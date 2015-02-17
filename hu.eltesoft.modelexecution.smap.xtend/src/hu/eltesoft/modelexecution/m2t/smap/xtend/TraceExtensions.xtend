@@ -21,7 +21,7 @@ interface LocationProvider {
  * Arbitrary data packaged with its source location information.
  */
 @Data
-class DataWithLocation<T> {
+package class DataWithLocation<T> {
     T data
     Location location
 
@@ -47,9 +47,5 @@ class TraceExtensions {
 
     def static <T extends LocationProvider> DataWithLocation<T> trace(T dataWithLocation) {
         trace(dataWithLocation.location, dataWithLocation)
-    }
-
-    def static <T> DataWithLocation<T> trace(DataWithLocation<T> data) {
-        data
     }
 }

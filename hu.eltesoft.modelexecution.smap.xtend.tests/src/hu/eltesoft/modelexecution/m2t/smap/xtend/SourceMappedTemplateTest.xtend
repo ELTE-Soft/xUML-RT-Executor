@@ -40,9 +40,14 @@ class SourceMappedTemplateTest {
                 *F
                 + 0 test.sm
                 test.sm
+                + 1 test2.sm
+                test2.sm
                 *L
                 17:2
                 42,3:3
+                1#1:8
+                2:10
+                5:12
             ''', smText.smap)
     }
 }

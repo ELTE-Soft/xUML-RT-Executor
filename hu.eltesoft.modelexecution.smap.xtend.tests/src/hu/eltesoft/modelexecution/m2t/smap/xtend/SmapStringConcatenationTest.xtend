@@ -34,11 +34,18 @@ class SmapStringConcatenationTest {
         val data = new DataWithLocation<String>("data", location)
         builder.append("a\r\nb\nc\r")
         builder.append(data, "")
-        return builder.toSourceMappedText
+        builder.toSourceMappedText
     }
 
     @Test
     def testAppendingNestedTemplateText() {
+        val smText = createBuilderFromNestedTemplate()
+
+        assertStringEquals("0\n1\n2\na\nb\nc\ndata", smText)
+    }
+
+    @Test
+    def testAppendingNestedTemplateSmap() {
         val smText = createBuilderFromNestedTemplate()
 
         assertStringEquals(
@@ -52,19 +59,11 @@ class SmapStringConcatenationTest {
             ''', smText.smap)
     }
 
-    @Test
-    def testAppendingNestedTemplateSmap() {
-        val smText = createBuilderFromNestedTemplate()
-
-        assertStringEquals("0\n1\n2\na\nb\nc\ndata", smText)
-    }
-
     def createBuilderFromNestedTemplate() {
         val builder = new SmapStringConcatenation("sm")
         val inner = createBuilderFromDataWithLocation()
         builder.append("0\r1\n2\r\n")
         builder.append(inner, "")
-        val smText = builder.toSourceMappedText
-        smText
+        builder.toSourceMappedText
     }
 }

@@ -8,11 +8,11 @@ class TestTemplate {
     val locationA = new Location("test.sm", 17, 17)
     val locationB = new Location("test.sm", 42, 44)
 
-    val numbers = #[1, "2", 3.14d]
+    val numbers = #[0, "2", 3.14d]
 
     val location1 = new Location("test2.sm", 1, 1)
-    val location2 = new Location("test2.sm", 2, 4)
-    val location3 = new Location("test2.sm", 5, 6)
+    val location2 = new Location("test2.sm", 2, 2)
+    val location3 = new Location("test2.sm", 5, 5)
 
     def generate(String value) '''
         «value»
@@ -31,7 +31,10 @@ class TestTemplate {
         «ENDFOR»
     '''
 
-    def dispatch renderItem(Integer item) '''Integer: «trace(location1, item)»'''
+    def dispatch renderItem(Integer item) {
+        val next = item + 1
+        '''Integer: «trace(location1, next)»'''
+    }
 
     def dispatch renderItem(String item) '''String: «trace(location2, item)»'''
 

@@ -50,7 +50,7 @@ class SmapStringConcatenation extends StringConcatenation {
      * location to the current output line, and appends the text
      * represented by the given data.
      */
-    def append(DataWithLocation<?> dataWithLocation, String indentation) {
+    def dispatch append(DataWithLocation<?> dataWithLocation, String indentation) {
 
         // assume that parameters are substituted to continuous line ranges in the template
         val outputLineIncrement = 1
@@ -62,14 +62,26 @@ class SmapStringConcatenation extends StringConcatenation {
     /**
      * Implements nested template support, as substitution of inner
      * templates will also result in a SourceMappedText instance.
+     * Requires dynamic dispatch in some cases, see append for objects.
      */
-    def append(SourceMappedText sourceMappedText, String indentation) {
+    def dispatch append(SourceMappedText sourceMappedText, String indentation) {
         sourceMappedText.mapping.forEach [ m |
             mapping.add(new LineMapping(m.inputLocation, lineNumber + m.outputStartLine - 1, m.outputLineIncrement))
         ]
         append(sourceMappedText.text, indentation)
     }
 
+    /**
+     * General case of dynamic dispatch. Delegates call to inherited implementation.
+     */
+    def dispatch append(Object object, String indentation) {
+        super.append(object, indentation)
+    }
+
+    /**
+     * Invocations with SourceMappedText could happen from generated code, but
+     * the static type is CharSequence there, so dynamic dispatch must be done.
+     */
     def toSourceMappedText() {
         return new SourceMappedText(stratumName, mapping, toString())
     }
@@ -83,6 +95,7 @@ class SmapStringConcatenation extends StringConcatenation {
         val Field field = StringConcatenation.getDeclaredField("segments")
         field.accessible = true
         val segments = field.get(this) as ArrayList<String>
+
         // as segments also contains single line delimiters,
         // only the ordinary lines should be counted
         segments.filter[e|e == lineDelimiter].length + 1

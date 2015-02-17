@@ -15,7 +15,7 @@ import org.eclipse.xtext.smap.SmapStratum;
  * stratum, and the internal line mapping can also be accessed with a getter.
  */
 @SuppressWarnings("restriction")
-public class SourceMappedText {
+public class SourceMappedText implements CharSequence {
 
 	private final String stratumName;
 	private final List<LineMapping> mapping;
@@ -71,6 +71,21 @@ public class SourceMappedText {
 			smap.addLineData(l.getStartLine(), fileName, inputLineCount,
 					m.getOutputStartLine(), m.getOutputLineIncrement());
 		}
+	}
+
+	@Override
+	public char charAt(int index) {
+		return text.toString().charAt(index);
+	}
+
+	@Override
+	public int length() {
+		return text.toString().length();
+	}
+
+	@Override
+	public CharSequence subSequence(int start, int end) {
+		return text.toString().subSequence(start, end);
 	}
 
 	@Override

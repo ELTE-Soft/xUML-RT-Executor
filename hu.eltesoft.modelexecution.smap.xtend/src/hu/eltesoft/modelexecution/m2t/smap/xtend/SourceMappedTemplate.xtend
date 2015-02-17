@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend
 
-import java.util.HashSet
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.Active
 import org.eclipse.xtend.lib.macro.TransformationContext
@@ -8,11 +7,27 @@ import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtend.lib.macro.expression.Expression
-import org.eclipse.xtext.common.types.JvmType
-import org.eclipse.xtext.common.types.JvmTypeReference
 
 import static extension hu.eltesoft.modelexecution.m2t.smap.xtend.BuiltinObjectsFactory.*
 
+/**
+ * Enables JSR-045 compatible source mapping support for ordinary Xtend templates.
+ * It should be used on Xtend classes which are serving code generation purposes.
+ * When present, code for each template method (which is returning a CharSequence)
+ * will be generated twice. First, the Xtend compiler will create its own code,
+ * but this method will be renamed as it gets prefixed with ORIGINAL_PREFIX.
+ * Second, the associated annotation processor will generate custom body for each
+ * template method with its original name. In this body, the usual StringConcatenation
+ * class is replaced with a custom SmapStringConcatenation, which is able to collect
+ * and return source mapping related information in a straightforward way.
+ * 
+ * Exact source locations could be added to template substitutions using one of
+ * the trace methods in the TraceExtensions class. Example:
+ * 
+ * val Location location = ...;
+ * 
+ * def generate(String name) '''Hello «trace(location, name)»!'''
+ */
 @Active(SourceMappedTemplateProcessor)
 annotation SourceMappedTemplate {
     String stratumName;
@@ -20,55 +35,59 @@ annotation SourceMappedTemplate {
 
 class SourceMappedTemplateProcessor extends AbstractClassProcessor {
 
+    public static val ORIGINAL_PREFIX = "original_"
+    public static val SMAP_CONCAT_CLASS_NAME = SmapStringConcatenation.canonicalName
+
     var SmapCompiler compiler
-    var JvmType thisType
-    var JvmTypeReference blockReturnType
-    val methodNames = new HashSet<String>
 
     override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-        compiler = new SmapCompiler
-        getXtendPluginInjector.injectMembers(compiler)
 
+        // collect and assemble compilation data and set up compiler
         val cu = annotatedClass.getComilationUnit
-        thisType = cu.toJvmTypeReference(newTypeReference(annotatedClass)).type
-        blockReturnType = cu.toJvmTypeReference(newTypeReference(SmapStringConcatenation))
+        val thisType = cu.toJvmTypeReference(newTypeReference(annotatedClass)).type
 
         val annotation = annotatedClass.findAnnotation(newTypeReference(SourceMappedTemplate).type)
         val stratumName = annotation.getStringValue("stratumName")
 
-        annotatedClass.declaredMethods.filter[transformable].forEach [ method |
-            methodNames.add(method.simpleName)
-        ]
+        compiler = new SmapCompiler(thisType, stratumName)
+        getXtendPluginInjector.injectMembers(compiler)
 
         annotatedClass.declaredMethods.filter[transformable].forEach [ method |
-            annotatedClass.addMethod("smap_" + method.simpleName) [
-                returnType = newTypeReference(SourceMappedText)
+            compiler.addOriginalMethodName(method.simpleName)
+        ]
+
+        // run transformation over appropriate methods
+        annotatedClass.declaredMethods.filter[transformable].forEach [ method |
+            annotatedClass.addMethod(method.simpleName) [
+                it.returnType = newTypeReference(SourceMappedText)
                 for (param : method.parameters) {
-                    addParameter(param.simpleName, param.type)
+                    it.addParameter(param.simpleName, param.type)
                 }
-                body = '''return «compileSmapCapableBody(method.body, stratumName)».toSourceMappedText();''';
+                val smapBody = compileSmapCapableBody(method.body)
+                it.body = '''
+                    return ((«SMAP_CONCAT_CLASS_NAME»)«smapBody»).toSourceMappedText();
+                ''';
+                method.simpleName = ORIGINAL_PREFIX + method.simpleName
+                method.visibility = Visibility.PRIVATE
             ]
-            //method.simpleName = "_" + method.simpleName
-            method.visibility = Visibility.PRIVATE
         ]
     }
 
     def transformable(MutableMethodDeclaration method) {
-        return hasNoInferredParameters(method) && returnsCharSequence(method)
+        return !hasInferredParameters(method) && returnsCharSequence(method)
     }
 
-    def hasNoInferredParameters(MutableMethodDeclaration method) {
-        !method.parameters.exists[p|p.type.inferred]
+    def hasInferredParameters(MutableMethodDeclaration method) {
+        method.parameters.exists[p|p.type.inferred]
     }
 
     def returnsCharSequence(MutableMethodDeclaration method) {
         null != method.body && compiler.returnsCharSequence(method.body)
     }
 
-    def compileSmapCapableBody(Expression expression, String stratumName) {
+    def compileSmapCapableBody(Expression expression) {
         val output = createAppendable
-        output.declareVariable(thisType, "this")
-        compiler.compileBody(expression, output, stratumName, blockReturnType, methodNames, thisType)
+        compiler.compileBody(expression, output)
         return output
     }
 }
