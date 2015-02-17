@@ -14,7 +14,7 @@ import com.google.inject.Injector;
  * restrictions here, as it could not be done from Xtend code.
  */
 @SuppressWarnings("restriction")
-public class BuiltinObjectsFactory {
+class BuiltinObjectsFactory {
 
 	public static Injector getXtendPluginInjector() {
 		return XtendActivator.getInstance().getInjector(
