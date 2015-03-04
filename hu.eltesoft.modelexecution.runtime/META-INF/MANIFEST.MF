@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: hu.eltesoft.modelexecution.runtime
 Bundle-SymbolicName: hu.eltesoft.modelexecution.runtime
-Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-Version: 1.0.0
+Bundle-ClassPath: bin/
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: hu.eltesoft.modelexecution.3pp;bundle-version="1.0.0"
 Export-Package: hu.eltesoft.modelexecution.runtime,
