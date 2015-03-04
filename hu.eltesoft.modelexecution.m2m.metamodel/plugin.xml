@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?><!--
+--><plugin>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated gen -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/base"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated behavior -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/behavior"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated gen -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/classdef"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated gen -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/event"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated gen -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/region"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated gen -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/signal"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage"
+            genModel="model/gen.genmodel"/>
+   </extension>
+
+</plugin>
