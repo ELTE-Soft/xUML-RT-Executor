@@ -1,0 +1,35 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Cls(cls : Class, className) {
+	Class.name(cls, className);
+	neg find Behavior(cls, _name, _code);
+	neg find Stereotype(cls);
+}
+
+pattern Operation(cls : Class, operation : Operation, operationName) {
+	Class.ownedOperation(cls, operation);
+	Operation.name(operation, operationName);
+
+	// TODO check if operation is of right format
+}
+
+pattern Method(cls : Class, operation : Operation, methodName) {
+	Class.ownedOperation(cls, operation);
+
+	Operation.method(operation, method);
+	Behavior.name(method, methodName);
+}
+
+pattern Reception(cls : Class, receptionName, signalName) {
+	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+	Reception.name(reception, receptionName);
+	Signal.name(signal, signalName);
+}
+
+private pattern Stereotype(stereotype : Stereotype) {
+	Stereotype(stereotype);
+}
+

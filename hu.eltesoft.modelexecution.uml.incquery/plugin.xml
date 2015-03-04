@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><plugin>
+  <extension id="hu.eltesoft.modelexecution.m2m.tmp.Queries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.m2m.tmp.Queries" id="hu.eltesoft.modelexecution.m2m.tmp.Queries"/>
+  </extension>
+  <extension id="patterns.Queries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:patterns.Queries" id="patterns.Queries"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Queries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Queries" id="hu.eltesoft.modelexecution.uml.incquery.Queries"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Modelqueries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Modelqueries" id="hu.eltesoft.modelexecution.uml.incquery.Modelqueries"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Classdef" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Classdef" id="hu.eltesoft.modelexecution.uml.incquery.Classdef"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Signal" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Signal" id="hu.eltesoft.modelexecution.uml.incquery.Signal"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Event" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Event" id="hu.eltesoft.modelexecution.uml.incquery.Event"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Region" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Region" id="hu.eltesoft.modelexecution.uml.incquery.Region"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Behavior" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Behavior" id="hu.eltesoft.modelexecution.uml.incquery.Behavior"/>
+  </extension>
+</plugin>

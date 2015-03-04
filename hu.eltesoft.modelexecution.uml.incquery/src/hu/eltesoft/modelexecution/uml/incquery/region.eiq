@@ -1,0 +1,68 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Region(region : Region, regionName, firstStateName) {
+	find RegionInitials(region, regionName, _inTr, _fstSt, firstStateName);
+}
+
+pattern InitialTransitionEffect(region : Region, initEffectName) {
+	find RegionInitials(region, _rNm, initTransition, _fstSt, _fstStNm);
+	find TransitionEffect(region, initTransition, initEffectName);
+}
+
+pattern FirstStateEntry(region : Region, firstEntryName) {
+	find RegionInitials(region, _rNm, _inTr, firstState, _fstStNm);
+	find Entry(region, firstState, firstEntryName);
+}
+
+pattern State(region : Region, state : State, stateName) {
+	State.container(state, region);
+	State.name(state, stateName);
+}
+
+pattern Entry(region : Region, state : State, entryName) {
+	State.container(state, region);
+	State.entry(state, entry);
+	Behavior.name(entry, entryName);
+}
+
+pattern Exit(region : Region, state : State, exitName) {
+	State.container(state, region);
+	State.exit(state, exit);
+	Behavior.name(exit, exitName);
+}
+
+pattern
+Transition(region : Region, sourceState : State, transition : Transition, transitionName, eventName, targetName) { // -> regenerate state machine file
+	Transition.container(transition, region);
+
+	Transition.source(transition, sourceState);
+	Transition.target(transition, targetState);
+	State.name(targetState, targetName);
+
+	Transition.name(transition, transitionName);
+
+	Transition.trigger(transition, trigger);
+	Trigger.event(trigger, event);
+	Event.name(event, eventName);
+}
+
+pattern
+TransitionEffect(region : Region, transition : Transition, effectName) {
+	Transition.container(transition, region);
+	Transition.effect(transition, effect);
+	Behavior.name(effect, effectName);
+}
+
+private pattern
+RegionInitials(region : Region, regionName, initTransition : Transition, firstState : State, firstStateName) {
+	Region.name(region, regionName);
+
+	Pseudostate.kind(init, ::initial);
+	Transition.source(initTransition, init);
+	Transition.target(initTransition, firstState);
+	find State(region, firstState, firstStateName);
+}
+
+

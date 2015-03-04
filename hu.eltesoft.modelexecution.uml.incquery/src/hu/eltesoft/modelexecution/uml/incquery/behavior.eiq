@@ -1,0 +1,12 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Behavior(behavior : Behavior, behaviorName, alfCode) {
+	OpaqueBehavior(behavior);
+	Behavior.name(behavior, behaviorName);
+	OpaqueBehavior.body(behavior, alfCode);
+
+	// TODO check language
+	// OpaqueBehavior.language(behavior, "Alf");
+}

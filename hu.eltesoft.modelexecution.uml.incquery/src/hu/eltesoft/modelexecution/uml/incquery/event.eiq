@@ -1,0 +1,9 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Event(event : Event, eventName, signalName) { // is signal event
+	Event.name(event, eventName);
+	SignalEvent.signal(event, signal);
+	Signal.name(signal, signalName);
+}
