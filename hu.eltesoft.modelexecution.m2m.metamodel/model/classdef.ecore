@@ -10,8 +10,7 @@
         eType="#//ClSignal"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="base.ecore#//Named base.ecore#//Identified">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClReception" eSuperTypes="base.ecore#//Named base.ecore#//Identified">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signal" lowerBound="1"

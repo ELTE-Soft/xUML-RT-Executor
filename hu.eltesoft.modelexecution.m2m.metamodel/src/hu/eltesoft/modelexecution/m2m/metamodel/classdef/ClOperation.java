@@ -33,7 +33,7 @@ public interface ClOperation extends Named, Identified {
 	 * @return the value of the '<em>Method</em>' attribute.
 	 * @see #setMethod(String)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_Method()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	String getMethod();

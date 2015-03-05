@@ -34,9 +34,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getId <em>Id</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,6 +64,16 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 	protected String id = ID_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getRegion() <em>Region</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRegion()
+	 * @generated
+	 * @ordered
+	 */
+	protected ClRegion region;
+
+	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -82,16 +92,6 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 	 * @ordered
 	 */
 	protected EList<ClSignal> receptions;
-
-	/**
-	 * The cached value of the '{@link #getRegion() <em>Region</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRegion()
-	 * @generated
-	 * @ordered
-	 */
-	protected ClRegion region;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -205,13 +205,13 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		switch (featureID) {
 			case ClassdefPackage.CL_CLASS__ID:
 				return getId();
+			case ClassdefPackage.CL_CLASS__REGION:
+				if (resolve) return getRegion();
+				return basicGetRegion();
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return getOperations();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				return getReceptions();
-			case ClassdefPackage.CL_CLASS__REGION:
-				if (resolve) return getRegion();
-				return basicGetRegion();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -228,6 +228,9 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__ID:
 				setId((String)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS__REGION:
+				setRegion((ClRegion)newValue);
+				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
 				getOperations().addAll((Collection<? extends ClOperation>)newValue);
@@ -235,9 +238,6 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				getReceptions().clear();
 				getReceptions().addAll((Collection<? extends ClSignal>)newValue);
-				return;
-			case ClassdefPackage.CL_CLASS__REGION:
-				setRegion((ClRegion)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -254,14 +254,14 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__ID:
 				setId(ID_EDEFAULT);
 				return;
+			case ClassdefPackage.CL_CLASS__REGION:
+				setRegion((ClRegion)null);
+				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
 				return;
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				getReceptions().clear();
-				return;
-			case ClassdefPackage.CL_CLASS__REGION:
-				setRegion((ClRegion)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -277,12 +277,12 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		switch (featureID) {
 			case ClassdefPackage.CL_CLASS__ID:
 				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case ClassdefPackage.CL_CLASS__REGION:
+				return region != null;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				return receptions != null && !receptions.isEmpty();
-			case ClassdefPackage.CL_CLASS__REGION:
-				return region != null;
 		}
 		return super.eIsSet(featureID);
 	}

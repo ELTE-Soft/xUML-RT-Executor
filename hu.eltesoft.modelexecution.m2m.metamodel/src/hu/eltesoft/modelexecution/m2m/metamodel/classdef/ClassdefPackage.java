@@ -87,13 +87,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Region</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__REGION = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Operations</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__OPERATIONS = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int CL_CLASS__OPERATIONS = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
@@ -102,16 +111,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__RECEPTIONS = BasePackage.NAMED_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Region</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS__REGION = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int CL_CLASS__RECEPTIONS = BasePackage.NAMED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
