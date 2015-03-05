@@ -8,6 +8,12 @@ pattern Cls(cls : Class, className) {
 	neg find Stereotype(cls);
 }
 
+pattern RegionOfClass(cls : Class, regionName) {
+	Class.ownedBehavior(cls, stateMachine);
+	StateMachine.region(stateMachine, region);
+	Region.name(region, regionName);
+}
+
 pattern Operation(cls : Class, operation : Operation, operationName) {
 	Class.ownedOperation(cls, operation);
 	Operation.name(operation, operationName);

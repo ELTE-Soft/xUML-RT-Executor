@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getReceptions <em>Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,5 +57,31 @@ public interface ClClass extends Named, Identified {
 	 * @generated
 	 */
 	EList<ClSignal> getReceptions();
+
+	/**
+	 * Returns the value of the '<em><b>Region</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Region</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Region</em>' reference.
+	 * @see #setRegion(ClRegion)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Region()
+	 * @model
+	 * @generated
+	 */
+	ClRegion getRegion();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Region</em>' reference.
+	 * @see #getRegion()
+	 * @generated
+	 */
+	void setRegion(ClRegion value);
 
 } // ClClass

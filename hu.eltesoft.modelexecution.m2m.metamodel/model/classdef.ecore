@@ -3,6 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="classdef" nsURI="http://www.eltesoft.hu/modelexecution/m2m/classdef"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.classdef">
   <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//Named base.ecore#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="region" eType="#//ClRegion"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
         eType="#//ClOperation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="receptions" upperBound="-1"
@@ -17,4 +18,5 @@
         eType="#//ClSignal"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClSignal" eSuperTypes="base.ecore#//Named base.ecore#//Identified"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClRegion" eSuperTypes="base.ecore#//Named base.ecore#//Identified"/>
 </ecore:EPackage>

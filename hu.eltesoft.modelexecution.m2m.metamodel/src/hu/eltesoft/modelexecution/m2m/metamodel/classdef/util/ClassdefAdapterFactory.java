@@ -87,6 +87,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClSignalAdapter();
 			}
 			@Override
+			public Adapter caseClRegion(ClRegion object) {
+				return createClRegionAdapter();
+			}
+			@Override
 			public Adapter caseNamed(Named object) {
 				return createNamedAdapter();
 			}
@@ -167,6 +171,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClSignalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion <em>Cl Region</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion
+	 * @generated
+	 */
+	public Adapter createClRegionAdapter() {
 		return null;
 	}
 
