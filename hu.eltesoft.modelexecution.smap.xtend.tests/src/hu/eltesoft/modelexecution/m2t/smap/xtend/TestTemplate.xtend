@@ -1,9 +1,8 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend
 
-import static hu.eltesoft.modelexecution.m2t.smap.xtend.TraceExtensions.*
-
 @SourceMappedTemplate(stratumName="sm")
 class TestTemplate {
+    extension TraceExtensions e = new TraceExtensions();
 
     val locationA = new Location("test.sm", 17, 17)
     val locationB = new Location("test.sm", 42, 44)
