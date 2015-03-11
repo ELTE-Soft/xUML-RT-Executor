@@ -30,64 +30,64 @@ import static extension hu.eltesoft.modelexecution.m2t.smap.xtend.BuiltinObjects
  */
 @Active(SourceMappedTemplateProcessor)
 annotation SourceMappedTemplate {
-    String stratumName;
+	String stratumName;
 }
 
 class SourceMappedTemplateProcessor extends AbstractClassProcessor {
 
-    public static val ORIGINAL_PREFIX = "original_"
-    public static val SMAP_CONCAT_CLASS_NAME = SmapStringConcatenation.canonicalName
+	public static val ORIGINAL_PREFIX = "original_"
+	public static val SMAP_CONCAT_CLASS_NAME = SmapStringConcatenation.canonicalName
 
-    var SmapCompiler compiler
+	var SmapCompiler compiler
 
-    override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 
-        // collect and assemble compilation data and set up compiler
-        val cu = annotatedClass.getComilationUnit
-        val thisType = cu.toJvmTypeReference(newTypeReference(annotatedClass)).type
+		// collect and assemble compilation data and set up compiler
+		val cu = annotatedClass.getComilationUnit
+		val thisType = cu.toJvmTypeReference(newTypeReference(annotatedClass)).type
 
-        val annotation = annotatedClass.findAnnotation(newTypeReference(SourceMappedTemplate).type)
-        val stratumName = annotation.getStringValue("stratumName")
+		val annotation = annotatedClass.findAnnotation(newTypeReference(SourceMappedTemplate).type)
+		val stratumName = annotation.getStringValue("stratumName")
 
-        compiler = new SmapCompiler(thisType, stratumName)
-        getXtendPluginInjector.injectMembers(compiler)
+		compiler = new SmapCompiler(thisType, stratumName)
+		getXtendPluginInjector.injectMembers(compiler)
 
-        annotatedClass.declaredMethods.filter[transformable].forEach [ method |
-            compiler.addOriginalMethodName(method.simpleName)
-        ]
+		annotatedClass.declaredMethods.filter[transformable].forEach [ method |
+			compiler.addOriginalMethodName(method.simpleName)
+		]
 
-        // run transformation over appropriate methods
-        annotatedClass.declaredMethods.filter[transformable].forEach [ method |
-            annotatedClass.addMethod(method.simpleName) [
-                it.returnType = newTypeReference(SourceMappedText)
-                for (param : method.parameters) {
-                    it.addParameter(param.simpleName, param.type)
-                }
-                val smapBody = compileSmapCapableBody(method.body)
-                it.body = '''
-                    return ((«SMAP_CONCAT_CLASS_NAME»)«smapBody»).toSourceMappedText();
-                ''';
-                method.simpleName = ORIGINAL_PREFIX + method.simpleName
-                method.visibility = Visibility.PRIVATE
-            ]
-        ]
-    }
+		// run transformation over appropriate methods
+		annotatedClass.declaredMethods.filter[transformable].forEach [ method |
+			annotatedClass.addMethod(method.simpleName) [
+				it.returnType = newTypeReference(SourceMappedText)
+				for (param : method.parameters) {
+					it.addParameter(param.simpleName, param.type)
+				}
+				val smapBody = compileSmapCapableBody(method.body)
+				it.body = '''
+					return ((«SMAP_CONCAT_CLASS_NAME»)«smapBody»).toSourceMappedText();
+				''';
+				method.simpleName = ORIGINAL_PREFIX + method.simpleName
+				method.visibility = Visibility.PROTECTED
+			]
+		]
+	}
 
-    def transformable(MutableMethodDeclaration method) {
-        return !hasInferredParameters(method) && returnsCharSequence(method)
-    }
+	def transformable(MutableMethodDeclaration method) {
+		return !hasInferredParameters(method) && returnsCharSequence(method)
+	}
 
-    def hasInferredParameters(MutableMethodDeclaration method) {
-        method.parameters.exists[p|p.type.inferred]
-    }
+	def hasInferredParameters(MutableMethodDeclaration method) {
+		method.parameters.exists[p|p.type.inferred]
+	}
 
-    def returnsCharSequence(MutableMethodDeclaration method) {
-        null != method.body && compiler.returnsCharSequence(method.body)
-    }
+	def returnsCharSequence(MutableMethodDeclaration method) {
+		null != method.body && compiler.returnsCharSequence(method.body)
+	}
 
-    def compileSmapCapableBody(Expression expression) {
-        val output = createAppendable
-        compiler.compileBody(expression, output)
-        return output
-    }
+	def compileSmapCapableBody(Expression expression) {
+		val output = createAppendable
+		compiler.compileBody(expression, output)
+		return output
+	}
 }

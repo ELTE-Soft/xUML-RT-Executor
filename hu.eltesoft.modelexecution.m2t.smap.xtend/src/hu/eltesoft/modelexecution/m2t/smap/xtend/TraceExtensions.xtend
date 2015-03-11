@@ -7,14 +7,14 @@ package hu.eltesoft.modelexecution.m2t.smap.xtend
  */
 @Data
 class Location {
-    String filePath;
-    int startLine;
-    int endLine;
+	String filePath;
+	int startLine;
+	int endLine;
 }
 
 interface LocationProvider {
 
-    def Location getLocation()
+	def Location getLocation()
 }
 
 /**
@@ -22,12 +22,12 @@ interface LocationProvider {
  */
 @Data
 class DataWithLocation<T> {
-    T data
-    Location location
+	T data
+	Location location
 
-    override toString() {
-        data.toString
-    }
+	override toString() {
+		data.toString
+	}
 }
 
 /**
@@ -37,15 +37,15 @@ class DataWithLocation<T> {
  */
 class TraceExtensions {
 
-    def <T> DataWithLocation<T> trace(Location location, T data) {
-        new DataWithLocation(data, location)
-    }
+	def <T> DataWithLocation<T> trace(Location location, T data) {
+		new DataWithLocation(data, location)
+	}
 
-    def <T> DataWithLocation<T> trace(LocationProvider provider, T data) {
-        trace(provider.location, data)
-    }
+	def <T> DataWithLocation<T> trace(LocationProvider provider, T data) {
+		trace(provider.location, data)
+	}
 
-    def <T extends LocationProvider> DataWithLocation<T> trace(T dataWithLocation) {
-        trace(dataWithLocation.location, dataWithLocation)
-    }
+	def <T extends LocationProvider> DataWithLocation<T> trace(T dataWithLocation) {
+		trace(dataWithLocation.location, dataWithLocation)
+	}
 }
