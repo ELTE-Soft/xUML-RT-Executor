@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2t.smap.emf.xmi;
+package hu.eltesoft.modelexecution.m2t.smap.emf;
 
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier;
 
