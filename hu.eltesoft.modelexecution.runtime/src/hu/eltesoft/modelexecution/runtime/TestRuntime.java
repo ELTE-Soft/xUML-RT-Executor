@@ -15,12 +15,12 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
  * 
  * @author nboldi
  */
-public class Q1Runtime extends BaseRuntime {
+public class TestRuntime extends BaseRuntime {
 
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
 
-	public Q1Runtime(Tracer tracer, TraceReader traceReader, Logger logger) {
+	public TestRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
 		super(tracer, traceReader, logger);
 	}
 
@@ -54,6 +54,6 @@ public class Q1Runtime extends BaseRuntime {
 			}
 		}
 
-		new Q1Runtime(tracer, traceReader, logger).run(clsName, feedName);
+		new TestRuntime(tracer, traceReader, logger).run(clsName, feedName);
 	}
 }
