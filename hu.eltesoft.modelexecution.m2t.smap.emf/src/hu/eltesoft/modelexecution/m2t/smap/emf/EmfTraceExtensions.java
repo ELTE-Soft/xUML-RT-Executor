@@ -19,6 +19,16 @@ public class EmfTraceExtensions extends TraceExtensions {
 		return registry;
 	}
 
+	public DataWithLocation<String> trace(Reference reference) {
+		return trace(reference, LocationQualifier.None.class);
+	}
+
+	public DataWithLocation<String> trace(Reference reference,
+			Class<? extends LocationQualifier> classifier) {
+		Location location = registry.assignQualified(reference, classifier);
+		return trace(location, "");
+	}
+
 	public <T> DataWithLocation<T> trace(EObject object, T data) {
 		return trace(object, LocationQualifier.None.class, data);
 	}
