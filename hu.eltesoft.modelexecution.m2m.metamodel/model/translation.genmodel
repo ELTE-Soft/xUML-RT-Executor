@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.eltesoft.modelexecution.m2m.metamodel/src"
-    modelPluginID="hu.eltesoft.modelexecution.m2m.metamodel" modelName="Gen" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    operationReflection="true" importOrganizing="true">
+    modelPluginID="hu.eltesoft.modelexecution.m2m.metamodel" modelName="Translation metamodels"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>model/base.ecore</foreignModel>
   <foreignModel>model/behavior.ecore</foreignModel>
   <foreignModel>model/classdef.ecore</foreignModel>
@@ -12,25 +12,32 @@
   <foreignModel>model/signal.ecore</foreignModel>
   <genPackages prefix="Base" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="base.ecore#/">
-    <genClasses image="false" ecoreClass="base.ecore#//Identified">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Identified/id"/>
-    </genClasses>
+    <genDataTypes ecoreDataType="base.ecore#//Reference"/>
+    <genClasses image="false" ecoreClass="base.ecore#//TranslationModelObject"/>
+    <genClasses ecoreClass="base.ecore#//TranslationModelRootType"/>
     <genClasses image="false" ecoreClass="base.ecore#//Named">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Named/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="base.ecore#//Referenced">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Referenced/reference"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Behavior" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="behavior.ecore#/">
     <genClasses ecoreClass="behavior.ecore#//BhBehavior">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/code"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/containingClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/alfCode"/>
     </genClasses>
+    <genClasses ecoreClass="behavior.ecore#//BhClass"/>
   </genPackages>
   <genPackages prefix="Classdef" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="classdef.ecore#/">
     <genClasses ecoreClass="classdef.ecore#//ClClass">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/region"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/operations"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/receptions"/>
     </genClasses>
+    <genClasses ecoreClass="classdef.ecore#//ClRegion"/>
     <genClasses ecoreClass="classdef.ecore#//ClOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClOperation/method"/>
     </genClasses>
@@ -50,10 +57,12 @@
   <genPackages prefix="Region" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="region.ecore#/">
     <genClasses ecoreClass="region.ecore#//RgRegion">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/containingClass"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/initial"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/initialEffect"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/states"/>
     </genClasses>
+    <genClasses ecoreClass="region.ecore#//RgClass"/>
     <genClasses ecoreClass="region.ecore#//RgState">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgState/entry"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgState/exit"/>

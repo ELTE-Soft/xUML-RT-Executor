@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.signal;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
@@ -15,5 +15,5 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface SgSignal extends Named, Identified {
+public interface SgSignal extends ModelRootType, Named {
 } // SgSignal

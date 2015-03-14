@@ -68,12 +68,20 @@ public class BaseAdapterFactory extends AdapterFactoryImpl {
 	protected BaseSwitch<Adapter> modelSwitch =
 		new BaseSwitch<Adapter>() {
 			@Override
-			public Adapter caseIdentified(Identified object) {
-				return createIdentifiedAdapter();
+			public Adapter caseTranslationObject(TranslationObject object) {
+				return createTranslationObjectAdapter();
+			}
+			@Override
+			public Adapter caseModelRootType(ModelRootType object) {
+				return createModelRootTypeAdapter();
 			}
 			@Override
 			public Adapter caseNamed(Named object) {
 				return createNamedAdapter();
+			}
+			@Override
+			public Adapter caseReferenced(Referenced object) {
+				return createReferencedAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -96,16 +104,30 @@ public class BaseAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Identified <em>Identified</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject <em>Translation Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Identified
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject
 	 * @generated
 	 */
-	public Adapter createIdentifiedAdapter() {
+	public Adapter createTranslationObjectAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
+	 * @generated
+	 */
+	public Adapter createModelRootTypeAdapter() {
 		return null;
 	}
 
@@ -120,6 +142,20 @@ public class BaseAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNamedAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced
+	 * @generated
+	 */
+	public Adapter createReferencedAdapter() {
 		return null;
 	}
 

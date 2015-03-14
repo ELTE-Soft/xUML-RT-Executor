@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 import org.eclipse.emf.common.util.EList;
@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial <em>Initial</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialEffect <em>Initial Effect</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}</li>
@@ -25,7 +26,33 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RgRegion extends Named, Identified {
+public interface RgRegion extends ModelRootType, Named {
+	/**
+	 * Returns the value of the '<em><b>Containing Class</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Containing Class</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Containing Class</em>' reference.
+	 * @see #setContainingClass(RgClass)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_ContainingClass()
+	 * @model required="true"
+	 * @generated
+	 */
+	RgClass getContainingClass();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Containing Class</em>' reference.
+	 * @see #getContainingClass()
+	 * @generated
+	 */
+	void setContainingClass(RgClass value);
+
 	/**
 	 * Returns the value of the '<em><b>Initial</b></em>' reference.
 	 * <!-- begin-user-doc -->

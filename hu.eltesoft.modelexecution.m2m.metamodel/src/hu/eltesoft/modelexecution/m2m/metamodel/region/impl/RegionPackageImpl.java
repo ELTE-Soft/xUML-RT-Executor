@@ -21,6 +21,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
@@ -49,6 +50,13 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * @generated
 	 */
 	private EClass rgRegionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass rgClassEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -170,7 +178,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_Initial() {
+	public EReference getRgRegion_ContainingClass() {
 		return (EReference)rgRegionEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -179,7 +187,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_InitialEffect() {
+	public EReference getRgRegion_Initial() {
 		return (EReference)rgRegionEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -188,8 +196,26 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_States() {
+	public EReference getRgRegion_InitialEffect() {
 		return (EReference)rgRegionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRgRegion_States() {
+		return (EReference)rgRegionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getRgClass() {
+		return rgClassEClass;
 	}
 
 	/**
@@ -311,9 +337,12 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Create classes and their features
 		rgRegionEClass = createEClass(RG_REGION);
+		createEReference(rgRegionEClass, RG_REGION__CONTAINING_CLASS);
 		createEReference(rgRegionEClass, RG_REGION__INITIAL);
 		createEReference(rgRegionEClass, RG_REGION__INITIAL_EFFECT);
 		createEReference(rgRegionEClass, RG_REGION__STATES);
+
+		rgClassEClass = createEClass(RG_CLASS);
 
 		rgStateEClass = createEClass(RG_STATE);
 		createEReference(rgStateEClass, RG_STATE__ENTRY);
@@ -361,22 +390,23 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRootType());
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgRegionEClass.getESuperTypes().add(theBasePackage.getIdentified());
+		rgClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgStateEClass.getESuperTypes().add(theBasePackage.getIdentified());
-		rgTransitionEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgTransitionEClass.getESuperTypes().add(theBasePackage.getIdentified());
+		rgStateEClass.getESuperTypes().add(theBasePackage.getReferenced());
+		rgTransitionEClass.getESuperTypes().add(theBasePackage.getReferenced());
 		rgEventEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgEventEClass.getESuperTypes().add(theBasePackage.getIdentified());
 		rgBehaviorEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgBehaviorEClass.getESuperTypes().add(theBasePackage.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rgRegionEClass, RgRegion.class, "RgRegion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRgRegion_ContainingClass(), this.getRgClass(), null, "containingClass", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_Initial(), this.getRgState(), null, "initial", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_InitialEffect(), this.getRgBehavior(), null, "initialEffect", null, 0, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_States(), this.getRgState(), null, "states", null, 1, -1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(rgClassEClass, RgClass.class, "RgClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(rgStateEClass, RgState.class, "RgState", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRgState_Entry(), this.getRgBehavior(), null, "entry", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -194,8 +194,8 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		sgSignalEClass.getESuperTypes().add(theBasePackage.getModelRootType());
 		sgSignalEClass.getESuperTypes().add(theBasePackage.getNamed());
-		sgSignalEClass.getESuperTypes().add(theBasePackage.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(sgSignalEClass, SgSignal.class, "SgSignal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

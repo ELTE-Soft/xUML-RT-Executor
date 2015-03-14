@@ -2,8 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.event.*;
 
@@ -72,8 +73,9 @@ public class EventSwitch<T> extends Switch<T> {
 			case EventPackage.EV_EVENT: {
 				EvEvent evEvent = (EvEvent)theEObject;
 				T result = caseEvEvent(evEvent);
+				if (result == null) result = caseModelRootType(evEvent);
 				if (result == null) result = caseNamed(evEvent);
-				if (result == null) result = caseIdentified(evEvent);
+				if (result == null) result = caseTranslationObject(evEvent);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -81,8 +83,9 @@ public class EventSwitch<T> extends Switch<T> {
 				EvSignalEvent evSignalEvent = (EvSignalEvent)theEObject;
 				T result = caseEvSignalEvent(evSignalEvent);
 				if (result == null) result = caseEvEvent(evSignalEvent);
+				if (result == null) result = caseModelRootType(evSignalEvent);
 				if (result == null) result = caseNamed(evSignalEvent);
-				if (result == null) result = caseIdentified(evSignalEvent);
+				if (result == null) result = caseTranslationObject(evSignalEvent);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -90,7 +93,7 @@ public class EventSwitch<T> extends Switch<T> {
 				EvSignal evSignal = (EvSignal)theEObject;
 				T result = caseEvSignal(evSignal);
 				if (result == null) result = caseNamed(evSignal);
-				if (result == null) result = caseIdentified(evSignal);
+				if (result == null) result = caseTranslationObject(evSignal);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -144,6 +147,36 @@ public class EventSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Translation Object</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Translation Object</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTranslationObject(TranslationObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModelRootType(ModelRootType object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Named</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -155,21 +188,6 @@ public class EventSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNamed(Named object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIdentified(Identified object) {
 		return null;
 	}
 

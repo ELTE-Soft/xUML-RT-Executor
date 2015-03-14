@@ -2,7 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
@@ -15,5 +14,5 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface RgEvent extends Named, Identified {
+public interface RgEvent extends Named {
 } // RgEvent

@@ -57,6 +57,7 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case RegionPackage.RG_REGION: return createRgRegion();
+			case RegionPackage.RG_CLASS: return createRgClass();
 			case RegionPackage.RG_STATE: return createRgState();
 			case RegionPackage.RG_TRANSITION: return createRgTransition();
 			case RegionPackage.RG_EVENT: return createRgEvent();
@@ -74,6 +75,16 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public RgRegion createRgRegion() {
 		RgRegionImpl rgRegion = new RgRegionImpl();
 		return rgRegion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RgClass createRgClass() {
+		RgClassImpl rgClass = new RgClassImpl();
+		return rgClass;
 	}
 
 	/**

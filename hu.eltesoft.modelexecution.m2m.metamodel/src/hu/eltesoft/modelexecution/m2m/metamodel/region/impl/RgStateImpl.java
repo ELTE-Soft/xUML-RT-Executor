@@ -3,14 +3,14 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 import java.util.Collection;
 
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
@@ -32,7 +33,8 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getId <em>Id</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getEntry <em>Entry</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getExit <em>Exit</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getTransitions <em>Transitions</em>}</li>
@@ -41,26 +43,46 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class RgStateImpl extends NamedImpl implements RgState {
+public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState {
 	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ID_EDEFAULT = null;
+	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String id = ID_EDEFAULT;
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Reference REFERENCE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected Reference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' reference.
@@ -116,8 +138,8 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -125,11 +147,32 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__ID, oldId, id));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Reference getReference() {
+		return reference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setReference(Reference newReference) {
+		Reference oldReference = reference;
+		reference = newReference;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -228,8 +271,10 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__ID:
-				return getId();
+			case RegionPackage.RG_STATE__NAME:
+				return getName();
+			case RegionPackage.RG_STATE__REFERENCE:
+				return getReference();
 			case RegionPackage.RG_STATE__ENTRY:
 				if (resolve) return getEntry();
 				return basicGetEntry();
@@ -251,8 +296,11 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__ID:
-				setId((String)newValue);
+			case RegionPackage.RG_STATE__NAME:
+				setName((String)newValue);
+				return;
+			case RegionPackage.RG_STATE__REFERENCE:
+				setReference((Reference)newValue);
 				return;
 			case RegionPackage.RG_STATE__ENTRY:
 				setEntry((RgBehavior)newValue);
@@ -276,8 +324,11 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__ID:
-				setId(ID_EDEFAULT);
+			case RegionPackage.RG_STATE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case RegionPackage.RG_STATE__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case RegionPackage.RG_STATE__ENTRY:
 				setEntry((RgBehavior)null);
@@ -300,8 +351,10 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case RegionPackage.RG_STATE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case RegionPackage.RG_STATE__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_STATE__ENTRY:
 				return entry != null;
 			case RegionPackage.RG_STATE__EXIT:
@@ -319,9 +372,9 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
+		if (baseClass == Referenced.class) {
 			switch (derivedFeatureID) {
-				case RegionPackage.RG_STATE__ID: return BasePackage.IDENTIFIED__ID;
+				case RegionPackage.RG_STATE__REFERENCE: return BasePackage.REFERENCED__REFERENCE;
 				default: return -1;
 			}
 		}
@@ -335,9 +388,9 @@ public class RgStateImpl extends NamedImpl implements RgState {
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
+		if (baseClass == Referenced.class) {
 			switch (baseFeatureID) {
-				case BasePackage.IDENTIFIED__ID: return RegionPackage.RG_STATE__ID;
+				case BasePackage.REFERENCED__REFERENCE: return RegionPackage.RG_STATE__REFERENCE;
 				default: return -1;
 			}
 		}
@@ -354,8 +407,10 @@ public class RgStateImpl extends NamedImpl implements RgState {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (id: ");
-		result.append(id);
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", reference: ");
+		result.append(reference);
 		result.append(')');
 		return result.toString();
 	}

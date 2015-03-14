@@ -2,8 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.*;
 
@@ -72,8 +74,17 @@ public class RegionSwitch<T> extends Switch<T> {
 			case RegionPackage.RG_REGION: {
 				RgRegion rgRegion = (RgRegion)theEObject;
 				T result = caseRgRegion(rgRegion);
+				if (result == null) result = caseModelRootType(rgRegion);
 				if (result == null) result = caseNamed(rgRegion);
-				if (result == null) result = caseIdentified(rgRegion);
+				if (result == null) result = caseTranslationObject(rgRegion);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case RegionPackage.RG_CLASS: {
+				RgClass rgClass = (RgClass)theEObject;
+				T result = caseRgClass(rgClass);
+				if (result == null) result = caseNamed(rgClass);
+				if (result == null) result = caseTranslationObject(rgClass);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -81,15 +92,16 @@ public class RegionSwitch<T> extends Switch<T> {
 				RgState rgState = (RgState)theEObject;
 				T result = caseRgState(rgState);
 				if (result == null) result = caseNamed(rgState);
-				if (result == null) result = caseIdentified(rgState);
+				if (result == null) result = caseReferenced(rgState);
+				if (result == null) result = caseTranslationObject(rgState);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case RegionPackage.RG_TRANSITION: {
 				RgTransition rgTransition = (RgTransition)theEObject;
 				T result = caseRgTransition(rgTransition);
-				if (result == null) result = caseNamed(rgTransition);
-				if (result == null) result = caseIdentified(rgTransition);
+				if (result == null) result = caseReferenced(rgTransition);
+				if (result == null) result = caseTranslationObject(rgTransition);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -97,7 +109,7 @@ public class RegionSwitch<T> extends Switch<T> {
 				RgEvent rgEvent = (RgEvent)theEObject;
 				T result = caseRgEvent(rgEvent);
 				if (result == null) result = caseNamed(rgEvent);
-				if (result == null) result = caseIdentified(rgEvent);
+				if (result == null) result = caseTranslationObject(rgEvent);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -105,7 +117,7 @@ public class RegionSwitch<T> extends Switch<T> {
 				RgBehavior rgBehavior = (RgBehavior)theEObject;
 				T result = caseRgBehavior(rgBehavior);
 				if (result == null) result = caseNamed(rgBehavior);
-				if (result == null) result = caseIdentified(rgBehavior);
+				if (result == null) result = caseTranslationObject(rgBehavior);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -125,6 +137,21 @@ public class RegionSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseRgRegion(RgRegion object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Rg Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Rg Class</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRgClass(RgClass object) {
 		return null;
 	}
 
@@ -189,6 +216,36 @@ public class RegionSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Translation Object</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Translation Object</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTranslationObject(TranslationObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModelRootType(ModelRootType object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Named</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -204,17 +261,17 @@ public class RegionSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Referenced</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Referenced</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIdentified(Identified object) {
+	public T caseReferenced(Referenced object) {
 		return null;
 	}
 

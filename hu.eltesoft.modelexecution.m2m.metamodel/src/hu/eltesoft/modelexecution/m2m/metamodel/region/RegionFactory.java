@@ -31,6 +31,15 @@ public interface RegionFactory extends EFactory {
 	RgRegion createRgRegion();
 
 	/**
+	 * Returns a new object of class '<em>Rg Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Rg Class</em>'.
+	 * @generated
+	 */
+	RgClass createRgClass();
+
+	/**
 	 * Returns a new object of class '<em>Rg State</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

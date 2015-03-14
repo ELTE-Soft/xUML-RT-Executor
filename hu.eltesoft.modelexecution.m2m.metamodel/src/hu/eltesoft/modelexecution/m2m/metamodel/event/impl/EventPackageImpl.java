@@ -243,11 +243,10 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		evEventEClass.getESuperTypes().add(theBasePackage.getModelRootType());
 		evEventEClass.getESuperTypes().add(theBasePackage.getNamed());
-		evEventEClass.getESuperTypes().add(theBasePackage.getIdentified());
 		evSignalEventEClass.getESuperTypes().add(this.getEvEvent());
 		evSignalEClass.getESuperTypes().add(theBasePackage.getNamed());
-		evSignalEClass.getESuperTypes().add(theBasePackage.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(evEventEClass, EvEvent.class, "EvEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

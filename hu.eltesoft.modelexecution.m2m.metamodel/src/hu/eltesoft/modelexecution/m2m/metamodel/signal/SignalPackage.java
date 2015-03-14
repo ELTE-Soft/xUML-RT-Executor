@@ -38,7 +38,7 @@ public interface SignalPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/signal";
+	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/metamodel/signal";
 
 	/**
 	 * The package namespace name.
@@ -73,16 +73,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL__NAME = BasePackage.NAMED__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SG_SIGNAL__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int SG_SIGNAL__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Sg Signal</em>' class.
@@ -91,7 +82,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int SG_SIGNAL_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Sg Signal</em>' class.
@@ -100,7 +91,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int SG_SIGNAL_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
 
 
 	/**

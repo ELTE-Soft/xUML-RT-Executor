@@ -2,7 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
@@ -21,7 +20,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface ClOperation extends Named, Identified {
+public interface ClOperation extends Named {
 	/**
 	 * Returns the value of the '<em><b>Method</b></em>' attribute.
 	 * <!-- begin-user-doc -->

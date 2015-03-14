@@ -66,15 +66,30 @@ public class BaseSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case BasePackage.IDENTIFIED: {
-				Identified identified = (Identified)theEObject;
-				T result = caseIdentified(identified);
+			case BasePackage.TRANSLATION_OBJECT: {
+				TranslationObject translationObject = (TranslationObject)theEObject;
+				T result = caseTranslationObject(translationObject);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.MODEL_ROOT_TYPE: {
+				ModelRootType modelRootType = (ModelRootType)theEObject;
+				T result = caseModelRootType(modelRootType);
+				if (result == null) result = caseTranslationObject(modelRootType);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case BasePackage.NAMED: {
 				Named named = (Named)theEObject;
 				T result = caseNamed(named);
+				if (result == null) result = caseTranslationObject(named);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.REFERENCED: {
+				Referenced referenced = (Referenced)theEObject;
+				T result = caseReferenced(referenced);
+				if (result == null) result = caseTranslationObject(referenced);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -83,17 +98,32 @@ public class BaseSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Translation Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Translation Object</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIdentified(Identified object) {
+	public T caseTranslationObject(TranslationObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModelRootType(ModelRootType object) {
 		return null;
 	}
 
@@ -109,6 +139,21 @@ public class BaseSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNamed(Named object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Referenced</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Referenced</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReferenced(Referenced object) {
 		return null;
 	}
 

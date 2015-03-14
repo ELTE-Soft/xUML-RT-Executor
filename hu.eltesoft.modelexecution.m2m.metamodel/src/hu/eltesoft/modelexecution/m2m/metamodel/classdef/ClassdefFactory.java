@@ -31,6 +31,15 @@ public interface ClassdefFactory extends EFactory {
 	ClClass createClClass();
 
 	/**
+	 * Returns a new object of class '<em>Cl Region</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Region</em>'.
+	 * @generated
+	 */
+	ClRegion createClRegion();
+
+	/**
 	 * Returns a new object of class '<em>Cl Operation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -56,15 +65,6 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClSignal createClSignal();
-
-	/**
-	 * Returns a new object of class '<em>Cl Region</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Region</em>'.
-	 * @generated
-	 */
-	ClRegion createClRegion();
 
 	/**
 	 * Returns the package supported by this factory.

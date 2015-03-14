@@ -2,8 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -25,7 +25,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RgState extends Named, Identified {
+public interface RgState extends Named, Referenced {
 	/**
 	 * Returns the value of the '<em><b>Entry</b></em>' reference.
 	 * <!-- begin-user-doc -->

@@ -39,7 +39,7 @@ public interface EventPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/event";
+	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/metamodel/event";
 
 	/**
 	 * The package namespace name.
@@ -74,16 +74,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT__NAME = BasePackage.NAMED__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EV_EVENT__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int EV_EVENT__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Ev Event</em>' class.
@@ -92,7 +83,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int EV_EVENT_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Ev Event</em>' class.
@@ -101,7 +92,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int EV_EVENT_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EvSignalEventImpl <em>Ev Signal Event</em>}' class.
@@ -121,15 +112,6 @@ public interface EventPackage extends EPackage {
 	 * @ordered
 	 */
 	int EV_SIGNAL_EVENT__NAME = EV_EVENT__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EV_SIGNAL_EVENT__ID = EV_EVENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -178,22 +160,13 @@ public interface EventPackage extends EPackage {
 	int EV_SIGNAL__NAME = BasePackage.NAMED__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EV_SIGNAL__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Ev Signal</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EV_SIGNAL_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int EV_SIGNAL_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Ev Signal</em>' class.

@@ -57,6 +57,7 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case BehaviorPackage.BH_BEHAVIOR: return createBhBehavior();
+			case BehaviorPackage.BH_CLASS: return createBhClass();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -70,6 +71,16 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	public BhBehavior createBhBehavior() {
 		BhBehaviorImpl bhBehavior = new BhBehaviorImpl();
 		return bhBehavior;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BhClass createBhClass() {
+		BhClassImpl bhClass = new BhClassImpl();
+		return bhClass;
 	}
 
 	/**

@@ -2,7 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
@@ -15,5 +14,5 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface EvSignal extends Named, Identified {
+public interface EvSignal extends Named {
 } // EvSignal

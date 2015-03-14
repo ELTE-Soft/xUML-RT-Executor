@@ -39,7 +39,7 @@ public interface RegionPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/region";
+	String eNS_URI = "http://www.eltesoft.hu/modelexecution/m2m/metamodel/region";
 
 	/**
 	 * The package namespace name.
@@ -74,16 +74,16 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__NAME = BasePackage.NAMED__NAME;
+	int RG_REGION__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Containing Class</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int RG_REGION__CONTAINING_CLASS = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Initial</b></em>' reference.
@@ -92,7 +92,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_REGION__INITIAL = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Initial Effect</b></em>' reference.
@@ -101,7 +101,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL_EFFECT = BasePackage.NAMED_FEATURE_COUNT + 2;
+	int RG_REGION__INITIAL_EFFECT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>States</b></em>' reference list.
@@ -110,7 +110,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__STATES = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int RG_REGION__STATES = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Rg Region</em>' class.
@@ -119,7 +119,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
+	int RG_REGION_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Rg Region</em>' class.
@@ -128,7 +128,44 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int RG_REGION_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl <em>Rg Class</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgClass()
+	 * @generated
+	 */
+	int RG_CLASS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_CLASS__NAME = BasePackage.NAMED__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Rg Class</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_CLASS_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Rg Class</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_CLASS_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl <em>Rg State</em>}' class.
@@ -138,7 +175,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgState()
 	 * @generated
 	 */
-	int RG_STATE = 1;
+	int RG_STATE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -150,13 +187,13 @@ public interface RegionPackage extends EPackage {
 	int RG_STATE__NAME = BasePackage.NAMED__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int RG_STATE__REFERENCE = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Entry</b></em>' reference.
@@ -211,25 +248,16 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgTransition()
 	 * @generated
 	 */
-	int RG_TRANSITION = 2;
+	int RG_TRANSITION = 3;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__NAME = BasePackage.NAMED__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_TRANSITION__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int RG_TRANSITION__REFERENCE = BasePackage.REFERENCED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Event</b></em>' reference.
@@ -238,7 +266,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__EVENT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_TRANSITION__EVENT = BasePackage.REFERENCED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Effect</b></em>' reference.
@@ -247,7 +275,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__EFFECT = BasePackage.NAMED_FEATURE_COUNT + 2;
+	int RG_TRANSITION__EFFECT = BasePackage.REFERENCED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' reference.
@@ -256,7 +284,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__TARGET = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int RG_TRANSITION__TARGET = BasePackage.REFERENCED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Rg Transition</em>' class.
@@ -265,7 +293,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
+	int RG_TRANSITION_FEATURE_COUNT = BasePackage.REFERENCED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Rg Transition</em>' class.
@@ -274,7 +302,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int RG_TRANSITION_OPERATION_COUNT = BasePackage.REFERENCED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl <em>Rg Event</em>}' class.
@@ -284,7 +312,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgEvent()
 	 * @generated
 	 */
-	int RG_EVENT = 3;
+	int RG_EVENT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -296,22 +324,13 @@ public interface RegionPackage extends EPackage {
 	int RG_EVENT__NAME = BasePackage.NAMED__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_EVENT__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Rg Event</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_EVENT_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_EVENT_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Rg Event</em>' class.
@@ -330,7 +349,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgBehavior()
 	 * @generated
 	 */
-	int RG_BEHAVIOR = 4;
+	int RG_BEHAVIOR = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -342,22 +361,13 @@ public interface RegionPackage extends EPackage {
 	int RG_BEHAVIOR__NAME = BasePackage.NAMED__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_BEHAVIOR__ID = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Rg Behavior</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_BEHAVIOR_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_BEHAVIOR_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Rg Behavior</em>' class.
@@ -378,6 +388,17 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRgRegion();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Containing Class</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass()
+	 * @see #getRgRegion()
+	 * @generated
+	 */
+	EReference getRgRegion_ContainingClass();
 
 	/**
 	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial <em>Initial</em>}'.
@@ -411,6 +432,16 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRgRegion_States();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass <em>Rg Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Rg Class</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass
+	 * @generated
+	 */
+	EClass getRgClass();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState <em>Rg State</em>}'.
@@ -552,6 +583,14 @@ public interface RegionPackage extends EPackage {
 		EClass RG_REGION = eINSTANCE.getRgRegion();
 
 		/**
+		 * The meta object literal for the '<em><b>Containing Class</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RG_REGION__CONTAINING_CLASS = eINSTANCE.getRgRegion_ContainingClass();
+
+		/**
 		 * The meta object literal for the '<em><b>Initial</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -574,6 +613,16 @@ public interface RegionPackage extends EPackage {
 		 * @generated
 		 */
 		EReference RG_REGION__STATES = eINSTANCE.getRgRegion_States();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl <em>Rg Class</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgClass()
+		 * @generated
+		 */
+		EClass RG_CLASS = eINSTANCE.getRgClass();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl <em>Rg State</em>}' class.

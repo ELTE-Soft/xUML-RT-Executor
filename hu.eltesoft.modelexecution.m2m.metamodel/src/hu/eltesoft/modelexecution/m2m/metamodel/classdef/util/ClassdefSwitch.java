@@ -2,8 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.*;
 
@@ -72,32 +73,9 @@ public class ClassdefSwitch<T> extends Switch<T> {
 			case ClassdefPackage.CL_CLASS: {
 				ClClass clClass = (ClClass)theEObject;
 				T result = caseClClass(clClass);
+				if (result == null) result = caseModelRootType(clClass);
 				if (result == null) result = caseNamed(clClass);
-				if (result == null) result = caseIdentified(clClass);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_OPERATION: {
-				ClOperation clOperation = (ClOperation)theEObject;
-				T result = caseClOperation(clOperation);
-				if (result == null) result = caseNamed(clOperation);
-				if (result == null) result = caseIdentified(clOperation);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_RECEPTION: {
-				ClReception clReception = (ClReception)theEObject;
-				T result = caseClReception(clReception);
-				if (result == null) result = caseNamed(clReception);
-				if (result == null) result = caseIdentified(clReception);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_SIGNAL: {
-				ClSignal clSignal = (ClSignal)theEObject;
-				T result = caseClSignal(clSignal);
-				if (result == null) result = caseNamed(clSignal);
-				if (result == null) result = caseIdentified(clSignal);
+				if (result == null) result = caseTranslationObject(clClass);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -105,7 +83,31 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				ClRegion clRegion = (ClRegion)theEObject;
 				T result = caseClRegion(clRegion);
 				if (result == null) result = caseNamed(clRegion);
-				if (result == null) result = caseIdentified(clRegion);
+				if (result == null) result = caseTranslationObject(clRegion);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_OPERATION: {
+				ClOperation clOperation = (ClOperation)theEObject;
+				T result = caseClOperation(clOperation);
+				if (result == null) result = caseNamed(clOperation);
+				if (result == null) result = caseTranslationObject(clOperation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_RECEPTION: {
+				ClReception clReception = (ClReception)theEObject;
+				T result = caseClReception(clReception);
+				if (result == null) result = caseNamed(clReception);
+				if (result == null) result = caseTranslationObject(clReception);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_SIGNAL: {
+				ClSignal clSignal = (ClSignal)theEObject;
+				T result = caseClSignal(clSignal);
+				if (result == null) result = caseNamed(clSignal);
+				if (result == null) result = caseTranslationObject(clSignal);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -125,6 +127,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClClass(ClClass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Region</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Region</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClRegion(ClRegion object) {
 		return null;
 	}
 
@@ -174,17 +191,32 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Cl Region</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Translation Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Cl Region</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Translation Object</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseClRegion(ClRegion object) {
+	public T caseTranslationObject(TranslationObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModelRootType(ModelRootType object) {
 		return null;
 	}
 
@@ -200,21 +232,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNamed(Named object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIdentified(Identified object) {
 		return null;
 	}
 

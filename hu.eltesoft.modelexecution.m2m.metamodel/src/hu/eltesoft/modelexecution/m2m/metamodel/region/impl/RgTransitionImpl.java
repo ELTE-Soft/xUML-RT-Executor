@@ -2,16 +2,13 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -19,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getId <em>Id</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getEvent <em>Event</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getEffect <em>Effect</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getTarget <em>Target</em>}</li>
@@ -36,26 +34,26 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RgTransitionImpl extends NamedImpl implements RgTransition {
+public class RgTransitionImpl extends MinimalEObjectImpl.Container implements RgTransition {
 	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ID_EDEFAULT = null;
+	protected static final Reference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String id = ID_EDEFAULT;
+	protected Reference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getEvent() <em>Event</em>}' reference.
@@ -111,8 +109,8 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getId() {
-		return id;
+	public Reference getReference() {
+		return reference;
 	}
 
 	/**
@@ -120,11 +118,11 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
+	public void setReference(Reference newReference) {
+		Reference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_TRANSITION__ID, oldId, id));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_TRANSITION__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -249,8 +247,8 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_TRANSITION__ID:
-				return getId();
+			case RegionPackage.RG_TRANSITION__REFERENCE:
+				return getReference();
 			case RegionPackage.RG_TRANSITION__EVENT:
 				if (resolve) return getEvent();
 				return basicGetEvent();
@@ -272,8 +270,8 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_TRANSITION__ID:
-				setId((String)newValue);
+			case RegionPackage.RG_TRANSITION__REFERENCE:
+				setReference((Reference)newValue);
 				return;
 			case RegionPackage.RG_TRANSITION__EVENT:
 				setEvent((RgEvent)newValue);
@@ -296,8 +294,8 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_TRANSITION__ID:
-				setId(ID_EDEFAULT);
+			case RegionPackage.RG_TRANSITION__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case RegionPackage.RG_TRANSITION__EVENT:
 				setEvent((RgEvent)null);
@@ -320,8 +318,8 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_TRANSITION__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case RegionPackage.RG_TRANSITION__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_TRANSITION__EVENT:
 				return event != null;
 			case RegionPackage.RG_TRANSITION__EFFECT:
@@ -338,44 +336,12 @@ public class RgTransitionImpl extends NamedImpl implements RgTransition {
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
-			switch (derivedFeatureID) {
-				case RegionPackage.RG_TRANSITION__ID: return BasePackage.IDENTIFIED__ID;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
-			switch (baseFeatureID) {
-				case BasePackage.IDENTIFIED__ID: return RegionPackage.RG_TRANSITION__ID;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (id: ");
-		result.append(id);
+		result.append(" (reference: ");
+		result.append(reference);
 		result.append(')');
 		return result.toString();
 	}

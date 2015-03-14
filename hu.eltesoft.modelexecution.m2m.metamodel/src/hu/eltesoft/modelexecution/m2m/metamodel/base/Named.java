@@ -2,7 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,10 +16,10 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getNamed()
- * @model abstract="true"
+ * @model interface="true" abstract="true"
  * @generated
  */
-public interface Named extends EObject {
+public interface Named extends TranslationObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -2,8 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.*;
 
@@ -75,6 +76,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClClassAdapter();
 			}
 			@Override
+			public Adapter caseClRegion(ClRegion object) {
+				return createClRegionAdapter();
+			}
+			@Override
 			public Adapter caseClOperation(ClOperation object) {
 				return createClOperationAdapter();
 			}
@@ -87,16 +92,16 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClSignalAdapter();
 			}
 			@Override
-			public Adapter caseClRegion(ClRegion object) {
-				return createClRegionAdapter();
+			public Adapter caseTranslationObject(TranslationObject object) {
+				return createTranslationObjectAdapter();
+			}
+			@Override
+			public Adapter caseModelRootType(ModelRootType object) {
+				return createModelRootTypeAdapter();
 			}
 			@Override
 			public Adapter caseNamed(Named object) {
 				return createNamedAdapter();
-			}
-			@Override
-			public Adapter caseIdentified(Identified object) {
-				return createIdentifiedAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -129,6 +134,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClClassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion <em>Cl Region</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion
+	 * @generated
+	 */
+	public Adapter createClRegionAdapter() {
 		return null;
 	}
 
@@ -175,16 +194,30 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion <em>Cl Region</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject <em>Translation Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject
 	 * @generated
 	 */
-	public Adapter createClRegionAdapter() {
+	public Adapter createTranslationObjectAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
+	 * @generated
+	 */
+	public Adapter createModelRootTypeAdapter() {
 		return null;
 	}
 
@@ -199,20 +232,6 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNamedAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Identified <em>Identified</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Identified
-	 * @generated
-	 */
-	public Adapter createIdentifiedAdapter() {
 		return null;
 	}
 

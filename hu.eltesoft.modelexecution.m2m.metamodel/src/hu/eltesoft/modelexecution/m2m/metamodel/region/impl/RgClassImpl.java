@@ -1,9 +1,9 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -14,18 +14,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Named</b></em>'.
+ * An implementation of the model object '<em><b>Rg Class</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class NamedImpl extends MinimalEObjectImpl.Container implements Named {
+public class RgClassImpl extends MinimalEObjectImpl.Container implements RgClass {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,7 +51,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected NamedImpl() {
+	protected RgClassImpl() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return BasePackage.Literals.NAMED;
+		return RegionPackage.Literals.RG_CLASS;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.NAMED__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_CLASS__NAME, oldName, name));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BasePackage.NAMED__NAME:
+			case RegionPackage.RG_CLASS__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -108,7 +108,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BasePackage.NAMED__NAME:
+			case RegionPackage.RG_CLASS__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -123,7 +123,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BasePackage.NAMED__NAME:
+			case RegionPackage.RG_CLASS__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -138,7 +138,7 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BasePackage.NAMED__NAME:
+			case RegionPackage.RG_CLASS__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
@@ -160,4 +160,4 @@ public abstract class NamedImpl extends MinimalEObjectImpl.Container implements 
 		return result.toString();
 	}
 
-} //NamedImpl
+} //RgClassImpl

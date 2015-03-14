@@ -3,9 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Identified;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
@@ -15,6 +13,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,32 +22,32 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EvEventImpl#getId <em>Id</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EvEventImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class EvEventImpl extends NamedImpl implements EvEvent {
+public class EvEventImpl extends MinimalEObjectImpl.Container implements EvEvent {
 	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ID_EDEFAULT = null;
+	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String id = ID_EDEFAULT;
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -74,8 +73,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -83,11 +82,11 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EventPackage.EV_EVENT__ID, oldId, id));
+			eNotify(new ENotificationImpl(this, Notification.SET, EventPackage.EV_EVENT__NAME, oldName, name));
 	}
 
 	/**
@@ -98,8 +97,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case EventPackage.EV_EVENT__ID:
-				return getId();
+			case EventPackage.EV_EVENT__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -112,8 +111,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case EventPackage.EV_EVENT__ID:
-				setId((String)newValue);
+			case EventPackage.EV_EVENT__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -127,8 +126,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EventPackage.EV_EVENT__ID:
-				setId(ID_EDEFAULT);
+			case EventPackage.EV_EVENT__NAME:
+				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -142,8 +141,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EventPackage.EV_EVENT__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case EventPackage.EV_EVENT__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -155,9 +154,9 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
+		if (baseClass == Named.class) {
 			switch (derivedFeatureID) {
-				case EventPackage.EV_EVENT__ID: return BasePackage.IDENTIFIED__ID;
+				case EventPackage.EV_EVENT__NAME: return BasePackage.NAMED__NAME;
 				default: return -1;
 			}
 		}
@@ -171,9 +170,9 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Identified.class) {
+		if (baseClass == Named.class) {
 			switch (baseFeatureID) {
-				case BasePackage.IDENTIFIED__ID: return EventPackage.EV_EVENT__ID;
+				case BasePackage.NAMED__NAME: return EventPackage.EV_EVENT__NAME;
 				default: return -1;
 			}
 		}
@@ -190,8 +189,8 @@ public class EvEventImpl extends NamedImpl implements EvEvent {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (id: ");
-		result.append(id);
+		result.append(" (name: ");
+		result.append(name);
 		result.append(')');
 		return result.toString();
 	}
