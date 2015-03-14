@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
@@ -73,7 +73,7 @@ public class EventSwitch<T> extends Switch<T> {
 			case EventPackage.EV_EVENT: {
 				EvEvent evEvent = (EvEvent)theEObject;
 				T result = caseEvEvent(evEvent);
-				if (result == null) result = caseModelRootType(evEvent);
+				if (result == null) result = caseModelRoot(evEvent);
 				if (result == null) result = caseNamed(evEvent);
 				if (result == null) result = caseTranslationObject(evEvent);
 				if (result == null) result = defaultCase(theEObject);
@@ -83,7 +83,7 @@ public class EventSwitch<T> extends Switch<T> {
 				EvSignalEvent evSignalEvent = (EvSignalEvent)theEObject;
 				T result = caseEvSignalEvent(evSignalEvent);
 				if (result == null) result = caseEvEvent(evSignalEvent);
-				if (result == null) result = caseModelRootType(evSignalEvent);
+				if (result == null) result = caseModelRoot(evSignalEvent);
 				if (result == null) result = caseNamed(evSignalEvent);
 				if (result == null) result = caseTranslationObject(evSignalEvent);
 				if (result == null) result = defaultCase(theEObject);
@@ -162,17 +162,17 @@ public class EventSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelRootType(ModelRootType object) {
+	public T caseModelRoot(ModelRoot object) {
 		return null;
 	}
 

@@ -322,7 +322,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		clClassEClass.getESuperTypes().add(theBasePackage.getModelRootType());
+		clClassEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		clClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clOperationEClass.getESuperTypes().add(theBasePackage.getNamed());

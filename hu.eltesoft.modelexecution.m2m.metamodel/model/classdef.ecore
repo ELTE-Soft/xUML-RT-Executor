@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="classdef" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/classdef"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.classdef">
-  <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//ModelRootType base.ecore#//Named">
+  <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="region" eType="#//ClRegion"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
         eType="#//ClOperation"/>

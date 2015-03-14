@@ -4,7 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
@@ -57,7 +57,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass modelRootTypeEClass = null;
+	private EClass modelRootEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -172,8 +172,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getModelRootType() {
-		return modelRootTypeEClass;
+	public EClass getModelRoot() {
+		return modelRootEClass;
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Create classes and their features
 		translationObjectEClass = createEClass(TRANSLATION_OBJECT);
 
-		modelRootTypeEClass = createEClass(MODEL_ROOT_TYPE);
+		modelRootEClass = createEClass(MODEL_ROOT);
 
 		namedEClass = createEClass(NAMED);
 		createEAttribute(namedEClass, NAMED__NAME);
@@ -291,14 +291,14 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		modelRootTypeEClass.getESuperTypes().add(this.getTranslationObject());
+		modelRootEClass.getESuperTypes().add(this.getTranslationObject());
 		namedEClass.getESuperTypes().add(this.getTranslationObject());
 		referencedEClass.getESuperTypes().add(this.getTranslationObject());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(modelRootTypeEClass, ModelRootType.class, "ModelRootType", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(modelRootEClass, ModelRoot.class, "ModelRoot", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(namedEClass, Named.class, "Named", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNamed_Name(), ecorePackage.getEString(), "name", null, 1, 1, Named.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

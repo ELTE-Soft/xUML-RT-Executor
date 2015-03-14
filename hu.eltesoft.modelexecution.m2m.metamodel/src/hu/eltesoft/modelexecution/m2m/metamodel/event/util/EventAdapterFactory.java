@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
@@ -88,8 +88,8 @@ public class EventAdapterFactory extends AdapterFactoryImpl {
 				return createTranslationObjectAdapter();
 			}
 			@Override
-			public Adapter caseModelRootType(ModelRootType object) {
-				return createModelRootTypeAdapter();
+			public Adapter caseModelRoot(ModelRoot object) {
+				return createModelRootAdapter();
 			}
 			@Override
 			public Adapter caseNamed(Named object) {
@@ -172,16 +172,16 @@ public class EventAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot <em>Model Root</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot
 	 * @generated
 	 */
-	public Adapter createModelRootTypeAdapter() {
+	public Adapter createModelRootAdapter() {
 		return null;
 	}
 

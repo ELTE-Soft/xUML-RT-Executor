@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
@@ -74,7 +74,7 @@ public class RegionSwitch<T> extends Switch<T> {
 			case RegionPackage.RG_REGION: {
 				RgRegion rgRegion = (RgRegion)theEObject;
 				T result = caseRgRegion(rgRegion);
-				if (result == null) result = caseModelRootType(rgRegion);
+				if (result == null) result = caseModelRoot(rgRegion);
 				if (result == null) result = caseNamed(rgRegion);
 				if (result == null) result = caseTranslationObject(rgRegion);
 				if (result == null) result = defaultCase(theEObject);
@@ -231,17 +231,17 @@ public class RegionSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelRootType(ModelRootType object) {
+	public T caseModelRoot(ModelRoot object) {
 		return null;
 	}
 

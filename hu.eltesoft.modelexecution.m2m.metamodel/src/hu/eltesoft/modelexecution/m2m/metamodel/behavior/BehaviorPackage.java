@@ -75,7 +75,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
+	int BH_BEHAVIOR__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Containing Class</b></em>' reference.
@@ -84,7 +84,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__CONTAINING_CLASS = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
+	int BH_BEHAVIOR__CONTAINING_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Alf Code</b></em>' attribute.
@@ -93,7 +93,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__ALF_CODE = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 2;
+	int BH_BEHAVIOR__ALF_CODE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Bh Behavior</em>' class.
@@ -102,7 +102,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 3;
+	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Bh Behavior</em>' class.
@@ -111,7 +111,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
+	int BH_BEHAVIOR_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhClassImpl <em>Bh Class</em>}' class.

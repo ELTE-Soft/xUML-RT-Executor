@@ -72,10 +72,10 @@ public class BaseSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case BasePackage.MODEL_ROOT_TYPE: {
-				ModelRootType modelRootType = (ModelRootType)theEObject;
-				T result = caseModelRootType(modelRootType);
-				if (result == null) result = caseTranslationObject(modelRootType);
+			case BasePackage.MODEL_ROOT: {
+				ModelRoot modelRoot = (ModelRoot)theEObject;
+				T result = caseModelRoot(modelRoot);
+				if (result == null) result = caseTranslationObject(modelRoot);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -113,17 +113,17 @@ public class BaseSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelRootType(ModelRootType object) {
+	public T caseModelRoot(ModelRoot object) {
 		return null;
 	}
 

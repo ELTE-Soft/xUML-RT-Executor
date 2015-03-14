@@ -75,7 +75,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
+	int CL_CLASS__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Region</b></em>' reference.
@@ -84,7 +84,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__REGION = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
+	int CL_CLASS__REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Operations</b></em>' reference list.
@@ -93,7 +93,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 2;
+	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
@@ -102,7 +102,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 3;
+	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
@@ -111,7 +111,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 4;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -120,7 +120,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
+	int CL_CLASS_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClRegionImpl <em>Cl Region</em>}' class.

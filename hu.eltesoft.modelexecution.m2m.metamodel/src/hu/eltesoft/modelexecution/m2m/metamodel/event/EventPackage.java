@@ -74,7 +74,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
+	int EV_EVENT__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Ev Event</em>' class.
@@ -83,7 +83,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
+	int EV_EVENT_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Ev Event</em>' class.
@@ -92,7 +92,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
+	int EV_EVENT_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EvSignalEventImpl <em>Ev Signal Event</em>}' class.

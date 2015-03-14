@@ -74,7 +74,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__NAME = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 0;
+	int RG_REGION__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Containing Class</b></em>' reference.
@@ -83,7 +83,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__CONTAINING_CLASS = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 1;
+	int RG_REGION__CONTAINING_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Initial</b></em>' reference.
@@ -92,7 +92,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 2;
+	int RG_REGION__INITIAL = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Initial Effect</b></em>' reference.
@@ -101,7 +101,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL_EFFECT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 3;
+	int RG_REGION__INITIAL_EFFECT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>States</b></em>' reference list.
@@ -110,7 +110,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__STATES = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 4;
+	int RG_REGION__STATES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Rg Region</em>' class.
@@ -119,7 +119,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION_FEATURE_COUNT = BasePackage.MODEL_ROOT_TYPE_FEATURE_COUNT + 5;
+	int RG_REGION_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Rg Region</em>' class.
@@ -128,7 +128,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION_OPERATION_COUNT = BasePackage.MODEL_ROOT_TYPE_OPERATION_COUNT + 0;
+	int RG_REGION_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgClassImpl <em>Rg Class</em>}' class.

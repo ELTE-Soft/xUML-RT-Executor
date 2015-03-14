@@ -390,7 +390,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRootType());
+		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());

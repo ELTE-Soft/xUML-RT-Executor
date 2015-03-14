@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 import org.eclipse.emf.common.util.EList;
@@ -26,7 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RgRegion extends ModelRootType, Named {
+public interface RgRegion extends ModelRoot, Named {
 	/**
 	 * Returns the value of the '<em><b>Containing Class</b></em>' reference.
 	 * <!-- begin-user-doc -->

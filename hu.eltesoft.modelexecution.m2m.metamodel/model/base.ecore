@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="base" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/base"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.base">
   <eClassifiers xsi:type="ecore:EClass" name="TranslationObject" abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ModelRootType" abstract="true" interface="true"
+  <eClassifiers xsi:type="ecore:EClass" name="ModelRoot" abstract="true" interface="true"
       eSuperTypes="#//TranslationObject"/>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true" interface="true"
       eSuperTypes="#//TranslationObject">

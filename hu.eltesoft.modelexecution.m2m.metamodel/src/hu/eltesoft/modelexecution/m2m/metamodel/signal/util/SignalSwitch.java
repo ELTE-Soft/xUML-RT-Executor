@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
@@ -73,7 +73,7 @@ public class SignalSwitch<T> extends Switch<T> {
 			case SignalPackage.SG_SIGNAL: {
 				SgSignal sgSignal = (SgSignal)theEObject;
 				T result = caseSgSignal(sgSignal);
-				if (result == null) result = caseModelRootType(sgSignal);
+				if (result == null) result = caseModelRoot(sgSignal);
 				if (result == null) result = caseNamed(sgSignal);
 				if (result == null) result = caseTranslationObject(sgSignal);
 				if (result == null) result = defaultCase(theEObject);
@@ -114,17 +114,17 @@ public class SignalSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Model Root Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Model Root</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelRootType(ModelRootType object) {
+	public T caseModelRoot(ModelRoot object) {
 		return null;
 	}
 

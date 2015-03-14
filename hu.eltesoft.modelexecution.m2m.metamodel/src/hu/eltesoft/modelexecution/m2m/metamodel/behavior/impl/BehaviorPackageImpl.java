@@ -235,7 +235,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getModelRootType());
+		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getNamed());
 		bhClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 

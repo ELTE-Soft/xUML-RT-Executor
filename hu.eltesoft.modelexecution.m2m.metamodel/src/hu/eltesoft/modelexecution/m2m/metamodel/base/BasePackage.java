@@ -85,32 +85,32 @@ public interface BasePackage extends EPackage {
 	int TRANSLATION_OBJECT_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot <em>Model Root</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getModelRootType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getModelRoot()
 	 * @generated
 	 */
-	int MODEL_ROOT_TYPE = 1;
+	int MODEL_ROOT = 1;
 
 	/**
-	 * The number of structural features of the '<em>Model Root Type</em>' class.
+	 * The number of structural features of the '<em>Model Root</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_ROOT_TYPE_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+	int MODEL_ROOT_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Model Root Type</em>' class.
+	 * The number of operations of the '<em>Model Root</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_ROOT_TYPE_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
+	int MODEL_ROOT_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}' class.
@@ -208,14 +208,14 @@ public interface BasePackage extends EPackage {
 	EClass getTranslationObject();
 
 	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}'.
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot <em>Model Root</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Model Root Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
+	 * @return the meta object for class '<em>Model Root</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot
 	 * @generated
 	 */
-	EClass getModelRootType();
+	EClass getModelRoot();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}'.
@@ -304,14 +304,14 @@ public interface BasePackage extends EPackage {
 		EClass TRANSLATION_OBJECT = eINSTANCE.getTranslationObject();
 
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType <em>Model Root Type</em>}' class.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot <em>Model Root</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getModelRootType()
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getModelRoot()
 		 * @generated
 		 */
-		EClass MODEL_ROOT_TYPE = eINSTANCE.getModelRootType();
+		EClass MODEL_ROOT = eINSTANCE.getModelRoot();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}' class.

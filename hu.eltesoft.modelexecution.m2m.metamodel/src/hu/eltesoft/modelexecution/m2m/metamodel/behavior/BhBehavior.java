@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRootType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
@@ -22,7 +22,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface BhBehavior extends ModelRootType, Named {
+public interface BhBehavior extends ModelRoot, Named {
 	/**
 	 * Returns the value of the '<em><b>Containing Class</b></em>' reference.
 	 * <!-- begin-user-doc -->
