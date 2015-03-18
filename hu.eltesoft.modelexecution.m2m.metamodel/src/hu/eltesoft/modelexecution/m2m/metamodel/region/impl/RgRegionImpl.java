@@ -4,25 +4,18 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
-
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -34,8 +27,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getName <em>Name</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getContainingClass <em>Containing Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getInitial <em>Initial</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getInitialEffect <em>Initial Effect</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getInitialTransition <em>Initial Transition</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getStates <em>States</em>}</li>
  * </ul>
  * </p>
@@ -74,24 +66,14 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	protected RgClass containingClass;
 
 	/**
-	 * The cached value of the '{@link #getInitial() <em>Initial</em>}' reference.
+	 * The cached value of the '{@link #getInitialTransition() <em>Initial Transition</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getInitial()
+	 * @see #getInitialTransition()
 	 * @generated
 	 * @ordered
 	 */
-	protected RgState initial;
-
-	/**
-	 * The cached value of the '{@link #getInitialEffect() <em>Initial Effect</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInitialEffect()
-	 * @generated
-	 * @ordered
-	 */
-	protected RgBehavior initialEffect;
+	protected RgTransition initialTransition;
 
 	/**
 	 * The cached value of the '{@link #getStates() <em>States</em>}' reference list.
@@ -186,16 +168,16 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgState getInitial() {
-		if (initial != null && initial.eIsProxy()) {
-			InternalEObject oldInitial = (InternalEObject)initial;
-			initial = (RgState)eResolveProxy(oldInitial);
-			if (initial != oldInitial) {
+	public RgTransition getInitialTransition() {
+		if (initialTransition != null && initialTransition.eIsProxy()) {
+			InternalEObject oldInitialTransition = (InternalEObject)initialTransition;
+			initialTransition = (RgTransition)eResolveProxy(oldInitialTransition);
+			if (initialTransition != oldInitialTransition) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_REGION__INITIAL, oldInitial, initial));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_REGION__INITIAL_TRANSITION, oldInitialTransition, initialTransition));
 			}
 		}
-		return initial;
+		return initialTransition;
 	}
 
 	/**
@@ -203,8 +185,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgState basicGetInitial() {
-		return initial;
+	public RgTransition basicGetInitialTransition() {
+		return initialTransition;
 	}
 
 	/**
@@ -212,49 +194,11 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInitial(RgState newInitial) {
-		RgState oldInitial = initial;
-		initial = newInitial;
+	public void setInitialTransition(RgTransition newInitialTransition) {
+		RgTransition oldInitialTransition = initialTransition;
+		initialTransition = newInitialTransition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__INITIAL, oldInitial, initial));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgBehavior getInitialEffect() {
-		if (initialEffect != null && initialEffect.eIsProxy()) {
-			InternalEObject oldInitialEffect = (InternalEObject)initialEffect;
-			initialEffect = (RgBehavior)eResolveProxy(oldInitialEffect);
-			if (initialEffect != oldInitialEffect) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_REGION__INITIAL_EFFECT, oldInitialEffect, initialEffect));
-			}
-		}
-		return initialEffect;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgBehavior basicGetInitialEffect() {
-		return initialEffect;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setInitialEffect(RgBehavior newInitialEffect) {
-		RgBehavior oldInitialEffect = initialEffect;
-		initialEffect = newInitialEffect;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__INITIAL_EFFECT, oldInitialEffect, initialEffect));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__INITIAL_TRANSITION, oldInitialTransition, initialTransition));
 	}
 
 	/**
@@ -282,12 +226,9 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 			case RegionPackage.RG_REGION__CONTAINING_CLASS:
 				if (resolve) return getContainingClass();
 				return basicGetContainingClass();
-			case RegionPackage.RG_REGION__INITIAL:
-				if (resolve) return getInitial();
-				return basicGetInitial();
-			case RegionPackage.RG_REGION__INITIAL_EFFECT:
-				if (resolve) return getInitialEffect();
-				return basicGetInitialEffect();
+			case RegionPackage.RG_REGION__INITIAL_TRANSITION:
+				if (resolve) return getInitialTransition();
+				return basicGetInitialTransition();
 			case RegionPackage.RG_REGION__STATES:
 				return getStates();
 		}
@@ -309,11 +250,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 			case RegionPackage.RG_REGION__CONTAINING_CLASS:
 				setContainingClass((RgClass)newValue);
 				return;
-			case RegionPackage.RG_REGION__INITIAL:
-				setInitial((RgState)newValue);
-				return;
-			case RegionPackage.RG_REGION__INITIAL_EFFECT:
-				setInitialEffect((RgBehavior)newValue);
+			case RegionPackage.RG_REGION__INITIAL_TRANSITION:
+				setInitialTransition((RgTransition)newValue);
 				return;
 			case RegionPackage.RG_REGION__STATES:
 				getStates().clear();
@@ -337,11 +275,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 			case RegionPackage.RG_REGION__CONTAINING_CLASS:
 				setContainingClass((RgClass)null);
 				return;
-			case RegionPackage.RG_REGION__INITIAL:
-				setInitial((RgState)null);
-				return;
-			case RegionPackage.RG_REGION__INITIAL_EFFECT:
-				setInitialEffect((RgBehavior)null);
+			case RegionPackage.RG_REGION__INITIAL_TRANSITION:
+				setInitialTransition((RgTransition)null);
 				return;
 			case RegionPackage.RG_REGION__STATES:
 				getStates().clear();
@@ -362,10 +297,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case RegionPackage.RG_REGION__CONTAINING_CLASS:
 				return containingClass != null;
-			case RegionPackage.RG_REGION__INITIAL:
-				return initial != null;
-			case RegionPackage.RG_REGION__INITIAL_EFFECT:
-				return initialEffect != null;
+			case RegionPackage.RG_REGION__INITIAL_TRANSITION:
+				return initialTransition != null;
 			case RegionPackage.RG_REGION__STATES:
 				return states != null && !states.isEmpty();
 		}

@@ -16,8 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial <em>Initial</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialEffect <em>Initial Effect</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}</li>
  * </ul>
  * </p>
@@ -54,56 +53,30 @@ public interface RgRegion extends ModelRoot, Named {
 	void setContainingClass(RgClass value);
 
 	/**
-	 * Returns the value of the '<em><b>Initial</b></em>' reference.
+	 * Returns the value of the '<em><b>Initial Transition</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Initial</em>' reference isn't clear,
+	 * If the meaning of the '<em>Initial Transition</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initial</em>' reference.
-	 * @see #setInitial(RgState)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_Initial()
-	 * @model required="true"
-	 * @generated
-	 */
-	RgState getInitial();
-
-	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial <em>Initial</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initial</em>' reference.
-	 * @see #getInitial()
-	 * @generated
-	 */
-	void setInitial(RgState value);
-
-	/**
-	 * Returns the value of the '<em><b>Initial Effect</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Initial Effect</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initial Effect</em>' reference.
-	 * @see #setInitialEffect(RgBehavior)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_InitialEffect()
+	 * @return the value of the '<em>Initial Transition</em>' reference.
+	 * @see #setInitialTransition(RgTransition)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_InitialTransition()
 	 * @model
 	 * @generated
 	 */
-	RgBehavior getInitialEffect();
+	RgTransition getInitialTransition();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialEffect <em>Initial Effect</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initial Effect</em>' reference.
-	 * @see #getInitialEffect()
+	 * @param value the new value of the '<em>Initial Transition</em>' reference.
+	 * @see #getInitialTransition()
 	 * @generated
 	 */
-	void setInitialEffect(RgBehavior value);
+	void setInitialTransition(RgTransition value);
 
 	/**
 	 * Returns the value of the '<em><b>States</b></em>' reference list.

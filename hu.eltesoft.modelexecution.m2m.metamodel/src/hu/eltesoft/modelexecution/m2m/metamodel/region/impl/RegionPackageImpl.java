@@ -187,7 +187,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_Initial() {
+	public EReference getRgRegion_InitialTransition() {
 		return (EReference)rgRegionEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -196,17 +196,8 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_InitialEffect() {
-		return (EReference)rgRegionEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getRgRegion_States() {
-		return (EReference)rgRegionEClass.getEStructuralFeatures().get(3);
+		return (EReference)rgRegionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -338,8 +329,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		// Create classes and their features
 		rgRegionEClass = createEClass(RG_REGION);
 		createEReference(rgRegionEClass, RG_REGION__CONTAINING_CLASS);
-		createEReference(rgRegionEClass, RG_REGION__INITIAL);
-		createEReference(rgRegionEClass, RG_REGION__INITIAL_EFFECT);
+		createEReference(rgRegionEClass, RG_REGION__INITIAL_TRANSITION);
 		createEReference(rgRegionEClass, RG_REGION__STATES);
 
 		rgClassEClass = createEClass(RG_CLASS);
@@ -402,8 +392,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rgRegionEClass, RgRegion.class, "RgRegion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRgRegion_ContainingClass(), this.getRgClass(), null, "containingClass", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRgRegion_Initial(), this.getRgState(), null, "initial", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRgRegion_InitialEffect(), this.getRgBehavior(), null, "initialEffect", null, 0, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRgRegion_InitialTransition(), this.getRgTransition(), null, "initialTransition", null, 0, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_States(), this.getRgState(), null, "states", null, 1, -1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(rgClassEClass, RgClass.class, "RgClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

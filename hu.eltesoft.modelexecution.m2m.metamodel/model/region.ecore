@@ -5,9 +5,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RgRegion" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="containingClass" lowerBound="1"
         eType="#//RgClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initial" lowerBound="1"
-        eType="#//RgState"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initialEffect" eType="#//RgBehavior"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialTransition" eType="#//RgTransition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="states" lowerBound="1"
         upperBound="-1" eType="#//RgState"/>
   </eClassifiers>

@@ -86,22 +86,13 @@ public interface RegionPackage extends EPackage {
 	int RG_REGION__CONTAINING_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Initial</b></em>' reference.
+	 * The feature id for the '<em><b>Initial Transition</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Initial Effect</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_REGION__INITIAL_EFFECT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+	int RG_REGION__INITIAL_TRANSITION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>States</b></em>' reference list.
@@ -110,7 +101,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__STATES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+	int RG_REGION__STATES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Rg Region</em>' class.
@@ -119,7 +110,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int RG_REGION_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Rg Region</em>' class.
@@ -401,26 +392,15 @@ public interface RegionPackage extends EPackage {
 	EReference getRgRegion_ContainingClass();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial <em>Initial</em>}'.
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Initial</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitial()
+	 * @return the meta object for the reference '<em>Initial Transition</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition()
 	 * @see #getRgRegion()
 	 * @generated
 	 */
-	EReference getRgRegion_Initial();
-
-	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialEffect <em>Initial Effect</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Initial Effect</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialEffect()
-	 * @see #getRgRegion()
-	 * @generated
-	 */
-	EReference getRgRegion_InitialEffect();
+	EReference getRgRegion_InitialTransition();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}'.
@@ -591,20 +571,12 @@ public interface RegionPackage extends EPackage {
 		EReference RG_REGION__CONTAINING_CLASS = eINSTANCE.getRgRegion_ContainingClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Initial</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Initial Transition</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference RG_REGION__INITIAL = eINSTANCE.getRgRegion_Initial();
-
-		/**
-		 * The meta object literal for the '<em><b>Initial Effect</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference RG_REGION__INITIAL_EFFECT = eINSTANCE.getRgRegion_InitialEffect();
+		EReference RG_REGION__INITIAL_TRANSITION = eINSTANCE.getRgRegion_InitialTransition();
 
 		/**
 		 * The meta object literal for the '<em><b>States</b></em>' reference list feature.
