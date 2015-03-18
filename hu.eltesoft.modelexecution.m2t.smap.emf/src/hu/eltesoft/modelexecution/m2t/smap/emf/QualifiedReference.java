@@ -40,12 +40,12 @@ public class QualifiedReference extends Reference {
 	 * @return Whether this object has the specified qualifier. It compares the
 	 *         canonical names of the classifier interfaces.
 	 */
-	public boolean isQualifieddAs(Class<? extends LocationQualifier> other) {
+	public boolean isQualifiedAs(Class<? extends LocationQualifier> other) {
 		return qualifier.getCanonicalName().equals(other.getCanonicalName());
 	}
 
 	public boolean isUnqualified() {
-		return isQualifieddAs(LocationQualifier.None.class);
+		return isQualifiedAs(LocationQualifier.None.class);
 	}
 
 	public Reference asUnqualified() {

@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ReferenceToLineMappingTests extends ModelBasedTests {
+public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
 	private ReferenceToLineMapping mapping;
 
@@ -73,7 +73,7 @@ public class ReferenceToLineMappingTests extends ModelBasedTests {
 		ResourceSet resourceSet = model.eResource().getResourceSet();
 		assertEquals(aClass, first.resolve(resourceSet));
 		assertEquals(aClass, second.resolve(resourceSet));
-		assertTrue(first.isQualifieddAs(First.class));
-		assertTrue(second.isQualifieddAs(Second.class));
+		assertTrue(first.isQualifiedAs(First.class));
+		assertTrue(second.isQualifiedAs(Second.class));
 	}
 }

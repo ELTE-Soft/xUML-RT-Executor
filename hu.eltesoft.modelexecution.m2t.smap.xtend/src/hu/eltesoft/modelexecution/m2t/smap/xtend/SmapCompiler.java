@@ -287,9 +287,8 @@ class SmapCompiler extends XtendCompiler {
 	 */
 	@SuppressWarnings("unchecked")
 	private <T> T getInheritedFieldValue(Class<?> parent, String fieldName) {
-		Field field;
 		try {
-			field = parent.getDeclaredField(fieldName);
+			Field field = parent.getDeclaredField(fieldName);
 			field.setAccessible(true);
 			return (T) field.get(this);
 		} catch (NoSuchFieldException | SecurityException

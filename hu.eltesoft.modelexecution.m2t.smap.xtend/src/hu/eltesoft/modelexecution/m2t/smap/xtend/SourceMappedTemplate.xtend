@@ -43,7 +43,7 @@ class SourceMappedTemplateProcessor extends AbstractClassProcessor {
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 
 		// collect and assemble compilation data and set up compiler
-		val cu = annotatedClass.getComilationUnit
+		val cu = annotatedClass.getCompilationUnitInternal
 		val thisType = cu.toJvmTypeReference(newTypeReference(annotatedClass)).type
 
 		val annotation = annotatedClass.findAnnotation(newTypeReference(SourceMappedTemplate).type)

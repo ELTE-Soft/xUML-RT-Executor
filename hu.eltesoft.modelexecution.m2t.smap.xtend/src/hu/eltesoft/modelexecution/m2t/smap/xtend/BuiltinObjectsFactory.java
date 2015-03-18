@@ -21,7 +21,8 @@ class BuiltinObjectsFactory {
 				XtendActivator.ORG_ECLIPSE_XTEND_CORE_XTEND);
 	}
 
-	public static CompilationUnitImpl getComilationUnit(NamedElement element) {
+	public static CompilationUnitImpl getCompilationUnitInternal(
+			NamedElement element) {
 		return (CompilationUnitImpl) element.getCompilationUnit();
 	}
 

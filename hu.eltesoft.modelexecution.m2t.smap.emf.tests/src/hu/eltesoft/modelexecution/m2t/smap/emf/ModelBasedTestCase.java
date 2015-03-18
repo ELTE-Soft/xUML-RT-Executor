@@ -15,7 +15,7 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.junit.Before;
 
-public class ModelBasedTests {
+public abstract class ModelBasedTestCase {
 
 	private static final String UML_TEST_MODEL_PATH = "resources/model.uml";
 

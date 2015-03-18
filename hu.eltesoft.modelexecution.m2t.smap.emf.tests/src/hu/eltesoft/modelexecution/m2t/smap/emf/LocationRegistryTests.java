@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2t.smap.emf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
@@ -19,7 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LocationRegistryTests extends ModelBasedTests {
+public class LocationRegistryTests extends ModelBasedTestCase {
 
 	private LocationRegistry registry;
 	private Reference aClassRef;
@@ -64,23 +63,20 @@ public class LocationRegistryTests extends ModelBasedTests {
 	}
 
 	@Test
-	public void testSerializationWorks() {
+	public void testSerializationWorks() throws IOException,
+			ClassNotFoundException {
 		Location location = registry.assign(aClassRef);
 
-		byte[] buffer = null;
 		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(bos)) {
 			oos.writeObject(registry);
-			buffer = bos.toByteArray();
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+			oos.flush();
 
-		try (ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-				ObjectInputStream ois = new ObjectInputStream(bis)) {
-			registry = (LocationRegistry) ois.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			fail(e.getMessage());
+			byte[] buffer = bos.toByteArray();
+			try (ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
+					ObjectInputStream ois = new ObjectInputStream(bis)) {
+				registry = (LocationRegistry) ois.readObject();
+			}
 		}
 
 		ResourceSet resourceSet = model.eResource().getResourceSet();
