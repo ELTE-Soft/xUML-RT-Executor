@@ -9,7 +9,7 @@ import org.eclipse.xtext.parser.ParseResult;
 
 import com.google.inject.Injector;
 
-public class OperationBodyParser extends AlfParser {
+class OperationBodyParser extends AlfParser {
 
 	public OperationBodyParser() {
 		AlfStandaloneSetup setup = new AlfStandaloneSetup();

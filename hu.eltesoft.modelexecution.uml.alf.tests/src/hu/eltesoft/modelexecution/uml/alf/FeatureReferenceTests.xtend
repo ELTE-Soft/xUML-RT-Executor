@@ -25,14 +25,6 @@ class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
-	def testCompilingFeatureCallOnNameExpression() {
-
-		// FIXME: the compiled code is not correct
-		// this is a BehaviorInvocationExpression with name "x.y" on `this`
-		assertCompilesTo("x.y();", '''«OperationBodyCompiler.CONTEXT_NAME».x.y();''')
-	}
-
-	@Test
 	def testCompilingMultipleStatements() {
 		assertCompilesTo(" x;  y; z;  ", "x;y;z;")
 	}
