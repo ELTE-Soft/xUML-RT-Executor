@@ -5,9 +5,7 @@ Bundle-SymbolicName: org.eclipse.papyrus.alf.libraries;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.papyrus.alf.libraries.AlfLibrariesActivator
 Bundle-Vendor: CEA LIST
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.papyrus.uml.extensionpoints,
- org.eclipse.emf.ecore;bundle-version="2.10.1",
+Require-Bundle: org.eclipse.papyrus.uml.extensionpoints,
  org.eclipse.uml2.uml,
  org.eclipse.papyrus.uml.tools.utils,
  org.eclipse.gmf.runtime.emf.commands.core,
