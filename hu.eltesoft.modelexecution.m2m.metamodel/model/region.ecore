@@ -5,16 +5,21 @@
   <eClassifiers xsi:type="ecore:EClass" name="RgRegion" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="containingClass" lowerBound="1"
         eType="#//RgClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initialTransition" eType="#//RgTransition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialPseudostate" lowerBound="1"
+        eType="#//RgInitialPseudostate"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="states" lowerBound="1"
         upperBound="-1" eType="#//RgState"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgClass" eSuperTypes="base.ecore#//Named"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RgInitialPseudostate" eSuperTypes="base.ecore#//Referenced">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialTransition" lowerBound="1"
+        eType="#//RgTransition"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgState" eSuperTypes="base.ecore#//Named base.ecore#//Referenced">
     <eStructuralFeatures xsi:type="ecore:EReference" name="entry" eType="#//RgBehavior"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="exit" eType="#//RgBehavior"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" lowerBound="1"
-        upperBound="-1" eType="#//RgTransition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//RgTransition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgTransition" eSuperTypes="base.ecore#//Referenced">
     <eStructuralFeatures xsi:type="ecore:EReference" name="event" lowerBound="1" eType="#//RgEvent"/>

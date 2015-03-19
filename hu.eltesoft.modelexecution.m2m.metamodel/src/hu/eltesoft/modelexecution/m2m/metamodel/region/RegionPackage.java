@@ -86,13 +86,13 @@ public interface RegionPackage extends EPackage {
 	int RG_REGION__CONTAINING_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Initial Transition</b></em>' reference.
+	 * The feature id for the '<em><b>Initial Pseudostate</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__INITIAL_TRANSITION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int RG_REGION__INITIAL_PSEUDOSTATE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>States</b></em>' reference list.
@@ -159,6 +159,52 @@ public interface RegionPackage extends EPackage {
 	int RG_CLASS_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl <em>Rg Initial Pseudostate</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgInitialPseudostate()
+	 * @generated
+	 */
+	int RG_INITIAL_PSEUDOSTATE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_INITIAL_PSEUDOSTATE__REFERENCE = BasePackage.REFERENCED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Initial Transition</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION = BasePackage.REFERENCED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Rg Initial Pseudostate</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_INITIAL_PSEUDOSTATE_FEATURE_COUNT = BasePackage.REFERENCED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Rg Initial Pseudostate</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_INITIAL_PSEUDOSTATE_OPERATION_COUNT = BasePackage.REFERENCED_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl <em>Rg State</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -166,7 +212,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgState()
 	 * @generated
 	 */
-	int RG_STATE = 2;
+	int RG_STATE = 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -239,7 +285,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgTransition()
 	 * @generated
 	 */
-	int RG_TRANSITION = 3;
+	int RG_TRANSITION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -303,7 +349,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgEvent()
 	 * @generated
 	 */
-	int RG_EVENT = 4;
+	int RG_EVENT = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -340,7 +386,7 @@ public interface RegionPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgBehavior()
 	 * @generated
 	 */
-	int RG_BEHAVIOR = 5;
+	int RG_BEHAVIOR = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -392,15 +438,15 @@ public interface RegionPackage extends EPackage {
 	EReference getRgRegion_ContainingClass();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}'.
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialPseudostate <em>Initial Pseudostate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Initial Transition</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition()
+	 * @return the meta object for the reference '<em>Initial Pseudostate</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialPseudostate()
 	 * @see #getRgRegion()
 	 * @generated
 	 */
-	EReference getRgRegion_InitialTransition();
+	EReference getRgRegion_InitialPseudostate();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}'.
@@ -422,6 +468,27 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRgClass();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate <em>Rg Initial Pseudostate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Rg Initial Pseudostate</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate
+	 * @generated
+	 */
+	EClass getRgInitialPseudostate();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate#getInitialTransition <em>Initial Transition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Initial Transition</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate#getInitialTransition()
+	 * @see #getRgInitialPseudostate()
+	 * @generated
+	 */
+	EReference getRgInitialPseudostate_InitialTransition();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState <em>Rg State</em>}'.
@@ -571,12 +638,12 @@ public interface RegionPackage extends EPackage {
 		EReference RG_REGION__CONTAINING_CLASS = eINSTANCE.getRgRegion_ContainingClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Initial Transition</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Initial Pseudostate</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference RG_REGION__INITIAL_TRANSITION = eINSTANCE.getRgRegion_InitialTransition();
+		EReference RG_REGION__INITIAL_PSEUDOSTATE = eINSTANCE.getRgRegion_InitialPseudostate();
 
 		/**
 		 * The meta object literal for the '<em><b>States</b></em>' reference list feature.
@@ -595,6 +662,24 @@ public interface RegionPackage extends EPackage {
 		 * @generated
 		 */
 		EClass RG_CLASS = eINSTANCE.getRgClass();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl <em>Rg Initial Pseudostate</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgInitialPseudostate()
+		 * @generated
+		 */
+		EClass RG_INITIAL_PSEUDOSTATE = eINSTANCE.getRgInitialPseudostate();
+
+		/**
+		 * The meta object literal for the '<em><b>Initial Transition</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION = eINSTANCE.getRgInitialPseudostate_InitialTransition();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl <em>Rg State</em>}' class.

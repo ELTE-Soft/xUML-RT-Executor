@@ -81,6 +81,10 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 				return createRgClassAdapter();
 			}
 			@Override
+			public Adapter caseRgInitialPseudostate(RgInitialPseudostate object) {
+				return createRgInitialPseudostateAdapter();
+			}
+			@Override
 			public Adapter caseRgState(RgState object) {
 				return createRgStateAdapter();
 			}
@@ -157,6 +161,20 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRgClassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate <em>Rg Initial Pseudostate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate
+	 * @generated
+	 */
+	public Adapter createRgInitialPseudostateAdapter() {
 		return null;
 	}
 

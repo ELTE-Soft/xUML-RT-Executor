@@ -88,6 +88,14 @@ public class RegionSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case RegionPackage.RG_INITIAL_PSEUDOSTATE: {
+				RgInitialPseudostate rgInitialPseudostate = (RgInitialPseudostate)theEObject;
+				T result = caseRgInitialPseudostate(rgInitialPseudostate);
+				if (result == null) result = caseReferenced(rgInitialPseudostate);
+				if (result == null) result = caseTranslationObject(rgInitialPseudostate);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case RegionPackage.RG_STATE: {
 				RgState rgState = (RgState)theEObject;
 				T result = caseRgState(rgState);
@@ -152,6 +160,21 @@ public class RegionSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseRgClass(RgClass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Rg Initial Pseudostate</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Rg Initial Pseudostate</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRgInitialPseudostate(RgInitialPseudostate object) {
 		return null;
 	}
 

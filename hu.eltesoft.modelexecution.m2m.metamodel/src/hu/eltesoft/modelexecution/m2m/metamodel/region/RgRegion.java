@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialPseudostate <em>Initial Pseudostate</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}</li>
  * </ul>
  * </p>
@@ -53,30 +53,30 @@ public interface RgRegion extends ModelRoot, Named {
 	void setContainingClass(RgClass value);
 
 	/**
-	 * Returns the value of the '<em><b>Initial Transition</b></em>' reference.
+	 * Returns the value of the '<em><b>Initial Pseudostate</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Initial Transition</em>' reference isn't clear,
+	 * If the meaning of the '<em>Initial Pseudostate</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initial Transition</em>' reference.
-	 * @see #setInitialTransition(RgTransition)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_InitialTransition()
-	 * @model
+	 * @return the value of the '<em>Initial Pseudostate</em>' reference.
+	 * @see #setInitialPseudostate(RgInitialPseudostate)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_InitialPseudostate()
+	 * @model required="true"
 	 * @generated
 	 */
-	RgTransition getInitialTransition();
+	RgInitialPseudostate getInitialPseudostate();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialTransition <em>Initial Transition</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialPseudostate <em>Initial Pseudostate</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initial Transition</em>' reference.
-	 * @see #getInitialTransition()
+	 * @param value the new value of the '<em>Initial Pseudostate</em>' reference.
+	 * @see #getInitialPseudostate()
 	 * @generated
 	 */
-	void setInitialTransition(RgTransition value);
+	void setInitialPseudostate(RgInitialPseudostate value);
 
 	/**
 	 * Returns the value of the '<em><b>States</b></em>' reference list.

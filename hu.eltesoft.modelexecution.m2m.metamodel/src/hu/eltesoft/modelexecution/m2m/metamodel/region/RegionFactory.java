@@ -40,6 +40,15 @@ public interface RegionFactory extends EFactory {
 	RgClass createRgClass();
 
 	/**
+	 * Returns a new object of class '<em>Rg Initial Pseudostate</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Rg Initial Pseudostate</em>'.
+	 * @generated
+	 */
+	RgInitialPseudostate createRgInitialPseudostate();
+
+	/**
 	 * Returns a new object of class '<em>Rg State</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

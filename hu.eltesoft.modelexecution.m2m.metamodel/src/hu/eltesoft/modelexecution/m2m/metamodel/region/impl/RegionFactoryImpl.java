@@ -58,6 +58,7 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 		switch (eClass.getClassifierID()) {
 			case RegionPackage.RG_REGION: return createRgRegion();
 			case RegionPackage.RG_CLASS: return createRgClass();
+			case RegionPackage.RG_INITIAL_PSEUDOSTATE: return createRgInitialPseudostate();
 			case RegionPackage.RG_STATE: return createRgState();
 			case RegionPackage.RG_TRANSITION: return createRgTransition();
 			case RegionPackage.RG_EVENT: return createRgEvent();
@@ -85,6 +86,16 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public RgClass createRgClass() {
 		RgClassImpl rgClass = new RgClassImpl();
 		return rgClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RgInitialPseudostate createRgInitialPseudostate() {
+		RgInitialPseudostateImpl rgInitialPseudostate = new RgInitialPseudostateImpl();
+		return rgInitialPseudostate;
 	}
 
 	/**
