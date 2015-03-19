@@ -22,7 +22,7 @@ import static extension hu.eltesoft.modelexecution.m2t.smap.xtend.BuiltinObjects
  * and return source mapping related information in a straightforward way.
  * 
  * Exact source locations could be added to template substitutions using one of
- * the trace methods in the TraceExtensions class. Example:
+ * the trace methods in the {@link TraceExtensions} class. Example:
  * 
  * val Location location = ...;
  * 

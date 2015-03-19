@@ -8,7 +8,8 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * Extension methods to be used in templates annotated with
- * SourceMappedTemplate. These methods enable assigning a source position to
+ * {@link hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
+ * SourceMappedTemplate}. These methods enable assigning a source position to
  * each EMF object. It is recommended to inherit generators from this class.
  */
 public class EmfTraceExtensions extends TraceExtensions {

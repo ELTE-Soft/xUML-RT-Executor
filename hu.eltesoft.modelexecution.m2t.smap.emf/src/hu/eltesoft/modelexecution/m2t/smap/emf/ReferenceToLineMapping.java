@@ -32,7 +32,7 @@ class ReferenceToLineMapping implements Serializable {
 		// Vectors are indexed from zero, while lines from one
 		int index = lineNumber - 1;
 
-		if (lineNumber < 0 || lineNumberToReference.size() <= index) {
+		if (index < 0 || lineNumberToReference.size() <= index) {
 			return null;
 		}
 

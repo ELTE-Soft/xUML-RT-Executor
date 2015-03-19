@@ -33,7 +33,7 @@ class DataWithLocation<T> {
 /**
  * Provides various location tracing methods to inject source location information
  * during evaluation of Xtend templates. The class which contains the template
- * method where location tracing used must be annotated with @SourceMappedTemplate.
+ * method where location tracing used must be annotated with {@link SourceMappedTemplate}.
  */
 class TraceExtensions {
 

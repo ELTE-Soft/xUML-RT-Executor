@@ -8,8 +8,8 @@ import org.eclipse.xtext.smap.SmapStratum;
 
 /**
  * Holds text with its source mapping information. When an Xtend template class
- * is annotated as @SourceMappedTemplate, the template methods will return an
- * instance of this class instead of a CharSequence.
+ * is annotated as {@link SourceMappedTemplate}, the template methods will
+ * return an instance of this class instead of a CharSequence.
  * 
  * String representation of an instance is simply the stored text. Source map
  * stratum, and the internal line mapping can also be accessed with a getter.
