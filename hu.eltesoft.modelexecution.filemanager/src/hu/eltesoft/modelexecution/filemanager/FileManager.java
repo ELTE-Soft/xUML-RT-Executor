@@ -5,45 +5,65 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * Manager class to write, update and delete Java files.
+ */
 public class FileManager {
 
 	private String rootDirectory;
 
+	/**
+	 * @param rootDirectory
+	 *            Root directory of the package hierarchy to be created.
+	 */
 	public FileManager(String rootDirectory) {
 		this.rootDirectory = rootDirectory;
-		if(null == this.rootDirectory) {
+		if (null == this.rootDirectory) {
 			this.rootDirectory = "";
 		}
 	}
-	
-	public void addOrUpdate(String qualifiedName, String content) throws IOException {
-		if(null == qualifiedName) {
+
+	/**
+	 * @param qualifiedName
+	 *            A fully qualified class name like a.b.cc.Ddd or Aaa
+	 * @param content
+	 *            The content to be written in the file.
+	 */
+	public void addOrUpdate(String qualifiedName, String content)
+			throws IOException {
+		if (null == qualifiedName) {
 			return;
 		}
-		
+
 		File outFile = qualifiedNameToFile(qualifiedName);
 		File parent = outFile.getParentFile();
-		if(null != parent) {
+		if (null != parent) {
 			parent.mkdirs();
 		}
 		FileWriter writer = new FileWriter(outFile);
 		writer.write(content);
 		writer.close();
 	}
-	
+
+	/**
+	 * Removes a Java file if possible.
+	 * 
+	 * @param qualifiedName
+	 *            Fully qualified class name of the Java file to be deleted.
+	 */
 	public void remove(String qualifiedName) {
-		if(null == qualifiedName) {
+		if (null == qualifiedName) {
 			return;
 		}
-		
+
 		File toDelete = qualifiedNameToFile(qualifiedName);
 		toDelete.delete();
 	}
-	
+
 	private File qualifiedNameToFile(String qualifiedName) {
 		String[] parts = qualifiedName.split("\\.");
-		if(parts.length > 0) {
-			parts[parts.length-1] += ".java";
+		if (parts.length > 0) {
+			parts[parts.length - 1] += ".java";
 		}
 		return Paths.get(rootDirectory, parts).toFile();
 	}

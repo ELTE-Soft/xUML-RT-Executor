@@ -6,52 +6,102 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import junit.framework.TestCase;
-
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class FileManagerTests extends TestCase {
+public class FileManagerTests {
 
-	private String root;
-	private static String testQualifiedName = "hu.eltesoft.modelexecution.testfilemanager.Test";
-	private static String testFile = "hu/eltesoft/modelexecution/testfilemanager/Test.java";
+	private static String root;
+	private static String testPackage = "hu.eltesoft.modelexecution.testfilemanager";
+	private static String testClass = "Test";
+	private static String testQualifiedName = testPackage + "." +  testClass;
+	private static String testPath = "hu/eltesoft/modelexecution/testfilemanager";
+	private static String testFile = "Test.java";
 	private static String testContent = "test\ncontent";
 	private static String testDirPrefix = "filemanager_test_";
-	
-	@Before
-	public void setUp() {
+	private static FileManager manager;
+
+	@BeforeClass
+	public static void setUp() {
 		try {
 			Path tempDir = Files.createTempDirectory(testDirPrefix);
 			root = tempDir.toString();
-		} catch(Exception e) {
+			manager = new FileManager(root);
+		} catch (Exception e) {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
-	public void testCreate() {
-		FileManager manager = new FileManager(root);
+	public void testCreateAndUpdate() {
 		try {
+			// Create
 			manager.addOrUpdate(testQualifiedName, testContent);
-			File result = new File(root + File.separator + testFile);
+			File result = new File(root + File.separator + testPath
+					+ File.separator + testFile);
 			Assert.assertTrue("Missing file.", result.exists());
 			String read = new String(Files.readAllBytes(result.toPath()));
 			Assert.assertEquals("Wrong contents.", testContent, read);
-		} catch(Exception e) {
+
+			// Update
+			manager.addOrUpdate(testQualifiedName, testContent + testContent);
+			result = new File(root + File.separator + testPath + File.separator
+					+ testFile);
+			Assert.assertTrue("Missing file.", result.exists());
+			read = new String(Files.readAllBytes(result.toPath()));
+			Assert.assertEquals("Wrong contents.", testContent + testContent,
+					read);
+		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();
 		}
 	}
-	
-	@After
-	public void cleanUp() {
+
+	@Test
+	public void testNoPackage() {
 		try {
-			new File(root).delete();
-		} catch(Exception e) {
+			manager.addOrUpdate(testClass, testContent);
+			File result = new File(root + File.separator + testFile);
+			Assert.assertTrue("Missing unpackaged file.", result.exists());
+			String read = new String(Files.readAllBytes(result.toPath()));
+			Assert.assertEquals("Wrong contents.", testContent, read);
+		} catch (Exception e) {
 			e.printStackTrace();
+			Assert.fail();
+		}
+
+	}
+	
+	@Test
+	public void testRemove() {
+		manager.remove(testQualifiedName);
+		File result = new File(root + File.separator + testPath
+				+ File.separator + testFile);
+		Assert.assertFalse("Remove failed.", result.exists());
+	}
+
+	@AfterClass
+	public static void cleanUp() {
+		try {
+			deleteDirectory(new File(root));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteDirectory(file);
+				} else {
+					file.delete();
+				}
+			}
+			path.delete();
 		}
 	}
 }
