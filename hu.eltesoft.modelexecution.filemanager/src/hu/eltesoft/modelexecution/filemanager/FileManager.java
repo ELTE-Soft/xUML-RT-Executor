@@ -60,6 +60,28 @@ public class FileManager {
 		toDelete.delete();
 	}
 
+	/**
+	 * Remove all files and directories under the root.
+	 */
+	public void cleanup() {
+		File root = new File(rootDirectory);
+		for (File file : root.listFiles()) {
+			delete(file);
+		}
+	}
+
+	private static void delete(File toDelete) {
+		if (toDelete.exists()) {
+			if (toDelete.isDirectory()) {
+				File[] files = toDelete.listFiles();
+				for (File file : files) {
+					delete(file);
+				}
+			}
+			toDelete.delete();
+		}
+	}
+
 	private File qualifiedNameToFile(String qualifiedName) {
 		String[] parts = qualifiedName.split("\\.");
 		if (parts.length > 0) {

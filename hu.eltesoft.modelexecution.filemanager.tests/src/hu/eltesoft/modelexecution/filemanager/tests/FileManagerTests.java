@@ -81,27 +81,20 @@ public class FileManagerTests {
 				+ File.separator + testFile);
 		Assert.assertFalse("Remove failed.", result.exists());
 	}
+	
+	@Test
+	public void testClenup() {
+		manager.cleanup();
+		Assert.assertArrayEquals(new File[0], new File(root).listFiles());
+	}
 
 	@AfterClass
 	public static void cleanUp() {
 		try {
-			deleteDirectory(new File(root));
+			manager.cleanup();
+			new File(root).delete();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	public static void deleteDirectory(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					deleteDirectory(file);
-				} else {
-					file.delete();
-				}
-			}
-			path.delete();
 		}
 	}
 }
