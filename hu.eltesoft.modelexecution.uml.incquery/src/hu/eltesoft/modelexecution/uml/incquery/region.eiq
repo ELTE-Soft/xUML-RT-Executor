@@ -2,18 +2,27 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern Region(region : Region, regionName, firstStateName) {
-	find RegionInitials(region, regionName, _inTr, _fstSt, firstStateName);
+pattern
+Region(region : Region, regionName, containerClassName, initPseudostate : Pseudostate) {
+	Region.name(region, regionName);
+
+	Class.name(containerClass, containerClassName);
+	Class.ownedBehavior(containerClass, stateMachine);
+	StateMachine.region(stateMachine, region);
+
+	Pseudostate.container(initPseudostate, region);
+	Pseudostate.kind(initPseudostate, ::initial);
 }
 
-pattern InitialTransitionEffect(region : Region, initEffectName) {
-	find RegionInitials(region, _rNm, initTransition, _fstSt, _fstStNm);
-	find TransitionEffect(region, initTransition, initEffectName);
-}
+pattern InitialTransition(region : Region, initPseudostate : Pseudostate, initTransition : Transition, initTransitionName, targetName) {
+	Pseudostate.container(initPseudostate, region);
+	Pseudostate.kind(initPseudostate, ::initial);
 
-pattern FirstStateEntry(region : Region, firstEntryName) {
-	find RegionInitials(region, _rNm, _inTr, firstState, _fstStNm);
-	find Entry(region, firstState, firstEntryName);
+	Transition.source(initTransition, initPseudostate);
+	Transition.name(initTransition, initTransitionName);
+	
+	Transition.target(initTransition, targetState);
+	State.name(targetState, targetName);
 }
 
 pattern State(region : Region, state : State, stateName) {
@@ -34,7 +43,7 @@ pattern Exit(region : Region, state : State, exitName) {
 }
 
 pattern
-Transition(region : Region, sourceState : State, transition : Transition, transitionName, eventName, targetName) { // -> regenerate state machine file
+Transition(region : Region, sourceState : State, transition : Transition, transitionName, eventName, targetName) {
 	Transition.container(transition, region);
 
 	Transition.source(transition, sourceState);
@@ -55,14 +64,5 @@ TransitionEffect(region : Region, transition : Transition, effectName) {
 	Behavior.name(effect, effectName);
 }
 
-private pattern
-RegionInitials(region : Region, regionName, initTransition : Transition, firstState : State, firstStateName) {
-	Region.name(region, regionName);
-
-	Pseudostate.kind(init, ::initial);
-	Transition.source(initTransition, init);
-	Transition.target(initTransition, firstState);
-	find State(region, firstState, firstStateName);
-}
 
 

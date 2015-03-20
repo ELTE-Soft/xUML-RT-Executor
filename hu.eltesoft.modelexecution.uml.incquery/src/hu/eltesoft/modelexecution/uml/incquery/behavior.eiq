@@ -10,3 +10,31 @@ pattern Behavior(behavior : Behavior, behaviorName, alfCode) {
 	// TODO check language
 	// OpaqueBehavior.language(behavior, "Alf");
 }
+
+pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
+// operation
+	Operation.method(operation, behavior);
+
+	Class.ownedOperation(cls, operation);
+	Class.name(cls, containerClassName);
+} or { // entry
+	State.entry(state, behavior);
+	find ContainerClassOfState(state, containerClassName);
+} or { // exit
+	State.entry(state, behavior);
+	find ContainerClassOfState(state, containerClassName);
+} or { // effect
+	Transition.effect(transition, behavior);
+	Transition.source(transition, state);
+	find ContainerClassOfState(state, containerClassName);
+}
+
+private pattern ContainerClassOfState(state : State, containerClassName) {
+	State.container(state, region);
+
+	StateMachine.region(sm, region);
+	Class.ownedBehavior(cls, sm);
+
+	Class.name(cls, containerClassName);
+}
+

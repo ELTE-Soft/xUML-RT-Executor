@@ -4,7 +4,7 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 
 pattern Cls(cls : Class, className) {
 	Class.name(cls, className);
-	neg find Behavior(cls, _name, _code);
+	neg find IsBehavior(cls);
 	neg find Stereotype(cls);
 }
 
@@ -33,6 +33,10 @@ pattern Reception(cls : Class, receptionName, signalName) {
 	Reception.signal(reception, signal);
 	Reception.name(reception, receptionName);
 	Signal.name(signal, signalName);
+}
+
+private pattern IsBehavior(behavior : Behavior) {
+	Behavior(behavior);
 }
 
 private pattern Stereotype(stereotype : Stereotype) {
