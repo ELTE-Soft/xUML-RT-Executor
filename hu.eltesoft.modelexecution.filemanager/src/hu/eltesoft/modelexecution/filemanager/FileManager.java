@@ -42,6 +42,9 @@ public class FileManager {
 	
 	private File qualifiedNameToFile(String qualifiedName) {
 		String[] parts = qualifiedName.split("\\.");
+		if(parts.length > 0) {
+			parts[parts.length-1] += ".java";
+		}
 		return Paths.get(rootDirectory, parts).toFile();
 	}
 }
