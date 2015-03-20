@@ -75,16 +75,16 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
+	int BH_BEHAVIOR__NAME = BasePackage.MODEL_ROOT__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Containing Class</b></em>' reference.
+	 * The feature id for the '<em><b>Container Class</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__CONTAINING_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int BH_BEHAVIOR__CONTAINER_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Alf Code</b></em>' attribute.
@@ -93,7 +93,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__ALF_CODE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int BH_BEHAVIOR__ALF_CODE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Bh Behavior</em>' class.
@@ -102,7 +102,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Bh Behavior</em>' class.
@@ -162,15 +162,15 @@ public interface BehaviorPackage extends EPackage {
 	EClass getBhBehavior();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainingClass <em>Containing Class</em>}'.
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Containing Class</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainingClass()
+	 * @return the meta object for the reference '<em>Container Class</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass()
 	 * @see #getBhBehavior()
 	 * @generated
 	 */
-	EReference getBhBehavior_ContainingClass();
+	EReference getBhBehavior_ContainerClass();
 
 	/**
 	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode <em>Alf Code</em>}'.
@@ -227,12 +227,12 @@ public interface BehaviorPackage extends EPackage {
 		EClass BH_BEHAVIOR = eINSTANCE.getBhBehavior();
 
 		/**
-		 * The meta object literal for the '<em><b>Containing Class</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Container Class</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference BH_BEHAVIOR__CONTAINING_CLASS = eINSTANCE.getBhBehavior_ContainingClass();
+		EReference BH_BEHAVIOR__CONTAINER_CLASS = eINSTANCE.getBhBehavior_ContainerClass();
 
 		/**
 		 * The meta object literal for the '<em><b>Alf Code</b></em>' attribute feature.

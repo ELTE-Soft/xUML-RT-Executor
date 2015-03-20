@@ -74,7 +74,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
+	int EV_EVENT__NAME = BasePackage.MODEL_ROOT__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Ev Event</em>' class.
@@ -83,7 +83,7 @@ public interface EventPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int EV_EVENT_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Ev Event</em>' class.

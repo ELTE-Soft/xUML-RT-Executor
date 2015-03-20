@@ -80,12 +80,12 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 				return createTranslationObjectAdapter();
 			}
 			@Override
-			public Adapter caseModelRoot(ModelRoot object) {
-				return createModelRootAdapter();
-			}
-			@Override
 			public Adapter caseNamed(Named object) {
 				return createNamedAdapter();
+			}
+			@Override
+			public Adapter caseModelRoot(ModelRoot object) {
+				return createModelRootAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {

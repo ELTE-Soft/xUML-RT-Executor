@@ -75,6 +75,7 @@ public class BaseSwitch<T> extends Switch<T> {
 			case BasePackage.MODEL_ROOT: {
 				ModelRoot modelRoot = (ModelRoot)theEObject;
 				T result = caseModelRoot(modelRoot);
+				if (result == null) result = caseNamed(modelRoot);
 				if (result == null) result = caseTranslationObject(modelRoot);
 				if (result == null) result = defaultCase(theEObject);
 				return result;

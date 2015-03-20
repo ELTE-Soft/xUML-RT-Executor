@@ -2,16 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -145,38 +139,6 @@ public class EvEventImpl extends MinimalEObjectImpl.Container implements EvEvent
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Named.class) {
-			switch (derivedFeatureID) {
-				case EventPackage.EV_EVENT__NAME: return BasePackage.NAMED__NAME;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Named.class) {
-			switch (baseFeatureID) {
-				case BasePackage.NAMED__NAME: return EventPackage.EV_EVENT__NAME;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

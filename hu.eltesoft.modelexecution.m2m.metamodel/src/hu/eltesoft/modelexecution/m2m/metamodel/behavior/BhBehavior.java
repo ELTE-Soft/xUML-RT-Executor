@@ -13,7 +13,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainingClass <em>Containing Class</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode <em>Alf Code</em>}</li>
  * </ul>
  * </p>
@@ -24,30 +24,30 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  */
 public interface BhBehavior extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Containing Class</b></em>' reference.
+	 * Returns the value of the '<em><b>Container Class</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Containing Class</em>' reference isn't clear,
+	 * If the meaning of the '<em>Container Class</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Containing Class</em>' reference.
-	 * @see #setContainingClass(BhClass)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ContainingClass()
+	 * @return the value of the '<em>Container Class</em>' reference.
+	 * @see #setContainerClass(BhClass)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ContainerClass()
 	 * @model required="true"
 	 * @generated
 	 */
-	BhClass getContainingClass();
+	BhClass getContainerClass();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainingClass <em>Containing Class</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Containing Class</em>' reference.
-	 * @see #getContainingClass()
+	 * @param value the new value of the '<em>Container Class</em>' reference.
+	 * @see #getContainerClass()
 	 * @generated
 	 */
-	void setContainingClass(BhClass value);
+	void setContainerClass(BhClass value);
 
 	/**
 	 * Returns the value of the '<em><b>Alf Code</b></em>' attribute.

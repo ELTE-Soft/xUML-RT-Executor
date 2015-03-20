@@ -34,7 +34,7 @@ public interface RgTransition extends Referenced {
 	 * @return the value of the '<em>Event</em>' reference.
 	 * @see #setEvent(RgEvent)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Event()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	RgEvent getEvent();

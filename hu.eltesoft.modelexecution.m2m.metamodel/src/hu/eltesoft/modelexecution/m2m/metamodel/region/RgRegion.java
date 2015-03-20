@@ -15,7 +15,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getInitialPseudostate <em>Initial Pseudostate</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getStates <em>States</em>}</li>
  * </ul>
@@ -27,30 +27,30 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface RgRegion extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Containing Class</b></em>' reference.
+	 * Returns the value of the '<em><b>Container Class</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Containing Class</em>' reference isn't clear,
+	 * If the meaning of the '<em>Container Class</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Containing Class</em>' reference.
-	 * @see #setContainingClass(RgClass)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_ContainingClass()
+	 * @return the value of the '<em>Container Class</em>' reference.
+	 * @see #setContainerClass(RgClass)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_ContainerClass()
 	 * @model required="true"
 	 * @generated
 	 */
-	RgClass getContainingClass();
+	RgClass getContainerClass();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainingClass <em>Containing Class</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainerClass <em>Container Class</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Containing Class</em>' reference.
-	 * @see #getContainingClass()
+	 * @param value the new value of the '<em>Container Class</em>' reference.
+	 * @see #getContainerClass()
 	 * @generated
 	 */
-	void setContainingClass(RgClass value);
+	void setContainerClass(RgClass value);
 
 	/**
 	 * Returns the value of the '<em><b>Initial Pseudostate</b></em>' reference.

@@ -147,7 +147,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBhBehavior_ContainingClass() {
+	public EReference getBhBehavior_ContainerClass() {
 		return (EReference)bhBehaviorEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -198,7 +198,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 
 		// Create classes and their features
 		bhBehaviorEClass = createEClass(BH_BEHAVIOR);
-		createEReference(bhBehaviorEClass, BH_BEHAVIOR__CONTAINING_CLASS);
+		createEReference(bhBehaviorEClass, BH_BEHAVIOR__CONTAINER_CLASS);
 		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__ALF_CODE);
 
 		bhClassEClass = createEClass(BH_CLASS);
@@ -241,7 +241,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bhBehaviorEClass, BhBehavior.class, "BhBehavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBhBehavior_ContainingClass(), this.getBhClass(), null, "containingClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBhBehavior_ContainerClass(), this.getBhClass(), null, "containerClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBhBehavior_AlfCode(), ecorePackage.getEString(), "alfCode", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(bhClassEClass, BhClass.class, "BhClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

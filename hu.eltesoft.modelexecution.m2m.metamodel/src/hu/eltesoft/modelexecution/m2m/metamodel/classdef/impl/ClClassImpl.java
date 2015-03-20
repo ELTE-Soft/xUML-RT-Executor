@@ -2,27 +2,18 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -284,38 +275,6 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				return receptions != null && !receptions.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Named.class) {
-			switch (derivedFeatureID) {
-				case ClassdefPackage.CL_CLASS__NAME: return BasePackage.NAMED__NAME;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Named.class) {
-			switch (baseFeatureID) {
-				case BasePackage.NAMED__NAME: return ClassdefPackage.CL_CLASS__NAME;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

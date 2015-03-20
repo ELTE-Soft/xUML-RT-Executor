@@ -95,24 +95,6 @@ public interface BasePackage extends EPackage {
 	int MODEL_ROOT = 1;
 
 	/**
-	 * The number of structural features of the '<em>Model Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODEL_ROOT_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Model Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODEL_ROOT_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -148,6 +130,33 @@ public interface BasePackage extends EPackage {
 	 * @ordered
 	 */
 	int NAMED_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL_ROOT__NAME = NAMED__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Model Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL_ROOT_FEATURE_COUNT = NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Model Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL_ROOT_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}' class.

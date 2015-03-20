@@ -73,7 +73,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL__NAME = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
+	int SG_SIGNAL__NAME = BasePackage.MODEL_ROOT__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Sg Signal</em>' class.
@@ -82,7 +82,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int SG_SIGNAL_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Sg Signal</em>' class.

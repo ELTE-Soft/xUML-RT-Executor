@@ -91,6 +91,7 @@ public class RegionSwitch<T> extends Switch<T> {
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE: {
 				RgInitialPseudostate rgInitialPseudostate = (RgInitialPseudostate)theEObject;
 				T result = caseRgInitialPseudostate(rgInitialPseudostate);
+				if (result == null) result = caseNamed(rgInitialPseudostate);
 				if (result == null) result = caseReferenced(rgInitialPseudostate);
 				if (result == null) result = caseTranslationObject(rgInitialPseudostate);
 				if (result == null) result = defaultCase(theEObject);

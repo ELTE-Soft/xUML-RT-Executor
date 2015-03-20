@@ -291,7 +291,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		modelRootEClass.getESuperTypes().add(this.getTranslationObject());
+		modelRootEClass.getESuperTypes().add(this.getNamed());
 		namedEClass.getESuperTypes().add(this.getTranslationObject());
 		referencedEClass.getESuperTypes().add(this.getTranslationObject());
 

@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="region" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/region"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.region">
   <eClassifiers xsi:type="ecore:EClass" name="RgRegion" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="containingClass" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="containerClass" lowerBound="1"
         eType="#//RgClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialPseudostate" lowerBound="1"
         eType="#//RgInitialPseudostate"/>
@@ -11,7 +11,7 @@
         upperBound="-1" eType="#//RgState"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgClass" eSuperTypes="base.ecore#//Named"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RgInitialPseudostate" eSuperTypes="base.ecore#//Referenced">
+  <eClassifiers xsi:type="ecore:EClass" name="RgInitialPseudostate" eSuperTypes="base.ecore#//Named base.ecore#//Referenced">
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialTransition" lowerBound="1"
         eType="#//RgTransition"/>
   </eClassifiers>
@@ -22,7 +22,7 @@
         eType="#//RgTransition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgTransition" eSuperTypes="base.ecore#//Referenced">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="event" lowerBound="1" eType="#//RgEvent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//RgEvent"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//RgBehavior"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//RgState"/>

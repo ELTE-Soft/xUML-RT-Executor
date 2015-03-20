@@ -4,7 +4,7 @@
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.base">
   <eClassifiers xsi:type="ecore:EClass" name="TranslationObject" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModelRoot" abstract="true" interface="true"
-      eSuperTypes="#//TranslationObject"/>
+      eSuperTypes="#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true" interface="true"
       eSuperTypes="#//TranslationObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

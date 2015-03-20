@@ -186,7 +186,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRgRegion_ContainingClass() {
+	public EReference getRgRegion_ContainerClass() {
 		return (EReference)rgRegionEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -354,7 +354,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Create classes and their features
 		rgRegionEClass = createEClass(RG_REGION);
-		createEReference(rgRegionEClass, RG_REGION__CONTAINING_CLASS);
+		createEReference(rgRegionEClass, RG_REGION__CONTAINER_CLASS);
 		createEReference(rgRegionEClass, RG_REGION__INITIAL_PSEUDOSTATE);
 		createEReference(rgRegionEClass, RG_REGION__STATES);
 
@@ -412,6 +412,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgClassEClass.getESuperTypes().add(theBasePackage.getNamed());
+		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getReferenced());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getReferenced());
@@ -421,7 +422,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rgRegionEClass, RgRegion.class, "RgRegion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRgRegion_ContainingClass(), this.getRgClass(), null, "containingClass", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRgRegion_ContainerClass(), this.getRgClass(), null, "containerClass", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_InitialPseudostate(), this.getRgInitialPseudostate(), null, "initialPseudostate", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_States(), this.getRgState(), null, "states", null, 1, -1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -436,7 +437,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(rgTransitionEClass, RgTransition.class, "RgTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRgTransition_Event(), this.getRgEvent(), null, "event", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRgTransition_Event(), this.getRgEvent(), null, "event", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgTransition_Effect(), this.getRgBehavior(), null, "effect", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgTransition_Target(), this.getRgState(), null, "target", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

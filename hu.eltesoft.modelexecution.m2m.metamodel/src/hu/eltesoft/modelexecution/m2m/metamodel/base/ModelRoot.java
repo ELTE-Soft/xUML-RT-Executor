@@ -13,5 +13,5 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface ModelRoot extends TranslationObject {
+public interface ModelRoot extends Named {
 } // ModelRoot
