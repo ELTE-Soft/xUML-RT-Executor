@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: hu.eltesoft.modelexecution.m2m.incquery
+Bundle-Name: EMF-IncQuery queries for an EMF-UML2 model
 Bundle-SymbolicName: hu.eltesoft.modelexecution.uml.incquery;singleton:=true
 Bundle-Version: 0.0.1.qualifier
+Bundle-Vendor: ELTE-Soft
 Export-Package: hu.eltesoft.modelexecution.uml.incquery,
  hu.eltesoft.modelexecution.uml.incquery.util
 Require-Bundle: org.eclipse.uml2.uml,
