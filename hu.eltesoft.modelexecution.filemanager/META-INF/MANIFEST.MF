@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Filemanager
+Bundle-SymbolicName: hu.eltesoft.modelexecution.filemanager
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: hu.eltesoft.modelexecution.filemanager.Activator
+Bundle-Vendor: ELTE-Soft Kft
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: hu.eltesoft.modelexecution.filemanager
