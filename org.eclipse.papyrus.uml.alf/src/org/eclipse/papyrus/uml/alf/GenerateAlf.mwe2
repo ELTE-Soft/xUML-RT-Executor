@@ -22,6 +22,7 @@ import org.eclipse.xtext.ui.generator.*
 
 var fileExtensions = "alf"
 var projectname = "org.eclipse.papyrus.uml.alf"
+var projectname.ui = "${projectname}.ui"
 var runtimeProject = "../${projectname}"
 var generateXtendStub = true
 
@@ -44,7 +45,9 @@ Workflow {
     /*Generate other artifacts (validation, quickfix, etc.)*/
     component = Generator {
     	pathRtProject = runtimeProject
+    	pathUiProject = "${runtimeProject}.ui"
     	projectNameRt = projectname
+    	projectNameUi = projectname.ui
     	
     	language = auto-inject {
     		uri = grammarURI
@@ -85,42 +88,42 @@ Workflow {
     		fragment = formatting.FormatterFragment auto-inject {}
     
     		// labeling API
-    		//fragment = labeling.LabelProviderFragment auto-inject {}
+    		fragment = labeling.LabelProviderFragment auto-inject {}
     
     		// outline API
-    		//fragment = outline.OutlineTreeProviderFragment auto-inject {}
-    		//fragment = outline.QuickOutlineFragment auto-inject {}
+    		fragment = outline.OutlineTreeProviderFragment auto-inject {}
+    		fragment = outline.QuickOutlineFragment auto-inject {}
     
     		// quickfix API
-    		//fragment = quickfix.QuickfixProviderFragment auto-inject {}
+    		fragment = quickfix.QuickfixProviderFragment auto-inject {}
     
     		// content assist API
-    		//fragment = contentAssist.ContentAssistFragment auto-inject {}
+    		fragment = contentAssist.ContentAssistFragment auto-inject {}
     
     		// generates a more lightweight Antlr parser and lexer tailored for content assist
-    		//fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {
-	        //  options = {
-	        //      backtrack = true
-	        //  }
-    		//}
+    		fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {
+	          options = {
+	              backtrack = true
+	          }
+    		}
     
     		// generates junit test support classes into Generator#pathTestProject
     		//fragment = junit.Junit4Fragment auto-inject {}
     
     		// rename refactoring
-    		//fragment = refactoring.RefactorElementNameFragment auto-inject {}
+    		fragment = refactoring.RefactorElementNameFragment auto-inject {}
     
     		// provides the necessary bindings for java types integration
-    		//fragment = types.TypesGeneratorFragment auto-inject {}
+    		fragment = types.TypesGeneratorFragment auto-inject {}
     
     		// generates the required bindings only if the grammar inherits from Xbase
-    		//fragment = xbase.XbaseGeneratorFragment auto-inject {}
+    		fragment = xbase.XbaseGeneratorFragment auto-inject {}
     
     		// provides a preference page for template proposals
-    		//fragment = templates.CodetemplatesGeneratorFragment auto-inject {}
+    		fragment = templates.CodetemplatesGeneratorFragment auto-inject {}
     
     		// provides a compare view
-    		//fragment = compare.CompareFragment auto-inject {}
+    		fragment = compare.CompareFragment auto-inject {}
     	}
     }
 }
