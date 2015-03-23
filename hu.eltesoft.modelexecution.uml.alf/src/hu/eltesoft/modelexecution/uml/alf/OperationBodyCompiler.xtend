@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.uml.alf
 
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import org.eclipse.papyrus.uml.alf.BehaviorInvocationExpression
 import org.eclipse.papyrus.uml.alf.Block
 import org.eclipse.papyrus.uml.alf.ExpressionStatement
@@ -12,13 +11,12 @@ import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
 import org.eclipse.xtext.parser.IParseResult
+import org.eclipse.papyrus.uml.alf.NameBinding
 
-@Data
-class CompilationResult {
-	IParseResult parseResult
-	SourceMappedText output;
-}
-
+/**
+ * Compiles an operation body written in Alf to Java code by implementing an AST
+ * visitor.
+ */
 class OperationBodyCompiler {
 
 	public static val CONTEXT_NAME = "context"
@@ -26,6 +24,12 @@ class OperationBodyCompiler {
 	val parser = new OperationBodyParser
 	var SmapStringConcatenation builder
 
+	/**
+	 * Compile the specified operation body code to Java source code. The output
+	 * code will be written into the specified builder object, along with its
+	 * source mapping information. Parsing result, including errors can be
+	 * extracted from the return value.
+	 */
 	def IParseResult compile(String alfCode, SmapStringConcatenation builder) {
 		val parseResult = parser.parse(alfCode)
 		if (!parseResult.hasSyntaxErrors) {
@@ -46,14 +50,20 @@ class OperationBodyCompiler {
 		builder.append(";")
 	}
 
+	/**
+	 * Handle feature invocation on an explicit this expression.
+	 */
 	private def dispatch void visit(FeatureInvocationExpression call) {
 		val feature = call.target
 		visit(feature.expression)
 		builder.append(".")
-		builder.append(feature.nameBinding.name)
+		builder.append(toJavaName(feature.nameBinding))
 		visit(call.tuple)
 	}
 
+	/**
+	 * Handle behavior invocation on an implicit this expression.
+	 */
 	private def dispatch void visit(BehaviorInvocationExpression call) {
 		builder.append(CONTEXT_NAME)
 		builder.append(".")
@@ -73,5 +83,7 @@ class OperationBodyCompiler {
 		builder.append("()")
 	}
 
-	private def toJavaName(QualifiedName qname) '''«FOR binding : qname.nameBinding SEPARATOR '.'»«binding.name»«ENDFOR»'''
+	private def toJavaName(NameBinding binding) '''«binding.name»'''
+
+	private def toJavaName(QualifiedName qname) '''«FOR binding : qname.nameBinding SEPARATOR '.'»«toJavaName(binding)»«ENDFOR»'''
 }

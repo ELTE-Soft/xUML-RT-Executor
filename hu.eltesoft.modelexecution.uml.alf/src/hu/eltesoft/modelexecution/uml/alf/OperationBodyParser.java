@@ -9,6 +9,12 @@ import org.eclipse.xtext.parser.ParseResult;
 
 import com.google.inject.Injector;
 
+/**
+ * Alf parser with a custom start rule. It tries to parse an operation body
+ * parsing a non empty statement sequence. The {@link #parse(String) parse}
+ * method is implemented to return an empty block when there are no statements
+ * in the input text at all, or it is null.
+ */
 class OperationBodyParser extends AlfParser {
 
 	public OperationBodyParser() {
