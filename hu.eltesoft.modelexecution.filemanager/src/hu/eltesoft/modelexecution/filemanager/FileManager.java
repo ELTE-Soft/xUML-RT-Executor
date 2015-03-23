@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 public class FileManager {
 
 	private String rootDirectory;
+	private static final String DEFAULT_ROOT_DIRECTORY = "";
 
 	/**
 	 * @param rootDirectory
@@ -20,7 +21,7 @@ public class FileManager {
 	public FileManager(String rootDirectory) {
 		this.rootDirectory = rootDirectory;
 		if (null == this.rootDirectory) {
-			this.rootDirectory = "";
+			this.rootDirectory = DEFAULT_ROOT_DIRECTORY;
 		}
 	}
 
