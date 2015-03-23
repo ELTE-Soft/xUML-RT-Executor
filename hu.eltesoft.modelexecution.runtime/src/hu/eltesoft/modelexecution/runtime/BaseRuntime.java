@@ -69,8 +69,8 @@ public abstract class BaseRuntime implements Runtime {
 		java.lang.Class<?> classClass = java.lang.Class.forName(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
 		Object classInstance = constructor.newInstance(this);
-		Method method = classClass.getMethod(feedName, classClass);
-		method.invoke(null, classInstance);
+		Method method = classClass.getMethod(feedName);
+		method.invoke(classInstance);
 	}
 
 	@Override

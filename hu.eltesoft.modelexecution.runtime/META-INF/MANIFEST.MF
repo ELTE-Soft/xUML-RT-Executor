@@ -7,5 +7,7 @@ Bundle-ClassPath: bin/
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: hu.eltesoft.modelexecution.3pp;bundle-version="1.0.0"
 Export-Package: hu.eltesoft.modelexecution.runtime,
- hu.eltesoft.modelexecution.runtime.base
+ hu.eltesoft.modelexecution.runtime.base,
+ hu.eltesoft.modelexecution.runtime.log,
+ hu.eltesoft.modelexecution.runtime.trace
 Bundle-Vendor: ELTE-Soft

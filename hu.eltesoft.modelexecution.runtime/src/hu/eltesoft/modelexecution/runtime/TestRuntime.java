@@ -17,6 +17,9 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
  */
 public class TestRuntime extends BaseRuntime {
 
+	public static final String OPTION_LOG = "-log";
+	public static final String OPTION_READ_TRACE = "-read-trace";
+	public static final String OPTION_WRITE_TRACE = "-write-trace";
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
 
@@ -37,14 +40,14 @@ public class TestRuntime extends BaseRuntime {
 
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
-			case "-write-trace":
+			case OPTION_WRITE_TRACE:
 				tracer = new TraceWriter(args[++i]);
 				break;
 
-			case "-read-trace":
+			case OPTION_READ_TRACE:
 				traceReader = new TraceReplayer(args[++i]);
 				break;
-			case "-log":
+			case OPTION_LOG:
 				logger = new MinimalLogger();
 				break;
 			default:
