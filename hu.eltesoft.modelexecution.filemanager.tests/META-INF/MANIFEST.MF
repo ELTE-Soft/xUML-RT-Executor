@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: hu.eltesoft.modelexecution.filemanager.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: hu.eltesoft.modelexecution.filemanager.tests.Activator
 Bundle-Vendor: ELTE-Soft Kft
 Require-Bundle: org.eclipse.core.runtime,
  hu.eltesoft.modelexecution.filemanager;bundle-version="1.0.0",
