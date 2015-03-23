@@ -91,11 +91,16 @@ public class FileManager {
 	public boolean cleanup() {
 		File root = new File(rootDirectory);
 		boolean allSucceeded = true;
-		for (File file : root.listFiles()) {
-			boolean thisSucceeded = delete(file);
-			allSucceeded &= thisSucceeded;
+		File[] listFiles = root.listFiles();
+		if (listFiles != null) {
+			for (File file : listFiles) {
+				boolean thisSucceeded = delete(file);
+				allSucceeded &= thisSucceeded;
+			}
+			return allSucceeded;
+		} else {
+			return false;
 		}
-		return allSucceeded;
 	}
 
 	private static boolean delete(File toDelete) {
