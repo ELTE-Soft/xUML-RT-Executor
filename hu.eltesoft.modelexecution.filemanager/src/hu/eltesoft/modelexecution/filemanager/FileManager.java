@@ -17,6 +17,8 @@ public class FileManager {
 	/**
 	 * @param rootDirectory
 	 *            Root directory of the package hierarchy to be created.
+	 *            Warning: Empty path is set as default if this parameter is
+	 *            null.
 	 */
 	public FileManager(String rootDirectory) {
 		this.rootDirectory = rootDirectory;
@@ -38,11 +40,8 @@ public class FileManager {
 		}
 
 		File outFile = qualifiedNameToFile(qualifiedName);
-		File parent = outFile.getParentFile();
-		if (null != parent) {
-			parent.mkdirs();
-		}
-		try(FileWriter writer = new FileWriter(outFile)) {
+		createDirectoryForFile(outFile);
+		try (FileWriter writer = new FileWriter(outFile)) {
 			writer.write(content);
 		}
 	}
@@ -90,5 +89,12 @@ public class FileManager {
 			parts[parts.length - 1] += ".java";
 		}
 		return Paths.get(rootDirectory, parts).toFile();
+	}
+	
+	private static void createDirectoryForFile(File outFile) {
+		File parent = outFile.getParentFile();
+		if (null != parent) {
+			parent.mkdirs();
+		}
 	}
 }
