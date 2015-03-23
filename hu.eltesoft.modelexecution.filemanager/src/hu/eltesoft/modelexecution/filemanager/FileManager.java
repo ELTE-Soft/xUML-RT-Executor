@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * Manager class to write, update and delete Java files.
+ * Manager class to write, update and delete Java files according to package
+ * hierarchy under a specified root directory.
  */
 public class FileManager {
 
@@ -40,9 +41,9 @@ public class FileManager {
 		if (null != parent) {
 			parent.mkdirs();
 		}
-		FileWriter writer = new FileWriter(outFile);
-		writer.write(content);
-		writer.close();
+		try(FileWriter writer = new FileWriter(outFile)) {
+			writer.write(content);
+		}
 	}
 
 	/**

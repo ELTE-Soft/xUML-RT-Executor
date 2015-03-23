@@ -83,7 +83,7 @@ public class FileManagerTests {
 	}
 	
 	@Test
-	public void testClenup() {
+	public void testCleanup() {
 		manager.cleanup();
 		Assert.assertArrayEquals(new File[0], new File(root).listFiles());
 	}
