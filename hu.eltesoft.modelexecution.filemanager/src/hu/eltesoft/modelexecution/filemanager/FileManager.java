@@ -31,6 +31,24 @@ public class FileManager {
 	}
 
 	/**
+	 * Set root directory. Contents of the old location will be left intact and
+	 * will not be moved/copied to this new location.
+	 * 
+	 * @param rootDirectory
+	 *            The new path to set.
+	 */
+	public void setRoot(String rootDirectory) {
+		this.rootDirectory = rootDirectory;
+	}
+
+	/**
+	 * @return Returns the current root directory path as string.
+	 */
+	public String getRoot() {
+		return rootDirectory;
+	}
+
+	/**
 	 * @param qualifiedName
 	 *            A fully qualified class name like a.b.cc.Ddd or Aaa
 	 * @param content
@@ -66,17 +84,23 @@ public class FileManager {
 
 	/**
 	 * Remove all files and directories under the root.
+	 * 
+	 * @return Returns true if all files and directories under the root were
+	 *         successfully removed, false otherwise.
 	 */
-	public void cleanup() {
+	public boolean cleanup() {
 		File root = new File(rootDirectory);
+		boolean allSucceeded = true;
 		for (File file : root.listFiles()) {
-			delete(file);
+			boolean thisSucceeded = delete(file);
+			allSucceeded &= thisSucceeded;
 		}
+		return allSucceeded;
 	}
 
-	private static void delete(File toDelete) {
+	private static boolean delete(File toDelete) {
 		if (!toDelete.exists()) {
-			return;
+			return true;
 		}
 
 		if (toDelete.isDirectory()) {
@@ -85,7 +109,7 @@ public class FileManager {
 				delete(file);
 			}
 		}
-		toDelete.delete();
+		return toDelete.delete();
 	}
 
 	private File qualifiedNameToFile(String qualifiedName) {
