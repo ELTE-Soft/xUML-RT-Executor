@@ -72,15 +72,17 @@ public class FileManager {
 	}
 
 	private static void delete(File toDelete) {
-		if (toDelete.exists()) {
-			if (toDelete.isDirectory()) {
-				File[] files = toDelete.listFiles();
-				for (File file : files) {
-					delete(file);
-				}
-			}
-			toDelete.delete();
+		if (!toDelete.exists()) {
+			return;
 		}
+
+		if (toDelete.isDirectory()) {
+			File[] files = toDelete.listFiles();
+			for (File file : files) {
+				delete(file);
+			}
+		}
+		toDelete.delete();
 	}
 
 	private File qualifiedNameToFile(String qualifiedName) {
@@ -90,7 +92,7 @@ public class FileManager {
 		}
 		return Paths.get(rootDirectory, parts).toFile();
 	}
-	
+
 	private static void createDirectoryForFile(File outFile) {
 		File parent = outFile.getParentFile();
 		if (null != parent) {
