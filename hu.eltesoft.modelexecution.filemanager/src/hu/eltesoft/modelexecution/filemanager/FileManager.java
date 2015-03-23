@@ -13,6 +13,9 @@ public class FileManager {
 
 	private String rootDirectory;
 	private static final String DEFAULT_ROOT_DIRECTORY = "";
+	// The package element separator is a dot and it needs to be escaped:
+	private static final String PACKAGE_ELEMENT_SEPARATOR_REGEX = "\\.";
+	private static final String JAVA_EXTENSION = ".java";
 
 	/**
 	 * @param rootDirectory
@@ -86,9 +89,9 @@ public class FileManager {
 	}
 
 	private File qualifiedNameToFile(String qualifiedName) {
-		String[] parts = qualifiedName.split("\\.");
+		String[] parts = qualifiedName.split(PACKAGE_ELEMENT_SEPARATOR_REGEX);
 		if (parts.length > 0) {
-			parts[parts.length - 1] += ".java";
+			parts[parts.length - 1] += JAVA_EXTENSION;
 		}
 		return Paths.get(rootDirectory, parts).toFile();
 	}
