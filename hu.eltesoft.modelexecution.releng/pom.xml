@@ -16,6 +16,7 @@
 	<modules>
 		<!-- <module>../hu.eltesoft.modelexecution./pom.xml</module> -->
 		<module>../hu.eltesoft.modelexecution.3pp/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 	</modules>
 

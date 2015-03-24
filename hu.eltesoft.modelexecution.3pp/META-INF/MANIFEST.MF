@@ -29,4 +29,3 @@ Export-Package: com.thoughtworks.xstream,
  org.xmlpull.v1
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %Bundle-Vendor.0
-Bundle-ClassPath: .
