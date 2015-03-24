@@ -19,14 +19,17 @@
 		<module>../hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 	</modules>
 
 	<!-- common settings for all modules -->
 	<properties>
-		<tycho-version>0.22.0</tycho-version>
-		<xtend-version>2.6.1</xtend-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version>1.8</java-version>
+		<tycho-version>0.22.0</tycho-version>
+		<build-helper-version>1.7</build-helper-version>
+		<xtend-version>2.6.1</xtend-version>
 	</properties>
 
 	<!-- configure p2 repositories to resolve against -->
@@ -71,8 +74,8 @@
 				<artifactId>tycho-compiler-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<excludeResources>
 						<exludeResource>**/*.xtend</exludeResource>
@@ -97,5 +100,60 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<!-- Xtend-specific configuration -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper-version}</version>
+					<executions>
+						<execution>
+							<id>add-source</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>xtend-gen</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>xtend-gen</directory>
+								<includes>
+									<include>**</include>
+								</includes>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtend-version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>xtend-gen</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
