@@ -14,3 +14,4 @@ Require-Bundle: hu.eltesoft.modelexecution.m2m.metamodel,
  hu.eltesoft.modelexecution.m2t.smap.emf,
  hu.eltesoft.modelexecution.m2t.smap.xtend,
  hu.eltesoft.modelexecution.m2t.java
+Export-Package: hu.eltesoft.modelexecution.m2m.logic
