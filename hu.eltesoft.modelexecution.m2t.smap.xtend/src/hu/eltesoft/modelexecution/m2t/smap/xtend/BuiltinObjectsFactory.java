@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend;
 
+import org.eclipse.xtend.core.XtendStandaloneSetup;
 import org.eclipse.xtend.core.macro.declaration.CompilationUnitImpl;
 import org.eclipse.xtend.ide.internal.XtendActivator;
 import org.eclipse.xtend.lib.macro.declaration.NamedElement;
@@ -17,8 +18,12 @@ import com.google.inject.Injector;
 class BuiltinObjectsFactory {
 
 	public static Injector getXtendPluginInjector() {
-		return XtendActivator.getInstance().getInjector(
-				XtendActivator.ORG_ECLIPSE_XTEND_CORE_XTEND);
+		XtendActivator activator = XtendActivator.getInstance();
+		if (null != activator) {
+			return activator
+					.getInjector(XtendActivator.ORG_ECLIPSE_XTEND_CORE_XTEND);
+		}
+		return new XtendStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 
 	public static CompilationUnitImpl getCompilationUnitInternal(
