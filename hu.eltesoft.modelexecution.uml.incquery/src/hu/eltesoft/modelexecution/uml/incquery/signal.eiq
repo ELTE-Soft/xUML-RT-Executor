@@ -5,3 +5,4 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 pattern Signal(signal : Signal, signalName) {
 	Signal.name(signal, signalName);
 }
+

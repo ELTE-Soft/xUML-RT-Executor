@@ -2,27 +2,25 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern
-Region(region : Region, regionName, containerClassName, initPseudostate : Pseudostate) {
+pattern Region(region : Region, regionName) {
 	Region.name(region, regionName);
-
-	Class.name(containerClass, containerClassName);
-	Class.ownedBehavior(containerClass, stateMachine);
-	StateMachine.region(stateMachine, region);
-
-	Pseudostate.container(initPseudostate, region);
-	Pseudostate.kind(initPseudostate, ::initial);
 }
 
-pattern InitialTransition(region : Region, initPseudostate : Pseudostate, initTransition : Transition, initTransitionName, targetName) {
+pattern ContainerClassOfRegion(region : Region, containerClassName) {
+	Class.name(containerClass, containerClassName);
+	Class.ownedBehavior(containerClass, stateMachine);
+	StateMachine.region(stateMachine, region);	
+}
+
+pattern
+Initials(region : Region, initPseudostate : Pseudostate, initPseudostateName, initTransition : Transition, firstState : State) {
 	Pseudostate.container(initPseudostate, region);
 	Pseudostate.kind(initPseudostate, ::initial);
+	Pseudostate.name(initPseudostate, initPseudostateName);
 
 	Transition.source(initTransition, initPseudostate);
-	Transition.name(initTransition, initTransitionName);
-	
-	Transition.target(initTransition, targetState);
-	State.name(targetState, targetName);
+
+	Transition.target(initTransition, firstState);
 }
 
 pattern State(region : Region, state : State, stateName) {
@@ -43,12 +41,11 @@ pattern Exit(region : Region, state : State, exitName) {
 }
 
 pattern
-Transition(region : Region, sourceState : State, transition : Transition, transitionName, eventName, targetName) {
+Transition(region : Region, source : State, transition : Transition, transitionName, eventName, target : State) {
 	Transition.container(transition, region);
 
-	Transition.source(transition, sourceState);
-	Transition.target(transition, targetState);
-	State.name(targetState, targetName);
+	Transition.source(transition, source);
+	Transition.target(transition, target);
 
 	Transition.name(transition, transitionName);
 

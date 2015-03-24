@@ -5,7 +5,7 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 pattern Cls(cls : Class, className) {
 	Class.name(cls, className);
 	neg find IsBehavior(cls);
-	neg find Stereotype(cls);
+	neg find IsStereotype(cls);
 }
 
 pattern RegionOfClass(cls : Class, regionName) {
@@ -17,8 +17,6 @@ pattern RegionOfClass(cls : Class, regionName) {
 pattern Operation(cls : Class, operation : Operation, operationName) {
 	Class.ownedOperation(cls, operation);
 	Operation.name(operation, operationName);
-
-	// TODO check if operation is of right format
 }
 
 pattern Method(cls : Class, operation : Operation, methodName) {
@@ -39,7 +37,7 @@ private pattern IsBehavior(behavior : Behavior) {
 	Behavior(behavior);
 }
 
-private pattern Stereotype(stereotype : Stereotype) {
+private pattern IsStereotype(stereotype : Stereotype) {
 	Stereotype(stereotype);
 }
 

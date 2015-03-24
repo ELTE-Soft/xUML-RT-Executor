@@ -2,13 +2,9 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern Behavior(behavior : Behavior, behaviorName, alfCode) {
+pattern Behavior(behavior : Behavior, behaviorName) {
 	OpaqueBehavior(behavior);
 	Behavior.name(behavior, behaviorName);
-	OpaqueBehavior.body(behavior, alfCode);
-
-	// TODO check language
-	// OpaqueBehavior.language(behavior, "Alf");
 }
 
 pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
@@ -17,17 +13,31 @@ pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
 
 	Class.ownedOperation(cls, operation);
 	Class.name(cls, containerClassName);
-} or { // entry
+} or {
+// entry
 	State.entry(state, behavior);
+
 	find ContainerClassOfState(state, containerClassName);
-} or { // exit
-	State.entry(state, behavior);
+
+} or {
+// exit
+	State.exit(state, behavior);
+
 	find ContainerClassOfState(state, containerClassName);
-} or { // effect
+
+} or {
+// effect
 	Transition.effect(transition, behavior);
 	Transition.source(transition, state);
+
 	find ContainerClassOfState(state, containerClassName);
 }
+
+pattern AlfCode(behavior : Behavior, alfCode) {
+	OpaqueBehavior.body(behavior, alfCode);
+	OpaqueBehavior.language(behavior, "Alf");
+}
+
 
 private pattern ContainerClassOfState(state : State, containerClassName) {
 	State.container(state, region);
