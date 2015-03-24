@@ -12,5 +12,6 @@ Require-Bundle: org.junit,
  org.eclipse.uml2.uml,
  org.eclipse.incquery.runtime,
  hu.eltesoft.modelexecution.m2t.smap.xtend,
- hu.eltesoft.modelexecution.m2t.java
+ hu.eltesoft.modelexecution.m2t.java,
+ hu.eltesoft.modelexecution.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

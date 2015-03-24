@@ -15,6 +15,8 @@ public class SimpleM2MTranslatorTests extends IncQueryBasedTestCase {
 	private static final String UML_TEST_2015_Q1_MODEL_PATH = "resources/2015_q1_model.uml";
 	private static final String[] UML_TEST_2015_Q1_MODEL_EXPECTED_FILES = {
 			"Class1", "Region1", "Method1", "Entry1", "Exit1", "Effect0", "Effect1", "Signal1", "SignalEvent1" };
+	private static final String PATH_TO_PRINT_GENERATED_FILES = "src_gen";
+	
 
 	private SimpleM2MTranslator translator;
 	private BasicTextChangesListener listener = new BasicTextChangesListener();
@@ -66,6 +68,8 @@ public class SimpleM2MTranslatorTests extends IncQueryBasedTestCase {
 
 		assertAsSets(UML_TEST_2015_Q1_MODEL_EXPECTED_FILES,
 				listener.modifications.toArray(new String[0]));
+		
+		listener.printModifiedFiles(PATH_TO_PRINT_GENERATED_FILES);
 	}
 
 }
