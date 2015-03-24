@@ -14,14 +14,15 @@
 
 	<!-- the modules that shall be built together in one reactor -->
 	<modules>
-		<!-- <module>../hu.eltesoft.modelexecution./pom.xml</module> -->
 		<module>../hu.eltesoft.modelexecution.3pp/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.feature/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.repository/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 	</modules>
 
