@@ -17,6 +17,13 @@ public class BasicTextChangesListener implements TextChangesListener {
 	ArrayList<SourceMappedText> outputs = new ArrayList<>();
 	ArrayList<DebugSymbols> symbols = new ArrayList<>();
 
+	public void clear() {
+		deletions.clear();
+		modifications.clear();
+		outputs.clear();
+		symbols.clear();
+	}
+	
 	@Override
 	public void contentChanged(String filename, SourceMappedText output,
 			DebugSymbols symbols) {

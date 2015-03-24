@@ -15,11 +15,25 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 public abstract class IncQueryBasedTestCase {
 
+	protected static final String PATH_TO_PRINT_GENERATED_FILES = "src_gen";
+
+	protected static final String UML_TEST_SIMPLE_MODEL_PATH = "resources/simple_model.uml";
+	
+	protected static final String UML_TEST_2015_Q1_MODEL_PATH = "resources/2015_q1_model.uml";
+	protected static final String[] UML_TEST_2015_Q1_MODEL_EXPECTED_FILES = {
+			"Class1", "Region1", "Method1", "Entry1", "Exit1", "Effect0",
+			"Effect1", "Signal1", "SignalEvent1" };
+
+	protected Model model;
+	
+	
 	public IncQueryEngine configureEngine(String path) {
 		return configureEngine(loadModel(path));
 	}
 
+	
 	public IncQueryEngine configureEngine(Model model) {
+		this.model = model;
 		try {
 			return IncQueryEngine.on(model);
 		} catch (IncQueryException e) {
@@ -27,6 +41,7 @@ public abstract class IncQueryBasedTestCase {
 			return null;
 		}
 	}
+
 	
 	public Model loadModel(String path) {
 		ResourceSet resourceSet = new ResourceSetImpl();
