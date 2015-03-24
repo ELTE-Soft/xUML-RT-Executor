@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Messages;
+import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
 import hu.eltesoft.modelexecution.cli.Util;
 
@@ -29,10 +29,10 @@ public class IncompatibleOptsException extends IllegalArgumentException {
 		List<String> optNames = opt.requiredOpts.stream().map(Opt::toString).collect(Collectors.toList());
 		String commaSepOptNames = Util.join(optNames, ", ");
 		if (optNames.size() > 1) {
-			return Messages.NO_REQUIRED_OPTION_PRESENT_MANY.getMsg(msgs, opt,
+			return Message.NO_REQUIRED_OPTION_PRESENT_MANY.getMsg(msgs, opt,
 					commaSepOptNames);
 		} else {
-			return Messages.NO_REQUIRED_OPTION_PRESENT1.getMsg(msgs, opt,
+			return Message.NO_REQUIRED_OPTION_PRESENT1.getMsg(msgs, opt,
 					commaSepOptNames);
 		}
 	}

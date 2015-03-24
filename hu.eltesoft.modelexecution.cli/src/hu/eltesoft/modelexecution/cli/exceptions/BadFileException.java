@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Messages;
+import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 
 import java.util.ResourceBundle;
 
@@ -25,14 +25,12 @@ public class BadFileException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Messages.BAD_FILE.getMsg(msgs, presentOptName, model);
+		return Message.BAD_FILE.getMsg(msgs, presentOptName, model);
 	}
 	
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
-	
-	
 
 }

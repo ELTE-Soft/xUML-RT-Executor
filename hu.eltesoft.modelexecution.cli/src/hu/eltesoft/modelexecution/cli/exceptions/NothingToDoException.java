@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Messages;
+import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 import hu.eltesoft.modelexecution.cli.Util;
 
 import java.util.ResourceBundle;
@@ -21,7 +21,7 @@ public class NothingToDoException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Messages.MISSING_ACTION_OPTIONS.getMsg(msgs)
+		return Message.MISSING_ACTION_OPTIONS.getMsg(msgs)
 				+ Util.join(ConsoleModelRunner.ACTION_OPTS, "\n\t");
 	}
 	

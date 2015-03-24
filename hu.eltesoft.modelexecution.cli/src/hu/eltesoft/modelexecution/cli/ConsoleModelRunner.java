@@ -61,7 +61,7 @@ public class ConsoleModelRunner {
 	/** Messages that are printed at some point.
 	 *  The names in the resource bundle must be the lower case equivalents
 	 *  of the enum labels. */
-	public enum Messages {
+	public enum Message {
 		EXECUTING_COMPILED_JAVA,
 		DEFAULT_VALUE,
 		POSSIBLE_VALUES,
@@ -72,7 +72,9 @@ public class ConsoleModelRunner {
 		MISSING_ACTION_OPTIONS,
 		OPTION,
 		BAD_DIRECTORY,
-		BAD_FILE
+		BAD_FILE,
+		BAD_ARG_COUNT,
+		DANGLING_ARG
 		;
 
 		public String getMsg(ResourceBundle msgs, Object... args) {
@@ -150,7 +152,7 @@ public class ConsoleModelRunner {
 		}
 
 		private String mkDescriptionWithArgValues(String descr, ResourceBundle msgs) {
-			String possibleValuesMsg = Messages.POSSIBLE_VALUES.getMsg(msgs);
+			String possibleValuesMsg = Message.POSSIBLE_VALUES.getMsg(msgs);
 			List<String> possibleValues = getPossibleLoggerValues(msgs);
 			return String.format("%s%n%s: %s", descr,
 					possibleValuesMsg, Util.join(possibleValues, ", "));
@@ -161,7 +163,7 @@ public class ConsoleModelRunner {
 			ArgValueName defaultValue = argValueNames.get(0);
 			for (ArgValueName argValueName : new TreeSet<>(argValueNames)) {
 				boolean isDefault = argValueName == defaultValue;
-				String defaultTxt = " (" + Messages.DEFAULT_VALUE.getMsg(msgs) + ")";
+				String defaultTxt = " (" + Message.DEFAULT_VALUE.getMsg(msgs) + ")";
 				String appendWhenDefault = isDefault ? defaultTxt : "";
 				String loggerOpt = argValueName.name + appendWhenDefault;
 				
@@ -175,9 +177,15 @@ public class ConsoleModelRunner {
 		}
 		
 		String getOption(CommandLine cmd, int idx) {
+			String[] options = getOptions(cmd);
+			if (options == null)   return null;
+			return options[idx];
+		}
+
+		String[] getOptions(CommandLine cmd) {
 			String presentName = getPresentName(cmd);
 			if (presentName == null)   return null;
-			return (String) cmd.getOptionValues(presentName)[idx];
+			return cmd.getOptionValues(presentName);
 		}
 
 		public boolean requires(Opt opt2) {
@@ -246,7 +254,7 @@ public class ConsoleModelRunner {
 
 	private static void checkOptsValidity(CommandLine cmd,
 			Options parserOpts, ResourceBundle msgs) {
-		checkIncompatibleOpts(cmd, parserOpts, msgs);
+		checkMissingRequiredOpts(cmd, parserOpts, msgs);
 		
 		checkUnknownLoggerType(cmd, parserOpts, msgs);
 
@@ -257,6 +265,32 @@ public class ConsoleModelRunner {
 		checkIsParameterDir(cmd, parserOpts, msgs, Opt.READ_TRACE, 0);
 
 		checkIsParameterFile(cmd, parserOpts, msgs, Opt.SETUP, 0);
+
+		checkArgCount(cmd, parserOpts, msgs, Opt.EXECUTE, 2);
+		
+		checkNoDanglingArg(cmd, parserOpts, msgs);
+	}
+
+	private static void checkNoDanglingArg(CommandLine cmd, Options parserOpts,
+			ResourceBundle msgs) {
+		String[] danglingArgs = cmd.getArgs();
+		if (danglingArgs.length > 0) {
+			throw new DanglingArgumentsException(danglingArgs, msgs, parserOpts);
+		}
+		
+	}
+
+	private static void checkArgCount(CommandLine cmd, Options parserOpts,
+			ResourceBundle msgs, Opt opt, int expectedArgCount) {
+		if (!opt.isPresent(cmd)) {
+			return;
+		}
+
+		int foundArgCount = opt.getOptions(cmd).length;
+		if (foundArgCount != expectedArgCount) {
+			throw new BadArgCountException(opt.getPresentName(cmd), foundArgCount, expectedArgCount, msgs, parserOpts);
+		}
+		
 	}
 
 	private static void checkIsParameterFile(CommandLine cmd, Options parserOpts,
@@ -285,7 +319,7 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	private static void checkIncompatibleOpts(CommandLine cmd,
+	private static void checkMissingRequiredOpts(CommandLine cmd,
 			Options parserOpts, ResourceBundle msgs) {
 		Set<Opt> presentOpts = getPresentOpts(cmd);
 		for (Opt opt : presentOpts) {
@@ -372,7 +406,7 @@ public class ConsoleModelRunner {
 			ResourceBundle msgs, boolean isVerbose) {
 		if (Opt.SETUP.isPresent(cmd)) {
 			if (isVerbose)
-				System.out.println(Messages.COMPILING_MODEL_TO_JAVA.getMsg(msgs));
+				System.out.println(Message.COMPILING_MODEL_TO_JAVA.getMsg(msgs));
 			runCompilationStep();
 		}
 
@@ -382,7 +416,7 @@ public class ConsoleModelRunner {
 			Logger logger = getLogger(cmd);
 
 			if (isVerbose)
-				System.out.println(Messages.EXECUTING_COMPILED_JAVA.getMsg(msgs));
+				System.out.println(Message.EXECUTING_COMPILED_JAVA.getMsg(msgs));
 			runExecutionStep(tracer, traceReader, logger);
 		}
 	}
@@ -416,7 +450,7 @@ public class ConsoleModelRunner {
 		HelpFormatter formatter = new HelpFormatter();
 		String headline = String.format("java %s%n\t\t [%s]...",
 				ConsoleModelRunner.class.getCanonicalName(),
-				Messages.OPTION.getMsg(msgs));
+				Message.OPTION.getMsg(msgs));
 		formatter.printHelp(headline, parserOpts);
 	}
 
