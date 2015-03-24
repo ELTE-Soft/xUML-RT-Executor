@@ -17,20 +17,20 @@ pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
 // entry
 	State.entry(state, behavior);
 
-	find ContainerClassOfState(state, containerClassName);
+	find ContainerClassOfVertex(state, containerClassName);
 
 } or {
 // exit
 	State.exit(state, behavior);
 
-	find ContainerClassOfState(state, containerClassName);
+	find ContainerClassOfVertex(state, containerClassName);
 
 } or {
 // effect
 	Transition.effect(transition, behavior);
-	Transition.source(transition, state);
+	Transition.container(transition, region);
 
-	find ContainerClassOfState(state, containerClassName);
+	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
 }
 
 pattern AlfCode(behavior : Behavior, alfCode) {
@@ -38,13 +38,9 @@ pattern AlfCode(behavior : Behavior, alfCode) {
 	OpaqueBehavior.language(behavior, "Alf");
 }
 
+private pattern ContainerClassOfVertex(vertex : Vertex, containerClassName) {
+	State.container(vertex, region);
 
-private pattern ContainerClassOfState(state : State, containerClassName) {
-	State.container(state, region);
-
-	StateMachine.region(sm, region);
-	Class.ownedBehavior(cls, sm);
-
-	Class.name(cls, containerClassName);
+	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
 }
 
