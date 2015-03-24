@@ -74,8 +74,6 @@ public class SimpleM2MTranslatorTests extends IncQueryBasedTestCase {
 
 		assertAsSets(UML_TEST_2015_Q1_MODEL_EXPECTED_FILES,
 				listener.modifications.toArray(new String[0]));
-		
-		//listener.printModifiedFiles(PATH_TO_PRINT_GENERATED_FILES);
 	}
 
 }

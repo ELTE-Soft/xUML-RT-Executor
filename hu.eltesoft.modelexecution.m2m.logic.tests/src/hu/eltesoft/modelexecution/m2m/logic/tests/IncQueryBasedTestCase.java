@@ -15,7 +15,7 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 public abstract class IncQueryBasedTestCase {
 
-	protected static final String PATH_TO_PRINT_GENERATED_FILES = "src_gen";
+	protected static final String PATH_TO_PRINT_GENERATED_FILES = "src-gen";
 
 	protected static final String UML_TEST_SIMPLE_MODEL_PATH = "resources/simple_model.uml";
 	
