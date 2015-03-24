@@ -14,7 +14,9 @@
 
 	<!-- the modules that shall be built together in one reactor -->
 	<modules>
-		<!-- <module>../hu.eltesoft.modelexecution.</module> -->
+		<!-- <module>../hu.eltesoft.modelexecution./pom.xml</module> -->
+		<module>../hu.eltesoft.modelexecution.3pp/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 	</modules>
 
 	<!-- common settings for all modules -->
@@ -47,6 +49,12 @@
 	</repositories>
 
 	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<scriptSourceDirectory>src</scriptSourceDirectory>
+		<testSourceDirectory>src</testSourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		<testOutputDirectory>bin</testOutputDirectory>
+
 		<plugins>
 			<plugin>
 				<!-- enable the Tycho build extension -->
