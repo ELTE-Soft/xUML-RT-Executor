@@ -62,9 +62,7 @@ public class FileManager {
 
 		File outFile = qualifiedNameToFile(qualifiedName);
 		createDirectoryForFile(outFile);
-		try (FileWriter writer = new FileWriter(outFile)) {
-			writer.write(content);
-		}
+		writeContentToFile(content, outFile);
 	}
 
 	/**
@@ -129,6 +127,13 @@ public class FileManager {
 		File parent = outFile.getParentFile();
 		if (null != parent) {
 			parent.mkdirs();
+		}
+	}
+
+	private static void writeContentToFile(String content, File outFile)
+			throws IOException {
+		try (FileWriter writer = new FileWriter(outFile)) {
+			writer.write(content);
 		}
 	}
 }
