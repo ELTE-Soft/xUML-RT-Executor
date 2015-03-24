@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.filemanager.tests;
+package hu.eltesoft.modelexecution.filemanager;
 
 import hu.eltesoft.modelexecution.filemanager.FileManager;
 
