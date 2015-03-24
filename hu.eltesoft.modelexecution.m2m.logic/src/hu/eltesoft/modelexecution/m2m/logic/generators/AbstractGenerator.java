@@ -5,7 +5,13 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
 import org.eclipse.emf.ecore.EObject;
 
-public abstract class AbstractGenerator<S extends EObject, R extends ModelRoot> implements IGenerator<S, R> {
+/**
+ * 
+ * @author Gábor Ferenc Kovács
+ *
+ */
+public abstract class AbstractGenerator<S extends EObject, R extends ModelRoot>
+		implements Generator<S, R> {
 
 	protected final TextChangesListener listener;
 
@@ -13,15 +19,10 @@ public abstract class AbstractGenerator<S extends EObject, R extends ModelRoot> 
 		this.listener = listener;
 	}
 
-	@Override
-	public abstract R generateTranslationModel(S source);
-
-	@Override
-	public abstract void generateText(R root);
-
-	@Override
-	public void deleteText(R root) {
-		listener.contentDeleted(root.getName());
+	protected void check(boolean success) throws GenerationException {
+		if (!success) {
+			throw new GenerationException();
+		}
 	}
 
 }

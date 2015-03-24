@@ -1,17 +1,15 @@
 package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
+import java.util.LinkedList;
+
 /**
  * A queue of {@link FileUpdateTask} instances.
  * 
- * @author Kov·cs G·bor Ferenc
+ * @author G√°bor Ferenc Kov√°cs
  *
  */
-public interface FileUpdateTaskQueue {
-
-	/**
-	 * Iterates through the {@link FileUpdateTask} instances contained in this
-	 * queue and calls the <code>update</code> method on all of them.
-	 */
-	void updateAll();
+@SuppressWarnings("serial")
+public class FileUpdateTaskQueue extends LinkedList<FileUpdateTask> implements
+		FileUpdateTaskCollection {
 
 }

@@ -1,9 +1,16 @@
 package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
-public interface ModelGenerationTaskQueue {
+import java.util.LinkedList;
 
-	void add(ModelGenerationTask task);
-	
-	FileUpdateTaskQueue translateAll();
-	
+/**
+ * A queue of {@link ModelGenerationTask} instances.
+ * 
+ * @author Gábor Ferenc Kovács
+ *
+ */
+@SuppressWarnings("serial")
+public class ModelGenerationTaskQueue extends
+		LinkedList<ModelGenerationTask<?, ?>> implements
+		ModelGenerationTaskCollection {
+
 }
