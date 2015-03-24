@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for model to model translation logic
+Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.logic.tests
+Bundle-Version: 1.0.0.qualifier
+Export-Package: hu.eltesoft.modelexecution.m2m.logic.tests
+Bundle-Vendor: ELTE-Soft
+Require-Bundle: org.junit,
+ hu.eltesoft.modelexecution.m2m.logic,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
+ org.eclipse.uml2.uml,
+ org.eclipse.incquery.runtime,
+ hu.eltesoft.modelexecution.m2t.smap.xtend,
+ hu.eltesoft.modelexecution.m2t.java
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

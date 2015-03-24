@@ -94,7 +94,7 @@ public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 				getProcessorToGenerateSignalModels(generationTaskQueue));
 
 		FileUpdateTaskQueue updateTaskQueue = generationTaskQueue.performAll();
-
+				
 		return updateTaskQueue;
 	}
 
