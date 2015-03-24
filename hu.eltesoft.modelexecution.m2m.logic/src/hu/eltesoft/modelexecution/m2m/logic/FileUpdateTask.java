@@ -1,6 +1,7 @@
-package hu.eltesoft.modelexecution.m2m.logic.tasks;
+package hu.eltesoft.modelexecution.m2m.logic;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.FileDeletionTask;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.FileModificationTask;
 
 /**
  * A task to update a single file in the textual representation of the model. An

@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.m2m.logic.impl;
 
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.FileDeletionTask;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskSet;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ModelGenerationTaskSet;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;

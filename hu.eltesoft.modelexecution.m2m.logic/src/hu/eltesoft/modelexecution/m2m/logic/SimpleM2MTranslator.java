@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.m2m.logic;
 
 import hu.eltesoft.modelexecution.m2m.logic.impl.SimpleM2MTranslatorImpl;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskQueue;
 
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;

@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.impl;
 
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskQueue;
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;

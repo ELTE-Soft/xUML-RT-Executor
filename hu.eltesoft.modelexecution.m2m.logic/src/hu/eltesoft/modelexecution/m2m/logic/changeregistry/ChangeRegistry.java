@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.changeregistry;
 
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
 import hu.eltesoft.modelexecution.m2m.logic.impl.ChangeRegistryImpl;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
 import org.eclipse.emf.ecore.EObject;

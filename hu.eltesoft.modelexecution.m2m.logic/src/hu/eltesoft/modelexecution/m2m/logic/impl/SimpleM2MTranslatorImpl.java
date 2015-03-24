@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2m.logic.impl;
 
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.generators.BehaviorGenerator;
@@ -7,7 +8,6 @@ import hu.eltesoft.modelexecution.m2m.logic.generators.ClassGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.RegionGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.SignalEventGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.SignalGenerator;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ModelGenerationTaskQueue;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;

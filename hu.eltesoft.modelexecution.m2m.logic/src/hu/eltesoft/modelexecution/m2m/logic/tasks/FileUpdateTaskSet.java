@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
+
 import java.util.LinkedHashSet;
 
 /**
@@ -11,8 +14,7 @@ import java.util.LinkedHashSet;
  *
  */
 @SuppressWarnings("serial")
-public class FileUpdateTaskSet extends LinkedHashSet<FileUpdateTask> implements
-		FileUpdateTaskCollection {
+public class FileUpdateTaskSet extends LinkedHashSet<FileUpdateTask> {
 
 	public FileUpdateTaskQueue asQueue() {
 		FileUpdateTaskQueue taskQueue = new FileUpdateTaskQueue();
