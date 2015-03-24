@@ -17,6 +17,7 @@
 		<!-- <module>../hu.eltesoft.modelexecution./pom.xml</module> -->
 		<module>../hu.eltesoft.modelexecution.3pp/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 	</modules>
 
@@ -84,6 +85,14 @@
 				<configuration>
 					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<test>AllTests</test>
 				</configuration>
 			</plugin>
 		</plugins>
