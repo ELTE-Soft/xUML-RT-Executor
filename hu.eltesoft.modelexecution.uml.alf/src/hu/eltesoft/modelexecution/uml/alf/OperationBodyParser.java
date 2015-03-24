@@ -29,10 +29,7 @@ class OperationBodyParser extends AlfParser {
 	}
 
 	public IParseResult parse(String alfCode) {
-		if (null == alfCode) {
-			alfCode = "";
-		}
-		if (alfCode.trim().isEmpty()) {
+		if (null == alfCode || alfCode.trim().isEmpty()) {
 			ICompositeNode blockNode = new EmptyBlockNode();
 			EObject block = blockNode.getSemanticElement();
 			return new ParseResult(block, blockNode, false);
