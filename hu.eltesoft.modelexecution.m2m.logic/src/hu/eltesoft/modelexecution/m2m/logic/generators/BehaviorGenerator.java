@@ -63,8 +63,11 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 				null, getProcessorToSetContainerClassOfRoot(root)));
 
 		// alfCode
-		check(alfCodeMatcher.forOneArbitraryMatch(source, null,
-				getProcessorToSetAlfCodeOfRoot(root)));
+		if (!alfCodeMatcher.forOneArbitraryMatch(source, null,
+				getProcessorToSetAlfCodeOfRoot(root))) {
+			
+			root.setAlfCode("{}");
+		}
 
 		return root;
 	}
