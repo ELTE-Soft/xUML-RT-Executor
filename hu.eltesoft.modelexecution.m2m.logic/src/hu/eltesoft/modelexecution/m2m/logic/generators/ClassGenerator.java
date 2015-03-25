@@ -143,7 +143,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 					@Override
 					public void process(Class pCls, Operation pOperation,
 							String pMethodName) {
-						clOperation.setName(pMethodName);
+						clOperation.setMethod(pMethodName);
 					}
 				};
 			}
