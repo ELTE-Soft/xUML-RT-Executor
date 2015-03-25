@@ -9,9 +9,9 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Exit
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Event
-import hu.eltesoft.modelexecution.runtime.base.SMRegion
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class RegionTemplate extends Template {
@@ -31,7 +31,7 @@ class RegionTemplate extends Template {
 
 	override generate() '''
 		«generatedHeader(region.name)»
-		public class «region.name» extends «SMRegion.canonicalName» {
+		public class «region.name» extends «StateMachineRegion.canonicalName» {
 		
 			private enum States {
 				«initState.name», «FOR state : region.states SEPARATOR ', '»«state.name»«ENDFOR»
@@ -42,10 +42,10 @@ class RegionTemplate extends Template {
 		
 			public «region.name»(«region.containerClass.name» owner) {
 				this.owner = owner;
-				doInitialTransition();
 			}
 		
-			private void doInitialTransition() {
+			@Override
+			public void doInitialTransition() {
 				// Initial state exit «trace(initState.reference, Exit)»
 				owner.getRuntime().logExitState("«initState.name»");
 		
@@ -71,7 +71,7 @@ class RegionTemplate extends Template {
 				«FOR state : region.states»
 					case «state.name»:
 						«FOR transition : state.transitions SEPARATOR ' else '»
-							if (event instanceof «transition.event.name»)
+							if («transition.event.name».eventMatches(event))
 							{
 								// State exit «trace(state.reference, Exit)»
 								owner.getRuntime().logExitState("«state.name»");

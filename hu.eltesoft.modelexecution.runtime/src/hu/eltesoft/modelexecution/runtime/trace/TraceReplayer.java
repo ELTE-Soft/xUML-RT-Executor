@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
+import hu.eltesoft.modelexecution.runtime.log.Logger;
+
 import java.io.FileNotFoundException;
 
 /**
@@ -16,10 +18,10 @@ public class TraceReplayer extends TraceReader {
 	}
 
 	@Override
-	public void dispatchEvent() {
+	public void dispatchEvent(Logger logger) {
 		if (source.hasMoreElems()) {
 			TargetedEvent tracedEvent = source.getTracedEvent();
-			tracedEvent.send();
+			sendAndLog(logger, tracedEvent);
 		} else {
 			throw new RuntimeException("dispatchEvent() on empty queue");
 		}
@@ -31,11 +33,11 @@ public class TraceReplayer extends TraceReader {
 	}
 
 	@Override
-	public EventSource dispatchEvent(TargetedEvent event) {
+	public EventSource dispatchEvent(TargetedEvent event, Logger logger) {
 		if (source.hasMoreElems()) {
 			TargetedEvent tracedEvent = source.getTracedEvent();
 			if (tracedEvent.isFromOutside()) {
-				tracedEvent.send();
+				sendAndLog(logger, tracedEvent);
 				return EventSource.Trace;
 			} else if (!event.equals(tracedEvent)) {
 				String msg = "The event read from queue is not the same as the event read from the trace. Queue: "
@@ -43,8 +45,13 @@ public class TraceReplayer extends TraceReader {
 				throw new RuntimeException(msg);
 			}
 		}
-		event.send();
+		sendAndLog(logger, event);
 		return EventSource.Queue;
+	}
+
+	private void sendAndLog(Logger logger, TargetedEvent tracedEvent) {
+		tracedEvent.send();
+		logger.eventDispatched(tracedEvent.getTarget(), tracedEvent.getEvent());
 	}
 
 	@Override

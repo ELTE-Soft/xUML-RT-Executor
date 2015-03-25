@@ -38,6 +38,11 @@ class ClassTemplate extends Template {
 				super(runtime, "«classDefinition.name»");
 				instance = this; // Only for Q1
 			}
+			
+			@Override
+			public void init() {
+				stateMachine.doInitialTransition();
+			}
 		
 			@Override
 			public void receive(«Event.canonicalName» event) {
