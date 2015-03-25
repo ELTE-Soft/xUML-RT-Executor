@@ -34,9 +34,4 @@ public class DynamicSignalEvent extends SignalEvent {
 		return signal.equals(oth.signal);
 	}
 
-	@Override
-	public int signalCode() {
-		return signal.signalCode();
-	}
-
 }
