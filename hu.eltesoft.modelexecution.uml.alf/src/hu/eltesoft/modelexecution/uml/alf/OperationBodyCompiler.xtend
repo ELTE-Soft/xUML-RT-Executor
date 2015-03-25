@@ -12,6 +12,7 @@ import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
 import org.eclipse.xtext.parser.IParseResult
 import org.eclipse.papyrus.uml.alf.NameBinding
+import org.eclipse.papyrus.uml.alf.BlockStatement
 
 /**
  * Compiles an operation body written in Alf to Java code by implementing an AST
@@ -43,6 +44,10 @@ class OperationBodyCompiler {
 		for (annotated : block.statement) {
 			visit(annotated.statement)
 		}
+	}
+	
+	private def dispatch void visit(BlockStatement blockStmt) {
+		visit(blockStmt.block);
 	}
 
 	private def dispatch void visit(ExpressionStatement stmt) {
