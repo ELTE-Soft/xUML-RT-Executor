@@ -36,9 +36,9 @@ public abstract class BaseRuntime implements Runtime {
 
 	@Override
 	public void addEventToQueue(Class target, Event event) {
+		TargetedEvent targetedEvent = new TargetedEvent(target, event);
+		queue.add(targetedEvent);
 		logger.eventQueued(target, event);
-		traceWriter.traceEvent(new TargetedEvent(target, event));
-		traceReader.dispatchEvent(new TargetedEvent(target, event));
 	}
 
 	/**
@@ -49,12 +49,13 @@ public abstract class BaseRuntime implements Runtime {
 		while (!queue.isEmpty() || traceReader.hasEvent()) {
 			if (!queue.isEmpty()) {
 				TargetedEvent currQueueEvent = queue.peek();
-				if (traceReader.dispatchEvent(currQueueEvent) == EventSource.Queue) {
+				if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
 					queue.poll();
 					traceWriter.traceEvent(currQueueEvent);
 				}
 			} else {
-				traceReader.dispatchEvent();
+				// TODO: log events from outside
+				traceReader.dispatchEvent(logger);
 			}
 		}
 		traceWriter.close();
@@ -68,7 +69,8 @@ public abstract class BaseRuntime implements Runtime {
 			InvocationTargetException {
 		java.lang.Class<?> classClass = java.lang.Class.forName(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
-		Object classInstance = constructor.newInstance(this);
+		Class classInstance = (Class) constructor.newInstance(this);
+		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
 	}
