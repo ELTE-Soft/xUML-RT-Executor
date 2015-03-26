@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ SimpleM2MTranslatorTests.class })
+@SuiteClasses({ SimpleM2MTranslatorTests.class, ChangeListenerM2MTranslatorTests.class })
 public class AllTests {
 }
