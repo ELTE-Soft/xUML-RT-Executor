@@ -20,6 +20,7 @@
 		<module>../hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2m.metamodel/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.java/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
