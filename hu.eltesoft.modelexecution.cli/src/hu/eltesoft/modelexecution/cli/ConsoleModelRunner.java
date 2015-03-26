@@ -429,8 +429,8 @@ public class ConsoleModelRunner {
 	}
 
 	public static ResourceBundle getDefaultBundle() {
-		final String BUNDLE_ID = ConsoleModelRunner.class.getSimpleName();
-		return ResourceBundle.getBundle(BUNDLE_ID);
+		String bundleId = ConsoleModelRunner.class.getSimpleName();
+		return ResourceBundle.getBundle(bundleId);
 	}
 
 	public static Options mkParserOpts(ResourceBundle msgs) {
