@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ZW7FsMc1EeSnK7LttAdTLw" name="model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_aeMPwMc1EeSnK7LttAdTLw" name="A">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_jk_EkNJLEeSd5I6-OPCzVg" name="SM1">
+      <region xmi:type="uml:Region" xmi:id="_lIjJENJLEeSd5I6-OPCzVg" name="R1">
+        <transition xmi:type="uml:Transition" xmi:id="_ux5o8NJLEeSd5I6-OPCzVg" name="T1" source="_tSnAcNJLEeSd5I6-OPCzVg" target="_uEH88NJLEeSd5I6-OPCzVg"/>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="_tSnAcNJLEeSd5I6-OPCzVg" name="Init"/>
+        <subvertex xmi:type="uml:State" xmi:id="_uEH88NJLEeSd5I6-OPCzVg" name="S1"/>
+      </region>
+    </ownedBehavior>
+  </packagedElement>
+</uml:Model>
