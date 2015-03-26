@@ -44,8 +44,6 @@ import org.apache.commons.cli.PosixParser;
 /**
  * Console application that compiles and/or executes the model
  * based on the command line arguments.
- * 
- * @author kitlei
  */
 public class ConsoleModelRunner {
 	/** Names for the arguments of the options. */
