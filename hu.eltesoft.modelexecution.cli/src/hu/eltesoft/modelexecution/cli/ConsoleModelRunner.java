@@ -77,7 +77,8 @@ public class ConsoleModelRunner {
 		BAD_DIRECTORY,
 		BAD_FILE,
 		BAD_ARG_COUNT,
-		DANGLING_ARG
+		DANGLING_ARG,
+		RUNTIME_EXCEPTION
 		;
 
 		public String getMsg(Object... args) {
@@ -410,9 +411,12 @@ public class ConsoleModelRunner {
 			TraceReader traceReader = getTraceReader(cmd, parserOpts);
 			Logger logger = getLogger(cmd);
 
+			String className = Opt.EXECUTE.getOption(cmd, 0).get();
+			String feedName = Opt.EXECUTE.getOption(cmd, 1).get();
+			
 			if (isVerbose)
 				System.out.println(Message.EXECUTING_COMPILED_JAVA.getMsg());
-			runExecutionStep(tracer, traceReader, logger);
+			runExecutionStep(tracer, traceReader, logger, className, feedName);
 		}
 	}
 
@@ -421,8 +425,15 @@ public class ConsoleModelRunner {
 
 	}
 
-	private static void runExecutionStep(Tracer tracer, TraceReader traceReader, Logger logger) {
-		new CliRuntime(tracer, traceReader, logger);
+	private static void runExecutionStep(Tracer tracer,
+			TraceReader traceReader, Logger logger, String className,
+			String feedName) {
+		try {
+			new CliRuntime(tracer, traceReader, logger).run(className, feedName);
+		} catch (Exception e) {
+			System.err.println(Message.RUNTIME_EXCEPTION.getMsg());
+			e.printStackTrace();
+		}
 	}
 
 	public static ResourceBundle getDefaultBundle() {
