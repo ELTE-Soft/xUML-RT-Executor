@@ -79,9 +79,9 @@ public class ConsoleModelRunner {
 		DANGLING_ARG
 		;
 
-		public String getMsg(ResourceBundle msgs, Object... args) {
+		public String getMsg(Object... args) {
 			String descrBundleName = getDescriptionBundleName();
-			String format = msgs.getString(descrBundleName);
+			String format = getMsgs().getString(descrBundleName);
 			return MessageFormat.format(format, args);
 		}
 		
@@ -126,13 +126,13 @@ public class ConsoleModelRunner {
 			this.argValueNames = argValueNames;
 		}
 
-		private Option mkOpt(ResourceBundle msgs) {
+		private Option mkOpt() {
 			OptionBuilder.withLongOpt(longName);
 			OptionBuilder.hasArgs(argNames.size());
 			OptionBuilder.withArgName(String.join(",", argNames));
 
 			String descrBundleName = getDescriptionBundleName();
-			String description = getDescription(msgs, descrBundleName);
+			String description = getDescription(descrBundleName);
 			OptionBuilder.withDescription(description);
 			
 			return OptionBuilder.create(shortName);
@@ -142,10 +142,9 @@ public class ConsoleModelRunner {
 			return name().toLowerCase() + OPT_BUNDLE_POSTFIX;
 		}
 
-		private String getDescription(ResourceBundle msgs,
-				String descrBundleName) {
-			String descr = msgs.getString(descrBundleName);
-			return hasArgValues() ? descr : mkDescriptionWithArgValues(descr, msgs);
+		private String getDescription(String descrBundleName) {
+			String descr = getMsgs().getString(descrBundleName);
+			return hasArgValues() ? descr : mkDescriptionWithArgValues(descr);
 		}
 
 		/** Returns whether the option has (named) values for its argument. */
@@ -153,19 +152,19 @@ public class ConsoleModelRunner {
 			return argValueNames.size() == 0;
 		}
 
-		private String mkDescriptionWithArgValues(String descr, ResourceBundle msgs) {
-			String possibleValuesMsg = Message.POSSIBLE_VALUES.getMsg(msgs);
-			List<String> possibleValues = getPossibleLoggerValues(msgs);
+		private String mkDescriptionWithArgValues(String descr) {
+			String possibleValuesMsg = Message.POSSIBLE_VALUES.getMsg();
+			List<String> possibleValues = getPossibleLoggerValues();
 			return String.format("%s%n%s: %s", descr,
 					possibleValuesMsg, Util.join(possibleValues, ", "));
 		}
 
-		private List<String> getPossibleLoggerValues(ResourceBundle msgs) {
+		private List<String> getPossibleLoggerValues() {
 			List<String> argValuesTxt = new ArrayList<>();
 			ArgValueName defaultValue = argValueNames.get(0);
 			for (ArgValueName argValueName : new TreeSet<>(argValueNames)) {
 				boolean isDefault = argValueName == defaultValue;
-				String defaultTxt = " (" + Message.DEFAULT_VALUE.getMsg(msgs) + ")";
+				String defaultTxt = " (" + Message.DEFAULT_VALUE.getMsg() + ")";
 				String appendWhenDefault = isDefault ? defaultTxt : "";
 				String loggerOpt = argValueName.name + appendWhenDefault;
 				
@@ -197,6 +196,8 @@ public class ConsoleModelRunner {
 		}
 	};
 
+	private static ResourceBundle msgs = getDefaultBundle();
+
 	private static final int PARSER_EXCEPTION_EXIT_CODE = 1;
 
 	private static final Map<String, Function<String, Logger>> LOGGERMAKER_BY_NAME = mkLoggerMaker();
@@ -207,27 +208,25 @@ public class ConsoleModelRunner {
 			Opt.SETUP.longName, Opt.EXECUTE.longName);
 
 	public static void main(String[] args) {
-		ResourceBundle msgs = getDefaultBundle();
-		Options parserOpts = mkParserOpts(msgs);
+		Options parserOpts = mkParserOpts();
 
 		try {
-			doCli(args, msgs, parserOpts);
+			doCli(args, parserOpts);
 		} catch (IllegalArgumentException | ParseException e) {
-			exitWithErrorMsg(parserOpts, e.getLocalizedMessage(), msgs);
+			exitWithErrorMsg(parserOpts, e.getLocalizedMessage());
 		}
 	}
 
-	public static void doCli(String[] args, ResourceBundle msgs,
+	public static void doCli(String[] args,
 			Options parserOpts) throws ParseException {
 		CommandLineParser parser = new PosixParser();
 		CommandLine cmd = parser.parse(parserOpts, args);
-		processCmdLine(cmd, parserOpts, msgs);
+		processCmdLine(cmd, parserOpts);
 	}
 
-	private static void exitWithErrorMsg(Options parserOpts, String errMsg,
-			ResourceBundle msgs) {
+	private static void exitWithErrorMsg(Options parserOpts, String errMsg) {
 		System.err.println(errMsg);
-		printHelp(parserOpts, msgs);
+		printHelp(parserOpts);
 		System.exit(PARSER_EXCEPTION_EXIT_CODE);
 	}
 
@@ -238,61 +237,59 @@ public class ConsoleModelRunner {
 		return loggerByName;
 	}
 
-	private static void processCmdLine(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs) {
+	private static void processCmdLine(CommandLine cmd, Options parserOpts) {
 		if (cmd.hasOption(Opt.HELP.shortName)) {
-			showOptionsAndExit(parserOpts, msgs);
+			showOptionsAndExit(parserOpts);
 		}
 
-		checkOptsValidity(cmd, parserOpts, msgs);
+		checkOptsValidity(cmd, parserOpts);
 
-		processValidCmdLine(parserOpts, cmd, msgs,
+		processValidCmdLine(parserOpts, cmd,
 				Opt.VERBOSE.isPresent(cmd));
 	}
 
 	private static void checkOptsValidity(CommandLine cmd,
-			Options parserOpts, ResourceBundle msgs) {
-		checkMissingRequiredOpts(cmd, parserOpts, msgs);
+			Options parserOpts) {
+		checkMissingRequiredOpts(cmd, parserOpts);
 		
-		checkUnknownLoggerType(cmd, parserOpts, msgs);
+		checkUnknownLoggerType(cmd, parserOpts);
 
-		checkNothingToDo(cmd, parserOpts, msgs);
+		checkNothingToDo(cmd, parserOpts);
 		
-		checkIsParameterDir(cmd, parserOpts, msgs, Opt.ROOT, 0);
-		checkIsParameterDir(cmd, parserOpts, msgs, Opt.WRITE_TRACE, 0);
-		checkIsParameterDir(cmd, parserOpts, msgs, Opt.READ_TRACE, 0);
+		checkIsParameterDir(cmd, parserOpts, Opt.ROOT, 0);
+		checkIsParameterDir(cmd, parserOpts, Opt.WRITE_TRACE, 0);
+		checkIsParameterDir(cmd, parserOpts, Opt.READ_TRACE, 0);
 
-		checkIsParameterFile(cmd, parserOpts, msgs, Opt.SETUP, 0);
+		checkIsParameterFile(cmd, parserOpts, Opt.SETUP, 0);
 
-		checkArgCount(cmd, parserOpts, msgs, Opt.EXECUTE, 2);
+		checkArgCount(cmd, parserOpts, Opt.EXECUTE, 2);
 		
-		checkNoDanglingArg(cmd, parserOpts, msgs);
+		checkNoDanglingArg(cmd, parserOpts);
 	}
 
-	private static void checkNoDanglingArg(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs) {
+	private static void checkNoDanglingArg(CommandLine cmd, Options parserOpts) {
 		String[] danglingArgs = cmd.getArgs();
 		if (danglingArgs.length > 0) {
-			throw new DanglingArgumentsException(danglingArgs, msgs, parserOpts);
+			throw new DanglingArgumentsException(danglingArgs, parserOpts);
 		}
 		
 	}
 
 	private static void checkArgCount(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs, Opt opt, int expectedArgCount) {
+			Opt opt, int expectedArgCount) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
 
 		int foundArgCount = opt.getOptions(cmd).length;
 		if (foundArgCount != expectedArgCount) {
-			throw new BadArgCountException(opt.getPresentName(cmd), foundArgCount, expectedArgCount, msgs, parserOpts);
+			throw new BadArgCountException(opt.getPresentName(cmd), foundArgCount, expectedArgCount, parserOpts);
 		}
 		
 	}
 
 	private static void checkIsParameterFile(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs, Opt opt, int idx) {
+			Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
@@ -300,12 +297,12 @@ public class ConsoleModelRunner {
 		String model = opt.getOption(cmd, idx);
 
 		if (!new File(model).canRead()) {
-			throw new BadFileException(opt.getPresentName(cmd), model, msgs, parserOpts);
+			throw new BadFileException(opt.getPresentName(cmd), model, parserOpts);
 		}
 	}
 
 	private static void checkIsParameterDir(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs, Opt opt, int idx) {
+			Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
@@ -313,12 +310,12 @@ public class ConsoleModelRunner {
 		String root = opt.getOption(cmd, idx);
 
 		if (!new File(root).isDirectory()) {
-			throw new BadDirectoryException(opt.getPresentName(cmd), root, msgs, parserOpts);
+			throw new BadDirectoryException(opt.getPresentName(cmd), root, parserOpts);
 		}
 	}
 
 	private static void checkMissingRequiredOpts(CommandLine cmd,
-			Options parserOpts, ResourceBundle msgs) {
+			Options parserOpts) {
 		Set<Opt> presentOpts = getPresentOpts(cmd);
 		for (Opt opt : presentOpts) {
 			if (opt.requiredOpts.isEmpty()) {
@@ -328,7 +325,7 @@ public class ConsoleModelRunner {
 			boolean hasRequiredOpt = opt.requiredOpts.stream().anyMatch(
 					opt2 -> opt2.isPresent(cmd));
 			if (!hasRequiredOpt) {
-				throw new IncompatibleOptsException(opt, msgs, parserOpts);
+				throw new IncompatibleOptsException(opt, parserOpts);
 			}
 		}
 	}
@@ -363,7 +360,7 @@ public class ConsoleModelRunner {
 	
 	private static TraceReader getTraceReader(
 			CommandLine cmd,
-			Options parserOpts, ResourceBundle msgs) {
+			Options parserOpts) {
 		try {
 			String folderName = Opt.READ_TRACE.getOption(cmd, 0); 
 
@@ -373,17 +370,16 @@ public class ConsoleModelRunner {
 
 			return new TraceReplayer(folderName);
 		} catch (FileNotFoundException e) {
-			exitWithErrorMsg(parserOpts, e.getLocalizedMessage(), msgs);
+			exitWithErrorMsg(parserOpts, e.getLocalizedMessage());
 		}
 		return new NoTraceReader();
 	}
 
-	private static void checkNothingToDo(CommandLine cmd, Options parserOpts,
-			ResourceBundle msgs) {
+	private static void checkNothingToDo(CommandLine cmd, Options parserOpts) {
 		boolean isAtLeastOneOptPresent = ACTION_OPTS.stream().anyMatch(
 				opt -> cmd.hasOption(opt));
 		if (!isAtLeastOneOptPresent) {
-			throw new NothingToDoException(parserOpts, msgs);
+			throw new NothingToDoException(parserOpts);
 		}
 	}
 
@@ -391,30 +387,30 @@ public class ConsoleModelRunner {
 	 *  Checks if the entered logger type is unknown.
 	 */
 	private static void checkUnknownLoggerType(CommandLine cmd,
-			Options parserOpts, ResourceBundle msgs) {
+			Options parserOpts) {
 		if (!Opt.LOGGER.isPresent(cmd))    return;
 
 		String userLoggerType = Opt.LOGGER.getOption(cmd, 0);
 		if (LOGGERMAKER_BY_NAME.containsKey(userLoggerType))    return;
 
-		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, parserOpts, msgs);
+		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, parserOpts);
 	}
 
 	private static void processValidCmdLine(Options parserOpts, CommandLine cmd,
-			ResourceBundle msgs, boolean isVerbose) {
+			boolean isVerbose) {
 		if (Opt.SETUP.isPresent(cmd)) {
 			if (isVerbose)
-				System.out.println(Message.COMPILING_MODEL_TO_JAVA.getMsg(msgs));
+				System.out.println(Message.COMPILING_MODEL_TO_JAVA.getMsg());
 			runCompilationStep();
 		}
 
 		if (Opt.EXECUTE.isPresent(cmd)) {
 			Tracer tracer = getTracer(cmd);
-			TraceReader traceReader = getTraceReader(cmd, parserOpts, msgs);
+			TraceReader traceReader = getTraceReader(cmd, parserOpts);
 			Logger logger = getLogger(cmd);
 
 			if (isVerbose)
-				System.out.println(Message.EXECUTING_COMPILED_JAVA.getMsg(msgs));
+				System.out.println(Message.EXECUTING_COMPILED_JAVA.getMsg());
 			runExecutionStep(tracer, traceReader, logger);
 		}
 	}
@@ -433,23 +429,31 @@ public class ConsoleModelRunner {
 		return ResourceBundle.getBundle(bundleId);
 	}
 
-	public static Options mkParserOpts(ResourceBundle msgs) {
+	public static Options mkParserOpts() {
 		Options parserOpts = new Options();
-		Arrays.stream(Opt.values()).map(opt -> opt.mkOpt(msgs)).forEach(parserOpts::addOption); 
+		Arrays.stream(Opt.values()).map(opt -> opt.mkOpt()).forEach(parserOpts::addOption); 
 		return parserOpts;
 	}
 
-	private static void showOptionsAndExit(Options parserOpts, ResourceBundle msgs) {
-		printHelp(parserOpts, msgs);
+	private static void showOptionsAndExit(Options parserOpts) {
+		printHelp(parserOpts);
 		System.exit(0);
 	}
 
-	private static void printHelp(Options parserOpts, ResourceBundle msgs) {
+	private static void printHelp(Options parserOpts) {
 		HelpFormatter formatter = new HelpFormatter();
 		String headline = String.format("java %s%n\t\t [%s]...",
 				ConsoleModelRunner.class.getCanonicalName(),
-				Message.OPTION.getMsg(msgs));
+				Message.OPTION.getMsg());
 		formatter.printHelp(headline, parserOpts);
+	}
+
+	public static ResourceBundle getMsgs() {
+		return msgs;
+	}
+
+	public static void setMsgs(ResourceBundle newMsgs) {
+		msgs = newMsgs;
 	}
 
 }

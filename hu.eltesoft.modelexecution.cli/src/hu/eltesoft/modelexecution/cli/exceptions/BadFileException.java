@@ -2,8 +2,6 @@ package hu.eltesoft.modelexecution.cli.exceptions;
 
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 
-import java.util.ResourceBundle;
-
 import org.apache.commons.cli.Options;
 
 public class BadFileException extends IllegalArgumentException {
@@ -11,21 +9,18 @@ public class BadFileException extends IllegalArgumentException {
 
 	String presentOptName;
 	String model;
-	ResourceBundle msgs;
 	Options parserOpts;
 
-	public BadFileException(String presentOptName, String model, ResourceBundle msgs,
-			Options parserOpts) {
+	public BadFileException(String presentOptName, String model, Options parserOpts) {
 		super();
 		this.presentOptName = presentOptName;
 		this.model = model;
-		this.msgs = msgs;
 		this.parserOpts = parserOpts;
 	}
 
 	@Override
 	public String toString() {
-		return Message.BAD_FILE.getMsg(msgs, presentOptName, model);
+		return Message.BAD_FILE.getMsg(presentOptName, model);
 	}
 	
 	@Override

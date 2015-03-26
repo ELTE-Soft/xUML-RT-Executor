@@ -31,18 +31,16 @@ public class ConsoleModelRunnerTests {
 	List<String> optNamesInBundle = Arrays.stream(Opt.values())
 			.map(Opt::getDescriptionBundleName).collect(Collectors.toList());
 
-	ResourceBundle msgs;
 	Options parserOpts;
 	
 	@Before
 	public void before() {
-		msgs = ConsoleModelRunner.getDefaultBundle();
-		parserOpts = ConsoleModelRunner.mkParserOpts(msgs);
+		parserOpts = ConsoleModelRunner.mkParserOpts();
 	}
 	
 	@Test
 	public void allUsedMsgsAreInBundle() {
-		ResourceBundle msgs = ConsoleModelRunner.getDefaultBundle();
+		ResourceBundle msgs = ConsoleModelRunner.getMsgs();
 		for (String msgName : messageNamesInBundle) {
 			assertTrue("message " + msgName + " is present", msgs.containsKey(msgName));
 		}
@@ -64,7 +62,7 @@ public class ConsoleModelRunnerTests {
 
 	private void runCli(String argsTxt) throws ParseException {
 		String[] args = argsTxt.split(" ");
-		ConsoleModelRunner.doCli(args, msgs, parserOpts);
+		ConsoleModelRunner.doCli(args, parserOpts);
 	}
 
 	@Test(expected = NothingToDoException.class)

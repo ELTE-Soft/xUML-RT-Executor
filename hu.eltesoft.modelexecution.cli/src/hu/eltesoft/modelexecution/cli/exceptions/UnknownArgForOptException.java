@@ -3,8 +3,6 @@ package hu.eltesoft.modelexecution.cli.exceptions;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
 
-import java.util.ResourceBundle;
-
 import org.apache.commons.cli.Options;
 
 public class UnknownArgForOptException extends IllegalArgumentException {
@@ -13,18 +11,15 @@ public class UnknownArgForOptException extends IllegalArgumentException {
 	String arg;
 	Opt opt;
 	Options parserOpts;
-	ResourceBundle msgs;
 
-	public UnknownArgForOptException(String arg, Opt opt, Options parserOpts,
-			ResourceBundle msgs) {
+	public UnknownArgForOptException(String arg, Opt opt, Options parserOpts) {
 		this.arg = arg;
 		this.opt = opt;
 		this.parserOpts = parserOpts;
-		this.msgs = msgs;
 	}
 
 	public String toString() {
-		return Message.UNKNOWN_OPT_PAR.getMsg(msgs, arg, opt.name());
+		return Message.UNKNOWN_OPT_PAR.getMsg(arg, opt.name());
 	}
 	
 	public String getLocalizedMessage() {

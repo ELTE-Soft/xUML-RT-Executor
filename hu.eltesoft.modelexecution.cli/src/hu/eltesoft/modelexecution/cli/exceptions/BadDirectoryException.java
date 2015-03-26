@@ -2,8 +2,6 @@ package hu.eltesoft.modelexecution.cli.exceptions;
 
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 
-import java.util.ResourceBundle;
-
 import org.apache.commons.cli.Options;
 
 public class BadDirectoryException extends IllegalArgumentException {
@@ -11,21 +9,18 @@ public class BadDirectoryException extends IllegalArgumentException {
 
 	String presentOptName;
 	String root;
-	ResourceBundle msgs;
 	Options parserOpts;
 
-	public BadDirectoryException(String presentOptName, String root, ResourceBundle msgs,
-			Options parserOpts) {
+	public BadDirectoryException(String presentOptName, String root, Options parserOpts) {
 		super();
 		this.presentOptName = presentOptName;
 		this.root = root;
-		this.msgs = msgs;
 		this.parserOpts = parserOpts;
 	}
 
 	@Override
 	public String toString() {
-		return Message.BAD_DIRECTORY.getMsg(msgs, presentOptName, root);
+		return Message.BAD_DIRECTORY.getMsg(presentOptName, root);
 	}
 	
 	@Override
