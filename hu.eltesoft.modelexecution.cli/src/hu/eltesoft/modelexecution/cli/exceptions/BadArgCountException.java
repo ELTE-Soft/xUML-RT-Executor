@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.cli;
+package hu.eltesoft.modelexecution.cli.exceptions;
 
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 
