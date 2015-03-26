@@ -10,8 +10,6 @@ import java.lang.reflect.InvocationTargetException;
  * stored indirectly, because it has to be serialized, deserialized and still
  * point to the same object. Currently it utilizes that only one class can
  * exist.
- * 
- * @author nboldi
  */
 public class TargetedEvent {
 	

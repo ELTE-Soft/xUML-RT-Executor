@@ -9,8 +9,6 @@ import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
  * transition is chosen using the {@linkplain Event.eventCode} method, if an event is
  * a DynamicSignalEvent it will behave exactly as it was the SignalEvent for the
  * signal it carries.
- * 
- * @author nboldi
  */
 public class DynamicSignalEvent extends SignalEvent {
 

@@ -13,9 +13,6 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 /**
  * A wizard to create a new executable model project.
- * 
- * @author nboldi
- *
  */
 public class ExecutableModelProjectWizard extends Wizard implements INewWizard {
 

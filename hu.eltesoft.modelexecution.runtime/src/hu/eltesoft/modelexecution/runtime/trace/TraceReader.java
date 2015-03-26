@@ -4,8 +4,6 @@ import hu.eltesoft.modelexecution.runtime.log.Logger;
 
 /**
  * The trace reader can read events from trace files, created by a {@linkplain Tracer}.
- * 
- * @author nboldi
  */
 public abstract class TraceReader implements AutoCloseable {
 

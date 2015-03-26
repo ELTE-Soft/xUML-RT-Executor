@@ -39,9 +39,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * it locks the editor when the model is under compilation.
  * 
  * Generated files are deleted on full build.
- * 
- * @author nboldi
- *
  */
 public class ModelBuilder extends IncrementalProjectBuilder {
 	// TODO: use the model loading interface instead of direct IncQuery usage.

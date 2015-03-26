@@ -17,8 +17,6 @@ import java.util.Queue;
 /**
  * Executes the model using logging and tracing. Receives the name of the class
  * and the name of a static function to execute.
- * 
- * @author nboldi
  */
 public abstract class BaseRuntime implements Runtime {
 

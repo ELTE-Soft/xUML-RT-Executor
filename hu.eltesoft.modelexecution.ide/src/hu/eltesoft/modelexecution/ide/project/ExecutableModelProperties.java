@@ -12,9 +12,6 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
  * 
  * Properties are stored under
  * .settings/hu.eltesoft.modelexecution.natures.executableModelNature.prefs
- * 
- * @author nboldi
- *
  */
 public class ExecutableModelProperties {
 

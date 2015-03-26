@@ -5,9 +5,7 @@ import hu.eltesoft.modelexecution.runtime.log.Logger;
 import java.io.FileNotFoundException;
 
 /**
- * This tracer replays the incoming events previously recorded in a set of XML files. Uses 
- * 
- * @author nboldi
+ * This tracer replays the incoming events previously recorded in a set of XML files.
  */
 public class TraceReplayer extends TraceReader {
 

@@ -50,8 +50,6 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 /**
  * Allows the user to configure the model that is loaded, the main class and the
  * feed function that starts the execution.
- * 
- * @author nboldi
  */
 public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		implements ILaunchConfigurationTab {

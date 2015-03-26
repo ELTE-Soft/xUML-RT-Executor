@@ -5,8 +5,6 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 
 /**
  * This logger outputs when state transitions happen.
- * 
- * @author nboldi
  */
 public class MinimalLogger extends Logger {
 

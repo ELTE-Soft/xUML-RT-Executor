@@ -2,8 +2,6 @@ package hu.eltesoft.modelexecution.runtime.base;
 
 /**
  * A base class for java instructions generated from blocks of action code.
- * 
- * @author nboldi
  */
 public abstract class ActionCode {
 

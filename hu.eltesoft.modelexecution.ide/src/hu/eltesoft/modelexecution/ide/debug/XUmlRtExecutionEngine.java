@@ -20,9 +20,7 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 /**
- * Execution engine for Moka
- * 
- * @author nboldi
+ * Execution engine for Moka.
  */
 public class XUmlRtExecutionEngine implements IExecutionEngine {
 	// TODO: this class is a stub and need to be implemented later

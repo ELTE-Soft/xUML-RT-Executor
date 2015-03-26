@@ -1,0 +1,13 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Event(event : SignalEvent, eventName) { // TODO support different events in the future 
+	Event.name(event, eventName);
+}
+
+pattern SignalEvent(event : SignalEvent, signalName) {
+	SignalEvent.signal(event, signal);
+	Signal.name(signal, signalName);
+}
+
