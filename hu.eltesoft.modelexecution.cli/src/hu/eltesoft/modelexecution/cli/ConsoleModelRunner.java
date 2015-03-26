@@ -108,16 +108,16 @@ public class ConsoleModelRunner {
 
 		private static final String OPT_BUNDLE_POSTFIX = "_opt";
 
-		String longName;
-		String shortName;
-		List<String> argNames;
+		private String longName;
+		private String shortName;
+		private List<String> argNames;
 		/** If the current option is present, one of these must also be present. */
 		public List<Opt> requiredOpts;
 		/** If the option has a limited number of values, list them here.
 		 *  An empty list means the values are not limited to a few items. */
-		List<ArgValueName> argValueNames;
+		private List<ArgValueName> argValueNames;
 
-		Opt(String longName, String shortName, List<Opt> requiredOpts,
+		private Opt(String longName, String shortName, List<Opt> requiredOpts,
 				List<ArgValueName> argValueNames, String... argNames) {
 			this.longName = longName;
 			this.shortName = shortName;
@@ -126,7 +126,7 @@ public class ConsoleModelRunner {
 			this.argValueNames = argValueNames;
 		}
 
-		Option mkOpt(ResourceBundle msgs) {
+		private Option mkOpt(ResourceBundle msgs) {
 			OptionBuilder.withLongOpt(longName);
 			OptionBuilder.hasArgs(argNames.size());
 			OptionBuilder.withArgName(String.join(",", argNames));
@@ -174,17 +174,17 @@ public class ConsoleModelRunner {
 			return argValuesTxt; 
 		}
 		
-		boolean isPresent(CommandLine cmd) {
+		private boolean isPresent(CommandLine cmd) {
 			return cmd.hasOption(shortName) || cmd.hasOption(longName);
 		}
 		
-		String getOption(CommandLine cmd, int idx) {
+		private String getOption(CommandLine cmd, int idx) {
 			String[] options = getOptions(cmd);
 			if (options == null)   return null;
 			return options[idx];
 		}
 
-		String[] getOptions(CommandLine cmd) {
+		private String[] getOptions(CommandLine cmd) {
 			String presentName = getPresentName(cmd);
 			if (presentName == null)   return null;
 			return cmd.getOptionValues(presentName);
@@ -194,7 +194,7 @@ public class ConsoleModelRunner {
 			return requiredOpts.contains(opt2);
 		}
 
-		public String getPresentName(CommandLine cmd) {
+		private String getPresentName(CommandLine cmd) {
 			if (cmd.hasOption(longName))    return longName;
 			if (cmd.hasOption(shortName))    return shortName;
 			return null;
