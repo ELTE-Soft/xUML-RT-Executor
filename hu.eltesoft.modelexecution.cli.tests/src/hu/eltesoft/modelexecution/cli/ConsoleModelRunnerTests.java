@@ -1,13 +1,13 @@
-package hu.eltesoft.modelexecution.cli.tests;
+package hu.eltesoft.modelexecution.cli;
 
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.cli.BadArgCountException;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
-import hu.eltesoft.modelexecution.cli.DanglingArgumentsException;
+import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadDirectoryException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadFileException;
+import hu.eltesoft.modelexecution.cli.exceptions.DanglingArgumentsException;
 import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
