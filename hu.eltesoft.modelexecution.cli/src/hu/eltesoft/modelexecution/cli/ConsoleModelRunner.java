@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
@@ -177,22 +178,22 @@ public class ConsoleModelRunner {
 			return cmd.hasOption(shortName) || cmd.hasOption(longName);
 		}
 		
-		private String getOption(CommandLine cmd, int idx) {
-			String[] options = getOptions(cmd);
-			if (options == null)   return null;
-			return options[idx];
+		private Optional<String> getOption(CommandLine cmd, int idx) {
+			Optional<String[]> options = getOptions(cmd);
+			if (!options.isPresent())   return Optional.empty();
+			return Optional.of(options.get()[idx]);
 		}
 
-		private String[] getOptions(CommandLine cmd) {
-			String presentName = getPresentName(cmd);
-			if (presentName == null)   return null;
-			return cmd.getOptionValues(presentName);
+		private Optional<String[]> getOptions(CommandLine cmd) {
+			Optional<String> presentName = getPresentName(cmd);
+			if (!presentName.isPresent())   return Optional.empty();
+			return Optional.of(cmd.getOptionValues(presentName.get()));
 		}
 
-		private String getPresentName(CommandLine cmd) {
-			if (cmd.hasOption(longName))    return longName;
-			if (cmd.hasOption(shortName))    return shortName;
-			return null;
+		private Optional<String> getPresentName(CommandLine cmd) {
+			if (cmd.hasOption(longName))    return Optional.of(longName);
+			if (cmd.hasOption(shortName))    return Optional.of(shortName);
+			return Optional.empty();
 		}
 	};
 
@@ -281,9 +282,9 @@ public class ConsoleModelRunner {
 			return;
 		}
 
-		int foundArgCount = opt.getOptions(cmd).length;
+		int foundArgCount = opt.getOptions(cmd).get().length;
 		if (foundArgCount != expectedArgCount) {
-			throw new BadArgCountException(opt.getPresentName(cmd), foundArgCount, expectedArgCount, parserOpts);
+			throw new BadArgCountException(opt.getPresentName(cmd).get(), foundArgCount, expectedArgCount, parserOpts);
 		}
 		
 	}
@@ -294,10 +295,10 @@ public class ConsoleModelRunner {
 			return;
 		}
 
-		String model = opt.getOption(cmd, idx);
+		String model = opt.getOption(cmd, idx).get();
 
 		if (!new File(model).canRead()) {
-			throw new BadFileException(opt.getPresentName(cmd), model, parserOpts);
+			throw new BadFileException(opt.getPresentName(cmd).get(), model, parserOpts);
 		}
 	}
 
@@ -307,10 +308,10 @@ public class ConsoleModelRunner {
 			return;
 		}
 
-		String root = opt.getOption(cmd, idx);
+		String root = opt.getOption(cmd, idx).get();
 
 		if (!new File(root).isDirectory()) {
-			throw new BadDirectoryException(opt.getPresentName(cmd), root, parserOpts);
+			throw new BadDirectoryException(opt.getPresentName(cmd).get(), root, parserOpts);
 		}
 	}
 
@@ -339,9 +340,9 @@ public class ConsoleModelRunner {
 		// Note: placeholder to pass arguments to the logger if necessary
 		String optsForLogger = "";
 		
-		String loggerName = Opt.LOGGER.getOption(cmd, 0);
+		Optional<String> loggerName = Opt.LOGGER.getOption(cmd, 0);
 
-		if (loggerName == null) {
+		if (!loggerName.isPresent()) {
 			return new NoLogger();
 		}
 		
@@ -349,26 +350,26 @@ public class ConsoleModelRunner {
 	}
 
 	private static Tracer getTracer(CommandLine cmd) {
-		String folderName = Opt.WRITE_TRACE.getOption(cmd, 0); 
+		Optional<String> folderName = Opt.WRITE_TRACE.getOption(cmd, 0); 
 
-		if (folderName == null) {
+		if (!folderName.isPresent()) {
 			return new NoTracer();
 		}
 
-		return new TraceWriter(folderName);
+		return new TraceWriter(folderName.get());
 	}
 	
 	private static TraceReader getTraceReader(
 			CommandLine cmd,
 			Options parserOpts) {
 		try {
-			String folderName = Opt.READ_TRACE.getOption(cmd, 0); 
+			Optional<String> folderName = Opt.READ_TRACE.getOption(cmd, 0); 
 
-			if (folderName == null) {
+			if (!folderName.isPresent()) {
 				return new NoTraceReader();
 			}
 
-			return new TraceReplayer(folderName);
+			return new TraceReplayer(folderName.get());
 		} catch (FileNotFoundException e) {
 			exitWithErrorMsg(parserOpts, e.getLocalizedMessage());
 		}
@@ -390,7 +391,7 @@ public class ConsoleModelRunner {
 			Options parserOpts) {
 		if (!Opt.LOGGER.isPresent(cmd))    return;
 
-		String userLoggerType = Opt.LOGGER.getOption(cmd, 0);
+		String userLoggerType = Opt.LOGGER.getOption(cmd, 0).get();
 		if (LOGGERMAKER_BY_NAME.containsKey(userLoggerType))    return;
 
 		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, parserOpts);
