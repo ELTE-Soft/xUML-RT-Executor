@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for Java code generation templates and infrastructure
+Bundle-SymbolicName: hu.eltesoft.modelexecution.m2t.java.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: ELTE-Soft
+Fragment-Host: hu.eltesoft.modelexecution.m2t.java;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.eclipse.xtext.smap

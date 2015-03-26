@@ -24,6 +24,10 @@ public class DynamicSignalEvent extends SignalEvent {
 	public String toString() {
 		return super.toString() + ", signal : " + signal;
 	}
+	
+	public Signal getSignal() {
+		return signal;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -32,11 +36,6 @@ public class DynamicSignalEvent extends SignalEvent {
 		}
 		DynamicSignalEvent oth = (DynamicSignalEvent) obj;
 		return signal.equals(oth.signal);
-	}
-
-	@Override
-	public int signalCode() {
-		return signal.signalCode();
 	}
 
 }

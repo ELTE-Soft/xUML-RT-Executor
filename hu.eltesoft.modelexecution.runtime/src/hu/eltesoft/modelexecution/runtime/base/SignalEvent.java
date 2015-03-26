@@ -8,11 +8,4 @@ package hu.eltesoft.modelexecution.runtime.base;
  */
 public abstract class SignalEvent extends Event {
 
-	@Override
-	public int eventCode() {
-		return signalCode();
-	}
-
-	public abstract int signalCode();
-
 }
