@@ -6,8 +6,6 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 /**
  * Monitors active Papyrus editors to lock them when the models are under
  * compilation.
- * 
- * @author nboldi
  */
 public class PapyrusEditorListener extends ResourceSetListenerImpl {
 

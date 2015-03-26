@@ -14,9 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * A project nature for executable model projects. Installs a builder on
  * configuration and enables a custom property page for the project.
- * 
- * @author nboldi
- *
  */
 public class ExecutableModelNature implements IProjectNature {
 

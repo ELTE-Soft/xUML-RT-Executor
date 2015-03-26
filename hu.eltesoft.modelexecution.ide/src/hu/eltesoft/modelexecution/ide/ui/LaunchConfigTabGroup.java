@@ -6,8 +6,6 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 /**
  * Tab group is populated according to the extension points described in plugin.xml.
- * 
- * @author nboldi
  */
 public class LaunchConfigTabGroup extends
 		AbstractLaunchConfigurationTabGroup {

@@ -4,8 +4,6 @@ import hu.eltesoft.modelexecution.runtime.Runtime;
 
 /**
  * The base class of generated code from UML classes.
- * 
- * @author nboldi
  */
 public abstract class Class {
 

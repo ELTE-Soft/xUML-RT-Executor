@@ -28,9 +28,6 @@ import org.osgi.framework.Bundle;
  * Initializes the executable model project. Sets attributes that are not
  * directly related to {@linkplain ExecutableModelNature}. Creates the projects,
  * its folders, the build path and a sample launch config.
- * 
- * @author nboldi
- *
  */
 public class ExecutableModelProjectSetup {
 

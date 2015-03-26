@@ -12,8 +12,6 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Implements the collection of traces into tracefiles. Buffers events and puts
  * each N event them into an XML file.
- * 
- * @author nboldi
  */
 public class OutputTraceBuffer implements AutoCloseable {
 

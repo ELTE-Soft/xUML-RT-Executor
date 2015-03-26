@@ -12,8 +12,6 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 /**
  * BaseRuntime with main. Parses tracing and logging flags.
- * 
- * @author nboldi
  */
 public class TestRuntime extends BaseRuntime {
 

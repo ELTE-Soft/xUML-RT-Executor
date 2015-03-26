@@ -23,9 +23,6 @@ import org.osgi.service.prefs.BackingStoreException;
 /**
  * The appearance of the property page where properties of an executable model
  * project can be configured.
- * 
- * @author nboldi
- *
  */
 public class ExecutableModelPropertiesPage extends PropertyPage implements
 		IWorkbenchPropertyPage {

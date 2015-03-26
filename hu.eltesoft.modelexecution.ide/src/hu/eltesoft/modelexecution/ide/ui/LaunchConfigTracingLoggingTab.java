@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Group;
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
  * of the model.
- * 
- * @author nboldi
  */
 public class LaunchConfigTracingLoggingTab extends
 		AbstractLaunchConfigurationTab {

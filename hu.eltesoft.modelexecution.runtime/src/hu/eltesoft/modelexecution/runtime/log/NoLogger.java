@@ -5,8 +5,6 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 
 /**
  * A logger that does not log. Used to turn off logging support.
- * 
- * @author nboldi
  */
 public class NoLogger extends Logger {
 

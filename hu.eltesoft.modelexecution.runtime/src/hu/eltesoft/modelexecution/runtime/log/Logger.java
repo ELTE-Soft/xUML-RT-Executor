@@ -7,8 +7,6 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
  * A logger can output textual information about the execution of the model. It
  * has different logging methods that are called from the generated code when a
  * given situation occurs.
- * 
- * @author nboldi
  */
 public abstract class Logger implements AutoCloseable {
 

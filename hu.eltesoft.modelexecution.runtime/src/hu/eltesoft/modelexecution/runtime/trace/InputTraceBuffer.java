@@ -17,8 +17,6 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Collects traces from several XML files in a directory. Puts them in order and
  * loads events from them on demand.
- * 
- * @author nboldi
  */
 public class InputTraceBuffer implements AutoCloseable {
 

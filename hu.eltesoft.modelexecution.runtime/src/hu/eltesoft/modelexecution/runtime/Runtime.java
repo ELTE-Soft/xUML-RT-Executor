@@ -6,8 +6,6 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 /**
  * The class responsible for running the modelled system, and an access point
  * for features used from the system, like event queues or logging.
- * 
- * @author nboldi
  */
 public interface Runtime {
 
