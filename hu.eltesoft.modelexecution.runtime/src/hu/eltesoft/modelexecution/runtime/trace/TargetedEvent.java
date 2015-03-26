@@ -36,6 +36,13 @@ public class TargetedEvent {
 	 * cannot be accessed.
 	 */
 	public void send() {
+		getTarget().receive(event);
+	}
+
+	/**
+	 * Get the target of the targeted event. Works after the event had been serialized. 
+	 */
+	public Class getTarget() {
 		Class instance;
 		try {
 			instance = (Class) targetClass.getMethod("getInstance")
@@ -50,7 +57,7 @@ public class TargetedEvent {
 			throw new RuntimeException(
 					"Cannot access instance of the event target.", e);
 		}
-		instance.receive(event);
+		return instance;
 	}
 
 	/**
@@ -74,6 +81,10 @@ public class TargetedEvent {
 		return super.toString() + " target class: "
 				+ targetClass.getCanonicalName() + ", event: "
 				+ event.toString();
+	}
+
+	public Event getEvent() {
+		return event;
 	}
 
 }
