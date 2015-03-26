@@ -190,10 +190,6 @@ public class ConsoleModelRunner {
 			return cmd.getOptionValues(presentName);
 		}
 
-		public boolean requires(Opt opt2) {
-			return requiredOpts.contains(opt2);
-		}
-
 		private String getPresentName(CommandLine cmd) {
 			if (cmd.hasOption(longName))    return longName;
 			if (cmd.hasOption(shortName))    return shortName;
