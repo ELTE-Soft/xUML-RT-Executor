@@ -24,7 +24,7 @@
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
-		<module>../hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
+		<!-- <module>../hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module> -->
 		<module>../hu.eltesoft.modelexecution.repository/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.runtime/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.targetplatform/pom.xml</module>
