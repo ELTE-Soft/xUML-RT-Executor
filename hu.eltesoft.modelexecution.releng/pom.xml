@@ -18,6 +18,7 @@
 		<module>../hu.eltesoft.modelexecution.feature/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
+		<module>../hu.eltesoft.modelexecution.ide/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2m.logic/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
 		<module>../hu.eltesoft.modelexecution.m2m.metamodel/pom.xml</module>
