@@ -1,8 +1,9 @@
-package hu.eltesoft.modelexecution.m2m.logic.tests;
+package hu.eltesoft.modelexecution.m2m.logic;
 
-import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
+import static hu.eltesoft.modelexecution.m2m.logic.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
+
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Pseudostate;

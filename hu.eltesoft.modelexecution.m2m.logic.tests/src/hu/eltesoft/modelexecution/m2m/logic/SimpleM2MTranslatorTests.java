@@ -1,8 +1,7 @@
-package hu.eltesoft.modelexecution.m2m.logic.tests;
+package hu.eltesoft.modelexecution.m2m.logic;
 
-import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
+import static hu.eltesoft.modelexecution.m2m.logic.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
-
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
 

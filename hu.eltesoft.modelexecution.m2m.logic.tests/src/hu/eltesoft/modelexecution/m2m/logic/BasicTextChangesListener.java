@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic.tests;
+package hu.eltesoft.modelexecution.m2m.logic;
 
 import java.io.File;
 import java.io.FileWriter;
