@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,6 +29,7 @@ final class FolderSelector extends SelectionAdapter {
 	private IResource selectedResource;
 	private Text field;
 	private Composite parent;
+	private List<FolderSelectorUpdateListener> listeners = new LinkedList<>();
 
 	public FolderSelector(Composite comp, String labelCaption,
 			String buttonText, String dialogTitle, String attribute) {
@@ -76,6 +80,21 @@ final class FolderSelector extends SelectionAdapter {
 		if (selectionValid(dialog, selection)) {
 			selectedResource = (IResource) selection[0];
 			refreshField();
+			notifyListeners(selectedResource);
+		}
+	}
+
+	public void addUpdateListener(FolderSelectorUpdateListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeUpdateListener(FolderSelectorUpdateListener listener) {
+		listeners.remove(listener);
+	}
+	
+	protected void notifyListeners(IResource folder) {
+		for (FolderSelectorUpdateListener listener : listeners) {
+			listener.folderSelectorUpdated(folder);
 		}
 	}
 
