@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.filemanager.FileManager;
-import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -168,8 +167,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	protected void rebuildResource(IResource resource) {
 
-		URI uri = URI.createFileURI(getWorkspacePath().append(
-				resource.getFullPath().toString()).toString());
+		URI uri = URI.createFileURI(resource.getLocation().toString());
 		Resource res = resourceSet.getResource(uri, true);
 
 		if (res == null) {
@@ -226,12 +224,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * generated sources.
 	 */
 	private String getGenSourcePath() {
-		return getWorkspacePath().append(getProject().getFullPath())
-				.append(getGenSourceDir()).toString();
-	}
-
-	private IPath getWorkspacePath() {
-		return ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		return getProject().getLocation().append(getGenSourceDir()).toString();
 	}
 
 	private String getGenSourceDir() {
