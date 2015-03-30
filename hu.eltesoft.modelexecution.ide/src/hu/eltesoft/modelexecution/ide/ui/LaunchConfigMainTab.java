@@ -138,14 +138,14 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				selectedModelResource = (IFile) selection[0];
 				selectedModelField.setText(selectedModelResource.getFullPath()
 						.toString());
+				registerUMLPackageAndExtension();
+				URI uri = URI.createFileURI(selectedModelResource.getLocation()
+						.toString());
+				resource = resourceSet.getResource(uri, true);
+				
+				initMatchers();
+				updateDialog();
 			}
-
-			registerUMLPackageAndExtension();
-			URI uri = URI.createFileURI(selectedModelResource.getLocation()
-					.toString());
-			resource = resourceSet.getResource(uri, true);
-
-			initMatchers();
 		}
 
 		private boolean selectionIsOk(TreeSelectorDialog dialog,
@@ -164,6 +164,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					.put(UMLResource.FILE_EXTENSION,
 							UMLResource.Factory.INSTANCE);
 		}
+	}
+
+	private void updateDialog() {
+		setDirty(true);
+		updateLaunchConfigurationDialog();
 	}
 
 	private void createClassSelector(Composite parent) {
@@ -213,6 +218,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 						&& (selection[0] instanceof Class)) {
 					selectedClass = (Class) selection[0];
 					selectedClassField.setText(selectedClass.getName());
+					updateDialog();
 				}
 			}
 		});
@@ -267,6 +273,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					selectedFeedFunction = (Operation) selection[0];
 					selectedFeedFunctionField.setText(selectedFeedFunction
 							.getName());
+					updateDialog();
 				}
 			}
 		});

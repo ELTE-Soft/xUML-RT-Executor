@@ -3,12 +3,15 @@ package hu.eltesoft.modelexecution.ide.ui;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -71,7 +74,25 @@ public class LaunchConfigTracingLoggingTab extends
 		loggingEnabled = new Button(loggingGroup, SWT.CHECK);
 		loggingEnabled
 				.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_logging_label);
+		loggingEnabled.addSelectionListener(selectionTabUpdater());
 		loggingGroup.pack();
+	}
+
+	private SelectionListener selectionTabUpdater() {
+		return new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setDirty(true);
+				updateLaunchConfigurationDialog();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				setDirty(true);
+				updateLaunchConfigurationDialog();
+			}
+		};
 	}
 
 	private void createTracingControl(Composite comp) {
@@ -85,15 +106,28 @@ public class LaunchConfigTracingLoggingTab extends
 				.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_tracing_label);
 		tracingEnabled.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false));
-
+		tracingEnabled.addSelectionListener(selectionTabUpdater());
+		
 		traceFolderSelector = new FolderSelector(
 				group,
 				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_label,
 				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_button_text,
 				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_dialog_title,
 				TRACE_FOLDER_PROPERTY);
-
+		traceFolderSelector.addUpdateListener(tabUpdater());
+		
+		
 		group.pack();
+	}
+
+	private FolderSelectorUpdateListener tabUpdater() {
+		return new FolderSelectorUpdateListener() {
+			@Override
+			public void folderSelectorUpdated(IResource folder) {
+				setDirty(true);
+				updateLaunchConfigurationDialog();
+			}
+		};
 	}
 
 	private void createReplayControl(Composite comp) {
@@ -105,6 +139,7 @@ public class LaunchConfigTracingLoggingTab extends
 		replayTrace = new Button(group, SWT.CHECK);
 		replayTrace
 				.setText(Messages.LaunchConfigurationTracingLoggingTab_trace_replay_label);
+		replayTrace.addSelectionListener(selectionTabUpdater());
 
 		replayFolderSelector = new FolderSelector(
 				group,
@@ -112,6 +147,7 @@ public class LaunchConfigTracingLoggingTab extends
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_button_label,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_dialog_title,
 				REPLAY_TRACE_FOLDER_PROPERTY);
+		replayFolderSelector.addUpdateListener(tabUpdater());
 
 		group.pack();
 	}
