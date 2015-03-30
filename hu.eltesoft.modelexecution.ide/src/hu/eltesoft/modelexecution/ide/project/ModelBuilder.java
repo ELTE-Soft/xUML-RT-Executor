@@ -167,7 +167,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * accumulating changes.
 	 */
 	protected void rebuildResource(IResource resource) {
-		URI uri = URI.createFileURI((resource.getFullPath().toString()));
+
+		URI uri = URI.createFileURI(getWorkspacePath().append(
+				resource.getFullPath().toString()).toString());
 		Resource res = resourceSet.getResource(uri, true);
 
 		if (res == null) {
@@ -204,7 +206,8 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		public void contentChanged(String fileName, SourceMappedText output,
 				DebugSymbols symbols) {
 			try {
-				getFileManager().addOrUpdate(fileName, output.getText().toString());
+				getFileManager().addOrUpdate(fileName,
+						output.getText().toString());
 			} catch (IOException e) {
 				IdePlugin.logError("Error while writing file: " + fileName, e);
 			}
@@ -223,9 +226,12 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * generated sources.
 	 */
 	private String getGenSourcePath() {
-		return ResourcesPlugin.getWorkspace().getRoot().getLocation()
-				.append(getProject().getFullPath()).append(getGenSourceDir())
-				.toString();
+		return getWorkspacePath().append(getProject().getFullPath())
+				.append(getGenSourceDir()).toString();
+	}
+
+	private IPath getWorkspacePath() {
+		return ResourcesPlugin.getWorkspace().getRoot().getLocation();
 	}
 
 	private String getGenSourceDir() {
