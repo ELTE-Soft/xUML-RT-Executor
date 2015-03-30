@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="hu.eltesoft.modelexecution.targetplatform" sequenceNumber="9">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.xtext.sdk.feature.group" version="2.6.1.v201406120726"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.6.1.v201406120726"/>
+<unit id="org.eclipse.xtext.redist.feature.group" version="2.6.1.v201406120726"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/archive/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.platform.ide" version="4.4.2.M20150204-1700"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.ocl.examples.feature.group" version="3.4.4.v20150213-2254"/>
+<unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.3.0.v20140606-1557"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.10.2.v20150123-0452"/>
+<unit id="org.eclipse.papyrus.sdk.feature.feature.group" version="1.0.2.v201502181349"/>
+<repository location="http://download.eclipse.org/releases/luna"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.papyrus.extra.feature.feature.group" version="1.0.2.v201502181446"/>
+<repository location="http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/luna"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="0.8.1.201410011502"/>
+<repository location="http://download.eclipse.org/incquery/updates/release"/>
+</location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+</target>
