@@ -1,7 +1,7 @@
 <html>
 <head><title>xUML-RT Model Executor v0.1.0</title></head>
 <body bgcolor="lightblue">
-<table width="800pt" align="center" bgcolor="white"><tr><td>
+<table width="800pt" align="center" bgcolor="white" cellpadding="10pt"><tr><td>
 <font face="arial">
 <h1 align="center">xUML-RT Model Executor v0.1.0</h1>
 <h2 align="center">2015-03-31</h1>
@@ -12,14 +12,30 @@ This version handles simplistic EMF-UML2 models with a single class including a 
 <ul>
   <li>Supported Eclipse version is 4.4 (Luna).
   <li>Use the following update site from Eclipse: <a href="http://txtuml.inf.elte.hu/modelexecution/20150331/eclipse">http://txtuml.inf.elte.hu/modelexecution/20150331/eclipse</a>
-  <li><font color="red">Note:</font> If you have IncQuery or XText installed, please make sure that IncQuery version is smaller than 0.9.0 and XText version is smaller than 2.7.0. Model executor currently earlier versions and the Elipse installation procedure cannot downgrade and will fail. If you do not have these software components, the correct versions will be installed automatically as part of the installation process.
+  <li><font color="red">Note:</font> If you have IncQuery or XText installed, please make sure that IncQuery version is smaller than 0.9.0 and XText version is smaller than 2.7.0. Model executor currently uses earlier versions and the Elipse installation procedure cannot downgrade and will fail. If you do not have these software components, the correct versions will be installed automatically as part of the installation process.
 </ul>
 <h4>Command line interface</h4>
 <ul>
-  <li>Download <a href="http://txtuml.inf.elte.hu/modelexecution/20150331/cli/modelexecutor-20150331.jar">this jar file</a>.
+  <li>Download <a href="http://txtuml.inf.elte.hu/modelexecution/20150331/cli/xumlrt-executor-cli.jar">this jar file</a>.
 </ul>
 <h3>Using the xUML-RT Model Executor</h3>
-TODO
+<h4>Eclipse interface</h4>
+<ul>
+  <li>Create a new project of type <i>Executable Model Project</i>. (This can be found in the <i>Papyrus</i> cathegory if Papyrus is installed and in the <i>Other</i> cathegory otherwise.)</li>
+  <li>Add a new EMF-UML2 model (or copy an existing one) to the project. Note that the current version supports <a href="sample-models.zip">simple models like these</a>.</li>
+  <li>Create a new run configuration of type <i>Executable Model Launch Config</i>. Select the model, the class and the entry operation. Enable logging on the <i>Tracing and Logging</i> tab.</li>
+  <li>Run the newly created launch configuration and see the console log.</li>
+</ul>
+<h4>Command line interface</h4>
+<ul>
+  <li>Ask for all supported options:<br>
+  <i>java -jar xumlrt-executor-cli.jar --help</i></li>
+  <li>Setup a model for execution:<br>
+  <i>java -jar xumlrt-executor-cli.jar --root gen --setup model.uml</i><br>
+  Note: Use <i>java</i> from a JDK in order to ensure successful compilation of the generated Java files.</li>
+  <li>Execute the model:<br>
+  <i>java -jar xumlrt-executor-cli.jar --root gen --execute ClassName opName --logger minimal</i></li>
+</ul>
 </font>
 </td></tr></table>
 </body>
