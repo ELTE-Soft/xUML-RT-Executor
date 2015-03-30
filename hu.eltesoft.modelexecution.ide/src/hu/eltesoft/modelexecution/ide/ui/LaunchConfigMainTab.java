@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -141,8 +142,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			}
 
 			registerUMLPackageAndExtension();
-			URI uri = URI.createFileURI((selectedModelResource.getFullPath()
-					.toString()));
+			URI uri = URI.createFileURI(getWorkspacePath().append(selectedModelResource.getFullPath()
+					.toString()).toString());
 			resource = resourceSet.getResource(uri, true);
 
 			initMatchers();
@@ -384,6 +385,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	@Override
 	public String getName() {
 		return Messages.LaunchConfigurationMainTab_launch_config_main_tab_caption;
+	}
+	
+	private IPath getWorkspacePath() {
+		return ResourcesPlugin.getWorkspace().getRoot().getLocation();
 	}
 
 	private void initMatchers() {
