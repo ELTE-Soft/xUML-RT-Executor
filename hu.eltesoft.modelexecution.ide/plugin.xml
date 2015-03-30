@@ -67,7 +67,7 @@
             delegate="hu.eltesoft.modelexecution.ide.project.ExecutableModelLaunchDelegate"
             id="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel"
             modes="run, debug"
-            name="Executable Model Launch Config">
+            name="%launchConfigurationType.name">
       </launchConfigurationType>
    </extension>
    <extension
