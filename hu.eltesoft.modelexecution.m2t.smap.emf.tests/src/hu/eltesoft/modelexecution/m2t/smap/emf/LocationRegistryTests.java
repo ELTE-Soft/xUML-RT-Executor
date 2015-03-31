@@ -2,7 +2,9 @@ package hu.eltesoft.modelexecution.m2t.smap.emf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
@@ -60,6 +62,71 @@ public class LocationRegistryTests extends ModelBasedTestCase {
 		Location second = registry.assignQualified(aClassRef, None.class);
 
 		assertEquals(first, second);
+	}
+
+	@Test
+	public void testUnqualifiedResolutionOfInvalidLocationIsNull() {
+		Location location = new Location("test", 1, 1);
+
+		assertNull(registry.resolve(location));
+	}
+
+	@Test
+	public void testUnqualifiedResolutionOfValidLocationGivesTheOriginalEObject() {
+		Location location = registry.assign(aClassRef);
+		Reference reference = registry.resolve(location);
+		ResourceSet resourceSet = aClass.eResource().getResourceSet();
+
+		assertSame(aClassRef.resolve(resourceSet),
+				reference.resolve(resourceSet));
+	}
+
+	@Test
+	public void testQualifiedResolutionOfValidLocationGivesTheOriginalEObject() {
+		Location location = registry.assignQualified(aClassRef, First.class);
+		QualifiedReference reference = registry.resolveQualified(location);
+		ResourceSet resourceSet = aClass.eResource().getResourceSet();
+
+		assertSame(aClassRef.resolve(resourceSet),
+				reference.resolve(resourceSet));
+		assertTrue(reference.isQualifiedAs(First.class));
+	}
+
+	@Test
+	public void testUnqualifiedResolutionOfInvalidEObjectIsNull() {
+		assertNull(registry.resolve(aClassRef));
+	}
+
+	@Test
+	public void testUnqualifiedResolutionOfValidEObjectIsCorrect() {
+		Location assigned = registry.assign(aClassRef);
+		Location resolved = registry.resolve(aClassRef);
+
+		assertEquals(assigned, resolved);
+	}
+
+	@Test
+	public void testQualifiedResolutionOfValidEObjectIsCorrect() {
+		Location assigned = registry.assignQualified(aClassRef, First.class);
+		Location resolved = registry.resolveQualified(aClassRef, First.class);
+
+		assertEquals(assigned, resolved);
+	}
+
+	@Test
+	public void testResolutionOfValidQualifiedEObjectIsNull() {
+		registry.assignQualified(aClassRef, First.class);
+		Location resolved = registry.resolve(aClassRef);
+
+		assertNull(resolved);
+	}
+
+	@Test
+	public void testNoneQualifiedResolutionOfValidQualifiedEObjectIsCorrect() {
+		Location assigned = registry.assign(aClassRef);
+		Location resolved = registry.resolveQualified(aClassRef, None.class);
+
+		assertEquals(assigned, resolved);
 	}
 
 	@Test

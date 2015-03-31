@@ -40,7 +40,7 @@ public class LocationRegistry implements Serializable {
 
 	public Location assignQualified(QualifiedReference reference) {
 		String filePath = reference.getResourceURI().toString();
-		int lineNumber = getMapping(filePath).toLineNumber(reference);
+		int lineNumber = getMapping(filePath).addLineNumber(reference);
 		return new Location(filePath, lineNumber, lineNumber);
 	}
 
@@ -57,5 +57,23 @@ public class LocationRegistry implements Serializable {
 			}
 		}
 		return null;
+	}
+
+	public Location resolve(Reference reference) {
+		return resolveQualified(new QualifiedReference(reference));
+	}
+
+	public Location resolveQualified(Reference reference,
+			Class<? extends LocationQualifier> qualifier) {
+		return resolveQualified(new QualifiedReference(reference, qualifier));
+	}
+
+	public Location resolveQualified(QualifiedReference reference) {
+		String filePath = reference.getResourceURI().toString();
+		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
+		if (null == lineNumber) {
+			return null;
+		}
+		return new Location(filePath, lineNumber, lineNumber);
 	}
 }

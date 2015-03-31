@@ -16,8 +16,8 @@ class ReferenceToLineMapping implements Serializable {
 	private final Vector<QualifiedReference> lineNumberToReference = new Vector<>();
 	private final Map<QualifiedReference, Integer> referenceToLineNumber = new HashMap<>();
 
-	public int toLineNumber(QualifiedReference reference) {
-		Integer result = referenceToLineNumber.get(reference);
+	public int addLineNumber(QualifiedReference reference) {
+		Integer result = toLineNumber(reference);
 		if (null != result) {
 			return result;
 		}
@@ -26,6 +26,10 @@ class ReferenceToLineMapping implements Serializable {
 		int lineNumber = lineNumberToReference.size();
 		referenceToLineNumber.put(reference, lineNumber);
 		return lineNumber;
+	}
+
+	public Integer toLineNumber(QualifiedReference reference) {
+		return referenceToLineNumber.get(reference);
 	}
 
 	public QualifiedReference fromLineNumber(int lineNumber) {
