@@ -16,7 +16,7 @@
      <wizard
            category="org.eclipse.papyrus.wizards.category"
            class="hu.eltesoft.modelexecution.ide.ui.ExecutableModelProjectWizard"
-           icon="res/project-icon.gif"
+           icon="resources/project-icon.gif"
            id="hu.eltesoft.modelexecution.wizards.createExecutableModelProject"
            name="%project.wizard.name"
            project="true">
@@ -58,7 +58,7 @@
          point="org.eclipse.papyrus.moka.engine">
       <engine
             class="hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine"
-            description="xUML-RT execution engine">
+            description="%mokaExecutionEngine.description">
       </engine>
    </extension>
    <extension
@@ -84,13 +84,13 @@
             class="hu.eltesoft.modelexecution.ide.ui.LaunchConfigMainTab"
             group="hu.eltesoft.modelexecution.ide.launchConfiguration.tabGroup.executableModel"
             id="hu.eltesoft.modelexecution.ide.tabs.executableModel.mainTab"
-            name="Main">
+            name="%launchConfigurationTab.main.name">
       </tab>
       <tab
             class="hu.eltesoft.modelexecution.ide.ui.LaunchConfigTracingLoggingTab"
             group="hu.eltesoft.modelexecution.ide.launchConfiguration.tabGroup.executableModel"
             id="hu.eltesoft.modelexecution.ide.tabs.executableModel.tracingLoggingTab"
-            name="Tracing and Logging">
+            name="%launchConfigurationTab.tracingAndLogging.name">
          <placement
                after="hu.eltesoft.modelexecution.ide.tabs.executableModel.mainTab">
          </placement>
@@ -99,7 +99,7 @@
             class="org.eclipse.debug.ui.CommonTab"
             group="hu.eltesoft.modelexecution.ide.launchConfiguration.tabGroup.executableModel"
             id="hu.eltesoft.modelexecution.ide.tabs.executableModel.commonTab"
-            name="Common">
+            name="%launchConfigurationTab.common.name">
          <placement
                after="hu.eltesoft.modelexecution.ide.tabs.executableModel.tracingLoggingTab">
          </placement>
@@ -109,7 +109,7 @@
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel"
-            icon="res/launch-config-type-icon.gif"
+            icon="resources/launch-config-type-icon.gif"
             id="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel.icon">
       </launchConfigurationTypeImage>
    </extension>
