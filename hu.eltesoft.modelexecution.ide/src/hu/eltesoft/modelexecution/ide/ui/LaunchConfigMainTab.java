@@ -7,6 +7,7 @@ import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -125,7 +126,13 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 			TreeSelectorDialog dialog = new TreeSelectorDialog(getShell());
 			dialog.setTitle(Messages.LaunchConfigurationMainTab_select_model_dialog_title);
-			dialog.setContentProvider(new WorkspaceContentProvider());
+			WorkspaceContentProvider content = new WorkspaceContentProvider();
+			HashMap<String, String> extensions = new HashMap<String,String>();
+			extensions.put(".uml", "(.uml) UML Model resource");
+			extensions.put("*", "(*) All files and folders");
+			content.setExtensionFilters(extensions);
+//			content.setExtensionFilters(extensionFilters);
+			dialog.setContentProvider(content);
 			dialog.setLabelProvider(WorkbenchLabelProvider
 					.getDecoratingWorkbenchLabelProvider());
 			if (selectedModelResource != null && selectedModelResource.exists()) {
