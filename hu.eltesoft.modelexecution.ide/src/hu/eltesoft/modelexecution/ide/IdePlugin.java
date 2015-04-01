@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.ide;
 
+import hu.eltesoft.modelexecution.ide.project.ModelBuilder;
+
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -34,6 +36,7 @@ public class IdePlugin extends AbstractUIPlugin implements IStartup {
 	@Override
 	public void earlyStartup() {
 		IdePlugin.log = Platform.getLog(getBundle());
+		ModelBuilder.hookupAllChangeListeners();
 		logInfo("IdePlugin logger started");
 	}
 

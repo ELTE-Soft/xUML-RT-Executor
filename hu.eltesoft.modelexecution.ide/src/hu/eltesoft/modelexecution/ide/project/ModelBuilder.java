@@ -12,6 +12,8 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +23,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,6 +56,14 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	private Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
 
 	private ResourceSet resourceSet = new ResourceSetImpl();
+
+	private static List<ModelBuilder> builders = new LinkedList<>();
+
+	@Override
+	protected void startupOnInitialize() {
+		builders.add(this);
+		super.startupOnInitialize();
+	}
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args,
@@ -94,18 +105,46 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	private void fullBuild() {
 		getFileManager().cleanup();
+		hookupChangeListeners();
+	}
+
+	public static void hookupAllChangeListeners() {
+		initializeBuilders();
+		for (ModelBuilder modelBuilder : builders) {
+			modelBuilder.hookupChangeListeners();
+		}
+	}
+
+	/**
+	 * Forces model builders to be initialized. See {@linkplain startupOnInitialize}.
+	 */
+	private static void initializeBuilders() {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		for (IProject project : projects) {
+			try {
+				if (project.hasNature(ExecutableModelNature.NATURE_ID)) {
+					project.build(AUTO_BUILD, null);
+				}
+			} catch (CoreException e) {
+				IdePlugin.logError("Cannot initialize builders", e);
+			}
+		}
+	}
+
+	private void hookupChangeListeners() {
 		try {
 			getProject().accept(new IResourceVisitor() {
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
 					if (isModelResource(resource)) {
-						rebuildResource(resource);
+						registerRebuildResource(resource);
 					}
 					return true;
 				}
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while doing full build.", e);
+			IdePlugin.logError("Exception while hooking up model listeners.", e);
 		}
 	}
 
@@ -126,7 +165,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 						if (isModelResource(resource)
 								&& !trackedResources.contains(path.toString())) {
 							trackedResources.add(path.toString());
-							rebuildResource(resource);
+							registerRebuildResource(resource);
 						}
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
 						// rebuild uml files that changed
@@ -157,7 +196,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	}
 
 	// TODO: find a way to test if the resource contains an UML model.
-	protected boolean isModelResource(IResource resource) {
+	protected static boolean isModelResource(IResource resource) {
 		return UML_FILE_EXTENSION.equals(resource.getFileExtension());
 	}
 
@@ -165,7 +204,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * Rebuilds the code generated from the given resource and registers it for
 	 * accumulating changes.
 	 */
-	protected void rebuildResource(IResource resource) {
+	protected void registerRebuildResource(IResource resource) {
 
 		URI uri = URI.createFileURI(resource.getLocation().toString());
 		Resource res = resourceSet.getResource(uri, true);
