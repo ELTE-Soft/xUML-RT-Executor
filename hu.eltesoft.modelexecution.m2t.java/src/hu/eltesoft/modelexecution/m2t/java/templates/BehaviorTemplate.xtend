@@ -16,33 +16,40 @@ class BehaviorTemplate extends Template {
 
 	static val CONTEXT_NAME = OperationBodyCompiler.CONTEXT_NAME
 
-	val BhBehavior behavior;
+	val BhBehavior behavior
+	val SourceMappedText compiledAlfCode
+	val boolean needsContext
 
 	new(BhBehavior behavior) {
 		this.behavior = behavior
+		compiledAlfCode = compile(behavior.alfCode)
+		needsContext = !compiledAlfCode.text.toString.trim.empty
 	}
-
-	override generate() '''
-		«generatedHeader(behavior.name)»
-		public class «behavior.name» extends «ActionCode.canonicalName» {
-		
-			@SuppressWarnings("unused")
-			private «behavior.containerClass.name» «CONTEXT_NAME»;
-		
-			public «behavior.name»(«behavior.containerClass.name» «CONTEXT_NAME») {
-				this.«CONTEXT_NAME» = «CONTEXT_NAME»;
-			}
-		
-			@Override
-			public void execute() {
-				«compile(behavior.alfCode)»
-			}
-		}
-	'''
 
 	def SourceMappedText compile(String alfCode) {
 		val builder = new SmapStringConcatenation(Languages.ALF)
 		new OperationBodyCompiler().compile(alfCode, builder);
 		return builder.toSourceMappedText
 	}
+
+	override generate() '''
+		«generatedHeader(behavior.name)»
+		public class «behavior.name» extends «ActionCode.canonicalName» {
+		
+			«IF needsContext»
+				private «behavior.containerClass.name» «CONTEXT_NAME»;
+			«ENDIF»
+		
+			public «behavior.name»(«behavior.containerClass.name» «CONTEXT_NAME») {
+				«IF needsContext»
+					this.«CONTEXT_NAME» = «CONTEXT_NAME»;
+				«ENDIF»
+			}
+		
+			@Override
+			public void execute() {
+				«compiledAlfCode»
+			}
+		}
+	'''
 }
