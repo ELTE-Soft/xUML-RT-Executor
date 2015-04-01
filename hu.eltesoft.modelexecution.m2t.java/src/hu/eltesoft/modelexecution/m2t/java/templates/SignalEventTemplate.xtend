@@ -13,11 +13,11 @@ import hu.eltesoft.modelexecution.runtime.base.Signal
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalEventTemplate extends Template {
 
-	val EvSignalEvent event;
+	val EvSignalEvent event
 
 	new(EvSignalEvent event) {
 		super(event)
-		this.event = event;
+		this.event = event
 	}
 
 	override generate() '''

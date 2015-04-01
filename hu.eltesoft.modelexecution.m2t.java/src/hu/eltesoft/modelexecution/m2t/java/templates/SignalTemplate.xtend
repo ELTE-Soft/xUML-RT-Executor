@@ -10,7 +10,7 @@ import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
 
-	val SgSignal signal;
+	val SgSignal signal
 
 	new(SgSignal signal) {
 		super(signal)

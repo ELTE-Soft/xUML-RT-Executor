@@ -13,11 +13,11 @@ import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
 
-	val ClClass classDefinition;
+	val ClClass classDefinition
 
 	new(ClClass classDefinition) {
 		super(classDefinition)
-		this.classDefinition = classDefinition;
+		this.classDefinition = classDefinition
 	}
 
 	override generate() '''

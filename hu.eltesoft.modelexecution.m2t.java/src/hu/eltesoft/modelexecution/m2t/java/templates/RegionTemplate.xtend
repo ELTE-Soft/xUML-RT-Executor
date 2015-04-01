@@ -16,10 +16,10 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 @SourceMappedTemplate(stratumName=XUML_RT)
 class RegionTemplate extends Template {
 
-	val RgRegion region;
-	val RgInitialPseudostate initState;
-	val RgTransition initTransition;
-	val RgState firstState;
+	val RgRegion region
+	val RgInitialPseudostate initState
+	val RgTransition initTransition
+	val RgState firstState
 
 	new(RgRegion region) {
 		super(region)
