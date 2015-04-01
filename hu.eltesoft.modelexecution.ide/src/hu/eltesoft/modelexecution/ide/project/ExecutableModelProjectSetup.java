@@ -4,6 +4,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.runtime.RuntimePlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -31,9 +33,9 @@ import org.osgi.framework.Bundle;
  */
 public class ExecutableModelProjectSetup {
 
-	private static final String ECLIPSE_PLUGINS_PATH = "plugins/";
-
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin";
+
+	private static final String DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER = "bin";
 
 	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src";
 
@@ -87,32 +89,42 @@ public class ExecutableModelProjectSetup {
 	}
 
 	private static void setupClassPath(IJavaProject javaProject,
-			String sourceFolder) throws JavaModelException {
-		List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-		IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-		LibraryLocation[] locations = JavaRuntime
-				.getLibraryLocations(vmInstall);
-		for (LibraryLocation element : locations) {
+			String sourceFolder) {
+		try {
+			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+			IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+			LibraryLocation[] locations = JavaRuntime
+					.getLibraryLocations(vmInstall);
+			for (LibraryLocation element : locations) {
+				entries.add(JavaCore.newLibraryEntry(
+						element.getSystemLibraryPath(), null, null));
+			}
+			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
+					sourceFolder)));
+			File pluginJar = getPluginJar();
 			entries.add(JavaCore.newLibraryEntry(
-					element.getSystemLibraryPath(), null, null));
+					new Path(pluginJar.getAbsolutePath()), null, new Path(
+							String.valueOf(Path.SEPARATOR))));
+			// add libs to project class path
+			javaProject.setRawClasspath(
+					entries.toArray(new IClasspathEntry[entries.size()]), null);
+		} catch (IOException | JavaModelException e) {
+			IdePlugin.logError("Cannot setup class path", e);
 		}
-		entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
-				sourceFolder)));
-		File pluginJar = getPluginJar();
-		entries.add(JavaCore.newLibraryEntry(
-				new Path(pluginJar.getAbsolutePath()), null,
-				new Path(String.valueOf(Path.SEPARATOR))));
-		// add libs to project class path
-		javaProject.setRawClasspath(
-				entries.toArray(new IClasspathEntry[entries.size()]), null);
 	}
 
-	private static File getPluginJar() {
-		// TODO: make the detection more robust
-		// The working directory of the plugin is the ECLIPSE_HOME directory
+	private static File getPluginJar() throws IOException {
 		Bundle bundle = Platform.getBundle(RuntimePlugin.PLUGIN_ID);
-		return new File(ECLIPSE_PLUGINS_PATH + RuntimePlugin.PLUGIN_ID + "_"
-				+ bundle.getVersion() + ".jar");
+		File bundleFile = FileLocator.getBundleFile(bundle);
+		if (bundleFile.isDirectory()) {
+			// development run: use class files
+			return bundleFile.toPath()
+					.resolve(DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER).toFile();
+		} else {
+			// product: use jar file
+			return bundleFile;
+		}
+
 	}
 
 }
