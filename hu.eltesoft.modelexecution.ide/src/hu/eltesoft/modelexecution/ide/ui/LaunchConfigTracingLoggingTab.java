@@ -29,7 +29,7 @@ public class LaunchConfigTracingLoggingTab extends
 	public static final String TAB_ID = "hu.eltesoft.modelexecution.ide.tabs.executableModel.tracingLoggingTab"; //$NON-NLS-1$
 	public static final boolean REPLAY_TRACE_PROPERTY_DEFAULT = false;
 	public static final boolean TRACING_PROPERTY_DEFAULT = false;
-	public static final boolean LOGGING_PROPERTY_DEFAULT = false;
+	public static final boolean LOGGING_PROPERTY_DEFAULT = true;
 	public static final String REPLAY_TRACE_PROPERTY = "replayTrace"; //$NON-NLS-1$
 	public static final String TRACING_PROPERTY = "tracing"; //$NON-NLS-1$
 	public static final String LOGGING_PROPERTY = "logging"; //$NON-NLS-1$
