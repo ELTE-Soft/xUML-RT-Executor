@@ -11,11 +11,9 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -25,12 +23,9 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -49,13 +44,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	private static final String UML_FILE_EXTENSION = "uml";
 
-	private Set<String> trackedResources = new HashSet<>();
-
 	private FileManager fileManager;
 
 	private Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
-
-	private ResourceSet resourceSet = new ResourceSetImpl();
 
 	private static List<ModelBuilder> builders = new LinkedList<>();
 
@@ -69,8 +60,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map<String, String> args,
 			IProgressMonitor monitor) throws CoreException {
 
-		TransactionalEditingDomain shared = TransactionalEditingDomain.Registry.INSTANCE
-				.getEditingDomain(PapyrusEditorListener.EDITING_DOMAIN);
+		TransactionalEditingDomain shared = PapyrusEditorListener.getDomain();
 
 		loadProjectProperties();
 
@@ -106,6 +96,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	private void fullBuild() {
 		getFileManager().cleanup();
 		hookupChangeListeners();
+		FileUpdateTaskQueue queue = new FileUpdateTaskQueue();
+		for (ChangeListenerM2MTranslator translator : translators.values()) {
+			queue.addAll(translator.fullBuild());
+		}
+		queue.performAll();
 	}
 
 	public static void hookupAllChangeListeners() {
@@ -114,16 +109,25 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			modelBuilder.hookupChangeListeners();
 		}
 	}
+	
+	// TODO: remove
+	public static void cleanAllProjects() {
+		for (ModelBuilder modelBuilder : builders) {
+			modelBuilder.fullBuild();
+		}
+	}
 
 	/**
-	 * Forces model builders to be initialized. See {@linkplain startupOnInitialize}.
+	 * Forces model builders to be initialized. See
+	 * {@linkplain startupOnInitialize}.
 	 */
 	private static void initializeBuilders() {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		for (IProject project : projects) {
 			try {
-				if (project.hasNature(ExecutableModelNature.NATURE_ID)) {
+				if (project.isOpen()
+						&& project.hasNature(ExecutableModelNature.NATURE_ID)) {
 					project.build(AUTO_BUILD, null);
 				}
 			} catch (CoreException e) {
@@ -134,17 +138,21 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	private void hookupChangeListeners() {
 		try {
+			if (!getProject().isOpen()) {
+				return;
+			}
 			getProject().accept(new IResourceVisitor() {
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
 					if (isModelResource(resource)) {
-						registerRebuildResource(resource);
+						registerResource(resource);
 					}
 					return true;
 				}
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while hooking up model listeners.", e);
+			IdePlugin
+					.logError("Exception while hooking up model listeners.", e);
 		}
 	}
 
@@ -154,28 +162,31 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	private void incrementalBuild() {
 		IResourceDelta delta = getDelta(getProject());
+		FileUpdateTaskQueue rebuild = new FileUpdateTaskQueue();
 		try {
 			delta.accept(new IResourceDeltaVisitor() {
 				@Override
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED) {
-						// add uml files that appeared in the project
-						IPath path = delta.getProjectRelativePath();
-						if (isModelResource(resource)
-								&& !trackedResources.contains(path.toString())) {
-							trackedResources.add(path.toString());
-							registerRebuildResource(resource);
+						if (isModelResource(resource)) {
+							registerResource(resource);
+							rebuildIfAble(rebuild, resource);
 						}
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
-						// rebuild uml files that changed
-						if (translators.containsKey(resource)) {
-							translators.get(resource).rebuild();
-						}
+						rebuildIfAble(rebuild, resource);
 					}
 					return true;
 				}
+
+				private void rebuildIfAble(FileUpdateTaskQueue rebuild,
+						IResource resource) {
+					if (translators.containsKey(resource)) {
+						rebuild.addAll(translators.get(resource).rebuild());
+					}
+				}
 			});
+			rebuild.performAll();
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while incremental build.", e);
 		}
@@ -204,26 +215,27 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * Rebuilds the code generated from the given resource and registers it for
 	 * accumulating changes.
 	 */
-	protected void registerRebuildResource(IResource resource) {
+	protected void registerResource(IResource resource) {
 
-		URI uri = URI.createFileURI(resource.getLocation().toString());
-		Resource res = resourceSet.getResource(uri, true);
+		TransactionalEditingDomain domain = PapyrusEditorListener.getDomain();
+		if (domain == null) {
+			return;
+		}
+
+		URI uri = URI.createPlatformResourceURI(resource.getFullPath()
+				.toString(), false);
+		Resource res = domain.getResourceSet().getResource(uri, true);
 
 		if (res == null) {
+			IdePlugin.logError("Resource does not exist: " + uri);
 			return;
 		}
 		try {
 			ChangeListenerM2MTranslator translator;
-			if (!translators.containsKey(resource)) {
-				IncQueryEngine engine = IncQueryEngine.on(res);
-				translator = ChangeListenerM2MTranslator.create(engine,
-						new FileManagerTextChangeListener());
-				translators.put(resource, translator);
-			} else {
-				translator = translators.get(resource);
-			}
-			FileUpdateTaskQueue fullBuild = translator.fullBuild();
-			fullBuild.forEach(t -> t.perform());
+			IncQueryEngine engine = IncQueryEngine.on(res);
+			translator = ChangeListenerM2MTranslator.create(engine,
+					new FileManagerTextChangeListener());
+			translators.put(resource, translator);
 		} catch (IncQueryException e) {
 			IdePlugin.logError("IncQuery engine could not be created.", e);
 		}
