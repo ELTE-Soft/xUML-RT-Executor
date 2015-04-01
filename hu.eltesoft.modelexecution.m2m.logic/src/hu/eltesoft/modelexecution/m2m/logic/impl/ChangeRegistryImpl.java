@@ -46,7 +46,7 @@ public class ChangeRegistryImpl implements ChangeRegistry {
 		FileUpdateTaskQueue taskQueue = deletions.asQueue();
 		deletions.clear();
 
-		taskQueue.addAll(modifications.performAll(taskQueue));
+		modifications.performAll(taskQueue);
 		modifications.clear();
 
 		return taskQueue;
