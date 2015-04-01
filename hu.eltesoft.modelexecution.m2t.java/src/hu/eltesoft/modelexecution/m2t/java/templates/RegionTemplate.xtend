@@ -68,6 +68,8 @@ class RegionTemplate extends Template {
 			public void step(«Event.canonicalName» event) {
 				owner.getRuntime().logEventDispatched(owner, event);
 				switch (currentState) {
+				case «initState.name»:
+					break;
 				«FOR state : region.states»
 					case «state.name»:
 						«FOR transition : state.transitions SEPARATOR ' else '»
