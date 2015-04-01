@@ -26,6 +26,7 @@ class BehaviorTemplate extends Template {
 		«generatedHeader(behavior.name)»
 		public class «behavior.name» extends «ActionCode.canonicalName» {
 		
+			@SuppressWarnings("unused")
 			private «behavior.containerClass.name» «CONTEXT_NAME»;
 		
 			public «behavior.name»(«behavior.containerClass.name» «CONTEXT_NAME») {
