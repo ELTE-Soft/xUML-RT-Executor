@@ -131,7 +131,6 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			extensions.put(".uml", "(.uml) UML Model resource");
 			extensions.put("*", "(*) All files and folders");
 			content.setExtensionFilters(extensions);
-//			content.setExtensionFilters(extensionFilters);
 			dialog.setContentProvider(content);
 			dialog.setLabelProvider(WorkbenchLabelProvider
 					.getDecoratingWorkbenchLabelProvider());

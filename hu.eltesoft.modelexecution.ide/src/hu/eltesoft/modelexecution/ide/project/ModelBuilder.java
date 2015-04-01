@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -49,6 +51,8 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	private Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
 
 	private static List<ModelBuilder> builders = new LinkedList<>();
+
+	private ResourceSet resourceSet = new ResourceSetImpl();
 
 	@Override
 	protected void startupOnInitialize() {
@@ -109,7 +113,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			modelBuilder.hookupChangeListeners();
 		}
 	}
-	
+
 	// TODO: remove
 	public static void cleanAllProjects() {
 		for (ModelBuilder modelBuilder : builders) {
@@ -174,21 +178,39 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 							rebuildIfAble(rebuild, resource);
 						}
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
-						rebuildIfAble(rebuild, resource);
+						if (isModelResource(resource)) {
+							rebuildIfAble(rebuild, resource);
+						}
 					}
 					return true;
-				}
-
-				private void rebuildIfAble(FileUpdateTaskQueue rebuild,
-						IResource resource) {
-					if (translators.containsKey(resource)) {
-						rebuild.addAll(translators.get(resource).rebuild());
-					}
 				}
 			});
 			rebuild.performAll();
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while incremental build.", e);
+		}
+	}
+
+	private void rebuildIfAble(FileUpdateTaskQueue rebuild, IResource resource) {
+		if (translators.containsKey(resource)) {
+			rebuild.addAll(translators.get(resource).rebuild());
+		} else {
+			try {
+				URI uri = URI.createFileURI(resource.getLocation().toString());
+				Resource res = resourceSet.getResource(uri, true);
+				if (res != null) {
+					IncQueryEngine engine;
+					engine = IncQueryEngine.on(res);
+					ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
+							.create(engine, new FileManagerTextChangeListener());
+					translator.fullBuild().performAll();
+				} else {
+					IdePlugin.logError("Resource to rebuild is not found: "
+							+ resource);
+				}
+			} catch (IncQueryException e) {
+				IdePlugin.logError("Error while rebuilding resource", e);
+			}
 		}
 	}
 
@@ -231,10 +253,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			return;
 		}
 		try {
-			ChangeListenerM2MTranslator translator;
 			IncQueryEngine engine = IncQueryEngine.on(res);
-			translator = ChangeListenerM2MTranslator.create(engine,
-					new FileManagerTextChangeListener());
+			ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
+					.create(engine, new FileManagerTextChangeListener());
 			translators.put(resource, translator);
 		} catch (IncQueryException e) {
 			IdePlugin.logError("IncQuery engine could not be created.", e);
