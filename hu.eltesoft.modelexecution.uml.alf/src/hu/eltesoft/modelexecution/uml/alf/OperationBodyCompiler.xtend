@@ -3,16 +3,16 @@ package hu.eltesoft.modelexecution.uml.alf
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import org.eclipse.papyrus.uml.alf.BehaviorInvocationExpression
 import org.eclipse.papyrus.uml.alf.Block
+import org.eclipse.papyrus.uml.alf.BlockStatement
 import org.eclipse.papyrus.uml.alf.ExpressionStatement
 import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
+import org.eclipse.papyrus.uml.alf.NameBinding
 import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
 import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
 import org.eclipse.xtext.parser.IParseResult
-import org.eclipse.papyrus.uml.alf.NameBinding
-import org.eclipse.papyrus.uml.alf.BlockStatement
 
 /**
  * Compiles an operation body written in Alf to Java code by implementing an AST
@@ -43,9 +43,10 @@ class OperationBodyCompiler {
 	private def dispatch void visit(Block block) {
 		for (annotated : block.statement) {
 			visit(annotated.statement)
+			builder.append("\n")
 		}
 	}
-	
+
 	private def dispatch void visit(BlockStatement blockStmt) {
 		visit(blockStmt.block);
 	}

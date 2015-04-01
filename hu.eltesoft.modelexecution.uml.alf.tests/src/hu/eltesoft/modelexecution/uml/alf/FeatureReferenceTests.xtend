@@ -6,26 +6,36 @@ class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testCompilingThisExpressionStatement() {
-		assertCompilesTo("this;", '''«OperationBodyCompiler.CONTEXT_NAME»;''')
+		assertCompilesTo("this;", '''
+		«OperationBodyCompiler.CONTEXT_NAME»;
+		''')
 	}
 
 	@Test
 	def testCompilingNameExpressionStatement() {
-		assertCompilesTo("x;", "x;")
+		assertCompilesTo("x;", "x;\n")
 	}
 
 	@Test
 	def testCompilingFeatureCallOnExplicitThis() {
-		assertCompilesTo("this.x();", '''«OperationBodyCompiler.CONTEXT_NAME».x();''')
+		assertCompilesTo("this.x();", '''
+		«OperationBodyCompiler.CONTEXT_NAME».x();
+		''')
 	}
 
 	@Test
 	def testCompilingFeatureCallOnImplicitThis() {
-		assertCompilesTo("x();", '''«OperationBodyCompiler.CONTEXT_NAME».x();''')
+		assertCompilesTo("x();", '''
+		«OperationBodyCompiler.CONTEXT_NAME».x();
+		''')
 	}
 
 	@Test
 	def testCompilingMultipleStatements() {
-		assertCompilesTo(" x;  y; z;  ", "x;y;z;")
+		assertCompilesTo(" x;  y; z;  ", '''
+		x;
+		y;
+		z;
+		''')
 	}
 }
