@@ -13,7 +13,8 @@ class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testCompilingNameExpressionStatement() {
-		assertCompilesTo("x;", "x;\n")
+		assertCompilesTo("x;", '''x;
+		''')
 	}
 
 	@Test
