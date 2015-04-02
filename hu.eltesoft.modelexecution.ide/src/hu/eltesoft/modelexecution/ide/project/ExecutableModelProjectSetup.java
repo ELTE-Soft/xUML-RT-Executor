@@ -33,6 +33,8 @@ import org.osgi.framework.Bundle;
  */
 public class ExecutableModelProjectSetup {
 
+	private static final String PLUGIN_3PP_ID = "hu.eltesoft.modelexecution.3pp";
+
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin";
 
 	private static final String DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER = "bin";
@@ -101,10 +103,9 @@ public class ExecutableModelProjectSetup {
 			}
 			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
 					sourceFolder)));
-			File pluginJar = getPluginJar();
-			entries.add(JavaCore.newLibraryEntry(
-					new Path(pluginJar.getAbsolutePath()), null, new Path(
-							String.valueOf(Path.SEPARATOR))));
+			addPluginCPEntry(entries, RuntimePlugin.PLUGIN_ID,
+					BinFolder.HasBinFolder);
+			addPluginCPEntry(entries, PLUGIN_3PP_ID, BinFolder.NoBinFolder);
 			// add libs to project class path
 			javaProject.setRawClasspath(
 					entries.toArray(new IClasspathEntry[entries.size()]), null);
@@ -113,13 +114,31 @@ public class ExecutableModelProjectSetup {
 		}
 	}
 
-	private static File getPluginJar() throws IOException {
-		Bundle bundle = Platform.getBundle(RuntimePlugin.PLUGIN_ID);
+	private enum BinFolder {
+		HasBinFolder, NoBinFolder
+	}
+
+	private static void addPluginCPEntry(List<IClasspathEntry> entries,
+			String pluginId, BinFolder binFolder) throws IOException {
+		File pluginJar = getPluginCPEntry(pluginId, binFolder);
+		entries.add(JavaCore.newLibraryEntry(
+				new Path(pluginJar.getAbsolutePath()), null,
+				new Path(String.valueOf(Path.SEPARATOR))));
+	}
+
+	private static File getPluginCPEntry(String pluginId, BinFolder binFolder)
+			throws IOException {
+		Bundle bundle = Platform.getBundle(pluginId);
 		File bundleFile = FileLocator.getBundleFile(bundle);
 		if (bundleFile.isDirectory()) {
 			// development run: use class files
-			return bundleFile.toPath()
-					.resolve(DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER).toFile();
+			if (binFolder == BinFolder.HasBinFolder) {
+				return bundleFile.toPath()
+						.resolve(DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER)
+						.toFile();
+			} else {
+				return bundleFile;
+			}
 		} else {
 			// product: use jar file
 			return bundleFile;

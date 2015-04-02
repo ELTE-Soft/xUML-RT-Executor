@@ -40,7 +40,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * Generated files are deleted on full build.
  */
 public class ModelBuilder extends IncrementalProjectBuilder {
-	// TODO: use the model loading interface instead of direct IncQuery usage.
 
 	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder";
 
