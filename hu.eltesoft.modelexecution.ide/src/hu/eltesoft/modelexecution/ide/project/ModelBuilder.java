@@ -107,17 +107,17 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		queue.performAll();
 	}
 
+	/**
+	 * Registers resources for the compilation pipeline for all active builders.
+	 * Without it, the project only supports incremental build after a clean
+	 * operation.
+	 * 
+	 * Should be called after {@linkplain initializeBuilders}.
+	 */
 	public static void hookupAllChangeListeners() {
 		initializeBuilders();
 		for (ModelBuilder modelBuilder : builders) {
 			modelBuilder.hookupChangeListeners();
-		}
-	}
-
-	// TODO: remove
-	public static void cleanAllProjects() {
-		for (ModelBuilder modelBuilder : builders) {
-			modelBuilder.fullBuild();
 		}
 	}
 
@@ -140,6 +140,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
+	/**
+	 * Registers all uml resources in the project of the builder.
+	 */
 	private void hookupChangeListeners() {
 		try {
 			if (!getProject().isOpen()) {
@@ -175,11 +178,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					if (delta.getKind() == IResourceDelta.ADDED) {
 						if (isModelResource(resource)) {
 							registerResource(resource);
-							rebuildIfAble(rebuild, resource);
+							rebuild.addAll(rebuild(resource));
 						}
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
 						if (isModelResource(resource)) {
-							rebuildIfAble(rebuild, resource);
+							rebuild.addAll(rebuild(resource));
 						}
 					}
 					return true;
@@ -191,7 +194,13 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private void rebuildIfAble(FileUpdateTaskQueue rebuild, IResource resource) {
+	/**
+	 * Rebuilds the files that are generated from the given resource. Uses
+	 * incremental compilation if the current resource is opened in an editor,
+	 * or simply performs a full build on the resource if not.
+	 */
+	private FileUpdateTaskQueue rebuild(IResource resource) {
+		FileUpdateTaskQueue rebuild = new FileUpdateTaskQueue();
 		if (translators.containsKey(resource)) {
 			rebuild.addAll(translators.get(resource).rebuild());
 		} else {
@@ -203,7 +212,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					engine = IncQueryEngine.on(res);
 					ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
 							.create(engine, new FileManagerTextChangeListener());
-					translator.fullBuild().performAll();
+					rebuild.addAll(translator.fullBuild());
 				} else {
 					IdePlugin.logError("Resource to rebuild is not found: "
 							+ resource);
@@ -212,6 +221,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				IdePlugin.logError("Error while rebuilding resource", e);
 			}
 		}
+		return rebuild;
 	}
 
 	/**
@@ -228,7 +238,6 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	// TODO: find a way to test if the resource contains an UML model.
 	protected static boolean isModelResource(IResource resource) {
 		return UML_FILE_EXTENSION.equals(resource.getFileExtension());
 	}

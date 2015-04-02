@@ -20,19 +20,21 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 
 	private final AdvancedIncQueryEngine advancedEngine;
 	private final ChangeRegistry changeRegistry;
-	private boolean listeningToModelChanges;
+	private boolean listeningToModelChanges = false;
+	private boolean modelBuilt = false;
 
 	public ChangeListenerM2MTranslatorImpl(IncQueryEngine engine,
 			TextChangesListener listener) throws IncQueryException {
 		super(engine, listener);
 		this.advancedEngine = AdvancedIncQueryEngine.from(engine);
 		this.changeRegistry = ChangeRegistry.create(listener);
-		this.listeningToModelChanges = false;
+		startListeningToModelChanges();
 	}
 
 	@Override
 	public FileUpdateTaskQueue fullBuild() {
 		startListeningToModelChanges();
+		modelBuilt = true;
 		return super.fullBuild();
 	}
 
@@ -56,7 +58,7 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 
 	@Override
 	public FileUpdateTaskQueue rebuild() {
-		if (startListeningToModelChanges()) {
+		if (!modelBuilt) {
 			return super.fullBuild();
 		}
 		return changeRegistry.performAllChanges();

@@ -17,9 +17,7 @@ public class PapyrusEditorListener extends ResourceSetListenerImpl {
 	public void setTarget(TransactionalEditingDomain domain) {
 		TransactionalEditingDomain.Registry.INSTANCE
 				.add(EDITING_DOMAIN, domain);
-		// TODO: remove walkaround
-//		ModelBuilder.hookupAllChangeListeners();
-		ModelBuilder.cleanAllProjects();
+		ModelBuilder.hookupAllChangeListeners();
 	}
 
 	/**
