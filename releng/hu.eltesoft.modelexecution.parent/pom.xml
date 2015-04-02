@@ -1,0 +1,218 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>hu.eltesoft.modelexecution</groupId>
+	<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<!-- Tycho requires Maven 3 -->
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<!-- the modules that shall be built together in one reactor -->
+	<modules>
+		<module>../../plugins/hu.eltesoft.modelexecution.3pp/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.filemanager/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.ide/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.m2m.logic/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.m2m.metamodel/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.m2t.java/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.m2t.smap.emf/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.runtime/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.uml.alf/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
+
+		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
+		<!-- <module>../../tests/hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module> -->
+		<module>../../tests/hu.eltesoft.modelexecution.uml.alf.tests/pom.xml</module>
+
+		<module>../../features/hu.eltesoft.modelexecution.feature/pom.xml</module>
+
+		<module>../../releng/hu.eltesoft.modelexecution.update/pom.xml</module>
+		<module>../../releng/hu.eltesoft.modelexecution.target/pom.xml</module>
+	</modules>
+
+	<!-- common settings for all modules -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<tycho.version>0.22.0</tycho.version>
+		<build-helper.version>1.7</build-helper.version>
+		<xtend.version>2.6.1</xtend.version>
+		<incquery.version>0.8.0</incquery.version>
+	</properties>
+
+	<!-- configure p2 repositories to resolve against -->
+	<repositories>
+		<repository>
+			<id>eclipse-luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna</url>
+		</repository>
+		<repository>
+			<id>eclipse-luna-updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/eclipse/updates/4.4</url>
+		</repository>
+		<repository>
+			<id>eclipse-xtend</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases</url>
+		</repository>
+		<repository>
+			<id>eclipse-papyrus</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/luna</url>
+		</repository>
+		<repository>
+			<id>incquery</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/incquery/updates/release</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<scriptSourceDirectory>src</scriptSourceDirectory>
+		<testSourceDirectory>src</testSourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		<testOutputDirectory>bin</testOutputDirectory>
+
+		<plugins>
+			<plugin>
+				<!-- enable the Tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<excludeResources>
+						<exludeResource>**/*.xtend</exludeResource>
+					</excludeResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
+					<target>
+						<artifact>
+							<groupId>hu.eltesoft.modelexecution</groupId>
+							<artifactId>hu.eltesoft.modelexecution.target</artifactId>
+							<version>0.1.0-SNAPSHOT</version>
+                            <classifier>default</classifier>
+						</artifact>
+					</target>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<test>AllTests</test>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<!-- Xtend-specific configuration -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper.version}</version>
+					<executions>
+						<execution>
+							<id>add-source</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>xtend-gen</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>xtend-gen</directory>
+								<includes>
+									<include>**</include>
+								</includes>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtend.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${basedir}/xtend-gen</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
