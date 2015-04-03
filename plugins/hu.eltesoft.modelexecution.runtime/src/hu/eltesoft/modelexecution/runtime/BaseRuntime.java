@@ -52,7 +52,6 @@ public abstract class BaseRuntime implements Runtime {
 					traceWriter.traceEvent(currQueueEvent);
 				}
 			} else {
-				// TODO: log events from outside
 				traceReader.dispatchEvent(logger);
 			}
 		}

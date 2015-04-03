@@ -1,16 +1,13 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
+import hu.eltesoft.modelexecution.runtime.util.PathConverter;
+
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Set;
-import java.util.TreeSet;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -23,40 +20,31 @@ public class InputTraceBuffer implements AutoCloseable {
 	private XStream xStream = new XStream();
 
 	/** Invariant: nonempty while hasMoreElems() is true */
-	private LinkedList<TargetedEvent> tracedEvents;
+	private LinkedList<TargetedEvent> tracedEvents = new LinkedList<>();
 
 	public InputTraceBuffer(String inputFolder) {
 		detectTraceFiles(inputFolder);
 		loadEvents();
 	}
 
-	protected Iterator<Path> traceFileIterator;
+	protected LinkedList<File> traceFiles = new LinkedList<>();
 
 	/**
 	 * Detects all files in the given directory and orders them.
 	 */
 	protected void detectTraceFiles(String inputFolder) {
-		Path folder = FileSystems.getDefault().getPath(inputFolder);
-		Set<Path> traceFiles = new TreeSet<>();
-		if (folder.toFile().exists() && !folder.toFile().isDirectory()) {
+		File folder = new File(
+				PathConverter.workspaceToProjectBased(inputFolder));
+		if (folder.exists() && !folder.isDirectory()) {
 			throw new RuntimeException(folder + " exists but not a directory.");
 		}
-		if (!folder.toFile().exists()) {
-			folder.toFile().mkdir();
+		if (!folder.exists()) {
+			folder.mkdir();
 		}
-		if (folder.toFile().exists() && folder.toFile().isDirectory()) {
+		if (folder.exists() && folder.isDirectory()) {
 			// newDirectoryStream has better performance than File.listFiles().
-			try (DirectoryStream<Path> stream = Files
-					.newDirectoryStream(folder)) {
-				// files are stared inside a set to be sorted
-				for (Path entry : stream) {
-					traceFiles.add(entry);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			traceFiles = new LinkedList<File>(Arrays.asList(folder.listFiles()));
 		}
-		traceFileIterator = traceFiles.iterator();
 	}
 
 	/**
@@ -64,10 +52,10 @@ public class InputTraceBuffer implements AutoCloseable {
 	 */
 	@SuppressWarnings("unchecked")
 	private void loadEvents() {
-		if (traceFileIterator.hasNext()) {
-			Path first = traceFileIterator.next();
+		if (!traceFiles.isEmpty()) {
+			File first = traceFiles.poll();
 			try (BufferedInputStream input = new BufferedInputStream(
-					new FileInputStream(first.toFile()))) {
+					new FileInputStream(first))) {
 				tracedEvents = (LinkedList<TargetedEvent>) xStream
 						.fromXML(input);
 			} catch (IOException e) {

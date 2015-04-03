@@ -94,13 +94,7 @@ public class ExecutableModelProjectSetup {
 			String sourceFolder) {
 		try {
 			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-			IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-			LibraryLocation[] locations = JavaRuntime
-					.getLibraryLocations(vmInstall);
-			for (LibraryLocation element : locations) {
-				entries.add(JavaCore.newLibraryEntry(
-						element.getSystemLibraryPath(), null, null));
-			}
+			addSystemLibrariesToCP(entries);
 			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
 					sourceFolder)));
 			addPluginCPEntry(entries, RuntimePlugin.PLUGIN_ID,
@@ -114,10 +108,27 @@ public class ExecutableModelProjectSetup {
 		}
 	}
 
+	private static void addSystemLibrariesToCP(List<IClasspathEntry> entries) {
+		IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+		LibraryLocation[] locations = JavaRuntime
+				.getLibraryLocations(vmInstall);
+		for (LibraryLocation element : locations) {
+			entries.add(JavaCore.newLibraryEntry(
+					element.getSystemLibraryPath(), null, null));
+		}
+	}
+
+	/**
+	 * Marks if the plugin that is put on the build path of the generated
+	 * projects has a bin folder or binaries are placed in project root.
+	 */
 	private enum BinFolder {
 		HasBinFolder, NoBinFolder
 	}
 
+	/**
+	 * Adds a plugin as a classpath entry to the generated project.
+	 */
 	private static void addPluginCPEntry(List<IClasspathEntry> entries,
 			String pluginId, BinFolder binFolder) throws IOException {
 		File pluginJar = getPluginCPEntry(pluginId, binFolder);

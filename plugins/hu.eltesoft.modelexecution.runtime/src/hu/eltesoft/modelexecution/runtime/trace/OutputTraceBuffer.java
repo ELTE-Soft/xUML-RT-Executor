@@ -1,11 +1,15 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
+import hu.eltesoft.modelexecution.runtime.util.PathConverter;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
+
+import org.eclipse.core.runtime.Path;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -22,7 +26,10 @@ public class OutputTraceBuffer implements AutoCloseable {
 	LinkedList<TargetedEvent> tracedEvents = new LinkedList<>();
 	private int size;
 
+	private String folderName;
+
 	public OutputTraceBuffer(String folderName, int size) {
+		this.folderName = folderName;
 		this.size = size;
 	}
 
@@ -34,9 +41,14 @@ public class OutputTraceBuffer implements AutoCloseable {
 		}
 	}
 
+	/**
+	 * Writes the collected event into a file.
+	 */
 	public void outputTracedEvents() {
+		String filename = PathConverter.workspaceToProjectBased(folderName
+				+ Path.SEPARATOR + "t" + (++i) + ".trace");
 		try (OutputStream stream = new BufferedOutputStream(
-				new FileOutputStream(new File("t" + i + ".trace")))) {
+				new FileOutputStream(new File(filename).getAbsoluteFile()))) {
 			xStream.toXML(tracedEvents, stream);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception while opening trace stream.",
