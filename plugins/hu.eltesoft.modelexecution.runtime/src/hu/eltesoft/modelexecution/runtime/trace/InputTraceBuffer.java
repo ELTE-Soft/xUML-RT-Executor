@@ -33,8 +33,7 @@ public class InputTraceBuffer implements AutoCloseable {
 	 * Detects all files in the given directory and orders them.
 	 */
 	protected void detectTraceFiles(String inputFolder) {
-		File folder = new File(
-				PathConverter.workspaceToProjectBased(inputFolder));
+		File folder = PathConverter.workspaceToProjectBased(inputFolder);
 		if (folder.exists() && !folder.isDirectory()) {
 			throw new RuntimeException(folder + " exists but not a directory.");
 		}

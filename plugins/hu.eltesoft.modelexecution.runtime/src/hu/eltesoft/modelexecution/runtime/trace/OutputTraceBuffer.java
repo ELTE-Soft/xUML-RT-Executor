@@ -45,10 +45,14 @@ public class OutputTraceBuffer implements AutoCloseable {
 	 * Writes the collected event into a file.
 	 */
 	public void outputTracedEvents() {
-		String filename = PathConverter.workspaceToProjectBased(folderName
+		File folder = PathConverter.workspaceToProjectBased(folderName);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		File file = PathConverter.workspaceToProjectBased(folderName
 				+ Path.SEPARATOR + "t" + (++i) + ".trace");
 		try (OutputStream stream = new BufferedOutputStream(
-				new FileOutputStream(new File(filename).getAbsoluteFile()))) {
+				new FileOutputStream(file.getAbsoluteFile()))) {
 			xStream.toXML(tracedEvents, stream);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception while opening trace stream.",
