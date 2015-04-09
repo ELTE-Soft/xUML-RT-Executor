@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.runtime.log.Logger;
  * A trace reader that does not read traces. Used to turn off trace reading
  * support.
  */
-public class NoTraceReader extends TraceReader {
+public class NoTraceReader implements TraceReader {
 
 	@Override
 	public boolean hasEvent() {

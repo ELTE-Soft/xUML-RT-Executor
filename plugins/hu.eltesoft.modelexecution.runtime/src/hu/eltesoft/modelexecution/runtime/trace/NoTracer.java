@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.runtime.trace;
 /**
  * A tracer that does not record traces. Used to turn off tracing.
  */
-public class NoTracer extends Tracer {
+public class NoTracer implements Tracer {
 
 	@Override
 	public void traceEvent(TargetedEvent targetedEvent) {

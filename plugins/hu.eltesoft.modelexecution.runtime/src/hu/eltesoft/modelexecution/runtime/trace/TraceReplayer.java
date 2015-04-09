@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.runtime.log.Logger;
  * This tracer replays the incoming events previously recorded in a set of XML
  * files.
  */
-public class TraceReplayer extends TraceReader {
+public class TraceReplayer implements TraceReader {
 
 	private IInputTraceBuffer source;
 	
