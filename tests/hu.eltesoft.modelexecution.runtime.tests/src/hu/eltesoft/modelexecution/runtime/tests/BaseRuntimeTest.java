@@ -1,9 +1,10 @@
-package hu.eltesoft.modelexecution.runtime.test;
+package hu.eltesoft.modelexecution.runtime.tests;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
+import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.test.mocks.DummyEvent;
-import hu.eltesoft.modelexecution.runtime.test.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.DummyEvent;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
@@ -24,7 +25,7 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		BaseRuntime sut = new BaseRuntimeExtension(tracerMock, readerMock, loggerMock);
+		Runtime sut = new BaseRuntimeExtension(tracerMock, readerMock, loggerMock);
 
 		context.checking(new Expectations() {
 			{
@@ -46,7 +47,7 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		BaseRuntime sut = new BaseRuntime(tracerMock, readerMock, loggerMock) {
+		Runtime sut = new BaseRuntime(tracerMock, readerMock, loggerMock) {
 		};
 
 		context.checking(new Expectations() {

@@ -42,6 +42,7 @@ public abstract class BaseRuntime implements Runtime {
 	/**
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
+	@Override
 	public void run(String className, String feedName) throws Exception {
 		prepare(className, feedName);
 		while (!queue.isEmpty() || traceReader.hasEvent()) {

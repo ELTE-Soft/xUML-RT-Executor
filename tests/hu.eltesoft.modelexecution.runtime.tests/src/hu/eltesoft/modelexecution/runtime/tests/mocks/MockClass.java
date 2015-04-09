@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.test.mocks;
+package hu.eltesoft.modelexecution.runtime.tests.mocks;
 
 import java.util.LinkedList;
 import java.util.List;

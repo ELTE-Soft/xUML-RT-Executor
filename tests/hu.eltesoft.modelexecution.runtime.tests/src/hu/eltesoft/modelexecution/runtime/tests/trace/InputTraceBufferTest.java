@@ -1,10 +1,11 @@
-package hu.eltesoft.modelexecution.runtime.test.trace;
+package hu.eltesoft.modelexecution.runtime.tests.trace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.runtime.test.mocks.DummyEvent;
-import hu.eltesoft.modelexecution.runtime.test.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.Runtime;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.DummyEvent;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.InputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
@@ -13,8 +14,10 @@ import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 
+import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.jimfs.Configuration;
@@ -23,7 +26,14 @@ import com.google.common.jimfs.Jimfs;
 public class InputTraceBufferTest {
 
 	FileSystem fs;
+	static Mockery context = new Mockery();
+	static Runtime runtime = context.mock(hu.eltesoft.modelexecution.runtime.Runtime.class);
 
+	@BeforeClass
+	public static void setupClass() {
+		new MockClass(runtime);
+	}
+	
 	@Before
 	public void setup() {
 		fs = Jimfs.newFileSystem(Configuration.unix());

@@ -1,8 +1,8 @@
-package hu.eltesoft.modelexecution.runtime.test;
+package hu.eltesoft.modelexecution.runtime.tests;
 
-import hu.eltesoft.modelexecution.runtime.test.trace.InputTraceBufferTest;
-import hu.eltesoft.modelexecution.runtime.test.trace.OutputTraceBufferTest;
-import hu.eltesoft.modelexecution.runtime.test.trace.TraceReplayerTest;
+import hu.eltesoft.modelexecution.runtime.tests.trace.InputTraceBufferTest;
+import hu.eltesoft.modelexecution.runtime.tests.trace.OutputTraceBufferTest;
+import hu.eltesoft.modelexecution.runtime.tests.trace.TraceReplayerTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

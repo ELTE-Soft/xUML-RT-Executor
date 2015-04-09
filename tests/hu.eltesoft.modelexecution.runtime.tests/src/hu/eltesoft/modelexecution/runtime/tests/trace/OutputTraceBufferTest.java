@@ -1,8 +1,8 @@
-package hu.eltesoft.modelexecution.runtime.test.trace;
+package hu.eltesoft.modelexecution.runtime.tests.trace;
 
 import static org.junit.Assert.*;
-import hu.eltesoft.modelexecution.runtime.test.mocks.DummyEvent;
-import hu.eltesoft.modelexecution.runtime.test.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.DummyEvent;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 
