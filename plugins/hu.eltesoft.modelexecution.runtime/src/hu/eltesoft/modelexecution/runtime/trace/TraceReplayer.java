@@ -2,17 +2,16 @@ package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 
-import java.io.FileNotFoundException;
-
 /**
- * This tracer replays the incoming events previously recorded in a set of XML files.
+ * This tracer replays the incoming events previously recorded in a set of XML
+ * files.
  */
 public class TraceReplayer extends TraceReader {
 
-	private InputTraceBuffer source;
-
-	public TraceReplayer(String logFileName) throws FileNotFoundException {
-		source = new InputTraceBuffer(logFileName);
+	private IInputTraceBuffer source;
+	
+	public TraceReplayer(IInputTraceBuffer buffer) {
+		source = buffer;
 	}
 
 	@Override
@@ -38,6 +37,7 @@ public class TraceReplayer extends TraceReader {
 				sendAndLog(logger, tracedEvent);
 				return EventSource.Trace;
 			} else if (!event.equals(tracedEvent)) {
+				// TODO: error logging in runtime
 				String msg = "The event read from queue is not the same as the event read from the trace. Queue: "
 						+ event + ", Trace: " + tracedEvent;
 				throw new RuntimeException(msg);

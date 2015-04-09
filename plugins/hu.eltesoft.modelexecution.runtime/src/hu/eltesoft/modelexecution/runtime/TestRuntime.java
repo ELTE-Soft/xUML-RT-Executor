@@ -3,18 +3,24 @@ package hu.eltesoft.modelexecution.runtime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
 import hu.eltesoft.modelexecution.runtime.log.NoLogger;
+import hu.eltesoft.modelexecution.runtime.trace.InputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
+import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
+
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 
 /**
  * BaseRuntime with main. Parses tracing and logging flags.
  */
 public class TestRuntime extends BaseRuntime {
 
+	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 10;
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
@@ -39,11 +45,10 @@ public class TestRuntime extends BaseRuntime {
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = new TraceWriter(args[++i]);
+				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]));
 				break;
-
 			case OPTION_READ_TRACE:
-				traceReader = new TraceReplayer(args[++i]);
+				traceReader = new TraceReplayer(getDefaultInputTraceBuffer(args[++i]));
 				break;
 			case OPTION_LOG:
 				logger = new MinimalLogger();
@@ -56,5 +61,32 @@ public class TestRuntime extends BaseRuntime {
 		}
 
 		new TestRuntime(tracer, traceReader, logger).run(clsName, feedName);
+	}
+
+	/**
+	 * Constructs a tracer that actually creates tracefiles.
+	 */
+	public static Tracer getDefaultTraceWriter(String inputFolder) {
+		return new TraceWriter(getDefaultOutputTraceBuffer(inputFolder));
+	}
+	
+	private static OutputTraceBuffer getDefaultOutputTraceBuffer(String folderName) {
+		return new OutputTraceBuffer(folderName, DEFAULT_OUTPUT_BUFFER_SIZE,
+				defaultFileSystem());
+	}
+
+	/**
+	 * Constructs a trace replayer that actually reads tracefiles.
+	 */
+	public static TraceReplayer getDefaultTraceReplayer(String inputFolder) {
+		return new TraceReplayer(getDefaultInputTraceBuffer(inputFolder));
+	}
+
+	private static InputTraceBuffer getDefaultInputTraceBuffer(String inputFolder) {
+		return new InputTraceBuffer(inputFolder, defaultFileSystem());
+	}
+
+	private static FileSystem defaultFileSystem() {
+		return FileSystems.getDefault();
 	}
 }

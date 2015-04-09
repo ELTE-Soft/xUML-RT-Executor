@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 /**
  * A logger that does not log. Used to turn off logging support.
  */
-public class NoLogger extends Logger {
+public class NoLogger implements Logger {
 
 	@Override
 	public void eventQueued(Class target, Event event) {

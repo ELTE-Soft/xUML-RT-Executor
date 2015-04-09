@@ -7,18 +7,16 @@ import hu.eltesoft.modelexecution.cli.exceptions.DanglingArgumentsException;
 import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
+import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
 import hu.eltesoft.modelexecution.runtime.log.NoLogger;
 import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
-import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
-import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,15 +40,13 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 /**
- * Console application that compiles and/or executes the model
- * based on the command line arguments.
+ * Console application that compiles and/or executes the model based on the
+ * command line arguments.
  */
 public class ConsoleModelRunner {
 	/** Names for the arguments of the options. */
 	public enum ArgValueName {
-		LOGGER_NONE("none"),
-		LOGGER_MINIMAL("minimal")
-		;
+		LOGGER_NONE("none"), LOGGER_MINIMAL("minimal");
 
 		String name;
 
@@ -59,32 +55,19 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	/** Messages that are printed at some point.
-	 *  The names in the resource bundle must be the lower case equivalents
-	 *  of the enum labels. */
+	/**
+	 * Messages that are printed at some point. The names in the resource bundle
+	 * must be the lower case equivalents of the enum labels.
+	 */
 	public enum Message {
-		EXECUTING_COMPILED_JAVA,
-		DEFAULT_VALUE,
-		POSSIBLE_VALUES,
-		COMPILING_MODEL_TO_JAVA,
-		UNKNOWN_OPT_PAR,
-		NO_REQUIRED_OPTION_PRESENT_MANY,
-		NO_REQUIRED_OPTION_PRESENT1,
-		MISSING_ACTION_OPTIONS,
-		OPTION,
-		BAD_DIRECTORY,
-		BAD_FILE,
-		BAD_ARG_COUNT,
-		DANGLING_ARG,
-		RUNTIME_EXCEPTION
-		;
+		EXECUTING_COMPILED_JAVA, DEFAULT_VALUE, POSSIBLE_VALUES, COMPILING_MODEL_TO_JAVA, UNKNOWN_OPT_PAR, NO_REQUIRED_OPTION_PRESENT_MANY, NO_REQUIRED_OPTION_PRESENT1, MISSING_ACTION_OPTIONS, OPTION, BAD_DIRECTORY, BAD_FILE, BAD_ARG_COUNT, DANGLING_ARG, RUNTIME_EXCEPTION;
 
 		public String getMsg(Object... args) {
 			String descrBundleName = getDescriptionBundleName();
 			String format = getMsgs().getString(descrBundleName);
 			return MessageFormat.format(format, args);
 		}
-		
+
 		public String getDescriptionBundleName() {
 			return name().toLowerCase();
 		}
@@ -92,19 +75,19 @@ public class ConsoleModelRunner {
 
 	/** Describes the syntax of the options that come from the command line. */
 	public enum Opt {
-		HELP("help", "h", Util.list(), Util.list()),
-		VERBOSE("verbose", "v", Util.list(), Util.list()),
+		HELP("help", "h", Util.list(), Util.list()), VERBOSE("verbose", "v",
+				Util.list(), Util.list()),
 
 		SETUP("setup", "s", Util.list(), Util.list(), "model"),
 
-		EXECUTE("execute", "e", Util.list(), Util.list(), "class", "feed"),
-		WRITE_TRACE("write-trace", "wtr", Util.list(EXECUTE), Util.list(), "dir"),
-		READ_TRACE("read-trace", "rtr", Util.list(EXECUTE), Util.list(), "dir"),
-		LOGGER("logger", "l", Util.list(EXECUTE),
-			   Util.list(ArgValueName.LOGGER_NONE, ArgValueName.LOGGER_MINIMAL), "logger"),
+		EXECUTE("execute", "e", Util.list(), Util.list(), "class", "feed"), WRITE_TRACE(
+				"write-trace", "wtr", Util.list(EXECUTE), Util.list(), "dir"), READ_TRACE(
+				"read-trace", "rtr", Util.list(EXECUTE), Util.list(), "dir"), LOGGER(
+				"logger", "l", Util.list(EXECUTE), Util.list(
+						ArgValueName.LOGGER_NONE, ArgValueName.LOGGER_MINIMAL),
+				"logger"),
 
-		ROOT("root", "r", Util.list(EXECUTE, SETUP), Util.list(), "dir")
-		;
+		ROOT("root", "r", Util.list(EXECUTE, SETUP), Util.list(), "dir");
 
 		private static final String OPT_BUNDLE_POSTFIX = "_opt";
 
@@ -113,8 +96,10 @@ public class ConsoleModelRunner {
 		private List<String> argNames;
 		/** If the current option is present, one of these must also be present. */
 		public List<Opt> requiredOpts;
-		/** If the option has a limited number of values, list them here.
-		 *  An empty list means the values are not limited to a few items. */
+		/**
+		 * If the option has a limited number of values, list them here. An
+		 * empty list means the values are not limited to a few items.
+		 */
 		private List<ArgValueName> argValueNames;
 
 		private Opt(String longName, String shortName, List<Opt> requiredOpts,
@@ -134,7 +119,7 @@ public class ConsoleModelRunner {
 			String descrBundleName = getDescriptionBundleName();
 			String description = getDescription(descrBundleName);
 			OptionBuilder.withDescription(description);
-			
+
 			return OptionBuilder.create(shortName);
 		}
 
@@ -155,8 +140,8 @@ public class ConsoleModelRunner {
 		private String mkDescriptionWithArgValues(String descr) {
 			String possibleValuesMsg = Message.POSSIBLE_VALUES.getMsg();
 			List<String> possibleValues = getPossibleLoggerValues();
-			return String.format("%s%n%s: %s", descr,
-					possibleValuesMsg, Util.join(possibleValues, ", "));
+			return String.format("%s%n%s: %s", descr, possibleValuesMsg,
+					Util.join(possibleValues, ", "));
 		}
 
 		private List<String> getPossibleLoggerValues() {
@@ -167,31 +152,35 @@ public class ConsoleModelRunner {
 				String defaultTxt = " (" + Message.DEFAULT_VALUE.getMsg() + ")";
 				String appendWhenDefault = isDefault ? defaultTxt : "";
 				String loggerOpt = argValueName.name + appendWhenDefault;
-				
+
 				argValuesTxt.add(loggerOpt);
 			}
-			return argValuesTxt; 
+			return argValuesTxt;
 		}
-		
+
 		private boolean isPresent(CommandLine cmd) {
 			return cmd.hasOption(shortName) || cmd.hasOption(longName);
 		}
-		
+
 		private Optional<String> getOption(CommandLine cmd, int idx) {
 			Optional<String[]> options = getOptions(cmd);
-			if (!options.isPresent())   return Optional.empty();
+			if (!options.isPresent())
+				return Optional.empty();
 			return Optional.of(options.get()[idx]);
 		}
 
 		private Optional<String[]> getOptions(CommandLine cmd) {
 			Optional<String> presentName = getPresentName(cmd);
-			if (!presentName.isPresent())   return Optional.empty();
+			if (!presentName.isPresent())
+				return Optional.empty();
 			return Optional.of(cmd.getOptionValues(presentName.get()));
 		}
 
 		private Optional<String> getPresentName(CommandLine cmd) {
-			if (cmd.hasOption(longName))    return Optional.of(longName);
-			if (cmd.hasOption(shortName))    return Optional.of(shortName);
+			if (cmd.hasOption(longName))
+				return Optional.of(longName);
+			if (cmd.hasOption(shortName))
+				return Optional.of(shortName);
 			return Optional.empty();
 		}
 	};
@@ -202,8 +191,10 @@ public class ConsoleModelRunner {
 
 	private static final Map<String, Function<String, Logger>> LOGGERMAKER_BY_NAME = mkLoggerMaker();
 
-	/** The main actions that the program can do.
-	 *  At least one of them must be present. */
+	/**
+	 * The main actions that the program can do. At least one of them must be
+	 * present.
+	 */
 	public static final List<String> ACTION_OPTS = Util.list(
 			Opt.SETUP.longName, Opt.EXECUTE.longName);
 
@@ -217,8 +208,8 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	public static void doCli(String[] args,
-			Options parserOpts) throws ParseException {
+	public static void doCli(String[] args, Options parserOpts)
+			throws ParseException {
 		CommandLineParser parser = new PosixParser();
 		CommandLine cmd = parser.parse(parserOpts, args);
 		processCmdLine(cmd, parserOpts);
@@ -231,9 +222,10 @@ public class ConsoleModelRunner {
 	}
 
 	private static Map<String, Function<String, Logger>> mkLoggerMaker() {
-		Map<String, Function<String, Logger>> loggerByName = new HashMap<>(); 
+		Map<String, Function<String, Logger>> loggerByName = new HashMap<>();
 		loggerByName.put(ArgValueName.LOGGER_NONE.name, args -> new NoLogger());
-		loggerByName.put(ArgValueName.LOGGER_MINIMAL.name, args -> new MinimalLogger());
+		loggerByName.put(ArgValueName.LOGGER_MINIMAL.name,
+				args -> new MinimalLogger());
 		return loggerByName;
 	}
 
@@ -244,18 +236,16 @@ public class ConsoleModelRunner {
 
 		checkOptsValidity(cmd, parserOpts);
 
-		processValidCmdLine(parserOpts, cmd,
-				Opt.VERBOSE.isPresent(cmd));
+		processValidCmdLine(parserOpts, cmd, Opt.VERBOSE.isPresent(cmd));
 	}
 
-	private static void checkOptsValidity(CommandLine cmd,
-			Options parserOpts) {
+	private static void checkOptsValidity(CommandLine cmd, Options parserOpts) {
 		checkMissingRequiredOpts(cmd, parserOpts);
-		
+
 		checkUnknownLoggerType(cmd, parserOpts);
 
 		checkNothingToDo(cmd, parserOpts);
-		
+
 		checkIsParameterDir(cmd, parserOpts, Opt.ROOT, 0);
 		checkIsParameterDir(cmd, parserOpts, Opt.WRITE_TRACE, 0);
 		checkIsParameterDir(cmd, parserOpts, Opt.READ_TRACE, 0);
@@ -263,7 +253,7 @@ public class ConsoleModelRunner {
 		checkIsParameterFile(cmd, parserOpts, Opt.SETUP, 0);
 
 		checkArgCount(cmd, parserOpts, Opt.EXECUTE, 2);
-		
+
 		checkNoDanglingArg(cmd, parserOpts);
 	}
 
@@ -272,7 +262,7 @@ public class ConsoleModelRunner {
 		if (danglingArgs.length > 0) {
 			throw new DanglingArgumentsException(danglingArgs, parserOpts);
 		}
-		
+
 	}
 
 	private static void checkArgCount(CommandLine cmd, Options parserOpts,
@@ -283,13 +273,14 @@ public class ConsoleModelRunner {
 
 		int foundArgCount = opt.getOptions(cmd).get().length;
 		if (foundArgCount != expectedArgCount) {
-			throw new BadArgCountException(opt.getPresentName(cmd).get(), foundArgCount, expectedArgCount, parserOpts);
+			throw new BadArgCountException(opt.getPresentName(cmd).get(),
+					foundArgCount, expectedArgCount, parserOpts);
 		}
-		
+
 	}
 
-	private static void checkIsParameterFile(CommandLine cmd, Options parserOpts,
-			Opt opt, int idx) {
+	private static void checkIsParameterFile(CommandLine cmd,
+			Options parserOpts, Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
@@ -297,12 +288,13 @@ public class ConsoleModelRunner {
 		String model = opt.getOption(cmd, idx).get();
 
 		if (!new File(model).canRead()) {
-			throw new BadFileException(opt.getPresentName(cmd).get(), model, parserOpts);
+			throw new BadFileException(opt.getPresentName(cmd).get(), model,
+					parserOpts);
 		}
 	}
 
-	private static void checkIsParameterDir(CommandLine cmd, Options parserOpts,
-			Opt opt, int idx) {
+	private static void checkIsParameterDir(CommandLine cmd,
+			Options parserOpts, Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
@@ -310,7 +302,8 @@ public class ConsoleModelRunner {
 		String root = opt.getOption(cmd, idx).get();
 
 		if (!new File(root).isDirectory()) {
-			throw new BadDirectoryException(opt.getPresentName(cmd).get(), root, parserOpts);
+			throw new BadDirectoryException(opt.getPresentName(cmd).get(),
+					root, parserOpts);
 		}
 	}
 
@@ -321,7 +314,7 @@ public class ConsoleModelRunner {
 			if (opt.requiredOpts.isEmpty()) {
 				continue;
 			}
-			
+
 			boolean hasRequiredOpt = opt.requiredOpts.stream().anyMatch(
 					opt2 -> opt2.isPresent(cmd));
 			if (!hasRequiredOpt) {
@@ -338,41 +331,36 @@ public class ConsoleModelRunner {
 	private static Logger getLogger(CommandLine cmd) {
 		// Note: placeholder to pass arguments to the logger if necessary
 		String optsForLogger = "";
-		
+
 		Optional<String> loggerName = Opt.LOGGER.getOption(cmd, 0);
 
 		if (!loggerName.isPresent()) {
 			return new NoLogger();
 		}
-		
+
 		return LOGGERMAKER_BY_NAME.get(loggerName).apply(optsForLogger);
 	}
 
 	private static Tracer getTracer(CommandLine cmd) {
-		Optional<String> folderName = Opt.WRITE_TRACE.getOption(cmd, 0); 
+		Optional<String> folderName = Opt.WRITE_TRACE.getOption(cmd, 0);
 
 		if (!folderName.isPresent()) {
 			return new NoTracer();
 		}
 
-		return new TraceWriter(folderName.get());
+		return TestRuntime.getDefaultTraceWriter(folderName.get());
 	}
-	
-	private static TraceReader getTraceReader(
-			CommandLine cmd,
+
+	private static TraceReader getTraceReader(CommandLine cmd,
 			Options parserOpts) {
-		try {
-			Optional<String> folderName = Opt.READ_TRACE.getOption(cmd, 0); 
 
-			if (!folderName.isPresent()) {
-				return new NoTraceReader();
-			}
+		Optional<String> folderName = Opt.READ_TRACE.getOption(cmd, 0);
 
-			return new TraceReplayer(folderName.get());
-		} catch (FileNotFoundException e) {
-			exitWithErrorMsg(parserOpts, e.getLocalizedMessage());
+		if (!folderName.isPresent()) {
+			return new NoTraceReader();
 		}
-		return new NoTraceReader();
+
+		return TestRuntime.getDefaultTraceReplayer(folderName.get());
 	}
 
 	private static void checkNothingToDo(CommandLine cmd, Options parserOpts) {
@@ -383,21 +371,25 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	/** This check is only activated when the user enters a logger type.
-	 *  Checks if the entered logger type is unknown.
+	/**
+	 * This check is only activated when the user enters a logger type. Checks
+	 * if the entered logger type is unknown.
 	 */
 	private static void checkUnknownLoggerType(CommandLine cmd,
 			Options parserOpts) {
-		if (!Opt.LOGGER.isPresent(cmd))    return;
+		if (!Opt.LOGGER.isPresent(cmd))
+			return;
 
 		String userLoggerType = Opt.LOGGER.getOption(cmd, 0).get();
-		if (LOGGERMAKER_BY_NAME.containsKey(userLoggerType))    return;
+		if (LOGGERMAKER_BY_NAME.containsKey(userLoggerType))
+			return;
 
-		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, parserOpts);
+		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER,
+				parserOpts);
 	}
 
-	private static void processValidCmdLine(Options parserOpts, CommandLine cmd,
-			boolean isVerbose) {
+	private static void processValidCmdLine(Options parserOpts,
+			CommandLine cmd, boolean isVerbose) {
 		if (Opt.SETUP.isPresent(cmd)) {
 			if (isVerbose)
 				System.out.println(Message.COMPILING_MODEL_TO_JAVA.getMsg());
@@ -411,7 +403,7 @@ public class ConsoleModelRunner {
 
 			String className = Opt.EXECUTE.getOption(cmd, 0).get();
 			String feedName = Opt.EXECUTE.getOption(cmd, 1).get();
-			
+
 			if (isVerbose)
 				System.out.println(Message.EXECUTING_COMPILED_JAVA.getMsg());
 			runExecutionStep(tracer, traceReader, logger, className, feedName);
@@ -427,7 +419,8 @@ public class ConsoleModelRunner {
 			TraceReader traceReader, Logger logger, String className,
 			String feedName) {
 		try {
-			new CliRuntime(tracer, traceReader, logger).run(className, feedName);
+			new CliRuntime(tracer, traceReader, logger)
+					.run(className, feedName);
 		} catch (Exception e) {
 			System.err.println(Message.RUNTIME_EXCEPTION.getMsg());
 			e.printStackTrace();
@@ -441,7 +434,8 @@ public class ConsoleModelRunner {
 
 	public static Options mkParserOpts() {
 		Options parserOpts = new Options();
-		Arrays.stream(Opt.values()).map(opt -> opt.mkOpt()).forEach(parserOpts::addOption); 
+		Arrays.stream(Opt.values()).map(opt -> opt.mkOpt())
+				.forEach(parserOpts::addOption);
 		return parserOpts;
 	}
 

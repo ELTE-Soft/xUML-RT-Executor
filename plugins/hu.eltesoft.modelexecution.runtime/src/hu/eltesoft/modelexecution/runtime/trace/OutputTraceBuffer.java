@@ -2,22 +2,20 @@ package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.util.PathConverter;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
-
-import org.eclipse.core.runtime.Path;
 
 import com.thoughtworks.xstream.XStream;
 
 /**
- * Implements the collection of traces into tracefiles. Buffers events and puts
- * each N event them into an XML file.
+ * Implements the collection of traces into trace files. Buffers events and puts
+ * each N event them into a separate XML file.
  */
-public class OutputTraceBuffer implements AutoCloseable {
+public class OutputTraceBuffer implements IOutputTraceBuffer {
 
 	private XStream xStream = new XStream();
 
@@ -28,31 +26,47 @@ public class OutputTraceBuffer implements AutoCloseable {
 
 	private String folderName;
 
-	public OutputTraceBuffer(String folderName, int size) {
+	private FileSystem fileSystem;
+
+	/**
+	 * The trace files will be put under the project-based part of folderName.
+	 * (Working directory is assumed to be project-based.)
+	 * 
+	 * @param folderName
+	 *            Workspace based.
+	 */
+	public OutputTraceBuffer(String folderName, int size, FileSystem fileSystem) {
 		this.folderName = folderName;
 		this.size = size;
+		this.fileSystem = fileSystem;
 	}
 
+	/* (non-Javadoc)
+	 * @see hu.eltesoft.modelexecution.runtime.trace.IOutputTraceBuffer#traceEvent(hu.eltesoft.modelexecution.runtime.trace.TargetedEvent)
+	 */
+	@Override
 	public void traceEvent(TargetedEvent event) {
-		if (tracedEvents.size() < size) {
-			tracedEvents.add(event);
-		} else {
+		if (tracedEvents.size() >= size) {
 			outputTracedEvents();
 		}
+		tracedEvents.add(event);
 	}
 
 	/**
-	 * Writes the collected event into a file.
+	 * Writes collected events into a file.
 	 */
-	public void outputTracedEvents() {
-		File folder = PathConverter.workspaceToProjectBased(folderName);
-		if (!folder.exists()) {
-			folder.mkdirs();
+	private void outputTracedEvents() {
+		Path path = PathConverter.workspaceToProjectBasedPath(fileSystem,
+				folderName);
+		if (!Files.exists(path)) {
+			try {
+				Files.createDirectories(path);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
-		File file = PathConverter.workspaceToProjectBased(folderName
-				+ Path.SEPARATOR + "t" + (++i) + ".trace");
-		try (OutputStream stream = new BufferedOutputStream(
-				new FileOutputStream(file.getAbsoluteFile()))) {
+		Path file = path.resolve("t" + (++i) + ".trace");
+		try (OutputStream stream = Files.newOutputStream(file)) {
 			xStream.toXML(tracedEvents, stream);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception while opening trace stream.",

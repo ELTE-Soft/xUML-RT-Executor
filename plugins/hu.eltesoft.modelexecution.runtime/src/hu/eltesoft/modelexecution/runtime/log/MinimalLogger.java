@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 /**
  * This logger outputs when state transitions happen.
  */
-public class MinimalLogger extends Logger {
+public class MinimalLogger implements Logger {
 
 	@Override
 	public void eventQueued(Class target, Event event) {

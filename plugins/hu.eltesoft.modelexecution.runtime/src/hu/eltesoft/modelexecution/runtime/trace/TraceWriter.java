@@ -1,28 +1,25 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
-
 /**
  * This tracer serializes incoming events into a file. The file contains no root
- * element, so it can be read while still being written. The serialization is a
- * naive reflection based solution.
+ * element, so it can be read while still being written.
  */
 public class TraceWriter extends Tracer {
 
-	private OutputTraceBuffer output;
-	private static final int TRACE_BUFFER_SIZE = 10;
+	private IOutputTraceBuffer buffer;
 
-	public TraceWriter(String folderName) {
-		output = new OutputTraceBuffer(folderName, TRACE_BUFFER_SIZE);
+	public TraceWriter(IOutputTraceBuffer outputTraceBuffer) {
+		buffer = outputTraceBuffer;
 	}
 	
 	@Override
 	public void traceEvent(TargetedEvent event) {
-		output.traceEvent(event);
+		buffer.traceEvent(event);
 	}
 
 	@Override
 	public void close() throws Exception {
-		output.close();
+		buffer.close();
 	}
 
 }

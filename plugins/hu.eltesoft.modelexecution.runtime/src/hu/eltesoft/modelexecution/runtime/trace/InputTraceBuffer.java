@@ -2,11 +2,13 @@ package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.util.PathConverter;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.thoughtworks.xstream.XStream;
@@ -15,34 +17,39 @@ import com.thoughtworks.xstream.XStream;
  * Collects traces from several XML files in a directory. Puts them in order and
  * loads events from them on demand.
  */
-public class InputTraceBuffer implements AutoCloseable {
+public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 
 	private XStream xStream = new XStream();
 
 	/** Invariant: nonempty while hasMoreElems() is true */
 	private LinkedList<TargetedEvent> tracedEvents = new LinkedList<>();
 
-	public InputTraceBuffer(String inputFolder) {
+	private FileSystem fileSystem;
+
+	public InputTraceBuffer(String inputFolder, FileSystem fileSystem) {
+		this.fileSystem = fileSystem;
 		detectTraceFiles(inputFolder);
 		loadEvents();
 	}
 
-	protected LinkedList<File> traceFiles = new LinkedList<>();
+	protected Iterator<Path> traceFiles = Arrays.asList(new Path[] {})
+			.iterator();
 
 	/**
 	 * Detects all files in the given directory and orders them.
 	 */
 	protected void detectTraceFiles(String inputFolder) {
-		File folder = PathConverter.workspaceToProjectBased(inputFolder);
-		if (folder.exists() && !folder.isDirectory()) {
-			throw new RuntimeException(folder + " exists but not a directory.");
+		Path path = PathConverter.workspaceToProjectBasedPath(fileSystem,
+				inputFolder);
+		if (Files.exists(path) && !Files.isDirectory(path)) {
+			throw new RuntimeException(path + " exists but not a directory.");
 		}
-		if (!folder.exists()) {
-			folder.mkdir();
-		}
-		if (folder.exists() && folder.isDirectory()) {
-			// newDirectoryStream has better performance than File.listFiles().
-			traceFiles = new LinkedList<File>(Arrays.asList(folder.listFiles()));
+		try {
+			if (Files.exists(path)) {
+				traceFiles = Files.list(path).iterator();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot detect trace files", e);
 		}
 	}
 
@@ -51,10 +58,9 @@ public class InputTraceBuffer implements AutoCloseable {
 	 */
 	@SuppressWarnings("unchecked")
 	private void loadEvents() {
-		if (!traceFiles.isEmpty()) {
-			File first = traceFiles.poll();
-			try (BufferedInputStream input = new BufferedInputStream(
-					new FileInputStream(first))) {
+		if (traceFiles.hasNext()) {
+			Path first = traceFiles.next();
+			try (InputStream input = Files.newInputStream(first)) {
 				tracedEvents = (LinkedList<TargetedEvent>) xStream
 						.fromXML(input);
 			} catch (IOException e) {
@@ -63,16 +69,18 @@ public class InputTraceBuffer implements AutoCloseable {
 		}
 	}
 
-	/**
-	 * True, if getTracedEvent() can be called.
+	/* (non-Javadoc)
+	 * @see hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#hasMoreElems()
 	 */
+	@Override
 	public boolean hasMoreElems() {
 		return !tracedEvents.isEmpty();
 	}
 
-	/**
-	 * Takes the next event. If the queue becomes empty loads the next file.
+	/* (non-Javadoc)
+	 * @see hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#getTracedEvent()
 	 */
+	@Override
 	public TargetedEvent getTracedEvent() {
 		TargetedEvent ret = tracedEvents.poll();
 		if (tracedEvents.isEmpty()) {

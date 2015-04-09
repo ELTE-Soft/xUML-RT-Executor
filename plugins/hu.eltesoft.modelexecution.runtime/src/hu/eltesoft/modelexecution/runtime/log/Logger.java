@@ -8,17 +8,16 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
  * has different logging methods that are called from the generated code when a
  * given situation occurs.
  */
-public abstract class Logger implements AutoCloseable {
+public interface Logger extends AutoCloseable {
 
-	public abstract void eventQueued(Class target, Event event);
+	void eventQueued(Class target, Event event);
 
-	public abstract void eventDispatched(Class target, Event event);
+	void eventDispatched(Class target, Event event);
 
-	public abstract void enterState(String state);
+	void enterState(String state);
 
-	public abstract void exitState(String state);
+	void exitState(String state);
 
-	public abstract void transition(String eventName, String source,
-			String target);
+	void transition(String eventName, String source, String target);
 
 }
