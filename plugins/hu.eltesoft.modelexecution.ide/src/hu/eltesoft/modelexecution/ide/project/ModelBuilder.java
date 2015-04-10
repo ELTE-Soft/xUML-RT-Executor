@@ -49,6 +49,8 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	private Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
 
+	private Map<Resource, ChangeListenerM2MTranslator> translatorsFromEmfRes = new HashMap<>();
+
 	private static List<ModelBuilder> builders = new LinkedList<>();
 
 	private ResourceSet resourceSet = new ResourceSetImpl();
@@ -118,6 +120,20 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		for (ModelBuilder modelBuilder : builders) {
 			modelBuilder.hookupChangeListeners();
 		}
+	}
+
+	/**
+	 * Returns the translator of the resource. Will return null, if the
+	 * translator is not set for the resource. {@linkplain initializeBuilders}
+	 * should be called before calling this method.
+	 */
+	public static ChangeListenerM2MTranslator getTranslatorOfEmfRes(Resource res) {
+		for (ModelBuilder modelBuilder : builders) {
+			if (modelBuilder.translatorsFromEmfRes.containsKey(res)) {
+				return modelBuilder.translatorsFromEmfRes.get(res);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -265,6 +281,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
 					.create(engine, new FileManagerTextChangeListener());
 			translators.put(resource, translator);
+			translatorsFromEmfRes.put(res, translator);
 		} catch (IncQueryException e) {
 			IdePlugin.logError("IncQuery engine could not be created.", e);
 		}
