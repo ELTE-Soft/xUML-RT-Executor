@@ -9,7 +9,7 @@ import java.nio.file.Paths;
  * Manager class to write, update and delete Java files according to package
  * hierarchy under a specified root directory.
  */
-public class FileManager {
+public class FileManager implements IFileManager {
 
 	private String rootDirectory;
 	private static final String DEFAULT_ROOT_DIRECTORY = "";
@@ -30,30 +30,17 @@ public class FileManager {
 		}
 	}
 
-	/**
-	 * Set root directory. Contents of the old location will be left intact and
-	 * will not be moved/copied to this new location.
-	 * 
-	 * @param rootDirectory
-	 *            The new path to set.
-	 */
+	@Override
 	public void setRoot(String rootDirectory) {
 		this.rootDirectory = rootDirectory;
 	}
 
-	/**
-	 * @return Returns the current root directory path as string.
-	 */
+	@Override
 	public String getRoot() {
 		return rootDirectory;
 	}
 
-	/**
-	 * @param qualifiedName
-	 *            A fully qualified class name like a.b.cc.Ddd or Aaa
-	 * @param content
-	 *            The content to be written in the file.
-	 */
+	@Override
 	public void addOrUpdate(String qualifiedName, String content)
 			throws IOException {
 		if (null == qualifiedName) {
@@ -65,12 +52,7 @@ public class FileManager {
 		writeContentToFile(content, outFile);
 	}
 
-	/**
-	 * Removes a Java file if possible.
-	 * 
-	 * @param qualifiedName
-	 *            Fully qualified class name of the Java file to be deleted.
-	 */
+	@Override
 	public void remove(String qualifiedName) {
 		if (null == qualifiedName) {
 			return;
@@ -80,12 +62,7 @@ public class FileManager {
 		toDelete.delete();
 	}
 
-	/**
-	 * Remove all files and directories under the root.
-	 * 
-	 * @return Returns true if all files and directories under the root were
-	 *         successfully removed, false otherwise.
-	 */
+	@Override
 	public boolean cleanup() {
 		File root = new File(rootDirectory);
 		File[] listFiles = root.listFiles();

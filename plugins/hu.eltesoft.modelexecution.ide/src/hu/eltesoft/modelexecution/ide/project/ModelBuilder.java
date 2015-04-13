@@ -1,25 +1,21 @@
 package hu.eltesoft.modelexecution.ide.project;
 
-import hu.eltesoft.modelexecution.filemanager.FileManager;
+import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
+import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
-import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
+import hu.eltesoft.modelexecution.ide.util.ResourceAnalyzer;
+import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerTranslatorFactory;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+import hu.eltesoft.modelexecution.m2m.logic.IChangeListenerTranslatorFactory;
+import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -43,31 +39,49 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder";
 
-	private static final String UML_FILE_EXTENSION = "uml";
+	private IFileManagerFactory fileManagerFactory;
 
-	private FileManager fileManager;
+	private BuilderListenerInterface listenerInterface;
 
-	private Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
-
-	private Map<Resource, ChangeListenerM2MTranslator> translatorsFromEmfRes = new HashMap<>();
-
-	private static List<ModelBuilder> builders = new LinkedList<>();
-
+	/**
+	 * Caches resources that are not open in an editor.
+	 */
 	private ResourceSet resourceSet = new ResourceSetImpl();
+
+	private BuilderFileManager builderFileManager;
+
+	private IChangeListenerTranslatorFactory translatorFactory;
+
+	/**
+	 * Default constructor used by Eclipse
+	 */
+	public ModelBuilder() {
+		this(new FileManagerFactory(), new ChangeListenerTranslatorFactory());
+	}
+
+	/**
+	 * A more configurable version.
+	 */
+	public ModelBuilder(IFileManagerFactory fileManagerFactory,
+			IChangeListenerTranslatorFactory translatorFactory) {
+		this.fileManagerFactory = fileManagerFactory;
+		this.translatorFactory = translatorFactory;
+	}
 
 	@Override
 	protected void startupOnInitialize() {
-		builders.add(this);
+		builderFileManager = new BuilderFileManager(getBuiltProject(),
+				fileManagerFactory);
+		listenerInterface = new BuilderListenerInterface(getBuiltProject(),
+				builderFileManager, translatorFactory);
 		super.startupOnInitialize();
 	}
 
 	@Override
-	protected IProject[] build(int kind, Map<String, String> args,
+	public IProject[] build(int kind, Map<String, String> args,
 			IProgressMonitor monitor) throws CoreException {
 
 		TransactionalEditingDomain shared = PapyrusEditorListener.getDomain();
-
-		loadProjectProperties();
 
 		if (shared != null) {
 			// when an editor is present ask exclusive access to the resources
@@ -82,65 +96,39 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		return null;
 	}
 
-	private void loadProjectProperties() {
-		getFileManager().setRoot(getGenSourcePath());
-	}
-
-	private void build(int kind) {
+	public void build(int kind) {
 		if (kind == AUTO_BUILD || kind == INCREMENTAL_BUILD) {
 			incrementalBuild();
 		} else if (kind == FULL_BUILD) {
 			fullBuild();
 		}
-		refreshFolder();
+		builderFileManager.refreshFolder();
 	}
 
 	/**
 	 * Removes and regenerates the codes for the model resources.
 	 */
 	private void fullBuild() {
-		getFileManager().cleanup();
-		hookupChangeListeners();
+		listenerInterface.hookupChangeListeners();
 		FileUpdateTaskQueue queue = new FileUpdateTaskQueue();
-		for (ChangeListenerM2MTranslator translator : translators.values()) {
-			queue.addAll(translator.fullBuild());
+		try {
+			getBuiltProject().accept(res -> {
+				if (ResourceAnalyzer.isModelResource(res)) {
+					queue.addAll(rebuild(res));
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			IdePlugin.logError("Error while rebuilding resources", e);
 		}
 		queue.performAll();
-	}
-
-	/**
-	 * Registers resources for the compilation pipeline for all active builders.
-	 * Without it, the project only supports incremental build after a clean
-	 * operation.
-	 * 
-	 * Should be called after {@linkplain initializeBuilders}.
-	 */
-	public static void hookupAllChangeListeners() {
-		initializeBuilders();
-		for (ModelBuilder modelBuilder : builders) {
-			modelBuilder.hookupChangeListeners();
-		}
-	}
-
-	/**
-	 * Returns the translator of the resource. Will return null, if the
-	 * translator is not set for the resource. {@linkplain initializeBuilders}
-	 * should be called before calling this method.
-	 */
-	public static ChangeListenerM2MTranslator getTranslatorOfEmfRes(Resource res) {
-		for (ModelBuilder modelBuilder : builders) {
-			if (modelBuilder.translatorsFromEmfRes.containsKey(res)) {
-				return modelBuilder.translatorsFromEmfRes.get(res);
-			}
-		}
-		return null;
 	}
 
 	/**
 	 * Forces model builders to be initialized. See
 	 * {@linkplain startupOnInitialize}.
 	 */
-	private static void initializeBuilders() {
+	public static void initializeBuilders() {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		for (IProject project : projects) {
@@ -156,34 +144,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * Registers all uml resources in the project of the builder.
-	 */
-	private void hookupChangeListeners() {
-		try {
-			if (!getProject().isOpen()) {
-				return;
-			}
-			getProject().accept(new IResourceVisitor() {
-				@Override
-				public boolean visit(IResource resource) throws CoreException {
-					if (isModelResource(resource)) {
-						registerResource(resource);
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			IdePlugin
-					.logError("Exception while hooking up model listeners.", e);
-		}
-	}
-
-	/**
 	 * Adds generators for new .uml files and regenerates the content of
 	 * existing .uml files.
 	 */
 	private void incrementalBuild() {
-		IResourceDelta delta = getDelta(getProject());
+		IResourceDelta delta = getDelta(getBuiltProject());
 		FileUpdateTaskQueue rebuild = new FileUpdateTaskQueue();
 		try {
 			delta.accept(new IResourceDeltaVisitor() {
@@ -191,12 +156,12 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED) {
-						if (isModelResource(resource)) {
-							registerResource(resource);
+						if (ResourceAnalyzer.isModelResource(resource)) {
+							listenerInterface.registerResource(resource);
 							rebuild.addAll(rebuild(resource));
 						}
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
-						if (isModelResource(resource)) {
+						if (ResourceAnalyzer.isModelResource(resource)) {
 							rebuild.addAll(rebuild(resource));
 						}
 					}
@@ -215,18 +180,21 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * or simply performs a full build on the resource if not.
 	 */
 	private FileUpdateTaskQueue rebuild(IResource resource) {
+		// FIXME: also register?
 		FileUpdateTaskQueue rebuild = new FileUpdateTaskQueue();
-		if (translators.containsKey(resource)) {
-			rebuild.addAll(translators.get(resource).rebuild());
+		if (listenerInterface.translators.containsKey(resource)) {
+			rebuild.addAll(listenerInterface.translators.get(resource)
+					.rebuild());
 		} else {
 			try {
+				// reads the model resource when it isn't open in an editor
 				URI uri = URI.createFileURI(resource.getLocation().toString());
 				Resource res = resourceSet.getResource(uri, true);
 				if (res != null) {
 					IncQueryEngine engine;
 					engine = IncQueryEngine.on(res);
-					ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
-							.create(engine, new FileManagerTextChangeListener());
+					SimpleM2MTranslator translator = listenerInterface.translatorFactory
+							.createTranslator(engine, builderFileManager);
 					rebuild.addAll(translator.fullBuild());
 				} else {
 					IdePlugin.logError("Resource to rebuild is not found: "
@@ -239,93 +207,8 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		return rebuild;
 	}
 
-	/**
-	 * Refreshes folder after files have been written
-	 */
-	private void refreshFolder() {
-		try {
-			IResource genSourceDir = getProject().findMember(getGenSourceDir());
-			if (genSourceDir != null && genSourceDir.exists()) {
-				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
-			}
-		} catch (CoreException e) {
-			IdePlugin.logError("Exception while refreshing folder.", e);
-		}
-	}
-
-	protected static boolean isModelResource(IResource resource) {
-		return UML_FILE_EXTENSION.equals(resource.getFileExtension());
-	}
-
-	/**
-	 * Rebuilds the code generated from the given resource and registers it for
-	 * accumulating changes.
-	 */
-	protected void registerResource(IResource resource) {
-
-		TransactionalEditingDomain domain = PapyrusEditorListener.getDomain();
-		if (domain == null) {
-			return;
-		}
-
-		URI uri = URI.createPlatformResourceURI(resource.getFullPath()
-				.toString(), false);
-		Resource res = domain.getResourceSet().getResource(uri, true);
-
-		if (res == null) {
-			IdePlugin.logError("Resource does not exist: " + uri);
-			return;
-		}
-		try {
-			IncQueryEngine engine = IncQueryEngine.on(res);
-			ChangeListenerM2MTranslator translator = ChangeListenerM2MTranslator
-					.create(engine, new FileManagerTextChangeListener());
-			translators.put(resource, translator);
-			translatorsFromEmfRes.put(res, translator);
-		} catch (IncQueryException e) {
-			IdePlugin.logError("IncQuery engine could not be created.", e);
-		}
-	}
-
-	/**
-	 * Uses the fileManager to apply textual changes in generated files.
-	 */
-	private final class FileManagerTextChangeListener implements
-			TextChangesListener {
-		@Override
-		public void contentDeleted(String fileName) {
-			getFileManager().remove(fileName);
-		}
-
-		@Override
-		public void contentChanged(String fileName, SourceMappedText output,
-				DebugSymbols symbols) {
-			try {
-				getFileManager().addOrUpdate(fileName,
-						output.getText().toString());
-			} catch (IOException e) {
-				IdePlugin.logError("Error while writing file: " + fileName, e);
-			}
-		}
-	}
-
-	private FileManager getFileManager() {
-		if (fileManager == null) {
-			fileManager = new FileManager(getGenSourcePath());
-		}
-		return fileManager;
-	}
-
-	/**
-	 * Gets the full file-system dependent path to the directory of the
-	 * generated sources.
-	 */
-	private String getGenSourcePath() {
-		return getProject().getLocation().append(getGenSourceDir()).toString();
-	}
-
-	private String getGenSourceDir() {
-		return ExecutableModelProperties.getSourceGenPath(getProject());
+	protected IProject getBuiltProject() {
+		return getProject();
 	}
 
 }

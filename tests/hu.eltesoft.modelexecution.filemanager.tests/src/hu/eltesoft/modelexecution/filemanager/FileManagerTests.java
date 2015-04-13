@@ -21,7 +21,7 @@ public class FileManagerTests {
 	private static String testFile = "Test.java";
 	private static String testContent = "test\ncontent";
 	private static String testDirPrefix = "filemanager_test_";
-	private static FileManager manager;
+	private static IFileManager manager;
 
 	@BeforeClass
 	public static void setUp() {
