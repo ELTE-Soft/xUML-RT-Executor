@@ -27,8 +27,9 @@ public class TestRuntime extends BaseRuntime {
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
 
-	public TestRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
-		super(tracer, traceReader, logger);
+	public TestRuntime(ClassLoader classLoader, Tracer tracer,
+			TraceReader traceReader, Logger logger) {
+		super(classLoader, tracer, traceReader, logger);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -48,7 +49,8 @@ public class TestRuntime extends BaseRuntime {
 				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]));
 				break;
 			case OPTION_READ_TRACE:
-				traceReader = new TraceReplayer(getDefaultInputTraceBuffer(args[++i]));
+				traceReader = new TraceReplayer(
+						getDefaultInputTraceBuffer(args[++i]));
 				break;
 			case OPTION_LOG:
 				logger = new MinimalLogger();
@@ -60,7 +62,8 @@ public class TestRuntime extends BaseRuntime {
 			}
 		}
 
-		new TestRuntime(tracer, traceReader, logger).run(clsName, feedName);
+		new TestRuntime(TestRuntime.class.getClassLoader(), tracer,
+				traceReader, logger).run(clsName, feedName);
 	}
 
 	/**
@@ -69,8 +72,9 @@ public class TestRuntime extends BaseRuntime {
 	public static Tracer getDefaultTraceWriter(String inputFolder) {
 		return new TraceWriter(getDefaultOutputTraceBuffer(inputFolder));
 	}
-	
-	private static OutputTraceBuffer getDefaultOutputTraceBuffer(String folderName) {
+
+	private static OutputTraceBuffer getDefaultOutputTraceBuffer(
+			String folderName) {
 		return new OutputTraceBuffer(folderName, DEFAULT_OUTPUT_BUFFER_SIZE,
 				defaultFileSystem());
 	}
@@ -82,7 +86,8 @@ public class TestRuntime extends BaseRuntime {
 		return new TraceReplayer(getDefaultInputTraceBuffer(inputFolder));
 	}
 
-	private static InputTraceBuffer getDefaultInputTraceBuffer(String inputFolder) {
+	private static InputTraceBuffer getDefaultInputTraceBuffer(
+			String inputFolder) {
 		return new InputTraceBuffer(inputFolder, defaultFileSystem());
 	}
 

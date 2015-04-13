@@ -12,14 +12,12 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class BaseRuntimeTest {
 
 	Mockery context = new Mockery();
 
-	@Ignore("ClassNotFoundException because the tester does not use the same classloader as MockClass")
 	@Test
 	public void testRun() throws Exception {
 
@@ -27,8 +25,9 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		Runtime sut = new BaseRuntimeExtension(tracerMock, readerMock,
-				loggerMock);
+		Runtime sut = new BaseRuntime(getClass().getClassLoader(), tracerMock,
+				readerMock, loggerMock) {
+		};
 
 		context.checking(new Expectations() {
 			{
@@ -43,7 +42,6 @@ public class BaseRuntimeTest {
 		sut.run(MockClass.class.getCanonicalName(), "emptyFeed");
 	}
 
-	@Ignore("ClassNotFoundException because the tester does not use the same classloader as MockClass")
 	@Test
 	public void testRun_eventFeeded() throws Exception {
 
@@ -51,7 +49,8 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		Runtime sut = new BaseRuntime(tracerMock, readerMock, loggerMock) {
+		Runtime sut = new BaseRuntime(getClass().getClassLoader(), tracerMock,
+				readerMock, loggerMock) {
 		};
 
 		context.checking(new Expectations() {

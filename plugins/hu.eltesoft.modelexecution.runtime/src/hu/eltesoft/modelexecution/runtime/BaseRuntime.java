@@ -25,8 +25,14 @@ public abstract class BaseRuntime implements Runtime {
 	private Tracer traceWriter;
 	private TraceReader traceReader;
 	private Logger logger;
+	private ClassLoader classLoader;
 
 	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
+		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
+	}
+	
+	public BaseRuntime(ClassLoader classLoader, Tracer tracer, TraceReader traceReader, Logger logger) {
+		this.classLoader = classLoader;
 		this.traceWriter = tracer;
 		this.traceReader = traceReader;
 		this.logger = logger;
@@ -65,7 +71,7 @@ public abstract class BaseRuntime implements Runtime {
 			throws ClassNotFoundException, NoSuchMethodException,
 			InstantiationException, IllegalAccessException,
 			InvocationTargetException {
-		java.lang.Class<?> classClass = java.lang.Class.forName(className);
+		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
 		Class classInstance = (Class) constructor.newInstance(this);
 		classInstance.init();

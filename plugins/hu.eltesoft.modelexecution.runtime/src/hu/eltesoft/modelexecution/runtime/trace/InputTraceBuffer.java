@@ -27,6 +27,11 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 	private FileSystem fileSystem;
 
 	public InputTraceBuffer(String inputFolder, FileSystem fileSystem) {
+		this(InputTraceBuffer.class.getClassLoader(), inputFolder, fileSystem);
+	}
+	
+	public InputTraceBuffer(ClassLoader classLoader, String inputFolder, FileSystem fileSystem) {
+		xStream.setClassLoader(classLoader);
 		this.fileSystem = fileSystem;
 		detectTraceFiles(inputFolder);
 		loadEvents();
