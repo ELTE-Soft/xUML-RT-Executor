@@ -51,7 +51,7 @@ public class InputTraceBufferTest {
 				traceFolderName).toString();
 		int numEvents = 3;
 		writeTraceFiles(folderName, 10, numEvents);
-		InputTraceBuffer sut = new InputTraceBuffer(folderName, fs);
+		InputTraceBuffer sut = new InputTraceBuffer(getClass().getClassLoader(), folderName, fs);
 		checkElems(numEvents, sut);
 		sut.close();
 	}
@@ -63,7 +63,7 @@ public class InputTraceBufferTest {
 				traceFolderName).toString();
 		int numEvents = 10;
 		writeTraceFiles(folderName, 3, numEvents);
-		InputTraceBuffer sut = new InputTraceBuffer(folderName, fs);
+		InputTraceBuffer sut = new InputTraceBuffer(getClass().getClassLoader(), folderName, fs);
 		checkElems(numEvents, sut);
 		sut.close();
 	}
