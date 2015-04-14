@@ -160,7 +160,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 			// (add transitions to states)
 			transitionMatcher.forEachMatch(source, null, null, null, null,
-					null, getProcessorToSetTransitionsOfState());
+					getProcessorToSetTransitionsOfState());
 
 		}
 
@@ -214,8 +214,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 				@Override
 				public void process(Region pRegion, State pSource,
-						Transition pTransition, String pTransitionName,
-						String pEventName, State pTarget) {
+						Transition pTransition, String pEventName, State pTarget) {
 
 					RgState rgState = manager.get(pSource);
 

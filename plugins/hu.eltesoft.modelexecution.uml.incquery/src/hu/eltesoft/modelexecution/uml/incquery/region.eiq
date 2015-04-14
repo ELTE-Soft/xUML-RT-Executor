@@ -41,13 +41,11 @@ pattern Exit(region : Region, state : State, exitName) {
 }
 
 pattern
-Transition(region : Region, source : State, transition : Transition, transitionName, eventName, target : State) {
+Transition(region : Region, source : State, transition : Transition, eventName, target : State) {
 	Transition.container(transition, region);
 
 	Transition.source(transition, source);
 	Transition.target(transition, target);
-
-	Transition.name(transition, transitionName);
 
 	Transition.trigger(transition, trigger);
 	Trigger.event(trigger, event);
