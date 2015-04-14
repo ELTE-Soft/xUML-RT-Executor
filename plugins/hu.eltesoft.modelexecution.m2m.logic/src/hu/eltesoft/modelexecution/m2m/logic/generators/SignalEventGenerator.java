@@ -21,11 +21,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.SignalEvent;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class SignalEventGenerator extends
 		AbstractGenerator<SignalEvent, EvSignalEvent> {
 

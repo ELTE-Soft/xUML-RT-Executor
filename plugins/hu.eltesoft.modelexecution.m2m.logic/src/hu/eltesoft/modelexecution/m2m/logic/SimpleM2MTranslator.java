@@ -13,7 +13,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * model is created and managed, the implementations of this interface are
  * <i>not</i> thread-safe.
  * 
- * @author Gábor Ferenc Kovács
  * @see ChangeListenerM2MTranslator
  *
  */

@@ -24,11 +24,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
 	private static final BehaviorFactory FACTORY = BehaviorFactory.eINSTANCE;

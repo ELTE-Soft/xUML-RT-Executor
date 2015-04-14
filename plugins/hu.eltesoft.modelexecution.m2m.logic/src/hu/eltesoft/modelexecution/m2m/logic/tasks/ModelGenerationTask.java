@@ -8,9 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * A task to generate a translation model.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 

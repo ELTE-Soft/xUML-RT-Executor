@@ -10,9 +10,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * A change registry to record changes in the model and perform them later.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public interface ChangeRegistry {
 
