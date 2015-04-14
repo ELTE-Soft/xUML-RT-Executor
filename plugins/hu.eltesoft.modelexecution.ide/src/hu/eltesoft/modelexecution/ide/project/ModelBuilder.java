@@ -4,7 +4,6 @@ import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
-import hu.eltesoft.modelexecution.ide.util.ResourceAnalyzer;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerTranslatorFactory;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.IChangeListenerTranslatorFactory;
@@ -113,9 +112,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		FileUpdateTaskQueue queue = new FileUpdateTaskQueue();
 		try {
 			getBuiltProject().accept(res -> {
-				if (ResourceAnalyzer.isModelResource(res)) {
-					queue.addAll(rebuild(res));
-				}
+				queue.addAll(rebuild(res));
 				return true;
 			});
 		} catch (CoreException e) {
@@ -156,14 +153,10 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED) {
-						if (ResourceAnalyzer.isModelResource(resource)) {
-							listenerInterface.registerResource(resource);
-							rebuild.addAll(rebuild(resource));
-						}
+						listenerInterface.registerResource(resource);
+						rebuild.addAll(rebuild(resource));
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
-						if (ResourceAnalyzer.isModelResource(resource)) {
-							rebuild.addAll(rebuild(resource));
-						}
+						rebuild.addAll(rebuild(resource));
 					}
 					return true;
 				}
@@ -189,7 +182,13 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			try {
 				// reads the model resource when it isn't open in an editor
 				URI uri = URI.createFileURI(resource.getLocation().toString());
-				Resource res = resourceSet.getResource(uri, true);
+				Resource res;
+				try {
+					res = resourceSet.getResource(uri, true);
+				} catch (Exception e) {
+					// probably not a model resource
+					return rebuild;
+				}
 				if (res != null) {
 					IncQueryEngine engine;
 					engine = IncQueryEngine.on(res);

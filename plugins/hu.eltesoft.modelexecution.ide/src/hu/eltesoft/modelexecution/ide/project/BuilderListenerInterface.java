@@ -2,7 +2,6 @@ package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
-import hu.eltesoft.modelexecution.ide.util.ResourceAnalyzer;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.IChangeListenerTranslatorFactory;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
@@ -32,7 +31,8 @@ public class BuilderListenerInterface {
 	private TextChangesListener textChangesListener;
 
 	public BuilderListenerInterface(IProject builtProject,
-			TextChangesListener textChangesListener, IChangeListenerTranslatorFactory translatorFactory) {
+			TextChangesListener textChangesListener,
+			IChangeListenerTranslatorFactory translatorFactory) {
 		this.project = builtProject;
 		this.textChangesListener = textChangesListener;
 		this.translatorFactory = translatorFactory;
@@ -66,9 +66,7 @@ public class BuilderListenerInterface {
 			project.accept(new IResourceVisitor() {
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					if (ResourceAnalyzer.isModelResource(resource)) {
-						registerResource(resource);
-					}
+					registerResource(resource);
 					return true;
 				}
 			});
@@ -90,8 +88,13 @@ public class BuilderListenerInterface {
 
 		URI uri = URI.createPlatformResourceURI(resource.getFullPath()
 				.toString(), false);
-		Resource res = domain.getResourceSet().getResource(uri, true);
-
+		Resource res;
+		try {
+			res = domain.getResourceSet().getResource(uri, true);
+		} catch (Exception e) {
+			// probably not a model resource
+			return;
+		}
 		if (res == null) {
 			IdePlugin.logError("Resource does not exist: " + uri);
 			return;
