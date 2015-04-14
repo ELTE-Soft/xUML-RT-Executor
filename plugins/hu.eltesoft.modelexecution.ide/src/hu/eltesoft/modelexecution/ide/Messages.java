@@ -4,12 +4,14 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.messages"; //$NON-NLS-1$
+	public static String ClasspathRuntimeLibrary_model_execution_classpath_library;
 	public static String ExecutableModelProjectWizard_create_new_project_description;
 	public static String ExecutableModelProjectWizard_create_new_project_error_text;
 	public static String ExecutableModelProjectWizard_create_new_project_error_title;
 	public static String ExecutableModelProjectWizard_create_new_project_name;
 	public static String ExecutableModelProjectWizard_create_new_project_title;
 	public static String ExecutableModelPropertiesPage_project_properties_folder_for_generated_sources_label;
+	public static String IdePlugin_logger_start_msg;
 	public static String LaunchConfigurationMainTab_launch_config_main_tab_caption;
 	public static String LaunchConfigurationMainTab_select_class_button_text;
 	public static String LaunchConfigurationMainTab_select_class_dialog_title;

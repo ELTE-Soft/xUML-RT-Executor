@@ -24,7 +24,7 @@ public class ExecutableModelLaunchDelegate implements
 			try {
 				mokaDelegate.launch(configuration, mode, launch, monitor);
 			} catch (Exception e) {
-				IdePlugin.logError("Unable to launch moka delegate", e);
+				IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 			}
 		}
 		javaDelegate.launch(configuration, mode, launch, monitor);

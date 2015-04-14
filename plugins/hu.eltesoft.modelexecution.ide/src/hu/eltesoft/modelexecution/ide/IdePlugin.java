@@ -39,7 +39,7 @@ public class IdePlugin extends AbstractUIPlugin implements IStartup {
 		IdePlugin.log = Platform.getLog(getBundle());
 		ModelBuilder.initializeBuilders();
 		BuilderListenerInterface.hookupAllChangeListeners();
-		logInfo("IdePlugin logger started");
+		logInfo(Messages.IdePlugin_logger_start_msg);
 	}
 
 }

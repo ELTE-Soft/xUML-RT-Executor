@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
  */
 public class ExecutableModelProperties {
 
-	private static final String SOURCE_GEN_PATH_PROPERTY_NAME = "sourceGenPath";
+	private static final String SOURCE_GEN_PATH_PROPERTY_NAME = "sourceGenPath"; //$NON-NLS-1$
 
-	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src";
+	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src"; //$NON-NLS-1$
 
 	public static IEclipsePreferences getProperties(IProject project) {
 		IScopeContext projectScope = new ProjectScope(project);

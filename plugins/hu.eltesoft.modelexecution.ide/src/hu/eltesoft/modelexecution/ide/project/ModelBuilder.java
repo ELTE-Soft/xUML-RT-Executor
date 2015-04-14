@@ -37,7 +37,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  */
 public class ModelBuilder extends IncrementalProjectBuilder {
 
-	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder";
+	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder"; //$NON-NLS-1$
 
 	private IFileManagerFactory fileManagerFactory;
 
@@ -119,7 +119,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				return true;
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while rebuilding resources", e);
+			IdePlugin.logError("Error while rebuilding resources", e); //$NON-NLS-1$
 		}
 		queue.performAll();
 	}
@@ -138,7 +138,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					project.build(AUTO_BUILD, null);
 				}
 			} catch (CoreException e) {
-				IdePlugin.logError("Cannot initialize builders", e);
+				IdePlugin.logError("Cannot initialize builders", e); //$NON-NLS-1$
 			}
 		}
 	}
@@ -170,7 +170,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			});
 			rebuild.performAll();
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while incremental build.", e);
+			IdePlugin.logError("Exception while incremental build.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -197,11 +197,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 							.createTranslator(engine, builderFileManager);
 					rebuild.addAll(translator.fullBuild());
 				} else {
-					IdePlugin.logError("Resource to rebuild is not found: "
+					IdePlugin.logError("Resource to rebuild is not found: " //$NON-NLS-1$
 							+ resource);
 				}
 			} catch (IncQueryException e) {
-				IdePlugin.logError("Error while rebuilding resource", e);
+				IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 			}
 		}
 		return rebuild;

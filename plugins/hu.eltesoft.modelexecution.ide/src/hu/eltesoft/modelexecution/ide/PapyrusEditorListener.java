@@ -12,7 +12,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
  */
 public class PapyrusEditorListener extends ResourceSetListenerImpl {
 
-	public static final String EDITING_DOMAIN = "hu.eltesoft.modelexecution.editingDomain";
+	public static final String EDITING_DOMAIN = "hu.eltesoft.modelexecution.editingDomain"; //$NON-NLS-1$
 
 	@Override
 	public void setTarget(TransactionalEditingDomain domain) {

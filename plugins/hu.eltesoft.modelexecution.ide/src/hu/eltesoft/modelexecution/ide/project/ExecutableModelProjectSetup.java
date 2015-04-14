@@ -1,10 +1,7 @@
 package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.runtime.RuntimePlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,30 +11,25 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.internal.launching.StandardVMType;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
-import org.osgi.framework.Bundle;
 
 /**
  * Initializes the executable model project. Sets attributes that are not
  * directly related to {@linkplain ExecutableModelNature}. Creates the projects,
  * its folders, the build path and a sample launch config.
  */
+@SuppressWarnings("restriction")
 public class ExecutableModelProjectSetup {
 
-	private static final String PLUGIN_3PP_ID = "hu.eltesoft.modelexecution.3pp";
+	private static final String JAVA_SE_VERSION = "JavaSE-1.8";
 
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin";
-
-	private static final String DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER = "bin";
 
 	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src";
 
@@ -94,67 +86,21 @@ public class ExecutableModelProjectSetup {
 			String sourceFolder) {
 		try {
 			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-			addSystemLibrariesToCP(entries);
 			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
 					sourceFolder)));
-			addPluginCPEntry(entries, RuntimePlugin.PLUGIN_ID,
-					BinFolder.HasBinFolder);
-			addPluginCPEntry(entries, PLUGIN_3PP_ID, BinFolder.NoBinFolder);
-			// add libs to project class path
+			IClasspathEntry jreEntry = JavaCore.newContainerEntry(JavaRuntime
+					.newDefaultJREContainerPath()
+					.append(StandardVMType.ID_STANDARD_VM_TYPE)
+					.append(JAVA_SE_VERSION));
+			entries.add(jreEntry);
+			IClasspathEntry containerEntry = JavaCore
+					.newContainerEntry(new Path(
+							ClasspathRuntimeLibrary.CONTAINER_ID));
+			entries.add(containerEntry);
 			javaProject.setRawClasspath(
 					entries.toArray(new IClasspathEntry[entries.size()]), null);
-		} catch (IOException | JavaModelException e) {
+		} catch (JavaModelException e) {
 			IdePlugin.logError("Cannot setup class path", e);
 		}
 	}
-
-	private static void addSystemLibrariesToCP(List<IClasspathEntry> entries) {
-		IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-		LibraryLocation[] locations = JavaRuntime
-				.getLibraryLocations(vmInstall);
-		for (LibraryLocation element : locations) {
-			entries.add(JavaCore.newLibraryEntry(
-					element.getSystemLibraryPath(), null, null));
-		}
-	}
-
-	/**
-	 * Marks if the plugin that is put on the build path of the generated
-	 * projects has a bin folder or binaries are placed in project root.
-	 */
-	private enum BinFolder {
-		HasBinFolder, NoBinFolder
-	}
-
-	/**
-	 * Adds a plugin as a classpath entry to the generated project.
-	 */
-	private static void addPluginCPEntry(List<IClasspathEntry> entries,
-			String pluginId, BinFolder binFolder) throws IOException {
-		File pluginJar = getPluginCPEntry(pluginId, binFolder);
-		entries.add(JavaCore.newLibraryEntry(
-				new Path(pluginJar.getAbsolutePath()), null,
-				new Path(String.valueOf(Path.SEPARATOR))));
-	}
-
-	private static File getPluginCPEntry(String pluginId, BinFolder binFolder)
-			throws IOException {
-		Bundle bundle = Platform.getBundle(pluginId);
-		File bundleFile = FileLocator.getBundleFile(bundle);
-		if (bundleFile.isDirectory()) {
-			// development run: use class files
-			if (binFolder == BinFolder.HasBinFolder) {
-				return bundleFile.toPath()
-						.resolve(DEVELOPMENT_ENVIRONMENT_OUTPUT_FOLDER)
-						.toFile();
-			} else {
-				return bundleFile;
-			}
-		} else {
-			// product: use jar file
-			return bundleFile;
-		}
-
-	}
-
 }
