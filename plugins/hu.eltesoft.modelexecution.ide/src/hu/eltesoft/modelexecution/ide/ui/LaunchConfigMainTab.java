@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.uml2.uml.Class;
@@ -127,7 +128,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			TreeSelectorDialog dialog = new TreeSelectorDialog(getShell());
 			dialog.setTitle(Messages.LaunchConfigurationMainTab_select_model_dialog_title);
 			WorkspaceContentProvider content = new WorkspaceContentProvider();
-			HashMap<String, String> extensions = new HashMap<String,String>();
+			HashMap<String, String> extensions = new HashMap<String, String>();
 			extensions.put(".uml", "(.uml) UML Model resource");
 			extensions.put("*", "(*) All files and folders");
 			content.setExtensionFilters(extensions);
@@ -148,7 +149,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				URI uri = URI.createFileURI(selectedModelResource.getLocation()
 						.toString());
 				resource = resourceSet.getResource(uri, true);
-				
+
 				initMatchers();
 				updateDialog();
 			}
@@ -209,11 +210,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				classMatcher.getAllMatches().forEach(
 						m -> classes.add(m.getCls()));
 
-				ListSelectionDialog dialog = new ListSelectionDialog(
-						getShell(),
-						classes.toArray(new Object[classes.size()]),
-						new ArrayContentProvider(), new EMFLabelProvider(),
-						null);
+				ListDialog dialog = new ListDialog(getShell());
+				dialog.setInput(classes.toArray(new Object[classes.size()]));
+				dialog.setLabelProvider(new EMFLabelProvider());
+				dialog.setContentProvider(new ArrayContentProvider());
 				dialog.setTitle(Messages.LaunchConfigurationMainTab_select_class_dialog_title);
 
 				dialog.open();
@@ -264,10 +264,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				methodMatcher.getAllMatches(selectedClass, null, null).forEach(
 						m -> functions.add(m.getOperation()));
 
-				ListSelectionDialog dialog = new ListSelectionDialog(
-						getShell(), functions.toArray(new Object[functions
-								.size()]), new ArrayContentProvider(),
-						new EMFLabelProvider(), null);
+				ListDialog dialog = new ListDialog(getShell());
+				dialog.setInput(functions.toArray(new Object[functions.size()]));
+				dialog.setLabelProvider(new EMFLabelProvider());
+				dialog.setContentProvider(new ArrayContentProvider());
+
 				dialog.setTitle(Messages.LaunchConfigurationMainTab_select_feed_dialog_title);
 
 				dialog.open();
