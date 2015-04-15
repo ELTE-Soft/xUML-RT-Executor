@@ -77,8 +77,11 @@ public class ClasspathRuntimeLibrary extends ClasspathContainerInitializer {
 					File bundleFile = FileLocator.getBundleFile(bundlePath
 							.getKey());
 					IPath bundleClasspath = new Path(
-							bundleFile.getAbsolutePath()).append(bundlePath
-							.getValue().toString());
+							bundleFile.getAbsolutePath());
+					if (!bundleFile.isFile()) {
+						bundleClasspath = bundleClasspath.append(bundlePath
+								.getValue().toString());
+					}
 					IClasspathEntry entry = JavaCore.newLibraryEntry(
 							bundleClasspath, null, null, new IAccessRule[0],
 							new IClasspathAttribute[0], false);
