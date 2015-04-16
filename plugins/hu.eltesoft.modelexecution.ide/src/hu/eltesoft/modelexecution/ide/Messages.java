@@ -14,6 +14,10 @@ public class Messages extends NLS {
 	public static String ExecutableModelProjectWizard_create_new_project_title;
 	public static String ExecutableModelPropertiesPage_project_properties_folder_for_generated_sources_label;
 	public static String IdePlugin_logger_start_msg;
+	public static String LaunchConfigMainTab_all_extensions_filter;
+	public static String LaunchConfigMainTab_model_not_in_execution_project_caption;
+	public static String LaunchConfigMainTab_model_not_in_execution_project_text;
+	public static String LaunchConfigMainTab_uml_extension_filter;
 	public static String LaunchConfigurationMainTab_launch_config_main_tab_caption;
 	public static String LaunchConfigurationMainTab_select_class_button_text;
 	public static String LaunchConfigurationMainTab_select_class_dialog_title;

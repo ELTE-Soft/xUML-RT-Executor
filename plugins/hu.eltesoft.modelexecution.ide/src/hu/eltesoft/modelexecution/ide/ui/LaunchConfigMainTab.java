@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.ui;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.papyrus.infra.emf.providers.EMFLabelProvider;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
@@ -128,8 +130,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			dialog.setTitle(Messages.LaunchConfigurationMainTab_select_model_dialog_title);
 			WorkspaceContentProvider content = new WorkspaceContentProvider();
 			HashMap<String, String> extensions = new HashMap<String, String>();
-			extensions.put(".uml", "(.uml) UML Model resource");
-			extensions.put("*", "(*) All files and folders");
+			extensions.put(
+					".uml", Messages.LaunchConfigMainTab_uml_extension_filter); //$NON-NLS-1$
+			extensions.put(
+					"*", Messages.LaunchConfigMainTab_all_extensions_filter); //$NON-NLS-1$
 			content.setExtensionFilters(extensions);
 			dialog.setContentProvider(content);
 			dialog.setLabelProvider(WorkbenchLabelProvider
@@ -142,15 +146,29 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			Object[] selection = dialog.getResult();
 			if (selectionIsOk(dialog, selection)) {
 				selectedModelResource = (IFile) selection[0];
-				selectedModelField.setText(selectedModelResource.getFullPath()
-						.toString());
-				registerUMLPackageAndExtension();
-				URI uri = URI.createFileURI(selectedModelResource.getLocation()
-						.toString());
-				resource = resourceSet.getResource(uri, true);
+				try {
+					if (selectedModelResource.getProject().hasNature(
+							ExecutableModelNature.NATURE_ID)) {
+						selectedModelField.setText(selectedModelResource
+								.getFullPath().toString());
+						registerUMLPackageAndExtension();
+						URI uri = URI.createFileURI(selectedModelResource
+								.getLocation().toString());
+						resource = resourceSet.getResource(uri, true);
 
-				initMatchers();
-				updateDialog();
+						initMatchers();
+						updateDialog();
+					} else {
+						MessageDialog
+								.openError(
+										getShell(),
+										Messages.LaunchConfigMainTab_model_not_in_execution_project_caption,
+										Messages.LaunchConfigMainTab_model_not_in_execution_project_text);
+					}
+				} catch (CoreException e) {
+					IdePlugin.logError(
+							"Error while checking model for execution", e);
+				}
 			}
 		}
 
@@ -319,7 +337,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 			}
 		} catch (Exception e) {
-			IdePlugin.logError("Cannot initialize from configuration", e);
+			IdePlugin.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
 		}
 	}
 
@@ -390,7 +408,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
 					argsBuilder.toString());
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot setup launch args", e);
+			IdePlugin.logError("Cannot setup launch args", e); //$NON-NLS-1$
 		}
 	}
 
@@ -405,7 +423,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			classMatcher = ClsMatcher.on(engine);
 			methodMatcher = MethodMatcher.on(engine);
 		} catch (IncQueryException e) {
-			IdePlugin.logError("Problem while creating IncQuery engine", e);
+			IdePlugin.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
 		}
 	}
 
