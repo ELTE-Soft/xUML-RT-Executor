@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
+import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.util.PathConverter;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 				traceFiles = Files.list(path).iterator();
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("Cannot detect trace files", e);
+			BaseRuntime.logError("Cannot detect trace files", e);
 		}
 	}
 
@@ -69,7 +70,8 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 				tracedEvents = (LinkedList<TargetedEvent>) xStream
 						.fromXML(input);
 			} catch (IOException e) {
-				e.printStackTrace();
+				// this problem should shut down the execution
+				throw new RuntimeException(e);
 			}
 		}
 	}

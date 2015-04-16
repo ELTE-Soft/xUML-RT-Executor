@@ -1,7 +1,12 @@
 package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +16,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -27,11 +33,15 @@ import org.eclipse.jdt.launching.JavaRuntime;
 @SuppressWarnings("restriction")
 public class ExecutableModelProjectSetup {
 
-	private static final String JAVA_SE_VERSION = "JavaSE-1.8";
+	private static final String JAVA_SE_VERSION = "JavaSE-1.8"; //$NON-NLS-1$
 
-	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin";
+	public static final IPath JRE_CONTAINER_PATH = JavaRuntime
+			.newDefaultJREContainerPath()
+			.append(StandardVMType.ID_STANDARD_VM_TYPE).append(JAVA_SE_VERSION);
 
-	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src";
+	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin"; //$NON-NLS-1$
+
+	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src"; //$NON-NLS-1$
 
 	public static void createProject(String projectName) throws CoreException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -50,7 +60,19 @@ public class ExecutableModelProjectSetup {
 
 		createBinFolder(project, javaProject);
 		createGenSourceFolder(project, DEFAULT_SOURCE_GEN_PATH);
+		createLoggingPropertiesFile(project);
 		setupClassPath(javaProject, DEFAULT_SOURCE_GEN_PATH);
+	}
+
+	private static void createLoggingPropertiesFile(IProject project) {
+		File createdLoggingPropsFile = project.getLocation().append(Messages.ExecutableModelProjectSetup_default_logging_properties_file_location).toFile();
+		try (OutputStreamWriter stream = new OutputStreamWriter(
+				new FileOutputStream(createdLoggingPropsFile))) {
+			createdLoggingPropsFile.createNewFile();
+			stream.append(Messages.ExecutableModelProjectSetup_default_logging_properties_file);
+		} catch (IOException e) {
+			IdePlugin.logError("Error while creating logging properties file.", e); //$NON-NLS-1$
+		}
 	}
 
 	private static void setProjectNatures(IProject project)
@@ -77,7 +99,7 @@ public class ExecutableModelProjectSetup {
 		try {
 			sourceFolder.create(false, true, null);
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while creating folder.", e);
+			IdePlugin.logError("Error while creating folder.", e); //$NON-NLS-1$
 		}
 		return sourceFolder;
 	}
@@ -88,10 +110,8 @@ public class ExecutableModelProjectSetup {
 			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
 			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(
 					sourceFolder)));
-			IClasspathEntry jreEntry = JavaCore.newContainerEntry(JavaRuntime
-					.newDefaultJREContainerPath()
-					.append(StandardVMType.ID_STANDARD_VM_TYPE)
-					.append(JAVA_SE_VERSION));
+			IClasspathEntry jreEntry = JavaCore
+					.newContainerEntry(JRE_CONTAINER_PATH);
 			entries.add(jreEntry);
 			IClasspathEntry containerEntry = JavaCore
 					.newContainerEntry(new Path(
@@ -100,7 +120,7 @@ public class ExecutableModelProjectSetup {
 			javaProject.setRawClasspath(
 					entries.toArray(new IClasspathEntry[entries.size()]), null);
 		} catch (JavaModelException e) {
-			IdePlugin.logError("Cannot setup class path", e);
+			IdePlugin.logError("Cannot setup class path", e); //$NON-NLS-1$
 		}
 	}
 }

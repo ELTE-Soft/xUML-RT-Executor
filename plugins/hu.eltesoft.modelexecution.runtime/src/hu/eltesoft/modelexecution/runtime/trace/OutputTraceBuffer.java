@@ -69,8 +69,8 @@ public class OutputTraceBuffer implements IOutputTraceBuffer {
 		try (OutputStream stream = Files.newOutputStream(file)) {
 			xStream.toXML(tracedEvents, stream);
 		} catch (IOException e) {
-			throw new RuntimeException("Exception while opening trace stream.",
-					e);
+			// this problem should shut down the execution
+			throw new RuntimeException(e);
 		}
 		tracedEvents.clear();
 	}

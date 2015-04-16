@@ -26,12 +26,15 @@ public abstract class BaseRuntime implements Runtime {
 	private TraceReader traceReader;
 	private Logger logger;
 	private ClassLoader classLoader;
+	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
+			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime");
 
 	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
 		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
 	}
-	
-	public BaseRuntime(ClassLoader classLoader, Tracer tracer, TraceReader traceReader, Logger logger) {
+
+	public BaseRuntime(ClassLoader classLoader, Tracer tracer,
+			TraceReader traceReader, Logger logger) {
 		this.classLoader = classLoader;
 		this.traceWriter = tracer;
 		this.traceReader = traceReader;
@@ -50,21 +53,28 @@ public abstract class BaseRuntime implements Runtime {
 	 */
 	@Override
 	public void run(String className, String feedName) throws Exception {
-		prepare(className, feedName);
-		while (!queue.isEmpty() || traceReader.hasEvent()) {
-			if (!queue.isEmpty()) {
-				TargetedEvent currQueueEvent = queue.peek();
-				if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
-					queue.poll();
-					traceWriter.traceEvent(currQueueEvent);
+		try {
+			prepare(className, feedName);
+			while (!queue.isEmpty() || traceReader.hasEvent()) {
+				if (!queue.isEmpty()) {
+					TargetedEvent currQueueEvent = queue.peek();
+					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
+						queue.poll();
+						traceWriter.traceEvent(currQueueEvent);
+					}
+				} else {
+					traceReader.dispatchEvent(logger);
 				}
-			} else {
-				traceReader.dispatchEvent(logger);
 			}
+		} catch (Exception e) {
+			logError(e);
+			System.err
+					.println("\nThe system was shut down due to an unexpected problem. Please consult with the developers about the issue.");
+		} finally {
+			traceWriter.close();
+			traceReader.close();
+			logger.close();
 		}
-		traceWriter.close();
-		traceReader.close();
-		logger.close();
 	}
 
 	private void prepare(String className, String feedName)
@@ -102,6 +112,19 @@ public abstract class BaseRuntime implements Runtime {
 	@Override
 	public void logTransition(String eventName, String source, String target) {
 		logger.transition(eventName, source, target);
+	}
+
+	public static void logError(String message) {
+		errorLogger.log(java.util.logging.Level.SEVERE, message);
+	}
+
+	public static void logError(String message, Throwable cause) {
+		errorLogger.log(java.util.logging.Level.SEVERE, message, cause);
+	}
+
+	public static void logError(Throwable cause) {
+		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception",
+				cause);
 	}
 
 }

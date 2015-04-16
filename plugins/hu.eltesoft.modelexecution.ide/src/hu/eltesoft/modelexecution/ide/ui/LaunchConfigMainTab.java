@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.ui;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
@@ -310,6 +311,12 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 				TestRuntime.class.getCanonicalName());
+		configuration.setAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
+				"-Djava.util.logging.config.file=logging.properties");
+		configuration.setAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH,
+				ExecutableModelProjectSetup.JRE_CONTAINER_PATH.toString());
 	}
 
 	@Override
