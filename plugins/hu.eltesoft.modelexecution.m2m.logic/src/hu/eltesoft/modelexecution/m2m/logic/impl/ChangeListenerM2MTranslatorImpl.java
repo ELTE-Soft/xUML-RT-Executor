@@ -27,8 +27,12 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 	public ChangeListenerM2MTranslatorImpl(IncQueryEngine engine,
 			TextChangesListener listener) throws IncQueryException {
 		super(engine, listener);
+
 		this.advancedEngine = AdvancedIncQueryEngine.from(engine);
 		this.changeRegistry = ChangeRegistry.create(listener);
+
+		regionGenerator.setChangeRegistry(changeRegistry);
+
 		startListeningToModelChanges();
 	}
 
