@@ -11,8 +11,8 @@ public interface ContainerNameProvider {
 	 * is represented.
 	 * 
 	 * <b>Important note:</b> currently this feature is only supported for
-	 * transitions and states. For any other model element, this method will
-	 * return <code>null</code>.
+	 * transitions and vertices (states and pseudostates). For any other model
+	 * element, this method will return <code>null</code>.
 	 * 
 	 * @param modelElement
 	 *            a model element for which the fully qualified name of its

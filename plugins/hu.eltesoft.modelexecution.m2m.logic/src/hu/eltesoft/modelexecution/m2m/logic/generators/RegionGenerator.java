@@ -212,6 +212,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 					RgInitialPseudostate rgInitialPseudostate = FACTORY
 							.createRgInitialPseudostate();
 
+					// register initial to EObject -> container name mapping
+					setContainerName(pInitPseudostate, root.getName());
+
 					// name
 					rgInitialPseudostate.setName(pInitPseudostateName);
 
