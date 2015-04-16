@@ -65,4 +65,14 @@ public interface ChangeListenerM2MTranslator extends SimpleM2MTranslator {
 	 */
 	FileUpdateTaskQueue rebuild();
 
+	/**
+	 * When called on the same translator object, this method will always return
+	 * the same <code>ContainerNameProvider</code> instance and never
+	 * <code>null</code>.
+	 * 
+	 * @return the <code>ContainerNameProvider</code> instance related to this
+	 *         object
+	 */
+	ContainerNameProvider getContainerNameProvider();
+
 }

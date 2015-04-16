@@ -18,5 +18,5 @@ public class FileUpdateTaskQueue extends LinkedList<FileUpdateTask> {
 	public void performAll() {
 		forEach(task -> task.perform());
 	}
-	
+
 }

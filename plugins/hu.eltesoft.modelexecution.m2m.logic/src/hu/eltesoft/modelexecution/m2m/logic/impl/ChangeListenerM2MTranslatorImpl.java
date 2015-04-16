@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.impl;
 
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
+import hu.eltesoft.modelexecution.m2m.logic.ContainerNameProvider;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 
@@ -62,6 +63,11 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 			return super.fullBuild();
 		}
 		return changeRegistry.performAllChanges();
+	}
+
+	@Override
+	public ContainerNameProvider getContainerNameProvider() {
+		return changeRegistry;
 	}
 
 }
