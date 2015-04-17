@@ -1,9 +1,10 @@
-package hu.eltesoft.modelexecution.ide.project;
+package hu.eltesoft.modelexecution.ide.builder;
 
 import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerTranslatorFactory;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.IChangeListenerTranslatorFactory;

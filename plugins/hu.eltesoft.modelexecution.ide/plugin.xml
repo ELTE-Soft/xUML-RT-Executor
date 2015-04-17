@@ -9,8 +9,18 @@
   </extension>
   <extension id="hu.eltesoft.modelexecution.builders.modelbuilder" name="%builder.name" point="org.eclipse.core.resources.builders">
     <builder>
-      <run class="hu.eltesoft.modelexecution.ide.project.ModelBuilder"/>
+      <run class="hu.eltesoft.modelexecution.ide.builder.ModelBuilder"/>
     </builder>
+  </extension>
+  <extension
+        id="hu.eltesoft.modelexecution.builders.stratumbuilder"
+        name="%stratumbuilder.name"
+        point="org.eclipse.core.resources.builders">
+     <builder>
+        <run
+              class="hu.eltesoft.modelexecution.ide.builder.StratumBuilder">
+        </run>
+     </builder>
   </extension>
   <extension point="org.eclipse.ui.newWizards">
      <wizard
@@ -35,6 +45,9 @@
       </requires-nature>
       <builder
             id="hu.eltesoft.modelexecution.builders.modelbuilder">
+      </builder>
+      <builder
+            id="hu.eltesoft.modelexecution.builders.stratumbuilder">
       </builder>
    </extension>
    <extension
@@ -64,7 +77,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="hu.eltesoft.modelexecution.ide.project.ExecutableModelLaunchDelegate"
+            delegate="hu.eltesoft.modelexecution.ide.launch.ExecutableModelLaunchDelegate"
             id="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel"
             modes="run, debug"
             name="%launchConfigurationType.name">
@@ -116,8 +129,15 @@
    <extension
          point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
-            class="hu.eltesoft.modelexecution.ide.project.ClasspathRuntimeLibrary"
+            class="hu.eltesoft.modelexecution.ide.launch.ClasspathRuntimeLibrary"
             id="hu.eltesoft.modelexecution.ide.runtimeClasspathInitializer">
       </classpathContainerInitializer>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.launching.classpathProviders">
+      <classpathProvider
+            class="hu.eltesoft.modelexecution.ide.launch.RuntimeClasspathProvider"
+            id="hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider">
+      </classpathProvider>
    </extension>
 </plugin>

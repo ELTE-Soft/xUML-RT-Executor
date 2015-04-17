@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.launch.ClasspathRuntimeLibrary;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,6 +44,10 @@ public class ExecutableModelProjectSetup {
 
 	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src"; //$NON-NLS-1$
 
+	public static final String JAVA_INSTRUMENTED_CLASS_FOLDER = "bin-debug"; //$NON-NLS-1$
+	
+	public static final String SMAP_FOLDER = "smap"; //$NON-NLS-1$
+
 	public static void createProject(String projectName) throws CoreException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
@@ -58,20 +63,24 @@ public class ExecutableModelProjectSetup {
 
 		IJavaProject javaProject = JavaCore.create(project);
 
-		createBinFolder(project, javaProject);
+		createBinFolders(project, javaProject);
 		createGenSourceFolder(project, DEFAULT_SOURCE_GEN_PATH);
 		createLoggingPropertiesFile(project);
 		setupClassPath(javaProject, DEFAULT_SOURCE_GEN_PATH);
 	}
 
 	private static void createLoggingPropertiesFile(IProject project) {
-		File createdLoggingPropsFile = project.getLocation().append(Messages.ExecutableModelProjectSetup_default_logging_properties_file_location).toFile();
+		File createdLoggingPropsFile = project
+				.getLocation()
+				.append(Messages.ExecutableModelProjectSetup_default_logging_properties_file_location)
+				.toFile();
 		try (OutputStreamWriter stream = new OutputStreamWriter(
 				new FileOutputStream(createdLoggingPropsFile))) {
 			createdLoggingPropsFile.createNewFile();
 			stream.append(Messages.ExecutableModelProjectSetup_default_logging_properties_file);
 		} catch (IOException e) {
-			IdePlugin.logError("Error while creating logging properties file.", e); //$NON-NLS-1$
+			IdePlugin.logError(
+					"Error while creating logging properties file.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -83,9 +92,15 @@ public class ExecutableModelProjectSetup {
 		project.setDescription(description, null);
 	}
 
-	private static void createBinFolder(IProject project,
+	private static void createBinFolders(IProject project,
 			IJavaProject javaProject) throws CoreException, JavaModelException {
 		IFolder binFolder = createFolder(project, JAVA_COMPILER_OUTPUT_FOLDER);
+		IFolder instrumentedBinFolder = createFolder(project, JAVA_INSTRUMENTED_CLASS_FOLDER);
+		instrumentedBinFolder.setTeamPrivateMember(true);
+		instrumentedBinFolder.setDerived(true, null);
+		IFolder smapFolder = createFolder(project, SMAP_FOLDER);
+		smapFolder.setTeamPrivateMember(true);
+		smapFolder.setDerived(true, null);
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
 	}
 

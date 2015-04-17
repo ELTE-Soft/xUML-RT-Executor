@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.ide.project;
 
+import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
+import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,12 +25,12 @@ public class ExecutableModelNature implements IProjectNature {
 
 	@Override
 	public void configure() throws CoreException {
-		registerModelBuilder();
+		registerBuilders();
 	}
 
 	@Override
 	public void deconfigure() throws CoreException {
-		removeModelBuilder();
+		removeBuilders();
 	}
 
 	@Override
@@ -40,20 +43,21 @@ public class ExecutableModelNature implements IProjectNature {
 		this.project = project;
 	}
 
-	private void registerModelBuilder() throws CoreException {
-		if (hasModelBuilder()) {
-			// already enabled
-			return;
-		}
-
-		// add builder to project properties
+	private void registerBuilders() throws CoreException {
 		IProjectDescription description = project.getDescription();
-		ICommand buildCommand = description.newCommand();
-		buildCommand.setBuilderName(ModelBuilder.BUILDER_ID);
+		ICommand modelBuildCommand = description.newCommand();
+		modelBuildCommand.setBuilderName(ModelBuilder.BUILDER_ID);
+		ICommand stratumBuildCommand = description.newCommand();
+		stratumBuildCommand.setBuilderName(StratumBuilder.BUILDER_ID);
 
 		List<ICommand> commands = new ArrayList<ICommand>();
 		commands.addAll(Arrays.asList(description.getBuildSpec()));
-		commands.add(buildCommand);
+		if (!hasModelBuilder()) {
+			commands.add(modelBuildCommand);
+		}
+		if (!hasStratumBuilder()) {
+			commands.add(stratumBuildCommand);
+		}
 
 		description
 				.setBuildSpec(commands.toArray(new ICommand[commands.size()]));
@@ -68,7 +72,7 @@ public class ExecutableModelNature implements IProjectNature {
 		return false;
 	}
 
-	private void removeModelBuilder() throws CoreException {
+	private void removeBuilders() throws CoreException {
 		LinkedList<ICommand> newBuildSpec = new LinkedList<>();
 		for (ICommand builder : project.getDescription().getBuildSpec()) {
 			if (!ModelBuilder.BUILDER_ID.equals(builder.getBuilderName()))
@@ -76,6 +80,14 @@ public class ExecutableModelNature implements IProjectNature {
 		}
 		project.getDescription().setBuildSpec(
 				newBuildSpec.toArray(new ICommand[newBuildSpec.size()]));
+	}
+	
+	private boolean hasStratumBuilder() throws CoreException {
+		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
+			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
+				return true;
+		}
+		return false;
 	}
 
 }

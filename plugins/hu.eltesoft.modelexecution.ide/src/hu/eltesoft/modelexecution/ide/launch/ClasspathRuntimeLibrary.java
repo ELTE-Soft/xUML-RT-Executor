@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.project;
+package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
@@ -57,7 +57,7 @@ public class ClasspathRuntimeLibrary extends ClasspathContainerInitializer {
 	 * The container automatically adds the runtime and required projects to the
 	 * java class path when the model is executed.
 	 */
-	private static class BundleLibraryContainer implements IClasspathContainer {
+	private class BundleLibraryContainer implements IClasspathContainer {
 
 		private IPath path;
 		private Map<Bundle, IPath> bundleRelativePathes;

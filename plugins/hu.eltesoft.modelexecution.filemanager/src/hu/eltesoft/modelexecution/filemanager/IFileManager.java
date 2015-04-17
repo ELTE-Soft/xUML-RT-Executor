@@ -43,4 +43,12 @@ public interface IFileManager {
 	 */
 	public abstract boolean cleanup();
 
+	/**
+	 * @param fileName
+	 *            A fileName like almafa.java
+	 * @param content
+	 *            The content to be written in the file.
+	 */
+	public abstract void addOrUpdateFile(String fileName, String content) throws IOException;
+
 }

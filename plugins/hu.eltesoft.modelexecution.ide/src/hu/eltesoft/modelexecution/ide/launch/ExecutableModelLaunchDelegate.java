@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.project;
+package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;

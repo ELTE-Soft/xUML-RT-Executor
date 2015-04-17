@@ -1,13 +1,15 @@
-package hu.eltesoft.modelexecution.ide.project;
-
-import java.io.IOException;
+package hu.eltesoft.modelexecution.ide.builder;
 
 import hu.eltesoft.modelexecution.filemanager.IFileManager;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+
+import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -33,16 +35,21 @@ public class BuilderFileManager implements TextChangesListener {
 		getFileManager().remove(fileName);
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void contentChanged(String fileName, SourceMappedText output,
 			DebugSymbols symbols) {
 		try {
 			getFileManager().addOrUpdate(fileName, output.getText().toString());
+			String smap = output.getSmap().toString();
+			if (smap != null) {
+				getSmapFileManager().addOrUpdateFile(fileName + ".smap", smap);
+			}
 		} catch (IOException e) {
 			IdePlugin.logError("Error while writing file: " + fileName, e);
 		}
 	}
-	
+
 	/**
 	 * Refreshes folder after files have been written
 	 */
@@ -56,13 +63,19 @@ public class BuilderFileManager implements TextChangesListener {
 			IdePlugin.logError("Exception while refreshing folder.", e);
 		}
 	}
-	
+
 	public void cleanUp() {
 		getFileManager().cleanup();
+		getSmapFileManager().cleanup();
 	}
 
 	private IFileManager getFileManager() {
 		return fileManagerFactory.createFileManager(getGenSourcePath());
+	}
+
+	private IFileManager getSmapFileManager() {
+		return fileManagerFactory.createFileManager(project.getLocation()
+				.append(ExecutableModelProjectSetup.SMAP_FOLDER).toString());
 	}
 
 	/**

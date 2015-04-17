@@ -39,7 +39,7 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location assignQualified(QualifiedReference reference) {
-		String filePath = reference.getResourceURI().toString();
+		String filePath = reference.getResourceURI().toFileString();
 		int lineNumber = getMapping(filePath).addLineNumber(reference);
 		return new Location(filePath, lineNumber, lineNumber);
 	}
@@ -69,7 +69,7 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location resolveQualified(QualifiedReference reference) {
-		String filePath = reference.getResourceURI().toString();
+		String filePath = reference.getResourceURI().toFileString();
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
 		if (null == lineNumber) {
 			return null;

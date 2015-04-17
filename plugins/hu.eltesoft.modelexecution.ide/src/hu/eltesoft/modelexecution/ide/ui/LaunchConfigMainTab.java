@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.ui;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.launch.RuntimeClasspathProvider;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
@@ -317,6 +318,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH,
 				ExecutableModelProjectSetup.JRE_CONTAINER_PATH.toString());
+		configuration.setAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
+				RuntimeClasspathProvider.PROVIDER_ID);
+		configuration.setAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_STOP_IN_MAIN, true);
 	}
 
 	@Override

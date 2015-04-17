@@ -51,6 +51,18 @@ public class FileManager implements IFileManager {
 		createDirectoryForFile(outFile);
 		writeContentToFile(content, outFile);
 	}
+	
+	@Override
+	public void addOrUpdateFile(String fileName, String content)
+			throws IOException {
+		if (null == fileName) {
+			return;
+		}
+
+		File outFile = Paths.get(rootDirectory, fileName).toFile();
+		createDirectoryForFile(outFile);
+		writeContentToFile(content, outFile);
+	}
 
 	@Override
 	public void remove(String qualifiedName) {
