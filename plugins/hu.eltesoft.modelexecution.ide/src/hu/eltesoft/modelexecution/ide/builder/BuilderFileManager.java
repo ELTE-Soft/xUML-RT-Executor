@@ -45,6 +45,9 @@ public class BuilderFileManager implements TextChangesListener {
 			if (smap != null) {
 				getSmapFileManager().addOrUpdateFile(fileName + ".smap", smap);
 			}
+			if (symbols != null) {
+				getSmapFileManager().addOrUpdateFile(fileName + ".symbols", symbols);
+			}
 		} catch (IOException e) {
 			IdePlugin.logError("Error while writing file: " + fileName, e);
 		}
@@ -62,7 +65,7 @@ public class BuilderFileManager implements TextChangesListener {
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while refreshing folder.", e);
 		}
-	}
+	} 
 
 	public void cleanUp() {
 		getFileManager().cleanup();

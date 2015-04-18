@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.filemanager;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 public interface IFileManager {
 
@@ -49,6 +50,10 @@ public interface IFileManager {
 	 * @param content
 	 *            The content to be written in the file.
 	 */
-	public abstract void addOrUpdateFile(String fileName, String content) throws IOException;
+	public abstract void addOrUpdateFile(String fileName, String content)
+			throws IOException;
+
+	public abstract void addOrUpdateFile(String fileName, Serializable content)
+			throws IOException;
 
 }

@@ -1,8 +1,11 @@
 package hu.eltesoft.modelexecution.filemanager;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Paths;
 
 /**
@@ -51,7 +54,28 @@ public class FileManager implements IFileManager {
 		createDirectoryForFile(outFile);
 		writeContentToFile(content, outFile);
 	}
-	
+
+	@Override
+	public void addOrUpdateFile(String fileName, Serializable content)
+			throws IOException {
+		if (null == fileName) {
+			return;
+		}
+
+		File outFile = Paths.get(rootDirectory, fileName).toFile();
+		createDirectoryForFile(outFile);
+		writeContentToFile(content, outFile);
+
+	}
+
+	private void writeContentToFile(Serializable content, File outFile)
+			throws IOException {
+		FileOutputStream fileStream = new FileOutputStream(outFile);
+		ObjectOutputStream os = new ObjectOutputStream(fileStream);
+		os.writeObject(content);
+		os.close();
+	}
+
 	@Override
 	public void addOrUpdateFile(String fileName, String content)
 			throws IOException {
