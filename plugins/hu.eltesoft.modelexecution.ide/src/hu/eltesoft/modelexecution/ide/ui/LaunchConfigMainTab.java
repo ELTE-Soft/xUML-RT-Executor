@@ -10,6 +10,7 @@ import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -354,6 +355,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		}
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		if (selectedModelResource == null || selectedClass == null
@@ -363,16 +365,26 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		String projectName = selectedModelResource.getProject().getName();
 
 		configuration.setAttribute(ATTR_PROJECT_NAME, projectName);
-		configuration.setAttribute(ATTR_UML_RESOURCE, selectedModelResource
-				.getFullPath().toString());
+		String modelResourcePath = selectedModelResource.getFullPath()
+				.toString();
+		configuration.setAttribute(ATTR_UML_RESOURCE, modelResourcePath);
 		configuration.setAttribute(ATTR_EXECUTED_CLASS_URI,
 				resource.getURIFragment(selectedClass));
 		configuration.setAttribute(ATTR_EXECUTED_FEED_URI,
 				resource.getURIFragment(selectedFeedFunction));
 
+		// adds the model resource as a mapped resource path
+		configuration
+				.setAttribute(
+						org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+						Arrays.asList(modelResourcePath));
+		configuration
+				.setAttribute(
+						org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES,
+						Arrays.asList(Integer.toString(IResource.FILE)));
+
 		// fill Moka details
-		URI uri = URI.createPlatformResourceURI(selectedModelResource
-				.getFullPath().toString(), true);
+		URI uri = URI.createPlatformResourceURI(modelResourcePath, true);
 		configuration.setAttribute(MokaLaunchDelegate.URI_ATTRIBUTE_NAME,
 				uri.toString());
 		configuration.setAttribute(MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
