@@ -20,7 +20,7 @@ import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
 public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
-
+	
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
 	MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
@@ -33,6 +33,7 @@ public class ExecutableModelLaunchDelegate implements
 				return;
 			}
 		}
+		javaDelegate.launch(configuration, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			try {
 				mokaDelegate.launch(configuration, mode, launch, monitor);
@@ -40,7 +41,6 @@ public class ExecutableModelLaunchDelegate implements
 				IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 			}
 		}
-		javaDelegate.launch(configuration, mode, launch, monitor);
 	}
 
 	private boolean askUserToSetExecutionEngine() {
