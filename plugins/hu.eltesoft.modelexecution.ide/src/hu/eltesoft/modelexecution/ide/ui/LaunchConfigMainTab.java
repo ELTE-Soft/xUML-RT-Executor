@@ -2,11 +2,7 @@ package hu.eltesoft.modelexecution.ide.ui;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.RuntimeClasspathProvider;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
-import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
-import hu.eltesoft.modelexecution.runtime.TestRuntime;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 
@@ -30,13 +26,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.papyrus.infra.emf.providers.EMFLabelProvider;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
 import org.eclipse.papyrus.infra.widgets.providers.WorkspaceContentProvider;
-import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -62,10 +56,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 	public static final String TAB_ID = "hu.eltesoft.modelexecution.ide.tabs.executableModel.mainTab"; //$NON-NLS-1$
 	private static final String EMPTY_STR = ""; //$NON-NLS-1$
-	private static final String ATTR_EXECUTED_FEED_URI = "executed_feed_uri"; //$NON-NLS-1$
-	private static final String ATTR_EXECUTED_CLASS_URI = "executed_class_uri"; //$NON-NLS-1$
-	private static final String ATTR_UML_RESOURCE = "uml_resource"; //$NON-NLS-1$
-	private static final String ATTR_PROJECT_NAME = "project_name"; //$NON-NLS-1$
+
 	private IFile selectedModelResource;
 	private Text selectedModelField;
 	private Text selectedClassField;
@@ -310,27 +301,14 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-				TestRuntime.class.getCanonicalName());
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
-				"-Djava.util.logging.config.file=logging.properties");
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH,
-				ExecutableModelProjectSetup.JRE_CONTAINER_PATH.toString());
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
-				RuntimeClasspathProvider.PROVIDER_ID);
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_STOP_IN_MAIN, true);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		String uri;
 		try {
-			uri = configuration.getAttribute(ATTR_UML_RESOURCE, EMPTY_STR);
+			uri = configuration.getAttribute(
+					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
 			if (!uri.equals(EMPTY_STR)) {
 				resource = resourceSet.getResource(URI.createURI(uri), true);
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -340,12 +318,17 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					selectedModelField.setText(member.getFullPath().toString());
 				}
 				initMatchers();
-				selectedClass = (Class) resource.getEObject(configuration
-						.getAttribute(ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
+				selectedClass = (Class) resource
+						.getEObject(configuration
+								.getAttribute(
+										ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
+										EMPTY_STR));
 				selectedClassField.setText(selectedClass.getName());
 				selectedFeedFunction = (Operation) resource
-						.getEObject(configuration.getAttribute(
-								ATTR_EXECUTED_FEED_URI, EMPTY_STR));
+						.getEObject(configuration
+								.getAttribute(
+										ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
+										EMPTY_STR));
 				selectedFeedFunctionField.setText(selectedFeedFunction
 						.getName());
 
@@ -364,13 +347,25 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		}
 		String projectName = selectedModelResource.getProject().getName();
 
-		configuration.setAttribute(ATTR_PROJECT_NAME, projectName);
+		configuration.setAttribute(
+				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, projectName);
+		configuration.setAttribute(
+				ModelExecutionLaunchConfig.ATTR_EXEC_CLASS_NAME,
+				selectedClass.getName());
+		configuration.setAttribute(
+				ModelExecutionLaunchConfig.ATTR_FEED_FUN_NAME,
+				selectedFeedFunction.getName());
+
 		String modelResourcePath = selectedModelResource.getFullPath()
 				.toString();
-		configuration.setAttribute(ATTR_UML_RESOURCE, modelResourcePath);
-		configuration.setAttribute(ATTR_EXECUTED_CLASS_URI,
+		configuration
+				.setAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE,
+						modelResourcePath);
+		configuration.setAttribute(
+				ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
 				resource.getURIFragment(selectedClass));
-		configuration.setAttribute(ATTR_EXECUTED_FEED_URI,
+		configuration.setAttribute(
+				ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
 				resource.getURIFragment(selectedFeedFunction));
 
 		// adds the model resource as a mapped resource path
@@ -382,59 +377,6 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				.setAttribute(
 						org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES,
 						Arrays.asList(Integer.toString(IResource.FILE)));
-
-		// fill Moka details
-		URI uri = URI.createPlatformResourceURI(modelResourcePath, true);
-		configuration.setAttribute(MokaLaunchDelegate.URI_ATTRIBUTE_NAME,
-				uri.toString());
-		configuration.setAttribute(MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
-				resource.getURIFragment(selectedFeedFunction));
-
-		// fill Java details
-		configuration.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-				projectName);
-		setupLaunchArgs(configuration);
-	}
-
-	private void setupLaunchArgs(ILaunchConfigurationWorkingCopy configuration) {
-		try {
-			CmArgBuilder argsBuilder = new CmArgBuilder();
-
-			argsBuilder.append(selectedClass.getName());
-			argsBuilder.append(selectedFeedFunction.getName());
-
-			boolean logging = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.LOGGING_PROPERTY, false);
-			if (logging) {
-				argsBuilder.append(TestRuntime.OPTION_LOG);
-			}
-			boolean tracing = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.TRACING_PROPERTY, false);
-			if (tracing) {
-				String traceFolder = configuration.getAttribute(
-						LaunchConfigTracingLoggingTab.TRACE_FOLDER_PROPERTY,
-						EMPTY_STR); //$NON-NLS-1$
-				argsBuilder.append(TestRuntime.OPTION_WRITE_TRACE);
-				argsBuilder.append(traceFolder);
-			}
-			boolean traceReplay = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.REPLAY_TRACE_PROPERTY, false);
-			if (traceReplay) {
-				String replayTraceFolder = configuration
-						.getAttribute(
-								LaunchConfigTracingLoggingTab.REPLAY_TRACE_FOLDER_PROPERTY,
-								EMPTY_STR); //$NON-NLS-1$
-				argsBuilder.append(TestRuntime.OPTION_READ_TRACE);
-				argsBuilder.append(replayTraceFolder);
-			}
-
-			configuration.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-					argsBuilder.toString());
-		} catch (CoreException e) {
-			IdePlugin.logError("Cannot setup launch args", e); //$NON-NLS-1$
-		}
 	}
 
 	@Override

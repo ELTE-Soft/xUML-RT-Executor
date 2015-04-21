@@ -3,7 +3,12 @@ package hu.eltesoft.modelexecution.ide.launch;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
+import hu.eltesoft.modelexecution.ide.ui.ModelExecutionLaunchConfig;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,7 +25,7 @@ import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
 public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
-	
+
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
 	MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
@@ -28,19 +33,44 @@ public class ExecutableModelLaunchDelegate implements
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		if (!executionEngineIsXUMLRT()) {
-			if (!askUserToSetExecutionEngine()) {
-				return;
-			}
+		if (!launchPassesChecks(configuration, mode)) {
+			return;
 		}
-		javaDelegate.launch(configuration, mode, launch, monitor);
+		javaDelegate.launch(
+				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
+				launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			try {
-				mokaDelegate.launch(configuration, mode, launch, monitor);
+				mokaDelegate.launch(ModelExecutionLaunchConfig
+						.addMokaConfigs(configuration), mode, launch, monitor);
 			} catch (Exception e) {
 				IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 			}
 		}
+	}
+
+	protected boolean launchPassesChecks(ILaunchConfiguration configuration, String mode) throws CoreException {
+		if (!executionEngineIsXUMLRT()) {
+			if (!askUserToSetExecutionEngine()) {
+				return false;
+			}
+		}
+		String umlResource = configuration.getAttribute(
+				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
+		String diResource = umlResource.replaceAll("\\.uml$", ".di");
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && !diResourceIsPresent(configuration, diResource, umlResource)) {
+			notifyUserThatDiIsMissing(diResource, umlResource);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean diResourceIsPresent(ILaunchConfiguration configuration,
+			String diResource, String umlResource) {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot workspaceRoot = workspace.getRoot();
+		IFile modelElementIFile = (IFile) workspaceRoot.findMember(diResource);
+		return modelElementIFile != null;
 	}
 
 	private boolean askUserToSetExecutionEngine() {
@@ -49,6 +79,10 @@ public class ExecutableModelLaunchDelegate implements
 			return true;
 		}
 		return false;
+	}
+
+	private void notifyUserThatDiIsMissing(String diResource, String umlResource) {
+		Dialogs.openDiMissingNotificationDialog(diResource, umlResource);
 	}
 
 	private boolean executionEngineIsXUMLRT() {
