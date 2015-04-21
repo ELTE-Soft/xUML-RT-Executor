@@ -22,6 +22,10 @@ import org.eclipse.papyrus.moka.Activator;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
+/**
+ * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
+ * execution engine is selected and the needed resources exist.
+ */
 public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
@@ -48,7 +52,12 @@ public class ExecutableModelLaunchDelegate implements
 		}
 	}
 
-	protected boolean launchPassesChecks(ILaunchConfiguration configuration, String mode) throws CoreException {
+	/**
+	 * Returns true if the execution can be started, displays errors and returns
+	 * false otherwise.
+	 */
+	protected boolean launchPassesChecks(ILaunchConfiguration configuration,
+			String mode) throws CoreException {
 		if (!executionEngineIsXUMLRT()) {
 			if (!askUserToSetExecutionEngine()) {
 				return false;
@@ -57,7 +66,8 @@ public class ExecutableModelLaunchDelegate implements
 		String umlResource = configuration.getAttribute(
 				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
 		String diResource = umlResource.replaceAll("\\.uml$", ".di");
-		if (mode.equals(ILaunchManager.DEBUG_MODE) && !diResourceIsPresent(configuration, diResource, umlResource)) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE)
+				&& !diResourceIsPresent(configuration, diResource, umlResource)) {
 			notifyUserThatDiIsMissing(diResource, umlResource);
 			return false;
 		}

@@ -7,6 +7,10 @@ import hu.eltesoft.modelexecution.ide.Messages;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * A helper class that declares functions that show GUI elements for the user.
+ * These functions can be called from non-gui threads.
+ */
 public class Dialogs {
 
 	private static final class ShowEEPrefChangeConfirmDialog implements

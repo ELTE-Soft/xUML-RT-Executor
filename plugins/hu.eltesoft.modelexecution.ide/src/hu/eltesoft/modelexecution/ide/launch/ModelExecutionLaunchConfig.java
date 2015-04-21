@@ -24,15 +24,14 @@ public class ModelExecutionLaunchConfig {
 	/**
 	 * URI fragment of the executed feed function. Must be a non-static
 	 * operation of the class that is identified by the
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_CLASS_URI}
-	 * attribute.
+	 * {@linkplain #ATTR_EXECUTED_CLASS_URI} attribute.
 	 */
 	public static final String ATTR_EXECUTED_FEED_URI = ATTR_PREFIX
 			+ "executed_feed_uri"; //$NON-NLS-1$
 
 	/**
 	 * URI fragment of the executed class. Contains the operation marked by
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_FEED_URI} attribute.
+	 * {@linkplain #ATTR_EXECUTED_FEED_URI} attribute.
 	 */
 	public static final String ATTR_EXECUTED_CLASS_URI = ATTR_PREFIX
 			+ "executed_class_uri"; //$NON-NLS-1$
@@ -50,16 +49,14 @@ public class ModelExecutionLaunchConfig {
 
 	/**
 	 * The name of the executed class. Must be the fully qualified name of the
-	 * UML class that is identified by
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_CLASS_URI}.
+	 * UML class that is identified by {@linkplain #ATTR_EXECUTED_CLASS_URI}.
 	 */
 	public static final String ATTR_EXEC_CLASS_NAME = ATTR_PREFIX
 			+ "exec_class_name"; //$NON-NLS-1$
 
 	/**
 	 * The name of the executed feed function. Must be the name of the UML
-	 * function that is identified by
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_FEED_URI}.
+	 * function that is identified by {@linkplain #ATTR_EXECUTED_FEED_URI}.
 	 */
 	public static final String ATTR_FEED_FUN_NAME = ATTR_PREFIX
 			+ "feed_fun_name"; //$NON-NLS-1$
@@ -80,8 +77,7 @@ public class ModelExecutionLaunchConfig {
 	public static final String ATTR_REPLAY_TRACE = ATTR_PREFIX + "replay_trace"; //$NON-NLS-1$
 
 	/**
-	 * Controls if trace replay (
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_REPLAY_TRACE}) is enabled by
+	 * Controls if {@linkplain #ATTR_REPLAY_TRACE} is enabled by
 	 * default.
 	 */
 	public static final boolean ATTR_REPLAY_TRACE_DEFAULT = false;
@@ -93,8 +89,7 @@ public class ModelExecutionLaunchConfig {
 	public static final String ATTR_TRACING = ATTR_PREFIX + "tracing"; //$NON-NLS-1$
 
 	/**
-	 * Controls if tracing ({@linkplain ModelExecutionLaunchConfig#ATTR_TRACING}
-	 * ) is enabled by default.
+	 * Controls if {@linkplain #ATTR_TRACING} is enabled by default.
 	 */
 	public static final boolean ATTR_TRACING_DEFAULT = false;
 
@@ -104,20 +99,19 @@ public class ModelExecutionLaunchConfig {
 	public static final String ATTR_LOGGING = ATTR_PREFIX + "logging"; //$NON-NLS-1$
 
 	/**
-	 * Controls if logging ({@linkplain ModelExecutionLaunchConfig#ATTR_LOGGING}
-	 * ) is enabled by default.
+	 * Controls if {@linkplain #ATTR_LOGGING} is enabled by default.
 	 */
 	public static final boolean ATTR_LOGGING_DEFAULT = true;
 
 	/**
 	 * Selects the folder where events are serialized into files during tracing
-	 * ({@linkplain ModelExecutionLaunchConfig#ATTR_TRACING}).
+	 * ( enabled by {@linkplain #ATTR_TRACING} ).
 	 */
 	public static final String ATTR_TRACE_FOLDER = ATTR_PREFIX + "trace_folder"; //$NON-NLS-1$
 
 	/**
 	 * Selects the folder from where events are deserialized for trace replay (
-	 * {@linkplain ModelExecutionLaunchConfig#ATTR_REPLAY_TRACE}).
+	 * enabled by {@linkplain #ATTR_REPLAY_TRACE} ).
 	 */
 	public static final String ATTR_REPLAY_TRACE_FOLDER = ATTR_PREFIX
 			+ "replay_trace_folder"; //$NON-NLS-1$
