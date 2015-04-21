@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.ide.launch;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
-import hu.eltesoft.modelexecution.ide.ui.ModelExecutionLaunchConfig;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;

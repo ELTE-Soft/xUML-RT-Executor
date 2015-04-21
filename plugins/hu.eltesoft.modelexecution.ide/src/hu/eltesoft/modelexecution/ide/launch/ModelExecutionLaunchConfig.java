@@ -1,8 +1,8 @@
-package hu.eltesoft.modelexecution.ide.ui;
+package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.launch.RuntimeClasspathProvider;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
+import hu.eltesoft.modelexecution.ide.ui.LaunchConfigTracingLoggingTab;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.TestRuntime;
 
