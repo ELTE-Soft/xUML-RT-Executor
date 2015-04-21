@@ -2,7 +2,6 @@ package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
-import hu.eltesoft.modelexecution.ide.ui.LaunchConfigTracingLoggingTab;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.TestRuntime;
 
@@ -16,25 +15,124 @@ import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
 public class ModelExecutionLaunchConfig {
 
+	private static final String JAVA_LOGGING_OPTION = "-Djava.util.logging.config.file=logging.properties";
+
 	private static final String EMPTY_STR = "";
 
-	public static final String ATTR_EXECUTED_FEED_URI = "executed_feed_uri"; //$NON-NLS-1$
+	private static final String ATTR_PREFIX = "hu.eltesoft.modelexecution.attr.";
 
-	public static final String ATTR_EXECUTED_CLASS_URI = "executed_class_uri"; //$NON-NLS-1$
+	/**
+	 * URI fragment of the executed feed function. Must be a non-static
+	 * operation of the class that is identified by the
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_CLASS_URI}
+	 * attribute.
+	 */
+	public static final String ATTR_EXECUTED_FEED_URI = ATTR_PREFIX
+			+ "executed_feed_uri"; //$NON-NLS-1$
 
-	public static final String ATTR_UML_RESOURCE = "uml_resource"; //$NON-NLS-1$
+	/**
+	 * URI fragment of the executed class. Contains the operation marked by
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_FEED_URI} attribute.
+	 */
+	public static final String ATTR_EXECUTED_CLASS_URI = ATTR_PREFIX
+			+ "executed_class_uri"; //$NON-NLS-1$
 
-	public static final String ATTR_PROJECT_NAME = "project_name"; //$NON-NLS-1$
+	/**
+	 * The workspace-relative path to the uml file that contains the model that
+	 * is executed.
+	 */
+	public static final String ATTR_UML_RESOURCE = ATTR_PREFIX + "uml_resource"; //$NON-NLS-1$
 
-	public static final String ATTR_EXEC_CLASS_NAME = "exec_class_name"; //$NON-NLS-1$
+	/**
+	 * The name of the project this launch configuration is linked to.
+	 */
+	public static final String ATTR_PROJECT_NAME = ATTR_PREFIX + "project_name"; //$NON-NLS-1$
 
-	public static final String ATTR_FEED_FUN_NAME = "feed_fun_name"; //$NON-NLS-1$
+	/**
+	 * The name of the executed class. Must be the fully qualified name of the
+	 * UML class that is identified by
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_CLASS_URI}.
+	 */
+	public static final String ATTR_EXEC_CLASS_NAME = ATTR_PREFIX
+			+ "exec_class_name"; //$NON-NLS-1$
 
+	/**
+	 * The name of the executed feed function. Must be the name of the UML
+	 * function that is identified by
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_EXECUTED_FEED_URI}.
+	 */
+	public static final String ATTR_FEED_FUN_NAME = ATTR_PREFIX
+			+ "feed_fun_name"; //$NON-NLS-1$
+
+	/**
+	 * Marks if the animation is enabled in Moka debugging.
+	 */
+	public static final String ATTR_ANIMATE = ATTR_PREFIX + "animate"; //$NON-NLS-1$
+
+	/**
+	 * Controls if animation is enabled by default.
+	 */
+	public static final boolean ATTR_ANIMATE_DEFAULT = true;
+
+	/**
+	 * Marks if events are read from trace for the launch configuration.
+	 */
+	public static final String ATTR_REPLAY_TRACE = ATTR_PREFIX + "replay_trace"; //$NON-NLS-1$
+
+	/**
+	 * Controls if trace replay (
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_REPLAY_TRACE}) is enabled by
+	 * default.
+	 */
+	public static final boolean ATTR_REPLAY_TRACE_DEFAULT = false;
+
+	/**
+	 * Marks if events are serialized into trace files for the launch
+	 * configuration.
+	 */
+	public static final String ATTR_TRACING = ATTR_PREFIX + "tracing"; //$NON-NLS-1$
+
+	/**
+	 * Controls if tracing ({@linkplain ModelExecutionLaunchConfig#ATTR_TRACING}
+	 * ) is enabled by default.
+	 */
+	public static final boolean ATTR_TRACING_DEFAULT = false;
+
+	/**
+	 * Marks if events are logged during model execution.
+	 */
+	public static final String ATTR_LOGGING = ATTR_PREFIX + "logging"; //$NON-NLS-1$
+
+	/**
+	 * Controls if logging ({@linkplain ModelExecutionLaunchConfig#ATTR_LOGGING}
+	 * ) is enabled by default.
+	 */
+	public static final boolean ATTR_LOGGING_DEFAULT = true;
+
+	/**
+	 * Selects the folder where events are serialized into files during tracing
+	 * ({@linkplain ModelExecutionLaunchConfig#ATTR_TRACING}).
+	 */
+	public static final String ATTR_TRACE_FOLDER = ATTR_PREFIX + "trace_folder"; //$NON-NLS-1$
+
+	/**
+	 * Selects the folder from where events are deserialized for trace replay (
+	 * {@linkplain ModelExecutionLaunchConfig#ATTR_REPLAY_TRACE}).
+	 */
+	public static final String ATTR_REPLAY_TRACE_FOLDER = ATTR_PREFIX
+			+ "replay_trace_folder"; //$NON-NLS-1$
+
+	/**
+	 * Adds launch configuration attributes needed by Moka.
+	 */
 	public static ILaunchConfiguration addMokaConfigs(
 			ILaunchConfiguration configuration) throws CoreException {
 		return addConfigs(configuration, c -> addMokaConfigs(c));
 	}
 
+	/**
+	 * Adds launch configuration attributes needed for JRE execution.
+	 */
 	public static ILaunchConfiguration addJavaConfigs(
 			ILaunchConfiguration configuration) throws CoreException {
 		return addConfigs(configuration, c -> addJavaConfigs(c));
@@ -51,6 +149,10 @@ public class ModelExecutionLaunchConfig {
 		return configuration;
 	}
 
+	/**
+	 * Adds launch configuration attributes needed by Moka to a configuration
+	 * working copy.
+	 */
 	public static void addMokaConfigs(
 			ILaunchConfigurationWorkingCopy configuration) {
 		try {
@@ -64,6 +166,10 @@ public class ModelExecutionLaunchConfig {
 		}
 	}
 
+	/**
+	 * Adds launch configuration attributes needed for JRE execution to a
+	 * configuration working copy.
+	 */
 	public static void addJavaConfigs(
 			ILaunchConfigurationWorkingCopy configuration) {
 		setJavaDefaultArgs(configuration);
@@ -84,7 +190,7 @@ public class ModelExecutionLaunchConfig {
 				TestRuntime.class.getCanonicalName());
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
-				"-Djava.util.logging.config.file=logging.properties");
+				JAVA_LOGGING_OPTION);
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH,
 				ExecutableModelProjectSetup.JRE_CONTAINER_PATH.toString());
@@ -106,26 +212,26 @@ public class ModelExecutionLaunchConfig {
 					""));
 
 			boolean logging = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.LOGGING_PROPERTY, false);
+					ModelExecutionLaunchConfig.ATTR_LOGGING, false);
 			if (logging) {
 				argsBuilder.append(TestRuntime.OPTION_LOG);
 			}
 			boolean tracing = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.TRACING_PROPERTY, false);
+					ModelExecutionLaunchConfig.ATTR_TRACING, false);
 			if (tracing) {
-				String traceFolder = configuration.getAttribute(
-						LaunchConfigTracingLoggingTab.TRACE_FOLDER_PROPERTY,
-						EMPTY_STR); //$NON-NLS-1$
+				String traceFolder = configuration
+						.getAttribute(
+								ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER,
+								EMPTY_STR); //$NON-NLS-1$
 				argsBuilder.append(TestRuntime.OPTION_WRITE_TRACE);
 				argsBuilder.append(traceFolder);
 			}
 			boolean traceReplay = configuration.getAttribute(
-					LaunchConfigTracingLoggingTab.REPLAY_TRACE_PROPERTY, false);
+					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, false);
 			if (traceReplay) {
-				String replayTraceFolder = configuration
-						.getAttribute(
-								LaunchConfigTracingLoggingTab.REPLAY_TRACE_FOLDER_PROPERTY,
-								EMPTY_STR); //$NON-NLS-1$
+				String replayTraceFolder = configuration.getAttribute(
+						ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FOLDER,
+						EMPTY_STR); //$NON-NLS-1$
 				argsBuilder.append(TestRuntime.OPTION_READ_TRACE);
 				argsBuilder.append(replayTraceFolder);
 			}

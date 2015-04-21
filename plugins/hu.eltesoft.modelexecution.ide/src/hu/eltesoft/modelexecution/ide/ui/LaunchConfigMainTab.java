@@ -117,6 +117,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		group.pack();
 	}
 
+	/**
+	 * Selects a model resource.
+	 */
 	private final class ModelSelector extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent event) {
