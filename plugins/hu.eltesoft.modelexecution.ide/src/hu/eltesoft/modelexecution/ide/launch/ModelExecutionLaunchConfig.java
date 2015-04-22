@@ -77,8 +77,7 @@ public class ModelExecutionLaunchConfig {
 	public static final String ATTR_REPLAY_TRACE = ATTR_PREFIX + "replay_trace"; //$NON-NLS-1$
 
 	/**
-	 * Controls if {@linkplain #ATTR_REPLAY_TRACE} is enabled by
-	 * default.
+	 * Controls if {@linkplain #ATTR_REPLAY_TRACE} is enabled by default.
 	 */
 	public static final boolean ATTR_REPLAY_TRACE_DEFAULT = false;
 

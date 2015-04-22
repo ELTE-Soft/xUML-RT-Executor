@@ -23,7 +23,8 @@ import org.osgi.service.prefs.BackingStoreException;
  * The appearance of the property page where properties of an executable model
  * project can be configured.
  * 
- * Property pages are validated by
+ * Property pages are validated by {@linkplain #updateApplyButton()} that calls
+ * {@linkplain #isValid()}.
  */
 public class ExecutableModelPropertiesPage extends PropertyPage implements
 		IWorkbenchPropertyPage {

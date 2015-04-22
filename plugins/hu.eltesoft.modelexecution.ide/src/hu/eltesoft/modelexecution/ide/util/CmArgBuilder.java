@@ -8,7 +8,7 @@ public class CmArgBuilder {
 	public void append(String arg) {
 		sb.append(SPACE + arg);
 	}
-	
+
 	@Override
 	public String toString() {
 		return sb.toString();

@@ -3,7 +3,8 @@ package hu.eltesoft.modelexecution.runtime.trace;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 
 /**
- * The trace reader can read events from trace files, created by a {@linkplain Tracer}.
+ * The trace reader can read events from trace files, created by a
+ * {@linkplain Tracer}.
  */
 public interface TraceReader extends AutoCloseable {
 
@@ -17,8 +18,8 @@ public interface TraceReader extends AutoCloseable {
 	boolean hasEvent();
 
 	/**
-	 * Dispatch the event loaded from the trace file.
-	 * Precondition: hasEvent() is true.
+	 * Dispatch the event loaded from the trace file. Precondition: hasEvent()
+	 * is true.
 	 */
 	void dispatchEvent(Logger logger);
 

@@ -11,8 +11,9 @@ public class LaunchConfigFolderSelector extends FolderSelector {
 
 	private String attribute;
 
-	public LaunchConfigFolderSelector(Composite comp, ConfigBase base, String labelCaption,
-			String buttonText, String dialogTitle, String attribute) {
+	public LaunchConfigFolderSelector(Composite comp, ConfigBase base,
+			String labelCaption, String buttonText, String dialogTitle,
+			String attribute) {
 		super(comp, base, labelCaption, buttonText, dialogTitle);
 		this.attribute = attribute;
 	}
@@ -24,7 +25,8 @@ public class LaunchConfigFolderSelector extends FolderSelector {
 		}
 	}
 
-	public void initializeFrom(ILaunchConfiguration configuration) throws CoreException {
+	public void initializeFrom(ILaunchConfiguration configuration)
+			throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		selectedResource = workspace.getRoot().findMember(
 				configuration.getAttribute(attribute, "")); //$NON-NLS-1$

@@ -173,7 +173,7 @@ public class TraceReplayerTest {
 			sut.close();
 		}
 	}
-	
+
 	@Test
 	public void testDispatchEvent_withoutEventNoTrace() throws Exception {
 		TraceReplayer sut = new TraceReplayer(inputBufferMock);

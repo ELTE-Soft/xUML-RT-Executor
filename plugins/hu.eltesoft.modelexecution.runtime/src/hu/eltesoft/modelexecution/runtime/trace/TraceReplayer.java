@@ -9,7 +9,7 @@ import hu.eltesoft.modelexecution.runtime.log.Logger;
 public class TraceReplayer implements TraceReader {
 
 	private IInputTraceBuffer source;
-	
+
 	public TraceReplayer(IInputTraceBuffer buffer) {
 		source = buffer;
 	}

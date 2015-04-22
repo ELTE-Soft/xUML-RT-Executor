@@ -11,7 +11,7 @@ public class TraceWriter implements Tracer {
 	public TraceWriter(IOutputTraceBuffer outputTraceBuffer) {
 		buffer = outputTraceBuffer;
 	}
-	
+
 	@Override
 	public void traceEvent(TargetedEvent event) {
 		buffer.traceEvent(event);

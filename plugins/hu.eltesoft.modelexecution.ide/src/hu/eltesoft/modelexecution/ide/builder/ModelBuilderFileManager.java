@@ -15,23 +15,22 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 /**
- * File operation interface for builder.
+ * File operation interface for {@linkplain ModelBuilder}.
  */
-public class BuilderFileManager implements TextChangesListener {
+public class ModelBuilderFileManager implements TextChangesListener {
 
 	private IProject project;
 	private IFileManagerFactory fileManagerFactory;
 
-	public BuilderFileManager(IProject project,
+	public ModelBuilderFileManager(IProject project,
 			IFileManagerFactory fileManagerFactory) {
 		this.project = project;
 		this.fileManagerFactory = fileManagerFactory;
-
 	}
 
 	@Override
 	public void contentDeleted(String fileName) {
-		getFileManager().remove(fileName);
+		getGenSrcFileManager().remove(fileName);
 	}
 
 	@SuppressWarnings("restriction")
@@ -39,13 +38,16 @@ public class BuilderFileManager implements TextChangesListener {
 	public void contentChanged(String fileName, SourceMappedText output,
 			DebugSymbols symbols) {
 		try {
-			getFileManager().addOrUpdate(fileName, output.getText().toString());
+			getGenSrcFileManager().addOrUpdate(fileName,
+					output.getText().toString());
 			String smap = output.getSmap().toString();
 			if (smap != null) {
-				getSmapFileManager().addOrUpdateFile(fileName + ".smap", smap); //$NON-NLS-1$
+				getDebugInfoFileManager().addOrUpdateFile(
+						fileName + ".smap", smap); //$NON-NLS-1$
 			}
 			if (symbols != null) {
-				getSmapFileManager().addOrUpdateFile(fileName + ".symbols", //$NON-NLS-1$
+				getDebugInfoFileManager().addOrUpdateFile(
+						fileName + ".symbols", //$NON-NLS-1$
 						symbols);
 			}
 		} catch (IOException e) {
@@ -54,11 +56,13 @@ public class BuilderFileManager implements TextChangesListener {
 	}
 
 	/**
-	 * Refreshes folder after files have been written
+	 * Refreshes folder after files have been written.
 	 */
 	public void refreshFolder() {
 		try {
-			IResource genSourceDir = project.findMember(getGenSourceDir());
+			IResource genSourceDir = project
+					.findMember(ExecutableModelProperties
+							.getSourceGenPath(project));
 			if (genSourceDir != null && genSourceDir.exists()) {
 				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
@@ -67,31 +71,24 @@ public class BuilderFileManager implements TextChangesListener {
 		}
 	}
 
+	/**
+	 * Deletes generated files.
+	 */
 	public void cleanUp() {
-		getFileManager().cleanup();
-		getSmapFileManager().cleanup();
+		getGenSrcFileManager().cleanup();
+		getDebugInfoFileManager().cleanup();
 	}
 
-	private IFileManager getFileManager() {
-		return fileManagerFactory.createFileManager(getGenSourcePath());
-	}
-
-	private IFileManager getSmapFileManager() {
+	private IFileManager getGenSrcFileManager() {
 		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProperties.getDebugFilesPath(project))
+				.append(ExecutableModelProperties.getSourceGenPath(project))
 				.toString());
 	}
 
-	/**
-	 * Gets the full file-system dependent path to the directory of the
-	 * generated sources.
-	 */
-	private String getGenSourcePath() {
-		return project.getLocation().append(getGenSourceDir()).toString();
-	}
-
-	private String getGenSourceDir() {
-		return ExecutableModelProperties.getSourceGenPath(project);
+	private IFileManager getDebugInfoFileManager() {
+		return fileManagerFactory.createFileManager(project.getLocation()
+				.append(ExecutableModelProperties.getDebugFilesPath(project))
+				.toString());
 	}
 
 }

@@ -37,15 +37,15 @@ public class MockClass extends Class {
 	public List<Event> getReceivedEvents() {
 		return receivedEvents;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		return (obj != null && obj instanceof MockClass);
 	}
-	
+
 	public static void emptyFeed() {
 	}
-	
+
 	public void feedEvent() {
 		runtime.addEventToQueue(this, new DummyEvent());
 	}

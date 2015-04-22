@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.BuilderListenerInterface;
+import hu.eltesoft.modelexecution.ide.builder.ModelBuilderListenerInterface;
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
 
 import org.eclipse.emf.transaction.ResourceSetListenerImpl;
@@ -19,7 +19,7 @@ public class PapyrusEditorListener extends ResourceSetListenerImpl {
 		TransactionalEditingDomain.Registry.INSTANCE
 				.add(EDITING_DOMAIN, domain);
 		ModelBuilder.initializeBuilders();
-		BuilderListenerInterface.hookupAllChangeListeners();
+		ModelBuilderListenerInterface.hookupAllChangeListeners();
 	}
 
 	/**

@@ -8,7 +8,7 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
  * for features used from the system, like event queues or logging.
  */
 public interface Runtime {
-	
+
 	void addEventToQueue(Class target, Event event);
 
 	void logEventQueued(Class target, Event event);
@@ -21,6 +21,7 @@ public interface Runtime {
 
 	void logTransition(String eventName, String source, String target);
 
-	public abstract void run(String className, String feedName) throws Exception;
+	public abstract void run(String className, String feedName)
+			throws Exception;
 
 }

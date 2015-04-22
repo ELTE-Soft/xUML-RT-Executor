@@ -27,13 +27,14 @@ public class InputTraceBufferTest {
 
 	FileSystem fs;
 	static Mockery context = new Mockery();
-	static Runtime runtime = context.mock(hu.eltesoft.modelexecution.runtime.Runtime.class);
+	static Runtime runtime = context
+			.mock(hu.eltesoft.modelexecution.runtime.Runtime.class);
 
 	@BeforeClass
 	public static void setupClass() {
 		new MockClass(runtime);
 	}
-	
+
 	@Before
 	public void setup() {
 		fs = Jimfs.newFileSystem(Configuration.unix());
@@ -47,23 +48,23 @@ public class InputTraceBufferTest {
 	@Test
 	public void testWithOneTraceFile() throws Exception {
 		String traceFolderName = "tracefolder";
-		String folderName = fs.getPath("MyProject",
-				traceFolderName).toString();
+		String folderName = fs.getPath("MyProject", traceFolderName).toString();
 		int numEvents = 3;
 		writeTraceFiles(folderName, 10, numEvents);
-		InputTraceBuffer sut = new InputTraceBuffer(getClass().getClassLoader(), folderName, fs);
+		InputTraceBuffer sut = new InputTraceBuffer(
+				getClass().getClassLoader(), folderName, fs);
 		checkElems(numEvents, sut);
 		sut.close();
 	}
-	
+
 	@Test
 	public void testWithMultipleTraceFiles() throws Exception {
 		String traceFolderName = "tracefolder";
-		String folderName = fs.getPath("MyProject",
-				traceFolderName).toString();
+		String folderName = fs.getPath("MyProject", traceFolderName).toString();
 		int numEvents = 10;
 		writeTraceFiles(folderName, 3, numEvents);
-		InputTraceBuffer sut = new InputTraceBuffer(getClass().getClassLoader(), folderName, fs);
+		InputTraceBuffer sut = new InputTraceBuffer(
+				getClass().getClassLoader(), folderName, fs);
 		checkElems(numEvents, sut);
 		sut.close();
 	}
@@ -77,7 +78,8 @@ public class InputTraceBufferTest {
 		assertFalse(sut.hasMoreElems());
 	}
 
-	private void writeTraceFiles(String folderName, int size, int numEvents) throws Exception {
+	private void writeTraceFiles(String folderName, int size, int numEvents)
+			throws Exception {
 		OutputTraceBuffer otb = new OutputTraceBuffer(folderName, size, fs);
 		for (int i = 0; i < numEvents; i++) {
 			otb.traceEvent(sampleEvent());
@@ -86,7 +88,6 @@ public class InputTraceBufferTest {
 	}
 
 	private TargetedEvent sampleEvent() {
-		return new TargetedEvent(MockClass.getInstance(),
-				new DummyEvent());
+		return new TargetedEvent(MockClass.getInstance(), new DummyEvent());
 	}
 }

@@ -81,7 +81,7 @@ public class ExecutableModelNature implements IProjectNature {
 		project.getDescription().setBuildSpec(
 				newBuildSpec.toArray(new ICommand[newBuildSpec.size()]));
 	}
-	
+
 	private boolean hasStratumBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
 			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))

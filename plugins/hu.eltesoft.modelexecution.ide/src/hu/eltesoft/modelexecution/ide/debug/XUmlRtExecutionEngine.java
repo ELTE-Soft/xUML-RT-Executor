@@ -24,7 +24,7 @@ import org.eclipse.papyrus.moka.engine.IExecutionEngine;
  */
 public class XUmlRtExecutionEngine implements IExecutionEngine {
 	// TODO: this class is a stub and need to be implemented later
-		
+
 	public XUmlRtExecutionEngine() {
 		// TODO: implement
 	}
@@ -85,7 +85,7 @@ public class XUmlRtExecutionEngine implements IExecutionEngine {
 
 	@Override
 	public void terminate(Terminate_Request request) {
-		// TODO: implement		
+		// TODO: implement
 	}
 
 	@Override

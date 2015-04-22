@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.BuilderListenerInterface;
+import hu.eltesoft.modelexecution.ide.builder.ModelBuilderListenerInterface;
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
 
 import org.eclipse.core.runtime.ILog;
@@ -29,16 +29,16 @@ public class IdePlugin extends AbstractUIPlugin implements IStartup {
 	public static void logError(String msg) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, msg));
 	}
-	
+
 	public static void logInfo(String msg) {
 		log(new Status(IStatus.INFO, PLUGIN_ID, msg));
 	}
-	
+
 	@Override
 	public void earlyStartup() {
 		IdePlugin.log = Platform.getLog(getBundle());
 		ModelBuilder.initializeBuilders();
-		BuilderListenerInterface.hookupAllChangeListeners();
+		ModelBuilderListenerInterface.hookupAllChangeListeners();
 		logInfo(Messages.IdePlugin_logger_start_msg);
 	}
 
