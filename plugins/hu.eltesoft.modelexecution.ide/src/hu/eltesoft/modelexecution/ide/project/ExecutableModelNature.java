@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 public class ExecutableModelNature implements IProjectNature {
 
 	private IProject project;
-	public static final String NATURE_ID = "hu.eltesoft.modelexecution.natures.executableModelNature";
+	public static final String NATURE_ID = "hu.eltesoft.modelexecution.natures.executableModelNature"; //$NON-NLS-1$
 
 	@Override
 	public void configure() throws CoreException {

@@ -165,7 +165,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					}
 				} catch (CoreException e) {
 					IdePlugin.logError(
-							"Error while checking model for execution", e);
+							"Error while checking model for execution", e); //$NON-NLS-1$
 				}
 			}
 		}

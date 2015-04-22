@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.ide.builder;
 import hu.eltesoft.modelexecution.filemanager.IFileManager;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
@@ -43,13 +42,14 @@ public class BuilderFileManager implements TextChangesListener {
 			getFileManager().addOrUpdate(fileName, output.getText().toString());
 			String smap = output.getSmap().toString();
 			if (smap != null) {
-				getSmapFileManager().addOrUpdateFile(fileName + ".smap", smap);
+				getSmapFileManager().addOrUpdateFile(fileName + ".smap", smap); //$NON-NLS-1$
 			}
 			if (symbols != null) {
-				getSmapFileManager().addOrUpdateFile(fileName + ".symbols", symbols);
+				getSmapFileManager().addOrUpdateFile(fileName + ".symbols", //$NON-NLS-1$
+						symbols);
 			}
 		} catch (IOException e) {
-			IdePlugin.logError("Error while writing file: " + fileName, e);
+			IdePlugin.logError("Error while writing file: " + fileName, e); //$NON-NLS-1$
 		}
 	}
 
@@ -63,9 +63,9 @@ public class BuilderFileManager implements TextChangesListener {
 				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while refreshing folder.", e);
+			IdePlugin.logError("Exception while refreshing folder.", e); //$NON-NLS-1$
 		}
-	} 
+	}
 
 	public void cleanUp() {
 		getFileManager().cleanup();
@@ -78,7 +78,8 @@ public class BuilderFileManager implements TextChangesListener {
 
 	private IFileManager getSmapFileManager() {
 		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProjectSetup.SMAP_FOLDER).toString());
+				.append(ExecutableModelProperties.getDebugFilesPath(project))
+				.toString());
 	}
 
 	/**

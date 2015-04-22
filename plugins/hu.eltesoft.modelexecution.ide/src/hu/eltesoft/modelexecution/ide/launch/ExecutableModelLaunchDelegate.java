@@ -30,8 +30,8 @@ public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
-	MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
-	JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
+	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
+	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
@@ -64,8 +64,8 @@ public class ExecutableModelLaunchDelegate implements
 			}
 		}
 		String umlResource = configuration.getAttribute(
-				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
-		String diResource = umlResource.replaceAll("\\.uml$", ".di");
+				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
+		String diResource = umlResource.replaceAll("\\.uml$", ".di"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (mode.equals(ILaunchManager.DEBUG_MODE)
 				&& !diResourceIsPresent(configuration, diResource, umlResource)) {
 			notifyUserThatDiIsMissing(diResource, umlResource);

@@ -15,11 +15,11 @@ import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
 public class ModelExecutionLaunchConfig {
 
-	private static final String JAVA_LOGGING_OPTION = "-Djava.util.logging.config.file=logging.properties";
+	private static final String JAVA_LOGGING_OPTION = "-Djava.util.logging.config.file=logging.properties"; //$NON-NLS-1$
 
-	private static final String EMPTY_STR = "";
+	private static final String EMPTY_STR = ""; //$NON-NLS-1$
 
-	private static final String ATTR_PREFIX = "hu.eltesoft.modelexecution.attr.";
+	private static final String ATTR_PREFIX = "hu.eltesoft.modelexecution.attr."; //$NON-NLS-1$
 
 	/**
 	 * URI fragment of the executed feed function. Must be a non-static
@@ -151,12 +151,12 @@ public class ModelExecutionLaunchConfig {
 			ILaunchConfigurationWorkingCopy configuration) {
 		try {
 			configuration.setAttribute(MokaLaunchDelegate.URI_ATTRIBUTE_NAME,
-					configuration.getAttribute(ATTR_UML_RESOURCE, ""));
+					configuration.getAttribute(ATTR_UML_RESOURCE, "")); //$NON-NLS-1$
 			configuration.setAttribute(
 					MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
-					configuration.getAttribute(ATTR_EXECUTED_CLASS_URI, ""));
+					configuration.getAttribute(ATTR_EXECUTED_CLASS_URI, "")); //$NON-NLS-1$
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while adding Moka configs", e);
+			IdePlugin.logError("Error while adding Moka configs", e); //$NON-NLS-1$
 		}
 	}
 
@@ -170,10 +170,10 @@ public class ModelExecutionLaunchConfig {
 		try {
 			configuration.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					configuration.getAttribute(ATTR_PROJECT_NAME, ""));
+					configuration.getAttribute(ATTR_PROJECT_NAME, "")); //$NON-NLS-1$
 			setupLaunchArgs(configuration);
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while adding Java configs", e);
+			IdePlugin.logError("Error while adding Java configs", e); //$NON-NLS-1$
 		}
 	}
 
@@ -201,9 +201,9 @@ public class ModelExecutionLaunchConfig {
 			CmArgBuilder argsBuilder = new CmArgBuilder();
 
 			argsBuilder.append(configuration.getAttribute(ATTR_EXEC_CLASS_NAME,
-					""));
+					"")); //$NON-NLS-1$
 			argsBuilder.append(configuration.getAttribute(ATTR_FEED_FUN_NAME,
-					""));
+					"")); //$NON-NLS-1$
 
 			boolean logging = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_LOGGING, false);

@@ -72,7 +72,7 @@ public class BuilderListenerInterface {
 			});
 		} catch (CoreException e) {
 			IdePlugin
-					.logError("Exception while hooking up model listeners.", e);
+					.logError("Exception while hooking up model listeners.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -96,7 +96,7 @@ public class BuilderListenerInterface {
 			return;
 		}
 		if (res == null) {
-			IdePlugin.logError("Resource does not exist: " + uri);
+			IdePlugin.logError("Resource does not exist: " + uri); //$NON-NLS-1$
 			return;
 		}
 		try {
@@ -106,7 +106,7 @@ public class BuilderListenerInterface {
 			translators.put(resource, translator);
 			translatorsFromEmfRes.put(res, translator);
 		} catch (IncQueryException e) {
-			IdePlugin.logError("IncQuery engine could not be created.", e);
+			IdePlugin.logError("IncQuery engine could not be created.", e); //$NON-NLS-1$
 		}
 	}
 

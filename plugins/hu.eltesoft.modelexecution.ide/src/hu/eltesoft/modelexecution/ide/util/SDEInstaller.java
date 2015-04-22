@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class SDEInstaller {
 
-    static final String nameSDE = "SourceDebugExtension";
+    static final String nameSDE = "SourceDebugExtension"; //$NON-NLS-1$
 
     byte[] orig;
     byte[] sdeAttr;
@@ -29,24 +29,24 @@ public class SDEInstaller {
 
     static void install(File inOutClassFile, File attrFile)
         throws IOException {
-        File tmpFile = new File(inOutClassFile.getPath() + "tmp");
+        File tmpFile = new File(inOutClassFile.getPath() + "tmp"); //$NON-NLS-1$
         new SDEInstaller(inOutClassFile, attrFile, tmpFile);
         if (!inOutClassFile.delete()) {
-            throw new IOException("inOutClassFile.delete() failed");
+            throw new IOException("inOutClassFile.delete() failed"); //$NON-NLS-1$
         }
         if (!tmpFile.renameTo(inOutClassFile)) {
-            throw new IOException("tmpFile.renameTo(inOutClassFile) failed");
+            throw new IOException("tmpFile.renameTo(inOutClassFile) failed"); //$NON-NLS-1$
         }
     }
 
     static void install(File classFile, byte[] smap) throws IOException {
-        File tmpFile = new File(classFile.getPath() + "tmp");
+        File tmpFile = new File(classFile.getPath() + "tmp"); //$NON-NLS-1$
         new SDEInstaller(classFile, smap, tmpFile);
         if (!classFile.delete()) {
-            throw new IOException("classFile.delete() failed");
+            throw new IOException("classFile.delete() failed"); //$NON-NLS-1$
         }
         if (!tmpFile.renameTo(classFile)) {
-            throw new IOException("tmpFile.renameTo(classFile) failed");
+            throw new IOException("tmpFile.renameTo(classFile) failed"); //$NON-NLS-1$
         }
     }
 
@@ -82,7 +82,7 @@ public class SDEInstaller {
         byte[] bytes = new byte[len];
         if (inStream.read(bytes, 0, len) != len) {
         	inStream.close();
-            throw new IOException("expected size: " + len);
+            throw new IOException("expected size: " + len); //$NON-NLS-1$
         }
         inStream.close();
         return bytes;
@@ -246,14 +246,14 @@ public class SDEInstaller {
                     int len = readU2();
                     writeU2(len);
                     byte[] utf8 = readBytes(len);
-                    String str = new String(utf8, "UTF-8");
+                    String str = new String(utf8, "UTF-8"); //$NON-NLS-1$
                     if (str.equals(SDEInstaller.nameSDE)) {
                         newSdeIndex = i;
                     }
                     writeBytes(utf8);
                     break;
                 default :
-                    throw new IOException("unexpected tag: " + tag);
+                    throw new IOException("unexpected tag: " + tag); //$NON-NLS-1$
             }
         }
         return newSdeIndex;
