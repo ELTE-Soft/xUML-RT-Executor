@@ -45,4 +45,18 @@ public class Dialogs {
 								diResource, umlResource)));
 	}
 
+	public static void openTraceFileInvalidErrorDialog() {
+		Display.getDefault().syncExec(
+				() -> MessageDialog.openError(null,
+						Messages.Dialogs_invalid_trace_file_caption,
+						Messages.Dialogs_invalid_trace_file_text));
+	}
+
+	public static void openRuntimeInternalErrorDialog() {
+		Display.getDefault().syncExec(
+				() -> MessageDialog.openError(null,
+						Messages.Dialogs_internal_error_caption,
+						Messages.Dialogs_internal_error_text));
+	}
+
 }

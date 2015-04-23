@@ -66,10 +66,12 @@ public class SourceMappedText implements CharSequence {
 			Location l = m.getInputLocation();
 			int inputLineCount = l.getEndLine() - l.getStartLine() + 1;
 			String filePath = l.getFilePath();
-			String fileName = Paths.get(filePath).getFileName().toString();
-			smap.addFile(fileName, filePath);
-			smap.addLineData(l.getStartLine(), fileName, inputLineCount,
-					m.getOutputStartLine(), m.getOutputLineIncrement());
+			if (filePath != null && !filePath.equals("")) {
+				String fileName = Paths.get(filePath).getFileName().toString();
+				smap.addFile(fileName, filePath);
+				smap.addLineData(l.getStartLine(), fileName, inputLineCount,
+						m.getOutputStartLine(), m.getOutputLineIncrement());
+			}
 		}
 	}
 
