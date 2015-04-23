@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2m.logic.tests;
 
 import static org.junit.Assert.assertEquals;
 

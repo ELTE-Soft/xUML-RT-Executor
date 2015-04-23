@@ -1,6 +1,6 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2m.logic.tests;
 
-import static hu.eltesoft.modelexecution.m2m.logic.Assert.assertAsSets;
+import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
@@ -8,7 +8,7 @@ import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.junit.Test;
 
-public class SimpleM2MTranslatorTests extends IncQueryBasedTestCase {	
+public class SimpleM2MTranslatorTests extends M2MTranslatorTestsBase {	
 
 	protected SimpleM2MTranslator translator;
 	protected BasicTextChangesListener listener = new BasicTextChangesListener();
