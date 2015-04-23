@@ -3,8 +3,11 @@ package hu.eltesoft.modelexecution.m2t.smap.emf;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
 
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
 
 /**
  * Assigns virtual locations to EMF object references. These locations can be
@@ -39,11 +42,23 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location assignQualified(QualifiedReference reference) {
-		String filePath = reference.getResourceURI().toFileString();
+		String filePath = referenceToFilePath(reference);
 		int lineNumber = getMapping(filePath).addLineNumber(reference);
 		return new Location(filePath, lineNumber, lineNumber);
 	}
 
+	/** @return The file path that corresponds to the given reference,
+	 *          even in the case of a platform reference. */
+	private String referenceToFilePath(QualifiedReference reference) {
+		URI resourceURI = reference.getResourceURI();
+
+		String shortFilePath = resourceURI.toFileString(); 
+		if (shortFilePath == null) {
+			shortFilePath = resourceURI.toPlatformString(true); 
+		}
+		return Paths.get(shortFilePath).toAbsolutePath().toString();
+	}
+	
 	public Reference resolve(Location location) {
 		return resolveQualified(location);
 	}
@@ -69,7 +84,7 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location resolveQualified(QualifiedReference reference) {
-		String filePath = reference.getResourceURI().toFileString();
+		String filePath = referenceToFilePath(reference);
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
 		if (null == lineNumber) {
 			return null;
