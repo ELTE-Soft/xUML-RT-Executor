@@ -9,7 +9,6 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
-import hu.eltesoft.modelexecution.runtime.TestRuntime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +23,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,16 +31,13 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdi.Bootstrap;
-import org.eclipse.jdt.debug.core.JDIDebugModel;
+import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
@@ -51,8 +48,6 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
-import org.eclipse.uml2.uml.Region;
-import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
 
@@ -60,11 +55,6 @@ import com.google.common.base.Optional;
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.VirtualMachine;
-import com.sun.jdi.VirtualMachineManager;
-import com.sun.jdi.connect.Connector.Argument;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.connect.LaunchingConnector;
-import com.sun.jdi.connect.VMStartException;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.Event;
@@ -89,7 +79,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		
 	private ContainerNameProvider containerNameProvider;
 	
-	private BreakpointRegistry bpReg = new BreakpointRegistry();
+//	private BreakpointRegistry bpReg = new BreakpointRegistry();
 	private Map<String, DebugSymbols> filenameToDebugSymbols = new HashMap<>();
 	private Map<String, ReferenceType> loadedClassnameToJDILocations = new HashMap<>();
 	
@@ -104,86 +94,42 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 				eventPort);
 
 		dbg("--------------------------------");
-		dbg("target# " + mokaDebugTarget.getLaunch().getDebugTargets().length);
-		
-		Region region = getStateMachineRegion(eObjectToExecute);
-		if (region == null) {
-			setIsTerminated(true);
-			return;
-		}
 
 		AnimationUtils.init(eObjectToExecute);
 		if (this.debugTarget != null) {
 			this.debugTarget.setName("xUML-Rt State machine");
 		}
 
+		loadDebugSymbols(mokaDebugTarget);
+
+		containerNameProvider = getContainerNameProvider(eObjectToExecute);
+		
+		vm = getVM(mokaDebugTarget);
+	}
+
+	private ContainerNameProvider getContainerNameProvider(EObject eObjectToExecute) {
 		Resource res = eObjectToExecute.eResource();
 		ChangeListenerM2MTranslator translatorOfEmfRes = BuilderListenerInterface.getTranslatorOfEmfRes(res);
-		containerNameProvider = translatorOfEmfRes.getContainerNameProvider();
-		EList<Vertex> subvertices = region.getSubvertices();
-		if (subvertices.size() == 0) {
-			// TODO error message: no vertices in region
+		return translatorOfEmfRes.getContainerNameProvider();
+	}
+
+	/** @return The supplied virtual machine.
+	 *          If no virtual machine is supplied, {@code null}; this should not happen. */
+	private VirtualMachine getVM(MokaDebugTarget mokaDebugTarget) {
+		for (IDebugTarget debugTarget : mokaDebugTarget.getLaunch().getDebugTargets()) {
+			if (debugTarget instanceof JDIDebugTarget) {
+				return ((JDIDebugTarget)debugTarget).getVM();
+			}
 		}
-		Vertex aVertex = subvertices.get(0);
-		String fullyQualifiedName = containerNameProvider.getContainerName(aVertex);
-
-		if (fullyQualifiedName == null) {
-			// TODO proper error message
-			dbg("NULL fully qualified name!");
-		} else {
-			dbg("fully qualified name: " + fullyQualifiedName);
-		}
-
-		IDebugTarget debugTarget = mkDebugTarget(mokaDebugTarget, fullyQualifiedName);
-
-		loadDebugSymbols(mokaDebugTarget);
 		
-		loadDebuggedClasses();
+		return null;
 	}
 
 	private void dbg(String string) {
 		System.out.println(string);
 	}
 
-	/** Ensures that all classes that have associated .symbols files
-	 *  are loaded into the VM. */
-	private void loadDebuggedClasses() {
-		Set<String> debugClassnames = getDebugClassnames(); 
-		
-		listenForClassLoadEvents(vm, true);
-
-		vm.resume();
-
-		EventQueue eventQueue = vm.eventQueue();
-		while (debugClassnames.size() > 0) {
-			forEachVmEvent(eventQueue, event -> {
-				if (!(event instanceof ClassPrepareEvent))    return true;
-
-				ReferenceType type = ((ClassPrepareEvent) event).referenceType();
-				String loadedClassname = type.name();
-				if (!debugClassnames.contains(loadedClassname))   return true;
-
-				debugClassnames.remove(loadedClassname);
-				dbg("loaded: " + loadedClassname);
-				dbg("remaining: " + debugClassnames.size());
-
-				for (int i = 0; i < 15; i++) {
-					loadedClassnameToJDILocations.put(loadedClassname, type);
-				}
-
-				if (debugClassnames.size() == 0) {
-					return false;
-				}
-				
-				return true;
-			});
-
-		}
-		vm.suspend();
-		
-		listenForClassLoadEvents(vm, false);
-	}
-
+	
 	/** @param consumer It processes the event, and returns true if the event loop should continue.
 	 *  @return The virtual machine is stopped. */
 	private boolean forEachVmEvent(EventQueue eventQueue, Predicate<Event> consumer) {
@@ -209,11 +155,6 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		return false;
 	}
 	
-	/** Turns listening for VM class load events on and off. */
-	private void listenForClassLoadEvents(VirtualMachine vm, boolean shouldListen) {
-		vm.eventRequestManager().createClassPrepareRequest().setEnabled(shouldListen);
-	}
-
 	private Set<String> getDebugClassnames() {
 		String symExt = "." + SYMBOLS_EXTENSION;
 		return filenameToDebugSymbols.keySet().stream()
@@ -230,7 +171,24 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 	
 	private void loadDebugSymbols(MokaDebugTarget mokaDebugTarget)
 			throws IOException, FileNotFoundException {
-		String baseDir = getBaseDir(mokaDebugTarget);
+		try {
+			dbg(mokaDebugTarget.getLaunch().getLaunchConfiguration().getAttributes().toString());
+		} catch (CoreException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		String defaultBaseDir = "/";
+		String baseDir = defaultBaseDir;
+
+		//			baseDir = mokaDebugTarget.getLaunch().getLaunchConfiguration().getAttribute("traceFolderProperty", defaultBaseDir);
+			// TODO remove hack
+			baseDir = "T:\\runtime-MokaModel2\\Test2";
+		
+		dbg(ExecutableModelProjectSetup.SMAP_FOLDER.toString());
+		dbg(Paths.get(baseDir, ExecutableModelProjectSetup.SMAP_FOLDER).toString());
+		dbg(Paths.get(baseDir, ExecutableModelProjectSetup.SMAP_FOLDER).toFile().toString());
+		dbg(Paths.get(baseDir, ExecutableModelProjectSetup.SMAP_FOLDER).toFile().listFiles().toString());
 		
 		for (File file : Paths.get(baseDir, ExecutableModelProjectSetup.SMAP_FOLDER).toFile().listFiles()) {
 			if (!file.isFile())  continue;
@@ -247,111 +205,6 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/** @return The absolute path to the base directory of the xUML-RT project. */
-	private String getBaseDir(MokaDebugTarget mokaDebugTarget) {
-/* TODO fix or remove
-		try {
-			String uriAttr = mokaDebugTarget.getLaunch().getLaunchConfiguration().getAttribute("URI_ATTRIBUTE", ".");
-//			String fileString = URI.createPlatformResourceURI(uriAttr, true).toFileString();
-//			String fileString = URI.createURI(uriAttr).toFileString();
-			URI platformResourceURI = URI.createPlatformResourceURI(uriAttr, true);
-			
-			dbg(uriAttr);
-			dbg("fs " + resourceURIToAbsolutePath(platformResourceURI));
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-*/
-
-		// TODO remove fake dir
-		return "t:\\runtime-MokaModel2\\Test1";
-	}
-
-	/** @return The state machine region if {@code eObjectToExecute} is a state machine,
-	 * otherwise {@code null}. */
-	private Region getStateMachineRegion(EObject eObjectToExecute) {
-		if (!isExecutingStateMachine(eObjectToExecute)) {
-			errorNotExecutingStateMachine();
-			return null;
-		}
-
-		StateMachine machine = (StateMachine) eObjectToExecute;
-		if (machine.getRegions().size() < 1) {
-// TODO proper error message
-//			getOutputStream().write("Error: no state machine region found!\n");
-			return null;
-		}
-
-		return machine.getRegions().get(0);
-	}
-
-	
-	// TODO remove
-	IDebugTarget mkDebugTarget(MokaDebugTarget mokaDebugTarget, String fullyQualifiedName) {
-		VirtualMachineManager manager = Bootstrap.virtualMachineManager();
-		LaunchingConnector defaultConnector = manager.defaultConnector();
-
-		Map<String, ? extends Argument> arguments = mkVmArgs(defaultConnector, fullyQualifiedName, mokaDebugTarget);
-
-		try {
-			vm = defaultConnector.launch(arguments);
-			vm.setDefaultStratum(DEFAULT_STRATUM_NAME);
-			vm.resume();
-			// TODO give better name
-			String name = "xUML-RT Virtual Machine";
-			IProcess process = mokaDebugTarget.getProcess();
-			boolean allowTerminate = true;
-			boolean allowDisconnect = true;
-			return JDIDebugModel.newDebugTarget(mokaDebugTarget.getLaunch(), vm, name, process, allowTerminate, allowDisconnect);
-		} catch (IllegalConnectorArgumentsException | VMStartException | IOException e) {
-			// TODO proper error message
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-
-	private Map<String, ? extends Argument> mkVmArgs(LaunchingConnector connector, String fullyQualifiedName, MokaDebugTarget mokaDebugTarget) {
-		Map<String, ? extends Argument> arguments = connector.defaultArguments();
-		String testRuntimeClassName = TestRuntime.class.getCanonicalName();
-		// TODO get it from Boldi
-		String feedName = "feed";
-		
-		// TODO remove hack: we have to decide how to get from Region1 to the Loop class
-		fullyQualifiedName = "Loop";
-		
-		// TODO other arguments
-		String[] args = {testRuntimeClassName, fullyQualifiedName, feedName}; 
-		
-		dbg("vmargs " + String.join(" ", args));
-		
-		arguments.get("main").setValue(String.join(" ", args));
-		
-		
-		String binClasspath = Paths.get(getBaseDir(mokaDebugTarget), DEBUG_CLASSPATH_DIR).toAbsolutePath().toString();
-		// TODO remove fake dirs
-		String runtimeClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.runtime\\bin";
-		String thirdPartyClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.3pp";
-		// TODO make it not Windows-only
-		String fullClasspath = String.join(";", binClasspath, runtimeClasspath, thirdPartyClasspath);
-		arguments.get("options").setValue("-cp " + fullClasspath + "/");
-
-		dbg("cp " + binClasspath);
-
-		return arguments;
-	}
-	
-	private void errorNotExecutingStateMachine() {
-		// TODO
-//		getOutputStream().write(
-//				"Error: the selected element is not a state machine!\n");
-	}
-
-	private boolean isExecutingStateMachine(EObject eObjectToExecute) {
-		return eObjectToExecute instanceof StateMachine;
 	}
 
 	@Override
@@ -375,7 +228,9 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		}
 
 		Location location = optLocation.get();
-		dbg("found " + reference + " " + modelElement + " " + location);
+		dbg("found bp " + reference + " " + modelElement + " " + location + " " + breakpoint.getModelElement());
+
+		dbg("containerNP " + containerNameProvider);
 
 		String containerName = containerNameProvider.getContainerName(breakpoint.getModelElement());
 		dbg("container " + containerName);
@@ -398,7 +253,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 	 *          Tries to resolve the reference as unqualified and both as {@link StateQualifiers.Entry}
 	 *          and a {@link StateQualifiers.Exit}. */
 	private Optional<Location> referenceToLocation(Reference reference) {
-		dbg("kset " + filenameToDebugSymbols.entrySet());
+//		dbg("kset " + filenameToDebugSymbols.entrySet());
 
 		for (Map.Entry<String, DebugSymbols> entry : filenameToDebugSymbols.entrySet()) {
 			String filename = entry.getKey();
@@ -450,6 +305,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				dbg("job started");
+				Set<String> debugClassnames = getDebugClassnames();
+				vm.eventRequestManager().createClassPrepareRequest().setEnabled(true);
 				vm.resume();
 
 				EventQueue eventQueue = vm.eventQueue();
@@ -467,9 +324,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 					boolean vmIsFinished = forEachVmEvent(eventQueue, event -> {
 						dbg("evt " + event);
 
-						if (!(event instanceof BreakpointEvent))   return true;
-						
-						handleBreakpoint(event);
+						if (event instanceof BreakpointEvent)   return handleBreakpoint((BreakpointEvent)event);
+						else if (event instanceof ClassPrepareEvent)    return handleClassLoaded((ClassPrepareEvent)event, debugClassnames);
 
 						return true;
 					});
@@ -482,6 +338,20 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 				forceTermination();
 
 				return Status.OK_STATUS;
+			}
+
+			private boolean handleClassLoaded(ClassPrepareEvent event, Set<String> debugClassnames) {
+				ReferenceType type = event.referenceType();
+				String loadedClassname = type.name();
+				if (!debugClassnames.contains(loadedClassname))   return true;
+
+				debugClassnames.remove(loadedClassname);
+				dbg("loaded: " + loadedClassname);
+				dbg("remaining: " + debugClassnames.size());
+
+				loadedClassnameToJDILocations.put(loadedClassname, type);
+				
+				return true;
 			}
 
 			private void forceTermination() {
@@ -506,11 +376,12 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 				}
 			}
 
-			private void handleBreakpoint(Event event) {
-				com.sun.jdi.Location stoppedAt = ((BreakpointEvent) event).location();
+			private boolean handleBreakpoint(BreakpointEvent event) {
+				com.sun.jdi.Location stoppedAt = event.location();
 
 				dbg("Breakpoint found " + stoppedAt);
 
+				return true;
 				/*
 				Vertex state = representation.states
 						.get(stoppedAt.lineNumber() - 1);
