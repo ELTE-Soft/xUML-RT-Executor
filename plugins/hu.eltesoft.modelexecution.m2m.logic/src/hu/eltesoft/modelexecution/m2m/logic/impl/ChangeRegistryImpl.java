@@ -41,12 +41,18 @@ public class ChangeRegistryImpl implements ChangeRegistry {
 	@Override
 	public FileUpdateTaskQueue performAllChanges() {
 		FileUpdateTaskQueue taskQueue = deletions.asQueue();
-		deletions.clear();
 
 		modifications.performAll(taskQueue);
-		modifications.clear();
 
+		clear();
+		
 		return taskQueue;
+	}
+
+	@Override
+	public void clear() {
+		deletions.clear();
+		modifications.clear();
 	}
 
 }

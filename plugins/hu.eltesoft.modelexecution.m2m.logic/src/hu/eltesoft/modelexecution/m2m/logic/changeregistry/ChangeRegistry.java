@@ -39,5 +39,11 @@ public interface ChangeRegistry {
 	 * @return a queue of required file update tasks
 	 */
 	FileUpdateTaskQueue performAllChanges();
+	
+	
+	/**
+	 * Clears this registry.
+	 */
+	void clear();
 
 }
