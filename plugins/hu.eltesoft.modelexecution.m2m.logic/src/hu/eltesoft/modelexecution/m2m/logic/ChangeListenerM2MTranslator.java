@@ -7,11 +7,12 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 /**
  * Incremental m2m translator interface, which can translate an EMF-UML2 model
- * in a whole but also listens to model changes and based on them.
+ * in a whole but also listens to model changes and can do the translation
+ * incrementally based on them.
  * <p>
  * As it should be created and called on the same thread on which the EMF-UML2
  * model is created and managed, the implementations of this interface are
- * <i>not</i> thread-safe.
+ * <b><i>not</i></b> thread-safe.
  * 
  * @see SimpleM2MTranslator
  *
@@ -23,13 +24,13 @@ public interface ChangeListenerM2MTranslator extends SimpleM2MTranslator {
 	 * 
 	 * @param engine
 	 *            IncQuery engine created on the scope of the to-be-translated
-	 *            model.
+	 *            model
 	 * @param listener
-	 *            A listener which will be informed when model changes affect
-	 *            its textual representation.
-	 * @return The new <code>ChangeListenerM2MTranslator</code> instance.
+	 *            a listener which will be informed when model changes affect
+	 *            its textual representation
+	 * @return the new <code>ChangeListenerM2MTranslator</code> instance
 	 * @throws IncQueryException
-	 *             If an error occurs during pattern matcher creation.
+	 *             if an error occurs during pattern matcher creation
 	 */
 	static ChangeListenerM2MTranslator create(IncQueryEngine engine,
 			TextChangesListener listener) throws IncQueryException {
@@ -40,12 +41,12 @@ public interface ChangeListenerM2MTranslator extends SimpleM2MTranslator {
 	 * Runs a full build on the model, and then resets this translator's change
 	 * registry, or creates it if not existed.
 	 * <p>
-	 * <b>Note</b>: the result only contains modification tasks, therefore
+	 * <b>Note:</b> the result only contains modification tasks, therefore
 	 * previously created and now unused files will remain existing if not
 	 * deleted before calling this method.
 	 * 
-	 * @return The queue of tasks to be performed to update all files. Only
-	 *         contains modification tasks.
+	 * @return the queue of tasks to be performed to update all files; only
+	 *         contains modification tasks
 	 */
 	@Override
 	FileUpdateTaskQueue fullBuild();
@@ -59,8 +60,8 @@ public interface ChangeListenerM2MTranslator extends SimpleM2MTranslator {
 	 * same file: a deletion and a modification. However, in this case, it is
 	 * guaranteed that the deletion precedes the modification in the queue.
 	 * 
-	 * @return The queue of tasks to be performed to update all files. May
-	 *         contain modification and deletion tasks as well.
+	 * @return the queue of tasks to be performed to update all files; may
+	 *         contain modification and deletion tasks as well
 	 */
 	FileUpdateTaskQueue rebuild();
 

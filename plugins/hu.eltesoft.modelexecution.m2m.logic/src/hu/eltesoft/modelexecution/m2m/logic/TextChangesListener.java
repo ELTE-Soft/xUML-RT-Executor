@@ -15,11 +15,11 @@ public interface TextChangesListener {
 	 * creation and modification of a file.
 	 * 
 	 * @param filename
-	 *            The name of the file to be changed.
+	 *            the name of the file to be changed
 	 * @param output
-	 *            The new contents of the file with source mapping information.
+	 *            the new contents of the file with source mapping information
 	 * @param symbols
-	 *            Debug symbols.
+	 *            debug symbols
 	 */
 	void contentChanged(String filename, SourceMappedText output,
 			DebugSymbols symbols);
@@ -29,7 +29,7 @@ public interface TextChangesListener {
 	 * file is no more required.
 	 * 
 	 * @param filename
-	 *            The name of the file to be deleted.
+	 *            the name of the file to be deleted
 	 */
 	void contentDeleted(String filename);
 

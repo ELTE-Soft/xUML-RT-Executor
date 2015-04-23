@@ -36,7 +36,7 @@ public interface ChangeRegistry {
 	/**
 	 * Performs the previously registered changes and clears this registry.
 	 * 
-	 * @return A queue of required file update tasks.
+	 * @return a queue of required file update tasks
 	 */
 	FileUpdateTaskQueue performAllChanges();
 
