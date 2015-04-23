@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
@@ -60,7 +61,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		// alfCode
 		if (!alfCodeMatcher.forOneArbitraryMatch(source, null,
 				getProcessorToSetAlfCodeOfRoot(root))) {
-			
+
 			root.setAlfCode("{}");
 		}
 
@@ -120,17 +121,23 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		listener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getName(), output, symbols);
 	}
 
 	// add match update listeners
 
 	@Override
-	public void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry) {
+	public ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
 
-		advancedEngine.addMatchUpdateListener(behaviorMatcher,
-				new IMatchUpdateListener<BehaviorMatch>() {
+		return new ReversionTask() {
+
+			private final IMatchUpdateListener<BehaviorMatch> behaviorListener;
+			private final IMatchUpdateListener<ContainerClassOfBehaviorMatch> containerClassOfBehaviorListener;
+			private final IMatchUpdateListener<AlfCodeMatch> alfCodeListener;
+
+			{ // set behaviorListener
+				behaviorListener = new IMatchUpdateListener<BehaviorMatch>() {
 
 					@Override
 					public void notifyAppearance(BehaviorMatch match) {
@@ -144,10 +151,14 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 						changeRegistry.newDeletion(match.getBehaviorName());
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(containerClassOfBehaviorMatcher,
-				new IMatchUpdateListener<ContainerClassOfBehaviorMatch>() {
+				advancedEngine.addMatchUpdateListener(behaviorMatcher,
+						behaviorListener, false);
+			}
+
+			{ // set containerClassOfBehaviorListener
+				containerClassOfBehaviorListener = new IMatchUpdateListener<ContainerClassOfBehaviorMatch>() {
 
 					@Override
 					public void notifyAppearance(
@@ -163,10 +174,16 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 								BehaviorGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(alfCodeMatcher,
-				new IMatchUpdateListener<AlfCodeMatch>() {
+				advancedEngine.addMatchUpdateListener(
+						containerClassOfBehaviorMatcher,
+						containerClassOfBehaviorListener, false);
+
+			}
+
+			{ // setAlfCodeListener
+				alfCodeListener = new IMatchUpdateListener<AlfCodeMatch>() {
 
 					@Override
 					public void notifyAppearance(AlfCodeMatch match) {
@@ -180,8 +197,28 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 								BehaviorGenerator.this);
 					}
 
-				}, false);
+				};
+
+				advancedEngine.addMatchUpdateListener(alfCodeMatcher,
+						alfCodeListener, false);
+
+			}
+
+			@Override
+			public boolean revert() {
+
+				advancedEngine.removeMatchUpdateListener(behaviorMatcher,
+						behaviorListener);
+				advancedEngine.removeMatchUpdateListener(
+						containerClassOfBehaviorMatcher,
+						containerClassOfBehaviorListener);
+				advancedEngine.removeMatchUpdateListener(alfCodeMatcher,
+						alfCodeListener);
+
+				return true;
+			}
+
+		};
 
 	}
-
 }

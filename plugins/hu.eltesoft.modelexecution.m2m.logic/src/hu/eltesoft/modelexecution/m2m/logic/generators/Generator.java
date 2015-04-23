@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
 import org.eclipse.emf.ecore.EObject;
@@ -12,7 +13,10 @@ public interface Generator<S extends EObject, R extends ModelRoot> {
 
 	void generateText(R root);
 
-	void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry);
+	/**
+	 * @return a task to remove the registered match update listeners
+	 */
+	ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry);
 
 }
