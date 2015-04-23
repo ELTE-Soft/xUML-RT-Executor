@@ -65,4 +65,26 @@ public interface ChangeListenerM2MTranslator extends SimpleM2MTranslator {
 	 */
 	FileUpdateTaskQueue rebuild();
 
+	/**
+	 * Activates this object's listeners to model changes. If <code>force</code>
+	 * is set to be <code>true</code>, this method performs even if the
+	 * listeners are already active. In this case, it first inactivates, then
+	 * reactivates them (as a kind of reset).
+	 * 
+	 * @param force
+	 *            perform even if the listeners are already active
+	 * @return <code>true</code> if this method invoked the activation of the
+	 *         listeners (if they were not active yet or <code>force</code> was
+	 *         <code>true</code>), <code>false</code> otherwise
+	 */
+	boolean activateListeners(boolean force);
+
+	/**
+	 * Inactivates this object's listeners to model changes.
+	 * 
+	 * @return <code>true</code> if this method invoked the inactivation of the
+	 *         listeners (if they were not inactive yet), <code>false</code>
+	 *         otherwise
+	 */
+	boolean inactivateListeners();
 }
