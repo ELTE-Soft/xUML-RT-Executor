@@ -23,7 +23,7 @@ public class BasicTextChangesListener implements TextChangesListener {
 		outputs.clear();
 		symbols.clear();
 	}
-	
+
 	@Override
 	public void contentChanged(String filename, SourceMappedText output,
 			DebugSymbols symbols) {
