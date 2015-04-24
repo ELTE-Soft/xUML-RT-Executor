@@ -30,7 +30,6 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 		super(engine, listener);
 		this.advancedEngine = AdvancedIncQueryEngine.from(engine);
 		this.changeRegistry = ChangeRegistry.create(listener);
-		activateListeners(false);
 	}
 
 	@Override
@@ -99,6 +98,8 @@ public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 		if (!listenersActive) {
 			return false;
 		}
+		
+		listenersActive = false;		
 
 		removeListenersTask.revert();
 		removeListenersTask = null;
