@@ -9,6 +9,7 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
+import hu.eltesoft.modelexecution.runtime.TestRuntime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +18,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -37,6 +40,7 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdi.Bootstrap;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
@@ -48,13 +52,21 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
+import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.base.Optional;
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.VirtualMachine;
+import com.sun.jdi.VirtualMachineManager;
+import com.sun.jdi.connect.Connector.Argument;
+import com.sun.jdi.connect.IllegalConnectorArgumentsException;
+import com.sun.jdi.connect.LaunchingConnector;
+import com.sun.jdi.connect.VMStartException;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.Event;
@@ -82,6 +94,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 //	private BreakpointRegistry bpReg = new BreakpointRegistry();
 	private Map<String, DebugSymbols> filenameToDebugSymbols = new HashMap<>();
 	private Map<String, ReferenceType> loadedClassnameToJDILocations = new HashMap<>();
+	private Map<String, List<Pair<Location, EObject>>> loadedClassnameToDeferredLocation = new HashMap<>();
+	private Map<Pair<String, Integer>, EObject> jdiLocationToEObject = new HashMap<>();
 	
 	public XUmlRtExecutionEngine() {
 	}
@@ -92,7 +106,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			int eventPort) throws UnknownHostException, IOException {
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort, replyPort,
 				eventPort);
-
+		
 		dbg("--------------------------------");
 
 		AnimationUtils.init(eObjectToExecute);
@@ -104,7 +118,78 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 		containerNameProvider = getContainerNameProvider(eObjectToExecute);
 		
-		vm = getVM(mokaDebugTarget);
+//		vm = getVM(mokaDebugTarget);
+		vm = mkVM(mokaDebugTarget, getFQN(eObjectToExecute));
+		vm.setDefaultStratum(DEFAULT_STRATUM_NAME);
+
+	}
+
+	// TODO remove
+	private String getFQN(EObject eObjectToExecute) {
+		String fullyQualifiedName = containerNameProvider.getContainerName(eObjectToExecute);
+		return fullyQualifiedName;
+	}
+
+	// TODO remove
+	private Region getStateMachineRegion(EObject eObjectToExecute) {
+		StateMachine machine = (StateMachine) eObjectToExecute;
+		if (machine.getRegions().size() < 1) {
+			return null;
+		}
+
+		return machine.getRegions().get(0);
+	}
+
+	// TODO remove (currently present because getVM()'s VM seems to be missing a classpath entry)
+	VirtualMachine mkVM(MokaDebugTarget mokaDebugTarget, String fullyQualifiedName) {
+		VirtualMachineManager manager = Bootstrap.virtualMachineManager();
+		LaunchingConnector defaultConnector = manager.defaultConnector();
+
+		Map<String, ? extends Argument> arguments = mkVmArgs(defaultConnector, fullyQualifiedName, mokaDebugTarget);
+
+		try {
+			vm = defaultConnector.launch(arguments);
+			vm.setDefaultStratum(DEFAULT_STRATUM_NAME);
+			return vm;
+		} catch (IllegalConnectorArgumentsException | VMStartException | IOException e) {
+			// TODO proper error message
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	// TODO remove
+	private Map<String, ? extends Argument> mkVmArgs(LaunchingConnector connector, String fullyQualifiedName, MokaDebugTarget mokaDebugTarget) {
+		Map<String, ? extends Argument> arguments = connector.defaultArguments();
+		String testRuntimeClassName = TestRuntime.class.getCanonicalName();
+
+		String feedName = "feed";
+		
+		fullyQualifiedName = "Loop";
+		
+		String[] args = {testRuntimeClassName, fullyQualifiedName, feedName}; 
+		
+		dbg("vmargs " + String.join(" ", args));
+		
+		arguments.get("main").setValue(String.join(" ", args));
+		
+		
+		String binClasspath = Paths.get(getBaseDir(mokaDebugTarget), DEBUG_CLASSPATH_DIR).toAbsolutePath().toString();
+
+		String runtimeClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.runtime\\bin";
+		String thirdPartyClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.3pp";
+
+		String fullClasspath = String.join(";", binClasspath, runtimeClasspath, thirdPartyClasspath);
+		arguments.get("options").setValue("-cp " + fullClasspath + "/");
+
+		dbg("cp " + binClasspath);
+
+		return arguments;
+	}
+
+	// TODO remove
+	private String getBaseDir(MokaDebugTarget mokaDebugTarget) {
+		return "t:\\runtime-MokaModel3\\Test3";
 	}
 
 	private ContainerNameProvider getContainerNameProvider(EObject eObjectToExecute) {
@@ -136,8 +221,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		EventSet eventSet = null;
 		try {
 			eventSet = eventQueue.remove();
-			eventSet.stream().forEach(event -> dbg(event.toString()));
-		} catch (InterruptedException e) {
+//			eventSet.stream().forEach(event -> dbg("evEach " + event.toString()));
+		} catch (InterruptedException | com.sun.jdi.VMDisconnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -159,14 +244,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		String symExt = "." + SYMBOLS_EXTENSION;
 		return filenameToDebugSymbols.keySet().stream()
 				.filter(filename -> filename.endsWith(symExt))
-				.map(XUmlRtExecutionEngine::removeFromLastDot)
+				.map(XUmlRtExecutionEngine::removeLastDotSection)
 				.collect(Collectors.toSet());
-	}
-
-	/** @return The argument, with the portion after the last dot removed (including the dot).
-	 *          Useful for removing file extensions, for example. */
-	static private String removeFromLastDot(String s) {
-		return s.substring(0, s.lastIndexOf('.'));
 	}
 	
 	private void loadDebugSymbols(MokaDebugTarget mokaDebugTarget)
@@ -179,11 +258,13 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		}
 
 		String defaultBaseDir = "/";
-		String baseDir = defaultBaseDir;
+//		String baseDir = defaultBaseDir;
 
-		//			baseDir = mokaDebugTarget.getLaunch().getLaunchConfiguration().getAttribute("traceFolderProperty", defaultBaseDir);
+		
+		
+//		String baseDir = mokaDebugTarget.getLaunch().getLaunchConfiguration().getAttribute(ExecutableModelProperties.getSourceGenPath(mokaDebugTarget.getProcess()), defaultBaseDir);
 			// TODO remove hack
-			baseDir = "T:\\runtime-MokaModel2\\Test2";
+		String	baseDir = getBaseDir(mokaDebugTarget);
 		
 		dbg(ExecutableModelProjectSetup.SMAP_FOLDER.toString());
 		dbg(Paths.get(baseDir, ExecutableModelProjectSetup.SMAP_FOLDER).toString());
@@ -235,18 +316,84 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		String containerName = containerNameProvider.getContainerName(breakpoint.getModelElement());
 		dbg("container " + containerName);
 
-		// TODO what about multiline Locations? use all lines between getStartLine and getEndLine?
-		// TODO what about if locationsOfLine returns multiple lines?
+		dbg("loadedToLocs " + loadedClassnameToJDILocations);
+		ReferenceType referenceType = loadedClassnameToJDILocations.get(containerName);
+		
+		if (referenceType == null) {
+			dbg("deferringBp " + location);
+			deferBreakpoint(containerName, location, modelElement);
+		} else {
+			dbg("immediateBp " + referenceType.toString());
+			placeJdiBreakpoint(location, referenceType, modelElement);
+		}
+
+	}
+
+	/** The breakpoint is set on the related file.
+	 *  It is assumed that the file is already loaded into the virtual machine. 
+	 * @param modelElement */
+	private void placeJdiBreakpoint(Location location,
+			ReferenceType referenceType, EObject modelElement) {
 		try {
-			com.sun.jdi.Location jdiLocation = loadedClassnameToJDILocations.get(containerName).locationsOfLine(location.getStartLine()).get(0);
-			vm.eventRequestManager().createBreakpointRequest(jdiLocation).setEnabled(true);
-			
-			dbg("addedBp " + jdiLocation);
+			dbg("allLocsRefType " + referenceType.allLineLocations());
 		} catch (AbsentInformationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		int startLine = location.getStartLine();
+
+		int startLineInFile = startLine + 1;
+		
+		try {
+			List<com.sun.jdi.Location> locationsOfLine = referenceType.locationsOfLine(startLineInFile);
+
+			dbgPrintLocsOfLine(referenceType);
+			
+			if (locationsOfLine.size() == 0) {
+				dbg("missingBPloc " + startLineInFile);
+				return;
+			}
+
+			if (locationsOfLine.size() > 1) {
+				dbg("multiloc " + locationsOfLine);
+			}
+			
+			com.sun.jdi.Location jdiLocation = locationsOfLine.get(0);
+			vm.eventRequestManager().createBreakpointRequest(jdiLocation).setEnabled(true);
+			
+			String className = removeLastDotSection(jdiLocation.sourceName());
+			dbg("addedBp " + jdiLocation + " " + className);
+			jdiLocationToEObject.put(new Pair<String, Integer>(className, startLine), modelElement);
+		} catch (AbsentInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void dbgPrintLocsOfLine(ReferenceType referenceType) {
+		for (int i = 1; i < 20; i++) {
+			try {
+				List<com.sun.jdi.Location> locationsOfLine2 = referenceType.locationsOfLine(i);
+				dbg("locLine " + i + " ------> " + ((locationsOfLine2 == null) ? "X" : locationsOfLine2.get(0)));
+			} catch (Exception e) {
+				dbg("overLocLine " + i + " " + e);
+				break;
+			}
+		}
+	}
+
+	/** As the class for the breakpoint isn't loaded yet,
+	 *  the breakpoint information is stored until the class has arrived. */
+	private void deferBreakpoint(String containerName, Location location, EObject modelElement) {
+		dbg("deferring " + containerName);
+		List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation.get(containerName);
+		if (deferredLocations == null) {
+			deferredLocations = new ArrayList<>();
+		}
+
+		deferredLocations.add(new Pair<>(location, modelElement));
+		loadedClassnameToDeferredLocation.put(containerName, deferredLocations);
 	}
 
 	/** @return The {@link Location} of the {@link Reference}, or null if not found.
@@ -296,8 +443,9 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		if (!isVmJobStarted) {
 			dbg("starting job...");
 			vmJob = mkVmJob();
-			vmJob.schedule();
 		}
+
+		vmJob.schedule();
 	}
 
 	private Job mkVmJob() {
@@ -317,12 +465,13 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 						vm.resume();
 					}
 
-					dbg("handling events...");
+//					dbg("handling events...");
 
+					// TODO is this necessary all the time?
 					vm.resume();
 
 					boolean vmIsFinished = forEachVmEvent(eventQueue, event -> {
-						dbg("evt " + event);
+//						dbg("evt " + event);
 
 						if (event instanceof BreakpointEvent)   return handleBreakpoint((BreakpointEvent)event);
 						else if (event instanceof ClassPrepareEvent)    return handleClassLoaded((ClassPrepareEvent)event, debugClassnames);
@@ -330,7 +479,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 						return true;
 					});
 
-					dbg("handled events...");
+//					dbg("handled events...");
 
 					if (vmIsFinished)   break;
 				}
@@ -341,17 +490,36 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			}
 
 			private boolean handleClassLoaded(ClassPrepareEvent event, Set<String> debugClassnames) {
-				ReferenceType type = event.referenceType();
-				String loadedClassname = type.name();
+				ReferenceType referenceType = event.referenceType();
+				String loadedClassname = referenceType.name();
+//				dbg("classLoaded " + loadedClassname);
 				if (!debugClassnames.contains(loadedClassname))   return true;
 
 				debugClassnames.remove(loadedClassname);
-				dbg("loaded: " + loadedClassname);
-				dbg("remaining: " + debugClassnames.size());
+				dbg("loaded: " + loadedClassname + " remaining: " + debugClassnames.size());
 
-				loadedClassnameToJDILocations.put(loadedClassname, type);
+				loadedClassnameToJDILocations.put(loadedClassname, referenceType);
+
+				dbg("strata " + event.referenceType().name() + " " + referenceType.availableStrata());
+
+				placeDeferredBreakpoints(loadedClassname, referenceType);
 				
 				return true;
+			}
+
+			private void placeDeferredBreakpoints(String loadedClassname, ReferenceType referenceType) {
+				dbg("placeRemBP " + loadedClassname);
+				List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation.get(loadedClassname);
+				if (deferredLocations == null)   return;
+
+				dbg("deferredsFor " + loadedClassname + " " + deferredLocations);
+
+				for (Pair<Location, EObject> deferred: deferredLocations) {
+					dbg("placeDeferredBp");
+					Location location = deferred.getKey();
+					EObject modelElement = deferred.getValue();
+					placeJdiBreakpoint(location, referenceType, modelElement);
+				}
 			}
 
 			private void forceTermination() {
@@ -381,18 +549,23 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 				dbg("Breakpoint found " + stoppedAt);
 
-				return true;
-				/*
-				Vertex state = representation.states
-						.get(stoppedAt.lineNumber() - 1);
-				animate(state);
 				try {
-					dbg("Break on state: " + state.getName() + "\n");
-				} catch (IOException e) {
+					String sourceFileName = stoppedAt.sourceName();
+					int locationLine = stoppedAt.lineNumber() - 1;
+
+					// TODO is removing the .java extension always good enough?
+					String sourceName = removeLastDotSection(sourceFileName);
+
+					EObject eObject = jdiLocationToEObject.get(new Pair<>(sourceName, locationLine));
+					dbg("BReobj " + sourceName + " " + locationLine + " " + eObject);
+					
+					animate(eObject);
+				} catch (AbsentInformationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				*/
+				
+				return true;
 			}
 
 			protected void animate(EObject element) {
@@ -461,4 +634,18 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 	public IRegisterGroup[] getRegisterGroups(IStackFrame stackFrame) {
 		return new IRegisterGroup[0];
 	}
+
+	/** Typical usage: to remove {@code .java} postfixes.
+	 *  @return The input string without the last dot in it and everything that comes after that.
+	 *          If the text does not contain any dots, returns the original text.  */
+    public static String removeLastDotSection(String in){
+        if(in == null) {
+            return null;
+        }
+        int lastDotIdx = in.lastIndexOf(".");
+        if(lastDotIdx <= 0){
+            return in;
+        }
+        return in.substring(0, lastDotIdx);
+    }
 }
