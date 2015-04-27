@@ -36,6 +36,9 @@ class SourceMappedTemplateTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
@@ -48,6 +51,7 @@ class SourceMappedTemplateTest {
 				1#1:8
 				2:10
 				5:12
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 }
