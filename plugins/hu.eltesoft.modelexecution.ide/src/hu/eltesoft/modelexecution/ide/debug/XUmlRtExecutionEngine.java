@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,7 @@ import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.base.Optional;
 import com.sun.jdi.AbsentInformationException;
+import com.sun.jdi.Field;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.VirtualMachineManager;
@@ -118,8 +120,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 		containerNameProvider = getContainerNameProvider(eObjectToExecute);
 		
-//		vm = getVM(mokaDebugTarget);
-		vm = mkVM(mokaDebugTarget, getFQN(eObjectToExecute));
+		vm = getVM(mokaDebugTarget);
+//		vm = mkVM(mokaDebugTarget, getFQN(eObjectToExecute));
 		vm.setDefaultStratum(DEFAULT_STRATUM_NAME);
 
 	}
@@ -175,11 +177,12 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		
 		
 		String binClasspath = Paths.get(getBaseDir(mokaDebugTarget), DEBUG_CLASSPATH_DIR).toAbsolutePath().toString();
+		dbg("binCP " + binClasspath);
 
 		String runtimeClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.runtime\\bin";
 		String thirdPartyClasspath = "F:\\vcs\\modelinterpreter\\product\\trunk\\plugins\\hu.eltesoft.modelexecution.3pp";
 
-		String fullClasspath = String.join(";", binClasspath, runtimeClasspath, thirdPartyClasspath);
+		String fullClasspath = String.join(File.pathSeparator, binClasspath, runtimeClasspath, thirdPartyClasspath);
 		arguments.get("options").setValue("-cp " + fullClasspath + "/");
 
 		dbg("cp " + binClasspath);
@@ -189,7 +192,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 	// TODO remove
 	private String getBaseDir(MokaDebugTarget mokaDebugTarget) {
-		return "t:\\runtime-MokaModel3\\Test3";
+		return "T:\\runtime-MokaModel3\\Test1";
 	}
 
 	private ContainerNameProvider getContainerNameProvider(EObject eObjectToExecute) {
@@ -227,6 +230,11 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			e.printStackTrace();
 		}
 
+		if (eventSet == null) {
+			dbg("nullEvtSet");
+			return false;
+		}
+		
 		for (Event event : eventSet) {
 			if (event instanceof VMDeathEvent
 					|| event instanceof VMDisconnectEvent) {
@@ -290,8 +298,6 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 	@Override
 	public void addBreakpoint(MokaBreakpoint breakpoint) {
-		dbg("adding bp " + breakpoint);
-		
 		EObject modelElement = breakpoint.getModelElement();
 		if (!(modelElement instanceof Vertex || modelElement instanceof Transition)) {
 			// TODO note: breakpoints are only supported on Vertex and Transition nodes
@@ -301,19 +307,20 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		Reference reference = new Reference(modelElement);
 		Optional<Location> optLocation = referenceToLocation(reference);
 
+		dbg("queryBp " + reference + " " + modelElement);
+
 		if (!optLocation.isPresent()) {
-			dbg("missing breakpoint location!!!");
+			dbg("missingBp " + modelElement + " " + modelElement.eContents());
 
 			// TODO error msg
 			return;
 		}
 
 		Location location = optLocation.get();
-		dbg("found bp " + reference + " " + modelElement + " " + location + " " + breakpoint.getModelElement());
+		dbg("foundBp " + reference + " " + modelElement + " " + location);
 
-		dbg("containerNP " + containerNameProvider);
-
-		String containerName = containerNameProvider.getContainerName(breakpoint.getModelElement());
+		String containerName = getContainingRegionName(modelElement);
+//		String containerName = containerNameProvider.getContainerName(modelElement);
 		dbg("container " + containerName);
 
 		dbg("loadedToLocs " + loadedClassnameToJDILocations);
@@ -329,13 +336,41 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 	}
 
+	/** This method traverses EObjects, and should be removed in the future.
+	 *  @return The name of the (state machine) region that contains the {@code modelElement},
+	 *          or {@code null} if no such region is found. */
+	private String getContainingRegionName(EObject modelElement) {
+		EObject container = modelElement;
+		dbg("initCont " + container.getClass().getName() + " " + container);
+		while (container.eContainer() != null) {
+			container = container.eContainer();
+			dbg("parCont " + container.getClass().getName() + " " + container);
+			if (container instanceof Region)   break;
+		}
+
+		if (!(container instanceof Region)) {
+			// TODO
+			dbg("nonStateMachineContainer " + container.getClass().getName());
+			return null;
+		}
+
+		return ((Region)container).getName();
+	}
+
 	/** The breakpoint is set on the related file.
 	 *  It is assumed that the file is already loaded into the virtual machine. 
 	 * @param modelElement */
 	private void placeJdiBreakpoint(Location location,
 			ReferenceType referenceType, EObject modelElement) {
 		try {
+			dbg("rtStrat " + referenceType.availableStrata());
+			for (int i = 0; i < 1000; i++) {
+				if (referenceType.locationsOfLine(DEFAULT_STRATUM_NAME, "model3.uml", i).isEmpty())  continue;
+				dbg("line " + i + " " + referenceType.locationsOfLine(DEFAULT_STRATUM_NAME, "model3.uml", i));
+			}
+			dbg("allFields " + referenceType.allFields());
 			dbg("allLocsRefType " + referenceType.allLineLocations());
+			dbg("allLocsRefType " + referenceType.allLineLocations(DEFAULT_STRATUM_NAME, "model3.uml"));
 		} catch (AbsentInformationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -360,6 +395,9 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			}
 			
 			com.sun.jdi.Location jdiLocation = locationsOfLine.get(0);
+			
+			dbg("jdiLocation " + jdiLocation);
+			
 			vm.eventRequestManager().createBreakpointRequest(jdiLocation).setEnabled(true);
 			
 			String className = removeLastDotSection(jdiLocation.sourceName());
@@ -400,12 +438,14 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 	 *          Tries to resolve the reference as unqualified and both as {@link StateQualifiers.Entry}
 	 *          and a {@link StateQualifiers.Exit}. */
 	private Optional<Location> referenceToLocation(Reference reference) {
-//		dbg("kset " + filenameToDebugSymbols.entrySet());
+		dbg("kset " + filenameToDebugSymbols);
 
 		for (Map.Entry<String, DebugSymbols> entry : filenameToDebugSymbols.entrySet()) {
 			String filename = entry.getKey();
 			DebugSymbols debugSymbols = entry.getValue();
 			LocationRegistry locationRegistry = debugSymbols.getLocationRegistry();
+
+			dbg("dsyms " + locationRegistry);
 
 			Location location1 = locationRegistry.resolve(reference);
 			if (location1 != null)   return Optional.of(location1);
@@ -489,18 +529,22 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 				return Status.OK_STATUS;
 			}
 
+			// TODO remove
+			private int loadedClassCount = 0;
+			
 			private boolean handleClassLoaded(ClassPrepareEvent event, Set<String> debugClassnames) {
 				ReferenceType referenceType = event.referenceType();
 				String loadedClassname = referenceType.name();
-//				dbg("classLoaded " + loadedClassname);
+				dbg("classLoaded " + loadedClassname);
 				if (!debugClassnames.contains(loadedClassname))   return true;
 
 				debugClassnames.remove(loadedClassname);
-				dbg("loaded: " + loadedClassname + " remaining: " + debugClassnames.size());
+				dbg("loaded: " + loadedClassname + " #" + (++loadedClassCount) + " remaining: " + debugClassnames.size() + " " + new TreeSet<String>(debugClassnames).toString());
 
 				loadedClassnameToJDILocations.put(loadedClassname, referenceType);
 
-				dbg("strata " + event.referenceType().name() + " " + referenceType.availableStrata());
+//				dbg("strata " + referenceType.name() + " " + referenceType.availableStrata());
+//				dbg("defStratum " + referenceType.defaultStratum());
 
 				placeDeferredBreakpoints(loadedClassname, referenceType);
 				
@@ -508,14 +552,16 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			}
 
 			private void placeDeferredBreakpoints(String loadedClassname, ReferenceType referenceType) {
-				dbg("placeRemBP " + loadedClassname);
 				List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation.get(loadedClassname);
-				if (deferredLocations == null)   return;
+				if (referenceType.defaultStratum().contains(DEFAULT_STRATUM_NAME) && deferredLocations == null) dbg("noDeferredForXStratum");
+				if (deferredLocations == null) {
+					return;
+				}
 
 				dbg("deferredsFor " + loadedClassname + " " + deferredLocations);
 
 				for (Pair<Location, EObject> deferred: deferredLocations) {
-					dbg("placeDeferredBp");
+					dbg("placeDeferredBp " + deferred);
 					Location location = deferred.getKey();
 					EObject modelElement = deferred.getValue();
 					placeJdiBreakpoint(location, referenceType, modelElement);
@@ -547,7 +593,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 			private boolean handleBreakpoint(BreakpointEvent event) {
 				com.sun.jdi.Location stoppedAt = event.location();
 
-				dbg("Breakpoint found " + stoppedAt);
+				// dbg("Breakpoint found " + stoppedAt);
 
 				try {
 					String sourceFileName = stoppedAt.sourceName();
@@ -557,7 +603,7 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 					String sourceName = removeLastDotSection(sourceFileName);
 
 					EObject eObject = jdiLocationToEObject.get(new Pair<>(sourceName, locationLine));
-					dbg("BReobj " + sourceName + " " + locationLine + " " + eObject);
+					// dbg("BReobj " + sourceName + " " + locationLine + " " + eObject);
 					
 					animate(eObject);
 				} catch (AbsentInformationException e) {
