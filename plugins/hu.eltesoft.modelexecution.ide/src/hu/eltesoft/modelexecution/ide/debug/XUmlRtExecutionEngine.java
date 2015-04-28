@@ -151,11 +151,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	// TODO: resolve container in a sophisticated way
 	public String getContainerName(EObject modelElement) {
-		if (isContainer(modelElement)) {
-			return ((NamedElement) modelElement).getName();
-		} else {
-			return getContainerName(((Element) modelElement).getOwner());
+		while (!isContainer(modelElement)) {
+			modelElement = ((Element) modelElement).getOwner();
 		}
+
+		return ((NamedElement) modelElement).getName();
 	}
 
 	// TODO: resolve container in a sophisticated way
