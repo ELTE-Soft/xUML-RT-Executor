@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.ide.debug;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.m2m.logic.ContainerNameProvider;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
@@ -77,8 +76,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	private static final String SYMBOLS_EXTENSION = "symbols";
 
-	private ContainerNameProvider containerNameProvider;
-
 	private Map<String, DebugSymbols> filenameToDebugSymbols = new HashMap<>();
 	private Map<String, ReferenceType> loadedClassnameToJDILocations = new HashMap<>();
 	private Map<String, List<Pair<Location, EObject>>> loadedClassnameToDeferredLocation = new HashMap<>();
@@ -118,7 +115,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			IdePlugin.logError("Error while reading launch config", e);
 		}
 
-		containerNameProvider = getContainerNameProvider(eObjectToExecute);
 		jdiDebugTarget = getJDIDebugTarget(mokaDebugTarget);
 
 		jdiDebugTarget.setDefaultStratum(DEFAULT_STRATUM_NAME);
@@ -153,27 +149,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		return null;
 	}
 
-	private ContainerNameProvider getContainerNameProvider(
-			EObject eObjectToExecute) {
+	// TODO: resolve container in a sophisticated way
+	public String getContainerName(EObject modelElement) {
+		if (isContainer(modelElement)) {
+			return ((NamedElement) modelElement).getName();
+		} else {
+			return getContainerName(((Element) modelElement).getOwner());
+		}
+	}
 
-		// TODO: resolve container in a sofisticated way
-		return new ContainerNameProvider() {
-
-			@Override
-			public String getContainerName(EObject modelElement) {
-				if (isContainer(modelElement)) {
-					return ((NamedElement) modelElement).getName();
-				} else {
-					return getContainerName(((Element) modelElement).getOwner());
-				}
-			}
-
-			protected boolean isContainer(EObject modelElement) {
-				return (modelElement instanceof Region)
-						|| (modelElement instanceof org.eclipse.uml2.uml.Class);
-			}
-
-		};
+	// TODO: resolve container in a sophisticated way
+	protected boolean isContainer(EObject modelElement) {
+		return (modelElement instanceof Region)
+				|| (modelElement instanceof org.eclipse.uml2.uml.Class);
 	}
 
 	private Set<String> getDebugClassnames() {
@@ -243,8 +231,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		}
 
 		Location location = optLocation.get();
-		String containerName = containerNameProvider
-				.getContainerName(breakpoint.getModelElement());
+		String containerName = getContainerName(breakpoint.getModelElement());
 
 		ReferenceType referenceType = loadedClassnameToJDILocations
 				.get(containerName);
