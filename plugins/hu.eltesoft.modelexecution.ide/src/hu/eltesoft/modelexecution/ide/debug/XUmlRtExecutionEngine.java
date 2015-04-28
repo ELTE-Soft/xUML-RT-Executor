@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,6 +81,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private Map<String, ReferenceType> loadedClassnameToJDILocations = new HashMap<>();
 	private Map<String, List<Pair<Location, EObject>>> loadedClassnameToDeferredLocation = new HashMap<>();
 	private Map<Pair<String, Integer>, EObject> jdiLocationToEObject = new HashMap<>();
+	private Set<EObject> initialisedContainers = new HashSet<>();
+	private EObject previousAnimatedEObject = null;
 
 	private JDIDebugTarget jdiDebugTarget;
 	private boolean animated;
@@ -99,7 +102,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort,
 				replyPort, eventPort);
 
-		AnimationUtils.init(eObjectToExecute);
+		AnimationUtils.init();
 		if (this.debugTarget != null) {
 			this.debugTarget.setName("xUML-Rt State machine");
 		}
@@ -238,6 +241,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		Location location = optLocation.get();
 		String containerName = getContainerName(breakpoint.getModelElement());
 
+		initEObjectForAnimation(modelElement);
+
 		ReferenceType referenceType = loadedClassnameToJDILocations
 				.get(containerName);
 
@@ -247,6 +252,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			placeJdiBreakpoint(location, referenceType, modelElement);
 		}
 
+	}
+
+	// note: this reinitializes all internal hashmaps of AnimationUtils,
+	//       probably could be more efficient
+	private void initEObjectForAnimation(EObject modelElement) {
+		if (initialisedContainers.contains(modelElement)) {
+			return;
+		}
+			
+		// TODO if invoked during execution, locks up
+		AnimationUtils.init(modelElement);
+		initialisedContainers.add(modelElement);
 	}
 
 	/**
@@ -411,19 +428,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	protected void animate(EObject element) {
-		if (animated) {
-			AnimationUtils utils = AnimationUtils.getInstance();
-			if (!utils.diagramsExistFor(element)) {
-				return;
-			}
-			utils.addAnimationMarker(element);
-			try {
-				Thread.sleep(MokaConstants.MOKA_ANIMATION_DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			utils.removeAnimationMarker(element);
+		if (!animated)   return;
+
+		AnimationUtils utils = AnimationUtils.getInstance();
+		if (!utils.diagramsExistFor(element)) {
+			return;
 		}
+
+		if (previousAnimatedEObject != null) {
+			utils.removeAnimationMarker(previousAnimatedEObject);
+		}
+
+		utils.addAnimationMarker(element);
+		previousAnimatedEObject = element;
 	}
 
 	@Override
@@ -441,6 +458,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	public void terminate(Terminate_Request arg0) {
 		setIsTerminated(true);
 		try {
+			AnimationUtils.getInstance().removeAllAnimationMarker();
 			jdiDebugTarget.terminate();
 			mokaDebugTarget.terminate();
 		} catch (DebugException e) {
