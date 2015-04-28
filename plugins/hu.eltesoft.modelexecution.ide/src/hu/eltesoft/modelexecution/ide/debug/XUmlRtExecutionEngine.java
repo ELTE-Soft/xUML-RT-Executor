@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.ide.debug;
 import hu.eltesoft.modelexecution.ide.builder.BuilderListenerInterface;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
-import hu.eltesoft.modelexecution.m2m.logic.ContainerNameProvider;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
@@ -90,8 +89,10 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 	private VirtualMachine vm;
 	private Job vmJob;
-		
-	private ContainerNameProvider containerNameProvider;
+	
+	// TODO remove eventually, uncomment for custom VM
+	//      for custom VM, use m2m.logic from the m2m_mapping
+//	private ContainerNameProvider containerNameProvider;
 	
 //	private BreakpointRegistry bpReg = new BreakpointRegistry();
 	private Map<String, DebugSymbols> filenameToDebugSymbols = new HashMap<>();
@@ -118,7 +119,8 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 		loadDebugSymbols(mokaDebugTarget);
 
-		containerNameProvider = getContainerNameProvider(eObjectToExecute);
+		// TODO remove eventually, uncomment for custom VM
+//		containerNameProvider = getContainerNameProvider(eObjectToExecute);
 		
 		vm = getVM(mokaDebugTarget);
 //		vm = mkVM(mokaDebugTarget, getFQN(eObjectToExecute));
@@ -126,11 +128,11 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 
 	}
 
-	// TODO remove
-	private String getFQN(EObject eObjectToExecute) {
-		String fullyQualifiedName = containerNameProvider.getContainerName(eObjectToExecute);
-		return fullyQualifiedName;
-	}
+	// TODO remove eventually, uncomment for custom VM
+//	private String getFQN(EObject eObjectToExecute) {
+//		String fullyQualifiedName = containerNameProvider.getContainerName(eObjectToExecute);
+//		return fullyQualifiedName;
+//	}
 
 	// TODO remove
 	private Region getStateMachineRegion(EObject eObjectToExecute) {
@@ -195,11 +197,12 @@ public class XUmlRtExecutionEngine  extends AbstractExecutionEngine implements I
 		return "T:\\runtime-MokaModel3\\Test1";
 	}
 
-	private ContainerNameProvider getContainerNameProvider(EObject eObjectToExecute) {
-		Resource res = eObjectToExecute.eResource();
-		ChangeListenerM2MTranslator translatorOfEmfRes = BuilderListenerInterface.getTranslatorOfEmfRes(res);
-		return translatorOfEmfRes.getContainerNameProvider();
-	}
+	// TODO remove eventually, uncomment for custom VM
+//	private ContainerNameProvider getContainerNameProvider(EObject eObjectToExecute) {
+//		Resource res = eObjectToExecute.eResource();
+//		ChangeListenerM2MTranslator translatorOfEmfRes = BuilderListenerInterface.getTranslatorOfEmfRes(res);
+//		return translatorOfEmfRes.getContainerNameProvider();
+//	}
 
 	/** @return The supplied virtual machine.
 	 *          If no virtual machine is supplied, {@code null}; this should not happen. */
