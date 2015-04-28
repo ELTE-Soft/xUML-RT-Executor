@@ -58,4 +58,9 @@ public class Reference implements Serializable {
 		Reference other = (Reference) obj;
 		return uriString.equals(other.uriString);
 	}
+	
+	@Override
+	public String toString() {
+		return uriString;
+	}
 }
