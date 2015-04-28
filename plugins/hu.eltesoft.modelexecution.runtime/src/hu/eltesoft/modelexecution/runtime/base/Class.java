@@ -15,7 +15,7 @@ public abstract class Class {
 		this.runtime = runtime;
 		this.name = name;
 	}
-	
+
 	public abstract void init();
 
 	public abstract void receive(Event event);

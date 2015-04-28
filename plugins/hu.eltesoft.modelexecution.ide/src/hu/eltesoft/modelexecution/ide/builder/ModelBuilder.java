@@ -41,14 +41,14 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	private IFileManagerFactory fileManagerFactory;
 
-	private BuilderListenerInterface listenerInterface;
+	private ModelBuilderListenerInterface listenerInterface;
 
 	/**
 	 * Caches resources that are not open in an editor.
 	 */
 	private ResourceSet resourceSet = new ResourceSetImpl();
 
-	private BuilderFileManager builderFileManager;
+	private ModelBuilderFileManager builderFileManager;
 
 	private IChangeListenerTranslatorFactory translatorFactory;
 
@@ -70,10 +70,10 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	@Override
 	protected void startupOnInitialize() {
-		builderFileManager = new BuilderFileManager(getBuiltProject(),
+		builderFileManager = new ModelBuilderFileManager(getBuiltProject(),
 				fileManagerFactory);
-		listenerInterface = new BuilderListenerInterface(getBuiltProject(),
-				builderFileManager, translatorFactory);
+		listenerInterface = new ModelBuilderListenerInterface(
+				getBuiltProject(), builderFileManager, translatorFactory);
 		super.startupOnInitialize();
 	}
 

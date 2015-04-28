@@ -8,10 +8,10 @@ public class DummyEvent extends Event {
 	public boolean equals(Object obj) {
 		return (obj != null && obj instanceof DummyEvent);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return 0;
 	}
-	
+
 }

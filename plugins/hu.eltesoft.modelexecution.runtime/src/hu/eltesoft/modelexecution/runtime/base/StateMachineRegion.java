@@ -6,7 +6,7 @@ package hu.eltesoft.modelexecution.runtime.base;
 public abstract class StateMachineRegion {
 
 	abstract public void step(Event event);
-	
+
 	abstract public void doInitialTransition();
 
 }

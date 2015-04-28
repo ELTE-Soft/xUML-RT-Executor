@@ -2,13 +2,10 @@ package hu.eltesoft.modelexecution.ide.ui;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
 import org.eclipse.papyrus.infra.widgets.providers.WorkspaceContentProvider;
 import org.eclipse.swt.SWT;
@@ -22,21 +19,41 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-final class FolderSelector extends SelectionAdapter {
+class FolderSelector extends SelectionAdapter {
 
 	private String dialogTitle;
-	private String attribute;
-	private IResource selectedResource;
+	protected IResource selectedResource;
 	private Text field;
 	private Composite parent;
 	private List<FolderSelectorUpdateListener> listeners = new LinkedList<>();
+	private ConfigBase base;
 
-	public FolderSelector(Composite comp, String labelCaption,
-			String buttonText, String dialogTitle, String attribute) {
+	/**
+	 * A widget for selecting a folder in the workspace
+	 */
+	public FolderSelector(Composite comp, ConfigBase base, String labelCaption,
+			String buttonText, String dialogTitle) {
 		this.parent = comp;
+		this.base = base;
 		this.dialogTitle = dialogTitle;
-		this.attribute = attribute;
 		createWidget(comp, labelCaption, buttonText);
+	}
+
+	/**
+	 * Defines the base of the folder path.
+	 */
+	public enum ConfigBase {
+		WORKSPACE_BASED(res -> res.getFullPath()), PROJECT_BASED(res -> res
+				.getProjectRelativePath());
+		private ConfigBase(Function<IResource, IPath> conv) {
+			this.conv = conv;
+		}
+
+		private final Function<IResource, IPath> conv;
+
+		public IPath getPath(IResource res) {
+			return conv.apply(res);
+		}
 	}
 
 	private void createWidget(Composite comp, String labelCaption,
@@ -87,11 +104,11 @@ final class FolderSelector extends SelectionAdapter {
 	public void addUpdateListener(FolderSelectorUpdateListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	public void removeUpdateListener(FolderSelectorUpdateListener listener) {
 		listeners.remove(listener);
 	}
-	
+
 	protected void notifyListeners(IResource folder) {
 		for (FolderSelectorUpdateListener listener : listeners) {
 			listener.folderSelectorUpdated(folder);
@@ -104,24 +121,24 @@ final class FolderSelector extends SelectionAdapter {
 				&& selection.length > 0 && (selection[0] instanceof IResource);
 	}
 
-	private void refreshField() {
+	public boolean selectionValid() {
+		return selectedResource.exists();
+	}
+
+	protected void refreshField() {
 		if (selectedResource != null) {
-			field.setText(selectedResource.getFullPath().toString());
+			field.setText(base.getPath(selectedResource).toString());
 		}
 	}
 
-	public void apply(ILaunchConfigurationWorkingCopy configuration) {
-		if (selectedResource != null) {
-			configuration.setAttribute(attribute, selectedResource
-					.getFullPath().toString());
-		}
+	public IPath getSelectedResourcePath() {
+		return base.getPath(selectedResource);
 	}
 
-	public void initializeFrom(ILaunchConfiguration configuration)
-			throws CoreException {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		selectedResource = workspace.getRoot().findMember(
-				configuration.getAttribute(attribute, ""));
-		refreshField();
+	public void setSelectedResource(IResource resource) {
+		if (resource != null && resource.exists()) {
+			selectedResource = resource;
+			field.setText(base.getPath(selectedResource).toString());
+		}
 	}
 }

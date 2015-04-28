@@ -4,6 +4,7 @@ import hu.eltesoft.modelexecution.runtime.base.Class;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 /**
  * An event and the class object that will receive the event. The class is
@@ -12,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
  * exist.
  */
 public class TargetedEvent {
-	
+
 	private java.lang.Class<?> targetClass;
 	private Event event;
 	private boolean fromOutside = false;
@@ -38,7 +39,8 @@ public class TargetedEvent {
 	}
 
 	/**
-	 * Get the target of the targeted event. Works after the event had been serialized. 
+	 * Get the target of the targeted event. Works after the event had been
+	 * serialized.
 	 */
 	public Class getTarget() {
 		Class instance;
@@ -72,6 +74,11 @@ public class TargetedEvent {
 		}
 		TargetedEvent oth = (TargetedEvent) obj;
 		return targetClass.equals(oth.targetClass) && event.equals(oth.event);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(targetClass, event, fromOutside);
 	}
 
 	@Override

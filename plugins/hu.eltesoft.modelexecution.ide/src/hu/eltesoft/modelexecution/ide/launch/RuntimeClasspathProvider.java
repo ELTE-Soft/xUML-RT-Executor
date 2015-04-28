@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -19,7 +19,7 @@ import org.eclipse.jdt.launching.StandardClasspathProvider;
 public class RuntimeClasspathProvider extends StandardClasspathProvider
 		implements IRuntimeClasspathProvider {
 
-	public final static String PROVIDER_ID = "hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider";
+	public final static String PROVIDER_ID = "hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider"; //$NON-NLS-1$
 
 	@Override
 	public IRuntimeClasspathEntry[] resolveClasspath(
@@ -36,7 +36,9 @@ public class RuntimeClasspathProvider extends StandardClasspathProvider
 							resolved[i].getClasspathEntry()) {
 						@Override
 						public String getLocation() {
-							String folder = ExecutableModelProjectSetup.JAVA_INSTRUMENTED_CLASS_FOLDER;
+							String folder = ExecutableModelProperties
+									.getInstrumentedClassFilesPath(getResource()
+											.getProject());
 							return ((IProject) getResource()).getLocation()
 									.append(folder).toOSString();
 						}

@@ -41,8 +41,12 @@ public class OutputTraceBuffer implements IOutputTraceBuffer {
 		this.fileSystem = fileSystem;
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.trace.IOutputTraceBuffer#traceEvent(hu.eltesoft.modelexecution.runtime.trace.TargetedEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * hu.eltesoft.modelexecution.runtime.trace.IOutputTraceBuffer#traceEvent
+	 * (hu.eltesoft.modelexecution.runtime.trace.TargetedEvent)
 	 */
 	@Override
 	public void traceEvent(TargetedEvent event) {

@@ -22,15 +22,15 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 /**
- * Provides services for tracking changes for a builder.
+ * Provides services for tracking changes for {@linkplain ModelBuilder}.
  */
-public class BuilderListenerInterface {
+public class ModelBuilderListenerInterface {
 	public IChangeListenerTranslatorFactory translatorFactory;
 	public Map<IResource, ChangeListenerM2MTranslator> translators = new HashMap<>();
 	public Map<Resource, ChangeListenerM2MTranslator> translatorsFromEmfRes = new HashMap<>();
 	private TextChangesListener textChangesListener;
 
-	public BuilderListenerInterface(IProject builtProject,
+	public ModelBuilderListenerInterface(IProject builtProject,
 			TextChangesListener textChangesListener,
 			IChangeListenerTranslatorFactory translatorFactory) {
 		this.project = builtProject;
@@ -39,7 +39,7 @@ public class BuilderListenerInterface {
 		builders.add(this);
 	}
 
-	private static List<BuilderListenerInterface> builders = new LinkedList<>();
+	private static List<ModelBuilderListenerInterface> builders = new LinkedList<>();
 	private IProject project;
 
 	/**
@@ -50,7 +50,7 @@ public class BuilderListenerInterface {
 	 * Should be called after {@linkplain initializeBuilders}.
 	 */
 	public static void hookupAllChangeListeners() {
-		for (BuilderListenerInterface modelBuilder : builders) {
+		for (ModelBuilderListenerInterface modelBuilder : builders) {
 			modelBuilder.hookupChangeListeners();
 		}
 	}
@@ -72,7 +72,7 @@ public class BuilderListenerInterface {
 			});
 		} catch (CoreException e) {
 			IdePlugin
-					.logError("Exception while hooking up model listeners.", e);
+					.logError("Exception while hooking up model listeners.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -96,7 +96,7 @@ public class BuilderListenerInterface {
 			return;
 		}
 		if (res == null) {
-			IdePlugin.logError("Resource does not exist: " + uri);
+			IdePlugin.logError("Resource does not exist: " + uri); //$NON-NLS-1$
 			return;
 		}
 		try {
@@ -106,7 +106,7 @@ public class BuilderListenerInterface {
 			translators.put(resource, translator);
 			translatorsFromEmfRes.put(res, translator);
 		} catch (IncQueryException e) {
-			IdePlugin.logError("IncQuery engine could not be created.", e);
+			IdePlugin.logError("IncQuery engine could not be created.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -116,7 +116,7 @@ public class BuilderListenerInterface {
 	 * should be called before calling this method.
 	 */
 	public static ChangeListenerM2MTranslator getTranslatorOfEmfRes(Resource res) {
-		for (BuilderListenerInterface modelBuilder : builders) {
+		for (ModelBuilderListenerInterface modelBuilder : builders) {
 			if (modelBuilder.translatorsFromEmfRes.containsKey(res)) {
 				return modelBuilder.translatorsFromEmfRes.get(res);
 			}

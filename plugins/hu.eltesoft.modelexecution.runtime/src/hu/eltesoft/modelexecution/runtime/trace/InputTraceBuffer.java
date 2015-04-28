@@ -30,8 +30,9 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 	public InputTraceBuffer(String inputFolder, FileSystem fileSystem) {
 		this(InputTraceBuffer.class.getClassLoader(), inputFolder, fileSystem);
 	}
-	
-	public InputTraceBuffer(ClassLoader classLoader, String inputFolder, FileSystem fileSystem) {
+
+	public InputTraceBuffer(ClassLoader classLoader, String inputFolder,
+			FileSystem fileSystem) {
 		xStream.setClassLoader(classLoader);
 		this.fileSystem = fileSystem;
 		detectTraceFiles(inputFolder);
@@ -76,16 +77,23 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#hasMoreElems()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#hasMoreElems()
 	 */
 	@Override
 	public boolean hasMoreElems() {
 		return !tracedEvents.isEmpty();
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#getTracedEvent()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer#getTracedEvent
+	 * ()
 	 */
 	@Override
 	public TargetedEvent getTracedEvent() {

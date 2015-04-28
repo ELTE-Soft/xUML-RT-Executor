@@ -26,18 +26,19 @@ public class OutputTraceBufferTest {
 	public void setup() {
 		fs = Jimfs.newFileSystem(Configuration.unix());
 	}
-	
+
 	@After
 	public void teardown() throws IOException {
 		fs.close();
 	}
-	
+
 	@Test
 	public void testClose() throws Exception {
 		String traceFolderName = "tracefolder";
 		Path traceFolder = fs.getPath(traceFolderName);
 		Files.createDirectories(traceFolder);
-		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject", traceFolderName).toString(), 10, fs);
+		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject",
+				traceFolderName).toString(), 10, fs);
 		sut.traceEvent(new TargetedEvent(MockClass.getInstance(),
 				new DummyEvent()));
 		sut.close();
@@ -46,13 +47,14 @@ public class OutputTraceBufferTest {
 		String fileContent = new String(Files.readAllBytes(expectedFile));
 		assertTrue(fileContent.contains(MockClass.class.getCanonicalName()));
 	}
-	
+
 	@Test
 	public void testAutomaticWrite() throws Exception {
 		String traceFolderName = "tracefolder";
 		Path traceFolder = fs.getPath(traceFolderName);
 		Files.createDirectories(traceFolder);
-		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject", traceFolderName).toString(), 3, fs);
+		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject",
+				traceFolderName).toString(), 3, fs);
 		for (int i = 0; i < 10; i++) {
 			sut.traceEvent(new TargetedEvent(MockClass.getInstance(),
 					new DummyEvent()));
@@ -62,7 +64,8 @@ public class OutputTraceBufferTest {
 		assertTrue(Files.exists(traceFolder.resolve("t3.trace")));
 		sut.close();
 		assertTrue(Files.exists(traceFolder.resolve("t4.trace")));
-		String lastContent = new String(Files.readAllBytes(traceFolder.resolve("t4.trace")));
+		String lastContent = new String(Files.readAllBytes(traceFolder
+				.resolve("t4.trace")));
 		assertFalse(lastContent.trim().isEmpty());
 	}
 

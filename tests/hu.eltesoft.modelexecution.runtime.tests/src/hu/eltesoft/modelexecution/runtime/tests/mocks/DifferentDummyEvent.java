@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.runtime.tests.mocks;
 public class DifferentDummyEvent extends DummyEvent {
 
 	private int code;
-	
+
 	public DifferentDummyEvent(int code) {
 		this.code = code;
 	}
@@ -30,7 +30,5 @@ public class DifferentDummyEvent extends DummyEvent {
 		}
 		return true;
 	}
-	
-	
-	
+
 }

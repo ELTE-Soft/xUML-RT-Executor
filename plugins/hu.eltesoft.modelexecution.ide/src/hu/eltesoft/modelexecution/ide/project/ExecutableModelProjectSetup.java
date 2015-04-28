@@ -42,12 +42,6 @@ public class ExecutableModelProjectSetup {
 
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin"; //$NON-NLS-1$
 
-	private static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src"; //$NON-NLS-1$
-
-	public static final String JAVA_INSTRUMENTED_CLASS_FOLDER = "bin-debug"; //$NON-NLS-1$
-	
-	public static final String SMAP_FOLDER = "smap"; //$NON-NLS-1$
-
 	public static void createProject(String projectName) throws CoreException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
@@ -64,9 +58,11 @@ public class ExecutableModelProjectSetup {
 		IJavaProject javaProject = JavaCore.create(project);
 
 		createBinFolders(project, javaProject);
-		createGenSourceFolder(project, DEFAULT_SOURCE_GEN_PATH);
+		createGenSourceFolder(project,
+				ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
 		createLoggingPropertiesFile(project);
-		setupClassPath(javaProject, DEFAULT_SOURCE_GEN_PATH);
+		setupClassPath(javaProject,
+				ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
 	}
 
 	private static void createLoggingPropertiesFile(IProject project) {
@@ -95,10 +91,13 @@ public class ExecutableModelProjectSetup {
 	private static void createBinFolders(IProject project,
 			IJavaProject javaProject) throws CoreException, JavaModelException {
 		IFolder binFolder = createFolder(project, JAVA_COMPILER_OUTPUT_FOLDER);
-		IFolder instrumentedBinFolder = createFolder(project, JAVA_INSTRUMENTED_CLASS_FOLDER);
+		IFolder instrumentedBinFolder = createFolder(project,
+				ExecutableModelProperties
+						.getInstrumentedClassFilesPath(project));
 		instrumentedBinFolder.setTeamPrivateMember(true);
 		instrumentedBinFolder.setDerived(true, null);
-		IFolder smapFolder = createFolder(project, SMAP_FOLDER);
+		IFolder smapFolder = createFolder(project,
+				ExecutableModelProperties.getDebugFilesPath(project));
 		smapFolder.setTeamPrivateMember(true);
 		smapFolder.setDerived(true, null);
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);

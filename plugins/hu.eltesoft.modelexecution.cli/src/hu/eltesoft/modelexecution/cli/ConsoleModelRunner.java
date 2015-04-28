@@ -338,7 +338,7 @@ public class ConsoleModelRunner {
 			return new NoLogger();
 		}
 
-		return LOGGERMAKER_BY_NAME.get(loggerName).apply(optsForLogger);
+		return LOGGERMAKER_BY_NAME.get(loggerName.get()).apply(optsForLogger);
 	}
 
 	private static Tracer getTracer(CommandLine cmd) {
