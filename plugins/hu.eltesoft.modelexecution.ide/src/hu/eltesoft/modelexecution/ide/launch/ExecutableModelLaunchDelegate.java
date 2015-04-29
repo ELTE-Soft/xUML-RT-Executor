@@ -72,7 +72,8 @@ public class ExecutableModelLaunchDelegate implements
 	 */
 	protected boolean launchPassesChecks(ILaunchConfiguration configuration,
 			String mode) throws CoreException {
-		if (!executionEngineIsXUMLRT()) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE)
+				&& !executionEngineIsXUMLRT()) {
 			if (!askUserToSetExecutionEngine()) {
 				return false;
 			}
@@ -112,9 +113,9 @@ public class ExecutableModelLaunchDelegate implements
 
 	private boolean executionEngineIsXUMLRT() {
 		IConfigurationElement selectedExecutionEngine = getSelectedExecutionEngine();
-		return (selectedExecutionEngine
-				.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR)
-				.equals(XUmlRtExecutionEngine.class.getCanonicalName()));
+		return (selectedExecutionEngine != null && selectedExecutionEngine
+				.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR).equals(
+						XUmlRtExecutionEngine.class.getCanonicalName()));
 	}
 
 	private IConfigurationElement[] getPossibleExecutionEngines() {
@@ -132,8 +133,8 @@ public class ExecutableModelLaunchDelegate implements
 				return possibleEE;
 			}
 		}
-		throw new RuntimeException(
-				"Selected Execution Engine is not among possible Execution Engines."); //$NON-NLS-1$
+		// no execution engine is selected
+		return null;
 	}
 
 	private IConfigurationElement getXUMLRTExecutionEngine() {
