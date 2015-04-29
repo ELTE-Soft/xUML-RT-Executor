@@ -21,6 +21,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.papyrus.moka.Activator;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
@@ -43,12 +44,22 @@ public class ExecutableModelLaunchDelegate implements
 				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
 				launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			try {
-				mokaDelegate.launch(ModelExecutionLaunchConfig
-						.addMokaConfigs(configuration), mode, launch, monitor);
-			} catch (Exception e) {
-				IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
-			}
+
+			Display.getDefault().asyncExec(
+					() -> launchMokaDelegate(configuration, mode, launch,
+							monitor));
+
+		}
+	}
+
+	private void launchMokaDelegate(ILaunchConfiguration configuration,
+			String mode, ILaunch launch, IProgressMonitor monitor) {
+		try {
+			mokaDelegate.launch(
+					ModelExecutionLaunchConfig.addMokaConfigs(configuration),
+					mode, launch, monitor);
+		} catch (Exception e) {
+			IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 		}
 	}
 
