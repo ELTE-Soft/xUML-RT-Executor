@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
@@ -149,8 +150,10 @@ public class ModelExecutionLaunchConfig {
 	public static void addMokaConfigs(
 			ILaunchConfigurationWorkingCopy configuration) {
 		try {
+			URI uri = URI.createPlatformResourceURI(
+					configuration.getAttribute(ATTR_UML_RESOURCE, ""), false); //$NON-NLS-1$
 			configuration.setAttribute(MokaLaunchDelegate.URI_ATTRIBUTE_NAME,
-					configuration.getAttribute(ATTR_UML_RESOURCE, "")); //$NON-NLS-1$
+					uri.toString());
 			configuration.setAttribute(
 					MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
 					configuration.getAttribute(ATTR_EXECUTED_CLASS_URI, "")); //$NON-NLS-1$
