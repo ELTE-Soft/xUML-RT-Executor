@@ -62,8 +62,9 @@ public class TestRuntime extends BaseRuntime {
 			}
 		}
 
-		new TestRuntime(TestRuntime.class.getClassLoader(), tracer,
+		TerminationResult result = new TestRuntime(TestRuntime.class.getClassLoader(), tracer,
 				traceReader, logger).run(clsName, feedName);
+		System.exit(result.getExitCode());
 	}
 
 	/**

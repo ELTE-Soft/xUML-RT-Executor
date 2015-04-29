@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
@@ -45,6 +46,7 @@ public class ExecutableModelLaunchDelegate implements
 		javaDelegate.launch(
 				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
 				launch, monitor);
+		listenForLaunchTermination(launch);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			try {
 				mokaDelegate.launch(ModelExecutionLaunchConfig
@@ -53,6 +55,15 @@ public class ExecutableModelLaunchDelegate implements
 				IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 			}
 		}
+	}
+
+	/**
+	 * Listens for termination of the runtime and informs the user if it was not
+	 * successful.
+	 */
+	private void listenForLaunchTermination(ILaunch launch) {
+		DebugPlugin.getDefault().getLaunchManager()
+				.addLaunchListener(new ExitCodeChecker(launch));
 	}
 
 	/**
