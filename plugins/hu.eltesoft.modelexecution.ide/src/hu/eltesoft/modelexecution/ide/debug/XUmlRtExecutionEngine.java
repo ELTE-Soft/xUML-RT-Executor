@@ -101,7 +101,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort,
 				replyPort, eventPort);
 
-		AnimationUtils.init();
 		if (this.debugTarget != null) {
 			this.debugTarget.setName("xUML-Rt State machine");
 		}
