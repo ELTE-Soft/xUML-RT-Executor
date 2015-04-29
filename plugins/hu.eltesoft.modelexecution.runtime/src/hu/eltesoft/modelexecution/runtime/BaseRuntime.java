@@ -27,7 +27,7 @@ public abstract class BaseRuntime implements Runtime {
 	private Logger logger;
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
-			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime");
+			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime"); //$NON-NLS-1$
 
 	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
 		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
@@ -123,7 +123,7 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	public static void logError(Throwable cause) {
-		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception",
+		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception", //$NON-NLS-1$
 				cause);
 	}
 

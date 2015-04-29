@@ -70,7 +70,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 				Messages.ExecutableModelPropertiesPage_gen_sources_button,
 				Messages.ExecutableModelPropertiesPage_gen_sources_dialog_caption);
 		String sourceGenPath = ExecutableModelProperties
-				.getSourceGenPath(preferences);
+				.getSourceGenPath(getProject());
 		generatedFilesFolderSelector.setSelectedResource(getProject()
 				.findMember(sourceGenPath));
 		generatedFilesFolderSelector
