@@ -5,6 +5,7 @@ import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.PapyrusEditorListener;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerTranslatorFactory;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.IChangeListenerTranslatorFactory;
@@ -106,14 +107,15 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * Removes and regenerates the codes for the model resources.
+	 * Removes and regenerates generated files.
 	 */
 	private void fullBuild() {
+		builderFileManager.cleanUp();
 		listenerInterface.hookupChangeListeners();
 		FileUpdateTaskQueue queue = new FileUpdateTaskQueue();
 		try {
 			getBuiltProject().accept(res -> {
-				queue.addAll(rebuild(res));
+				queue.addAll(rebuild(res, true));
 				return true;
 			});
 		} catch (CoreException e) {
@@ -155,9 +157,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED) {
 						listenerInterface.registerResource(resource);
-						rebuild.addAll(rebuild(resource));
+						rebuild.addAll(rebuild(resource, false));
 					} else if (delta.getKind() == IResourceDelta.CHANGED) {
-						rebuild.addAll(rebuild(resource));
+						rebuild.addAll(rebuild(resource, false));
 					}
 					return true;
 				}
@@ -173,12 +175,14 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * incremental compilation if the current resource is opened in an editor,
 	 * or simply performs a full build on the resource if not.
 	 */
-	private FileUpdateTaskQueue rebuild(IResource resource) {
+	private FileUpdateTaskQueue rebuild(IResource resource, boolean fullBuild) {
 		// FIXME: also register?
 		FileUpdateTaskQueue rebuild = new FileUpdateTaskQueue();
 		if (listenerInterface.translators.containsKey(resource)) {
-			rebuild.addAll(listenerInterface.translators.get(resource)
-					.rebuild());
+			ChangeListenerM2MTranslator translator = listenerInterface.translators
+					.get(resource);
+			rebuild.addAll(fullBuild ? translator.rebuild() : translator
+					.fullBuild());
 		} else {
 			try {
 				// reads the model resource when it isn't open in an editor
