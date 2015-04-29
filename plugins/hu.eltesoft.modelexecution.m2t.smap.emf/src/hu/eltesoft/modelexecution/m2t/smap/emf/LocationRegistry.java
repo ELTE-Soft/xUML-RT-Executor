@@ -42,16 +42,9 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location assignQualified(QualifiedReference reference) {
-		String filePath = referenceToFilePath(reference);
+		String filePath = reference.getFileURI().toString();
 		int lineNumber = getMapping(filePath).addLineNumber(reference);
 		return new Location(filePath, lineNumber, lineNumber);
-	}
-
-	/** @return The file path that corresponds to the given reference,
-	 *          even in the case of a platform reference. */
-	private String referenceToFilePath(QualifiedReference reference) {
-		URI resourceURI = reference.getResourceURI();
-		return CommonPlugin.asLocalURI(resourceURI).toString();
 	}
 	
 	public Reference resolve(Location location) {
@@ -79,7 +72,7 @@ public class LocationRegistry implements Serializable {
 	}
 
 	public Location resolveQualified(QualifiedReference reference) {
-		String filePath = referenceToFilePath(reference);
+		String filePath = reference.getFileURI().toString();
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
 		if (null == lineNumber) {
 			lineNumber = getMapping(reference.getResourceURI().toString()).toLineNumber(reference);

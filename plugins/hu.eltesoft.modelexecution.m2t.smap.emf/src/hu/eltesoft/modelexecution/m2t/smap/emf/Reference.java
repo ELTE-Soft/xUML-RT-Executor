@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2t.smap.emf;
 
 import java.io.Serializable;
 
+import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,6 +38,10 @@ public class Reference implements Serializable {
 	public URI getResourceURI() {
 		return URI.createURI(uriString).trimFragment();
 	}
+	
+	public URI getFileURI() {
+		return CommonPlugin.asLocalURI(getResourceURI());
+	}
 
 	public EObject resolve(ResourceSet resourceSet) {
 		return resourceSet.getEObject(URI.createURI(uriString), false);
@@ -44,7 +49,7 @@ public class Reference implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return uriString.hashCode();
+		return getFileURI().hashCode();
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class Reference implements Serializable {
 			return false;
 		}
 		Reference other = (Reference) obj;
-		return uriString.equals(other.uriString);
+		return getFileURI().equals(other.getFileURI());
 	}
 	
 	@Override
