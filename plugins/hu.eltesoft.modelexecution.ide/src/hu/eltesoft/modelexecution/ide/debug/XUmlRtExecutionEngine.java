@@ -39,7 +39,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdi.internal.ReferenceTypeImpl;
 import org.eclipse.jdt.internal.debug.core.IJDIEventListener;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
-import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -116,6 +115,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 							false);
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while reading launch config", e);
+		}
+
+		if (animated) {
+			AnimationUtils.init(eObjectToExecute);
+			AnimationUtils.init();
 		}
 
 		jdiDebugTarget = getJDIDebugTarget(mokaDebugTarget);
@@ -255,12 +259,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	// note: this reinitializes all internal hashmaps of AnimationUtils,
-	//       probably could be more efficient
+	// probably could be more efficient
 	private void initEObjectForAnimation(EObject modelElement) {
 		if (initialisedContainers.contains(modelElement)) {
 			return;
 		}
-			
+
 		// TODO if invoked during execution, locks up
 		AnimationUtils.init(modelElement);
 		initialisedContainers.add(modelElement);
@@ -428,7 +432,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	protected void animate(EObject element) {
-		if (!animated)   return;
+		if (!animated)
+			return;
 
 		AnimationUtils utils = AnimationUtils.getInstance();
 		if (!utils.diagramsExistFor(element)) {
@@ -446,7 +451,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void suspend(Suspend_Request arg0) {
 		try {
-			
+
 			jdiDebugTarget.suspend();
 			mokaDebugTarget.suspend();
 		} catch (DebugException e) {

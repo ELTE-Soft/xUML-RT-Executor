@@ -3,10 +3,10 @@ package hu.eltesoft.modelexecution.m2t.smap.emf;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
 
 import java.io.Serializable;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -51,12 +51,7 @@ public class LocationRegistry implements Serializable {
 	 *          even in the case of a platform reference. */
 	private String referenceToFilePath(QualifiedReference reference) {
 		URI resourceURI = reference.getResourceURI();
-
-		String shortFilePath = resourceURI.toFileString(); 
-		if (shortFilePath == null) {
-			shortFilePath = resourceURI.toPlatformString(true); 
-		}
-		return Paths.get(shortFilePath).toAbsolutePath().toString();
+		return CommonPlugin.asLocalURI(resourceURI).toString();
 	}
 	
 	public Reference resolve(Location location) {
@@ -86,6 +81,9 @@ public class LocationRegistry implements Serializable {
 	public Location resolveQualified(QualifiedReference reference) {
 		String filePath = referenceToFilePath(reference);
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
+		if (null == lineNumber) {
+			lineNumber = getMapping(reference.getResourceURI().toString()).toLineNumber(reference);
+		}
 		if (null == lineNumber) {
 			return null;
 		}

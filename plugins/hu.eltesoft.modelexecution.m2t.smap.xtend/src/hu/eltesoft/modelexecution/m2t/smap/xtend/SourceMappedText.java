@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.smap.SmapStratum;
 
 /**
@@ -69,7 +70,14 @@ public class SourceMappedText implements CharSequence {
 			int inputLineCount = l.getEndLine() - l.getStartLine() + 1;
 			String filePath = l.getFilePath();
 			if (filePath != null && !filePath.equals("")) {
-				String fileName = Paths.get(filePath).getFileName().toString();
+				URI uri = URI.createURI(filePath);
+				String fileName;
+				if (uri != null) {
+					fileName = Paths.get(uri.toFileString()).getFileName()
+							.toString();
+				} else {
+					fileName = Paths.get(filePath).getFileName().toString();
+				}
 				stratum.addFile(fileName, filePath);
 				stratum.addLineData(l.getStartLine(), fileName, inputLineCount,
 						m.getOutputStartLine(), m.getOutputLineIncrement());
