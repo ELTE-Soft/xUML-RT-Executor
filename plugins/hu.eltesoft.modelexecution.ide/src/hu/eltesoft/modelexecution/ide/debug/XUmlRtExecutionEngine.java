@@ -36,6 +36,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdi.internal.ReferenceTypeImpl;
 import org.eclipse.jdt.internal.debug.core.IJDIEventListener;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
@@ -264,7 +265,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			return;
 		}
 
-		// TODO if invoked during execution, locks up
+		// resolve EObject proxies here as animation depends on their eResource
+		if (modelElement.eIsProxy()) {
+			modelElement = EcoreUtil.resolve(modelElement, (EObject) null);
+		}
+
 		AnimationUtils.init(modelElement);
 		initialisedContainers.add(modelElement);
 	}
