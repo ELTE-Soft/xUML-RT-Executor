@@ -30,9 +30,6 @@ import org.eclipse.uml2.uml.SignalEvent;
 
 /**
  * Default implementation for the {@link SimpleM2MTranslator} interface.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 
@@ -94,7 +91,7 @@ public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 				getProcessorToGenerateSignalModels(generationTaskQueue));
 
 		FileUpdateTaskQueue updateTaskQueue = generationTaskQueue.performAll();
-				
+
 		return updateTaskQueue;
 	}
 

@@ -11,9 +11,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * A collection of {@link ModelGenerationTask} instances.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public interface ModelGenerationTaskCollection extends
 		Collection<ModelGenerationTask<?, ?>> {

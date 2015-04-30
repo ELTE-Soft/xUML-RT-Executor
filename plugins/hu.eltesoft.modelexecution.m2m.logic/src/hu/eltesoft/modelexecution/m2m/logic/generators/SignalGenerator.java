@@ -17,11 +17,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Signal;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class SignalGenerator extends AbstractGenerator<Signal, SgSignal> {
 
 	private static final SignalFactory FACTORY = SignalFactory.eINSTANCE;

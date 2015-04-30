@@ -6,11 +6,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public interface Generator<S extends EObject, R extends ModelRoot> {
 
 	R generateTranslationModel(S source) throws GenerationException;

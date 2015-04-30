@@ -24,11 +24,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
 	private static final BehaviorFactory FACTORY = BehaviorFactory.eINSTANCE;
@@ -65,7 +60,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		// alfCode
 		if (!alfCodeMatcher.forOneArbitraryMatch(source, null,
 				getProcessorToSetAlfCodeOfRoot(root))) {
-			
+
 			root.setAlfCode("{}");
 		}
 

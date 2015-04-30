@@ -5,11 +5,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
 import org.eclipse.emf.ecore.EObject;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public abstract class AbstractGenerator<S extends EObject, R extends ModelRoot>
 		implements Generator<S, R> {
 

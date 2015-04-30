@@ -6,9 +6,6 @@ import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 /**
  * An implementation of {@link FileUpdateTask} which performs the deletion of a
  * single file.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class FileDeletionTask implements FileUpdateTask {
 
