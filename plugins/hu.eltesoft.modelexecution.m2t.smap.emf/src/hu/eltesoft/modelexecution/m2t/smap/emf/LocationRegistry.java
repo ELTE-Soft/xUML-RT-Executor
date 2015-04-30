@@ -6,9 +6,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.CommonPlugin;
-import org.eclipse.emf.common.util.URI;
-
 /**
  * Assigns virtual locations to EMF object references. These locations can be
  * used to implement source mapping for generated code. Objects from different
@@ -46,7 +43,7 @@ public class LocationRegistry implements Serializable {
 		int lineNumber = getMapping(filePath).addLineNumber(reference);
 		return new Location(filePath, lineNumber, lineNumber);
 	}
-	
+
 	public Reference resolve(Location location) {
 		return resolveQualified(location);
 	}
@@ -75,7 +72,8 @@ public class LocationRegistry implements Serializable {
 		String filePath = reference.getFileURI().toString();
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
 		if (null == lineNumber) {
-			lineNumber = getMapping(reference.getResourceURI().toString()).toLineNumber(reference);
+			lineNumber = getMapping(reference.getFileURI().toString())
+					.toLineNumber(reference);
 		}
 		if (null == lineNumber) {
 			return null;

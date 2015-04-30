@@ -28,19 +28,16 @@ public class Reference implements Serializable {
 	protected final String uriString;
 
 	public Reference(EObject referencedElement) {
-		uriString = EcoreUtil.getURI(referencedElement).toString();
+		URI eURI = EcoreUtil.getURI(referencedElement);
+		uriString = CommonPlugin.asLocalURI(eURI).toString();
 	}
 
 	protected Reference(Reference other) {
 		uriString = other.uriString;
 	}
 
-	public URI getResourceURI() {
-		return URI.createURI(uriString).trimFragment();
-	}
-	
 	public URI getFileURI() {
-		return CommonPlugin.asLocalURI(getResourceURI());
+		return URI.createURI(uriString).trimFragment();
 	}
 
 	public EObject resolve(ResourceSet resourceSet) {
@@ -49,7 +46,7 @@ public class Reference implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return getFileURI().hashCode();
+		return uriString.hashCode();
 	}
 
 	@Override
@@ -61,9 +58,9 @@ public class Reference implements Serializable {
 			return false;
 		}
 		Reference other = (Reference) obj;
-		return getFileURI().equals(other.getFileURI());
+		return uriString.equals(other.uriString);
 	}
-	
+
 	@Override
 	public String toString() {
 		return uriString;

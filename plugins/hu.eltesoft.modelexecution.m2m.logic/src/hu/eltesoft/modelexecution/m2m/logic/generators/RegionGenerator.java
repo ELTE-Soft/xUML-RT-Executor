@@ -200,7 +200,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 					// reference
 					rgInitialPseudostate.setReference(new Reference(
-							rgInitialPseudostate));
+							pInitPseudostate));
 
 					// initialTransition
 					rgInitialPseudostate.setInitialTransition(createTransition(
