@@ -280,7 +280,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		((ReferenceTypeImpl) referenceType).flushStoredJdwpResults();
 		int startLine = location.getStartLine();
 
-		int startLineInFile = startLine + 1;
+		int startLineInFile = startLine;
 
 		try {
 			List<com.sun.jdi.Location> locationsOfLine = referenceType
@@ -292,38 +292,39 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 				return;
 			}
 
-			if (locationsOfLine.size() > 1) {
-				IdePlugin.logError("Location with multiple lines: "
-						+ referenceType);
+			for (com.sun.jdi.Location jdiLocation : locationsOfLine) {
+				placeJdiBreakpointOnLocation(modelElement, startLine,
+						jdiLocation);
 			}
-
-			com.sun.jdi.Location jdiLocation = locationsOfLine.get(0);
-
-			BreakpointRequest breakpointRequest = eventRequestManager
-					.createBreakpointRequest(jdiLocation);
-			breakpointRequest.setEnabled(true);
-			jdiDebugTarget.addJDIEventListener(new IJDIEventListener() {
-
-				@Override
-				public boolean handleEvent(Event event, JDIDebugTarget target,
-						boolean suspendVote, EventSet eventSet) {
-					handleBreakpoint((BreakpointEvent) event);
-					return false;
-				}
-
-				@Override
-				public void eventSetComplete(Event event,
-						JDIDebugTarget target, boolean suspend,
-						EventSet eventSet) {
-				}
-			}, breakpointRequest);
-
-			String className = removeLastDotSection(jdiLocation.sourceName());
-			jdiLocationToEObject.put(new Pair<String, Integer>(className,
-					startLine), modelElement);
 		} catch (AbsentInformationException e) {
 			IdePlugin.logError("While setting JDI breakpoint", e);
 		}
+	}
+
+	private void placeJdiBreakpointOnLocation(EObject modelElement,
+			int startLine, com.sun.jdi.Location jdiLocation)
+			throws AbsentInformationException {
+		BreakpointRequest breakpointRequest = eventRequestManager
+				.createBreakpointRequest(jdiLocation);
+		breakpointRequest.setEnabled(true);
+		jdiDebugTarget.addJDIEventListener(new IJDIEventListener() {
+
+			@Override
+			public boolean handleEvent(Event event, JDIDebugTarget target,
+					boolean suspendVote, EventSet eventSet) {
+				handleBreakpoint((BreakpointEvent) event);
+				return false;
+			}
+
+			@Override
+			public void eventSetComplete(Event event, JDIDebugTarget target,
+					boolean suspend, EventSet eventSet) {
+			}
+		}, breakpointRequest);
+
+		String className = removeLastDotSection(jdiLocation.sourceName());
+		jdiLocationToEObject.put(
+				new Pair<String, Integer>(className, startLine), modelElement);
 	}
 
 	/**
@@ -414,7 +415,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		com.sun.jdi.Location stoppedAt = event.location();
 		try {
 			String sourceFileName = stoppedAt.sourceName();
-			int locationLine = stoppedAt.lineNumber() - 1;
+			int locationLine = stoppedAt.lineNumber();
 
 			// TODO is removing the .java extension always good enough?
 			String sourceName = removeLastDotSection(sourceFileName);
