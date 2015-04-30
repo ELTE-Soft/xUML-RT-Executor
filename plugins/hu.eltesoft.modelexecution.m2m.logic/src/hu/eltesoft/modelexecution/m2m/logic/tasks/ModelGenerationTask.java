@@ -8,9 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * A task to generate a translation model.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 
@@ -25,11 +22,11 @@ public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 	/**
 	 * Performs the model generation this task was created for.
 	 * 
-	 * @return A file modification task to perform the required updates in the
-	 *         textual representation of the original model.
+	 * @return a file modification task to perform the required updates in the
+	 *         textual representation of the original model
 	 * @throws GenerationException
-	 *             If a generation error occurred. It might be due to an
-	 *             inconsistent model or a missing source object.
+	 *             if a generation error occurred. It might be due to an
+	 *             inconsistent model or a missing source object
 	 */
 	public FileModificationTask<S, R> perform() throws GenerationException {
 		R root = generator.generateTranslationModel(source);

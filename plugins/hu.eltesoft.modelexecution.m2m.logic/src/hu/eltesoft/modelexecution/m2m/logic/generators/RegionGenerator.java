@@ -53,11 +53,6 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 	private static final RegionFactory FACTORY = RegionFactory.eINSTANCE;

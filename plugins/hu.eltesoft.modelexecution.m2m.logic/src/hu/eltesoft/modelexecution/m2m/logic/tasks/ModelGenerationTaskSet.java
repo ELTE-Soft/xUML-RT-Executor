@@ -6,9 +6,6 @@ import java.util.LinkedHashSet;
  * A set of {@link ModelGenerationTask} instances, which keeps the original
  * iteration order of its elements but never lets the addition of two objects
  * which are equal.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 @SuppressWarnings("serial")
 public class ModelGenerationTaskSet extends

@@ -12,9 +12,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 /**
  * Default implementation for the {@link ChangeListenerM2MTranslator} interface.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class ChangeListenerM2MTranslatorImpl extends SimpleM2MTranslatorImpl
 		implements ChangeListenerM2MTranslator {

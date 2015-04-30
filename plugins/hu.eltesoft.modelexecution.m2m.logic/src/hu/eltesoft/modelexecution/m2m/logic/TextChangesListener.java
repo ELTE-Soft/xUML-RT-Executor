@@ -6,9 +6,6 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 /**
  * A listener interface that is informed when the textual representation of the
  * model is changed.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public interface TextChangesListener {
 

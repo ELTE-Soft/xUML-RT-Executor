@@ -17,9 +17,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * Default implementation for the {@link ChangeRegistry} interface.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class ChangeRegistryImpl implements ChangeRegistry {
 

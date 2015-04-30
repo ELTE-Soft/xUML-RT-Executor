@@ -35,11 +35,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 
 	private static final ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
