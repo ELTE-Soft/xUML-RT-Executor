@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.NullSourceLocator;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 
@@ -40,6 +41,8 @@ public class ExecutableModelLaunchDelegate implements
 		if (!launchPassesChecks(configuration, mode)) {
 			return;
 		}
+
+		launch.setSourceLocator(new NullSourceLocator());
 		javaDelegate.launch(
 				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
 				launch, monitor);
