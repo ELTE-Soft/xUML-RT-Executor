@@ -39,9 +39,6 @@ public class ModelBuilderFileManager implements TextChangesListener {
 		try {
 			getGenSrcFileManager().addOrUpdate(fileName,
 					output.getText().toString());
-			@SuppressWarnings("restriction")
-			// SmapStratum.toString is not in API. It is a very strange toString
-			// indeed, but we need it.
 			String smap = output.getSmap().toString();
 			if (smap != null) {
 				getDebugInfoFileManager().addOrUpdateFile(

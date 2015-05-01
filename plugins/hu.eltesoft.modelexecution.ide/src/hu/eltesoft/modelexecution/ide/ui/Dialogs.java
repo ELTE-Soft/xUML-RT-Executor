@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import java.text.MessageFormat;
-
 import hu.eltesoft.modelexecution.ide.Messages;
+
+import java.text.MessageFormat;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -12,6 +12,25 @@ import org.eclipse.swt.widgets.Display;
  * These functions can be called from non-gui threads.
  */
 public class Dialogs {
+
+	public static final class ShowAnotherLaunchConfirmDialog implements
+			Runnable {
+		private boolean result;
+
+		@Override
+		public void run() {
+			result = new MessageDialog(null,
+					Messages.Dialogs_another_debug_launch_caption, null,
+					Messages.Dialogs_another_debug_launch_text,
+					MessageDialog.QUESTION, new String[] { "Abort",
+							"Force launch" }, 0).open() == 1;
+		}
+
+		public boolean getResult() {
+			return result;
+		}
+
+	}
 
 	private static final class ShowEEPrefChangeConfirmDialog implements
 			Runnable {
@@ -57,6 +76,12 @@ public class Dialogs {
 				() -> MessageDialog.openError(null,
 						Messages.Dialogs_internal_error_caption,
 						Messages.Dialogs_internal_error_text));
+	}
+
+	public static boolean openDebugAlreadyRunningWarning() {
+		ShowAnotherLaunchConfirmDialog showDialog = new ShowAnotherLaunchConfirmDialog();
+		Display.getDefault().syncExec(showDialog);
+		return showDialog.getResult();
 	}
 
 }
