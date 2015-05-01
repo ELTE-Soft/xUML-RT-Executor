@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.runtime;
 import hu.eltesoft.modelexecution.runtime.base.Class;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
+import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
@@ -27,7 +28,7 @@ public abstract class BaseRuntime implements Runtime {
 	private Logger logger;
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
-			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime");
+			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime"); //$NON-NLS-1$
 
 	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
 		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
@@ -52,7 +53,7 @@ public abstract class BaseRuntime implements Runtime {
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
 	@Override
-	public void run(String className, String feedName) throws Exception {
+	public TerminationResult run(String className, String feedName) throws Exception {
 		try {
 			prepare(className, feedName);
 			while (!queue.isEmpty() || traceReader.hasEvent()) {
@@ -66,10 +67,12 @@ public abstract class BaseRuntime implements Runtime {
 					traceReader.dispatchEvent(logger);
 				}
 			}
+			return TerminationResult.SUCCESSFUL_TERMINATION;
+		} catch (InvalidTraceException e) {
+			return TerminationResult.INVALID_TRACEFILE;
 		} catch (Exception e) {
 			logError(e);
-			System.err
-					.println("\nThe system was shut down due to an unexpected problem. Please consult with the developers about the issue.");
+			return TerminationResult.INTERNAL_ERROR;
 		} finally {
 			traceWriter.close();
 			traceReader.close();
@@ -123,7 +126,7 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	public static void logError(Throwable cause) {
-		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception",
+		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception", //$NON-NLS-1$
 				cause);
 	}
 

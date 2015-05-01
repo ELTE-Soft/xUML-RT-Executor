@@ -4,9 +4,6 @@ import java.util.LinkedList;
 
 /**
  * A queue of {@link FileUpdateTask} instances.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 @SuppressWarnings("serial")
 public class FileUpdateTaskQueue extends LinkedList<FileUpdateTask> {
@@ -18,5 +15,5 @@ public class FileUpdateTaskQueue extends LinkedList<FileUpdateTask> {
 	public void performAll() {
 		forEach(task -> task.perform());
 	}
-	
+
 }

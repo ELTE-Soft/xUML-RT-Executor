@@ -6,9 +6,6 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 /**
  * A listener interface that is informed when the textual representation of the
  * model is changed.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public interface TextChangesListener {
 
@@ -17,14 +14,15 @@ public interface TextChangesListener {
 	 * necessarily existed before, so this method covers both the cases of the
 	 * creation and modification of a file.
 	 * 
-	 * @param filename
-	 *            The name of the file to be changed.
+	 * @param rootName
+	 *            the fully qualified name of the root model object of the
+	 *            modified file
 	 * @param output
 	 *            The new contents of the file with source mapping information.
 	 * @param symbols
 	 *            Debug symbols.
 	 */
-	void contentChanged(String filename, SourceMappedText output,
+	void contentChanged(String rootName, SourceMappedText output,
 			DebugSymbols symbols);
 
 	/**
@@ -32,8 +30,9 @@ public interface TextChangesListener {
 	 * file is no more required.
 	 * 
 	 * @param filename
-	 *            The name of the file to be deleted.
+	 *            the fully qualified name of the root model object of the
+	 *            deleted file
 	 */
-	void contentDeleted(String filename);
+	void contentDeleted(String rootName);
 
 }

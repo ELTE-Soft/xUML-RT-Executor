@@ -37,16 +37,22 @@ public class ExecutableModelProperties {
 		return projectScope.getNode(ExecutableModelNature.NATURE_ID);
 	}
 
-	// path for generated sources
+	// ////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Get project-based path for java source files generated from the model.
+	 */
 	public static String getSourceGenPath(IProject project) {
 		return getSourceGenPath(getProperties(project));
 	}
-
-	public static String getSourceGenPath(IEclipsePreferences properties) {
+	
+	private static String getSourceGenPath(IEclipsePreferences properties) {
 		return properties.get(PROP_SOURCE_GEN_PATH, DEFAULT_SOURCE_GEN_PATH);
 	}
 
+	/**
+	 * Set project-based path for java source files generated from the model.
+	 */
 	public static void setSourceGenPath(IProject project, String path) {
 		setSourceGenPath(getProperties(project), path);
 	}
@@ -56,16 +62,24 @@ public class ExecutableModelProperties {
 		properties.put(PROP_SOURCE_GEN_PATH, path);
 	}
 
-	// path for debug files
+	// ////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Get project-based path for debugging resources, like source line mapping and symbol
+	 * name mapping.
+	 */
 	public static String getDebugFilesPath(IProject project) {
 		return getDebugFilesPath(getProperties(project));
 	}
 
-	public static String getDebugFilesPath(IEclipsePreferences properties) {
+	private static String getDebugFilesPath(IEclipsePreferences properties) {
 		return properties.get(PROP_DEBUG_RES_PATH, DEFAULT_DEBUG_RES_PATH);
 	}
 
+	/**
+	 * Set project-based path for debugging resources, like source line mapping and symbol
+	 * name mapping.
+	 */
 	public static void setDebugFilesPath(IProject project, String path) {
 		setDebugFilesPath(getProperties(project), path);
 	}
@@ -75,18 +89,26 @@ public class ExecutableModelProperties {
 		properties.put(PROP_DEBUG_RES_PATH, path);
 	}
 
-	// path for instrumented class files
+	// ////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Get project-based path for instrumented class files (.class files with debug
+	 * information)
+	 */
 	public static String getInstrumentedClassFilesPath(IProject project) {
 		return getInstrumentedClassFilesPath(getProperties(project));
 	}
-
-	public static String getInstrumentedClassFilesPath(
+	
+	private static String getInstrumentedClassFilesPath(
 			IEclipsePreferences properties) {
 		return properties.get(PROP_INSTRUMENTED_CLASS_FILE_PATH,
 				DEFAULT_INSTRUMENTED_CLASS_FILE_PATH);
 	}
 
+	/**
+	 * Set project-based path for instrumented class files (.class files with debug
+	 * information)
+	 */
 	public static void setInstrumentedClassFilesPath(IProject project,
 			String path) {
 		setInstrumentedClassFilesPath(getProperties(project), path);

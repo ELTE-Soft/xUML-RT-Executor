@@ -13,7 +13,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * model is created and managed, the implementations of this interface are
  * <i>not</i> thread-safe.
  * 
- * @author Gábor Ferenc Kovács
  * @see ChangeListenerM2MTranslator
  *
  */
@@ -24,13 +23,13 @@ public interface SimpleM2MTranslator {
 	 * 
 	 * @param engine
 	 *            IncQuery engine created on the scope of the to-be-translated
-	 *            model.
+	 *            model
 	 * @param listener
-	 *            A listener which will be informed when model changes affect
-	 *            its textual representation.
-	 * @return The new <code>SimpleM2MTranslator</code> instance.
+	 *            a listener which will be informed when model changes affect
+	 *            its textual representation
+	 * @return the new <code>SimpleM2MTranslator</code> instance
 	 * @throws IncQueryException
-	 *             If an error occurs during pattern matcher creation.
+	 *             if an error occurs during pattern matcher creation
 	 */
 	static SimpleM2MTranslator create(IncQueryEngine engine,
 			TextChangesListener listener) throws IncQueryException {
@@ -38,8 +37,8 @@ public interface SimpleM2MTranslator {
 	}
 
 	/**
-	 * @return The <code>IncQueryEngine</code> instance this translator was
-	 *         parameterized with.
+	 * @return the <code>IncQueryEngine</code> instance this translator was
+	 *         parameterized with
 	 */
 	IncQueryEngine getIncQueryEngine();
 
@@ -48,8 +47,8 @@ public interface SimpleM2MTranslator {
 	 * returns a queue of <code>FileUpdateTask</code> objects which make the
 	 * required changes in the textual representation when performed.
 	 * 
-	 * @return The queue of tasks to be performed to update all files. Only
-	 *         contains modification tasks.
+	 * @return the queue of tasks to be performed to update all files. Only
+	 *         contains modification tasks
 	 */
 	FileUpdateTaskQueue fullBuild();
 

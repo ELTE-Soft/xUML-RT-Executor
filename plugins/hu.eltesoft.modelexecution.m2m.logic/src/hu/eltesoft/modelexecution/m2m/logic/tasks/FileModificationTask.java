@@ -9,9 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * An implementation of {@link FileUpdateTask} which performs the modification
  * of a single file.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class FileModificationTask<S extends EObject, R extends ModelRoot>
 		implements FileUpdateTask {

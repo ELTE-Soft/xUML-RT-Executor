@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
@@ -32,6 +33,9 @@ public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
+	private static final String MODEL_FILE_EXTENSION = "uml";
+	private static final String DIAGRAM_FILE_EXTENSION = "di";
+
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
 
@@ -46,6 +50,7 @@ public class ExecutableModelLaunchDelegate implements
 		javaDelegate.launch(
 				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
 				launch, monitor);
+		listenForLaunchTermination(launch);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 
 			Display.getDefault().asyncExec(
@@ -67,19 +72,31 @@ public class ExecutableModelLaunchDelegate implements
 	}
 
 	/**
+	 * Listens for termination of the runtime and informs the user if it was not
+	 * successful.
+	 */
+	private void listenForLaunchTermination(ILaunch launch) {
+		DebugPlugin.getDefault().getLaunchManager()
+				.addLaunchListener(new ExitCodeChecker(launch));
+	}
+
+	/**
 	 * Returns true if the execution can be started, displays errors and returns
 	 * false otherwise.
 	 */
 	protected boolean launchPassesChecks(ILaunchConfiguration configuration,
 			String mode) throws CoreException {
-		if (!executionEngineIsXUMLRT()) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE)
+				&& !executionEngineIsXUMLRT()) {
 			if (!askUserToSetExecutionEngine()) {
 				return false;
 			}
 		}
 		String umlResource = configuration.getAttribute(
 				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
-		String diResource = umlResource.replaceAll("\\.uml$", ".di"); //$NON-NLS-1$ //$NON-NLS-2$
+		String diResource = umlResource
+				.replaceAll(
+						"\\." + MODEL_FILE_EXTENSION + "$", "." + DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (mode.equals(ILaunchManager.DEBUG_MODE)
 				&& !diResourceIsPresent(configuration, diResource, umlResource)) {
 			notifyUserThatDiIsMissing(diResource, umlResource);
@@ -110,9 +127,9 @@ public class ExecutableModelLaunchDelegate implements
 
 	private boolean executionEngineIsXUMLRT() {
 		IConfigurationElement selectedExecutionEngine = getSelectedExecutionEngine();
-		return (selectedExecutionEngine
-				.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR)
-				.equals(XUmlRtExecutionEngine.class.getCanonicalName()));
+		return (selectedExecutionEngine != null && selectedExecutionEngine
+				.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR).equals(
+						XUmlRtExecutionEngine.class.getCanonicalName()));
 	}
 
 	private IConfigurationElement[] getPossibleExecutionEngines() {
@@ -130,8 +147,8 @@ public class ExecutableModelLaunchDelegate implements
 				return possibleEE;
 			}
 		}
-		throw new RuntimeException(
-				"Selected Execution Engine is not among possible Execution Engines."); //$NON-NLS-1$
+		// no execution engine is selected
+		return null;
 	}
 
 	private IConfigurationElement getXUMLRTExecutionEngine() {

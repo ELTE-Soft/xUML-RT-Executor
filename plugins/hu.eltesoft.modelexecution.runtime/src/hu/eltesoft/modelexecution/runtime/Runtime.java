@@ -21,7 +21,7 @@ public interface Runtime {
 
 	void logTransition(String eventName, String source, String target);
 
-	public abstract void run(String className, String feedName)
+	public abstract TerminationResult run(String className, String feedName)
 			throws Exception;
 
 }

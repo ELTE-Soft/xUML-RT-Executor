@@ -7,6 +7,10 @@ public class Messages extends NLS {
 	public static String ClasspathRuntimeLibrary_model_execution_classpath_library;
 	public static String Dialogs_executionEnginePreferenceChange_caption;
 	public static String Dialogs_executionEnginePreferenceChange_text;
+	public static String Dialogs_internal_error_caption;
+	public static String Dialogs_internal_error_text;
+	public static String Dialogs_invalid_trace_file_caption;
+	public static String Dialogs_invalid_trace_file_text;
 	public static String Dialogs_missing_di_notification_caption;
 	public static String Dialogs_missing_di_notification_text;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file;

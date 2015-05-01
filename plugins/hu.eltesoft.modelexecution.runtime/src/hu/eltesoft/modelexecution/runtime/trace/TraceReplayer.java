@@ -37,10 +37,7 @@ public class TraceReplayer implements TraceReader {
 				sendAndLog(logger, tracedEvent);
 				return EventSource.Trace;
 			} else if (!event.equals(tracedEvent)) {
-				// TODO: error logging in runtime
-				String msg = "The event read from queue is not the same as the event read from the trace. Queue: "
-						+ event + ", Trace: " + tracedEvent;
-				throw new RuntimeException(msg);
+				throw new InvalidTraceException(event, tracedEvent);
 			}
 		}
 		sendAndLog(logger, event);

@@ -1,5 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.impl;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
@@ -13,20 +17,17 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * Default implementation for the {@link ChangeRegistry} interface.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
 public class ChangeRegistryImpl implements ChangeRegistry {
 
 	private final TextChangesListener listener;
-	private final ModelGenerationTaskSet modifications;
-	private final FileUpdateTaskSet deletions;
+	private final ModelGenerationTaskSet modifications = new ModelGenerationTaskSet();
+	private final FileUpdateTaskSet deletions = new FileUpdateTaskSet();
+	private final Map<EObject, String> qualifiedNameMap = Collections
+			.synchronizedMap(new WeakHashMap<>());
 
 	public ChangeRegistryImpl(TextChangesListener listener) {
 		this.listener = listener;
-		this.modifications = new ModelGenerationTaskSet();
-		this.deletions = new FileUpdateTaskSet();
 	}
 
 	@Override
@@ -50,6 +51,16 @@ public class ChangeRegistryImpl implements ChangeRegistry {
 		modifications.clear();
 
 		return taskQueue;
+	}
+
+	@Override
+	public void setContainerName(EObject modelElement, String rootName) {
+		qualifiedNameMap.put(modelElement, rootName);
+	}
+
+	@Override
+	public String getContainerName(EObject modelElement) {
+		return qualifiedNameMap.get(modelElement);
 	}
 
 }

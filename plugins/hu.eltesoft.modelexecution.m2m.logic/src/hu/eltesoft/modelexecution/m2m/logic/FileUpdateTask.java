@@ -15,7 +15,6 @@ import hu.eltesoft.modelexecution.m2m.logic.tasks.FileModificationTask;
  * This task does not perform any i/o actions, rather reports about the changes
  * to a {@link TextChangesListener}.
  * 
- * @author Gábor Ferenc Kovács
  * @see FileDeletionTask
  * @see FileModificationTask
  */

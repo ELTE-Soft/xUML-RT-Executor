@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -52,11 +53,6 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
 
-/**
- * 
- * @author Gábor Ferenc Kovács
- *
- */
 public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 	private static final RegionFactory FACTORY = RegionFactory.eINSTANCE;
@@ -70,6 +66,12 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 	private final TransitionMatcher transitionMatcher;
 	private final TransitionEffectMatcher transitionEffectMatcher;
 
+	/**
+	 * To manage EObject -> container name mapping. If <code>null</code>, no
+	 * mapping is required.
+	 */
+	private ChangeRegistry changeRegistry = null;
+
 	public RegionGenerator(IncQueryEngine engine, TextChangesListener listener)
 			throws IncQueryException {
 		super(listener);
@@ -82,6 +84,16 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		exitMatcher = ExitMatcher.on(engine);
 		transitionMatcher = TransitionMatcher.on(engine);
 		transitionEffectMatcher = TransitionEffectMatcher.on(engine);
+	}
+
+	public void setChangeRegistry(ChangeRegistry changeRegistry) {
+		this.changeRegistry = changeRegistry;
+	}
+
+	private void setContainerName(EObject modelElement, String rootName) {
+		if (changeRegistry != null) {
+			changeRegistry.setContainerName(modelElement, rootName);
+		}
 	}
 
 	// generate translation model
@@ -165,7 +177,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 			// (add transitions to states)
 			transitionMatcher.forEachMatch(source, null, null, null, null,
-					null, getProcessorToSetTransitionsOfState());
+					getProcessorToSetTransitionsOfState());
 
 		}
 
@@ -195,6 +207,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 					RgInitialPseudostate rgInitialPseudostate = FACTORY
 							.createRgInitialPseudostate();
 
+					// register initial to EObject -> container name mapping
+					setContainerName(pInitPseudostate, root.getName());
+
 					// name
 					rgInitialPseudostate.setName(pInitPseudostateName);
 
@@ -219,8 +234,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 				@Override
 				public void process(Region pRegion, State pSource,
-						Transition pTransition, String pTransitionName,
-						String pEventName, State pTarget) {
+						Transition pTransition, String pEventName, State pTarget) {
 
 					RgState rgState = manager.get(pSource);
 
@@ -236,6 +250,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 			// new RgTransition
 			RgTransition rgTransition = FACTORY.createRgTransition();
+
+			// register transition to EObject -> container name mapping
+			setContainerName(transition, root.getName());
 
 			// reference
 			rgTransition.setReference(new Reference(transition));
@@ -303,6 +320,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			void set(State state, String name) {
 				// new RgState
 				RgState rgState = FACTORY.createRgState();
+
+				// register state to EObject -> container name mapping
+				setContainerName(state, root.getName());
 
 				// name
 				rgState.setName(name);

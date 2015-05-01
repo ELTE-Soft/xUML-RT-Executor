@@ -343,6 +343,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	}
 
 	@SuppressWarnings("restriction")
+	// Restriction warning is suppressed for
+	// org.eclipse.debug.internal.core.LaunchConfiguration
+	// because the Common tab uses its ATTR_MAPPED_RESOURCE_PATHS and
+	// ATTR_MAPPED_RESOURCE_TYPES attributes to find the
+	// project that owns the configuration.
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		if (selectedModelResource == null || selectedClass == null

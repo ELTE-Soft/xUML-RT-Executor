@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.changeregistry;
 
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
+import hu.eltesoft.modelexecution.m2m.logic.ContainerNameProvider;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
 import hu.eltesoft.modelexecution.m2m.logic.impl.ChangeRegistryImpl;
@@ -10,11 +11,8 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * A change registry to record changes in the model and perform them later.
- * 
- * @author Gábor Ferenc Kovács
- *
  */
-public interface ChangeRegistry {
+public interface ChangeRegistry extends ContainerNameProvider {
 
 	/**
 	 * Creates a new registry.
@@ -32,9 +30,9 @@ public interface ChangeRegistry {
 
 	/**
 	 * Registers a new deletion. If another deletion entry is already present
-	 * with the same filename, that entry is overwritten.
+	 * with the same <code>rootName</code>, that entry is overwritten.
 	 */
-	void newDeletion(String filename);
+	void newDeletion(String rootName);
 
 	/**
 	 * Performs the previously registered changes and clears this registry.
@@ -43,4 +41,13 @@ public interface ChangeRegistry {
 	 */
 	FileUpdateTaskQueue performAllChanges();
 
+	/**
+	 * Sets the fully qualified root name which should be returned by the
+	 * {@link ChangeRegistry#getFilename(EObject) getFilename} method for
+	 * <code>modelElement</code>.
+	 */
+	void setContainerName(EObject modelElement, String rootName);
+
+	@Override
+	String getContainerName(EObject modelElement);
 }
