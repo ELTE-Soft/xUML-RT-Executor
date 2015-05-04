@@ -37,7 +37,7 @@ public class ExecutableModelLaunchDelegate implements
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
-	private JavaLaunchDelegate backgroundJavaLauncher = new BackgroundJavaLauncher();
+	private BackgroundJavaLauncher backgroundJavaLauncher = new BackgroundJavaLauncher();
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;
 

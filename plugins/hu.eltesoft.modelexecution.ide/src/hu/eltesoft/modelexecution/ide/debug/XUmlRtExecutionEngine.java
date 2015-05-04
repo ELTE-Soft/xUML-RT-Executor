@@ -24,13 +24,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugElement;
+import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -76,7 +83,7 @@ import com.sun.jdi.request.EventRequestManager;
  */
 @SuppressWarnings("restriction")
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
-		IExecutionEngine {
+
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
 	private static final String SYMBOLS_EXTENSION = "symbols";
@@ -141,14 +148,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 				.createClassPrepareRequest();
 		classPrepareRequest.setSuspendPolicy(EventRequest.SUSPEND_ALL);
 		classPrepareRequest.enable();
-		
-//		try {
-//			mokaDebugTarget.suspend();
-//		} catch (DebugException e) {
-//			IdePlugin.logError("Error while suspending", e);
-//		}
-		// initial start
-//		virtualMachine.resume();
 	}
 
 	private Thread createEventHandlerThread() {
@@ -162,6 +161,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 						for (Event event : events) {
 							if (event instanceof VMStartEvent) {
 								dbg("VMStart");
+								// initial start (the vm starts suspended)
+								// virtualMachine.resume();
 							} else if (event instanceof ClassPrepareEvent) {
 								handleClassLoaded((ClassPrepareEvent) event);
 							} else if (event instanceof BreakpointEvent) {
@@ -173,9 +174,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 							}
 						}
 						if (!stop) {
-							// events.resume();
+							events.resume();
 						} else {
-							//mokaDebugTarget.suspend();
+							debugTarget.suspend();
 						}
 					}
 				} catch (VMDisconnectedException e) {
@@ -195,7 +196,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		return getJavaProcess(mokaDebugTarget2).getVM();
 	}
 
- 	private BackgroundJavaProcess getJavaProcess(MokaDebugTarget mokaDebugTarget) {
+	private BackgroundJavaProcess getJavaProcess(MokaDebugTarget mokaDebugTarget) {
 		for (IProcess process : mokaDebugTarget.getLaunch().getProcesses()) {
 			if (process instanceof BackgroundJavaProcess) {
 				return (BackgroundJavaProcess) process;
@@ -423,12 +424,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void resume(Resume_Request arg0) {
-		try {
-			virtualMachine.resume();
-			mokaDebugTarget.resume();
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while resuming", e);
-		}
+		virtualMachine.resume();
 	}
 
 	private void handleClassLoaded(ClassPrepareEvent event) {
@@ -497,12 +493,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void suspend(Suspend_Request arg0) {
-		try {
-			virtualMachine.suspend();
-			mokaDebugTarget.suspend();
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while suspending debug target", e);
-		}
+		virtualMachine.suspend();
 	}
 
 	@Override
@@ -512,7 +503,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			AnimationUtils.getInstance().removeAllAnimationMarker();
 			virtualMachine.dispose();
 			javaProcess.terminate();
-			mokaDebugTarget.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}
@@ -521,12 +511,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void disconnect() {
 		setIsTerminated(true);
-		try {
-			virtualMachine.dispose();
-			mokaDebugTarget.disconnect();
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while disconnecting debug target", e);
-		}
+		virtualMachine.dispose();
 	}
 
 	@Override
