@@ -95,8 +95,7 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 		int exitValue = process.getExitValue();
 		if (exitValue == TerminationResult.INVALID_TRACEFILE.getExitCode()) {
 			Dialogs.openTraceFileInvalidErrorDialog();
-		} else if (exitValue != TerminationResult.SUCCESSFUL_TERMINATION
-				.getExitCode()) {
+		} else if (exitValue == TerminationResult.INTERNAL_ERROR.getExitCode()) {
 			Dialogs.openRuntimeInternalErrorDialog();
 		}
 	}

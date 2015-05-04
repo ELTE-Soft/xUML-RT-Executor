@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.NullSourceLocator;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 
@@ -38,6 +37,7 @@ public class ExecutableModelLaunchDelegate implements
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
+	private JavaLaunchDelegate backgroundJavaLauncher = new BackgroundJavaLauncher();
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;
 
@@ -45,20 +45,21 @@ public class ExecutableModelLaunchDelegate implements
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		listenForLaunchTermination();
-		if (!launchPassesChecks(configuration, mode) || !exitChecker.launchStarting(launch)) {
+		if (!launchPassesChecks(configuration, mode)
+				|| !exitChecker.launchStarting(launch)) {
 			return;
 		}
-
-		launch.setSourceLocator(new NullSourceLocator());
-		javaDelegate.launch(
-				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
-				launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-
+			backgroundJavaLauncher.launch(
+					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
+					mode, launch, monitor);
 			Display.getDefault().asyncExec(
 					() -> launchMokaDelegate(configuration, mode, launch,
 							monitor));
-
+		} else {
+			javaDelegate.launch(
+					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
+					mode, launch, monitor);
 		}
 	}
 

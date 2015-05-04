@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.launch.BackgroundJavaLauncher.BackgroundJavaProcess;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
@@ -30,7 +31,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugElement;
-import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
@@ -38,8 +39,6 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdi.internal.ReferenceTypeImpl;
-import org.eclipse.jdt.internal.debug.core.IJDIEventListener;
-import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -59,12 +58,17 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import com.google.common.base.Optional;
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ReferenceType;
+import com.sun.jdi.VMDisconnectedException;
+import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.Event;
 import com.sun.jdi.event.EventSet;
+import com.sun.jdi.event.VMDisconnectEvent;
+import com.sun.jdi.event.VMStartEvent;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
+import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.EventRequestManager;
 
 /**
@@ -84,14 +88,17 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private Set<EObject> initialisedContainers = new HashSet<>();
 	private EObject previousAnimatedEObject = null;
 
-	private JDIDebugTarget jdiDebugTarget;
+	private VirtualMachine virtualMachine;
 	private boolean animated;
 
 	private EventRequestManager eventRequestManager;
 
 	private MokaDebugTarget mokaDebugTarget;
+	private Thread eventHandlerThread;
+	private BackgroundJavaProcess javaProcess;
 
-	public XUmlRtExecutionEngine() {
+	private static void dbg(String msg) {
+		System.err.println(msg);
 	}
 
 	@Override
@@ -122,35 +129,76 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			AnimationUtils.init();
 		}
 
-		jdiDebugTarget = getJDIDebugTarget(mokaDebugTarget);
+		javaProcess = getJavaProcess(mokaDebugTarget);
+		virtualMachine = getVirtualMachine(mokaDebugTarget);
+		eventHandlerThread = createEventHandlerThread();
+		eventHandlerThread.start();
 
-		jdiDebugTarget.setDefaultStratum(DEFAULT_STRATUM_NAME);
+		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 
-		eventRequestManager = jdiDebugTarget.getEventRequestManager();
+		eventRequestManager = virtualMachine.eventRequestManager();
 		ClassPrepareRequest classPrepareRequest = eventRequestManager
 				.createClassPrepareRequest();
-		classPrepareRequest.setEnabled(true);
-		jdiDebugTarget.addJDIEventListener(new IJDIEventListener() {
-
-			@Override
-			public boolean handleEvent(Event event, JDIDebugTarget target,
-					boolean suspendVote, EventSet eventSet) {
-				handleClassLoaded((ClassPrepareEvent) event);
-				return true;
-			}
-
-			@Override
-			public void eventSetComplete(Event event, JDIDebugTarget target,
-					boolean suspend, EventSet eventSet) {
-			}
-		}, classPrepareRequest);
+		classPrepareRequest.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+		classPrepareRequest.enable();
+		
+//		try {
+//			mokaDebugTarget.suspend();
+//		} catch (DebugException e) {
+//			IdePlugin.logError("Error while suspending", e);
+//		}
+		// initial start
+//		virtualMachine.resume();
 	}
 
-	private JDIDebugTarget getJDIDebugTarget(MokaDebugTarget mokaDebugTarget) {
-		for (IDebugTarget debugTarget : mokaDebugTarget.getLaunch()
-				.getDebugTargets()) {
-			if (debugTarget instanceof JDIDebugTarget) {
-				return (JDIDebugTarget) debugTarget;
+	private Thread createEventHandlerThread() {
+		return new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						boolean stop = false;
+						EventSet events = virtualMachine.eventQueue().remove();
+						for (Event event : events) {
+							if (event instanceof VMStartEvent) {
+								dbg("VMStart");
+							} else if (event instanceof ClassPrepareEvent) {
+								handleClassLoaded((ClassPrepareEvent) event);
+							} else if (event instanceof BreakpointEvent) {
+								handleBreakpoint((BreakpointEvent) event);
+								stop = true;
+							} else if (event instanceof VMDisconnectEvent) {
+								// stop on vm disconnect
+								return;
+							}
+						}
+						if (!stop) {
+							// events.resume();
+						} else {
+							//mokaDebugTarget.suspend();
+						}
+					}
+				} catch (VMDisconnectedException e) {
+					// vm is terminated
+					return;
+				} catch (Exception e) {
+					IdePlugin.logError(
+							"Exception while processing VirtualMachine events",
+							e);
+				}
+
+			}
+		});
+	}
+
+	private VirtualMachine getVirtualMachine(MokaDebugTarget mokaDebugTarget2) {
+		return getJavaProcess(mokaDebugTarget2).getVM();
+	}
+
+ 	private BackgroundJavaProcess getJavaProcess(MokaDebugTarget mokaDebugTarget) {
+		for (IProcess process : mokaDebugTarget.getLaunch().getProcesses()) {
+			if (process instanceof BackgroundJavaProcess) {
+				return (BackgroundJavaProcess) process;
 			}
 		}
 		return null;
@@ -311,21 +359,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			throws AbsentInformationException {
 		BreakpointRequest breakpointRequest = eventRequestManager
 				.createBreakpointRequest(jdiLocation);
-		breakpointRequest.setEnabled(true);
-		jdiDebugTarget.addJDIEventListener(new IJDIEventListener() {
-
-			@Override
-			public boolean handleEvent(Event event, JDIDebugTarget target,
-					boolean suspendVote, EventSet eventSet) {
-				handleBreakpoint((BreakpointEvent) event);
-				return false;
-			}
-
-			@Override
-			public void eventSetComplete(Event event, JDIDebugTarget target,
-					boolean suspend, EventSet eventSet) {
-			}
-		}, breakpointRequest);
+		breakpointRequest.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+		breakpointRequest.enable();
 
 		String className = removeLastDotSection(jdiLocation.sourceName());
 		jdiLocationToEObject.put(
@@ -388,12 +423,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void resume(Resume_Request arg0) {
+		try {
+			virtualMachine.resume();
+			mokaDebugTarget.resume();
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while resuming", e);
+		}
 	}
 
 	private void handleClassLoaded(ClassPrepareEvent event) {
 		Set<String> debugClassnames = getDebugClassnames();
 		ReferenceType referenceType = event.referenceType();
 		String loadedClassname = referenceType.name();
+		dbg("Class loaded: " + loadedClassname);
 		if (!debugClassnames.contains(loadedClassname)) {
 			return;
 		}
@@ -421,6 +463,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		try {
 			String sourceFileName = stoppedAt.sourceName();
 			int locationLine = stoppedAt.lineNumber();
+			dbg("Breakpoint hit: " + sourceFileName + ":" + locationLine);
 
 			// TODO is removing the .java extension always good enough?
 			String sourceName = removeLastDotSection(sourceFileName);
@@ -428,8 +471,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			EObject eObject = jdiLocationToEObject.get(new Pair<>(sourceName,
 					locationLine));
 			animate(eObject);
-			jdiDebugTarget.refreshState();
-		} catch (AbsentInformationException | DebugException e) {
+		} catch (AbsentInformationException e) {
 			IdePlugin.logError("While handling breakpoint hit", e);
 		}
 
@@ -456,8 +498,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void suspend(Suspend_Request arg0) {
 		try {
-
-			jdiDebugTarget.suspend();
+			virtualMachine.suspend();
 			mokaDebugTarget.suspend();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while suspending debug target", e);
@@ -469,7 +510,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		setIsTerminated(true);
 		try {
 			AnimationUtils.getInstance().removeAllAnimationMarker();
-			jdiDebugTarget.terminate();
+			virtualMachine.dispose();
+			javaProcess.terminate();
 			mokaDebugTarget.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
@@ -480,7 +522,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	public void disconnect() {
 		setIsTerminated(true);
 		try {
-			jdiDebugTarget.disconnect();
+			virtualMachine.dispose();
 			mokaDebugTarget.disconnect();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while disconnecting debug target", e);
