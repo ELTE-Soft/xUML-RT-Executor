@@ -1,18 +1,15 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
+import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
+import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -30,7 +27,6 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
@@ -41,8 +37,6 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
-import org.eclipse.uml2.uml.Transition;
-import org.eclipse.uml2.uml.Vertex;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -60,8 +54,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
-	private Map<String, List<EObject>> loadedClassnameToDeferredLocation = new HashMap<>();
-	private Set<EObject> initialisedContainers = new HashSet<>();
 	private EObject previousAnimatedEObject = null;
 
 	private boolean animated;
@@ -69,8 +61,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	// /////////////////////////////////////////////////////////////////////////
 
 	private ResourceSet resourceSet;
+	private ModelElementsRegistry elementRegistry;
+
 	private SymbolsRegistry symbolsRegistry;
 	private LocationConverter locationConverter;
+
+	private BreakpointRegistry breakpoints;
 	private VirtualMachineManager virtualMachine;
 
 	@Override
@@ -100,33 +96,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		// /////////////////////////////////////////////////////////////////////
 
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
+		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
+
 		IProject project = getProject(mokaDebugTarget);
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
 		locationConverter = new LocationConverter(symbolsRegistry);
 
+		breakpoints = new BreakpointRegistry();
 		virtualMachine = new VirtualMachineManager(mokaDebugTarget.getLaunch());
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addVMEventListener(this);
-	}
-
-	/**
-	 * Marks all moka threads as suspended.
-	 */
-	private void markThreadAsSuspended() {
-		try {
-			for (IThread thread : debugTarget.getThreads()) {
-				MokaThread mokaThread = (MokaThread) thread;
-				// causes debug target to be suspended
-				sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
-						new MokaThread[] { mokaThread }));
-				// causes thread to be suspended
-				mokaThread.setSuspended(true);
-			}
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while marking thread as suspended", e);
-		}
 	}
 
 	private IProject getProject(MokaDebugTarget mokaDebugTarget) {
@@ -144,71 +125,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	@Override
+	public void initializeArguments(String[] args) {
+		// intentionally left blank
+	}
+
+	@Override
 	public void addBreakpoint(MokaBreakpoint breakpoint) {
-		EObject modelElement = breakpoint.getModelElement();
-		if (!(modelElement instanceof Vertex || modelElement instanceof Transition)) {
-			// TODO Support breakpoints on other nodes
-			return;
-		}
-
-		initEObjectForAnimation(modelElement);
-		if (locationConverter.locationsFor(modelElement).isEmpty()) {
-			deferBreakpoint(modelElement);
-		} else {
-			placeJdiBreakpoint(modelElement);
-		}
-	}
-
-	// note: this reinitializes all internal hashmaps of AnimationUtils,
-	// probably could be more efficient
-	private void initEObjectForAnimation(EObject modelElement) {
-		if (initialisedContainers.contains(modelElement)) {
-			return;
-		}
-
-		// resolve EObject proxies here as animation depends on their eResource
-		if (modelElement.eIsProxy()) {
-			modelElement = EcoreUtil.resolve(modelElement, (EObject) null);
-		}
-
-		AnimationUtils.init(modelElement);
-		initialisedContainers.add(modelElement);
-	}
-
-	/**
-	 * The breakpoint is set on the related file. It is assumed that the file is
-	 * already loaded into the virtual machine.
-	 * 
-	 * @param modelElement
-	 */
-	private void placeJdiBreakpoint(EObject modelElement) {
-		locationConverter.locationsFor(modelElement).forEach(
-				virtualMachine::addBreakpoint);
-	}
-
-	/**
-	 * As the class for the breakpoint isn't loaded yet, the breakpoint
-	 * information is stored until the class has arrived.
-	 */
-	private void deferBreakpoint(EObject modelElement) {
-		String containerName = ModelUtils.getContainerName(modelElement);
-		List<EObject> deferredLocations = loadedClassnameToDeferredLocation
-				.get(containerName);
-		if (deferredLocations == null) {
-			deferredLocations = new ArrayList<>();
-		}
-
-		deferredLocations.add(modelElement);
-		loadedClassnameToDeferredLocation.put(containerName, deferredLocations);
+		breakpoints.add(breakpoint);
 	}
 
 	@Override
-	public void initializeArguments(String[] arg0) {
-	}
-
-	@Override
-	public void removeBreakpoint(MokaBreakpoint arg0) {
-		// TODO: remove breakpoints
+	public void removeBreakpoint(MokaBreakpoint breakpoint) {
+		breakpoints.remove(breakpoint);
 	}
 
 	@Override
@@ -239,28 +167,52 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		locationConverter.registerClass(referenceType);
 		symbolsRegistry.getSymbolsFor(className);
 
-		placeDeferredBreakpoints(className, referenceType);
+		Set<EObject> elements = elementRegistry.get(className);
+		if (null != elements) {
+			elements.forEach(this::addVMBreakpoint);
+		}
+	}
+
+	/**
+	 * The breakpoint is set on the related file. It is assumed that the file is
+	 * already loaded into the virtual machine.
+	 * 
+	 * @param modelElement
+	 */
+	private void addVMBreakpoint(EObject modelElement) {
+		locationConverter.locationsFor(modelElement).forEach(
+				virtualMachine::addBreakpoint);
 	}
 
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
-		EObject eObject = reference.resolve(resourceSet);
-		animate(eObject);
+		EObject modelElement = reference.resolve(resourceSet);
+		animate(modelElement);
 
-		markThreadAsSuspended();
-		return ThreadAction.RemainSuspended;
+		if (breakpoints.hasEnabledBreakpointOn(modelElement)) {
+			markThreadAsSuspended();
+			return ThreadAction.RemainSuspended;
+		}
+		return ThreadAction.ShouldResume;
 	}
 
-	private void placeDeferredBreakpoints(String loadedClassname,
-			ReferenceType referenceType) {
-		List<EObject> deferredElements = loadedClassnameToDeferredLocation
-				.get(loadedClassname);
-		if (deferredElements == null)
-			return;
-		for (EObject deferred : deferredElements) {
-			placeJdiBreakpoint(deferred);
+	/**
+	 * Marks all moka threads as suspended.
+	 */
+	private void markThreadAsSuspended() {
+		try {
+			for (IThread thread : debugTarget.getThreads()) {
+				MokaThread mokaThread = (MokaThread) thread;
+				// causes debug target to be suspended
+				sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
+						new MokaThread[] { mokaThread }));
+				// causes thread to be suspended
+				mokaThread.setSuspended(true);
+			}
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while marking thread as suspended", e);
 		}
 	}
 
