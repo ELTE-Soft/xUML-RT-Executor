@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.cli;
 
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
 import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;

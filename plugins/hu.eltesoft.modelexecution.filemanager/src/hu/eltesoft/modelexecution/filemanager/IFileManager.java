@@ -24,8 +24,11 @@ public interface IFileManager {
 	 *            A fully qualified class name like a.b.cc.Ddd or Aaa
 	 * @param content
 	 *            The content to be written in the file.
+	 * @return
+	 *            The full path to the generated file or {@code null}
+	 *            if no path is available. 
 	 */
-	public abstract void addOrUpdate(String qualifiedName, String content)
+	public abstract String addOrUpdate(String qualifiedName, String content)
 			throws IOException;
 
 	/**

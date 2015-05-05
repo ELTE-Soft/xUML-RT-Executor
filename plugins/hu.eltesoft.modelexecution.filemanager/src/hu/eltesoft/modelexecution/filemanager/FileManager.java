@@ -44,15 +44,16 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public void addOrUpdate(String qualifiedName, String content)
+	public String addOrUpdate(String qualifiedName, String content)
 			throws IOException {
 		if (null == qualifiedName) {
-			return;
+			return null;
 		}
 
 		File outFile = qualifiedNameToFile(qualifiedName);
 		createDirectoryForFile(outFile);
 		writeContentToFile(content, outFile);
+		return outFile.getAbsolutePath();
 	}
 
 	@Override

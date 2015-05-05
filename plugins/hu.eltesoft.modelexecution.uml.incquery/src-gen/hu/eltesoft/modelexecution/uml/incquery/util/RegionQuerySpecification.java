@@ -78,8 +78,8 @@ public final class RegionQuerySpecification extends BaseGeneratedQuerySpecificat
         new ExportedParameter(body, var_regionName, "regionName")
       ));
       
-      new TypeUnary(body, var_region, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region"), "http://www.eclipse.org/uml2/5.0.0/UML/Region");
       
+      new TypeUnary(body, var_region, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region"), "http://www.eclipse.org/uml2/5.0.0/UML/Region");
       new TypeBinary(body, CONTEXT, var_region, var_regionName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }

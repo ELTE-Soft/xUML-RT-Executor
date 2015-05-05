@@ -1,16 +1,19 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-import hu.eltesoft.modelexecution.cli.Util;
 
-public class NothingToDoException extends IllegalArgumentException {
+public class ModelLoadFailedException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
+
+	String modelPath;
+	
+	public ModelLoadFailedException(String modelPath) {
+		this.modelPath = modelPath;
+	}
 
 	@Override
 	public String toString() {
-		return Message.MISSING_ACTION_OPTIONS.getMsg()
-				+ Util.join(ConsoleModelRunner.ACTION_OPTS, "\n\t");
+		return Message.MODEL_LOAD_FAILED.getMsg(modelPath);
 	}
 	
 	@Override
