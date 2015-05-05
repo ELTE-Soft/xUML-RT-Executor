@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.cli;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,4 +19,16 @@ public class Util {
 		return new ArrayList<>(Arrays.asList(elems));
 	}
 
+	public static String stackTraceToString(Exception e) {
+		try (
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+	    ) {
+			e.printStackTrace(pw);
+			return sw.toString();
+		} catch (IOException e1) {
+			// Note: this should never happen.
+			return null;
+		}
+	}
 }

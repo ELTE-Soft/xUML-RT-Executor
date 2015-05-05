@@ -1,20 +1,18 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner;
 import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-import hu.eltesoft.modelexecution.cli.Util;
 
-public class NothingToDoException extends IllegalArgumentException {
+public class JavaFileGenerationError extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {
-		return Message.MISSING_ACTION_OPTIONS.getMsg()
-				+ Util.join(ConsoleModelRunner.ACTION_OPTS, "\n\t");
+		return Message.FAILURE_WHILE_GENERATING_JAVA_FILES.getMsg();
 	}
 	
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
+
 }

@@ -17,5 +17,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/hu.eltesoft.modelexecution.runtime"/>
+	<classpathentry kind="src" path="/hu.eltesoft.modelexecution.m2m.logic"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/hu.eltesoft.modelexecution.filemanager"/>
+	<classpathentry kind="src" path="/hu.eltesoft.modelexecution.m2t.smap.xtend"/>
+	<classpathentry kind="src" path="/hu.eltesoft.modelexecution.m2t.java"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.uml2.uml_5.0.2.v20150202-0947.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.emf.common_2.10.1.v20150123-0348.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.emf.ecore_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
