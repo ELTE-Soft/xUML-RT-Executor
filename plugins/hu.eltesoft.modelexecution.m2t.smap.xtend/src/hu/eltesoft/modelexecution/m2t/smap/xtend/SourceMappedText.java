@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend;
 
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,13 +70,7 @@ public class SourceMappedText implements CharSequence {
 			String filePath = l.getFilePath();
 			if (filePath != null && !filePath.equals("")) {
 				URI uri = URI.createURI(filePath);
-				String fileName;
-				if (uri != null) {
-					fileName = Paths.get(uri.toFileString()).getFileName()
-							.toString();
-				} else {
-					fileName = Paths.get(filePath).getFileName().toString();
-				}
+				String fileName = uri.lastSegment();
 				stratum.addFile(fileName, filePath);
 				stratum.addLineData(l.getStartLine(), fileName, inputLineCount,
 						m.getOutputStartLine(), m.getOutputLineIncrement());
