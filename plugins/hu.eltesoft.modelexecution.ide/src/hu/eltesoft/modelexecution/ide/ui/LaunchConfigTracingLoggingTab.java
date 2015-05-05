@@ -32,7 +32,6 @@ public class LaunchConfigTracingLoggingTab extends
 	private Button loggingEnabled;
 	private Button tracingEnabled;
 	private Button replayTrace;
-	private Button animationEnabled;
 
 	private LaunchConfigFolderSelector traceFolderSelector;
 	private LaunchConfigFolderSelector replayFolderSelector;
@@ -52,7 +51,6 @@ public class LaunchConfigTracingLoggingTab extends
 		createLoggingControl(comp);
 		createTracingControl(comp);
 		createReplayControl(comp);
-		createAnimationControl(comp);
 
 		comp.pack();
 		updateLaunchConfigurationDialog();
@@ -148,21 +146,6 @@ public class LaunchConfigTracingLoggingTab extends
 		group.pack();
 	}
 
-	private void createAnimationControl(Composite comp) {
-		Group animationGroup = new Group(comp, SWT.NONE);
-		animationGroup
-				.setText(Messages.LaunchConfigTracingLoggingTab_animation_group_caption);
-		animationGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				false));
-		animationGroup.setLayout(new RowLayout());
-
-		animationEnabled = new Button(animationGroup, SWT.CHECK);
-		animationEnabled
-				.setText(Messages.LaunchConfigTracingLoggingTab_animation_checkbox_label);
-		animationEnabled.addSelectionListener(selectionTabUpdater());
-		animationGroup.pack();
-	}
-
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
@@ -172,8 +155,6 @@ public class LaunchConfigTracingLoggingTab extends
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT);
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_ANIMATE,
-				ModelExecutionLaunchConfig.ATTR_ANIMATE_DEFAULT);
 	}
 
 	@Override
@@ -188,9 +169,6 @@ public class LaunchConfigTracingLoggingTab extends
 			replayTrace.setSelection(configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT));
-			animationEnabled.setSelection(configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_ANIMATE,
-					ModelExecutionLaunchConfig.ATTR_ANIMATE_DEFAULT));
 			traceFolderSelector.initializeFrom(configuration);
 			replayFolderSelector.initializeFrom(configuration);
 		} catch (CoreException e) {
@@ -212,8 +190,6 @@ public class LaunchConfigTracingLoggingTab extends
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 				replayTrace.getSelection());
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_ANIMATE,
-				animationEnabled.getSelection());
 		traceFolderSelector.apply(configuration);
 		replayFolderSelector.apply(configuration);
 	}

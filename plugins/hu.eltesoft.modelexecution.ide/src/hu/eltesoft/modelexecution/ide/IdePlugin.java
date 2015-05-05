@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.ModelBuilderListenerInterface;
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
+import hu.eltesoft.modelexecution.ide.builder.ModelBuilderListenerInterface;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;

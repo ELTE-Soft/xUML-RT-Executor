@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -71,13 +70,5 @@ public class ModelUtils {
 				.eAllContents();
 		return StreamSupport.stream(iterable.spliterator(), false).filter(
 				ModelUtils::isSupportedNode);
-	}
-
-	/** @return the resolved model element */
-	public static EObject resolve(EObject modelElement) {
-		if (!modelElement.eIsProxy())
-			return modelElement;
-		// FIXME: the conditional above seems to be unnecessary
-		return AnimationUtils.resolve(modelElement);
 	}
 }

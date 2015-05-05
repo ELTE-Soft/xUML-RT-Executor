@@ -45,7 +45,7 @@ public class ExecutableModelProperties {
 	public static String getSourceGenPath(IProject project) {
 		return getSourceGenPath(getProperties(project));
 	}
-	
+
 	private static String getSourceGenPath(IEclipsePreferences properties) {
 		return properties.get(PROP_SOURCE_GEN_PATH, DEFAULT_SOURCE_GEN_PATH);
 	}
@@ -65,8 +65,8 @@ public class ExecutableModelProperties {
 	// ////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Get project-based path for debugging resources, like source line mapping and symbol
-	 * name mapping.
+	 * Get project-based path for debugging resources, like source line mapping
+	 * and symbol name mapping.
 	 */
 	public static String getDebugFilesPath(IProject project) {
 		return getDebugFilesPath(getProperties(project));
@@ -77,8 +77,8 @@ public class ExecutableModelProperties {
 	}
 
 	/**
-	 * Set project-based path for debugging resources, like source line mapping and symbol
-	 * name mapping.
+	 * Set project-based path for debugging resources, like source line mapping
+	 * and symbol name mapping.
 	 */
 	public static void setDebugFilesPath(IProject project, String path) {
 		setDebugFilesPath(getProperties(project), path);
@@ -92,13 +92,13 @@ public class ExecutableModelProperties {
 	// ////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Get project-based path for instrumented class files (.class files with debug
-	 * information)
+	 * Get project-based path for instrumented class files (.class files with
+	 * debug information)
 	 */
 	public static String getInstrumentedClassFilesPath(IProject project) {
 		return getInstrumentedClassFilesPath(getProperties(project));
 	}
-	
+
 	private static String getInstrumentedClassFilesPath(
 			IEclipsePreferences properties) {
 		return properties.get(PROP_INSTRUMENTED_CLASS_FILE_PATH,
@@ -106,8 +106,8 @@ public class ExecutableModelProperties {
 	}
 
 	/**
-	 * Set project-based path for instrumented class files (.class files with debug
-	 * information)
+	 * Set project-based path for instrumented class files (.class files with
+	 * debug information)
 	 */
 	public static void setInstrumentedClassFilesPath(IProject project,
 			String path) {

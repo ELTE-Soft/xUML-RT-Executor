@@ -10,6 +10,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Set;
+import java.util.TimerTask;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -34,6 +35,7 @@ import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import com.sun.jdi.ReferenceType;
+import com.sun.jdi.VMDisconnectedException;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.VMDeathEvent;
@@ -51,7 +53,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
 	private LaunchConfigReader configReader;
-	private AnimationController animationController;
+	private AnimationController animation;
 
 	private ResourceSet resourceSet;
 	private ModelElementsRegistry elementRegistry;
@@ -75,7 +77,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 		ILaunch launch = debugTarget.getLaunch();
 		configReader = new LaunchConfigReader(launch);
-		animationController = new AnimationController(configReader);
+		animation = new AnimationController(configReader);
 
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
 		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
@@ -153,17 +155,40 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 		boolean mustBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
 		if (mustBreak || waitingForSuspend) {
-			waitingForSuspend = false;
-			animationController.setSuspendedMarker(modelElement);
 			markThreadAsSuspended();
+			waitingForSuspend = false;
+			animation.setSuspendedMarker(modelElement);
 			return ThreadAction.RemainSuspended;
 		}
 
-		if (animationController.getAnimate()) {
-			animationController.setAnimationMarker(modelElement);
-			animationController.suspendForAnimation();
-			animationController.removeAnimationMarker();
+		if (animation.getAnimate()) {
+			animation.setAnimationMarker(modelElement);
+			animation.suspendForAnimation(new TimerTask() {
+
+				@Override
+				public void run() {
+					synchronized (animation) {
+						animation.removeAnimationMarker();
+
+						if (waitingForSuspend) {
+							markThreadAsSuspended();
+							waitingForSuspend = false;
+							animation.setSuspendedMarker(modelElement);
+						} else {
+							try {
+								virtualMachine.resume();
+							} catch (VMDisconnectedException e) {
+								// intentionally left blank
+								// the vm was stopped during the timer
+							}
+						}
+					}
+				}
+			});
+			return ThreadAction.RemainSuspended;
 		}
+
+		animation.removeAllMarkers();
 		return ThreadAction.ShouldResume;
 	}
 
@@ -186,13 +211,29 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void resume(Resume_Request request) {
-		virtualMachine.resume();
+		synchronized (animation) {
+			waitingForSuspend = false;
+			virtualMachine.resume();
+		}
+
 	}
 
 	@Override
 	public void suspend(Suspend_Request request) {
-		// this stops at the next breakpoint in the handler
-		waitingForSuspend = true;
+		synchronized (animation) {
+			// this stops at the next breakpoint in the handler
+			waitingForSuspend = true;
+
+			if (!animation.getAnimate()) {
+				return;
+			}
+
+			// stop the animation timer immediately
+			TimerTask animationEndTask = animation.stopSuspendingForAnimation();
+			if (null != animationEndTask) {
+				animationEndTask.run();
+			}
+		}
 	}
 
 	@Override
@@ -213,7 +254,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	private void performShutdown() {
 		setIsTerminated(true);
-		animationController.removeAllMarkers();
+		animation.removeAllMarkers();
 	}
 
 	@Override

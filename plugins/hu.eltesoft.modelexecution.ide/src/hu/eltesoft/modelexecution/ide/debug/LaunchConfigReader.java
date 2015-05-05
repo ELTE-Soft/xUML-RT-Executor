@@ -32,16 +32,6 @@ public class LaunchConfigReader {
 		}
 	}
 
-	public boolean getAnimate() {
-		try {
-			return configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_ANIMATE, false);
-		} catch (CoreException e) {
-			IdePlugin.logError(ERRMSG_READING_LAUNCH_CONFIG, e);
-			return false;
-		}
-	}
-
 	public int getAnimationTimerMultiplier() {
 		try {
 			return configuration.getAttribute(
