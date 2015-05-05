@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -31,7 +32,6 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
-import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -47,18 +47,15 @@ import com.sun.jdi.event.VMStartEvent;
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		IExecutionEngine, VMEventListener {
 
+	private static final String DEBUG_TARGET_NAME = "xUML-Rt Model";
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
-	private EObject previousAnimatedEObject = null;
-
-	private boolean animating;
-
-	// /////////////////////////////////////////////////////////////////////////
+	private LaunchConfigReader configReader;
+	private AnimationController animationController;
 
 	private ResourceSet resourceSet;
 	private ModelElementsRegistry elementRegistry;
 
-	private LaunchConfigReader configReader;
 	private SymbolsRegistry symbolsRegistry;
 	private LocationConverter locationConverter;
 
@@ -72,19 +69,14 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort,
 				replyPort, eventPort);
 
-		debugTarget.setName("xUML-Rt Model");
+		debugTarget.setName(DEBUG_TARGET_NAME);
+
+		ILaunch launch = debugTarget.getLaunch();
+		configReader = new LaunchConfigReader(launch);
+		animationController = new AnimationController(configReader);
 
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
 		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
-
-		configReader = new LaunchConfigReader(debugTarget.getLaunch());
-
-		// FIXME: how should we initialize this?
-		animating = configReader.isAnimating();
-		if (animating) {
-			AnimationUtils.init(eObjectToExecute);
-			AnimationUtils.init();
-		}
 
 		IProject project = configReader.getProject();
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
@@ -93,7 +85,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		locationConverter = new LocationConverter(symbolsRegistry);
 
 		breakpoints = new BreakpointRegistry();
-		virtualMachine = new VirtualMachineManager(mokaDebugTarget.getLaunch());
+		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addVMEventListener(this);
 	}
@@ -156,48 +148,36 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
 		EObject modelElement = reference.resolve(resourceSet);
-		animate(modelElement);
 
 		if (breakpoints.hasEnabledBreakpointOn(modelElement)) {
+			animationController.setSuspendedMarker(modelElement);
 			markThreadAsSuspended();
 			return ThreadAction.RemainSuspended;
+		}
+
+		if (animationController.getAnimate()) {
+			animationController.setAnimationMarker(modelElement);
+			animationController.suspendForAnimation();
+			animationController.removeAnimationMarker();
 		}
 		return ThreadAction.ShouldResume;
 	}
 
 	/**
-	 * Marks all moka threads as suspended.
+	 * Marks the thread and the debug target as suspended.
 	 */
 	private void markThreadAsSuspended() {
 		try {
-			for (IThread thread : debugTarget.getThreads()) {
-				MokaThread mokaThread = (MokaThread) thread;
-				// causes debug target to be suspended
-				sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
-						new MokaThread[] { mokaThread }));
-				// causes thread to be suspended
-				mokaThread.setSuspended(true);
-			}
+			// suspend just the first and only thread for now
+			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
+			// causes debug target to be suspended
+			sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
+					new MokaThread[] { mokaThread }));
+			// causes thread to be suspended
+			mokaThread.setSuspended(true);
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while marking thread as suspended", e);
 		}
-	}
-
-	protected void animate(EObject element) {
-		if (!animating)
-			return;
-
-		AnimationUtils utils = AnimationUtils.getInstance();
-		if (!utils.diagramsExistFor(element)) {
-			return;
-		}
-
-		if (previousAnimatedEObject != null) {
-			utils.removeAnimationMarker(previousAnimatedEObject);
-		}
-
-		utils.addAnimationMarker(element);
-		previousAnimatedEObject = element;
 	}
 
 	@Override
@@ -207,14 +187,14 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void suspend(Suspend_Request arg0) {
+		// TODO: stop at the next breakpoint
 		virtualMachine.suspend();
 	}
 
 	@Override
 	public void terminate(Terminate_Request arg0) {
-		setIsTerminated(true);
+		performShutdown();
 		try {
-			AnimationUtils.getInstance().removeAllAnimationMarker();
 			virtualMachine.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
@@ -223,8 +203,13 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void disconnect() {
-		setIsTerminated(true);
+		performShutdown();
 		virtualMachine.disconnect();
+	}
+
+	private void performShutdown() {
+		setIsTerminated(true);
+		animationController.removeAllMarkers();
 	}
 
 	@Override

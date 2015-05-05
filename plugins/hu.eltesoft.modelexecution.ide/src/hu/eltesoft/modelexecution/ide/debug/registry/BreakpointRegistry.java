@@ -16,14 +16,19 @@ public class BreakpointRegistry {
 
 	public void add(MokaBreakpoint breakpoint) {
 		EObject modelElement = breakpoint.getModelElement();
-		if (!ModelUtils.isSupportedNode(modelElement)) {
+		if (null == modelElement || !ModelUtils.isSupportedNode(modelElement)) {
 			return;
 		}
+
 		breakpointsForElements.put(modelElement, breakpoint);
 	}
 
 	public void remove(MokaBreakpoint breakpoint) {
 		EObject modelElement = breakpoint.getModelElement();
+		if (null == modelElement) {
+			return;
+		}
+
 		breakpointsForElements.remove(modelElement);
 	}
 
@@ -32,6 +37,7 @@ public class BreakpointRegistry {
 		if (null == breakpoint) {
 			return false;
 		}
+
 		try {
 			return breakpoint.isEnabled();
 		} catch (CoreException e) {

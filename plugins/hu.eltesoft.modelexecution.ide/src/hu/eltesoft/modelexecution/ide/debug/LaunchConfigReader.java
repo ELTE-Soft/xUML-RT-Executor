@@ -32,7 +32,7 @@ public class LaunchConfigReader {
 		}
 	}
 
-	public boolean isAnimating() {
+	public boolean getAnimate() {
 		try {
 			return configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_ANIMATE, false);
