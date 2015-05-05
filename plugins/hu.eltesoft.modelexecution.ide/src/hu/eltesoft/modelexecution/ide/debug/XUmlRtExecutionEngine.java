@@ -232,11 +232,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 				return;
 			}
 
-			// stop the animation timer immediately
-			TimerTask animationEndTask = animation.stopSuspendingForAnimation();
-			if (null != animationEndTask) {
-				animationEndTask.run();
-			}
+			// stop the animation timer and run its ending task immediately
+			animation.stopSuspendingForAnimation();
 		}
 	}
 

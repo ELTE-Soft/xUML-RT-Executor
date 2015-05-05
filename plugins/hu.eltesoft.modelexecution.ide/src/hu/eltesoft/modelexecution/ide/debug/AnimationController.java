@@ -49,12 +49,12 @@ public class AnimationController {
 		}, ms);
 	}
 
-	public TimerTask stopSuspendingForAnimation() {
-		TimerTask result = lastAnimationEndTask;
+	public void stopSuspendingForAnimation() {
 		if (null != lastAnimationEndTask) {
 			animationTimer.cancel();
+			lastAnimationEndTask.run();
+			lastAnimationEndTask = null;
 		}
-		return result;
 	}
 
 	public void setAnimationMarker(EObject modelElement) {
