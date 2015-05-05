@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.WrappedVirtualMachine.ThreadContinue;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
@@ -61,13 +60,16 @@ import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
+import com.sun.jdi.event.VMDeathEvent;
+import com.sun.jdi.event.VMDisconnectEvent;
+import com.sun.jdi.event.VMStartEvent;
 
 /**
  * Execution engine for Moka.
  */
 @SuppressWarnings("restriction")
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
-		IExecutionEngine, BreakpointEventListener, ClassPrepareEventListener {
+		IExecutionEngine, VMEventListener {
 
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
@@ -80,7 +82,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private Set<EObject> initialisedContainers = new HashSet<>();
 	private EObject previousAnimatedEObject = null;
 
-	private WrappedVirtualMachine virtualMachine;
+	private VirtualMachineManager virtualMachine;
 	private boolean animated;
 
 	private MokaDebugTarget mokaDebugTarget;
@@ -96,7 +98,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		if (this.debugTarget != null) {
 			this.debugTarget.setName("xUML-Rt State machine");
 		}
-		
+
 		loadDebugSymbols(mokaDebugTarget);
 		try {
 			animated = mokaDebugTarget
@@ -113,9 +115,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			AnimationUtils.init();
 		}
 
-		virtualMachine = new WrappedVirtualMachine(mokaDebugTarget);
+		virtualMachine = new VirtualMachineManager(mokaDebugTarget.getLaunch());
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
-		virtualMachine.addClassPrepareListener(this);
+		virtualMachine.addVMEventListener(this);
 	}
 
 	/**
@@ -289,7 +291,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private void placeJdiBreakpointOnLocation(EObject modelElement,
 			int startLine, com.sun.jdi.Location jdiLocation)
 			throws AbsentInformationException {
-		virtualMachine.addBreakpointListener(jdiLocation, this);
+		virtualMachine.addBreakpoint(jdiLocation);
 
 		String className = removeLastDotSection(jdiLocation.sourceName());
 		jdiLocationToEObject.put(
@@ -356,35 +358,36 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	@Override
-	public ThreadContinue classPrepare(ClassPrepareEvent event) {
+	public void handleVMStart(VMStartEvent event) {
+		// intentionally left blank
+	}
+
+	@Override
+	public void handleVMDisconnect(VMDisconnectEvent event) {
+		// intentionally left blank
+	}
+
+	@Override
+	public void handleVMDeath(VMDeathEvent event) {
+		// intentionally left blank
+	}
+
+	@Override
+	public void handleClassPrepare(ClassPrepareEvent event) {
 		Set<String> debugClassnames = getDebugClassnames();
 		ReferenceType referenceType = event.referenceType();
 		String loadedClassname = referenceType.name();
 		if (!debugClassnames.contains(loadedClassname)) {
-			return ThreadContinue.Resume;
+			return;
 		}
 
 		debugClassnames.remove(loadedClassname);
 		loadedClassnameToJDILocations.put(loadedClassname, referenceType);
 		placeDeferredBreakpoints(loadedClassname, referenceType);
-		return ThreadContinue.Resume;
-	}
-
-	private void placeDeferredBreakpoints(String loadedClassname,
-			ReferenceType referenceType) {
-		List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation
-				.get(loadedClassname);
-		if (deferredLocations == null)
-			return;
-		for (Pair<Location, EObject> deferred : deferredLocations) {
-			Location location = deferred.getKey();
-			EObject modelElement = deferred.getValue();
-			placeJdiBreakpoint(location, referenceType, modelElement);
-		}
 	}
 
 	@Override
-	public ThreadContinue breakpointHit(BreakpointEvent event) {
+	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		com.sun.jdi.Location stoppedAt = event.location();
 		try {
 			String sourceFileName = stoppedAt.sourceName();
@@ -399,7 +402,20 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			IdePlugin.logError("While handling breakpoint hit", e);
 		}
 		markThreadAsSuspended();
-		return ThreadContinue.RemainSuspended;
+		return ThreadAction.RemainSuspended;
+	}
+
+	private void placeDeferredBreakpoints(String loadedClassname,
+			ReferenceType referenceType) {
+		List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation
+				.get(loadedClassname);
+		if (deferredLocations == null)
+			return;
+		for (Pair<Location, EObject> deferred : deferredLocations) {
+			Location location = deferred.getKey();
+			EObject modelElement = deferred.getValue();
+			placeJdiBreakpoint(location, referenceType, modelElement);
+		}
 	}
 
 	protected void animate(EObject element) {

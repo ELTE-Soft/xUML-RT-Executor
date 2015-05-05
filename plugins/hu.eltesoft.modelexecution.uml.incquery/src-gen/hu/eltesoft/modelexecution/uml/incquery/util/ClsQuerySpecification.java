@@ -82,8 +82,8 @@ public final class ClsQuerySpecification extends BaseGeneratedQuerySpecification
         new ExportedParameter(body, var_className, "className")
       ));
       
-      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
+      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_cls, var_className, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       new NegativePatternCall(body, new FlatTuple(var_cls), IsBehaviorQuerySpecification.instance().instance());
       new NegativePatternCall(body, new FlatTuple(var_cls), IsStereotypeQuerySpecification.instance().instance());
