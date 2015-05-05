@@ -4,7 +4,6 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -13,13 +12,9 @@ import java.net.UnknownHostException;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -56,13 +51,14 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	private EObject previousAnimatedEObject = null;
 
-	private boolean animated;
+	private boolean animating;
 
 	// /////////////////////////////////////////////////////////////////////////
 
 	private ResourceSet resourceSet;
 	private ModelElementsRegistry elementRegistry;
 
+	private LaunchConfigReader configReader;
 	private SymbolsRegistry symbolsRegistry;
 	private LocationConverter locationConverter;
 
@@ -78,27 +74,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 		debugTarget.setName("xUML-Rt Model");
 
-		try {
-			animated = debugTarget
-					.getLaunch()
-					.getLaunchConfiguration()
-					.getAttribute(ModelExecutionLaunchConfig.ATTR_ANIMATE,
-							false);
-		} catch (CoreException e) {
-			IdePlugin.logError("Error while reading launch config", e);
-		}
+		resourceSet = eObjectToExecute.eResource().getResourceSet();
+		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
 
-		if (animated) {
+		configReader = new LaunchConfigReader(debugTarget.getLaunch());
+
+		// FIXME: how should we initialize this?
+		animating = configReader.isAnimating();
+		if (animating) {
 			AnimationUtils.init(eObjectToExecute);
 			AnimationUtils.init();
 		}
 
-		// /////////////////////////////////////////////////////////////////////
-
-		resourceSet = eObjectToExecute.eResource().getResourceSet();
-		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
-
-		IProject project = getProject(mokaDebugTarget);
+		IProject project = configReader.getProject();
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
@@ -108,20 +96,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		virtualMachine = new VirtualMachineManager(mokaDebugTarget.getLaunch());
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addVMEventListener(this);
-	}
-
-	private IProject getProject(MokaDebugTarget mokaDebugTarget) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		ILaunchConfiguration launchConfiguration = mokaDebugTarget.getLaunch()
-				.getLaunchConfiguration();
-		IProject project = null;
-		try {
-			project = root.getProject(launchConfiguration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, ""));
-		} catch (CoreException e) {
-			IdePlugin.logError("Error while retrieving attribute", e);
-		}
-		return project;
 	}
 
 	@Override
@@ -137,11 +111,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void removeBreakpoint(MokaBreakpoint breakpoint) {
 		breakpoints.remove(breakpoint);
-	}
-
-	@Override
-	public void resume(Resume_Request arg0) {
-		virtualMachine.resume();
 	}
 
 	@Override
@@ -163,12 +132,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	public void handleClassPrepare(ClassPrepareEvent event) {
 		ReferenceType referenceType = event.referenceType();
 		String className = referenceType.name();
-		// try to pre-load a symbols file
-		locationConverter.registerClass(referenceType);
-		symbolsRegistry.getSymbolsFor(className);
 
 		Set<EObject> elements = elementRegistry.get(className);
 		if (null != elements) {
+			locationConverter.registerClass(referenceType);
 			elements.forEach(this::addVMBreakpoint);
 		}
 	}
@@ -217,7 +184,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	protected void animate(EObject element) {
-		if (!animated)
+		if (!animating)
 			return;
 
 		AnimationUtils utils = AnimationUtils.getInstance();
@@ -231,6 +198,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 		utils.addAnimationMarker(element);
 		previousAnimatedEObject = element;
+	}
+
+	@Override
+	public void resume(Resume_Request arg0) {
+		virtualMachine.resume();
 	}
 
 	@Override

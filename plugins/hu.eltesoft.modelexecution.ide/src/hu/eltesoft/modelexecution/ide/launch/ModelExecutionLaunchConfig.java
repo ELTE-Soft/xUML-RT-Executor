@@ -73,6 +73,17 @@ public class ModelExecutionLaunchConfig {
 	public static final boolean ATTR_ANIMATE_DEFAULT = true;
 
 	/**
+	 * The slowdown factor for the animation.
+	 */
+	public static final String ATTR_TIMER_SLOWDOWN = ATTR_PREFIX
+			+ "timer_slowdown"; //$NON-NLS-1$
+
+	/**
+	 * Defines a reasonable default for the slowdown factor.
+	 */
+	public static final int ATTR_TIMER_SLOWDOWN_DEFAULT = 5;
+
+	/**
 	 * Marks if events are read from trace for the launch configuration.
 	 */
 	public static final String ATTR_REPLAY_TRACE = ATTR_PREFIX + "replay_trace"; //$NON-NLS-1$

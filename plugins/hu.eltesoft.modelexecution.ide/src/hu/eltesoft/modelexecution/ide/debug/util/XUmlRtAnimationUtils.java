@@ -14,15 +14,16 @@ public class XUmlRtAnimationUtils {
 
 	/** Indicates whether a suspended marker is applied to a model element. */
 	private boolean hasSuspendedMarker = false;
-	
+
 	/**
 	 * We always have at most one object with the marker. If {@code null}, no
 	 * object currently has the marker.
 	 */
 	private EObject previousAnimatedEObject = null;
 	private ModelElementsRegistry modelElementsRegistry;
-	
-	public XUmlRtAnimationUtils(EObject eObjectToExecute, ModelElementsRegistry modelElementsRegistry) {
+
+	public XUmlRtAnimationUtils(EObject eObjectToExecute,
+			ModelElementsRegistry modelElementsRegistry) {
 		AnimationUtils.init(eObjectToExecute);
 		this.modelElementsRegistry = modelElementsRegistry;
 	}
@@ -42,7 +43,8 @@ public class XUmlRtAnimationUtils {
 			return;
 		}
 
-		// resolving EObject proxies here as animation depends on their eResource
+		// resolving EObject proxies here as animation depends on their
+		// eResource
 		if (modelElement.eIsProxy()) {
 			modelElement = AnimationUtils.resolve(modelElement);
 
@@ -64,7 +66,7 @@ public class XUmlRtAnimationUtils {
 		removeAllSuspendedMarkers();
 		removeAllAnimationMarkers();
 	}
-	
+
 	/**
 	 * Removes all suspended markers.
 	 */
@@ -98,9 +100,9 @@ public class XUmlRtAnimationUtils {
 	public void removePreviousAnimationMarker() {
 		if (previousAnimatedEObject == null)
 			return;
-		
-		AnimationUtils.getInstance()
-				.removeAnimationMarker(previousAnimatedEObject);
+
+		AnimationUtils.getInstance().removeAnimationMarker(
+				previousAnimatedEObject);
 		previousAnimatedEObject = null;
 	}
 
@@ -117,13 +119,12 @@ public class XUmlRtAnimationUtils {
 						previousAnimatedEObject)) {
 			return;
 		}
-	
+
 		removeAllPreviousMarkers();
 		AnimationUtils.getInstance().addAnimationMarker(modelElement);
 		previousAnimatedEObject = modelElement;
 	}
 
-	
 	/**
 	 * The {@code modelElement} is lit with the suspended marker. Ensures that
 	 * no other model element is lit with either the animation or the suspended
@@ -136,6 +137,5 @@ public class XUmlRtAnimationUtils {
 		AnimationUtils.getInstance().addSuspendedMarker(modelElement);
 		hasSuspendedMarker = true;
 	}
-
 
 }
