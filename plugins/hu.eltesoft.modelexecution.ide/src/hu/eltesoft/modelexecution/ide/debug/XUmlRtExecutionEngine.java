@@ -3,17 +3,9 @@ package hu.eltesoft.modelexecution.ide.debug;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
-import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +13,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -36,8 +28,8 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdi.internal.ReferenceTypeImpl;
 import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
@@ -53,10 +45,7 @@ import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
-import org.eclipse.xtext.xbase.lib.Pair;
 
-import com.google.common.base.Optional;
-import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
@@ -73,35 +62,30 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
-	private static final String SYMBOLS_EXTENSION = "symbols";
-
-	private Map<String, DebugSymbols> filenameToDebugSymbols = new HashMap<>();
-	private Map<String, ReferenceType> loadedClassnameToJDILocations = new HashMap<>();
-	private Map<String, List<Pair<Location, EObject>>> loadedClassnameToDeferredLocation = new HashMap<>();
-	private Map<Pair<String, Integer>, EObject> jdiLocationToEObject = new HashMap<>();
+	private Map<String, List<EObject>> loadedClassnameToDeferredLocation = new HashMap<>();
 	private Set<EObject> initialisedContainers = new HashSet<>();
 	private EObject previousAnimatedEObject = null;
 
-	private VirtualMachineManager virtualMachine;
 	private boolean animated;
 
-	private MokaDebugTarget mokaDebugTarget;
+	// /////////////////////////////////////////////////////////////////////////
+
+	private ResourceSet resourceSet;
+	private SymbolsRegistry symbolsRegistry;
+	private LocationConverter locationConverter;
+	private VirtualMachineManager virtualMachine;
 
 	@Override
 	public void init(EObject eObjectToExecute, String[] args,
 			MokaDebugTarget mokaDebugTarget, int requestPort, int replyPort,
 			int eventPort) throws UnknownHostException, IOException {
-		this.mokaDebugTarget = mokaDebugTarget;
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort,
 				replyPort, eventPort);
 
-		if (this.debugTarget != null) {
-			this.debugTarget.setName("xUML-Rt State machine");
-		}
+		debugTarget.setName("xUML-Rt Model");
 
-		loadDebugSymbols(mokaDebugTarget);
 		try {
-			animated = mokaDebugTarget
+			animated = debugTarget
 					.getLaunch()
 					.getLaunchConfiguration()
 					.getAttribute(ModelExecutionLaunchConfig.ATTR_ANIMATE,
@@ -115,6 +99,15 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			AnimationUtils.init();
 		}
 
+		// /////////////////////////////////////////////////////////////////////
+
+		resourceSet = eObjectToExecute.eResource().getResourceSet();
+		IProject project = getProject(mokaDebugTarget);
+		String directory = ExecutableModelProperties.getDebugFilesPath(project);
+		IPath debugSymbolsDir = project.getLocation().append(directory);
+		symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
+		locationConverter = new LocationConverter(symbolsRegistry);
+
 		virtualMachine = new VirtualMachineManager(mokaDebugTarget.getLaunch());
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addVMEventListener(this);
@@ -125,7 +118,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	 */
 	private void markThreadAsSuspended() {
 		try {
-			for (IThread thread : mokaDebugTarget.getThreads()) {
+			for (IThread thread : debugTarget.getThreads()) {
 				MokaThread mokaThread = (MokaThread) thread;
 				// causes debug target to be suspended
 				sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
@@ -158,41 +151,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 				|| (modelElement instanceof org.eclipse.uml2.uml.Class);
 	}
 
-	private Set<String> getDebugClassnames() {
-		String symExt = "." + SYMBOLS_EXTENSION;
-		return filenameToDebugSymbols.keySet().stream()
-				.filter(filename -> filename.endsWith(symExt))
-				.map(XUmlRtExecutionEngine::removeLastDotSection)
-				.collect(Collectors.toSet());
-	}
-
-	private void loadDebugSymbols(MokaDebugTarget mokaDebugTarget)
-			throws IOException, FileNotFoundException {
-		IProject project = getProject(mokaDebugTarget);
-		if (project == null) {
-			return;
-		}
-		String debugResDir = ExecutableModelProperties
-				.getDebugFilesPath(project);
-
-		for (File file : project.getLocation().append(debugResDir).toFile()
-				.listFiles()) {
-			if (!file.isFile())
-				continue;
-			String filename = file.getName();
-			if (!filename.endsWith("." + SYMBOLS_EXTENSION))
-				continue;
-
-			try (ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(file));) {
-				DebugSymbols debugSymbols = (DebugSymbols) ois.readObject();
-				filenameToDebugSymbols.put(filename, debugSymbols);
-			} catch (ClassNotFoundException e) {
-				IdePlugin.logError("While deserializing symbol file", e);
-			}
-		}
-	}
-
 	private IProject getProject(MokaDebugTarget mokaDebugTarget) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		ILaunchConfiguration launchConfiguration = mokaDebugTarget.getLaunch()
@@ -215,29 +173,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			return;
 		}
 
-		Reference reference = new Reference(modelElement);
-		Optional<Location> optLocation = referenceToLocation(reference);
-
-		if (!optLocation.isPresent()) {
-			IdePlugin.logError("Breakpoint information is missing for "
-					+ reference);
-			return;
-		}
-
-		Location location = optLocation.get();
-		String containerName = getContainerName(breakpoint.getModelElement());
-
 		initEObjectForAnimation(modelElement);
-
-		ReferenceType referenceType = loadedClassnameToJDILocations
-				.get(containerName);
-
-		if (referenceType == null) {
-			deferBreakpoint(containerName, location, modelElement);
+		if (locationConverter.locationsFor(modelElement).isEmpty()) {
+			deferBreakpoint(modelElement);
 		} else {
-			placeJdiBreakpoint(location, referenceType, modelElement);
+			placeJdiBreakpoint(modelElement);
 		}
-
 	}
 
 	// note: this reinitializes all internal hashmaps of AnimationUtils,
@@ -262,85 +203,25 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	 * 
 	 * @param modelElement
 	 */
-	private void placeJdiBreakpoint(Location location,
-			ReferenceType referenceType, EObject modelElement) {
-		((ReferenceTypeImpl) referenceType).flushStoredJdwpResults();
-		int startLine = location.getStartLine();
-
-		int startLineInFile = startLine;
-
-		try {
-			List<com.sun.jdi.Location> locationsOfLine = referenceType
-					.locationsOfLine(startLineInFile);
-
-			if (locationsOfLine.size() == 0) {
-				IdePlugin
-						.logError("Location with zero lines: " + referenceType);
-				return;
-			}
-
-			for (com.sun.jdi.Location jdiLocation : locationsOfLine) {
-				placeJdiBreakpointOnLocation(modelElement, startLine,
-						jdiLocation);
-			}
-		} catch (AbsentInformationException e) {
-			IdePlugin.logError("While setting JDI breakpoint", e);
-		}
-	}
-
-	private void placeJdiBreakpointOnLocation(EObject modelElement,
-			int startLine, com.sun.jdi.Location jdiLocation)
-			throws AbsentInformationException {
-		virtualMachine.addBreakpoint(jdiLocation);
-
-		String className = removeLastDotSection(jdiLocation.sourceName());
-		jdiLocationToEObject.put(
-				new Pair<String, Integer>(className, startLine), modelElement);
+	private void placeJdiBreakpoint(EObject modelElement) {
+		locationConverter.locationsFor(modelElement).forEach(
+				virtualMachine::addBreakpoint);
 	}
 
 	/**
 	 * As the class for the breakpoint isn't loaded yet, the breakpoint
 	 * information is stored until the class has arrived.
 	 */
-	private void deferBreakpoint(String containerName, Location location,
-			EObject modelElement) {
-		List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation
+	private void deferBreakpoint(EObject modelElement) {
+		String containerName = getContainerName(modelElement);
+		List<EObject> deferredLocations = loadedClassnameToDeferredLocation
 				.get(containerName);
 		if (deferredLocations == null) {
 			deferredLocations = new ArrayList<>();
 		}
 
-		deferredLocations.add(new Pair<>(location, modelElement));
+		deferredLocations.add(modelElement);
 		loadedClassnameToDeferredLocation.put(containerName, deferredLocations);
-	}
-
-	/**
-	 * @return The {@link Location} of the {@link Reference}, or null if not
-	 *         found. Tries to resolve the reference as unqualified and both as
-	 *         {@link StateQualifiers.Entry} and a {@link StateQualifiers.Exit}.
-	 */
-	private Optional<Location> referenceToLocation(Reference reference) {
-		for (Map.Entry<String, DebugSymbols> entry : filenameToDebugSymbols
-				.entrySet()) {
-			DebugSymbols debugSymbols = entry.getValue();
-			LocationRegistry locationRegistry = debugSymbols
-					.getLocationRegistry();
-
-			Location location1 = locationRegistry.resolve(reference);
-			if (location1 != null)
-				return Optional.of(location1);
-
-			Location location2 = locationRegistry.resolveQualified(reference,
-					StateQualifiers.Entry.class);
-			if (location2 != null)
-				return Optional.of(location2);
-
-			Location location3 = locationRegistry.resolveQualified(reference,
-					StateQualifiers.Exit.class);
-			if (location3 != null)
-				return Optional.of(location3);
-		}
-		return Optional.absent();
 	}
 
 	@Override
@@ -374,47 +255,34 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void handleClassPrepare(ClassPrepareEvent event) {
-		Set<String> debugClassnames = getDebugClassnames();
 		ReferenceType referenceType = event.referenceType();
-		String loadedClassname = referenceType.name();
-		if (!debugClassnames.contains(loadedClassname)) {
-			return;
-		}
+		String className = referenceType.name();
+		// try to pre-load a symbols file
+		locationConverter.registerClass(referenceType);
+		symbolsRegistry.getSymbolsFor(className);
 
-		debugClassnames.remove(loadedClassname);
-		loadedClassnameToJDILocations.put(loadedClassname, referenceType);
-		placeDeferredBreakpoints(loadedClassname, referenceType);
+		placeDeferredBreakpoints(className, referenceType);
 	}
 
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		com.sun.jdi.Location stoppedAt = event.location();
-		try {
-			String sourceFileName = stoppedAt.sourceName();
-			int locationLine = stoppedAt.lineNumber();
-			// TODO is removing the .java extension always good enough?
-			String sourceName = removeLastDotSection(sourceFileName);
+		Reference reference = locationConverter.referenceFor(stoppedAt);
+		EObject eObject = reference.resolve(resourceSet);
+		animate(eObject);
 
-			EObject eObject = jdiLocationToEObject.get(new Pair<>(sourceName,
-					locationLine));
-			animate(eObject);
-		} catch (AbsentInformationException e) {
-			IdePlugin.logError("While handling breakpoint hit", e);
-		}
 		markThreadAsSuspended();
 		return ThreadAction.RemainSuspended;
 	}
 
 	private void placeDeferredBreakpoints(String loadedClassname,
 			ReferenceType referenceType) {
-		List<Pair<Location, EObject>> deferredLocations = loadedClassnameToDeferredLocation
+		List<EObject> deferredElements = loadedClassnameToDeferredLocation
 				.get(loadedClassname);
-		if (deferredLocations == null)
+		if (deferredElements == null)
 			return;
-		for (Pair<Location, EObject> deferred : deferredLocations) {
-			Location location = deferred.getKey();
-			EObject modelElement = deferred.getValue();
-			placeJdiBreakpoint(location, referenceType, modelElement);
+		for (EObject deferred : deferredElements) {
+			placeJdiBreakpoint(deferred);
 		}
 	}
 
@@ -459,8 +327,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public MokaThread[] getThreads() {
-		MokaThread mokaThread = new MokaThread(mokaDebugTarget);
-		mokaThread.setName("Moka thread");
+		MokaThread mokaThread = new MokaThread(debugTarget);
+		mokaThread.setName("Default component");
 		return new MokaThread[] { mokaThread };
 	}
 
@@ -477,23 +345,5 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public IRegisterGroup[] getRegisterGroups(IStackFrame stackFrame) {
 		return new IRegisterGroup[0];
-	}
-
-	/**
-	 * Typical usage: to remove {@code .java} postfixes.
-	 * 
-	 * @return The input string without the last dot in it and everything that
-	 *         comes after that. If the text does not contain any dots, returns
-	 *         the original text.
-	 */
-	public static String removeLastDotSection(String in) {
-		if (in == null) {
-			return null;
-		}
-		int lastDotIdx = in.lastIndexOf(".");
-		if (lastDotIdx <= 0) {
-			return in;
-		}
-		return in.substring(0, lastDotIdx);
 	}
 }
