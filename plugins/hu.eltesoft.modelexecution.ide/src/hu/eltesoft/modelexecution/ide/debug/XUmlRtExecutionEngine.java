@@ -62,6 +62,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private BreakpointRegistry breakpoints;
 	private VirtualMachineManager virtualMachine;
 
+	private boolean waitingForSuspend = false;
+
 	@Override
 	public void init(EObject eObjectToExecute, String[] args,
 			MokaDebugTarget mokaDebugTarget, int requestPort, int replyPort,
@@ -149,7 +151,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		Reference reference = locationConverter.referenceFor(stoppedAt);
 		EObject modelElement = reference.resolve(resourceSet);
 
-		if (breakpoints.hasEnabledBreakpointOn(modelElement)) {
+		boolean mustBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
+		if (mustBreak || waitingForSuspend) {
+			waitingForSuspend = false;
 			animationController.setSuspendedMarker(modelElement);
 			markThreadAsSuspended();
 			return ThreadAction.RemainSuspended;
@@ -181,18 +185,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	}
 
 	@Override
-	public void resume(Resume_Request arg0) {
+	public void resume(Resume_Request request) {
 		virtualMachine.resume();
 	}
 
 	@Override
-	public void suspend(Suspend_Request arg0) {
-		// TODO: stop at the next breakpoint
-		virtualMachine.suspend();
+	public void suspend(Suspend_Request request) {
+		// this stops at the next breakpoint in the handler
+		waitingForSuspend = true;
 	}
 
 	@Override
-	public void terminate(Terminate_Request arg0) {
+	public void terminate(Terminate_Request request) {
 		performShutdown();
 		try {
 			virtualMachine.terminate();
