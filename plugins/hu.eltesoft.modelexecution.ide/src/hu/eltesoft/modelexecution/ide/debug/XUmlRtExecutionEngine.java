@@ -155,9 +155,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 		boolean mustBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
 		if (mustBreak || waitingForSuspend) {
-			markThreadAsSuspended();
-			waitingForSuspend = false;
-			animation.setSuspendedMarker(modelElement);
+			markThreadAsSuspended(modelElement);
 			return ThreadAction.RemainSuspended;
 		}
 
@@ -171,9 +169,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 						animation.removeAnimationMarker();
 
 						if (waitingForSuspend) {
-							markThreadAsSuspended();
-							waitingForSuspend = false;
-							animation.setSuspendedMarker(modelElement);
+							markThreadAsSuspended(modelElement);
 						} else {
 							try {
 								virtualMachine.resume();
@@ -194,8 +190,14 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	/**
 	 * Marks the thread and the debug target as suspended.
+	 * 
+	 * @param modelElement
+	 *            the current element under the breakpoint (currently only a
+	 *            state or transition)
 	 */
-	private void markThreadAsSuspended() {
+	private void markThreadAsSuspended(EObject modelElement) {
+		animation.setSuspendedMarker(modelElement);
+
 		try {
 			// suspend just the first and only thread for now
 			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
@@ -207,6 +209,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while marking thread as suspended", e);
 		}
+
+		waitingForSuspend = false;
 	}
 
 	@Override
@@ -259,9 +263,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public MokaThread[] getThreads() {
-		MokaThread mokaThread = new MokaThread(debugTarget);
-		mokaThread.setName("Default component");
-		return new MokaThread[] { mokaThread };
+		MokaThread thread = new MokaThread(debugTarget);
+		thread.setName("Default component");
+		return new MokaThread[] { thread };
 	}
 
 	@Override
