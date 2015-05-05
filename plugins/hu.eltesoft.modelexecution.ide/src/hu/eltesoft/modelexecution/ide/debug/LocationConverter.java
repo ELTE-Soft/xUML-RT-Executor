@@ -1,10 +1,9 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier;
-import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
 import hu.eltesoft.modelexecution.m2t.smap.emf.QualifiedReference;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
@@ -15,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.State;
 
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.Location;
@@ -37,18 +34,9 @@ public class LocationConverter {
 	}
 
 	public List<Location> locationsFor(EObject modelElement) {
-		Class<? extends LocationQualifier> qualifier = defaultQualifierFor(modelElement);
+		Class<? extends LocationQualifier> qualifier;
+		qualifier = ModelUtils.defaultQualifierFor(modelElement);
 		return locationsFor(modelElement, qualifier);
-	}
-
-	private Class<? extends LocationQualifier> defaultQualifierFor(
-			EObject modelElement) {
-		if (modelElement instanceof Pseudostate) {
-			return StateQualifiers.Exit.class;
-		} else if (modelElement instanceof State) {
-			return StateQualifiers.Entry.class;
-		}
-		return None.class;
 	}
 
 	public List<Location> locationsFor(EObject modelElement,
@@ -58,26 +46,27 @@ public class LocationConverter {
 		String className = ModelUtils.getContainerName(modelElement);
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
-			// TODO: log error?
+			IdePlugin.logError(String.format(
+					"Unable to load debug symbols for class: ", className));
 			return locations;
 		}
 
 		LocationRegistry registry = symbols.getLocationRegistry();
-		// TODO: resolve model element?
 		Reference reference = new Reference(modelElement);
 		int startLine = registry.resolveQualified(reference, qualifier)
 				.getStartLine();
 
 		ReferenceType type = classForName.get(className);
 		if (null == type) {
-			// TODO: log error?
+			IdePlugin.logError(String.format(
+					"Reference type not found for class: ", className));
 			return locations;
 		}
 
 		try {
 			locations = type.locationsOfLine(startLine);
 		} catch (AbsentInformationException e) {
-			// TODO: log error?
+			IdePlugin.logError("Debug information is missing for location");
 		}
 
 		return locations;
@@ -87,15 +76,15 @@ public class LocationConverter {
 		String className = location.declaringType().name();
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
-			// TODO: log error?
-			return null;
+			IdePlugin.logError(String.format(
+					"Unable to load debug symbols for class: ", className));
 		}
 
 		LocationRegistry registry = symbols.getLocationRegistry();
 		try {
 			return registry.resolveQualified(convert(location));
 		} catch (AbsentInformationException e) {
-			// TODO: log error?
+			IdePlugin.logError("Debug information is missing for location");
 			return null;
 		}
 	}

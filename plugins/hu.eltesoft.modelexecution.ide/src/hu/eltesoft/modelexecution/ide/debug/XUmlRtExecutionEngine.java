@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
@@ -40,9 +41,6 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.NamedElement;
-import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
 
@@ -131,26 +129,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		}
 	}
 
-	// TODO: resolve container in a sophisticated way
-	public String getContainerName(EObject modelElement) {
-		EObject container = getContainer(modelElement);
-		return ((NamedElement) container).getName();
-	}
-
-	private EObject getContainer(EObject modelElement) {
-		while (!isContainer(modelElement)) {
-			modelElement = ((Element) modelElement).getOwner();
-		}
-
-		return modelElement;
-	}
-
-	// TODO: resolve container in a sophisticated way
-	protected boolean isContainer(EObject modelElement) {
-		return (modelElement instanceof Region)
-				|| (modelElement instanceof org.eclipse.uml2.uml.Class);
-	}
-
 	private IProject getProject(MokaDebugTarget mokaDebugTarget) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		ILaunchConfiguration launchConfiguration = mokaDebugTarget.getLaunch()
@@ -213,7 +191,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	 * information is stored until the class has arrived.
 	 */
 	private void deferBreakpoint(EObject modelElement) {
-		String containerName = getContainerName(modelElement);
+		String containerName = ModelUtils.getContainerName(modelElement);
 		List<EObject> deferredLocations = loadedClassnameToDeferredLocation
 				.get(containerName);
 		if (deferredLocations == null) {
