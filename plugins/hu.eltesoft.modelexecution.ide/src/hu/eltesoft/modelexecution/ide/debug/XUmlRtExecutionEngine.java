@@ -100,10 +100,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private Thread eventHandlerThread;
 	private BackgroundJavaProcess javaProcess;
 
-	private static void dbg(String msg) {
-		System.err.println(msg);
-	}
-
 	@Override
 	public void init(EObject eObjectToExecute, String[] args,
 			MokaDebugTarget mokaDebugTarget, int requestPort, int replyPort,
@@ -146,6 +142,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		classPrepareRequest.enable();
 	}
 
+	/**
+	 * Starts a thread that eats all events from the virtual machine and calls
+	 * the corresponding function.
+	 */
 	private Thread createEventHandlerThread() {
 		return new Thread(new Runnable() {
 			@Override
@@ -156,7 +156,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 						EventSet events = virtualMachine.eventQueue().remove();
 						for (Event event : events) {
 							if (event instanceof VMStartEvent) {
-								// FIXME: the vm does not stop on ClassPrepareEvents, so we need to wait a little.
+								// moka gets a starting resume event, so the vm
+								// will not start in suspended mode
 								stop = true;
 							} else if (event instanceof ClassPrepareEvent) {
 								handleClassLoaded((ClassPrepareEvent) event);
@@ -164,11 +165,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 								handleBreakpoint((BreakpointEvent) event);
 								stop = true;
 							} else if (event instanceof VMDisconnectEvent) {
-								// stop on vm disconnect
+								// stop on vm disconnect (not always received)
 								return;
 							}
 						}
 						if (!stop) {
+							// the execution is stopped when an event occurs
 							events.resume();
 						} else {
 							markThreadAsSuspended();
@@ -187,20 +189,31 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		});
 	}
 
+	/**
+	 * Marks all moka threads as suspended.
+	 */
 	private void markThreadAsSuspended() throws DebugException {
 		for (IThread thread : mokaDebugTarget.getThreads()) {
 			MokaThread mokaThread = (MokaThread) thread;
-			sendEvent(new Suspend_Event(mokaThread,
-					DebugEvent.STEP_END,
+			// causes debug target to be suspended
+			sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
 					new MokaThread[] { mokaThread }));
+			// causes thread to be suspended
 			mokaThread.setSuspended(true);
 		}
 	}
 
-	private VirtualMachine getVirtualMachine(MokaDebugTarget mokaDebugTarget2) {
-		return getJavaProcess(mokaDebugTarget2).getVM();
+	/**
+	 * Gets the VirtualMachine object that acts as an interface to the
+	 * background java virtual machine that operates in debug mode.
+	 */
+	private VirtualMachine getVirtualMachine(MokaDebugTarget mokaDebugTarget) {
+		return getJavaProcess(mokaDebugTarget).getVM();
 	}
 
+	/**
+	 * Gets the bacground java virtual machine that operates in debug mode.
+	 */
 	private BackgroundJavaProcess getJavaProcess(MokaDebugTarget mokaDebugTarget) {
 		for (IProcess process : mokaDebugTarget.getLaunch().getProcesses()) {
 			if (process instanceof BackgroundJavaProcess) {
@@ -436,7 +449,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		Set<String> debugClassnames = getDebugClassnames();
 		ReferenceType referenceType = event.referenceType();
 		String loadedClassname = referenceType.name();
-		dbg("Class loaded: " + loadedClassname);
 		if (!debugClassnames.contains(loadedClassname)) {
 			return;
 		}
@@ -464,8 +476,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		try {
 			String sourceFileName = stoppedAt.sourceName();
 			int locationLine = stoppedAt.lineNumber();
-			dbg("Breakpoint hit: " + sourceFileName + ":" + locationLine);
-
 			// TODO is removing the .java extension always good enough?
 			String sourceName = removeLastDotSection(sourceFileName);
 

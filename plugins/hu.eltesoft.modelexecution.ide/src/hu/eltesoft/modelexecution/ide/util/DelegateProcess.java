@@ -5,6 +5,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
 
+/**
+ * An Eclipse process that acts as a proxy to the other process received as a
+ * constructor argument.
+ */
 public class DelegateProcess implements IProcess {
 
 	private IProcess process;
