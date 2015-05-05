@@ -24,20 +24,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugElement;
-import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -46,6 +40,7 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdi.internal.ReferenceTypeImpl;
+import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -83,6 +78,7 @@ import com.sun.jdi.request.EventRequestManager;
  */
 @SuppressWarnings("restriction")
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
+		IExecutionEngine {
 
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
 
@@ -160,9 +156,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 						EventSet events = virtualMachine.eventQueue().remove();
 						for (Event event : events) {
 							if (event instanceof VMStartEvent) {
-								dbg("VMStart");
-								// initial start (the vm starts suspended)
-								// virtualMachine.resume();
+								// FIXME: the vm does not stop on ClassPrepareEvents, so we need to wait a little.
+								stop = true;
 							} else if (event instanceof ClassPrepareEvent) {
 								handleClassLoaded((ClassPrepareEvent) event);
 							} else if (event instanceof BreakpointEvent) {
@@ -176,7 +171,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 						if (!stop) {
 							events.resume();
 						} else {
-							debugTarget.suspend();
+							markThreadAsSuspended();
 						}
 					}
 				} catch (VMDisconnectedException e) {
@@ -190,6 +185,16 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 			}
 		});
+	}
+
+	private void markThreadAsSuspended() throws DebugException {
+		for (IThread thread : mokaDebugTarget.getThreads()) {
+			MokaThread mokaThread = (MokaThread) thread;
+			sendEvent(new Suspend_Event(mokaThread,
+					DebugEvent.STEP_END,
+					new MokaThread[] { mokaThread }));
+			mokaThread.setSuspended(true);
+		}
 	}
 
 	private VirtualMachine getVirtualMachine(MokaDebugTarget mokaDebugTarget2) {
@@ -516,7 +521,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public MokaThread[] getThreads() {
-		return new MokaThread[0];
+		MokaThread mokaThread = new MokaThread(mokaDebugTarget);
+		mokaThread.setName("Moka thread");
+		return new MokaThread[] { mokaThread };
 	}
 
 	@Override
