@@ -40,11 +40,13 @@ public class AnimationController {
 		lastAnimationEndTask = animationEndTask;
 		animationTimer = new Timer();
 		animationTimer.schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
-				lastAnimationEndTask.run();
-				lastAnimationEndTask = null;
+				if (lastAnimationEndTask != null) {
+					lastAnimationEndTask.run();
+					lastAnimationEndTask = null;
+				}
 			}
 		}, ms);
 	}

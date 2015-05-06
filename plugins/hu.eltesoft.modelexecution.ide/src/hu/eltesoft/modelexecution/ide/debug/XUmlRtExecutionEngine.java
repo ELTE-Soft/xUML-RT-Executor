@@ -80,6 +80,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		animation = new AnimationController(configReader);
 
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
+		new FilePathResourceLocator(resourceSet);
 		elementRegistry = new ModelElementsRegistry(eObjectToExecute);
 
 		IProject project = configReader.getProject();
@@ -116,12 +117,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void handleVMDisconnect(VMDisconnectEvent event) {
-		// intentionally left blank
+		terminate();
 	}
 
 	@Override
 	public void handleVMDeath(VMDeathEvent event) {
-		// intentionally left blank
+		terminate();
 	}
 
 	@Override
@@ -239,6 +240,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void terminate(Terminate_Request request) {
+		terminate();
+	}
+
+	private void terminate() {
 		performShutdown();
 		try {
 			virtualMachine.terminate();
@@ -247,15 +252,15 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		}
 	}
 
+	private void performShutdown() {
+		setIsTerminated(true);
+		animation.removeAllMarkers();
+	}
+
 	@Override
 	public void disconnect() {
 		performShutdown();
 		virtualMachine.disconnect();
-	}
-
-	private void performShutdown() {
-		setIsTerminated(true);
-		animation.removeAllMarkers();
 	}
 
 	@Override
