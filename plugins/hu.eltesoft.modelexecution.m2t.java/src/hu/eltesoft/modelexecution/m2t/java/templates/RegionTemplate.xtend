@@ -9,9 +9,9 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Exit
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Event
+import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class RegionTemplate extends Template {
@@ -46,17 +46,18 @@ class RegionTemplate extends Template {
 		
 			@Override
 			public void doInitialTransition() {
-				// Initial state exit «trace(initState.reference, Exit)»
-				owner.getRuntime().logExitState("«initState.name»");
+				// Initial state exit
+				owner.getRuntime().logExitState("«trace(initState, Exit)»");
 		
-				// Initial transition effect «trace(initTransition.reference)»
-				owner.getRuntime().logTransition("<init transition>", "«initState.name»", "«firstState.name»");
+				// Initial transition effect
+				owner.getRuntime().logTransition("<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.
+			name»");
 				«IF null != initTransition.effect»
 					new «initTransition.effect.name»(owner).execute();
 				«ENDIF»
 		
-				// First state entry «trace(firstState.reference, Entry)»
-				owner.getRuntime().logEnterState("«firstState.name»");
+				// First state entry
+				owner.getRuntime().logEnterState("«trace(firstState, Entry)»");
 				«IF null != firstState.entry»
 					new «firstState.entry.name»(owner).execute();
 				«ENDIF»
@@ -75,20 +76,20 @@ class RegionTemplate extends Template {
 						«FOR transition : state.transitions SEPARATOR ' else '»
 							if («transition.event.name».eventMatches(event))
 							{
-								// State exit «trace(state.reference, Exit)»
-								owner.getRuntime().logExitState("«state.name»");
+								// State exit
+								owner.getRuntime().logExitState("«trace(state, Exit)»");
 								«IF null != state.exit»
 									new «state.exit.name»(owner).execute();
 								«ENDIF»
 							
-								// Transition effect «trace(transition.reference)»
-								owner.getRuntime().logTransition("«transition.event.name»", "«state.name»", "«transition.target.name»");
+								// Transition effect
+								owner.getRuntime().logTransition("«trace(transition.event.name, transition.reference)»", "«state.name»", "«transition.target.name»");
 								«IF null != transition.effect»
 									new «transition.effect.name»(owner).execute();
 								«ENDIF»
 							
-								// State entry «trace(transition.target.reference, Entry)»
-								owner.getRuntime().logEnterState("«transition.target.name»");
+								// State entry
+								owner.getRuntime().logEnterState("«trace(transition.target, Entry)»");
 								«IF null != transition.target.entry»
 									new «transition.target.entry.name»(owner).execute();
 								«ENDIF»

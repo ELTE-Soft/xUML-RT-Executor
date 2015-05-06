@@ -55,7 +55,7 @@ class SmapStringConcatenation extends StringConcatenation {
 		// assume that parameters are substituted to continuous line ranges in the template
 		val outputLineIncrement = 1
 
-		mapping.add(new LineMapping(dataWithLocation.location, lineNumber + 1, outputLineIncrement))
+		mapping.add(new LineMapping(dataWithLocation.location, lineNumber, outputLineIncrement))
 		append(dataWithLocation.toString, indentation)
 	}
 
