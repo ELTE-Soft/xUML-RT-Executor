@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2t.smap.emf
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Require-Bundle: hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.1.0",
  org.eclipse.emf.ecore,
  org.eclipse.equinox.registry
