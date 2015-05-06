@@ -1,0 +1,46 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Behavior(behavior : Behavior, behaviorName) {
+	OpaqueBehavior(behavior);
+	Behavior.name(behavior, behaviorName);
+}
+
+pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
+// operation
+	Operation.method(operation, behavior);
+
+	Class.ownedOperation(cls, operation);
+	Class.name(cls, containerClassName);
+} or {
+// entry
+	State.entry(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClassName);
+
+} or {
+// exit
+	State.exit(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClassName);
+
+} or {
+// effect
+	Transition.effect(transition, behavior);
+	Transition.container(transition, region);
+
+	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
+}
+
+pattern AlfCode(behavior : Behavior, alfCode) {
+	OpaqueBehavior.body(behavior, alfCode);
+	OpaqueBehavior.language(behavior, "Alf");
+}
+
+private pattern ContainerClassOfVertex(vertex : Vertex, containerClassName) {
+	State.container(vertex, region);
+
+	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
+}
+
