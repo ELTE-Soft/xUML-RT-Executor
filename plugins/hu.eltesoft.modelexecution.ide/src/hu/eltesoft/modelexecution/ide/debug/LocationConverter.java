@@ -52,11 +52,6 @@ public class LocationConverter {
 			return locations;
 		}
 
-		LocationRegistry registry = symbols.getLocationRegistry();
-		Reference reference = new Reference(modelElement);
-		int startLine = registry.resolveQualified(reference, qualifier)
-				.getStartLine();
-
 		ReferenceType type = classForName.get(className);
 		if (null == type) {
 			IdePlugin.logError(String.format(
@@ -64,8 +59,17 @@ public class LocationConverter {
 			return locations;
 		}
 
+		LocationRegistry registry = symbols.getLocationRegistry();
+		Reference reference = new Reference(modelElement);
+		hu.eltesoft.modelexecution.m2t.smap.xtend.Location location;
+		location = registry.resolveQualified(reference, qualifier);
+		if (null == location) {
+			IdePlugin.logError("Unable to resolve model element location");
+			return locations;
+		}
+
 		try {
-			locations = type.locationsOfLine(startLine);
+			locations = type.locationsOfLine(location.getStartLine());
 		} catch (AbsentInformationException e) {
 			IdePlugin.logError("Debug information is missing for location");
 		}
