@@ -203,7 +203,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			// suspend just the first and only thread for now
 			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
 			// causes debug target to be suspended
-			sendEvent(new Suspend_Event(mokaThread, DebugEvent.STEP_END,
+			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
+					: DebugEvent.BREAKPOINT;
+			sendEvent(new Suspend_Event(mokaThread, eventCode,
 					new MokaThread[] { mokaThread }));
 			// causes thread to be suspended
 			mokaThread.setSuspended(true);
@@ -221,6 +223,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			virtualMachine.resume();
 		}
 
+		if (DebugEvent.CLIENT_REQUEST != request.getResumeDetail()) {
+			// this is a stepping request, just suspend again
+			suspend(null);
+		}
 	}
 
 	@Override

@@ -176,11 +176,19 @@ public class VirtualMachineManager implements ITerminate {
 	}
 
 	public void resume() {
-		virtualMachine.resume();
+		try {
+			virtualMachine.resume();
+		} catch (VMDisconnectedException e) {
+			// suppress any actions after the vm is disconnected
+		}
 	}
 
 	public void suspend() {
-		virtualMachine.suspend();
+		try {
+			virtualMachine.suspend();
+		} catch (VMDisconnectedException e) {
+			// suppress any actions after the vm is disconnected
+		}
 	}
 
 	public void disconnect() {
