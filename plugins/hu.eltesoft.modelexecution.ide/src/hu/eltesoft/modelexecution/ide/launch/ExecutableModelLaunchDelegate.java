@@ -37,23 +37,29 @@ public class ExecutableModelLaunchDelegate implements
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
 	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
+	private BackgroundJavaLauncher backgroundJavaLauncher = new BackgroundJavaLauncher();
+	private ExitCodeChecker exitChecker = new ExitCodeChecker();
+	private boolean isListening;
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		if (!launchPassesChecks(configuration, mode)) {
+		listenForLaunchTermination();
+		if (!launchPassesChecks(configuration, mode)
+				|| !exitChecker.launchStarting(launch)) {
 			return;
 		}
-		javaDelegate.launch(
-				ModelExecutionLaunchConfig.addJavaConfigs(configuration), mode,
-				launch, monitor);
-		listenForLaunchTermination(launch);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-
+			backgroundJavaLauncher.launch(
+					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
+					mode, launch, monitor);
 			Display.getDefault().asyncExec(
 					() -> launchMokaDelegate(configuration, mode, launch,
 							monitor));
-
+		} else {
+			javaDelegate.launch(
+					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
+					mode, launch, monitor);
 		}
 	}
 
@@ -72,9 +78,12 @@ public class ExecutableModelLaunchDelegate implements
 	 * Listens for termination of the runtime and informs the user if it was not
 	 * successful.
 	 */
-	private void listenForLaunchTermination(ILaunch launch) {
-		DebugPlugin.getDefault().getLaunchManager()
-				.addLaunchListener(new ExitCodeChecker(launch));
+	private void listenForLaunchTermination() {
+		if (!isListening) {
+			DebugPlugin.getDefault().getLaunchManager()
+					.addLaunchListener(exitChecker);
+			isListening = true;
+		}
 	}
 
 	/**

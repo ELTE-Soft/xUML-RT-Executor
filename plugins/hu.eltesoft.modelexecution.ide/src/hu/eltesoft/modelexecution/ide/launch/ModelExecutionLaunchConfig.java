@@ -63,14 +63,15 @@ public class ModelExecutionLaunchConfig {
 			+ "feed_fun_name"; //$NON-NLS-1$
 
 	/**
-	 * Marks if the animation is enabled in Moka debugging.
+	 * The slowdown factor for the animation.
 	 */
-	public static final String ATTR_ANIMATE = ATTR_PREFIX + "animate"; //$NON-NLS-1$
+	public static final String ATTR_TIMER_SLOWDOWN = ATTR_PREFIX
+			+ "timer_slowdown"; //$NON-NLS-1$
 
 	/**
-	 * Controls if animation is enabled by default.
+	 * Defines a reasonable default for the slowdown factor.
 	 */
-	public static final boolean ATTR_ANIMATE_DEFAULT = true;
+	public static final int ATTR_TIMER_SLOWDOWN_DEFAULT = 5;
 
 	/**
 	 * Marks if events are read from trace for the launch configuration.

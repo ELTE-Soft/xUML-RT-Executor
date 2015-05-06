@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2t.smap.xtend
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.smap.xtend.Assert.assertStringEquals
-import static org.junit.Assert.*
 
 class SourceMappedTextTest {
 
@@ -11,7 +10,13 @@ class SourceMappedTextTest {
 	def testEmptySmap() {
 		val smText = new SourceMappedText("sm", newArrayList(), "")
 
-		assertNull(smText.smap.toString)
+		assertStringEquals(
+			'''
+				SMAP
+				test.java
+				sm
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -23,13 +28,17 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				42:17
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -41,13 +50,17 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				42,4:17
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -59,13 +72,17 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				42:17,3
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -77,13 +94,17 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				42,4:17,3
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -97,6 +118,9 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 a.sm
@@ -106,7 +130,8 @@ class SourceMappedTextTest {
 				*L
 				42:17
 				29#1:32
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 
 	@Test
@@ -118,12 +143,16 @@ class SourceMappedTextTest {
 
 		assertStringEquals(
 			'''
+				SMAP
+				test.java
+				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				xtend/smap/test.sm
 				*L
 				42:17
-			''', smText.smap)
+				*E
+			''', smText.smap.toString("test.java"))
 	}
 }

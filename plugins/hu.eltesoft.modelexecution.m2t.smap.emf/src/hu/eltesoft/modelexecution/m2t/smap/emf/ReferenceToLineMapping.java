@@ -42,4 +42,9 @@ class ReferenceToLineMapping implements Serializable {
 
 		return lineNumberToReference.get(index);
 	}
+	
+	@Override
+	public String toString() {
+		return referenceToLineNumber.toString() + ";" + lineNumberToReference.toString();
+	}
 }

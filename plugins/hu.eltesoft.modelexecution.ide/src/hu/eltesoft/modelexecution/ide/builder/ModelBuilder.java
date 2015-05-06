@@ -90,6 +90,10 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				shared.runExclusive(() -> build(kind));
 			} catch (InterruptedException e) {
 				// nothing to do: interrupted by user
+			} catch (NullPointerException e) {
+				// the editor had been closed while the builder runs (the editor
+				// and the transaction is disposed)
+				build(kind);
 			}
 		} else {
 			build(kind);

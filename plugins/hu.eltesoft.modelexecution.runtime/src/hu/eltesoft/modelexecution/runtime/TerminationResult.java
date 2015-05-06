@@ -12,15 +12,21 @@ public enum TerminationResult {
 	SUCCESSFUL_TERMINATION(0),
 
 	/**
+	 * The runtime was terminated by the user. This is the exit code produced if
+	 * the runtime process is stopped from the outside.
+	 */
+	STOPPED(1),
+
+	/**
 	 * An internal error happened in the runtime so it was aborted.
 	 */
-	INTERNAL_ERROR(1),
+	INTERNAL_ERROR(2),
 
 	/**
 	 * The runtime used a trace file that was not consistent with the executed
 	 * model.
 	 */
-	INVALID_TRACEFILE(2);
+	INVALID_TRACEFILE(3);
 
 	private TerminationResult(int errorCode) {
 		this.errorCode = errorCode;

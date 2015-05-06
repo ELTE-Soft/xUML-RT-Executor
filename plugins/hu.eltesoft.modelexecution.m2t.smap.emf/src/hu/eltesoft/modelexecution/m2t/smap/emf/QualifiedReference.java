@@ -72,4 +72,9 @@ public class QualifiedReference extends Reference {
 		return qualifier.getCanonicalName().equals(
 				other.qualifier.getCanonicalName());
 	}
+	
+	@Override
+	public String toString() {
+		return qualifier.toString() + "::" + super.toString();
+	}
 }
