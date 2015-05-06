@@ -25,6 +25,7 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
+import org.eclipse.papyrus.moka.communication.event.iterminate.Terminate_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -117,12 +118,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void handleVMDisconnect(VMDisconnectEvent event) {
-		terminate();
+		terminateEngine();
 	}
 
 	@Override
 	public void handleVMDeath(VMDeathEvent event) {
-		terminate();
+		terminateEngine();
 	}
 
 	@Override
@@ -246,10 +247,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void terminate(Terminate_Request request) {
-		terminate();
-	}
-
-	private void terminate() {
 		performShutdown();
 		try {
 			virtualMachine.terminate();
@@ -261,6 +258,21 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private void performShutdown() {
 		setIsTerminated(true);
 		animation.removeAllMarkers();
+	}
+
+	// TODO: clean up termination logic
+	private void terminateEngine() {
+		try {
+			// terminate just the first and only thread for now
+			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
+			// causes debug target to be terminated
+			sendEvent(new Terminate_Event(mokaThread,	
+					new MokaThread[] { mokaThread }));
+			
+			debugTarget.terminate();
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while sending terminate notification", e);
+		}
 	}
 
 	@Override
