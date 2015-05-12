@@ -9,7 +9,7 @@ pattern Region(region : Region, regionName) {
 pattern ContainerClassOfRegion(region : Region, containerClassName) {
 	Class.name(containerClass, containerClassName);
 	Class.ownedBehavior(containerClass, stateMachine);
-	StateMachine.region(stateMachine, region);	
+	StateMachine.region(stateMachine, region);
 }
 
 pattern
@@ -41,12 +41,17 @@ pattern Exit(region : Region, state : State, exitName) {
 }
 
 pattern
-Transition(region : Region, source : State, transition : Transition, eventName, target : State) {
-	Transition.container(transition, region);
+Transition(region : Region, source : State, transition : Transition, eventName, messageName, target : State) {
+	find TransitionBase(region, source, transition, event, eventName, target);
+	SignalEvent.signal(event, signal);
+	Signal.name(signal, messageName);
+}
 
+private pattern
+TransitionBase(region : Region, source : State, transition : Transition, event : Event, eventName, target : State) {
+	Transition.container(transition, region);
 	Transition.source(transition, source);
 	Transition.target(transition, target);
-
 	Transition.trigger(transition, trigger);
 	Trigger.event(trigger, event);
 	Event.name(event, eventName);

@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.log;
 
 import hu.eltesoft.modelexecution.runtime.base.Class;
-import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
  * This logger outputs when state transitions happen.
@@ -9,7 +9,7 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 public class MinimalLogger implements Logger {
 
 	@Override
-	public void eventQueued(Class target, Event event) {
+	public void messageQueued(Class target, Message event) {
 	}
 
 	@Override
@@ -21,13 +21,13 @@ public class MinimalLogger implements Logger {
 	}
 
 	@Override
-	public void transition(String eventName, String source, String target) {
-		System.out.println("Transition by " + eventName + ": " + source
+	public void transition(String eventName, String messageName, String source, String target) {
+		System.out.println("Transition by " + messageName + "(" + eventName + ")" + ": " + source
 				+ " -> " + target);
 	}
 
 	@Override
-	public void eventDispatched(Class target, Event event) {
+	public void messageDispatched(Class target, Message event) {
 	}
 
 	@Override

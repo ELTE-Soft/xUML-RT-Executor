@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.Class;
-import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.Message;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
@@ -21,7 +21,7 @@ import java.util.Queue;
  */
 public abstract class BaseRuntime implements Runtime {
 
-	private Queue<TargetedEvent> queue = new LinkedList<>();
+	private Queue<TargetedMessage> queue = new LinkedList<>();
 
 	private Tracer traceWriter;
 	private TraceReader traceReader;
@@ -43,10 +43,10 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void addEventToQueue(Class target, Event event) {
-		TargetedEvent targetedEvent = new TargetedEvent(target, event);
+	public void addEventToQueue(Class target, Message message) {
+		TargetedMessage targetedEvent = new TargetedMessage(target, message);
 		queue.add(targetedEvent);
-		logger.eventQueued(target, event);
+		logger.messageQueued(target, message);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public abstract class BaseRuntime implements Runtime {
 			prepare(className, feedName);
 			while (!queue.isEmpty() || traceReader.hasEvent()) {
 				if (!queue.isEmpty()) {
-					TargetedEvent currQueueEvent = queue.peek();
+					TargetedMessage currQueueEvent = queue.peek();
 					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
 						queue.poll();
 						traceWriter.traceEvent(currQueueEvent);
@@ -93,13 +93,13 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void logEventQueued(Class target, Event event) {
-		logger.eventQueued(target, event);
+	public void logMessageQueued(Class target, Message event) {
+		logger.messageQueued(target, event);
 	}
 
 	@Override
-	public void logEventDispatched(Class target, Event event) {
-		logger.eventDispatched(target, event);
+	public void logMessageDispatched(Class target, Message event) {
+		logger.messageDispatched(target, event);
 	}
 
 	@Override
@@ -113,8 +113,8 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void logTransition(String eventName, String source, String target) {
-		logger.transition(eventName, source, target);
+	public void logTransition(String eventName, String messageName, String source, String target) {
+		logger.transition(eventName, messageName, source, target);
 	}
 
 	public static void logError(String message) {

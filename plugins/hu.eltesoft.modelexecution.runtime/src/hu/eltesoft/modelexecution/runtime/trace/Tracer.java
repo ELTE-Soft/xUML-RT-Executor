@@ -6,6 +6,6 @@ package hu.eltesoft.modelexecution.runtime.trace;
  */
 public interface Tracer extends AutoCloseable {
 
-	void traceEvent(TargetedEvent targetedEvent);
+	void traceEvent(TargetedMessage targetedEvent);
 
 }

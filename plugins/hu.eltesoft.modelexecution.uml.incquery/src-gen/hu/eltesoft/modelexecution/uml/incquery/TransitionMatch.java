@@ -33,15 +33,18 @@ public abstract class TransitionMatch extends BasePatternMatch {
   
   private String fEventName;
   
+  private String fMessageName;
+  
   private State fTarget;
   
-  private static List<String> parameterNames = makeImmutableList("region", "source", "transition", "eventName", "target");
+  private static List<String> parameterNames = makeImmutableList("region", "source", "transition", "eventName", "messageName", "target");
   
-  private TransitionMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
+  private TransitionMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final String pMessageName, final State pTarget) {
     this.fRegion = pRegion;
     this.fSource = pSource;
     this.fTransition = pTransition;
     this.fEventName = pEventName;
+    this.fMessageName = pMessageName;
     this.fTarget = pTarget;
     
   }
@@ -52,6 +55,7 @@ public abstract class TransitionMatch extends BasePatternMatch {
     if ("source".equals(parameterName)) return this.fSource;
     if ("transition".equals(parameterName)) return this.fTransition;
     if ("eventName".equals(parameterName)) return this.fEventName;
+    if ("messageName".equals(parameterName)) return this.fMessageName;
     if ("target".equals(parameterName)) return this.fTarget;
     return null;
     
@@ -77,6 +81,11 @@ public abstract class TransitionMatch extends BasePatternMatch {
     
   }
   
+  public String getMessageName() {
+    return this.fMessageName;
+    
+  }
+  
   public State getTarget() {
     return this.fTarget;
     
@@ -99,6 +108,10 @@ public abstract class TransitionMatch extends BasePatternMatch {
     }
     if ("eventName".equals(parameterName) ) {
     	this.fEventName = (java.lang.String) newValue;
+    	return true;
+    }
+    if ("messageName".equals(parameterName) ) {
+    	this.fMessageName = (java.lang.String) newValue;
     	return true;
     }
     if ("target".equals(parameterName) ) {
@@ -133,6 +146,12 @@ public abstract class TransitionMatch extends BasePatternMatch {
     
   }
   
+  public void setMessageName(final String pMessageName) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fMessageName = pMessageName;
+    
+  }
+  
   public void setTarget(final State pTarget) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fTarget = pTarget;
@@ -153,13 +172,13 @@ public abstract class TransitionMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fSource, fTransition, fEventName, fTarget};
+    return new Object[]{fRegion, fSource, fTransition, fEventName, fMessageName, fTarget};
     
   }
   
   @Override
   public TransitionMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fSource, fTransition, fEventName, fTarget) : this;
+    return isMutable() ? newMatch(fRegion, fSource, fTransition, fEventName, fMessageName, fTarget) : this;
     
   }
   
@@ -170,6 +189,7 @@ public abstract class TransitionMatch extends BasePatternMatch {
     result.append("\"source\"=" + prettyPrintValue(fSource) + ", ");
     result.append("\"transition\"=" + prettyPrintValue(fTransition) + ", ");
     result.append("\"eventName\"=" + prettyPrintValue(fEventName) + ", ");
+    result.append("\"messageName\"=" + prettyPrintValue(fMessageName) + ", ");
     result.append("\"target\"=" + prettyPrintValue(fTarget));
     return result.toString();
     
@@ -183,6 +203,7 @@ public abstract class TransitionMatch extends BasePatternMatch {
     result = prime * result + ((fSource == null) ? 0 : fSource.hashCode());
     result = prime * result + ((fTransition == null) ? 0 : fTransition.hashCode());
     result = prime * result + ((fEventName == null) ? 0 : fEventName.hashCode());
+    result = prime * result + ((fMessageName == null) ? 0 : fMessageName.hashCode());
     result = prime * result + ((fTarget == null) ? 0 : fTarget.hashCode());
     return result;
     
@@ -211,6 +232,8 @@ public abstract class TransitionMatch extends BasePatternMatch {
     else if (!fTransition.equals(other.fTransition)) return false;
     if (fEventName == null) {if (other.fEventName != null) return false;}
     else if (!fEventName.equals(other.fEventName)) return false;
+    if (fMessageName == null) {if (other.fMessageName != null) return false;}
+    else if (!fMessageName.equals(other.fMessageName)) return false;
     if (fTarget == null) {if (other.fTarget != null) return false;}
     else if (!fTarget.equals(other.fTarget)) return false;
     return true;
@@ -235,7 +258,7 @@ public abstract class TransitionMatch extends BasePatternMatch {
    * 
    */
   public static TransitionMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null, null);
+    return new Mutable(null, null, null, null, null, null);
     
   }
   
@@ -247,12 +270,13 @@ public abstract class TransitionMatch extends BasePatternMatch {
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
    * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static TransitionMatch newMutableMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return new Mutable(pRegion, pSource, pTransition, pEventName, pTarget);
+  public static TransitionMatch newMutableMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final String pMessageName, final State pTarget) {
+    return new Mutable(pRegion, pSource, pTransition, pEventName, pMessageName, pTarget);
     
   }
   
@@ -264,18 +288,19 @@ public abstract class TransitionMatch extends BasePatternMatch {
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
    * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static TransitionMatch newMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return new Immutable(pRegion, pSource, pTransition, pEventName, pTarget);
+  public static TransitionMatch newMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final String pMessageName, final State pTarget) {
+    return new Immutable(pRegion, pSource, pTransition, pEventName, pMessageName, pTarget);
     
   }
   
   private static final class Mutable extends TransitionMatch {
-    Mutable(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-      super(pRegion, pSource, pTransition, pEventName, pTarget);
+    Mutable(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final String pMessageName, final State pTarget) {
+      super(pRegion, pSource, pTransition, pEventName, pMessageName, pTarget);
       
     }
     
@@ -286,8 +311,8 @@ public abstract class TransitionMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends TransitionMatch {
-    Immutable(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-      super(pRegion, pSource, pTransition, pEventName, pTarget);
+    Immutable(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final String pMessageName, final State pTarget) {
+      super(pRegion, pSource, pTransition, pEventName, pMessageName, pTarget);
       
     }
     

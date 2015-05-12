@@ -23,7 +23,7 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 	private XStream xStream = new XStream();
 
 	/** Invariant: nonempty while hasMoreElems() is true */
-	private LinkedList<TargetedEvent> tracedEvents = new LinkedList<>();
+	private LinkedList<TargetedMessage> tracedEvents = new LinkedList<>();
 
 	private FileSystem fileSystem;
 
@@ -68,7 +68,7 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 		if (traceFiles.hasNext()) {
 			Path first = traceFiles.next();
 			try (InputStream input = Files.newInputStream(first)) {
-				tracedEvents = (LinkedList<TargetedEvent>) xStream
+				tracedEvents = (LinkedList<TargetedMessage>) xStream
 						.fromXML(input);
 			} catch (IOException e) {
 				// this problem should shut down the execution
@@ -96,8 +96,8 @@ public class InputTraceBuffer implements AutoCloseable, IInputTraceBuffer {
 	 * ()
 	 */
 	@Override
-	public TargetedEvent getTracedEvent() {
-		TargetedEvent ret = tracedEvents.poll();
+	public TargetedMessage getTracedEvent() {
+		TargetedMessage ret = tracedEvents.poll();
 		if (tracedEvents.isEmpty()) {
 			loadEvents();
 		}

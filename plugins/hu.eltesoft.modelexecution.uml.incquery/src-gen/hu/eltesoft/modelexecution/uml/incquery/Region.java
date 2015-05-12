@@ -35,6 +35,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>Entry</li>
  * <li>Exit</li>
  * <li>Transition</li>
+ * <li>TransitionBase</li>
  * <li>TransitionEffect</li>
  * </ul>
  * 

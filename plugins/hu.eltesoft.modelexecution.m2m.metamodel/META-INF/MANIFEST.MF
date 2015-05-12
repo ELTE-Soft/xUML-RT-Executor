@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
+Bundle-Name: %pluginName
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.metamodel;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: %Bundle-Vendor
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  hu.eltesoft.modelexecution.m2t.smap.emf

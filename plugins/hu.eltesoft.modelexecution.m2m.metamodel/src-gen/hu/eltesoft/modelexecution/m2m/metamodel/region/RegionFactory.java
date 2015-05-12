@@ -67,13 +67,13 @@ public interface RegionFactory extends EFactory {
 	RgTransition createRgTransition();
 
 	/**
-	 * Returns a new object of class '<em>Rg Event</em>'.
+	 * Returns a new object of class '<em>Rg Message</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Rg Event</em>'.
+	 * @return a new object of class '<em>Rg Message</em>'.
 	 * @generated
 	 */
-	RgEvent createRgEvent();
+	RgMessage createRgMessage();
 
 	/**
 	 * Returns a new object of class '<em>Rg Behavior</em>'.
@@ -83,6 +83,15 @@ public interface RegionFactory extends EFactory {
 	 * @generated
 	 */
 	RgBehavior createRgBehavior();
+
+	/**
+	 * Returns a new object of class '<em>Rg Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Rg Event</em>'.
+	 * @generated
+	 */
+	RgEvent createRgEvent();
 
 	/**
 	 * Returns the package supported by this factory.

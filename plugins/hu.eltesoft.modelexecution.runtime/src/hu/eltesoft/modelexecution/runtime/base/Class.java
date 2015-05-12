@@ -18,7 +18,7 @@ public abstract class Class {
 
 	public abstract void init();
 
-	public abstract void receive(Event event);
+	public abstract void receive(Message message);
 
 	public String getName() {
 		return name;

@@ -17,7 +17,7 @@ public class TraceReplayer implements TraceReader {
 	@Override
 	public void dispatchEvent(Logger logger) {
 		if (source.hasMoreElems()) {
-			TargetedEvent tracedEvent = source.getTracedEvent();
+			TargetedMessage tracedEvent = source.getTracedEvent();
 			sendAndLog(logger, tracedEvent);
 		} else {
 			throw new RuntimeException("dispatchEvent() on empty queue");
@@ -30,9 +30,9 @@ public class TraceReplayer implements TraceReader {
 	}
 
 	@Override
-	public EventSource dispatchEvent(TargetedEvent event, Logger logger) {
+	public EventSource dispatchEvent(TargetedMessage event, Logger logger) {
 		if (source.hasMoreElems()) {
-			TargetedEvent tracedEvent = source.getTracedEvent();
+			TargetedMessage tracedEvent = source.getTracedEvent();
 			if (tracedEvent.isFromOutside()) {
 				sendAndLog(logger, tracedEvent);
 				return EventSource.Trace;
@@ -44,9 +44,9 @@ public class TraceReplayer implements TraceReader {
 		return EventSource.Queue;
 	}
 
-	private void sendAndLog(Logger logger, TargetedEvent tracedEvent) {
+	private void sendAndLog(Logger logger, TargetedMessage tracedEvent) {
 		tracedEvent.send();
-		logger.eventDispatched(tracedEvent.getTarget(), tracedEvent.getEvent());
+		logger.messageDispatched(tracedEvent.getTarget(), tracedEvent.getMessage());
 	}
 
 	@Override

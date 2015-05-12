@@ -5,6 +5,6 @@ public interface IOutputTraceBuffer extends AutoCloseable {
 	/**
 	 * Adds an event to the buffer.
 	 */
-	public abstract void traceEvent(TargetedEvent event);
+	public abstract void traceEvent(TargetedMessage event);
 
 }

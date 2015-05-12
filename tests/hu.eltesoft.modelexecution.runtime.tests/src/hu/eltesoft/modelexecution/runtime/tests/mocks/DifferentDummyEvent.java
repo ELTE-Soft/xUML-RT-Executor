@@ -1,12 +1,13 @@
 package hu.eltesoft.modelexecution.runtime.tests.mocks;
 
-public class DifferentDummyEvent extends DummyEvent {
 
-	private int code;
+public class DifferentDummyEvent extends DummySignal {
 
 	public DifferentDummyEvent(int code) {
 		this.code = code;
 	}
+
+	private int code;
 
 	@Override
 	public int hashCode() {

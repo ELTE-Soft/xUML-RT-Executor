@@ -8,7 +8,7 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Entry
 import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Exit
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.base.Event
+import hu.eltesoft.modelexecution.runtime.base.Message
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
@@ -50,8 +50,7 @@ class RegionTemplate extends Template {
 				owner.getRuntime().logExitState("«trace(initState, Exit)»");
 		
 				// Initial transition effect
-				owner.getRuntime().logTransition("<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.
-			name»");
+				owner.getRuntime().logTransition("<init transition>", "<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.name»");
 				«IF null != initTransition.effect»
 					new «initTransition.effect.name»(owner).execute();
 				«ENDIF»
@@ -66,15 +65,15 @@ class RegionTemplate extends Template {
 			}
 		
 			@Override
-			public void step(«Event.canonicalName» event) {
-				owner.getRuntime().logEventDispatched(owner, event);
+			public void step(«Message.canonicalName» message) {
+				owner.getRuntime().logMessageDispatched(owner, message);
 				switch (currentState) {
 				case «initState.name»:
 					break;
 				«FOR state : region.states»
 					case «state.name»:
 						«FOR transition : state.transitions SEPARATOR ' else '»
-							if («transition.event.name».eventMatches(event))
+							if (message instanceof «transition.message.name»)
 							{
 								// State exit
 								owner.getRuntime().logExitState("«trace(state, Exit)»");
@@ -83,7 +82,7 @@ class RegionTemplate extends Template {
 								«ENDIF»
 							
 								// Transition effect
-								owner.getRuntime().logTransition("«trace(transition.event.name, transition.reference)»", "«state.name»", "«transition.target.name»");
+								owner.getRuntime().logTransition("«transition.event.name»", "«transition.message.name»", "«trace(state.name, transition.reference)»", "«transition.target.name»");
 								«IF null != transition.effect»
 									new «transition.effect.name»(owner).execute();
 								«ENDIF»

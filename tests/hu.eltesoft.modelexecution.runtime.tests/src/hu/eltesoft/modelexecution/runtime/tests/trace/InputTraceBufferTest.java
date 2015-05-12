@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import hu.eltesoft.modelexecution.runtime.Runtime;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DummyEvent;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.InputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -72,7 +72,7 @@ public class InputTraceBufferTest {
 	private void checkElems(int numEvents, IInputTraceBuffer sut) {
 		for (int i = 0; i < numEvents; i++) {
 			assertTrue(sut.hasMoreElems());
-			TargetedEvent tracedEvent = sut.getTracedEvent();
+			TargetedMessage tracedEvent = sut.getTracedEvent();
 			assertEquals(tracedEvent, sampleEvent());
 		}
 		assertFalse(sut.hasMoreElems());
@@ -87,7 +87,7 @@ public class InputTraceBufferTest {
 		otb.close();
 	}
 
-	private TargetedEvent sampleEvent() {
-		return new TargetedEvent(MockClass.getInstance(), new DummyEvent());
+	private TargetedMessage sampleEvent() {
+		return new TargetedMessage(MockClass.getInstance(), new DummySignal());
 	}
 }
