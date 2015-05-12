@@ -13,6 +13,40 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 
+/**
+ * Provides calculations for partitioning the step operation in the region
+ * template, based on the number of states in the region.
+ */
+class StepPartitioning {
+
+	/**
+	 * How many states a single step partition method should handle
+	 */
+	public static val PARTITION_SIZE = 128;
+
+	val int numberOfStates
+
+	new(int numberOfStates) {
+		this.numberOfStates = numberOfStates
+	}
+
+	def numberOfPartitions() {
+		Math.ceil(numberOfStates / (PARTITION_SIZE as double)) as int
+	}
+
+	def firstState(int partitionIndex) {
+		partitionIndex * PARTITION_SIZE
+	}
+
+	def afterLastState(int partitionIndex) {
+		Math.min((partitionIndex + 1) * PARTITION_SIZE, numberOfStates)
+	}
+
+	def isLast(int partitionIndex) {
+		afterLastState(partitionIndex) >= numberOfStates
+	}
+}
+
 @SourceMappedTemplate(stratumName=XUML_RT)
 class RegionTemplate extends Template {
 
@@ -21,12 +55,17 @@ class RegionTemplate extends Template {
 	val RgTransition initTransition
 	val RgState firstState
 
+	val StepPartitioning partitioning
+
 	new(RgRegion region) {
 		super(region)
 		this.region = region
 		initState = region.initialPseudostate
 		initTransition = initState.initialTransition
 		firstState = initTransition.target
+
+		val numberOfStates = region.states.length
+		partitioning = new StepPartitioning(numberOfStates)
 	}
 
 	override generate() '''
@@ -67,10 +106,27 @@ class RegionTemplate extends Template {
 			@Override
 			public void step(«Message.canonicalName» message) {
 				owner.getRuntime().logMessageDispatched(owner, message);
-				switch (currentState) {
-				case «initState.name»:
-					break;
-				«FOR state : region.states»
+				step0(message);
+			}
+		
+			«FOR i : 0 ..< partitioning.numberOfPartitions»
+				«makeStep(i)»
+				
+			«ENDFOR»
+			@Override
+			public String toString() {
+				return "«region.name» { currentState = " + currentState + " }";
+			}
+		}
+	'''
+
+	def makeStep(int i) '''
+		«IF partitioning.isLast(i)»
+			@SuppressWarnings("incomplete-switch")
+		«ENDIF»
+		private void step«i»(«Message.canonicalName» message) {
+			switch (currentState) {
+				«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
 					case «state.name»:
 						«FOR transition : state.transitions SEPARATOR ' else '»
 							if (message instanceof «transition.message.name»)
@@ -98,12 +154,11 @@ class RegionTemplate extends Template {
 						«ENDFOR»
 						break;
 				«ENDFOR»
-				}
-			}
-		
-			@Override
-			public String toString() {
-				return "«region.name» { currentState = " + currentState + " }";
+				«IF !partitioning.isLast(i)»
+					default:
+						step«i + 1»(message);
+						break;
+				«ENDIF»
 			}
 		}
 	'''
