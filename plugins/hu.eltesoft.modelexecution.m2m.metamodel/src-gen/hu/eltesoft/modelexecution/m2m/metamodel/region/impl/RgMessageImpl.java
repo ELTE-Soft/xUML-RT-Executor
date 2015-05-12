@@ -3,7 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -14,18 +14,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Rg Event</b></em>'.
+ * An implementation of the model object '<em><b>Rg Message</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgMessageImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent {
+public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMessage {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,7 +51,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected RgEventImpl() {
+	protected RgMessageImpl() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RegionPackage.Literals.RG_EVENT;
+		return RegionPackage.Literals.RG_MESSAGE;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_EVENT__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_MESSAGE__NAME, oldName, name));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
+			case RegionPackage.RG_MESSAGE__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -108,7 +108,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
+			case RegionPackage.RG_MESSAGE__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -123,7 +123,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
+			case RegionPackage.RG_MESSAGE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -138,7 +138,7 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
+			case RegionPackage.RG_MESSAGE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
@@ -160,4 +160,4 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 		return result.toString();
 	}
 
-} //RgEventImpl
+} //RgMessageImpl

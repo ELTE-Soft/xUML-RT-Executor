@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.log;
 
 import hu.eltesoft.modelexecution.runtime.base.Class;
-import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
  * A logger can output textual information about the execution of the model. It
@@ -10,9 +10,9 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
  */
 public interface Logger extends AutoCloseable {
 
-	void eventQueued(Class target, Event event);
+	void messageQueued(Class target, Message message);
 
-	void eventDispatched(Class target, Event event);
+	void messageDispatched(Class target, Message event);
 
 	void enterState(String state);
 

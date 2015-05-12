@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.runtime.tests.trace;
 
 import static org.junit.Assert.*;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DummyEvent;
+import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -39,8 +39,8 @@ public class OutputTraceBufferTest {
 		Files.createDirectories(traceFolder);
 		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject",
 				traceFolderName).toString(), 10, fs);
-		sut.traceEvent(new TargetedEvent(MockClass.getInstance(),
-				new DummyEvent()));
+		sut.traceEvent(new TargetedMessage(MockClass.getInstance(),
+				new DummySignal()));
 		sut.close();
 		Path expectedFile = traceFolder.resolve("t1.trace");
 		assertTrue(Files.exists(expectedFile));
@@ -56,8 +56,8 @@ public class OutputTraceBufferTest {
 		OutputTraceBuffer sut = new OutputTraceBuffer(fs.getPath("MyProject",
 				traceFolderName).toString(), 3, fs);
 		for (int i = 0; i < 10; i++) {
-			sut.traceEvent(new TargetedEvent(MockClass.getInstance(),
-					new DummyEvent()));
+			sut.traceEvent(new TargetedMessage(MockClass.getInstance(),
+					new DummySignal()));
 		}
 		assertTrue(Files.exists(traceFolder.resolve("t1.trace")));
 		assertTrue(Files.exists(traceFolder.resolve("t2.trace")));

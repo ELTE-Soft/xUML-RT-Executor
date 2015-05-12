@@ -21,7 +21,7 @@ public class OutputTraceBuffer implements IOutputTraceBuffer {
 
 	int i = 0;
 
-	LinkedList<TargetedEvent> tracedEvents = new LinkedList<>();
+	LinkedList<TargetedMessage> tracedEvents = new LinkedList<>();
 	private int size;
 
 	private String folderName;
@@ -49,7 +49,7 @@ public class OutputTraceBuffer implements IOutputTraceBuffer {
 	 * (hu.eltesoft.modelexecution.runtime.trace.TargetedEvent)
 	 */
 	@Override
-	public void traceEvent(TargetedEvent event) {
+	public void traceEvent(TargetedMessage event) {
 		if (tracedEvents.size() >= size) {
 			outputTracedEvents();
 		}

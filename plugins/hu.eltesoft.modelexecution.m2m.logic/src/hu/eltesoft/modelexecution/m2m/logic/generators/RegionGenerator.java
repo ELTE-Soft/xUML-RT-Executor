@@ -5,8 +5,8 @@ import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
@@ -234,19 +234,19 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 				@Override
 				public void process(Region pRegion, State pSource,
-						Transition pTransition, String pEventName, State pTarget) {
+						Transition pTransition, String pMessageName, State pTarget) {
 
 					RgState rgState = manager.get(pSource);
 
 					rgState.getTransitions().add(
-							createTransition(pTransition, pEventName, pTarget));
+							createTransition(pTransition, pMessageName, pTarget));
 				}
 
 			};
 		}
 
 		private RgTransition createTransition(Transition transition,
-				String eventName, State target) {
+				String messageName, State target) {
 
 			// new RgTransition
 			RgTransition rgTransition = FACTORY.createRgTransition();
@@ -258,9 +258,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			rgTransition.setReference(new Reference(transition));
 
 			// event
-			if (eventName != null) { // in case of any other than the initial
+			if (messageName != null) { // in case of any other than the initial
 										// transition
-				rgTransition.setEvent(createEvent(eventName));
+				rgTransition.setMessage(createMessage(messageName));
 			}
 
 			// effect
@@ -273,14 +273,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			return rgTransition;
 		}
 
-		private RgEvent createEvent(String name) {
+		private RgMessage createMessage(String name) {
 			// new RgEvent
-			RgEvent rgEvent = FACTORY.createRgEvent();
+			RgMessage rgMessage = FACTORY.createRgMessage();
 
 			// name
-			rgEvent.setName(name);
+			rgMessage.setName(name);
 
-			return rgEvent;
+			return rgMessage;
 		}
 
 		private TransitionEffectProcessor getProcessorToSetEffectOfTransition(

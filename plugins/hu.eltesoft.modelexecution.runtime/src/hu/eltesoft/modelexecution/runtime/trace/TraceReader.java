@@ -27,6 +27,6 @@ public interface TraceReader extends AutoCloseable {
 	 * Dispatch the given event or an event loaded from a tracefile (if there is
 	 * an external event).
 	 */
-	EventSource dispatchEvent(TargetedEvent event, Logger logger);
+	EventSource dispatchEvent(TargetedMessage event, Logger logger);
 
 }

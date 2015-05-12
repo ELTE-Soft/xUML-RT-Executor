@@ -93,8 +93,8 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 				return createRgTransitionAdapter();
 			}
 			@Override
-			public Adapter caseRgEvent(RgEvent object) {
-				return createRgEventAdapter();
+			public Adapter caseRgMessage(RgMessage object) {
+				return createRgMessageAdapter();
 			}
 			@Override
 			public Adapter caseRgBehavior(RgBehavior object) {
@@ -207,16 +207,16 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent <em>Rg Event</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage <em>Rg Message</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage
 	 * @generated
 	 */
-	public Adapter createRgEventAdapter() {
+	public Adapter createRgMessageAdapter() {
 		return null;
 	}
 

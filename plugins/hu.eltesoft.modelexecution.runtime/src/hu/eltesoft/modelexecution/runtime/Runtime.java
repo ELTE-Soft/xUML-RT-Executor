@@ -1,19 +1,17 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.Class;
-import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
- * The class responsible for running the modelled system, and an access point
+ * The class responsible for running the modeled system, and an access point
  * for features used from the system, like event queues or logging.
  */
 public interface Runtime {
 
-	void addEventToQueue(Class target, Event event);
+	void logMessageQueued(Class target, Message event);
 
-	void logEventQueued(Class target, Event event);
-
-	void logEventDispatched(Class target, Event event);
+	void logMessageDispatched(Class target, Message event);
 
 	void logEnterState(String state);
 
@@ -23,5 +21,7 @@ public interface Runtime {
 
 	public abstract TerminationResult run(String className, String feedName)
 			throws Exception;
+
+	void addEventToQueue(Class target, Message message);
 
 }

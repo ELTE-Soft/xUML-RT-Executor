@@ -10,6 +10,6 @@ public interface IInputTraceBuffer extends AutoCloseable {
 	/**
 	 * Takes the next event. If the queue becomes empty loads the next file.
 	 */
-	public abstract TargetedEvent getTracedEvent();
+	public abstract TargetedMessage getTracedEvent();
 
 }

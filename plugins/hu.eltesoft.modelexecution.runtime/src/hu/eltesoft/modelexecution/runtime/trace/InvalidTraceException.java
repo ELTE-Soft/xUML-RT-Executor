@@ -7,21 +7,21 @@ package hu.eltesoft.modelexecution.runtime.trace;
  */
 public class InvalidTraceException extends RuntimeException {
 
-	private TargetedEvent event;
-	private TargetedEvent tracedEvent;
+	private TargetedMessage event;
+	private TargetedMessage tracedEvent;
 
 	private static final long serialVersionUID = 1L;
 
-	public InvalidTraceException(TargetedEvent event, TargetedEvent tracedEvent) {
+	public InvalidTraceException(TargetedMessage event, TargetedMessage tracedEvent) {
 		this.event = event;
 		this.tracedEvent = tracedEvent;
 	}
 
-	public TargetedEvent getEvent() {
+	public TargetedMessage getEvent() {
 		return event;
 	}
 
-	public TargetedEvent getTracedEvent() {
+	public TargetedMessage getTracedEvent() {
 		return tracedEvent;
 	}
 

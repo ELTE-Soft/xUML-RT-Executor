@@ -12,7 +12,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent <em>Event</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getMessage <em>Message</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEffect <em>Effect</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getTarget <em>Target</em>}</li>
  * </ul>
@@ -24,30 +24,30 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
  */
 public interface RgTransition extends Referenced {
 	/**
-	 * Returns the value of the '<em><b>Event</b></em>' reference.
+	 * Returns the value of the '<em><b>Message</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Event</em>' reference isn't clear,
+	 * If the meaning of the '<em>Message</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Event</em>' reference.
-	 * @see #setEvent(RgEvent)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Event()
-	 * @model
+	 * @return the value of the '<em>Message</em>' containment reference.
+	 * @see #setMessage(RgMessage)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Message()
+	 * @model containment="true"
 	 * @generated
 	 */
-	RgEvent getEvent();
+	RgMessage getMessage();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent <em>Event</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getMessage <em>Message</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Event</em>' reference.
-	 * @see #getEvent()
+	 * @param value the new value of the '<em>Message</em>' containment reference.
+	 * @see #getMessage()
 	 * @generated
 	 */
-	void setEvent(RgEvent value);
+	void setMessage(RgMessage value);
 
 	/**
 	 * Returns the value of the '<em><b>Effect</b></em>' reference.

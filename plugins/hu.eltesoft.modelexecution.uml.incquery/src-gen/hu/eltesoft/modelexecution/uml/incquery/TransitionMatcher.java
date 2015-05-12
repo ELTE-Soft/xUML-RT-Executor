@@ -31,15 +31,10 @@ import org.eclipse.uml2.uml.Transition;
  * <p>Original source:
  * <code><pre>
  * pattern
- * Transition(region : Region, source : State, transition : Transition, eventName, target : State) {
- * 	Transition.container(transition, region);
- * 
- * 	Transition.source(transition, source);
- * 	Transition.target(transition, target);
- * 
- * 	Transition.trigger(transition, trigger);
- * 	Trigger.event(trigger, event);
- * 	Event.name(event, eventName);
+ * Transition(region : Region, source : State, transition : Transition, messageName, target : State) {
+ * 	find TransitionBase(region, source, transition, event, target);
+ * 	SignalEvent.signal(event, signal);
+ * 	Signal.name(signal, messageName);
  * }
  * </pre></code>
  * 
@@ -83,7 +78,7 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
   
   private final static int POSITION_TRANSITION = 2;
   
-  private final static int POSITION_EVENTNAME = 3;
+  private final static int POSITION_MESSAGENAME = 3;
   
   private final static int POSITION_TARGET = 4;
   
@@ -125,13 +120,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return matches represented as a TransitionMatch object.
    * 
    */
-  public Collection<TransitionMatch> getAllMatches(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawGetAllMatches(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget});
+  public Collection<TransitionMatch> getAllMatches(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawGetAllMatches(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -140,13 +135,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return a match represented as a TransitionMatch object, or null if no match is found.
    * 
    */
-  public TransitionMatch getOneArbitraryMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget});
+  public TransitionMatch getOneArbitraryMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -155,13 +150,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawHasMatch(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget});
+  public boolean hasMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawHasMatch(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -169,13 +164,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawCountMatches(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget});
+  public int countMatches(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawCountMatches(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -183,13 +178,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget, final IMatchProcessor<? super TransitionMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget}, processor);
+  public void forEachMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget, final IMatchProcessor<? super TransitionMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget}, processor);
   }
   
   /**
@@ -198,14 +193,14 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget, final IMatchProcessor<? super TransitionMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pSource, pTransition, pEventName, pTarget}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget, final IMatchProcessor<? super TransitionMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget}, processor);
   }
   
   /**
@@ -218,15 +213,15 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<TransitionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pSource, pTransition, pEventName, pTarget});
+  public DeltaMonitor<TransitionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -236,13 +231,13 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pSource the fixed value of pattern parameter source, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
+   * @param pMessageName the fixed value of pattern parameter messageName, or null if not bound.
    * @param pTarget the fixed value of pattern parameter target, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public TransitionMatch newMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return TransitionMatch.newMatch(pRegion, pSource, pTransition, pEventName, pTarget);
+  public TransitionMatch newMatch(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return TransitionMatch.newMatch(pRegion, pSource, pTransition, pMessageName, pTarget);
     
   }
   
@@ -280,8 +275,8 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final State pSource, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pSource, pTransition, pEventName, pTarget});
+  public Set<Region> getAllValuesOfregion(final State pSource, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pSource, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -318,8 +313,8 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOfsource(final Region pRegion, final Transition pTransition, final String pEventName, final State pTarget) {
-    return rawAccumulateAllValuesOfsource(new Object[]{pRegion, null, pTransition, pEventName, pTarget});
+  public Set<State> getAllValuesOfsource(final Region pRegion, final Transition pTransition, final String pMessageName, final State pTarget) {
+    return rawAccumulateAllValuesOfsource(new Object[]{pRegion, null, pTransition, pMessageName, pTarget});
   }
   
   /**
@@ -356,46 +351,46 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Transition> getAllValuesOftransition(final Region pRegion, final State pSource, final String pEventName, final State pTarget) {
-    return rawAccumulateAllValuesOftransition(new Object[]{pRegion, pSource, null, pEventName, pTarget});
+  public Set<Transition> getAllValuesOftransition(final Region pRegion, final State pSource, final String pMessageName, final State pTarget) {
+    return rawAccumulateAllValuesOftransition(new Object[]{pRegion, pSource, null, pMessageName, pTarget});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for eventName.
+   * Retrieve the set of values that occur in matches for messageName.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfeventName(final Object[] parameters) {
+  protected Set<String> rawAccumulateAllValuesOfmessageName(final Object[] parameters) {
     Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_EVENTNAME, parameters, results);
+    rawAccumulateAllValues(POSITION_MESSAGENAME, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for eventName.
+   * Retrieve the set of values that occur in matches for messageName.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeventName() {
-    return rawAccumulateAllValuesOfeventName(emptyArray());
+  public Set<String> getAllValuesOfmessageName() {
+    return rawAccumulateAllValuesOfmessageName(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for eventName.
+   * Retrieve the set of values that occur in matches for messageName.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeventName(final TransitionMatch partialMatch) {
-    return rawAccumulateAllValuesOfeventName(partialMatch.toArray());
+  public Set<String> getAllValuesOfmessageName(final TransitionMatch partialMatch) {
+    return rawAccumulateAllValuesOfmessageName(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for eventName.
+   * Retrieve the set of values that occur in matches for messageName.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeventName(final Region pRegion, final State pSource, final Transition pTransition, final State pTarget) {
-    return rawAccumulateAllValuesOfeventName(new Object[]{pRegion, pSource, pTransition, null, pTarget});
+  public Set<String> getAllValuesOfmessageName(final Region pRegion, final State pSource, final Transition pTransition, final State pTarget) {
+    return rawAccumulateAllValuesOfmessageName(new Object[]{pRegion, pSource, pTransition, null, pTarget});
   }
   
   /**
@@ -432,14 +427,14 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOftarget(final Region pRegion, final State pSource, final Transition pTransition, final String pEventName) {
-    return rawAccumulateAllValuesOftarget(new Object[]{pRegion, pSource, pTransition, pEventName, null});
+  public Set<State> getAllValuesOftarget(final Region pRegion, final State pSource, final Transition pTransition, final String pMessageName) {
+    return rawAccumulateAllValuesOftarget(new Object[]{pRegion, pSource, pTransition, pMessageName, null});
   }
   
   @Override
   protected TransitionMatch tupleToMatch(final Tuple t) {
     try {
-      return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_SOURCE), (org.eclipse.uml2.uml.Transition) t.get(POSITION_TRANSITION), (java.lang.String) t.get(POSITION_EVENTNAME), (org.eclipse.uml2.uml.State) t.get(POSITION_TARGET));
+      return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_SOURCE), (org.eclipse.uml2.uml.Transition) t.get(POSITION_TRANSITION), (java.lang.String) t.get(POSITION_MESSAGENAME), (org.eclipse.uml2.uml.State) t.get(POSITION_TARGET));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -450,7 +445,7 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
   @Override
   protected TransitionMatch arrayToMatch(final Object[] match) {
     try {
-      return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_SOURCE], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_EVENTNAME], (org.eclipse.uml2.uml.State) match[POSITION_TARGET]);
+      return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_SOURCE], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_MESSAGENAME], (org.eclipse.uml2.uml.State) match[POSITION_TARGET]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -461,7 +456,7 @@ public class TransitionMatcher extends BaseMatcher<TransitionMatch> {
   @Override
   protected TransitionMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return TransitionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_SOURCE], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_EVENTNAME], (org.eclipse.uml2.uml.State) match[POSITION_TARGET]);
+      return TransitionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_SOURCE], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_MESSAGENAME], (org.eclipse.uml2.uml.State) match[POSITION_TARGET]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.Region;
  * pattern ContainerClassOfRegion(region : Region, containerClassName) {
  * 	Class.name(containerClass, containerClassName);
  * 	Class.ownedBehavior(containerClass, stateMachine);
- * 	StateMachine.region(stateMachine, region);	
+ * 	StateMachine.region(stateMachine, region);
  * }
  * </pre></code>
  * 

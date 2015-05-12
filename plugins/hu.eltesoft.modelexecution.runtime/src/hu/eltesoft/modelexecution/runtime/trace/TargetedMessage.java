@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.base.Class;
-import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.Message;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
@@ -12,20 +12,20 @@ import java.util.Objects;
  * point to the same object. Currently it utilizes that only one class can
  * exist.
  */
-public class TargetedEvent {
+public class TargetedMessage {
 
 	private java.lang.Class<?> targetClass;
-	private Event event;
+	private Message message;
 	private boolean fromOutside = false;
 
-	public TargetedEvent(Class target, Event event) {
+	public TargetedMessage(Class target, Message message) {
 		super();
 		this.targetClass = target.getClass();
-		this.event = event;
+		this.message = message;
 	}
 
-	public static TargetedEvent createOutsideEvent(Class target, Event event) {
-		TargetedEvent ret = new TargetedEvent(target, event);
+	public static TargetedMessage createOutsideEvent(Class target, Message message) {
+		TargetedMessage ret = new TargetedMessage(target, message);
 		ret.fromOutside = true;
 		return ret;
 	}
@@ -35,7 +35,7 @@ public class TargetedEvent {
 	 * cannot be accessed.
 	 */
 	public void send() {
-		getTarget().receive(event);
+		getTarget().receive(message);
 	}
 
 	/**
@@ -69,27 +69,27 @@ public class TargetedEvent {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof TargetedEvent)) {
+		if (obj == null || !(obj instanceof TargetedMessage)) {
 			return false;
 		}
-		TargetedEvent oth = (TargetedEvent) obj;
-		return targetClass.equals(oth.targetClass) && event.equals(oth.event);
+		TargetedMessage oth = (TargetedMessage) obj;
+		return targetClass.equals(oth.targetClass) && message.equals(oth.message);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(targetClass, event, fromOutside);
+		return Objects.hash(targetClass, message, fromOutside);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + " target class: "
 				+ targetClass.getCanonicalName() + ", event: "
-				+ event.toString();
+				+ message.toString();
 	}
 
-	public Event getEvent() {
-		return event;
+	public Message getMessage() {
+		return message;
 	}
 
 }

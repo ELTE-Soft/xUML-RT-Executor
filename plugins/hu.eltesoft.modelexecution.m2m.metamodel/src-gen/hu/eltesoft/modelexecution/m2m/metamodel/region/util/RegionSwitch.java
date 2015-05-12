@@ -114,11 +114,11 @@ public class RegionSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case RegionPackage.RG_EVENT: {
-				RgEvent rgEvent = (RgEvent)theEObject;
-				T result = caseRgEvent(rgEvent);
-				if (result == null) result = caseNamed(rgEvent);
-				if (result == null) result = caseTranslationObject(rgEvent);
+			case RegionPackage.RG_MESSAGE: {
+				RgMessage rgMessage = (RgMessage)theEObject;
+				T result = caseRgMessage(rgMessage);
+				if (result == null) result = caseNamed(rgMessage);
+				if (result == null) result = caseTranslationObject(rgMessage);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -210,17 +210,17 @@ public class RegionSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Rg Event</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Rg Message</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Rg Event</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Rg Message</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseRgEvent(RgEvent object) {
+	public T caseRgMessage(RgMessage object) {
 		return null;
 	}
 

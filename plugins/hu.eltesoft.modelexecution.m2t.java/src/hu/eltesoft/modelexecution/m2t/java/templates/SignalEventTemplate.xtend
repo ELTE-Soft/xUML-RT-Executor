@@ -6,9 +6,6 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.DynamicSignalEvent
-import hu.eltesoft.modelexecution.runtime.base.Event
-import hu.eltesoft.modelexecution.runtime.base.Signal
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalEventTemplate extends Template {
@@ -32,17 +29,6 @@ class SignalEventTemplate extends Template {
 			@Override
 			public int hashCode() {
 				return 0;
-			}
-			
-			public static boolean eventMatches(«Event.canonicalName» event) {
-				if (event instanceof «event.name») {
-					return true;
-				}
-				if (event instanceof «DynamicSignalEvent.canonicalName») {
-					«Signal.canonicalName» signal = ((«DynamicSignalEvent.canonicalName») event).getSignal();
-					return signal instanceof «event.signal.name»;
-				}
-				return false;
 			}
 		}
 	'''

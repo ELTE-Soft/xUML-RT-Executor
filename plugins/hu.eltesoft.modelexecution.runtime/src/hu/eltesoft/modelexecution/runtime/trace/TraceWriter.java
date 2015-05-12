@@ -13,7 +13,7 @@ public class TraceWriter implements Tracer {
 	}
 
 	@Override
-	public void traceEvent(TargetedEvent event) {
+	public void traceEvent(TargetedMessage event) {
 		buffer.traceEvent(event);
 	}
 

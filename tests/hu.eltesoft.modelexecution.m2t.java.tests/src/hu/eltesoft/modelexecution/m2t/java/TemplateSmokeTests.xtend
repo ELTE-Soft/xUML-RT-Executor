@@ -106,15 +106,15 @@ class TemplateSmokeTests {
 		val firstTransition = factory.createRgTransition
 		firstTransition.reference = new Reference(firstTransition)
 		firstTransition.target = secondState
-		firstTransition.event = factory.createRgEvent
-		firstTransition.event.name = "ToSecondEvent"
+		firstTransition.message = factory.createRgMessage
+		firstTransition.message.name = "ToSecondSignal"
 		firstState.transitions.add(firstTransition)
 
 		val secondTransition = factory.createRgTransition
 		secondTransition.reference = new Reference(secondTransition)
 		secondTransition.target = firstState
-		secondTransition.event = factory.createRgEvent
-		secondTransition.event.name = "ToFirstEvent"
+		secondTransition.message = factory.createRgMessage
+		secondTransition.message.name = "ToFirstSignal"
 		secondState.transitions.add(secondTransition)
 
 		val template = new RegionTemplate(region)

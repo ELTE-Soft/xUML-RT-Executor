@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Signal
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -20,6 +21,14 @@ class SignalTemplate extends Template {
 	override generate() '''
 		«generatedHeader(signal.name)»
 		public class «signal.name» extends «Signal.canonicalName» {
+		
+			public «signal.name»() {
+				super();
+			}
+		
+			public «signal.name»(«SignalEvent.canonicalName» event) {
+				super(event);
+			}
 		
 			@Override
 			public boolean equals(Object other) {

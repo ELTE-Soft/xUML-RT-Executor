@@ -22,11 +22,12 @@
         eType="#//RgTransition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgTransition" eSuperTypes="base.ecore#//Referenced">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//RgEvent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//RgMessage"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//RgBehavior"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//RgState"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RgEvent" eSuperTypes="base.ecore#//Named"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RgMessage" eSuperTypes="base.ecore#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="RgBehavior" eSuperTypes="base.ecore#//Named"/>
 </ecore:EPackage>
