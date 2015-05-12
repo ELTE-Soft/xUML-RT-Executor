@@ -20,7 +20,7 @@ import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
-import hu.eltesoft.modelexecution.runtime.TestRuntime;
+import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
 import hu.eltesoft.modelexecution.runtime.log.NoLogger;
@@ -583,7 +583,7 @@ public class ConsoleModelRunner {
 	        String runtimeJar = getRuntimeJarPath();
 			String classpath = String.join(java.io.File.pathSeparatorChar + "", runtimeJar , rootDir);
 
-	        String runtimeClassName = TestRuntime.class.getCanonicalName();
+	        String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
 	        List<String> cmdLineArgs = Util.list(javaBin, "-cp", classpath, runtimeClassName, className, feedName);
 
@@ -609,7 +609,7 @@ public class ConsoleModelRunner {
 
 		String readTraceFolder = Opt.READ_TRACE.getOption(cmd, 0).get();
 
-		cmdLineArgs.add(TestRuntime.OPTION_READ_TRACE);
+		cmdLineArgs.add(XUMLRTRuntime.OPTION_READ_TRACE);
 		cmdLineArgs.add(readTraceFolder);
 	}
 
@@ -619,7 +619,7 @@ public class ConsoleModelRunner {
 
 		String writeTraceFolder = Opt.WRITE_TRACE.getOption(cmd, 0).get();
 
-		cmdLineArgs.add(TestRuntime.OPTION_WRITE_TRACE);
+		cmdLineArgs.add(XUMLRTRuntime.OPTION_WRITE_TRACE);
 		cmdLineArgs.add(writeTraceFolder);
 	}
 
@@ -631,11 +631,11 @@ public class ConsoleModelRunner {
 
 		if (loggerArg.equals("none"))    return;
 		if (loggerArg.equals("minimal")) {
-			cmdLineArgs.add(TestRuntime.OPTION_LOG);
+			cmdLineArgs.add(XUMLRTRuntime.OPTION_LOG);
 		}
 	}
 
-	/** The jar file of {@link TestRuntime} will be on our path. */
+	/** The jar file of {@link XUMLRTRuntime} will be on our path. */
 	private static String getRuntimeJarPath() {
 		return System.getProperty("java.class.path");
 	}

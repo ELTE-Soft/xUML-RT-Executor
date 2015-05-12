@@ -18,7 +18,7 @@ import java.nio.file.FileSystems;
 /**
  * BaseRuntime with main. Parses tracing and logging flags.
  */
-public class TestRuntime extends BaseRuntime {
+public class XUMLRTRuntime extends BaseRuntime {
 
 	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 10;
 	public static final String OPTION_LOG = "-log";
@@ -27,7 +27,7 @@ public class TestRuntime extends BaseRuntime {
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
 
-	public TestRuntime(ClassLoader classLoader, Tracer tracer,
+	public XUMLRTRuntime(ClassLoader classLoader, Tracer tracer,
 			TraceReader traceReader, Logger logger) {
 		super(classLoader, tracer, traceReader, logger);
 	}
@@ -62,7 +62,7 @@ public class TestRuntime extends BaseRuntime {
 			}
 		}
 
-		TerminationResult result = new TestRuntime(TestRuntime.class.getClassLoader(), tracer,
+		TerminationResult result = new XUMLRTRuntime(XUMLRTRuntime.class.getClassLoader(), tracer,
 				traceReader, logger).run(clsName, feedName);
 		System.exit(result.getExitCode());
 	}

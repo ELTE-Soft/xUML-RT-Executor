@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.ide.launch;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
-import hu.eltesoft.modelexecution.runtime.TestRuntime;
+import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
 import java.util.function.Consumer;
 
@@ -184,7 +184,7 @@ public class ModelExecutionLaunchConfig {
 			ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-				TestRuntime.class.getCanonicalName());
+				XUMLRTRuntime.class.getCanonicalName());
 		configuration.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
 				JAVA_LOGGING_OPTION);
@@ -211,7 +211,7 @@ public class ModelExecutionLaunchConfig {
 			boolean logging = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_LOGGING, false);
 			if (logging) {
-				argsBuilder.append(TestRuntime.OPTION_LOG);
+				argsBuilder.append(XUMLRTRuntime.OPTION_LOG);
 			}
 			boolean tracing = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_TRACING, false);
@@ -220,7 +220,7 @@ public class ModelExecutionLaunchConfig {
 						.getAttribute(
 								ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER,
 								EMPTY_STR); //$NON-NLS-1$
-				argsBuilder.append(TestRuntime.OPTION_WRITE_TRACE);
+				argsBuilder.append(XUMLRTRuntime.OPTION_WRITE_TRACE);
 				argsBuilder.append(traceFolder);
 			}
 			boolean traceReplay = configuration.getAttribute(
@@ -229,7 +229,7 @@ public class ModelExecutionLaunchConfig {
 				String replayTraceFolder = configuration.getAttribute(
 						ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FOLDER,
 						EMPTY_STR); //$NON-NLS-1$
-				argsBuilder.append(TestRuntime.OPTION_READ_TRACE);
+				argsBuilder.append(XUMLRTRuntime.OPTION_READ_TRACE);
 				argsBuilder.append(replayTraceFolder);
 			}
 
