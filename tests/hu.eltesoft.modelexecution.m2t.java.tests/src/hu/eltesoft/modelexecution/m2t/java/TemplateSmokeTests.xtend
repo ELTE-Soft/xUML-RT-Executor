@@ -108,6 +108,8 @@ class TemplateSmokeTests {
 		firstTransition.target = secondState
 		firstTransition.message = factory.createRgMessage
 		firstTransition.message.name = "ToSecondSignal"
+		firstTransition.event = factory.createRgEvent
+		firstTransition.event.name = "ToSecondSignalEvent"
 		firstState.transitions.add(firstTransition)
 
 		val secondTransition = factory.createRgTransition
@@ -115,6 +117,8 @@ class TemplateSmokeTests {
 		secondTransition.target = firstState
 		secondTransition.message = factory.createRgMessage
 		secondTransition.message.name = "ToFirstSignal"
+		secondTransition.event = factory.createRgEvent
+		secondTransition.event.name = "ToFirstSignalEvent"
 		secondState.transitions.add(secondTransition)
 
 		val template = new RegionTemplate(region)
