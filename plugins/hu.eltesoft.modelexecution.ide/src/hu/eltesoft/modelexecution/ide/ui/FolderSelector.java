@@ -70,6 +70,7 @@ class FolderSelector extends SelectionAdapter {
 		traceFolderLabel.pack();
 
 		field = new Text(group, SWT.BORDER);
+		field.setEnabled(false);
 		field.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Button browseUML = new Button(group, SWT.NONE);
