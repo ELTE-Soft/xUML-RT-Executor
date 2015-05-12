@@ -50,8 +50,7 @@ class RegionTemplate extends Template {
 				owner.getRuntime().logExitState("«trace(initState, Exit)»");
 		
 				// Initial transition effect
-				owner.getRuntime().logTransition("<init transition>", "<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.
-			name»");
+				owner.getRuntime().logTransition("<init transition>", "<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.name»");
 				«IF null != initTransition.effect»
 					new «initTransition.effect.name»(owner).execute();
 				«ENDIF»
@@ -83,7 +82,7 @@ class RegionTemplate extends Template {
 								«ENDIF»
 							
 								// Transition effect
-								owner.getRuntime().logTransition("«trace(transition.event.name, transition.reference)»", "«trace(transition.message.name, transition.reference)»", "«state.name»", "«transition.target.name»");
+								owner.getRuntime().logTransition("«transition.event.name»", "«transition.message.name»", "«trace(state.name, transition.reference)»", "«transition.target.name»");
 								«IF null != transition.effect»
 									new «transition.effect.name»(owner).execute();
 								«ENDIF»
