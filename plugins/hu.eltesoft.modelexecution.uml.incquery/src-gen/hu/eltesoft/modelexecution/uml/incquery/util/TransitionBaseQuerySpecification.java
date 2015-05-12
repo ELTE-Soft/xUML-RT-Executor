@@ -48,12 +48,12 @@ final class TransitionBaseQuerySpecification extends BaseGeneratedQuerySpecifica
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","source","transition","event","target");
+    return Arrays.asList("region","source","transition","event","eventName","target");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("source", "org.eclipse.uml2.uml.State"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("event", "org.eclipse.uml2.uml.Event"),new PParameter("target", "org.eclipse.uml2.uml.State"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("source", "org.eclipse.uml2.uml.State"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("event", "org.eclipse.uml2.uml.Event"),new PParameter("eventName", "java.lang.String"),new PParameter("target", "org.eclipse.uml2.uml.State"));
   }
   
   @Override
@@ -75,6 +75,7 @@ final class TransitionBaseQuerySpecification extends BaseGeneratedQuerySpecifica
       PVariable var_source = body.getOrCreateVariableByName("source");
       PVariable var_transition = body.getOrCreateVariableByName("transition");
       PVariable var_event = body.getOrCreateVariableByName("event");
+      PVariable var_eventName = body.getOrCreateVariableByName("eventName");
       PVariable var_target = body.getOrCreateVariableByName("target");
       PVariable var_trigger = body.getOrCreateVariableByName("trigger");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
@@ -82,11 +83,13 @@ final class TransitionBaseQuerySpecification extends BaseGeneratedQuerySpecifica
         new ExportedParameter(body, var_source, "source"), 
         new ExportedParameter(body, var_transition, "transition"), 
         new ExportedParameter(body, var_event, "event"), 
+        new ExportedParameter(body, var_eventName, "eventName"), 
         new ExportedParameter(body, var_target, "target")
       ));
       
       
       new TypeUnary(body, var_source, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State"), "http://www.eclipse.org/uml2/5.0.0/UML/State");
+      
       
       
       
@@ -96,6 +99,7 @@ final class TransitionBaseQuerySpecification extends BaseGeneratedQuerySpecifica
       new TypeBinary(body, CONTEXT, var_transition, var_target, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "target"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.target");
       new TypeBinary(body, CONTEXT, var_transition, var_trigger, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "trigger"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.trigger");
       new TypeBinary(body, CONTEXT, var_trigger, var_event, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Trigger", "event"), "http://www.eclipse.org/uml2/5.0.0/UML/Trigger.event");
+      new TypeBinary(body, CONTEXT, var_event, var_eventName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

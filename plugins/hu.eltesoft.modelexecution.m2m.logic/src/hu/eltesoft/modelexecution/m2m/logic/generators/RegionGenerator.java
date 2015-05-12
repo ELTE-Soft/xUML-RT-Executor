@@ -5,6 +5,7 @@ import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
@@ -177,7 +178,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 			// (add transitions to states)
 			transitionMatcher.forEachMatch(source, null, null, null, null,
-					getProcessorToSetTransitionsOfState());
+					null, getProcessorToSetTransitionsOfState());
 
 		}
 
@@ -219,7 +220,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 					// initialTransition
 					rgInitialPseudostate.setInitialTransition(createTransition(
-							pInitTransition, null, pFirstState));
+							pInitTransition, null, null, pFirstState));
 					// Event is not set. Initial transition has no explicit
 					// triggering event.
 
@@ -234,19 +235,21 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 				@Override
 				public void process(Region pRegion, State pSource,
-						Transition pTransition, String pMessageName, State pTarget) {
+						Transition pTransition, String pEventName,
+						String pMessageName, State pTarget) {
 
 					RgState rgState = manager.get(pSource);
 
 					rgState.getTransitions().add(
-							createTransition(pTransition, pMessageName, pTarget));
+							createTransition(pTransition, pEventName,
+									pMessageName, pTarget));
 				}
 
 			};
 		}
 
 		private RgTransition createTransition(Transition transition,
-				String messageName, State target) {
+				String eventName, String messageName, State target) {
 
 			// new RgTransition
 			RgTransition rgTransition = FACTORY.createRgTransition();
@@ -257,10 +260,16 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			// reference
 			rgTransition.setReference(new Reference(transition));
 
-			// event
+			// message
 			if (messageName != null) { // in case of any other than the initial
 										// transition
 				rgTransition.setMessage(createMessage(messageName));
+			}
+
+			// event
+			if (eventName != null) { // in case of any other than the initial
+										// transition
+				rgTransition.setEvent(createEvent(eventName));
 			}
 
 			// effect
@@ -271,6 +280,12 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			rgTransition.setTarget(manager.get(target));
 
 			return rgTransition;
+		}
+
+		private RgEvent createEvent(String name) {
+			RgEvent rgEvent = FACTORY.createRgEvent();
+			rgEvent.setName(name);
+			return rgEvent;
 		}
 
 		private RgMessage createMessage(String name) {

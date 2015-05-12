@@ -51,12 +51,12 @@ public final class TransitionQuerySpecification extends BaseGeneratedQuerySpecif
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","source","transition","messageName","target");
+    return Arrays.asList("region","source","transition","eventName","messageName","target");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("source", "org.eclipse.uml2.uml.State"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("messageName", "java.lang.String"),new PParameter("target", "org.eclipse.uml2.uml.State"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("source", "org.eclipse.uml2.uml.State"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("eventName", "java.lang.String"),new PParameter("messageName", "java.lang.String"),new PParameter("target", "org.eclipse.uml2.uml.State"));
   }
   
   @Override
@@ -66,7 +66,7 @@ public final class TransitionQuerySpecification extends BaseGeneratedQuerySpecif
   
   @Override
   public TransitionMatch newMatch(final Object... parameters) {
-    return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (org.eclipse.uml2.uml.Transition) parameters[2], (java.lang.String) parameters[3], (org.eclipse.uml2.uml.State) parameters[4]);
+    return TransitionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (org.eclipse.uml2.uml.Transition) parameters[2], (java.lang.String) parameters[3], (java.lang.String) parameters[4], (org.eclipse.uml2.uml.State) parameters[5]);
   }
   
   @Override
@@ -77,6 +77,7 @@ public final class TransitionQuerySpecification extends BaseGeneratedQuerySpecif
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_source = body.getOrCreateVariableByName("source");
       PVariable var_transition = body.getOrCreateVariableByName("transition");
+      PVariable var_eventName = body.getOrCreateVariableByName("eventName");
       PVariable var_messageName = body.getOrCreateVariableByName("messageName");
       PVariable var_target = body.getOrCreateVariableByName("target");
       PVariable var_event = body.getOrCreateVariableByName("event");
@@ -85,6 +86,7 @@ public final class TransitionQuerySpecification extends BaseGeneratedQuerySpecif
         new ExportedParameter(body, var_region, "region"), 
         new ExportedParameter(body, var_source, "source"), 
         new ExportedParameter(body, var_transition, "transition"), 
+        new ExportedParameter(body, var_eventName, "eventName"), 
         new ExportedParameter(body, var_messageName, "messageName"), 
         new ExportedParameter(body, var_target, "target")
       ));
@@ -96,8 +98,9 @@ public final class TransitionQuerySpecification extends BaseGeneratedQuerySpecif
       new TypeUnary(body, var_transition, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition");
       
       
+      
       new TypeUnary(body, var_target, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State"), "http://www.eclipse.org/uml2/5.0.0/UML/State");
-      new PositivePatternCall(body, new FlatTuple(var_region, var_source, var_transition, var_event, var_target), TransitionBaseQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_region, var_source, var_transition, var_event, var_eventName, var_target), TransitionBaseQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_event, var_signal, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal"), "http://www.eclipse.org/uml2/5.0.0/UML/SignalEvent.signal");
       new TypeBinary(body, CONTEXT, var_signal, var_messageName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);

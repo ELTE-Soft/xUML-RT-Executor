@@ -113,8 +113,8 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void logTransition(String eventName, String source, String target) {
-		logger.transition(eventName, source, target);
+	public void logTransition(String eventName, String messageName, String source, String target) {
+		logger.transition(eventName, messageName, source, target);
 	}
 
 	public static void logError(String message) {

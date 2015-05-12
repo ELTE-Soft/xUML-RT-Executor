@@ -21,8 +21,8 @@ public class MinimalLogger implements Logger {
 	}
 
 	@Override
-	public void transition(String eventName, String source, String target) {
-		System.out.println("Transition by " + eventName + ": " + source
+	public void transition(String eventName, String messageName, String source, String target) {
+		System.out.println("Transition by " + messageName + "(" + eventName + ")" + ": " + source
 				+ " -> " + target);
 	}
 

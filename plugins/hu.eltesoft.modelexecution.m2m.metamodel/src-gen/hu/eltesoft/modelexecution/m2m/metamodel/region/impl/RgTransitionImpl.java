@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
+import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getMessage <em>Message</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getEffect <em>Effect</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl#getEvent <em>Event</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,6 +83,16 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * @ordered
 	 */
 	protected RgState target;
+
+	/**
+	 * The cached value of the '{@link #getEvent() <em>Event</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEvent()
+	 * @generated
+	 * @ordered
+	 */
+	protected RgEvent event;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -246,6 +258,44 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public RgEvent getEvent() {
+		if (event != null && event.eIsProxy()) {
+			InternalEObject oldEvent = (InternalEObject)event;
+			event = (RgEvent)eResolveProxy(oldEvent);
+			if (event != oldEvent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_TRANSITION__EVENT, oldEvent, event));
+			}
+		}
+		return event;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RgEvent basicGetEvent() {
+		return event;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setEvent(RgEvent newEvent) {
+		RgEvent oldEvent = event;
+		event = newEvent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_TRANSITION__EVENT, oldEvent, event));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -273,6 +323,9 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 			case RegionPackage.RG_TRANSITION__TARGET:
 				if (resolve) return getTarget();
 				return basicGetTarget();
+			case RegionPackage.RG_TRANSITION__EVENT:
+				if (resolve) return getEvent();
+				return basicGetEvent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -296,6 +349,9 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 				return;
 			case RegionPackage.RG_TRANSITION__TARGET:
 				setTarget((RgState)newValue);
+				return;
+			case RegionPackage.RG_TRANSITION__EVENT:
+				setEvent((RgEvent)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -321,6 +377,9 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 			case RegionPackage.RG_TRANSITION__TARGET:
 				setTarget((RgState)null);
 				return;
+			case RegionPackage.RG_TRANSITION__EVENT:
+				setEvent((RgEvent)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -341,6 +400,8 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 				return effect != null;
 			case RegionPackage.RG_TRANSITION__TARGET:
 				return target != null;
+			case RegionPackage.RG_TRANSITION__EVENT:
+				return event != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -85,6 +85,15 @@ public interface RegionFactory extends EFactory {
 	RgBehavior createRgBehavior();
 
 	/**
+	 * Returns a new object of class '<em>Rg Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Rg Event</em>'.
+	 * @generated
+	 */
+	RgEvent createRgEvent();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

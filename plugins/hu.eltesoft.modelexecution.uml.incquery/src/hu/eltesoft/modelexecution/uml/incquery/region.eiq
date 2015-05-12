@@ -41,19 +41,20 @@ pattern Exit(region : Region, state : State, exitName) {
 }
 
 pattern
-Transition(region : Region, source : State, transition : Transition, messageName, target : State) {
-	find TransitionBase(region, source, transition, event, target);
+Transition(region : Region, source : State, transition : Transition, eventName, messageName, target : State) {
+	find TransitionBase(region, source, transition, event, eventName, target);
 	SignalEvent.signal(event, signal);
 	Signal.name(signal, messageName);
 }
 
 private pattern
-TransitionBase(region : Region, source : State, transition : Transition, event : Event, target : State) {
+TransitionBase(region : Region, source : State, transition : Transition, event : Event, eventName, target : State) {
 	Transition.container(transition, region);
 	Transition.source(transition, source);
 	Transition.target(transition, target);
 	Transition.trigger(transition, trigger);
 	Trigger.event(trigger, event);
+	Event.name(event, eventName);
 }
 
 pattern

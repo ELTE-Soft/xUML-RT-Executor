@@ -18,7 +18,7 @@ public class NoLogger implements Logger {
 	}
 
 	@Override
-	public void transition(String eventName, String source, String target) {
+	public void transition(String eventName, String messageName, String source, String target) {
 	}
 
 	@Override

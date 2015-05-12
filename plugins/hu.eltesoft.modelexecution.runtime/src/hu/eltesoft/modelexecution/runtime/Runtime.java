@@ -17,11 +17,12 @@ public interface Runtime {
 
 	void logExitState(String state);
 
-	void logTransition(String eventName, String source, String target);
-
-	public abstract TerminationResult run(String className, String feedName)
-			throws Exception;
+	void logTransition(String eventName, String messageName, String source,
+			String target);
 
 	void addEventToQueue(Class target, Message message);
+	
+	public abstract TerminationResult run(String className, String feedName)
+			throws Exception;
 
 }

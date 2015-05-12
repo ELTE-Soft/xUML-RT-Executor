@@ -333,13 +333,22 @@ public interface RegionPackage extends EPackage {
 	int RG_TRANSITION__TARGET = BasePackage.REFERENCED_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Event</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_TRANSITION__EVENT = BasePackage.REFERENCED_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Rg Transition</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION_FEATURE_COUNT = BasePackage.REFERENCED_FEATURE_COUNT + 3;
+	int RG_TRANSITION_FEATURE_COUNT = BasePackage.REFERENCED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Rg Transition</em>' class.
@@ -423,6 +432,44 @@ public interface RegionPackage extends EPackage {
 	 * @ordered
 	 */
 	int RG_BEHAVIOR_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl <em>Rg Event</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgEvent()
+	 * @generated
+	 */
+	int RG_EVENT = 7;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_EVENT__NAME = BasePackage.NAMED__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Rg Event</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_EVENT_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Rg Event</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_EVENT_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 
 	/**
@@ -586,6 +633,17 @@ public interface RegionPackage extends EPackage {
 	EReference getRgTransition_Target();
 
 	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent <em>Event</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Event</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent()
+	 * @see #getRgTransition()
+	 * @generated
+	 */
+	EReference getRgTransition_Event();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage <em>Rg Message</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -604,6 +662,16 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRgBehavior();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent <em>Rg Event</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Rg Event</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent
+	 * @generated
+	 */
+	EClass getRgEvent();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -759,6 +827,14 @@ public interface RegionPackage extends EPackage {
 		EReference RG_TRANSITION__TARGET = eINSTANCE.getRgTransition_Target();
 
 		/**
+		 * The meta object literal for the '<em><b>Event</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RG_TRANSITION__EVENT = eINSTANCE.getRgTransition_Event();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgMessageImpl <em>Rg Message</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -777,6 +853,16 @@ public interface RegionPackage extends EPackage {
 		 * @generated
 		 */
 		EClass RG_BEHAVIOR = eINSTANCE.getRgBehavior();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl <em>Rg Event</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl#getRgEvent()
+		 * @generated
+		 */
+		EClass RG_EVENT = eINSTANCE.getRgEvent();
 
 	}
 
