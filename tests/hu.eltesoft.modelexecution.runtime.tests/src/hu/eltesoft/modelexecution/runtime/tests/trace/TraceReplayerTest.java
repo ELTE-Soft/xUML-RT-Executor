@@ -45,7 +45,7 @@ public class TraceReplayerTest {
 			}
 		});
 
-		sut.dispatchEvent(mockLogger);
+		sut.dispatchEvent(te, mockLogger);
 
 		context.checking(new Expectations() {
 			{

@@ -18,6 +18,9 @@ public class TraceReplayer implements TraceReader {
 	public void dispatchEvent(Logger logger) {
 		if (source.hasMoreElems()) {
 			TargetedMessage tracedEvent = source.getTracedEvent();
+			if (!tracedEvent.isFromOutside()) {
+				throw new InvalidTraceException(tracedEvent);
+			}
 			sendAndLog(logger, tracedEvent);
 		} else {
 			throw new RuntimeException("dispatchEvent() on empty queue");
@@ -46,7 +49,8 @@ public class TraceReplayer implements TraceReader {
 
 	private void sendAndLog(Logger logger, TargetedMessage tracedEvent) {
 		tracedEvent.send();
-		logger.messageDispatched(tracedEvent.getTarget(), tracedEvent.getMessage());
+		logger.messageDispatched(tracedEvent.getTarget(),
+				tracedEvent.getMessage());
 	}
 
 	@Override

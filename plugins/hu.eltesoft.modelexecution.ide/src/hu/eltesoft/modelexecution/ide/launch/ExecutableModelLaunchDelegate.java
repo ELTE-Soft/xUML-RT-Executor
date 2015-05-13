@@ -17,6 +17,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.papyrus.moka.Activator;
@@ -92,6 +96,10 @@ public class ExecutableModelLaunchDelegate implements
 	 */
 	protected boolean launchPassesChecks(ILaunchConfiguration configuration,
 			String mode) throws CoreException {
+		if (!mentionedResourcesExist(configuration)) {
+			Dialogs.openMentionedResourceDoesNotExistsDialog();
+			return false;
+		}
 		if (mode.equals(ILaunchManager.DEBUG_MODE)
 				&& !executionEngineIsXUMLRT()) {
 			if (!askUserToSetExecutionEngine()) {
@@ -109,6 +117,19 @@ public class ExecutableModelLaunchDelegate implements
 			return false;
 		}
 		return true;
+	}
+
+	private boolean mentionedResourcesExist(ILaunchConfiguration configuration) throws CoreException {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		String umlResourceURI = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
+		String classURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, "");
+		String functionURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, "");
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot workspaceRoot = workspace.getRoot();
+		URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI).getLocationURI().toString());
+		EObject executedClass = resourceSet.getEObject(umlURI.appendFragment(classURIFragment), true);
+		EObject executedFunction = resourceSet.getEObject(umlURI.appendFragment(functionURIFragment), true);
+		return executedClass != null && executedFunction != null;
 	}
 
 	private boolean diResourceIsPresent(ILaunchConfiguration configuration,

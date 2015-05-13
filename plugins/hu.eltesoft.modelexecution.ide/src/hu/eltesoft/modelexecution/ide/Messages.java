@@ -5,6 +5,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.messages"; //$NON-NLS-1$
 	public static String ClasspathRuntimeLibrary_model_execution_classpath_library;
+	public static String Dialogs_another_debug_abort_button;
+	public static String Dialogs_another_debug_force_button;
 	public static String Dialogs_another_debug_launch_caption;
 	public static String Dialogs_another_debug_launch_text;
 	public static String Dialogs_executionEnginePreferenceChange_caption;
@@ -15,6 +17,8 @@ public class Messages extends NLS {
 	public static String Dialogs_invalid_trace_file_text;
 	public static String Dialogs_missing_di_notification_caption;
 	public static String Dialogs_missing_di_notification_text;
+	public static String Dialogs_resources_missing_caption;
+	public static String Dialogs_resources_missing_text;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file_location;
 	public static String ExecutableModelProjectWizard_create_new_project_description;
