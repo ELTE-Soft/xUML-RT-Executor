@@ -3,12 +3,12 @@ package hu.eltesoft.modelexecution.runtime.util;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class PathConverter {
 
 	public static Path workspaceToProjectBasedPath(FileSystem fs, String path) {
-		String[] splitPath = path.split(Character
-				.toString(org.eclipse.core.runtime.Path.SEPARATOR));
+		String[] splitPath = path.split(Pattern.quote(fs.getSeparator()));
 		Object[] pathParts = Arrays.stream(splitPath).filter(s -> !s.isEmpty())
 				.toArray();
 		if (pathParts.length > 1) {
