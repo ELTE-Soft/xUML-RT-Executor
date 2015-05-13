@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String LaunchConfigMainTab_uml_extension_filter;
 	public static String LaunchConfigTracingLoggingTab_animation_checkbox_label;
 	public static String LaunchConfigTracingLoggingTab_animation_group_caption;
+	public static String LaunchConfigTracingLoggingTab_trace_note_label;
 	public static String LaunchConfigurationMainTab_launch_config_main_tab_caption;
 	public static String LaunchConfigurationMainTab_select_class_button_text;
 	public static String LaunchConfigurationMainTab_select_class_dialog_title;

@@ -3,16 +3,19 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.Utils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedQuerySpecification;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.incquery.runtime.matchers.psystem.IExpressionEvaluator;
+import org.eclipse.incquery.runtime.matchers.psystem.IValueProvider;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.ConstantValue;
+import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExpressionEvaluation;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
@@ -73,7 +76,7 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
       PVariable var_alfCode = body.getOrCreateVariableByName("alfCode");
-      PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      PVariable var_langName = body.getOrCreateVariableByName("langName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_alfCode, "alfCode")
@@ -81,8 +84,25 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
       
       
       new TypeBinary(body, CONTEXT, var_behavior, var_alfCode, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "body"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.body");
-      new ConstantValue(body, var__virtual_1_, "Alf");
-      new TypeBinary(body, CONTEXT, var_behavior, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "language"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.language");
+      new TypeBinary(body, CONTEXT, var_behavior, var_langName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "language"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.language");
+      new ExpressionEvaluation(body, new IExpressionEvaluator() {
+        @Override
+        public String getShortDescription() {
+        	return "Expression evaluation from pattern AlfCode";
+        }
+        
+        @Override
+        public Iterable<String> getInputParameterNames() {
+        	return Arrays.asList("langName");
+        }
+        
+        @Override
+        public Object evaluateExpression(IValueProvider provider) throws Exception {
+        	java.lang.String langName = (java.lang.String) provider.getValue("langName");
+        	return evaluateExpression_1_1(langName);
+        }
+        
+        },  null); 
       bodies.add(body);
     }
     return bodies;
@@ -95,5 +115,11 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
       return new AlfCodeQuerySpecification();					
       
     }
+  }
+  
+  private boolean evaluateExpression_1_1(final String langName) {
+    String _lowerCase = Utils.toLowerCase(langName);
+    boolean _equals = _lowerCase.equals("alf");
+    return _equals;
   }
 }

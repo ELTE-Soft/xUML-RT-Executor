@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
@@ -49,6 +50,8 @@ public class LaunchConfigTracingLoggingTab extends
 		setControl(comp);
 
 		createLoggingControl(comp);
+		Label traceNoteLabel = new Label(comp, SWT.NONE);
+		traceNoteLabel.setText(Messages.LaunchConfigTracingLoggingTab_trace_note_label);
 		createTracingControl(comp);
 		createReplayControl(comp);
 

@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
+import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
@@ -20,6 +21,7 @@ import java.nio.file.FileSystems;
  */
 public class XUMLRTRuntime extends BaseRuntime {
 
+	private static final String TRACING_FOLDER_NAME = "traces";
 	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 10;
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
@@ -46,11 +48,13 @@ public class XUMLRTRuntime extends BaseRuntime {
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]));
+				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]
+						+ File.separator + TRACING_FOLDER_NAME));
 				break;
 			case OPTION_READ_TRACE:
 				traceReader = new TraceReplayer(
-						getDefaultInputTraceBuffer(args[++i]));
+						getDefaultInputTraceBuffer(args[++i] + File.separator
+								+ TRACING_FOLDER_NAME));
 				break;
 			case OPTION_LOG:
 				logger = new MinimalLogger();
@@ -62,8 +66,9 @@ public class XUMLRTRuntime extends BaseRuntime {
 			}
 		}
 
-		TerminationResult result = new XUMLRTRuntime(XUMLRTRuntime.class.getClassLoader(), tracer,
-				traceReader, logger).run(clsName, feedName);
+		TerminationResult result = new XUMLRTRuntime(
+				XUMLRTRuntime.class.getClassLoader(), tracer, traceReader,
+				logger).run(clsName, feedName);
 		System.exit(result.getExitCode());
 	}
 
