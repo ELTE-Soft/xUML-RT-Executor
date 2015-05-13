@@ -30,7 +30,8 @@ import org.eclipse.uml2.uml.Behavior;
  * <code><pre>
  * pattern AlfCode(behavior : Behavior, alfCode) {
  * 	OpaqueBehavior.body(behavior, alfCode);
- * 	OpaqueBehavior.language(behavior, "Alf");
+ * 	OpaqueBehavior.language(behavior, langName);
+ * 	check (Utils.toLowerCase(langName).equals("alf"));
  * }
  * </pre></code>
  * 

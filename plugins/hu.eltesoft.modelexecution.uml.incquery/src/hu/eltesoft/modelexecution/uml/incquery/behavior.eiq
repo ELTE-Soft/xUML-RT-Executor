@@ -35,7 +35,8 @@ pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
 
 pattern AlfCode(behavior : Behavior, alfCode) {
 	OpaqueBehavior.body(behavior, alfCode);
-	OpaqueBehavior.language(behavior, "Alf");
+	OpaqueBehavior.language(behavior, langName);
+	check (Utils.toLowerCase(langName).equals("alf"));
 }
 
 private pattern ContainerClassOfVertex(vertex : Vertex, containerClassName) {
