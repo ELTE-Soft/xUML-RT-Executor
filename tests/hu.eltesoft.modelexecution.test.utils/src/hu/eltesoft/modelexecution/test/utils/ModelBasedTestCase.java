@@ -44,12 +44,13 @@ public abstract class ModelBasedTestCase {
 		return null;
 	}
 
-	public EObject firstNamed(EObject parent,
-			java.lang.Class<? extends NamedElement> type, String name) {
+	@SuppressWarnings("unchecked")
+	public <T extends NamedElement> T namedChild(EObject parent,
+			java.lang.Class<T> type, String name) {
 		for (EObject child : parent.eContents()) {
 			if (type.isInstance(child)
 					&& ((NamedElement) child).getName().equals(name)) {
-				return child;
+				return (T) child;
 			}
 		}
 		return null;

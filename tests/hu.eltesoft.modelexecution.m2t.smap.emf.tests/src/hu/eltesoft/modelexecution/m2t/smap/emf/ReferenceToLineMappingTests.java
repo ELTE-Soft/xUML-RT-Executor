@@ -29,7 +29,7 @@ public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 	public void setUp() {
 		super.setUp();
 		mapping = new ReferenceToLineMapping();
-		aClass = firstNamed(model, Class.class, "A");
+		aClass = namedChild(model, Class.class, "A");
 	}
 
 	@Test

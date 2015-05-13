@@ -39,7 +39,7 @@ public class LocationRegistryTests extends ModelBasedTestCase {
 	public void setUp() {
 		super.setUp();
 		registry = new LocationRegistry();
-		aClass = firstNamed(model, Class.class, "A");
+		aClass = namedChild(model, Class.class, "A");
 		aClassRef = new Reference(aClass);
 	}
 
