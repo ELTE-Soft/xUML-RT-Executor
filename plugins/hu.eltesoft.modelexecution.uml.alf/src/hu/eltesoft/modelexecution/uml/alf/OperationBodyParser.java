@@ -15,7 +15,7 @@ import com.google.inject.Injector;
  * method is implemented to return an empty block when there are no statements
  * in the input text at all, or it is null.
  */
-class OperationBodyParser extends AlfParser {
+public class OperationBodyParser extends AlfParser {
 
 	public OperationBodyParser() {
 		AlfStandaloneSetup setup = new AlfStandaloneSetup();

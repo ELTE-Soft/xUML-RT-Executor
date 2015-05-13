@@ -1,20 +1,18 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
-import hu.eltesoft.modelexecution.m2t.java.Languages
+import hu.eltesoft.modelexecution.m2t.java.BehaviorBodyGenerator
 import hu.eltesoft.modelexecution.m2t.java.Template
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.runtime.base.ActionCode
-import hu.eltesoft.modelexecution.uml.alf.OperationBodyCompiler
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 
-@SourceMappedTemplate(stratumName=ALF)
+@SourceMappedTemplate(stratumName=XUML_RT)
 class BehaviorTemplate extends Template {
 
-	static val CONTEXT_NAME = OperationBodyCompiler.CONTEXT_NAME
+	static val CONTEXT_NAME = BehaviorBodyGenerator.CONTEXT_NAME
 
 	val BhBehavior behavior
 	val SourceMappedText compiledAlfCode
@@ -22,14 +20,9 @@ class BehaviorTemplate extends Template {
 
 	new(BhBehavior behavior) {
 		this.behavior = behavior
-		compiledAlfCode = compile(behavior.alfCode)
+		val generator = new BehaviorBodyGenerator
+		compiledAlfCode = generator.generate(behavior.alfResult.astRoot)
 		needsContext = !compiledAlfCode.text.toString.trim.empty
-	}
-
-	def SourceMappedText compile(String alfCode) {
-		val builder = new SmapStringConcatenation(Languages.ALF)
-		new OperationBodyCompiler().compile(alfCode, builder);
-		return builder.toSourceMappedText
 	}
 
 	override generate() '''

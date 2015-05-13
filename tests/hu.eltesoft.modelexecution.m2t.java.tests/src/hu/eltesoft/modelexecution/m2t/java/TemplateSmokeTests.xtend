@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.m2t.java.templates.SignalEventTemplate
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -23,7 +24,7 @@ class TemplateSmokeTests {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
 		behavior.name = "TestBehavior"
-		behavior.alfCode = "this.TestReception();"
+		behavior.alfResult = new AlfAnalyzer().analyze("this.TestReception();")
 		behavior.containerClass = factory.createBhClass
 		behavior.containerClass.name = "TestClass"
 		val template = new BehaviorTemplate(behavior)

@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ StartRuleTests.class, FeatureReferenceTests.class })
+@SuiteClasses({ StartRuleTests.class })
 public class AllTests {
 }

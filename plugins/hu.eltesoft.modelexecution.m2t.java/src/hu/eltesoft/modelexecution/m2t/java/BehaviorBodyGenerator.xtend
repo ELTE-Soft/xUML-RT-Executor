@@ -1,6 +1,7 @@
-package hu.eltesoft.modelexecution.uml.alf
+package hu.eltesoft.modelexecution.m2t.java
 
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
+import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import org.eclipse.papyrus.uml.alf.BehaviorInvocationExpression
 import org.eclipse.papyrus.uml.alf.Block
 import org.eclipse.papyrus.uml.alf.BlockStatement
@@ -12,32 +13,25 @@ import org.eclipse.papyrus.uml.alf.QualifiedName
 import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
-import org.eclipse.xtext.parser.IParseResult
 
 /**
- * Compiles an operation body written in Alf to Java code by implementing an AST
- * visitor.
+ * Generates an operation body written in Alf to Java code by implementing an
+ * AST visitor.
  */
-class OperationBodyCompiler {
+class BehaviorBodyGenerator {
 
 	public static val CONTEXT_NAME = "context"
 
-	val parser = new OperationBodyParser
 	var SmapStringConcatenation builder
 
 	/**
 	 * Compile the specified operation body code to Java source code. The output
-	 * code will be written into the specified builder object, along with its
-	 * source mapping information. Parsing result, including errors can be
-	 * extracted from the return value.
+	 * code will be returned along with its source mapping information.
 	 */
-	def IParseResult compile(String alfCode, SmapStringConcatenation builder) {
-		val parseResult = parser.parse(alfCode)
-		if (!parseResult.hasSyntaxErrors) {
-			this.builder = builder
-			visit(parseResult.rootASTElement as SyntaxElement)
-		}
-		return parseResult
+	def SourceMappedText generate(SyntaxElement astRoot) {
+		builder = new SmapStringConcatenation(Languages.ALF)
+		visit(astRoot)
+		return builder.toSourceMappedText
 	}
 
 	private def dispatch void visit(Block block) {

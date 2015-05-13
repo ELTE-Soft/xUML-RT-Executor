@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: hu.eltesoft.modelexecution.m2t.smap.emf,
  hu.eltesoft.modelexecution.m2t.smap.xtend,
  org.eclipse.xtend.lib,
+ hu.eltesoft.modelexecution.3pp;bundle-version="0.1.0",
  hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.1.0",
  hu.eltesoft.modelexecution.runtime;bundle-version="0.1.0",
  hu.eltesoft.modelexecution.uml.alf;bundle-version="0.1.0",

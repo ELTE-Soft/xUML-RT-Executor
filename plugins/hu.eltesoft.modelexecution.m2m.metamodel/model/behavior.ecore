@@ -5,8 +5,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="BhBehavior" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="containerClass" lowerBound="1"
         eType="#//BhClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alfCode" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alfResult" lowerBound="1"
+        eType="#//AlfAnalyzerResult"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BhClass" eSuperTypes="base.ecore#//Named"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="AlfAnalyzerResult" instanceClassName="hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult"/>
 </ecore:EPackage>

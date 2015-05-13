@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -87,13 +88,13 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR__CONTAINER_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Alf Code</b></em>' attribute.
+	 * The feature id for the '<em><b>Alf Result</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__ALF_CODE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int BH_BEHAVIOR__ALF_RESULT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Bh Behavior</em>' class.
@@ -152,6 +153,16 @@ public interface BehaviorPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '<em>Alf Analyzer Result</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getAlfAnalyzerResult()
+	 * @generated
+	 */
+	int ALF_ANALYZER_RESULT = 2;
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior <em>Bh Behavior</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -173,15 +184,15 @@ public interface BehaviorPackage extends EPackage {
 	EReference getBhBehavior_ContainerClass();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode <em>Alf Code</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Alf Code</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode()
+	 * @return the meta object for the attribute '<em>Alf Result</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult()
 	 * @see #getBhBehavior()
 	 * @generated
 	 */
-	EAttribute getBhBehavior_AlfCode();
+	EAttribute getBhBehavior_AlfResult();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass <em>Bh Class</em>}'.
@@ -192,6 +203,17 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getBhClass();
+
+	/**
+	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult <em>Alf Analyzer Result</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Alf Analyzer Result</em>'.
+	 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
+	 * @model instanceClass="hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult"
+	 * @generated
+	 */
+	EDataType getAlfAnalyzerResult();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -235,12 +257,12 @@ public interface BehaviorPackage extends EPackage {
 		EReference BH_BEHAVIOR__CONTAINER_CLASS = eINSTANCE.getBhBehavior_ContainerClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Alf Code</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Alf Result</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BH_BEHAVIOR__ALF_CODE = eINSTANCE.getBhBehavior_AlfCode();
+		EAttribute BH_BEHAVIOR__ALF_RESULT = eINSTANCE.getBhBehavior_AlfResult();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhClassImpl <em>Bh Class</em>}' class.
@@ -251,6 +273,16 @@ public interface BehaviorPackage extends EPackage {
 		 * @generated
 		 */
 		EClass BH_CLASS = eINSTANCE.getBhClass();
+
+		/**
+		 * The meta object literal for the '<em>Alf Analyzer Result</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getAlfAnalyzerResult()
+		 * @generated
+		 */
+		EDataType ALF_ANALYZER_RESULT = eINSTANCE.getAlfAnalyzerResult();
 
 	}
 

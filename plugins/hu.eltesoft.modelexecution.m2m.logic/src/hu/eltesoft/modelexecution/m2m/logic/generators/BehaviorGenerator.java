@@ -8,6 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch;
@@ -61,7 +62,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		if (!alfCodeMatcher.forOneArbitraryMatch(source, null,
 				getProcessorToSetAlfCodeOfRoot(root))) {
 
-			root.setAlfCode("{}");
+			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
 		}
 
 		return root;
@@ -105,7 +106,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
 			@Override
 			public void process(Behavior pBehavior, String pAlfCode) {
-				root.setAlfCode(pAlfCode);
+				root.setAlfResult(new AlfAnalyzer().analyze(pAlfCode));
 			}
 
 		};
