@@ -220,13 +220,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					return;
 				}
 
-				List<Class> classes = new LinkedList<>();
-
-				classMatcher.getAllMatches().forEach(
-						m -> classes.add(m.getCls()));
-
 				ListDialog dialog = new ListDialog(getShell());
-				dialog.setInput(classes.toArray(new Object[classes.size()]));
+				dialog.setInput(getAllClasses());
 				dialog.setLabelProvider(new EMFLabelProvider());
 				dialog.setContentProvider(new ArrayContentProvider());
 				dialog.setTitle(Messages.LaunchConfigurationMainTab_select_class_dialog_title);
@@ -245,6 +240,14 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		});
 
 		group.pack();
+	}
+
+	private Object[] getAllClasses() {
+		List<Class> classes = new LinkedList<>();
+		classMatcher.getAllMatches().forEach(
+				m -> classes.add(m.getCls()));
+		Object[] classesArray = classes.toArray(new Object[classes.size()]);
+		return classesArray;
 	}
 
 	private void createFeedFunctionSelector(Composite parent) {
@@ -274,13 +277,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					return;
 				}
 
-				List<Operation> functions = new LinkedList<>();
-
-				methodMatcher.getAllMatches(selectedClass, null, null).forEach(
-						m -> functions.add(m.getOperation()));
-
 				ListDialog dialog = new ListDialog(getShell());
-				dialog.setInput(functions.toArray(new Object[functions.size()]));
+				dialog.setInput(getAllFunctions());
 				dialog.setLabelProvider(new EMFLabelProvider());
 				dialog.setContentProvider(new ArrayContentProvider());
 
@@ -401,6 +399,15 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		} catch (IncQueryException e) {
 			IdePlugin.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
 		}
+	}
+
+	private Object[] getAllFunctions() {
+		List<Operation> functions = new LinkedList<>();
+
+		methodMatcher.getAllMatches(selectedClass, null, null).forEach(
+				m -> functions.add(m.getOperation()));
+		Object[] functionArray = functions.toArray(new Object[functions.size()]);
+		return functionArray;
 	}
 
 }

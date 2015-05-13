@@ -22,8 +22,8 @@ public class Dialogs {
 			result = new MessageDialog(null,
 					Messages.Dialogs_another_debug_launch_caption, null,
 					Messages.Dialogs_another_debug_launch_text,
-					MessageDialog.QUESTION, new String[] { "Abort",
-							"Force launch" }, 0).open() == 1;
+					MessageDialog.QUESTION, new String[] { Messages.Dialogs_another_debug_abort_button,
+							Messages.Dialogs_another_debug_force_button }, 0).open() == 1;
 		}
 
 		public boolean getResult() {
@@ -82,6 +82,13 @@ public class Dialogs {
 		ShowAnotherLaunchConfirmDialog showDialog = new ShowAnotherLaunchConfirmDialog();
 		Display.getDefault().syncExec(showDialog);
 		return showDialog.getResult();
+	}
+
+	public static void openMentionedResourceDoesNotExistsDialog() {
+		Display.getDefault().syncExec(
+				() -> MessageDialog.openError(null,
+						Messages.Dialogs_resources_missing_caption,
+						Messages.Dialogs_resources_missing_text));
 	}
 
 }
