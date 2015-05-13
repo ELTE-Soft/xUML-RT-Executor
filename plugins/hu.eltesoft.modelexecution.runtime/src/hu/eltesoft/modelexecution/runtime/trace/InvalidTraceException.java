@@ -12,8 +12,21 @@ public class InvalidTraceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public InvalidTraceException(TargetedMessage event, TargetedMessage tracedEvent) {
+	/**
+	 * Thrown when the event produced by the model and the event recorded in the
+	 * trace does not check.
+	 */
+	public InvalidTraceException(TargetedMessage event,
+			TargetedMessage tracedEvent) {
 		this.event = event;
+		this.tracedEvent = tracedEvent;
+	}
+
+	/**
+	 * Thrown when there is an event that is in the trace but produced by the
+	 * model.
+	 */
+	public InvalidTraceException(TargetedMessage tracedEvent) {
 		this.tracedEvent = tracedEvent;
 	}
 
