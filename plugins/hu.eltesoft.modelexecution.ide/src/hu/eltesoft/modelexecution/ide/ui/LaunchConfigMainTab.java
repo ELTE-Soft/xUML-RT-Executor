@@ -155,6 +155,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 						resource = resourceSet.getResource(uri, true);
 
 						initMatchers();
+						selectedClass = null;
+						selectedClassField.setText("");
+						selectedFeedFunction = null;
+						selectedFeedFunctionField.setText("");
 						updateDialog();
 					} else {
 						MessageDialog
@@ -234,6 +238,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 						&& (selection[0] instanceof Class)) {
 					selectedClass = (Class) selection[0];
 					selectedClassField.setText(selectedClass.getName());
+					selectedFeedFunction = null;
+					selectedFeedFunctionField.setText("");
 					updateDialog();
 				}
 			}
@@ -244,8 +250,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 	private Object[] getAllClasses() {
 		List<Class> classes = new LinkedList<>();
-		classMatcher.getAllMatches().forEach(
-				m -> classes.add(m.getCls()));
+		classMatcher.getAllMatches().forEach(m -> classes.add(m.getCls()));
 		Object[] classesArray = classes.toArray(new Object[classes.size()]);
 		return classesArray;
 	}
@@ -406,8 +411,15 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 		methodMatcher.getAllMatches(selectedClass, null, null).forEach(
 				m -> functions.add(m.getOperation()));
-		Object[] functionArray = functions.toArray(new Object[functions.size()]);
+		Object[] functionArray = functions
+				.toArray(new Object[functions.size()]);
 		return functionArray;
+	}
+
+	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		return super.isValid(launchConfig) && selectedModelResource != null
+				&& selectedClass != null && selectedFeedFunction != null;
 	}
 
 }
