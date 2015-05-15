@@ -14,9 +14,8 @@ public class AnimationController {
 	private EObject lastAnimated;
 	private EObject lastSuspended;
 
-	private Timer animationTimer;
-	// needs to be volatile as it is accessed from the timer thread too
-	private volatile TimerTask lastAnimationEndTask;
+	private final Timer animationTimer = new Timer();
+	private TimerTask lastAnimationEndTask;
 
 	public AnimationController(LaunchConfigReader configReader) {
 		animationTimeMultiplier = configReader.getAnimationTimerMultiplier();
@@ -29,31 +28,34 @@ public class AnimationController {
 		return MokaConstants.MOKA_AUTOMATIC_ANIMATION;
 	}
 
-	public void suspendForAnimation(TimerTask animationEndTask) {
-		if (null != lastAnimationEndTask) {
-			animationTimer.cancel();
-			lastAnimationEndTask = null;
-		}
+	public void startAnimationTimer(TimerTask animationEndTask) {
+		cancelAnimationTimer();
 
 		// we need to get the constant every time from the UI
 		long ms = animationTimeMultiplier * MokaConstants.MOKA_ANIMATION_DELAY;
-		lastAnimationEndTask = animationEndTask;
-		animationTimer = new Timer();
-		animationTimer.schedule(new TimerTask() {
 
-			@Override
-			public void run() {
-				if (lastAnimationEndTask != null) {
-					lastAnimationEndTask.run();
-					lastAnimationEndTask = null;
-				}
-			}
-		}, ms);
+		if (ms <= 0) {
+			// run the task immediately in the same thread
+			animationEndTask.run();
+		} else {
+			lastAnimationEndTask = animationEndTask;
+			animationTimer.schedule(lastAnimationEndTask, ms);
+		}
 	}
 
-	public void stopSuspendingForAnimation() {
+	public void cancelAnimationTimer() {
 		if (null != lastAnimationEndTask) {
-			animationTimer.cancel();
+			lastAnimationEndTask.cancel();
+			lastAnimationEndTask = null;
+		}
+	}
+
+	/**
+	 * Execute the currently scheduled timer task immediately.
+	 */
+	public void fireAnimationTimer() {
+		if (null != lastAnimationEndTask) {
+			lastAnimationEndTask.cancel();
 			lastAnimationEndTask.run();
 			lastAnimationEndTask = null;
 		}

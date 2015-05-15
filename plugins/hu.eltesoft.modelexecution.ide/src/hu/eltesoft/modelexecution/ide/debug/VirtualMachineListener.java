@@ -7,10 +7,16 @@ import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
 @SuppressWarnings("restriction")
-public interface VMEventListener {
+public interface VirtualMachineListener {
 
 	void handleVMStart(VMStartEvent event);
 
+	/**
+	 * @param event
+	 *            Can be null as the machine is unable to produce a proper event
+	 *            when the disconnect exception comes before the event. This
+	 *            situation is caused by a bug in JDI.
+	 */
 	void handleVMDisconnect(VMDisconnectEvent event);
 
 	void handleVMDeath(VMDeathEvent event);
