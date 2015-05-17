@@ -21,6 +21,13 @@ import java.util.Queue;
  */
 public abstract class BaseRuntime implements Runtime {
 
+	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
+	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
+	public static final String STATES_LOGGER_ID = LOGGER_ID + "StateMachine.States";
+	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + "StateMachine.Transitions";
+	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + "Events.Messages";
+	
+
 	private Queue<TargetedMessage> queue = new LinkedList<>();
 
 	private Tracer traceWriter;
@@ -28,7 +35,7 @@ public abstract class BaseRuntime implements Runtime {
 	private Logger logger;
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
-			.getLogger("hu.eltesoft.modelexecution.runtime.baseRuntime"); //$NON-NLS-1$
+			.getLogger(LOGGER_ID); //$NON-NLS-1$
 
 	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
 		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
