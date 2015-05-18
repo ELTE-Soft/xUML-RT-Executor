@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -65,6 +66,7 @@ public class ExecutableModelProjectSetup {
 		createLoggingPropertiesFile(project);
 		setupClassPath(javaProject,
 				ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	private static void createLoggingPropertiesFile(IProject project) {
