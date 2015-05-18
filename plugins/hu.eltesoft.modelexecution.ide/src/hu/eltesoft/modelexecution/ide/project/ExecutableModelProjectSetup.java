@@ -4,6 +4,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.launch.ClasspathRuntimeLibrary;
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
+import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -81,7 +82,8 @@ public class ExecutableModelProjectSetup {
 					.format(Messages.ExecutableModelProjectSetup_default_logging_properties_file,
 							BaseRuntime.STATES_LOGGER_ID,
 							BaseRuntime.TRANSITIONS_LOGGER_ID,
-							BaseRuntime.MESSAGES_LOGGER_ID));
+							BaseRuntime.MESSAGES_LOGGER_ID,
+							StandardOutHandler.class.getCanonicalName()));
 		} catch (IOException e) {
 			IdePlugin.logError(
 					"Error while creating logging properties file.", e); //$NON-NLS-1$

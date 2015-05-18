@@ -76,6 +76,7 @@ public abstract class BaseRuntime implements Runtime {
 			}
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
+			logError("The trace file is not consistent with the current model.");
 			return TerminationResult.INVALID_TRACEFILE;
 		} catch (Exception e) {
 			logError(e);
