@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
@@ -404,17 +405,28 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		listener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getName(), output, symbols);
 	}
 
 	// add match update listeners
 
 	@Override
-	public void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry) {
+	public ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
 
-		advancedEngine.addMatchUpdateListener(regionMatcher,
-				new IMatchUpdateListener<RegionMatch>() {
+		return new ReversionTask() {
+
+			private final IMatchUpdateListener<RegionMatch> regionListener;
+			private final IMatchUpdateListener<ContainerClassOfRegionMatch> containerClassOfRegionListener;
+			private final IMatchUpdateListener<InitialsMatch> initialsListener;
+			private final IMatchUpdateListener<StateMatch> stateListener;
+			private final IMatchUpdateListener<EntryMatch> entryListener;
+			private final IMatchUpdateListener<ExitMatch> exitListener;
+			private final IMatchUpdateListener<TransitionMatch> transitionListener;
+			private final IMatchUpdateListener<TransitionEffectMatch> transitionEffectListener;
+
+			{ // set regionListener
+				regionListener = new IMatchUpdateListener<RegionMatch>() {
 
 					@Override
 					public void notifyAppearance(RegionMatch match) {
@@ -428,10 +440,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newDeletion(match.getRegionName());
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(containerClassOfRegionMatcher,
-				new IMatchUpdateListener<ContainerClassOfRegionMatch>() {
+				advancedEngine.addMatchUpdateListener(regionMatcher,
+						regionListener, false);
+			}
+
+			{ // set containerClassOfRegionListener
+				containerClassOfRegionListener = new IMatchUpdateListener<ContainerClassOfRegionMatch>() {
 
 					@Override
 					public void notifyAppearance(
@@ -447,10 +463,15 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(initialsMatcher,
-				new IMatchUpdateListener<InitialsMatch>() {
+				advancedEngine.addMatchUpdateListener(
+						containerClassOfRegionMatcher,
+						containerClassOfRegionListener, false);
+			}
+
+			{ // set initialsListener
+				initialsListener = new IMatchUpdateListener<InitialsMatch>() {
 
 					@Override
 					public void notifyAppearance(InitialsMatch match) {
@@ -464,10 +485,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(stateMatcher,
-				new IMatchUpdateListener<StateMatch>() {
+				advancedEngine.addMatchUpdateListener(initialsMatcher,
+						initialsListener, false);
+			}
+
+			{ // set stateListener
+				stateListener = new IMatchUpdateListener<StateMatch>() {
 
 					@Override
 					public void notifyAppearance(StateMatch match) {
@@ -481,10 +506,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(entryMatcher,
-				new IMatchUpdateListener<EntryMatch>() {
+				advancedEngine.addMatchUpdateListener(stateMatcher,
+						stateListener, false);
+			}
+
+			{ // set entryListener
+				entryListener = new IMatchUpdateListener<EntryMatch>() {
 
 					@Override
 					public void notifyAppearance(EntryMatch match) {
@@ -498,10 +527,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(exitMatcher,
-				new IMatchUpdateListener<ExitMatch>() {
+				advancedEngine.addMatchUpdateListener(entryMatcher,
+						entryListener, false);
+			}
+
+			{ // set exitListener
+				exitListener = new IMatchUpdateListener<ExitMatch>() {
 
 					@Override
 					public void notifyAppearance(ExitMatch match) {
@@ -515,10 +548,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(transitionMatcher,
-				new IMatchUpdateListener<TransitionMatch>() {
+				advancedEngine.addMatchUpdateListener(exitMatcher,
+						exitListener, false);
+			}
+
+			{ // set transitionListener
+				transitionListener = new IMatchUpdateListener<TransitionMatch>() {
 
 					@Override
 					public void notifyAppearance(TransitionMatch match) {
@@ -532,10 +569,14 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(transitionEffectMatcher,
-				new IMatchUpdateListener<TransitionEffectMatch>() {
+				advancedEngine.addMatchUpdateListener(transitionMatcher,
+						transitionListener, false);
+			}
+
+			{ // set transitionEffectListener
+				transitionEffectListener = new IMatchUpdateListener<TransitionEffectMatch>() {
 
 					@Override
 					public void notifyAppearance(TransitionEffectMatch match) {
@@ -549,8 +590,37 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 								RegionGenerator.this);
 					}
 
-				}, false);
+				};
+
+				advancedEngine.addMatchUpdateListener(transitionEffectMatcher,
+						transitionEffectListener, false);
+			}
+
+			@Override
+			public boolean revert() {
+
+				advancedEngine.removeMatchUpdateListener(regionMatcher,
+						regionListener);
+				advancedEngine.removeMatchUpdateListener(
+						containerClassOfRegionMatcher,
+						containerClassOfRegionListener);
+				advancedEngine.removeMatchUpdateListener(initialsMatcher,
+						initialsListener);
+				advancedEngine.removeMatchUpdateListener(stateMatcher,
+						stateListener);
+				advancedEngine.removeMatchUpdateListener(entryMatcher,
+						entryListener);
+				advancedEngine.removeMatchUpdateListener(exitMatcher,
+						exitListener);
+				advancedEngine.removeMatchUpdateListener(transitionMatcher,
+						transitionListener);
+				advancedEngine.removeMatchUpdateListener(
+						transitionEffectMatcher, transitionEffectListener);
+
+				return true;
+			}
+
+		};
 
 	}
-
 }

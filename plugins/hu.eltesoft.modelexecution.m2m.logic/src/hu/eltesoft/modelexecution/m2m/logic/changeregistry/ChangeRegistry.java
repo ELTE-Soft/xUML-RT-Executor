@@ -37,9 +37,15 @@ public interface ChangeRegistry extends ContainerNameProvider {
 	/**
 	 * Performs the previously registered changes and clears this registry.
 	 * 
-	 * @return A queue of required file update tasks.
+	 * @return a queue of required file update tasks
 	 */
 	FileUpdateTaskQueue performAllChanges();
+	
+	
+	/**
+	 * Clears this registry.
+	 */
+	void clear();
 
 	/**
 	 * Sets the fully qualified root name which should be returned by the

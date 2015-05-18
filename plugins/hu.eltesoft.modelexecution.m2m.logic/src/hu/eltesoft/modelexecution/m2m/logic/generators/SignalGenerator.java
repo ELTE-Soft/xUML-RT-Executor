@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
@@ -66,32 +67,49 @@ public class SignalGenerator extends AbstractGenerator<Signal, SgSignal> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		listener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getName(), output, symbols);
 	}
 
 	// add match update listeners
 
 	@Override
-	public void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
+	public ReversionTask addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
 			ChangeRegistry changeRegistry) {
 
-		advancedEngine.addMatchUpdateListener(signalMatcher,
-				new IMatchUpdateListener<SignalMatch>() {
+		return new ReversionTask() {
 
-					@Override
-					public void notifyAppearance(SignalMatch match) {
-						changeRegistry.newModification(match.getSignal(),
-								SignalGenerator.this);
-					}
+			private final IMatchUpdateListener<SignalMatch> signalListener;
 
-					@Override
-					public void notifyDisappearance(SignalMatch match) {
-						// disappearance of root: delete file
-						changeRegistry.newDeletion(match.getSignalName());
-					}
+			{ // set signalListener
+					signalListener = new IMatchUpdateListener<SignalMatch>() {
 
-				}, false);
+						@Override
+						public void notifyAppearance(SignalMatch match) {
+							changeRegistry.newModification(match.getSignal(),
+									SignalGenerator.this);
+						}
 
+						@Override
+						public void notifyDisappearance(SignalMatch match) {
+							// disappearance of root: delete file
+							changeRegistry.newDeletion(match.getSignalName());
+						}
+
+					};
+
+					advancedEngine.addMatchUpdateListener(signalMatcher, signalListener, false);
+			}
+
+			@Override
+			public boolean revert() {
+				
+				advancedEngine.removeMatchUpdateListener(signalMatcher, signalListener);
+				
+				return true;
+			}
+
+		};
+		
 	}
 
 }

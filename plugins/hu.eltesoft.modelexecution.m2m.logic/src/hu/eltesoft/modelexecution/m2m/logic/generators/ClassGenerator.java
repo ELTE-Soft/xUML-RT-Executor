@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -187,17 +188,25 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		listener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getName(), output, symbols);
 	}
 
 	// add match update listener
 
 	@Override
-	public void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry) {
+	public ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
 
-		advancedEngine.addMatchUpdateListener(clsMatcher,
-				new IMatchUpdateListener<ClsMatch>() {
+		return new ReversionTask() {
+
+			private final IMatchUpdateListener<ClsMatch> clsListener;
+			private final IMatchUpdateListener<RegionOfClassMatch> regionOfClassListener;
+			private final IMatchUpdateListener<OperationMatch> operationListener;
+			private final IMatchUpdateListener<MethodMatch> methodListener;
+			private final IMatchUpdateListener<ReceptionMatch> receptionListener;
+
+			{ // set clsListener
+				clsListener = new IMatchUpdateListener<ClsMatch>() {
 
 					@Override
 					public void notifyAppearance(ClsMatch match) {
@@ -211,10 +220,14 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 						changeRegistry.newDeletion(match.getClassName());
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(regionOfClassMatcher,
-				new IMatchUpdateListener<RegionOfClassMatch>() {
+				advancedEngine.addMatchUpdateListener(clsMatcher, clsListener,
+						false);
+			}
+
+			{ // set regionOfClassListener
+				regionOfClassListener = new IMatchUpdateListener<RegionOfClassMatch>() {
 
 					@Override
 					public void notifyAppearance(RegionOfClassMatch match) {
@@ -228,10 +241,14 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 								ClassGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(operationMatcher,
-				new IMatchUpdateListener<OperationMatch>() {
+				advancedEngine.addMatchUpdateListener(regionOfClassMatcher,
+						regionOfClassListener, false);
+			}
+
+			{ // set operationListener
+				operationListener = new IMatchUpdateListener<OperationMatch>() {
 
 					@Override
 					public void notifyAppearance(OperationMatch match) {
@@ -245,10 +262,15 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 								ClassGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(methodMatcher,
-				new IMatchUpdateListener<MethodMatch>() {
+				advancedEngine.addMatchUpdateListener(operationMatcher,
+						operationListener, false);
+
+			}
+			
+			{ // set methodListener
+				methodListener = new IMatchUpdateListener<MethodMatch>() {
 
 					@Override
 					public void notifyAppearance(MethodMatch match) {
@@ -262,10 +284,14 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 								ClassGenerator.this);
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(receptionMatcher,
-				new IMatchUpdateListener<ReceptionMatch>() {
+				advancedEngine.addMatchUpdateListener(methodMatcher,
+						methodListener, false);
+			}
+
+			{ // set receptionListener
+				receptionListener = new IMatchUpdateListener<ReceptionMatch>() {
 
 					@Override
 					public void notifyAppearance(ReceptionMatch match) {
@@ -279,8 +305,30 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 								ClassGenerator.this);
 					}
 
-				}, false);
+				};
+
+				advancedEngine.addMatchUpdateListener(receptionMatcher,
+						receptionListener, false);
+			}
+
+			@Override
+			public boolean revert() {
+
+				advancedEngine.removeMatchUpdateListener(clsMatcher,
+						clsListener);
+				advancedEngine.removeMatchUpdateListener(regionOfClassMatcher,
+						regionOfClassListener);
+				advancedEngine.removeMatchUpdateListener(operationMatcher,
+						operationListener);
+				advancedEngine.removeMatchUpdateListener(methodMatcher,
+						methodListener);
+				advancedEngine.removeMatchUpdateListener(receptionMatcher,
+						receptionListener);
+
+				return true;
+			}
+
+		};
 
 	}
-
 }

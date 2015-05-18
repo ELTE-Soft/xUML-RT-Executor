@@ -18,9 +18,9 @@ public interface TextChangesListener {
 	 *            the fully qualified name of the root model object of the
 	 *            modified file
 	 * @param output
-	 *            The new contents of the file with source mapping information.
+	 *            the new contents of the file with source mapping information
 	 * @param symbols
-	 *            Debug symbols.
+	 *            debug symbols
 	 */
 	void contentChanged(String rootName, SourceMappedText output,
 			DebugSymbols symbols);

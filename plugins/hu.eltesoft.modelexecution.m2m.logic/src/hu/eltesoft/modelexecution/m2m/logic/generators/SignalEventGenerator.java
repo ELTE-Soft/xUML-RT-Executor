@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
@@ -99,17 +100,22 @@ public class SignalEventGenerator extends
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		listener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getName(), output, symbols);
 	}
 
 	// add match update listeners
 
 	@Override
-	public void addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry) {
+	public ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
 
-		advancedEngine.addMatchUpdateListener(eventMatcher,
-				new IMatchUpdateListener<EventMatch>() {
+		return new ReversionTask() {
+
+			private final IMatchUpdateListener<EventMatch> eventListener;
+			private final IMatchUpdateListener<SignalEventMatch> signalEventListener;
+
+			{ // set eventListener
+				eventListener = new IMatchUpdateListener<EventMatch>() {
 
 					@Override
 					public void notifyAppearance(EventMatch match) {
@@ -123,10 +129,14 @@ public class SignalEventGenerator extends
 						changeRegistry.newDeletion(match.getEventName());
 					}
 
-				}, false);
+				};
 
-		advancedEngine.addMatchUpdateListener(signalEventMatcher,
-				new IMatchUpdateListener<SignalEventMatch>() {
+				advancedEngine.addMatchUpdateListener(eventMatcher,
+						eventListener, false);
+			}
+
+			{ // set signalEventListener
+				signalEventListener = new IMatchUpdateListener<SignalEventMatch>() {
 
 					@Override
 					public void notifyAppearance(SignalEventMatch match) {
@@ -140,7 +150,22 @@ public class SignalEventGenerator extends
 								SignalEventGenerator.this);
 					}
 
-				}, false);
+				};
+
+				advancedEngine.addMatchUpdateListener(signalEventMatcher,
+						signalEventListener, false);
+			}
+
+			@Override
+			public boolean revert() {
+				
+				advancedEngine.removeMatchUpdateListener(eventMatcher, eventListener);
+				advancedEngine.removeMatchUpdateListener(signalEventMatcher, signalEventListener);
+				
+				return true;
+			}
+
+		};
 
 	}
 }
