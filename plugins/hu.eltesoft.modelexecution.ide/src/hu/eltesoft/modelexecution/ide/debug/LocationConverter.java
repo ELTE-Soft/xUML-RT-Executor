@@ -48,14 +48,14 @@ public class LocationConverter {
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
 			IdePlugin.logError(String.format(
-					"Unable to load debug symbols for class: ", className));
+					"Unable to load debug symbols for class: %s", className));
 			return locations;
 		}
 
 		ReferenceType type = classForName.get(className);
 		if (null == type) {
 			IdePlugin.logError(String.format(
-					"Reference type not found for class: ", className));
+					"Reference type not found for class: %s", className));
 			return locations;
 		}
 
@@ -82,7 +82,7 @@ public class LocationConverter {
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
 			IdePlugin.logError(String.format(
-					"Unable to load debug symbols for class: ", className));
+					"Unable to load debug symbols for class: %s", className));
 		}
 
 		LocationRegistry registry = symbols.getLocationRegistry();
