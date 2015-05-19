@@ -25,7 +25,6 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
-import org.eclipse.papyrus.moka.communication.event.iterminate.Terminate_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -119,15 +118,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void handleVMDisconnect(VMDisconnectEvent event) {
 		try {
-			// terminate just the first and only thread for now
-			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
-			// causes debug target to be terminated
-			sendEvent(new Terminate_Event(mokaThread,
-					new MokaThread[] { mokaThread }));
-
+			// force the debug target to send a termination request,
+			// which will be handled by the terminate method below
 			debugTarget.terminate();
 		} catch (DebugException e) {
-			IdePlugin.logError("Error while sending terminate notification", e);
+			IdePlugin.logError("Error while terminating debug target", e);
 		}
 	}
 
@@ -265,26 +260,24 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void terminate(Terminate_Request request) {
 		try {
+			// if the machine is already terminated,
+			// it will not indicate a disconnect event
 			virtualMachine.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}
-		performShutdown();
-	}
 
-	/**
-	 * Should only be called after the virtual machine is terminated or
-	 * disconnected.
-	 */
-	private void performShutdown() {
+		// clear only after the machine's event queue is surely stopped
 		animation.removeAllMarkers();
+
+		// execution engine will send out the termination event automatically
 		setIsTerminated(true);
 	}
 
 	@Override
 	public void disconnect() {
-		virtualMachine.disconnect();
-		performShutdown();
+		// intentionally left blank
+		// disconnect command is disabled by default in the Moka debug target
 	}
 
 	@Override

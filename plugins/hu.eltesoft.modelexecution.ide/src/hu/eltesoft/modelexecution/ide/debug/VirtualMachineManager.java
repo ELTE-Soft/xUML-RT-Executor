@@ -157,6 +157,13 @@ public class VirtualMachineManager implements ITerminate {
 		if (!disconnectFired) {
 			eventListeners.forEach(l -> l.handleVMDisconnect(event));
 			disconnectFired = true;
+
+			// notify termination of the associated Java process
+			try {
+				javaProcess.terminate();
+			} catch (DebugException e) {
+				// suppress any process termination failure
+			}
 		}
 	}
 
@@ -189,7 +196,7 @@ public class VirtualMachineManager implements ITerminate {
 	@Override
 	public void terminate() throws DebugException {
 		virtualMachine.dispose();
-		javaProcess.terminate();
+		// the Java process will be terminated by the disconnect event of the vm
 	}
 
 	public void resume() {
