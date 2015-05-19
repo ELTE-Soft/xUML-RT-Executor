@@ -66,6 +66,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	// access must be synchronized to intrinsic lock of "animation"!
 	private boolean waitingForSuspend = false;
 
+	private MokaThread[] threads;
+
 	@Override
 	public void init(EObject eObjectToExecute, String[] args,
 			MokaDebugTarget mokaDebugTarget, int requestPort, int replyPort,
@@ -218,19 +220,15 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		try {
-			// suspend just the first and only thread for now
-			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
-			// causes debug target to be suspended
-			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
-					: DebugEvent.BREAKPOINT;
-			sendEvent(new Suspend_Event(mokaThread, eventCode,
-					new MokaThread[] { mokaThread }));
-			// causes thread to be suspended
-			mokaThread.setSuspended(true);
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while marking thread as suspended", e);
-		}
+		// suspend just the first and only thread for now
+		MokaThread mokaThread = (MokaThread) getThreads()[0];
+		// causes debug target to be suspended
+		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
+				: DebugEvent.BREAKPOINT;
+		sendEvent(new Suspend_Event(mokaThread, eventCode,
+				new MokaThread[] { mokaThread }));
+		// causes thread to be suspended
+		mokaThread.setSuspended(true);
 	}
 
 	@Override
@@ -282,9 +280,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public MokaThread[] getThreads() {
-		MokaThread thread = new MokaThread(debugTarget);
-		thread.setName("Default component");
-		return new MokaThread[] { thread };
+		if (null == threads) {
+			MokaThread thread = new MokaThread(debugTarget);
+			thread.setName("Default component");
+			threads = new MokaThread[] { thread };
+		}
+		return threads;
 	}
 
 	@Override
