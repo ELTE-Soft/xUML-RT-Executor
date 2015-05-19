@@ -9,10 +9,15 @@ import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
 public class AnimationController {
 
+	private static final AnimationUtils UTILS = AnimationUtils.getInstance();
+
 	private int animationTimeMultiplier;
 
-	private EObject lastAnimated;
-	private EObject lastSuspended;
+	/**
+	 * Access to these fields is guarded by the synchronized keyword on the
+	 * marker setter and removal methods below.
+	 */
+	private EObject lastAnimated, lastSuspended;
 
 	private final Timer animationTimer = new Timer();
 	private TimerTask lastAnimationEndTask;
@@ -61,28 +66,28 @@ public class AnimationController {
 		}
 	}
 
-	public void setAnimationMarker(EObject modelElement) {
+	public synchronized void setAnimationMarker(EObject modelElement) {
 		removeAllMarkers();
 		lastAnimated = AnimationUtils.resolve(modelElement);
-		AnimationUtils.getInstance().addAnimationMarker(lastAnimated);
+		UTILS.addAnimationMarker(lastAnimated);
 	}
 
-	public void removeAnimationMarker() {
+	public synchronized void removeAnimationMarker() {
 		if (null != lastAnimated) {
-			AnimationUtils.getInstance().removeAnimationMarker(lastAnimated);
+			UTILS.removeAnimationMarker(lastAnimated);
 			lastAnimated = null;
 		}
 	}
 
-	public void setSuspendedMarker(EObject modelElement) {
+	public synchronized void setSuspendedMarker(EObject modelElement) {
 		removeAllMarkers();
 		lastSuspended = AnimationUtils.resolve(modelElement);
-		AnimationUtils.getInstance().addSuspendedMarker(lastSuspended);
+		UTILS.addSuspendedMarker(lastSuspended);
 	}
 
-	public void removeSuspendedMarker() {
+	public synchronized void removeSuspendedMarker() {
 		if (null != lastSuspended) {
-			AnimationUtils.getInstance().removeSuspendedMarker(null);
+			UTILS.removeSuspendedMarker(null);
 			lastSuspended = null;
 		}
 	}
