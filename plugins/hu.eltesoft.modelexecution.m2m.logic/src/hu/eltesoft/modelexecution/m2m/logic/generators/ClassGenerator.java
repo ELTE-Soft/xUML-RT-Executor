@@ -69,8 +69,8 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 				getProcessorToSetNameOfRoot(root)));
 
 		// region
-		check(regionOfClassMatcher.forOneArbitraryMatch(source, null,
-				getProcessorToSetRegionOfRoot(root)));
+		regionOfClassMatcher.forOneArbitraryMatch(source, null,
+				getProcessorToSetRegionOfRoot(root));
 
 		// operations
 		operationMatcher.forEachMatch(source, null, null,
