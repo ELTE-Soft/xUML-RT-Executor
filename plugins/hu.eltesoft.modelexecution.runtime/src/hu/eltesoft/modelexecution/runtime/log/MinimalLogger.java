@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.log;
 
-import hu.eltesoft.modelexecution.runtime.base.Class;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
@@ -9,7 +9,7 @@ import hu.eltesoft.modelexecution.runtime.base.Message;
 public class MinimalLogger implements Logger {
 
 	@Override
-	public void messageQueued(Class target, Message event) {
+	public void messageQueued(ClassWithState target, Message event) {
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class MinimalLogger implements Logger {
 	}
 
 	@Override
-	public void messageDispatched(Class target, Message event) {
+	public void messageDispatched(ClassWithState target, Message event) {
 	}
 
 	@Override

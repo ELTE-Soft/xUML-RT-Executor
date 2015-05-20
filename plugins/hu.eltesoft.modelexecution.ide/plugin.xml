@@ -80,7 +80,8 @@
             delegate="hu.eltesoft.modelexecution.ide.launch.ExecutableModelLaunchDelegate"
             id="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel"
             modes="run, debug"
-            name="%launchConfigurationType.name">
+            name="%launchConfigurationType.name"
+            sourceLocatorId="org.eclipse.papyrus.moka.sourceLocator">
       </launchConfigurationType>
    </extension>
    <extension

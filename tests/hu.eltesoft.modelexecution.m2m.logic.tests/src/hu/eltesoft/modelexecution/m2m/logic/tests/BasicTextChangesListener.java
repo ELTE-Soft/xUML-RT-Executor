@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2m.logic.tests;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,7 +23,7 @@ public class BasicTextChangesListener implements TextChangesListener {
 		outputs.clear();
 		symbols.clear();
 	}
-	
+
 	@Override
 	public void contentChanged(String filename, SourceMappedText output,
 			DebugSymbols symbols) {

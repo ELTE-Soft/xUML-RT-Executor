@@ -1,6 +1,6 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2m.logic.tests;
 
-import static hu.eltesoft.modelexecution.m2m.logic.Assert.assertAsSets;
+import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
 import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
 
@@ -15,10 +15,12 @@ import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.junit.Test;
 
-public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
+public class ChangeListenerM2MTranslatorIncrementalityTests extends
+		M2MTranslatorTestsBase {
 
-	@Override
-	protected void initTranslator(String path) {
+	protected ChangeListenerM2MTranslator translator;
+
+	private void initTranslator(String path) {
 		try {
 			translator = ChangeListenerM2MTranslator.create(
 					configureEngine(path), listener);
@@ -27,40 +29,18 @@ public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
 		}
 	}
 
-	@Test
-	public void testingFullBuildOnSimpleModelRepeteadly() {
-		initTranslator(UML_TEST_SIMPLE_MODEL_PATH);
+	protected void initialize(String path) {
+		initTranslator(path);
 
-		for (int i = 0; i < 3; ++i) {
-			listener.clear();
-			translator.fullBuild().performAll();
-		}
+		ChangeListenerM2MTranslator changeListenerTranslator = translator;
 
-		checkSimpleModelResult();
-
-	}
-
-	@Test
-	public void testingRebuildAsFirstBuild() {
-		initTranslator(UML_TEST_SIMPLE_MODEL_PATH);
-
-		ChangeListenerM2MTranslator changeListenerTranslator = (ChangeListenerM2MTranslator) translator;
-
-		listener.clear();
-		changeListenerTranslator.rebuild().performAll();
-
-		checkSimpleModelResult();
-
+		changeListenerTranslator.fullBuild().performAll();
 	}
 
 	@Test
 	public void testingIncrementalModification() {
-		initTranslator(UML_TEST_SIMPLE_MODEL_PATH);
-
-		ChangeListenerM2MTranslator changeListenerTranslator = (ChangeListenerM2MTranslator) translator;
-
-		changeListenerTranslator.fullBuild().performAll();
-
+		initialize(UML_TEST_SIMPLE_MODEL_PATH);
+		
 		Class a = (Class) model.getPackagedElement("A");
 		StateMachine sm = (StateMachine) a.getOwnedBehavior("SM1");
 		Region rg = sm.getRegion("R1");
@@ -85,7 +65,7 @@ public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
 
 		listener.clear();
 
-		changeListenerTranslator.rebuild().performAll();
+		translator.rebuild().performAll();
 
 		assertEquals(0, listener.deletions.size());
 		assertEquals(1, listener.modifications.size());
@@ -93,12 +73,8 @@ public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
 
 	@Test
 	public void testingIncrementalDeletion() {
-		initTranslator(UML_TEST_2015_Q1_MODEL_PATH);
-
-		ChangeListenerM2MTranslator changeListenerTranslator = (ChangeListenerM2MTranslator) translator;
-
-		changeListenerTranslator.fullBuild().performAll();
-
+		initialize(UML_TEST_2015_Q1_MODEL_PATH);
+		
 		Class a = (Class) model.getPackagedElement("Class1");
 		StateMachine sm = (StateMachine) a.getOwnedBehavior("StateMachine1");
 		Region rg = sm.getRegion("Region1");
@@ -107,23 +83,18 @@ public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
 
 		listener.clear();
 
-		changeListenerTranslator.rebuild().performAll();
+		translator.rebuild().performAll();
 
 		assertEquals(1, listener.deletions.size());
 		assertEquals(2, listener.modifications.size());
 		assertEquals("Region1", listener.deletions.get(0));
 		assertAsSets(new String[] { "RenamedRegion1", "Class1" },
 				listener.modifications.get(0), listener.modifications.get(1));
-
 	}
 
 	@Test
 	public void testingIncrementalDeletionUndo() {
-		initTranslator(UML_TEST_2015_Q1_MODEL_PATH);
-
-		ChangeListenerM2MTranslator changeListenerTranslator = (ChangeListenerM2MTranslator) translator;
-
-		changeListenerTranslator.fullBuild().performAll();
+		initialize(UML_TEST_2015_Q1_MODEL_PATH);
 
 		Class a = (Class) model.getPackagedElement("Class1");
 		StateMachine sm = (StateMachine) a.getOwnedBehavior("StateMachine1");
@@ -135,7 +106,7 @@ public class ChangeListenerM2MTranslatorTests extends SimpleM2MTranslatorTests {
 
 		listener.clear();
 
-		changeListenerTranslator.rebuild().performAll();
+		translator.rebuild().performAll();
 
 		assertEquals(2, listener.deletions.size());
 		assertEquals(2, listener.modifications.size());

@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.log;
 
-import hu.eltesoft.modelexecution.runtime.base.Class;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
@@ -26,11 +26,11 @@ public class NoLogger implements Logger {
 	}
 
 	@Override
-	public void messageQueued(Class target, Message message) {
+	public void messageQueued(ClassWithState target, Message message) {
 	}
 
 	@Override
-	public void messageDispatched(Class target, Message event) {	
+	public void messageDispatched(ClassWithState target, Message event) {	
 	}
 
 }

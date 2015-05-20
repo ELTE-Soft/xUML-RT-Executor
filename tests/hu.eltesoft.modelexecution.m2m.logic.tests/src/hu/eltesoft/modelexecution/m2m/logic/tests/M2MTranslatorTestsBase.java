@@ -1,4 +1,7 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2m.logic.tests;
+
+import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -13,25 +16,25 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
-public abstract class IncQueryBasedTestCase {
+public abstract class M2MTranslatorTestsBase {
 
 	protected static final String PATH_TO_PRINT_GENERATED_FILES = "src-gen";
 
 	protected static final String UML_TEST_SIMPLE_MODEL_PATH = "resources/simple_model.uml";
-	
+
 	protected static final String UML_TEST_2015_Q1_MODEL_PATH = "resources/2015_q1_model.uml";
 	protected static final String[] UML_TEST_2015_Q1_MODEL_EXPECTED_FILES = {
 			"Class1", "Region1", "Method1", "Entry1", "Exit1", "Effect0",
 			"Effect1", "Signal1", "SignalEvent1" };
 
 	protected Model model;
-	
-	
+
+	protected BasicTextChangesListener listener = new BasicTextChangesListener();
+
 	public IncQueryEngine configureEngine(String path) {
 		return configureEngine(loadModel(path));
 	}
 
-	
 	public IncQueryEngine configureEngine(Model model) {
 		this.model = model;
 		try {
@@ -42,7 +45,6 @@ public abstract class IncQueryBasedTestCase {
 		}
 	}
 
-	
 	public Model loadModel(String path) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
@@ -58,6 +60,14 @@ public abstract class IncQueryBasedTestCase {
 			}
 		}
 		return null;
+	}
+
+	protected void checkSimpleModelResult() {
+		assertEquals(0, listener.deletions.size());
+		assertEquals(2, listener.modifications.size());
+
+		assertAsSets(new String[] { "A", "R1" }, listener.modifications.get(0),
+				listener.modifications.get(1));
 	}
 
 }

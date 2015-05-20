@@ -3,11 +3,20 @@ package hu.eltesoft.modelexecution.ide.ui;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
+import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -154,14 +163,49 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 
 	@Override
 	public boolean performOk() {
-		ExecutableModelProperties.setSourceGenPath(getProject(),
-				generatedFilesFolderSelector.getSelectedResourcePath()
-						.toString());
+		String oldSrcGenPath = ExecutableModelProperties
+				.getSourceGenPath(getProject());
+		String newSrcGenPath = generatedFilesFolderSelector
+				.getSelectedResourcePath().toString();
+		ExecutableModelProperties.setSourceGenPath(getProject(), newSrcGenPath);
 		ExecutableModelProperties.setDebugFilesPath(getProject(),
 				debugFilesFolderSelector.getSelectedResourcePath().toString());
 		ExecutableModelProperties.setInstrumentedClassFilesPath(getProject(),
 				instrumentedClassFilesFolderSelector.getSelectedResourcePath()
 						.toString());
+
+		if (!newSrcGenPath.equals(oldSrcGenPath)) {
+			try {
+				ClasspathUtils.removeClasspathEntry(
+						JavaCore.create(getProject()),
+						getProject().findMember(oldSrcGenPath).getFullPath());
+			} catch (JavaModelException e) {
+				IdePlugin.logError(
+						"Error while removing old source dir classpath entry.", //$NON-NLS-1$
+						e);
+			}
+		}
+		Job job = new Job(Messages.ExecutableModelPropertiesPage_clean_job_name) {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					getProject().build(IncrementalProjectBuilder.FULL_BUILD,
+							monitor);
+				} catch (CoreException e) {
+					IdePlugin
+							.logError(
+									"Error while building project after a directory had been changed.", //$NON-NLS-1$
+									e);
+					return Status.CANCEL_STATUS;
+				}
+				return Status.OK_STATUS;
+			}
+
+		};
+		job.setUser(true);
+		job.schedule();
+
 		try {
 			getPreferences().flush();
 		} catch (BackingStoreException e) {

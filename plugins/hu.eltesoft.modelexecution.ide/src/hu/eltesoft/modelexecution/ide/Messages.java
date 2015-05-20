@@ -26,6 +26,7 @@ public class Messages extends NLS {
 	public static String ExecutableModelProjectWizard_create_new_project_error_title;
 	public static String ExecutableModelProjectWizard_create_new_project_name;
 	public static String ExecutableModelProjectWizard_create_new_project_title;
+	public static String ExecutableModelPropertiesPage_clean_job_name;
 	public static String ExecutableModelPropertiesPage_debug_files_button;
 	public static String ExecutableModelPropertiesPage_debug_files_dialog_caption;
 	public static String ExecutableModelPropertiesPage_debug_files_label;

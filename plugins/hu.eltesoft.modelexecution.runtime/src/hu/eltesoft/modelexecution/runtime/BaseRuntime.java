@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.base.Class;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
@@ -43,7 +43,7 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void addEventToQueue(Class target, Message message) {
+	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
 		queue.add(targetedEvent);
 		logger.messageQueued(target, message);
@@ -86,19 +86,19 @@ public abstract class BaseRuntime implements Runtime {
 			InvocationTargetException {
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
-		Class classInstance = (Class) constructor.newInstance(this);
+		ClassWithState classInstance = (ClassWithState) constructor.newInstance(this);
 		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
 	}
 
 	@Override
-	public void logMessageQueued(Class target, Message event) {
+	public void logMessageQueued(ClassWithState target, Message event) {
 		logger.messageQueued(target, event);
 	}
 
 	@Override
-	public void logMessageDispatched(Class target, Message event) {
+	public void logMessageDispatched(ClassWithState target, Message event) {
 		logger.messageDispatched(target, event);
 	}
 

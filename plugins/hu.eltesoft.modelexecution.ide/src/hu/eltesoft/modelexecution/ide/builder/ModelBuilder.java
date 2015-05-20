@@ -185,8 +185,8 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		if (listenerInterface.translators.containsKey(resource)) {
 			ChangeListenerM2MTranslator translator = listenerInterface.translators
 					.get(resource);
-			rebuild.addAll(fullBuild ? translator.rebuild() : translator
-					.fullBuild());
+			rebuild.addAll(fullBuild ? translator.fullBuild() : translator
+					.rebuild());
 		} else {
 			try {
 				// reads the model resource when it isn't open in an editor

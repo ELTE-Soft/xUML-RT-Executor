@@ -8,10 +8,10 @@ import org.eclipse.emf.ecore.EObject;
 public abstract class AbstractGenerator<S extends EObject, R extends ModelRoot>
 		implements Generator<S, R> {
 
-	protected final TextChangesListener listener;
+	protected final TextChangesListener textChangesListener;
 
 	public AbstractGenerator(TextChangesListener listener) {
-		this.listener = listener;
+		this.textChangesListener = listener;
 	}
 
 	protected void check(boolean success) throws GenerationException {

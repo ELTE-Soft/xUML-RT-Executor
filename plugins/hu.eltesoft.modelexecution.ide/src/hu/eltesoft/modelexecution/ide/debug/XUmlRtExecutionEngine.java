@@ -4,6 +4,9 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -25,7 +28,6 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
-import org.eclipse.papyrus.moka.communication.event.iterminate.Terminate_Event;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -34,9 +36,9 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
+import org.eclipse.uml2.uml.NamedElement;
 
 import com.sun.jdi.ReferenceType;
-import com.sun.jdi.VMDisconnectedException;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.VMDeathEvent;
@@ -48,7 +50,7 @@ import com.sun.jdi.event.VMStartEvent;
  */
 @SuppressWarnings("restriction")
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
-		IExecutionEngine, VMEventListener {
+		IExecutionEngine, VirtualMachineListener {
 
 	private static final String DEBUG_TARGET_NAME = "xUML-Rt Model";
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
@@ -65,7 +67,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private BreakpointRegistry breakpoints;
 	private VirtualMachineManager virtualMachine;
 
+	// access must be synchronized to intrinsic lock of "animation"!
 	private boolean waitingForSuspend = false;
+
+	private MokaThread[] threads;
 
 	@Override
 	public void init(EObject eObjectToExecute, String[] args,
@@ -93,7 +98,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		breakpoints = new BreakpointRegistry();
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
-		virtualMachine.addVMEventListener(this);
+		virtualMachine.addEventListener(this);
 	}
 
 	@Override
@@ -118,12 +123,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void handleVMDisconnect(VMDisconnectEvent event) {
-		terminateEngine();
+		try {
+			// force the debug target to send a termination request,
+			// which will be handled by the terminate method below
+			debugTarget.terminate();
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while terminating debug target", e);
+		}
 	}
 
 	@Override
 	public void handleVMDeath(VMDeathEvent event) {
-		terminateEngine();
+		// intentionally left blank
+		// this is an optional notification before a disconnect event
 	}
 
 	@Override
@@ -151,43 +163,55 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
+		animation.cancelAnimationTimer();
+		animation.removeAllMarkers();
+
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
 		EObject modelElement = reference.resolve(resourceSet);
 
-		boolean mustBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
-		if (mustBreak || waitingForSuspend) {
-			markThreadAsSuspended(modelElement);
+		boolean hasBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
+		if (suspendIfWaitingOrHasBreak(modelElement, hasBreak)) {
 			return ThreadAction.RemainSuspended;
 		}
 
 		if (animation.getAnimate()) {
 			animation.setAnimationMarker(modelElement);
-			animation.suspendForAnimation(new TimerTask() {
+			animation.startAnimationTimer(new TimerTask() {
 
 				@Override
 				public void run() {
-					synchronized (animation) {
-						animation.removeAnimationMarker();
-
-						if (waitingForSuspend) {
-							markThreadAsSuspended(modelElement);
-						} else {
-							try {
-								virtualMachine.resume();
-							} catch (VMDisconnectedException e) {
-								// intentionally left blank
-								// the vm was stopped during the timer
-							}
-						}
+					if (!suspendIfWaitingOrHasBreak(modelElement, false)) {
+						virtualMachine.resume();
 					}
 				}
 			});
 			return ThreadAction.RemainSuspended;
 		}
 
-		animation.removeAllMarkers();
 		return ThreadAction.ShouldResume;
+	}
+
+	/**
+	 * Suspends the current thread if there was a user-defined breakpoint here
+	 * or a previous suspension request was waiting for the next JDI breakpoint.
+	 * 
+	 * @param modelElement
+	 *            the current element under the breakpoint
+	 * @param hasBreak
+	 *            whether there is a user-defined breakpoint on the element
+	 * @return true when the thread has to remain in a suspended state
+	 */
+	private boolean suspendIfWaitingOrHasBreak(EObject modelElement,
+			boolean hasBreak) {
+		synchronized (animation) {
+			if (waitingForSuspend || hasBreak) {
+				markThreadAsSuspended(modelElement);
+				waitingForSuspend = false;
+				return true;
+			}
+			return false;
+		}
 	}
 
 	/**
@@ -200,21 +224,23 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		try {
-			// suspend just the first and only thread for now
-			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
-			// causes debug target to be suspended
-			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
-					: DebugEvent.BREAKPOINT;
-			sendEvent(new Suspend_Event(mokaThread, eventCode,
-					new MokaThread[] { mokaThread }));
-			// causes thread to be suspended
-			mokaThread.setSuspended(true);
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while marking thread as suspended", e);
-		}
+		// suspend just the first and only thread for now
+		MokaThread thread = (MokaThread) getThreads()[0];
 
-		waitingForSuspend = false;
+		// show the current element as a stack frame
+		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget,
+				(NamedElement) modelElement);
+		frame.setThread(thread);
+		thread.setStackFrames(new IStackFrame[] { frame });
+
+		// causes debug target to be suspended
+		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
+				: DebugEvent.BREAKPOINT;
+		sendEvent(new Suspend_Event(thread, eventCode,
+				new MokaThread[] { thread }));
+
+		// causes thread to be suspended
+		thread.setSuspended(true);
 	}
 
 	@Override
@@ -222,11 +248,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		synchronized (animation) {
 			waitingForSuspend = false;
 			virtualMachine.resume();
-		}
 
-		if (DebugEvent.CLIENT_REQUEST != request.getResumeDetail()) {
-			// this is a stepping request, just suspend again
-			suspend(null);
+			if (DebugEvent.CLIENT_REQUEST != request.getResumeDetail()) {
+				// this is a stepping request, just suspend again
+				suspend(null);
+			}
 		}
 	}
 
@@ -236,56 +262,42 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			// this stops at the next breakpoint in the handler
 			waitingForSuspend = true;
 
-			if (!animation.getAnimate()) {
-				return;
-			}
-
-			// stop the animation timer and run its ending task immediately
-			animation.stopSuspendingForAnimation();
+			// end the current animation immediately
+			animation.fireAnimationTimer();
 		}
 	}
 
 	@Override
 	public void terminate(Terminate_Request request) {
-		performShutdown();
 		try {
+			// if the machine is already terminated,
+			// it will not indicate a disconnect event
 			virtualMachine.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}
-	}
 
-	private void performShutdown() {
-		setIsTerminated(true);
+		// clear only after the machine's event queue is surely stopped
 		animation.removeAllMarkers();
-	}
 
-	// TODO: clean up termination logic
-	private void terminateEngine() {
-		try {
-			// terminate just the first and only thread for now
-			MokaThread mokaThread = (MokaThread) debugTarget.getThreads()[0];
-			// causes debug target to be terminated
-			sendEvent(new Terminate_Event(mokaThread,	
-					new MokaThread[] { mokaThread }));
-			
-			debugTarget.terminate();
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while sending terminate notification", e);
-		}
+		// execution engine will send out the termination event automatically
+		setIsTerminated(true);
 	}
 
 	@Override
 	public void disconnect() {
-		performShutdown();
-		virtualMachine.disconnect();
+		// intentionally left blank
+		// disconnect command is disabled by default in the Moka debug target
 	}
 
 	@Override
 	public MokaThread[] getThreads() {
-		MokaThread thread = new MokaThread(debugTarget);
-		thread.setName("Default component");
-		return new MokaThread[] { thread };
+		if (null == threads) {
+			XUmlRtThread thread = new XUmlRtThread(debugTarget);
+			thread.setName("Default component");
+			threads = new MokaThread[] { thread };
+		}
+		return threads;
 	}
 
 	@Override

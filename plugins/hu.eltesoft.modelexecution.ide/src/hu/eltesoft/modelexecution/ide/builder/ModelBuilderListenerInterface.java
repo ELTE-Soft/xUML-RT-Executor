@@ -104,6 +104,7 @@ public class ModelBuilderListenerInterface {
 			ChangeListenerM2MTranslator translator = translatorFactory
 					.createTranslator(engine, textChangesListener);
 			translators.put(resource, translator);
+			translator.activateListeners(true);
 			translatorsFromEmfRes.put(res, translator);
 		} catch (IncQueryException e) {
 			IdePlugin.logError("IncQuery engine could not be created.", e); //$NON-NLS-1$

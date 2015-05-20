@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.VMEventListener.ThreadAction;
+import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
 import hu.eltesoft.modelexecution.ide.launch.BackgroundJavaLauncher.BackgroundJavaProcess;
 
 import java.util.LinkedList;
@@ -22,7 +22,6 @@ import com.sun.jdi.event.VMDeathEvent;
 import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 import com.sun.jdi.request.BreakpointRequest;
-import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.EventRequestManager;
 
@@ -33,7 +32,9 @@ public class VirtualMachineManager implements ITerminate {
 	private VirtualMachine virtualMachine;
 	private BackgroundJavaProcess javaProcess;
 
-	private List<VMEventListener> vmEventListeners = new LinkedList<>();
+	private List<VirtualMachineListener> eventListeners = new LinkedList<>();
+	private boolean eventsEnabled;
+	private boolean disconnectFired;
 
 	public VirtualMachineManager(ILaunch launch) {
 		javaProcess = getJavaProcess(launch);
@@ -55,15 +56,22 @@ public class VirtualMachineManager implements ITerminate {
 		return null;
 	}
 
-	public void addVMEventListener(VMEventListener listener) {
-		if (vmEventListeners.contains(listener)) {
+	public void addEventListener(VirtualMachineListener listener) {
+		if (eventListeners.contains(listener)) {
 			return;
 		}
-		vmEventListeners.add(listener);
+		eventListeners.add(listener);
+		enableEvents();
+	}
 
-		// enable class prepare requests
+	private void enableEvents() {
+		if (eventsEnabled) {
+			return;
+		}
+		eventsEnabled = true;
+
 		EventRequestManager manager = virtualMachine.eventRequestManager();
-		ClassPrepareRequest request = manager.createClassPrepareRequest();
+		EventRequest request = manager.createClassPrepareRequest();
 		request.setSuspendPolicy(EventRequest.SUSPEND_ALL);
 		request.enable();
 	}
@@ -106,7 +114,11 @@ public class VirtualMachineManager implements ITerminate {
 						}
 					}
 				} catch (VMDisconnectedException e) {
-					// vm is terminated
+					// This is a workaround for a bug in JDI.
+					// https://bugs.openjdk.java.net/browse/JDK-4425852
+					fireVMDisconnectEvent(null);
+					// stop on vm disconnect
+					stop();
 				} catch (Exception e) {
 					IdePlugin.logError(
 							"Exception while processing VirtualMachine events",
@@ -119,12 +131,10 @@ public class VirtualMachineManager implements ITerminate {
 					fireVMStartEvent((VMStartEvent) event);
 				} else if (event instanceof VMDisconnectEvent) {
 					fireVMDisconnectEvent((VMDisconnectEvent) event);
-					// stop on vm disconnect (not always received)
+					// stop on vm disconnect
 					stop();
 				} else if (event instanceof VMDeathEvent) {
 					fireVMDeathEvent((VMDeathEvent) event);
-					// stop on vm death (not always received)
-					stop();
 				} else if (event instanceof ClassPrepareEvent) {
 					fireClassPrepareEvent((ClassPrepareEvent) event);
 					shouldResume = true;
@@ -136,24 +146,38 @@ public class VirtualMachineManager implements ITerminate {
 	}
 
 	private void fireVMStartEvent(VMStartEvent event) {
-		vmEventListeners.forEach(l -> l.handleVMStart(event));
+		eventListeners.forEach(l -> l.handleVMStart(event));
 	}
 
 	private void fireVMDisconnectEvent(VMDisconnectEvent event) {
-		vmEventListeners.forEach(l -> l.handleVMDisconnect(event));
+		// Notification of listeners is guarded as they should get this event
+		// only once. However, when JDI works as is should, it will be called
+		// twice: once from the event listener and once from the exception
+		// handler.
+		if (!disconnectFired) {
+			eventListeners.forEach(l -> l.handleVMDisconnect(event));
+			disconnectFired = true;
+
+			// notify termination of the associated Java process
+			try {
+				javaProcess.terminate();
+			} catch (DebugException e) {
+				// suppress any process termination failure
+			}
+		}
 	}
 
 	private void fireVMDeathEvent(VMDeathEvent event) {
-		vmEventListeners.forEach(l -> l.handleVMDeath(event));
+		eventListeners.forEach(l -> l.handleVMDeath(event));
 	}
 
 	private void fireClassPrepareEvent(ClassPrepareEvent event) {
-		vmEventListeners.forEach(l -> l.handleClassPrepare(event));
+		eventListeners.forEach(l -> l.handleClassPrepare(event));
 	}
 
 	protected boolean fireBreakpointEvent(BreakpointEvent event) {
 		ThreadAction action = ThreadAction.ShouldResume;
-		for (VMEventListener listener : vmEventListeners) {
+		for (VirtualMachineListener listener : eventListeners) {
 			action = action.merge(listener.handleBreakpoint(event));
 		}
 		return action.shouldResume();
@@ -172,7 +196,7 @@ public class VirtualMachineManager implements ITerminate {
 	@Override
 	public void terminate() throws DebugException {
 		virtualMachine.dispose();
-		javaProcess.terminate();
+		// the Java process will be terminated by the disconnect event of the vm
 	}
 
 	public void resume() {

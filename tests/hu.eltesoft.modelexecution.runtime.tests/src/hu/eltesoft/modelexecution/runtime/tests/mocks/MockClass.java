@@ -1,18 +1,18 @@
 package hu.eltesoft.modelexecution.runtime.tests.mocks;
 
 import hu.eltesoft.modelexecution.runtime.Runtime;
-import hu.eltesoft.modelexecution.runtime.base.Class;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class MockClass extends Class {
+public class MockClass extends ClassWithState {
 
 	private Runtime runtime;
 
 	public MockClass(Runtime runtime) {
-		super(runtime, "MockClass");
+		super(runtime);
 		this.runtime = runtime;
 		instance = this;
 	}

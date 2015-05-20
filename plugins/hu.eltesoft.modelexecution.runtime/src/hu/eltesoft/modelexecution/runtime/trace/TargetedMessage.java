@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
-import hu.eltesoft.modelexecution.runtime.base.Class;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,13 +18,13 @@ public class TargetedMessage {
 	private Message message;
 	private boolean fromOutside = false;
 
-	public TargetedMessage(Class target, Message message) {
+	public TargetedMessage(ClassWithState target, Message message) {
 		super();
 		this.targetClass = target.getClass();
 		this.message = message;
 	}
 
-	public static TargetedMessage createOutsideEvent(Class target, Message message) {
+	public static TargetedMessage createOutsideEvent(ClassWithState target, Message message) {
 		TargetedMessage ret = new TargetedMessage(target, message);
 		ret.fromOutside = true;
 		return ret;
@@ -42,10 +42,10 @@ public class TargetedMessage {
 	 * Get the target of the targeted event. Works after the event had been
 	 * serialized.
 	 */
-	public Class getTarget() {
-		Class instance;
+	public ClassWithState getTarget() {
+		ClassWithState instance;
 		try {
-			instance = (Class) targetClass.getMethod("getInstance")
+			instance = (ClassWithState) targetClass.getMethod("getInstance")
 					.invoke(null);
 			if (instance == null) {
 				throw new RuntimeException(

@@ -45,14 +45,19 @@ public class ChangeRegistryImpl implements ChangeRegistry {
 	@Override
 	public FileUpdateTaskQueue performAllChanges() {
 		FileUpdateTaskQueue taskQueue = deletions.asQueue();
-		deletions.clear();
 
 		modifications.performAll(taskQueue);
-		modifications.clear();
 
+		clear();
+		
 		return taskQueue;
 	}
 
+	@Override
+	public void clear() {
+		deletions.clear();
+		modifications.clear();
+	}
 	@Override
 	public void setContainerName(EObject modelElement, String rootName) {
 		qualifiedNameMap.put(modelElement, rootName);
@@ -62,5 +67,4 @@ public class ChangeRegistryImpl implements ChangeRegistry {
 	public String getContainerName(EObject modelElement) {
 		return qualifiedNameMap.get(modelElement);
 	}
-
 }
