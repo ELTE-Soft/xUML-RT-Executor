@@ -19,7 +19,7 @@ class SignalTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(signal.name)»
+		«generatedHeader(signal.originalName)»
 		public class «signal.name» extends «Signal.canonicalName» {
 		
 			public «signal.name»() {

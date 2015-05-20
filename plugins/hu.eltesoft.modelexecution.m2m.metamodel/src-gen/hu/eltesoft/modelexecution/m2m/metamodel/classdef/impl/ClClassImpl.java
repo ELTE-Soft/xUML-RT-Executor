@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -29,7 +30,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
@@ -40,24 +41,24 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getRegion() <em>Region</em>}' reference.
@@ -113,8 +114,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -122,11 +123,11 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -199,8 +200,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__NAME:
-				return getName();
+			case ClassdefPackage.CL_CLASS__REFERENCE:
+				return getReference();
 			case ClassdefPackage.CL_CLASS__REGION:
 				if (resolve) return getRegion();
 				return basicGetRegion();
@@ -221,8 +222,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__NAME:
-				setName((String)newValue);
+			case ClassdefPackage.CL_CLASS__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion((ClRegion)newValue);
@@ -247,8 +248,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__NAME:
-				setName(NAME_EDEFAULT);
+			case ClassdefPackage.CL_CLASS__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion((ClRegion)null);
@@ -271,8 +272,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case ClassdefPackage.CL_CLASS__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_CLASS__REGION:
 				return region != null;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
@@ -293,8 +294,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (reference: ");
+		result.append(reference);
 		result.append(')');
 		return result.toString();
 	}

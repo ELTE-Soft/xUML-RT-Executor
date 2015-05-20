@@ -2,28 +2,18 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
-
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
-
-import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -33,7 +23,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getName <em>Name</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getEntry <em>Entry</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getExit <em>Exit</em>}</li>
@@ -45,26 +34,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -72,7 +41,7 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Reference REFERENCE_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
@@ -82,7 +51,7 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * @generated
 	 * @ordered
 	 */
-	protected Reference reference = REFERENCE_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' reference.
@@ -138,28 +107,7 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Reference getReference() {
+	public NamedReference getReference() {
 		return reference;
 	}
 
@@ -168,8 +116,8 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReference(Reference newReference) {
-		Reference oldReference = reference;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__REFERENCE, oldReference, reference));
@@ -271,8 +219,6 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__NAME:
-				return getName();
 			case RegionPackage.RG_STATE__REFERENCE:
 				return getReference();
 			case RegionPackage.RG_STATE__ENTRY:
@@ -296,11 +242,8 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__NAME:
-				setName((String)newValue);
-				return;
 			case RegionPackage.RG_STATE__REFERENCE:
-				setReference((Reference)newValue);
+				setReference((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_STATE__ENTRY:
 				setEntry((RgBehavior)newValue);
@@ -324,9 +267,6 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case RegionPackage.RG_STATE__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
@@ -351,8 +291,6 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_STATE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case RegionPackage.RG_STATE__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_STATE__ENTRY:
@@ -371,45 +309,11 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Referenced.class) {
-			switch (derivedFeatureID) {
-				case RegionPackage.RG_STATE__REFERENCE: return BasePackage.REFERENCED__REFERENCE;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Referenced.class) {
-			switch (baseFeatureID) {
-				case BasePackage.REFERENCED__REFERENCE: return RegionPackage.RG_STATE__REFERENCE;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", reference: ");
+		result.append(" (reference: ");
 		result.append(reference);
 		result.append(')');
 		return result.toString();

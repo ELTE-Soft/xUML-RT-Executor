@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.ide.debug.util;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2t.java.StateQualifiers;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier;
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
@@ -33,8 +34,9 @@ public class ModelUtils {
 	}
 
 	public static String getContainerName(EObject modelElement) {
-		EObject container = getContainer(modelElement);
-		return ((NamedElement) container).getName();
+		NamedElement container = (NamedElement) getContainer(modelElement);
+		return new NamedReference(container, container.getName())
+				.getNewIdentifier();
 	}
 
 	public static EObject getContainer(EObject modelElement) {

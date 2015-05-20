@@ -47,12 +47,12 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","state","exitName");
+    return Arrays.asList("region","state","exit","exitName");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"),new PParameter("exitName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"),new PParameter("exit", "org.eclipse.uml2.uml.Behavior"),new PParameter("exitName", "java.lang.String"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
   
   @Override
   public ExitMatch newMatch(final Object... parameters) {
-    return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (java.lang.String) parameters[2]);
+    return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2], (java.lang.String) parameters[3]);
   }
   
   @Override
@@ -72,13 +72,15 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_state = body.getOrCreateVariableByName("state");
-      PVariable var_exitName = body.getOrCreateVariableByName("exitName");
       PVariable var_exit = body.getOrCreateVariableByName("exit");
+      PVariable var_exitName = body.getOrCreateVariableByName("exitName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
         new ExportedParameter(body, var_state, "state"), 
+        new ExportedParameter(body, var_exit, "exit"), 
         new ExportedParameter(body, var_exitName, "exitName")
       ));
+      
       
       
       

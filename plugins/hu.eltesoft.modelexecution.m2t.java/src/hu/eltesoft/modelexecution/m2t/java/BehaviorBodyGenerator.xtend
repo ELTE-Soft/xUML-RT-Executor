@@ -2,17 +2,20 @@ package hu.eltesoft.modelexecution.m2t.java
 
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
+import hu.eltesoft.modelexecution.uml.alf.ModelReferences
 import org.eclipse.papyrus.uml.alf.BehaviorInvocationExpression
 import org.eclipse.papyrus.uml.alf.Block
 import org.eclipse.papyrus.uml.alf.BlockStatement
 import org.eclipse.papyrus.uml.alf.ExpressionStatement
 import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
+import org.eclipse.papyrus.uml.alf.InvocationExpression
 import org.eclipse.papyrus.uml.alf.NameBinding
 import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
-import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 
 /**
  * Generates an operation body written in Alf to Java code by implementing an
@@ -23,14 +26,16 @@ class BehaviorBodyGenerator {
 	public static val CONTEXT_NAME = "context"
 
 	var SmapStringConcatenation builder
+	var ModelReferences references
 
 	/**
 	 * Compile the specified operation body code to Java source code. The output
 	 * code will be returned along with its source mapping information.
 	 */
-	def SourceMappedText generate(SyntaxElement astRoot) {
+	def SourceMappedText generate(AlfAnalyzerResult result) {
+		references = result.references
 		builder = new SmapStringConcatenation(Languages.ALF)
-		visit(astRoot)
+		visit(result.astRoot)
 		return builder.toSourceMappedText
 	}
 
@@ -57,7 +62,7 @@ class BehaviorBodyGenerator {
 		val feature = call.target
 		visit(feature.expression)
 		builder.append(".")
-		builder.append(toJavaName(feature.nameBinding))
+		builder.append(toJavaName(call))
 		visit(call.tuple)
 	}
 
@@ -67,7 +72,7 @@ class BehaviorBodyGenerator {
 	private def dispatch void visit(BehaviorInvocationExpression call) {
 		builder.append(CONTEXT_NAME)
 		builder.append(".")
-		builder.append(toJavaName(call.target))
+		builder.append(toJavaName(call))
 		visit(call.tuple)
 	}
 
@@ -86,4 +91,9 @@ class BehaviorBodyGenerator {
 	private def toJavaName(NameBinding binding) '''«binding.name»'''
 
 	private def toJavaName(QualifiedName qname) '''«FOR binding : qname.nameBinding SEPARATOR '.'»«toJavaName(binding)»«ENDFOR»'''
+
+	private def toJavaName(InvocationExpression call) {
+		var reception = references.getInvokedReception(call)
+		return new NamedReference(reception).newIdentifier
+	}
 }

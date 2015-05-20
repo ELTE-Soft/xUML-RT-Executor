@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
@@ -52,7 +53,7 @@ public class SignalGenerator extends AbstractGenerator<Signal, SgSignal> {
 			@Override
 			public void process(Signal pSignal, String pSignalName) {
 				// name
-				root.setName(pSignalName);
+				root.setReference(new NamedReference(pSignal, pSignalName));
 			}
 
 		};
@@ -67,49 +68,52 @@ public class SignalGenerator extends AbstractGenerator<Signal, SgSignal> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getReference()
+				.getNewIdentifier(), output, symbols);
 	}
 
 	// add match update listeners
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(AdvancedIncQueryEngine advancedEngine,
-			ChangeRegistry changeRegistry) {
+	public ReversionTask addMatchUpdateListeners(
+			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
 
 		return new ReversionTask() {
 
 			private final IMatchUpdateListener<SignalMatch> signalListener;
 
 			{ // set signalListener
-					signalListener = new IMatchUpdateListener<SignalMatch>() {
+				signalListener = new IMatchUpdateListener<SignalMatch>() {
 
-						@Override
-						public void notifyAppearance(SignalMatch match) {
-							changeRegistry.newModification(match.getSignal(),
-									SignalGenerator.this);
-						}
+					@Override
+					public void notifyAppearance(SignalMatch match) {
+						changeRegistry.newModification(match.getSignal(),
+								SignalGenerator.this);
+					}
 
-						@Override
-						public void notifyDisappearance(SignalMatch match) {
-							// disappearance of root: delete file
-							changeRegistry.newDeletion(match.getSignalName());
-						}
+					@Override
+					public void notifyDisappearance(SignalMatch match) {
+						// disappearance of root: delete file
+						changeRegistry.newDeletion(match.getSignalName());
+					}
 
-					};
+				};
 
-					advancedEngine.addMatchUpdateListener(signalMatcher, signalListener, false);
+				advancedEngine.addMatchUpdateListener(signalMatcher,
+						signalListener, false);
 			}
 
 			@Override
 			public boolean revert() {
-				
-				advancedEngine.removeMatchUpdateListener(signalMatcher, signalListener);
-				
+
+				advancedEngine.removeMatchUpdateListener(signalMatcher,
+						signalListener);
+
 				return true;
 			}
 
 		};
-		
+
 	}
 
 }

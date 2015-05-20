@@ -8,7 +8,7 @@ pattern Cls(cls : Class, className) {
 	neg find IsStereotype(cls);
 }
 
-pattern RegionOfClass(cls : Class, regionName) {
+pattern RegionOfClass(cls : Class, region : Region, regionName) {
 	Class.ownedBehavior(cls, stateMachine);
 	StateMachine.region(stateMachine, region);
 	Region.name(region, regionName);
@@ -19,14 +19,15 @@ pattern Operation(cls : Class, operation : Operation, operationName) {
 	Operation.name(operation, operationName);
 }
 
-pattern Method(cls : Class, operation : Operation, methodName) {
+pattern Method(cls : Class, operation : Operation, method: Behavior, methodName) {
 	Class.ownedOperation(cls, operation);
 
 	Operation.method(operation, method);
 	Behavior.name(method, methodName);
 }
 
-pattern Reception(cls : Class, receptionName, signalName) {
+pattern
+Reception(cls : Class, reception : Reception, receptionName, signal : Signal, signalName) {
 	Class.ownedReception(cls, reception);
 	Reception.signal(reception, signal);
 	Reception.name(reception, receptionName);

@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.m2t.java;
 
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+import hu.eltesoft.modelexecution.uml.alf.ModelReferences;
 
 import org.eclipse.papyrus.uml.alf.SyntaxElement;
 import org.junit.Assert;
@@ -12,6 +14,8 @@ public class CompiledCodeCheckTestCase {
 
 	protected void assertCompilesTo(String alfCode, String javaCode) {
 		SyntaxElement alfASTRoot = analyzer.analyze(alfCode).getAstRoot();
-		Assert.assertEquals(javaCode, generator.generate(alfASTRoot).toString());
+		AlfAnalyzerResult result = new AlfAnalyzerResult(null, alfASTRoot,
+				new ModelReferences());
+		Assert.assertEquals(javaCode, generator.generate(result).toString());
 	}
 }

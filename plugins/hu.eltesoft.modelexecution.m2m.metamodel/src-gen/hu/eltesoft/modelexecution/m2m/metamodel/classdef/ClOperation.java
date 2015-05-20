@@ -22,29 +22,29 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  */
 public interface ClOperation extends Named {
 	/**
-	 * Returns the value of the '<em><b>Method</b></em>' attribute.
+	 * Returns the value of the '<em><b>Method</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Method</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Method</em>' attribute.
-	 * @see #setMethod(String)
+	 * @return the value of the '<em>Method</em>' reference.
+	 * @see #setMethod(ClMethod)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_Method()
 	 * @model
 	 * @generated
 	 */
-	String getMethod();
+	ClMethod getMethod();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}' attribute.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Method</em>' attribute.
+	 * @param value the new value of the '<em>Method</em>' reference.
 	 * @see #getMethod()
 	 * @generated
 	 */
-	void setMethod(String value);
+	void setMethod(ClMethod value);
 
 } // ClOperation

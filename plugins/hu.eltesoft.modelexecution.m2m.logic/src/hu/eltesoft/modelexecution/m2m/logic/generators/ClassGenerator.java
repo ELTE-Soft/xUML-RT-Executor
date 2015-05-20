@@ -3,7 +3,9 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClMethod;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion;
@@ -35,6 +37,9 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.Signal;
 
 public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 
@@ -69,7 +74,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 				getProcessorToSetNameOfRoot(root)));
 
 		// region
-		regionOfClassMatcher.forOneArbitraryMatch(source, null,
+		regionOfClassMatcher.forOneArbitraryMatch(source, null, null,
 				getProcessorToSetRegionOfRoot(root));
 
 		// operations
@@ -77,7 +82,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 				getProcessorToSetOperationsOfRoot(root.getOperations()));
 
 		// receptions
-		receptionMatcher.forEachMatch(source, null, null,
+		receptionMatcher.forEachMatch(source, null, null, null, null,
 				getProcessorToSetReceptionsOfRoot(root.getReceptions()));
 
 		return root;
@@ -88,7 +93,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 
 			@Override
 			public void process(Class pCls, String pClassName) {
-				root.setName(pClassName);
+				root.setReference(new NamedReference(pCls, pClassName));
 			}
 
 		};
@@ -98,12 +103,12 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		return new RegionOfClassProcessor() {
 
 			@Override
-			public void process(Class pCls, String pRegionName) {
+			public void process(Class pCls, Region pRegion, String pRegionName) {
 				// new ClRegion
 				ClRegion clRegion = FACTORY.createClRegion();
 
 				// name
-				clRegion.setName(pRegionName);
+				clRegion.setReference(new NamedReference(pRegion, pRegionName));
 
 				root.setRegion(clRegion);
 			}
@@ -122,11 +127,12 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 				ClOperation clOperation = FACTORY.createClOperation();
 
 				// name
-				clOperation.setName(pOperationName);
+				clOperation.setReference(new NamedReference(pOperation,
+						pOperationName));
 
 				// method
 				methodMatcher.forOneArbitraryMatch(null, pOperation, null,
-						getProcessorToSetMethodOfOperation(clOperation));
+						null, getProcessorToSetMethodOfOperation(clOperation));
 				// Method attribute is optional: if there is no match, the
 				// method was missing from the source model as well.
 
@@ -138,8 +144,21 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 				return new MethodProcessor() {
 					@Override
 					public void process(Class pCls, Operation pOperation,
+							org.eclipse.uml2.uml.Behavior pMethod,
 							String pMethodName) {
-						clOperation.setMethod(pMethodName);
+						clOperation
+								.setMethod(createMethod(pMethod, pMethodName));
+					}
+
+					private ClMethod createMethod(
+							org.eclipse.uml2.uml.Behavior method, String name) {
+						// new ClMethod
+						ClMethod clMethod = FACTORY.createClMethod();
+
+						// name
+						clMethod.setReference(new NamedReference(method, name));
+
+						return clMethod;
 					}
 				};
 			}
@@ -152,26 +171,27 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		return new ReceptionProcessor() {
 
 			@Override
-			public void process(Class pCls, String pReceptionName,
-					String pSignalName) {
+			public void process(Class pCls, Reception pReception,
+					String pReceptionName, Signal pSignal, String pSignalName) {
 				// new ClReception
 				ClReception clReception = FACTORY.createClReception();
 
 				// name
-				clReception.setName(pReceptionName);
+				clReception.setReference(new NamedReference(pReception,
+						pReceptionName));
 
 				// signal
-				clReception.setSignal(createSignal(pSignalName));
+				clReception.setSignal(createSignal(pSignal, pSignalName));
 
 				receptionsOfRoot.add(clReception);
 			}
 
-			private ClSignal createSignal(String name) {
+			private ClSignal createSignal(Signal signal, String name) {
 				// new ClSignal
 				ClSignal clSignal = FACTORY.createClSignal();
 
 				// name
-				clSignal.setName(name);
+				clSignal.setReference(new NamedReference(signal, name));
 
 				return clSignal;
 			}
@@ -188,7 +208,8 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getReference()
+				.getNewIdentifier(), output, symbols);
 	}
 
 	// add match update listener
@@ -268,7 +289,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 						operationListener, false);
 
 			}
-			
+
 			{ // set methodListener
 				methodListener = new IMatchUpdateListener<MethodMatch>() {
 

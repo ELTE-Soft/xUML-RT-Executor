@@ -68,13 +68,13 @@ public interface RegionPackage extends EPackage {
 	int RG_REGION = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_REGION__NAME = BasePackage.MODEL_ROOT__NAME;
+	int RG_REGION__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Container Class</b></em>' reference.
@@ -132,13 +132,13 @@ public interface RegionPackage extends EPackage {
 	int RG_CLASS = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_CLASS__NAME = BasePackage.NAMED__NAME;
+	int RG_CLASS__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Rg Class</em>' class.
@@ -169,22 +169,13 @@ public interface RegionPackage extends EPackage {
 	int RG_INITIAL_PSEUDOSTATE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_INITIAL_PSEUDOSTATE__NAME = BasePackage.NAMED__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_INITIAL_PSEUDOSTATE__REFERENCE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int RG_INITIAL_PSEUDOSTATE__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Initial Transition</b></em>' reference.
@@ -193,7 +184,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Rg Initial Pseudostate</em>' class.
@@ -202,7 +193,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_INITIAL_PSEUDOSTATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
+	int RG_INITIAL_PSEUDOSTATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Rg Initial Pseudostate</em>' class.
@@ -224,22 +215,13 @@ public interface RegionPackage extends EPackage {
 	int RG_STATE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RG_STATE__NAME = BasePackage.NAMED__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE__REFERENCE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int RG_STATE__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Entry</b></em>' reference.
@@ -248,7 +230,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE__ENTRY = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int RG_STATE__ENTRY = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Exit</b></em>' reference.
@@ -257,7 +239,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE__EXIT = BasePackage.NAMED_FEATURE_COUNT + 2;
+	int RG_STATE__EXIT = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Transitions</b></em>' reference list.
@@ -266,7 +248,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE__TRANSITIONS = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int RG_STATE__TRANSITIONS = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Rg State</em>' class.
@@ -275,7 +257,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
+	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Rg State</em>' class.
@@ -303,7 +285,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__REFERENCE = BasePackage.REFERENCED__REFERENCE;
+	int RG_TRANSITION__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Message</b></em>' containment reference.
@@ -312,7 +294,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__MESSAGE = BasePackage.REFERENCED_FEATURE_COUNT + 0;
+	int RG_TRANSITION__MESSAGE = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Effect</b></em>' reference.
@@ -321,7 +303,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__EFFECT = BasePackage.REFERENCED_FEATURE_COUNT + 1;
+	int RG_TRANSITION__EFFECT = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' reference.
@@ -330,7 +312,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__TARGET = BasePackage.REFERENCED_FEATURE_COUNT + 2;
+	int RG_TRANSITION__TARGET = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Event</b></em>' reference.
@@ -339,7 +321,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION__EVENT = BasePackage.REFERENCED_FEATURE_COUNT + 3;
+	int RG_TRANSITION__EVENT = BasePackage.NAMED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Rg Transition</em>' class.
@@ -348,7 +330,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION_FEATURE_COUNT = BasePackage.REFERENCED_FEATURE_COUNT + 4;
+	int RG_TRANSITION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Rg Transition</em>' class.
@@ -357,7 +339,7 @@ public interface RegionPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RG_TRANSITION_OPERATION_COUNT = BasePackage.REFERENCED_OPERATION_COUNT + 0;
+	int RG_TRANSITION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgMessageImpl <em>Rg Message</em>}' class.
@@ -370,13 +352,13 @@ public interface RegionPackage extends EPackage {
 	int RG_MESSAGE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_MESSAGE__NAME = BasePackage.NAMED__NAME;
+	int RG_MESSAGE__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Rg Message</em>' class.
@@ -407,13 +389,13 @@ public interface RegionPackage extends EPackage {
 	int RG_BEHAVIOR = 6;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_BEHAVIOR__NAME = BasePackage.NAMED__NAME;
+	int RG_BEHAVIOR__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Rg Behavior</em>' class.
@@ -445,13 +427,13 @@ public interface RegionPackage extends EPackage {
 	int RG_EVENT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_EVENT__NAME = BasePackage.NAMED__NAME;
+	int RG_EVENT__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Rg Event</em>' class.

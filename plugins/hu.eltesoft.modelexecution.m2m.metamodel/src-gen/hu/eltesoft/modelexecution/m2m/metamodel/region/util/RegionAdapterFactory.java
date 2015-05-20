@@ -4,16 +4,11 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.util;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -115,10 +110,6 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseModelRoot(ModelRoot object) {
 				return createModelRootAdapter();
-			}
-			@Override
-			public Adapter caseReferenced(Referenced object) {
-				return createReferencedAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -291,20 +282,6 @@ public class RegionAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createModelRootAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced
-	 * @generated
-	 */
-	public Adapter createReferencedAdapter() {
 		return null;
 	}
 

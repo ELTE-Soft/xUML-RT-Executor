@@ -7,21 +7,24 @@ pattern Behavior(behavior : Behavior, behaviorName) {
 	Behavior.name(behavior, behaviorName);
 }
 
-pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
+pattern
+ContainerClassOfBehavior(behavior : Behavior, containerClass : Class, containerClassName) {
 // operation
 	Operation.method(operation, behavior);
 
-	Class.ownedOperation(cls, operation);
-	Class.name(cls, containerClassName);
+	Class.ownedOperation(containerClass, operation);
+	Class.name(containerClass, containerClassName);
 } or {
 // entry
 	State.entry(state, behavior);
+	Class.name(containerClass, containerClassName);
 
 	find ContainerClassOfVertex(state, containerClassName);
 
 } or {
 // exit
 	State.exit(state, behavior);
+	Class.name(containerClass, containerClassName);
 
 	find ContainerClassOfVertex(state, containerClassName);
 
@@ -29,19 +32,23 @@ pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
 // effect
 	Transition.effect(transition, behavior);
 	Transition.container(transition, region);
+	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
+	find ContainerClassOfRegion(region, containerClass, containerClassName); // from region.eiq
 }
 
-pattern AlfCode(behavior : Behavior, alfCode) {
+pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
 	OpaqueBehavior.body(behavior, alfCode);
 	OpaqueBehavior.language(behavior, langName);
-	check (Utils.toLowerCase(langName).equals("alf"));
+	Class.name(containerClass, containerClassName);
+	find ContainerClassOfBehavior(behavior, containerClass, containerClassName);
+	check(Utils.toLowerCase(langName).equals("alf"));
 }
 
 private pattern ContainerClassOfVertex(vertex : Vertex, containerClassName) {
 	State.container(vertex, region);
+	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
+	find ContainerClassOfRegion(region, containerClass, containerClassName); // from region.eiq
 }
 

@@ -25,12 +25,15 @@ import org.eclipse.uml2.uml.Behavior;
 public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   private Behavior fBehavior;
   
+  private org.eclipse.uml2.uml.Class fContainerClass;
+  
   private String fContainerClassName;
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "containerClassName");
+  private static List<String> parameterNames = makeImmutableList("behavior", "containerClass", "containerClassName");
   
-  private ContainerClassOfBehaviorMatch(final Behavior pBehavior, final String pContainerClassName) {
+  private ContainerClassOfBehaviorMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
     this.fBehavior = pBehavior;
+    this.fContainerClass = pContainerClass;
     this.fContainerClassName = pContainerClassName;
     
   }
@@ -38,6 +41,7 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   @Override
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
+    if ("containerClass".equals(parameterName)) return this.fContainerClass;
     if ("containerClassName".equals(parameterName)) return this.fContainerClassName;
     return null;
     
@@ -45,6 +49,11 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   
   public Behavior getBehavior() {
     return this.fBehavior;
+    
+  }
+  
+  public org.eclipse.uml2.uml.Class getContainerClass() {
+    return this.fContainerClass;
     
   }
   
@@ -60,6 +69,10 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
     	this.fBehavior = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
+    if ("containerClass".equals(parameterName) ) {
+    	this.fContainerClass = (org.eclipse.uml2.uml.Class) newValue;
+    	return true;
+    }
     if ("containerClassName".equals(parameterName) ) {
     	this.fContainerClassName = (java.lang.String) newValue;
     	return true;
@@ -71,6 +84,12 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   public void setBehavior(final Behavior pBehavior) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fBehavior = pBehavior;
+    
+  }
+  
+  public void setContainerClass(final org.eclipse.uml2.uml.Class pContainerClass) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fContainerClass = pContainerClass;
     
   }
   
@@ -94,13 +113,13 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fContainerClassName};
+    return new Object[]{fBehavior, fContainerClass, fContainerClassName};
     
   }
   
   @Override
   public ContainerClassOfBehaviorMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fContainerClassName) : this;
+    return isMutable() ? newMatch(fBehavior, fContainerClass, fContainerClassName) : this;
     
   }
   
@@ -108,6 +127,7 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
+    result.append("\"containerClass\"=" + prettyPrintValue(fContainerClass) + ", ");
     result.append("\"containerClassName\"=" + prettyPrintValue(fContainerClassName));
     return result.toString();
     
@@ -118,6 +138,7 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
+    result = prime * result + ((fContainerClass == null) ? 0 : fContainerClass.hashCode());
     result = prime * result + ((fContainerClassName == null) ? 0 : fContainerClassName.hashCode());
     return result;
     
@@ -140,6 +161,8 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
     ContainerClassOfBehaviorMatch other = (ContainerClassOfBehaviorMatch) obj;
     if (fBehavior == null) {if (other.fBehavior != null) return false;}
     else if (!fBehavior.equals(other.fBehavior)) return false;
+    if (fContainerClass == null) {if (other.fContainerClass != null) return false;}
+    else if (!fContainerClass.equals(other.fContainerClass)) return false;
     if (fContainerClassName == null) {if (other.fContainerClassName != null) return false;}
     else if (!fContainerClassName.equals(other.fContainerClassName)) return false;
     return true;
@@ -164,7 +187,7 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
    * 
    */
   public static ContainerClassOfBehaviorMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -173,12 +196,13 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ContainerClassOfBehaviorMatch newMutableMatch(final Behavior pBehavior, final String pContainerClassName) {
-    return new Mutable(pBehavior, pContainerClassName);
+  public static ContainerClassOfBehaviorMatch newMutableMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return new Mutable(pBehavior, pContainerClass, pContainerClassName);
     
   }
   
@@ -187,18 +211,19 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ContainerClassOfBehaviorMatch newMatch(final Behavior pBehavior, final String pContainerClassName) {
-    return new Immutable(pBehavior, pContainerClassName);
+  public static ContainerClassOfBehaviorMatch newMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return new Immutable(pBehavior, pContainerClass, pContainerClassName);
     
   }
   
   private static final class Mutable extends ContainerClassOfBehaviorMatch {
-    Mutable(final Behavior pBehavior, final String pContainerClassName) {
-      super(pBehavior, pContainerClassName);
+    Mutable(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+      super(pBehavior, pContainerClass, pContainerClassName);
       
     }
     
@@ -209,8 +234,8 @@ public abstract class ContainerClassOfBehaviorMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ContainerClassOfBehaviorMatch {
-    Immutable(final Behavior pBehavior, final String pContainerClassName) {
-      super(pBehavior, pContainerClassName);
+    Immutable(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+      super(pBehavior, pContainerClass, pContainerClassName);
       
     }
     

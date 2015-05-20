@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
@@ -25,6 +26,7 @@ import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
+import org.eclipse.uml2.uml.Class;
 
 public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
@@ -57,10 +59,10 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
 		// containerClass
 		check(containerClassOfBehaviorMatcher.forOneArbitraryMatch(source,
-				null, getProcessorToSetContainerClassOfRoot(root)));
+				null, null, getProcessorToSetContainerClassOfRoot(root)));
 
 		// alfCode
-		if (!alfCodeMatcher.forOneArbitraryMatch(source, null,
+		if (!alfCodeMatcher.forOneArbitraryMatch(source, null, null,
 				getProcessorToSetAlfCodeOfRoot(root))) {
 
 			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
@@ -74,7 +76,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 
 			@Override
 			public void process(Behavior pBehavior, String pBehaviorName) {
-				root.setName(pBehaviorName);
+				root.setReference(new NamedReference(pBehavior, pBehaviorName));
 			}
 
 		};
@@ -85,16 +87,19 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		return new ContainerClassOfBehaviorProcessor() {
 
 			@Override
-			public void process(Behavior pBehavior, String pContainerClassName) {
-				root.setContainerClass(createContainerClass(pContainerClassName));
+			public void process(Behavior pBehavior, Class pContainerClass,
+					String pContainerClassName) {
+				root.setContainerClass(createContainerClass(pContainerClass,
+						pContainerClassName));
 			}
 
-			private BhClass createContainerClass(String name) {
+			private BhClass createContainerClass(Class containerClass,
+					String name) {
 				// new BhClass
 				BhClass bhClass = FACTORY.createBhClass();
 
 				// name
-				bhClass.setName(name);
+				bhClass.setReference(new NamedReference(containerClass, name));
 
 				return bhClass;
 			}
@@ -106,8 +111,10 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		return new AlfCodeProcessor() {
 
 			@Override
-			public void process(Behavior pBehavior, String pAlfCode) {
-				root.setAlfResult(new AlfAnalyzer().analyze(pAlfCode));
+			public void process(Behavior pBehavior, Class pContainerClass,
+					String pAlfCode) {
+				root.setAlfResult(new AlfAnalyzer().analyze(pAlfCode,
+						pContainerClass));
 			}
 
 		};
@@ -122,7 +129,8 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getReference()
+				.getNewIdentifier(), output, symbols);
 	}
 
 	// add match update listeners

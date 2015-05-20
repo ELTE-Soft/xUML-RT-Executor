@@ -28,21 +28,24 @@ import org.eclipse.uml2.uml.Behavior;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern ContainerClassOfBehavior(behavior : Behavior, containerClassName) {
+ * pattern
+ * ContainerClassOfBehavior(behavior : Behavior, containerClass : Class, containerClassName) {
  * // operation
  * 	Operation.method(operation, behavior);
  * 
- * 	Class.ownedOperation(cls, operation);
- * 	Class.name(cls, containerClassName);
+ * 	Class.ownedOperation(containerClass, operation);
+ * 	Class.name(containerClass, containerClassName);
  * } or {
  * // entry
  * 	State.entry(state, behavior);
+ * 	Class.name(containerClass, containerClassName);
  * 
  * 	find ContainerClassOfVertex(state, containerClassName);
  * 
  * } or {
  * // exit
  * 	State.exit(state, behavior);
+ * 	Class.name(containerClass, containerClassName);
  * 
  * 	find ContainerClassOfVertex(state, containerClassName);
  * 
@@ -50,8 +53,9 @@ import org.eclipse.uml2.uml.Behavior;
  * // effect
  * 	Transition.effect(transition, behavior);
  * 	Transition.container(transition, region);
+ * 	Class.name(containerClass, containerClassName);
  * 
- * 	find ContainerClassOfRegion(region, containerClassName); // from region.eiq
+ * 	find ContainerClassOfRegion(region, containerClass, containerClassName); // from region.eiq
  * }
  * </pre></code>
  * 
@@ -91,7 +95,9 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
   
   private final static int POSITION_BEHAVIOR = 0;
   
-  private final static int POSITION_CONTAINERCLASSNAME = 1;
+  private final static int POSITION_CONTAINERCLASS = 1;
+  
+  private final static int POSITION_CONTAINERCLASSNAME = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ContainerClassOfBehaviorMatcher.class);
   
@@ -129,71 +135,77 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return matches represented as a ContainerClassOfBehaviorMatch object.
    * 
    */
-  public Collection<ContainerClassOfBehaviorMatch> getAllMatches(final Behavior pBehavior, final String pContainerClassName) {
-    return rawGetAllMatches(new Object[]{pBehavior, pContainerClassName});
+  public Collection<ContainerClassOfBehaviorMatch> getAllMatches(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawGetAllMatches(new Object[]{pBehavior, pContainerClass, pContainerClassName});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return a match represented as a ContainerClassOfBehaviorMatch object, or null if no match is found.
    * 
    */
-  public ContainerClassOfBehaviorMatch getOneArbitraryMatch(final Behavior pBehavior, final String pContainerClassName) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pContainerClassName});
+  public ContainerClassOfBehaviorMatch getOneArbitraryMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pContainerClass, pContainerClassName});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior, final String pContainerClassName) {
-    return rawHasMatch(new Object[]{pBehavior, pContainerClassName});
+  public boolean hasMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawHasMatch(new Object[]{pBehavior, pContainerClass, pContainerClassName});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior, final String pContainerClassName) {
-    return rawCountMatches(new Object[]{pBehavior, pContainerClassName});
+  public int countMatches(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawCountMatches(new Object[]{pBehavior, pContainerClass, pContainerClassName});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfBehaviorMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior, pContainerClassName}, processor);
+  public void forEachMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfBehaviorMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior, pContainerClass, pContainerClassName}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfBehaviorMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior, pContainerClassName}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfBehaviorMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior, pContainerClass, pContainerClassName}, processor);
   }
   
   /**
@@ -204,14 +216,15 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ContainerClassOfBehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final String pContainerClassName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pContainerClassName});
+  public DeltaMonitor<ContainerClassOfBehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pContainerClass, pContainerClassName});
   }
   
   /**
@@ -219,12 +232,13 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ContainerClassOfBehaviorMatch newMatch(final Behavior pBehavior, final String pContainerClassName) {
-    return ContainerClassOfBehaviorMatch.newMatch(pBehavior, pContainerClassName);
+  public ContainerClassOfBehaviorMatch newMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return ContainerClassOfBehaviorMatch.newMatch(pBehavior, pContainerClass, pContainerClassName);
     
   }
   
@@ -262,8 +276,46 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Behavior> getAllValuesOfbehavior(final String pContainerClassName) {
-    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pContainerClassName});
+  public Set<Behavior> getAllValuesOfbehavior(final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pContainerClass, pContainerClassName});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<org.eclipse.uml2.uml.Class> rawAccumulateAllValuesOfcontainerClass(final Object[] parameters) {
+    Set<org.eclipse.uml2.uml.Class> results = new HashSet<org.eclipse.uml2.uml.Class>();
+    rawAccumulateAllValues(POSITION_CONTAINERCLASS, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass() {
+    return rawAccumulateAllValuesOfcontainerClass(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final ContainerClassOfBehaviorMatch partialMatch) {
+    return rawAccumulateAllValuesOfcontainerClass(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final Behavior pBehavior, final String pContainerClassName) {
+    return rawAccumulateAllValuesOfcontainerClass(new Object[]{pBehavior, null, pContainerClassName});
   }
   
   /**
@@ -300,14 +352,14 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfcontainerClassName(final Behavior pBehavior) {
-    return rawAccumulateAllValuesOfcontainerClassName(new Object[]{pBehavior, null});
+  public Set<String> getAllValuesOfcontainerClassName(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawAccumulateAllValuesOfcontainerClassName(new Object[]{pBehavior, pContainerClass, null});
   }
   
   @Override
   protected ContainerClassOfBehaviorMatch tupleToMatch(final Tuple t) {
     try {
-      return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (java.lang.String) t.get(POSITION_CONTAINERCLASSNAME));
+      return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Class) t.get(POSITION_CONTAINERCLASS), (java.lang.String) t.get(POSITION_CONTAINERCLASSNAME));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -318,7 +370,7 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
   @Override
   protected ContainerClassOfBehaviorMatch arrayToMatch(final Object[] match) {
     try {
-      return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
+      return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -329,7 +381,7 @@ public class ContainerClassOfBehaviorMatcher extends BaseMatcher<ContainerClassO
   @Override
   protected ContainerClassOfBehaviorMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ContainerClassOfBehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
+      return ContainerClassOfBehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -23,7 +23,7 @@ class ClassTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(classDefinition.name)»
+		«generatedHeader(classDefinition.originalName)»
 		«IF hasStateMachine»
 			«generateClassWithState()»
 		«ELSE»
@@ -41,9 +41,10 @@ class ClassTemplate extends Template {
 			public static «classDefinition.name» getInstance() {
 				return instance;
 			}
-					
+			
+			@Generated(value = { "«classDefinition.region.originalName»" })
 			«classDefinition.region.name» stateMachine = new «classDefinition.region.name»(this);
-					
+			
 			public «classDefinition.name»(«Runtime.canonicalName» runtime) {
 				super(runtime);
 				instance = this; // Only for Q1
@@ -53,14 +54,14 @@ class ClassTemplate extends Template {
 			public void init() {
 				stateMachine.doInitialTransition();
 			}
-					
+			
 			@Override
 			public void receive(«Message.canonicalName» message) {
 				stateMachine.step(message);
 			}
-					
+			
 			«generateReceptions()»
-					
+			
 			«generateOperations()»
 		}
 	'''
@@ -77,9 +78,10 @@ class ClassTemplate extends Template {
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
+			@Generated(value = { "«operation.originalName»" })
 			public void «operation.name»() {
 				«IF null != operation.method»
-					new «operation.method»(this).execute();
+					new «operation.method.name»(this).execute();
 				«ENDIF»
 			}
 		«ENDFOR»
@@ -87,6 +89,7 @@ class ClassTemplate extends Template {
 
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
+			@Generated(value = { "«reception.originalName»" })
 			public void «reception.name»() {
 				getRuntime().addEventToQueue(this, new «reception.signal.name»());
 			}

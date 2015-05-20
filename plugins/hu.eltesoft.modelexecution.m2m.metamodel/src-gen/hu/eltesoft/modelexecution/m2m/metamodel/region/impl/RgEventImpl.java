@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 
@@ -19,7 +20,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgEventImpl#getReference <em>Reference</em>}</li>
  * </ul>
  * </p>
  *
@@ -27,24 +28,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -70,8 +71,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -79,11 +80,11 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_EVENT__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_EVENT__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -94,8 +95,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
-				return getName();
+			case RegionPackage.RG_EVENT__REFERENCE:
+				return getReference();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -108,8 +109,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
-				setName((String)newValue);
+			case RegionPackage.RG_EVENT__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,8 +124,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
-				setName(NAME_EDEFAULT);
+			case RegionPackage.RG_EVENT__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -138,8 +139,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_EVENT__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case RegionPackage.RG_EVENT__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -154,8 +155,8 @@ public class RgEventImpl extends MinimalEObjectImpl.Container implements RgEvent
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (reference: ");
+		result.append(reference);
 		result.append(')');
 		return result.toString();
 	}

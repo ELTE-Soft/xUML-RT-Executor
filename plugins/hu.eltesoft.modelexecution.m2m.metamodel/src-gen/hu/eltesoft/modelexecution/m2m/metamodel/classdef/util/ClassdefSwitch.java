@@ -111,6 +111,14 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ClassdefPackage.CL_METHOD: {
+				ClMethod clMethod = (ClMethod)theEObject;
+				T result = caseClMethod(clMethod);
+				if (result == null) result = caseNamed(clMethod);
+				if (result == null) result = caseTranslationObject(clMethod);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -187,6 +195,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClSignal(ClSignal object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Method</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Method</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClMethod(ClMethod object) {
 		return null;
 	}
 

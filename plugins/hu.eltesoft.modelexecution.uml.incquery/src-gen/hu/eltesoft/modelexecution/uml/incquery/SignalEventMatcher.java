@@ -15,6 +15,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.SignalEvent;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.uml2.uml.SignalEvent;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern SignalEvent(event : SignalEvent, signalName) {
+ * pattern SignalEvent(event : SignalEvent, signal: Signal, signalName) {
  * 	SignalEvent.signal(event, signal);
  * 	Signal.name(signal, signalName);
  * }
@@ -70,7 +71,9 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
   
   private final static int POSITION_EVENT = 0;
   
-  private final static int POSITION_SIGNALNAME = 1;
+  private final static int POSITION_SIGNAL = 1;
+  
+  private final static int POSITION_SIGNALNAME = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(SignalEventMatcher.class);
   
@@ -108,71 +111,77 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return matches represented as a SignalEventMatch object.
    * 
    */
-  public Collection<SignalEventMatch> getAllMatches(final SignalEvent pEvent, final String pSignalName) {
-    return rawGetAllMatches(new Object[]{pEvent, pSignalName});
+  public Collection<SignalEventMatch> getAllMatches(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return rawGetAllMatches(new Object[]{pEvent, pSignal, pSignalName});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return a match represented as a SignalEventMatch object, or null if no match is found.
    * 
    */
-  public SignalEventMatch getOneArbitraryMatch(final SignalEvent pEvent, final String pSignalName) {
-    return rawGetOneArbitraryMatch(new Object[]{pEvent, pSignalName});
+  public SignalEventMatch getOneArbitraryMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return rawGetOneArbitraryMatch(new Object[]{pEvent, pSignal, pSignalName});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final SignalEvent pEvent, final String pSignalName) {
-    return rawHasMatch(new Object[]{pEvent, pSignalName});
+  public boolean hasMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return rawHasMatch(new Object[]{pEvent, pSignal, pSignalName});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final SignalEvent pEvent, final String pSignalName) {
-    return rawCountMatches(new Object[]{pEvent, pSignalName});
+  public int countMatches(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return rawCountMatches(new Object[]{pEvent, pSignal, pSignalName});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final SignalEvent pEvent, final String pSignalName, final IMatchProcessor<? super SignalEventMatch> processor) {
-    rawForEachMatch(new Object[]{pEvent, pSignalName}, processor);
+  public void forEachMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName, final IMatchProcessor<? super SignalEventMatch> processor) {
+    rawForEachMatch(new Object[]{pEvent, pSignal, pSignalName}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final SignalEvent pEvent, final String pSignalName, final IMatchProcessor<? super SignalEventMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pEvent, pSignalName}, processor);
+  public boolean forOneArbitraryMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName, final IMatchProcessor<? super SignalEventMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pEvent, pSignal, pSignalName}, processor);
   }
   
   /**
@@ -183,14 +192,15 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<SignalEventMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final SignalEvent pEvent, final String pSignalName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pEvent, pSignalName});
+  public DeltaMonitor<SignalEventMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pEvent, pSignal, pSignalName});
   }
   
   /**
@@ -198,12 +208,13 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public SignalEventMatch newMatch(final SignalEvent pEvent, final String pSignalName) {
-    return SignalEventMatch.newMatch(pEvent, pSignalName);
+  public SignalEventMatch newMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+    return SignalEventMatch.newMatch(pEvent, pSignal, pSignalName);
     
   }
   
@@ -241,8 +252,46 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<SignalEvent> getAllValuesOfevent(final String pSignalName) {
-    return rawAccumulateAllValuesOfevent(new Object[]{null, pSignalName});
+  public Set<SignalEvent> getAllValuesOfevent(final Signal pSignal, final String pSignalName) {
+    return rawAccumulateAllValuesOfevent(new Object[]{null, pSignal, pSignalName});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Signal> rawAccumulateAllValuesOfsignal(final Object[] parameters) {
+    Set<Signal> results = new HashSet<Signal>();
+    rawAccumulateAllValues(POSITION_SIGNAL, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal() {
+    return rawAccumulateAllValuesOfsignal(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal(final SignalEventMatch partialMatch) {
+    return rawAccumulateAllValuesOfsignal(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal(final SignalEvent pEvent, final String pSignalName) {
+    return rawAccumulateAllValuesOfsignal(new Object[]{pEvent, null, pSignalName});
   }
   
   /**
@@ -279,14 +328,14 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfsignalName(final SignalEvent pEvent) {
-    return rawAccumulateAllValuesOfsignalName(new Object[]{pEvent, null});
+  public Set<String> getAllValuesOfsignalName(final SignalEvent pEvent, final Signal pSignal) {
+    return rawAccumulateAllValuesOfsignalName(new Object[]{pEvent, pSignal, null});
   }
   
   @Override
   protected SignalEventMatch tupleToMatch(final Tuple t) {
     try {
-      return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) t.get(POSITION_EVENT), (java.lang.String) t.get(POSITION_SIGNALNAME));
+      return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) t.get(POSITION_EVENT), (org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_SIGNALNAME));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -297,7 +346,7 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
   @Override
   protected SignalEventMatch arrayToMatch(final Object[] match) {
     try {
-      return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) match[POSITION_EVENT], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) match[POSITION_EVENT], (org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_SIGNALNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -308,7 +357,7 @@ public class SignalEventMatcher extends BaseMatcher<SignalEventMatch> {
   @Override
   protected SignalEventMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return SignalEventMatch.newMutableMatch((org.eclipse.uml2.uml.SignalEvent) match[POSITION_EVENT], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return SignalEventMatch.newMutableMatch((org.eclipse.uml2.uml.SignalEvent) match[POSITION_EVENT], (org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_SIGNALNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -25,12 +25,15 @@ import org.eclipse.uml2.uml.Region;
 public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   private Region fRegion;
   
+  private org.eclipse.uml2.uml.Class fContainerClass;
+  
   private String fContainerClassName;
   
-  private static List<String> parameterNames = makeImmutableList("region", "containerClassName");
+  private static List<String> parameterNames = makeImmutableList("region", "containerClass", "containerClassName");
   
-  private ContainerClassOfRegionMatch(final Region pRegion, final String pContainerClassName) {
+  private ContainerClassOfRegionMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
     this.fRegion = pRegion;
+    this.fContainerClass = pContainerClass;
     this.fContainerClassName = pContainerClassName;
     
   }
@@ -38,6 +41,7 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   @Override
   public Object get(final String parameterName) {
     if ("region".equals(parameterName)) return this.fRegion;
+    if ("containerClass".equals(parameterName)) return this.fContainerClass;
     if ("containerClassName".equals(parameterName)) return this.fContainerClassName;
     return null;
     
@@ -45,6 +49,11 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   
   public Region getRegion() {
     return this.fRegion;
+    
+  }
+  
+  public org.eclipse.uml2.uml.Class getContainerClass() {
+    return this.fContainerClass;
     
   }
   
@@ -60,6 +69,10 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
     	this.fRegion = (org.eclipse.uml2.uml.Region) newValue;
     	return true;
     }
+    if ("containerClass".equals(parameterName) ) {
+    	this.fContainerClass = (org.eclipse.uml2.uml.Class) newValue;
+    	return true;
+    }
     if ("containerClassName".equals(parameterName) ) {
     	this.fContainerClassName = (java.lang.String) newValue;
     	return true;
@@ -71,6 +84,12 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   public void setRegion(final Region pRegion) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fRegion = pRegion;
+    
+  }
+  
+  public void setContainerClass(final org.eclipse.uml2.uml.Class pContainerClass) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fContainerClass = pContainerClass;
     
   }
   
@@ -94,13 +113,13 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fContainerClassName};
+    return new Object[]{fRegion, fContainerClass, fContainerClassName};
     
   }
   
   @Override
   public ContainerClassOfRegionMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fContainerClassName) : this;
+    return isMutable() ? newMatch(fRegion, fContainerClass, fContainerClassName) : this;
     
   }
   
@@ -108,6 +127,7 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
+    result.append("\"containerClass\"=" + prettyPrintValue(fContainerClass) + ", ");
     result.append("\"containerClassName\"=" + prettyPrintValue(fContainerClassName));
     return result.toString();
     
@@ -118,6 +138,7 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
+    result = prime * result + ((fContainerClass == null) ? 0 : fContainerClass.hashCode());
     result = prime * result + ((fContainerClassName == null) ? 0 : fContainerClassName.hashCode());
     return result;
     
@@ -140,6 +161,8 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
     ContainerClassOfRegionMatch other = (ContainerClassOfRegionMatch) obj;
     if (fRegion == null) {if (other.fRegion != null) return false;}
     else if (!fRegion.equals(other.fRegion)) return false;
+    if (fContainerClass == null) {if (other.fContainerClass != null) return false;}
+    else if (!fContainerClass.equals(other.fContainerClass)) return false;
     if (fContainerClassName == null) {if (other.fContainerClassName != null) return false;}
     else if (!fContainerClassName.equals(other.fContainerClassName)) return false;
     return true;
@@ -164,7 +187,7 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
    * 
    */
   public static ContainerClassOfRegionMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -173,12 +196,13 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ContainerClassOfRegionMatch newMutableMatch(final Region pRegion, final String pContainerClassName) {
-    return new Mutable(pRegion, pContainerClassName);
+  public static ContainerClassOfRegionMatch newMutableMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return new Mutable(pRegion, pContainerClass, pContainerClassName);
     
   }
   
@@ -187,18 +211,19 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ContainerClassOfRegionMatch newMatch(final Region pRegion, final String pContainerClassName) {
-    return new Immutable(pRegion, pContainerClassName);
+  public static ContainerClassOfRegionMatch newMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+    return new Immutable(pRegion, pContainerClass, pContainerClassName);
     
   }
   
   private static final class Mutable extends ContainerClassOfRegionMatch {
-    Mutable(final Region pRegion, final String pContainerClassName) {
-      super(pRegion, pContainerClassName);
+    Mutable(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+      super(pRegion, pContainerClass, pContainerClassName);
       
     }
     
@@ -209,8 +234,8 @@ public abstract class ContainerClassOfRegionMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ContainerClassOfRegionMatch {
-    Immutable(final Region pRegion, final String pContainerClassName) {
-      super(pRegion, pContainerClassName);
+    Immutable(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
+      super(pRegion, pContainerClass, pContainerClassName);
       
     }
     

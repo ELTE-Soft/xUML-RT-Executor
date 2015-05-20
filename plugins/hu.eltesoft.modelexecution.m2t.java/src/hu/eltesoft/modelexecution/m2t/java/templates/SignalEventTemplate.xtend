@@ -18,7 +18,7 @@ class SignalEventTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(event.name)»
+		«generatedHeader(event.originalName)»
 		public class «event.name» extends «SignalEvent.canonicalName» {
 		
 			@Override

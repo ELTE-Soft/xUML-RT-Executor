@@ -47,12 +47,12 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","operation","methodName");
+    return Arrays.asList("cls","operation","method","methodName");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("methodName", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("method", "org.eclipse.uml2.uml.Behavior"),new PParameter("methodName", "java.lang.String"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public MethodMatch newMatch(final Object... parameters) {
-    return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (java.lang.String) parameters[2]);
+    return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2], (java.lang.String) parameters[3]);
   }
   
   @Override
@@ -72,13 +72,15 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
       PBody body = new PBody(this);
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
-      PVariable var_methodName = body.getOrCreateVariableByName("methodName");
       PVariable var_method = body.getOrCreateVariableByName("method");
+      PVariable var_methodName = body.getOrCreateVariableByName("methodName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_operation, "operation"), 
+        new ExportedParameter(body, var_method, "method"), 
         new ExportedParameter(body, var_methodName, "methodName")
       ));
+      
       
       
       

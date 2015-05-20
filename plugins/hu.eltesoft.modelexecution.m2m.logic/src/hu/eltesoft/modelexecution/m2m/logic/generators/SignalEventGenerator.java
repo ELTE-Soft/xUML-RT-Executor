@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
@@ -20,6 +21,7 @@ import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.SignalEvent;
 
 public class SignalEventGenerator extends
@@ -59,11 +61,11 @@ public class SignalEventGenerator extends
 			@Override
 			public void process(SignalEvent pEvent, String pEventName) {
 				// name
-				root.setName(pEventName);
+				root.setReference(new NamedReference(pEvent, pEventName));
 
 				// signal
 				check(signalEventMatcher.forOneArbitraryMatch(pEvent, null,
-						getProcessorToSetNameOfRoot(root)));
+						null, getProcessorToSetNameOfRoot(root)));
 			}
 
 			private SignalEventProcessor getProcessorToSetNameOfRoot(
@@ -71,19 +73,20 @@ public class SignalEventGenerator extends
 				return new SignalEventProcessor() {
 
 					@Override
-					public void process(SignalEvent pEvent, String pSignalName) {
-						root.setSignal(createSignal(pSignalName));
+					public void process(SignalEvent pEvent, Signal pSignal,
+							String pSignalName) {
+						root.setSignal(createSignal(pSignal, pSignalName));
 					}
 
 				};
 			}
 
-			private EvSignal createSignal(String name) {
+			private EvSignal createSignal(Signal pSignal, String name) {
 				// new EvSignal
 				EvSignal evSignal = FACTORY.createEvSignal();
 
 				// name
-				evSignal.setName(name);
+				evSignal.setReference(new NamedReference(pSignal, name));
 
 				return evSignal;
 			}
@@ -100,7 +103,8 @@ public class SignalEventGenerator extends
 		SourceMappedText output = template.generate();
 		DebugSymbols symbols = template.getDebugSymbols();
 
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+		textChangesListener.contentChanged(root.getReference()
+				.getNewIdentifier(), output, symbols);
 	}
 
 	// add match update listeners
@@ -158,10 +162,12 @@ public class SignalEventGenerator extends
 
 			@Override
 			public boolean revert() {
-				
-				advancedEngine.removeMatchUpdateListener(eventMatcher, eventListener);
-				advancedEngine.removeMatchUpdateListener(signalEventMatcher, signalEventListener);
-				
+
+				advancedEngine.removeMatchUpdateListener(eventMatcher,
+						eventListener);
+				advancedEngine.removeMatchUpdateListener(signalEventMatcher,
+						signalEventListener);
+
 				return true;
 			}
 

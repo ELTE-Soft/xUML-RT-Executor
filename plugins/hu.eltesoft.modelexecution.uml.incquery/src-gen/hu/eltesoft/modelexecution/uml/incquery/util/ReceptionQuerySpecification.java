@@ -47,12 +47,12 @@ public final class ReceptionQuerySpecification extends BaseGeneratedQuerySpecifi
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","receptionName","signalName");
+    return Arrays.asList("cls","reception","receptionName","signal","signalName");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("receptionName", "java.lang.String"),new PParameter("signalName", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("reception", "org.eclipse.uml2.uml.Reception"),new PParameter("receptionName", "java.lang.String"),new PParameter("signal", "org.eclipse.uml2.uml.Signal"),new PParameter("signalName", "java.lang.String"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class ReceptionQuerySpecification extends BaseGeneratedQuerySpecifi
   
   @Override
   public ReceptionMatch newMatch(final Object... parameters) {
-    return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (java.lang.String) parameters[1], (java.lang.String) parameters[2]);
+    return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Reception) parameters[1], (java.lang.String) parameters[2], (org.eclipse.uml2.uml.Signal) parameters[3], (java.lang.String) parameters[4]);
   }
   
   @Override
@@ -71,15 +71,19 @@ public final class ReceptionQuerySpecification extends BaseGeneratedQuerySpecifi
     {
       PBody body = new PBody(this);
       PVariable var_cls = body.getOrCreateVariableByName("cls");
-      PVariable var_receptionName = body.getOrCreateVariableByName("receptionName");
-      PVariable var_signalName = body.getOrCreateVariableByName("signalName");
       PVariable var_reception = body.getOrCreateVariableByName("reception");
+      PVariable var_receptionName = body.getOrCreateVariableByName("receptionName");
       PVariable var_signal = body.getOrCreateVariableByName("signal");
+      PVariable var_signalName = body.getOrCreateVariableByName("signalName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
+        new ExportedParameter(body, var_reception, "reception"), 
         new ExportedParameter(body, var_receptionName, "receptionName"), 
+        new ExportedParameter(body, var_signal, "signal"), 
         new ExportedParameter(body, var_signalName, "signalName")
       ));
+      
+      
       
       
       

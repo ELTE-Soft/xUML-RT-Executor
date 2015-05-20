@@ -70,13 +70,13 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__NAME = BasePackage.MODEL_ROOT__NAME;
+	int BH_BEHAVIOR__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Container Class</b></em>' reference.
@@ -125,13 +125,13 @@ public interface BehaviorPackage extends EPackage {
 	int BH_CLASS = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_CLASS__NAME = BasePackage.NAMED__NAME;
+	int BH_CLASS__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Bh Class</em>' class.

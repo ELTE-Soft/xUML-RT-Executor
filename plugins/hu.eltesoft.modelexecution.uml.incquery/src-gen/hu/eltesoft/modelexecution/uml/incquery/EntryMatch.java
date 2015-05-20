@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
@@ -28,13 +29,16 @@ public abstract class EntryMatch extends BasePatternMatch {
   
   private State fState;
   
+  private Behavior fEntry;
+  
   private String fEntryName;
   
-  private static List<String> parameterNames = makeImmutableList("region", "state", "entryName");
+  private static List<String> parameterNames = makeImmutableList("region", "state", "entry", "entryName");
   
-  private EntryMatch(final Region pRegion, final State pState, final String pEntryName) {
+  private EntryMatch(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName) {
     this.fRegion = pRegion;
     this.fState = pState;
+    this.fEntry = pEntry;
     this.fEntryName = pEntryName;
     
   }
@@ -43,6 +47,7 @@ public abstract class EntryMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("region".equals(parameterName)) return this.fRegion;
     if ("state".equals(parameterName)) return this.fState;
+    if ("entry".equals(parameterName)) return this.fEntry;
     if ("entryName".equals(parameterName)) return this.fEntryName;
     return null;
     
@@ -55,6 +60,11 @@ public abstract class EntryMatch extends BasePatternMatch {
   
   public State getState() {
     return this.fState;
+    
+  }
+  
+  public Behavior getEntry() {
+    return this.fEntry;
     
   }
   
@@ -74,6 +84,10 @@ public abstract class EntryMatch extends BasePatternMatch {
     	this.fState = (org.eclipse.uml2.uml.State) newValue;
     	return true;
     }
+    if ("entry".equals(parameterName) ) {
+    	this.fEntry = (org.eclipse.uml2.uml.Behavior) newValue;
+    	return true;
+    }
     if ("entryName".equals(parameterName) ) {
     	this.fEntryName = (java.lang.String) newValue;
     	return true;
@@ -91,6 +105,12 @@ public abstract class EntryMatch extends BasePatternMatch {
   public void setState(final State pState) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fState = pState;
+    
+  }
+  
+  public void setEntry(final Behavior pEntry) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fEntry = pEntry;
     
   }
   
@@ -114,13 +134,13 @@ public abstract class EntryMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fState, fEntryName};
+    return new Object[]{fRegion, fState, fEntry, fEntryName};
     
   }
   
   @Override
   public EntryMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fState, fEntryName) : this;
+    return isMutable() ? newMatch(fRegion, fState, fEntry, fEntryName) : this;
     
   }
   
@@ -129,6 +149,7 @@ public abstract class EntryMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
     result.append("\"state\"=" + prettyPrintValue(fState) + ", ");
+    result.append("\"entry\"=" + prettyPrintValue(fEntry) + ", ");
     result.append("\"entryName\"=" + prettyPrintValue(fEntryName));
     return result.toString();
     
@@ -140,6 +161,7 @@ public abstract class EntryMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
     result = prime * result + ((fState == null) ? 0 : fState.hashCode());
+    result = prime * result + ((fEntry == null) ? 0 : fEntry.hashCode());
     result = prime * result + ((fEntryName == null) ? 0 : fEntryName.hashCode());
     return result;
     
@@ -164,6 +186,8 @@ public abstract class EntryMatch extends BasePatternMatch {
     else if (!fRegion.equals(other.fRegion)) return false;
     if (fState == null) {if (other.fState != null) return false;}
     else if (!fState.equals(other.fState)) return false;
+    if (fEntry == null) {if (other.fEntry != null) return false;}
+    else if (!fEntry.equals(other.fEntry)) return false;
     if (fEntryName == null) {if (other.fEntryName != null) return false;}
     else if (!fEntryName.equals(other.fEntryName)) return false;
     return true;
@@ -188,7 +212,7 @@ public abstract class EntryMatch extends BasePatternMatch {
    * 
    */
   public static EntryMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null, null, null);
     
   }
   
@@ -198,12 +222,13 @@ public abstract class EntryMatch extends BasePatternMatch {
    * 
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static EntryMatch newMutableMatch(final Region pRegion, final State pState, final String pEntryName) {
-    return new Mutable(pRegion, pState, pEntryName);
+  public static EntryMatch newMutableMatch(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName) {
+    return new Mutable(pRegion, pState, pEntry, pEntryName);
     
   }
   
@@ -213,18 +238,19 @@ public abstract class EntryMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static EntryMatch newMatch(final Region pRegion, final State pState, final String pEntryName) {
-    return new Immutable(pRegion, pState, pEntryName);
+  public static EntryMatch newMatch(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName) {
+    return new Immutable(pRegion, pState, pEntry, pEntryName);
     
   }
   
   private static final class Mutable extends EntryMatch {
-    Mutable(final Region pRegion, final State pState, final String pEntryName) {
-      super(pRegion, pState, pEntryName);
+    Mutable(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName) {
+      super(pRegion, pState, pEntry, pEntryName);
       
     }
     
@@ -235,8 +261,8 @@ public abstract class EntryMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends EntryMatch {
-    Immutable(final Region pRegion, final State pState, final String pEntryName) {
-      super(pRegion, pState, pEntryName);
+    Immutable(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName) {
+      super(pRegion, pState, pEntry, pEntryName);
       
     }
     

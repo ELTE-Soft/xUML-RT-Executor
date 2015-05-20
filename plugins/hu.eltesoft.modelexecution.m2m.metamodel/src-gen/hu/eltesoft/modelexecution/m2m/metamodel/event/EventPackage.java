@@ -68,13 +68,13 @@ public interface EventPackage extends EPackage {
 	int EV_EVENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EV_EVENT__NAME = BasePackage.MODEL_ROOT__NAME;
+	int EV_EVENT__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Ev Event</em>' class.
@@ -105,13 +105,13 @@ public interface EventPackage extends EPackage {
 	int EV_SIGNAL_EVENT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EV_SIGNAL_EVENT__NAME = EV_EVENT__NAME;
+	int EV_SIGNAL_EVENT__REFERENCE = EV_EVENT__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -151,13 +151,13 @@ public interface EventPackage extends EPackage {
 	int EV_SIGNAL = 2;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EV_SIGNAL__NAME = BasePackage.NAMED__NAME;
+	int EV_SIGNAL__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Ev Signal</em>' class.

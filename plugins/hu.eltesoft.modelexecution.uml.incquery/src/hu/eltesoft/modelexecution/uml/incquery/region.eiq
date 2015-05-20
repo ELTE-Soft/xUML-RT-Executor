@@ -6,7 +6,8 @@ pattern Region(region : Region, regionName) {
 	Region.name(region, regionName);
 }
 
-pattern ContainerClassOfRegion(region : Region, containerClassName) {
+pattern
+ContainerClassOfRegion(region : Region, containerClass : Class, containerClassName) {
 	Class.name(containerClass, containerClassName);
 	Class.ownedBehavior(containerClass, stateMachine);
 	StateMachine.region(stateMachine, region);
@@ -28,23 +29,24 @@ pattern State(region : Region, state : State, stateName) {
 	State.name(state, stateName);
 }
 
-pattern Entry(region : Region, state : State, entryName) {
+pattern Entry(region : Region, state : State, entry : Behavior, entryName) {
 	State.container(state, region);
 	State.entry(state, entry);
 	Behavior.name(entry, entryName);
 }
 
-pattern Exit(region : Region, state : State, exitName) {
+pattern Exit(region : Region, state : State, exit : Behavior, exitName) {
 	State.container(state, region);
 	State.exit(state, exit);
 	Behavior.name(exit, exitName);
 }
 
 pattern
-Transition(region : Region, source : State, transition : Transition, eventName, messageName, target : State) {
+Transition(region : Region, source : State, transition : Transition, transitionName, event : Event, eventName, signal : Signal, messageName, target : State) {
 	find TransitionBase(region, source, transition, event, eventName, target);
 	SignalEvent.signal(event, signal);
 	Signal.name(signal, messageName);
+	Transition.name(transition, transitionName);
 }
 
 private pattern
@@ -58,7 +60,7 @@ TransitionBase(region : Region, source : State, transition : Transition, event :
 }
 
 pattern
-TransitionEffect(region : Region, transition : Transition, effectName) {
+TransitionEffect(region : Region, transition : Transition, effect : Behavior, effectName) {
 	Transition.container(transition, region);
 	Transition.effect(transition, effect);
 	Behavior.name(effect, effectName);

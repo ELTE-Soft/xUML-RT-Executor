@@ -92,6 +92,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClSignalAdapter();
 			}
 			@Override
+			public Adapter caseClMethod(ClMethod object) {
+				return createClMethodAdapter();
+			}
+			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -190,6 +194,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClSignalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClMethod <em>Cl Method</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClMethod
+	 * @generated
+	 */
+	public Adapter createClMethodAdapter() {
 		return null;
 	}
 

@@ -95,13 +95,13 @@ public interface BasePackage extends EPackage {
 	int NAMED = 2;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAMED__NAME = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+	int NAMED__REFERENCE = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Named</em>' class.
@@ -132,13 +132,13 @@ public interface BasePackage extends EPackage {
 	int MODEL_ROOT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_ROOT__NAME = NAMED__NAME;
+	int MODEL_ROOT__REFERENCE = NAMED__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Model Root</em>' class.
@@ -159,52 +159,14 @@ public interface BasePackage extends EPackage {
 	int MODEL_ROOT_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}' class.
+	 * The meta object id for the '<em>Named Reference</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReferenced()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int REFERENCED = 3;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFERENCED__REFERENCE = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Referenced</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFERENCED_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Referenced</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFERENCED_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '<em>Reference</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2t.smap.emf.Reference
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
-	 * @generated
-	 */
-	int REFERENCE = 4;
-
+	int NAMED_REFERENCE = 3;
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject <em>Translation Object</em>}'.
@@ -237,47 +199,26 @@ public interface BasePackage extends EPackage {
 	EClass getNamed();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getName()
-	 * @see #getNamed()
-	 * @generated
-	 */
-	EAttribute getNamed_Name();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Referenced</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced
-	 * @generated
-	 */
-	EClass getReferenced();
-
-	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced#getReference <em>Reference</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getReference <em>Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Reference</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced#getReference()
-	 * @see #getReferenced()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getReference()
+	 * @see #getNamed()
 	 * @generated
 	 */
-	EAttribute getReferenced_Reference();
+	EAttribute getNamed_Reference();
 
 	/**
-	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.m2t.smap.emf.Reference <em>Reference</em>}'.
+	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference <em>Named Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Reference</em>'.
-	 * @see hu.eltesoft.modelexecution.m2t.smap.emf.Reference
-	 * @model instanceClass="hu.eltesoft.modelexecution.m2t.smap.emf.Reference"
+	 * @return the meta object for data type '<em>Named Reference</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+	 * @model instanceClass="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	EDataType getReference();
+	EDataType getNamedReference();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -333,40 +274,22 @@ public interface BasePackage extends EPackage {
 		EClass NAMED = eINSTANCE.getNamed();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute NAMED__NAME = eINSTANCE.getNamed_Name();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced <em>Referenced</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReferenced()
-		 * @generated
-		 */
-		EClass REFERENCED = eINSTANCE.getReferenced();
-
-		/**
 		 * The meta object literal for the '<em><b>Reference</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute REFERENCED__REFERENCE = eINSTANCE.getReferenced_Reference();
+		EAttribute NAMED__REFERENCE = eINSTANCE.getNamed_Reference();
 
 		/**
-		 * The meta object literal for the '<em>Reference</em>' data type.
+		 * The meta object literal for the '<em>Named Reference</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2t.smap.emf.Reference
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 		 * @generated
 		 */
-		EDataType REFERENCE = eINSTANCE.getReference();
+		EDataType NAMED_REFERENCE = eINSTANCE.getNamedReference();
 
 	}
 

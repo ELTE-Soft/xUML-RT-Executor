@@ -3,16 +3,11 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.*;
-
-import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -72,8 +67,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case BasePackage.REFERENCE:
-				return createReferenceFromString(eDataType, initialValue);
+			case BasePackage.NAMED_REFERENCE:
+				return createNamedReferenceFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -87,8 +82,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case BasePackage.REFERENCE:
-				return convertReferenceToString(eDataType, instanceValue);
+			case BasePackage.NAMED_REFERENCE:
+				return convertNamedReferenceToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -99,8 +94,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Reference createReferenceFromString(EDataType eDataType, String initialValue) {
-		return (Reference)super.createFromString(eDataType, initialValue);
+	public NamedReference createNamedReferenceFromString(EDataType eDataType, String initialValue) {
+		return (NamedReference)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -108,7 +103,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertReferenceToString(EDataType eDataType, Object instanceValue) {
+	public String convertNamedReferenceToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

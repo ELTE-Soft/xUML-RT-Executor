@@ -2,7 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,7 +23,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
  * @model
  * @generated
  */
-public interface RgTransition extends Referenced {
+public interface RgTransition extends Named {
 	/**
 	 * Returns the value of the '<em><b>Message</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

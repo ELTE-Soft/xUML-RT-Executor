@@ -28,10 +28,12 @@ import org.eclipse.uml2.uml.Behavior;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern AlfCode(behavior : Behavior, alfCode) {
+ * pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
  * 	OpaqueBehavior.body(behavior, alfCode);
  * 	OpaqueBehavior.language(behavior, langName);
- * 	check (Utils.toLowerCase(langName).equals("alf"));
+ * 	Class.name(containerClass, containerClassName);
+ * 	find ContainerClassOfBehavior(behavior, containerClass, containerClassName);
+ * 	check(Utils.toLowerCase(langName).equals("alf"));
  * }
  * </pre></code>
  * 
@@ -71,7 +73,9 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
   
   private final static int POSITION_BEHAVIOR = 0;
   
-  private final static int POSITION_ALFCODE = 1;
+  private final static int POSITION_CONTAINERCLASS = 1;
+  
+  private final static int POSITION_ALFCODE = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(AlfCodeMatcher.class);
   
@@ -109,71 +113,77 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return matches represented as a AlfCodeMatch object.
    * 
    */
-  public Collection<AlfCodeMatch> getAllMatches(final Behavior pBehavior, final String pAlfCode) {
-    return rawGetAllMatches(new Object[]{pBehavior, pAlfCode});
+  public Collection<AlfCodeMatch> getAllMatches(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawGetAllMatches(new Object[]{pBehavior, pContainerClass, pAlfCode});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return a match represented as a AlfCodeMatch object, or null if no match is found.
    * 
    */
-  public AlfCodeMatch getOneArbitraryMatch(final Behavior pBehavior, final String pAlfCode) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pAlfCode});
+  public AlfCodeMatch getOneArbitraryMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pContainerClass, pAlfCode});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior, final String pAlfCode) {
-    return rawHasMatch(new Object[]{pBehavior, pAlfCode});
+  public boolean hasMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawHasMatch(new Object[]{pBehavior, pContainerClass, pAlfCode});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior, final String pAlfCode) {
-    return rawCountMatches(new Object[]{pBehavior, pAlfCode});
+  public int countMatches(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawCountMatches(new Object[]{pBehavior, pContainerClass, pAlfCode});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final String pAlfCode, final IMatchProcessor<? super AlfCodeMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior, pAlfCode}, processor);
+  public void forEachMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode, final IMatchProcessor<? super AlfCodeMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior, pContainerClass, pAlfCode}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final String pAlfCode, final IMatchProcessor<? super AlfCodeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior, pAlfCode}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode, final IMatchProcessor<? super AlfCodeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior, pContainerClass, pAlfCode}, processor);
   }
   
   /**
@@ -184,14 +194,15 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<AlfCodeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final String pAlfCode) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pAlfCode});
+  public DeltaMonitor<AlfCodeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pContainerClass, pAlfCode});
   }
   
   /**
@@ -199,12 +210,13 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public AlfCodeMatch newMatch(final Behavior pBehavior, final String pAlfCode) {
-    return AlfCodeMatch.newMatch(pBehavior, pAlfCode);
+  public AlfCodeMatch newMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return AlfCodeMatch.newMatch(pBehavior, pContainerClass, pAlfCode);
     
   }
   
@@ -242,8 +254,46 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Behavior> getAllValuesOfbehavior(final String pAlfCode) {
-    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pAlfCode});
+  public Set<Behavior> getAllValuesOfbehavior(final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pContainerClass, pAlfCode});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<org.eclipse.uml2.uml.Class> rawAccumulateAllValuesOfcontainerClass(final Object[] parameters) {
+    Set<org.eclipse.uml2.uml.Class> results = new HashSet<org.eclipse.uml2.uml.Class>();
+    rawAccumulateAllValues(POSITION_CONTAINERCLASS, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass() {
+    return rawAccumulateAllValuesOfcontainerClass(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final AlfCodeMatch partialMatch) {
+    return rawAccumulateAllValuesOfcontainerClass(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for containerClass.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final Behavior pBehavior, final String pAlfCode) {
+    return rawAccumulateAllValuesOfcontainerClass(new Object[]{pBehavior, null, pAlfCode});
   }
   
   /**
@@ -280,14 +330,14 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfalfCode(final Behavior pBehavior) {
-    return rawAccumulateAllValuesOfalfCode(new Object[]{pBehavior, null});
+  public Set<String> getAllValuesOfalfCode(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawAccumulateAllValuesOfalfCode(new Object[]{pBehavior, pContainerClass, null});
   }
   
   @Override
   protected AlfCodeMatch tupleToMatch(final Tuple t) {
     try {
-      return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (java.lang.String) t.get(POSITION_ALFCODE));
+      return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Class) t.get(POSITION_CONTAINERCLASS), (java.lang.String) t.get(POSITION_ALFCODE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -298,7 +348,7 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
   @Override
   protected AlfCodeMatch arrayToMatch(final Object[] match) {
     try {
-      return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_ALFCODE]);
+      return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_ALFCODE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -309,7 +359,7 @@ public class AlfCodeMatcher extends BaseMatcher<AlfCodeMatch> {
   @Override
   protected AlfCodeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return AlfCodeMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_ALFCODE]);
+      return AlfCodeMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_ALFCODE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

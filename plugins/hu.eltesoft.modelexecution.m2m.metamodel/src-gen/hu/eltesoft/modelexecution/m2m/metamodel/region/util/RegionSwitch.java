@@ -4,14 +4,10 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.util;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -92,7 +88,6 @@ public class RegionSwitch<T> extends Switch<T> {
 				RgInitialPseudostate rgInitialPseudostate = (RgInitialPseudostate)theEObject;
 				T result = caseRgInitialPseudostate(rgInitialPseudostate);
 				if (result == null) result = caseNamed(rgInitialPseudostate);
-				if (result == null) result = caseReferenced(rgInitialPseudostate);
 				if (result == null) result = caseTranslationObject(rgInitialPseudostate);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -101,7 +96,6 @@ public class RegionSwitch<T> extends Switch<T> {
 				RgState rgState = (RgState)theEObject;
 				T result = caseRgState(rgState);
 				if (result == null) result = caseNamed(rgState);
-				if (result == null) result = caseReferenced(rgState);
 				if (result == null) result = caseTranslationObject(rgState);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -109,7 +103,7 @@ public class RegionSwitch<T> extends Switch<T> {
 			case RegionPackage.RG_TRANSITION: {
 				RgTransition rgTransition = (RgTransition)theEObject;
 				T result = caseRgTransition(rgTransition);
-				if (result == null) result = caseReferenced(rgTransition);
+				if (result == null) result = caseNamed(rgTransition);
 				if (result == null) result = caseTranslationObject(rgTransition);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -304,21 +298,6 @@ public class RegionSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModelRoot(ModelRoot object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Referenced</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Referenced</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseReferenced(Referenced object) {
 		return null;
 	}
 

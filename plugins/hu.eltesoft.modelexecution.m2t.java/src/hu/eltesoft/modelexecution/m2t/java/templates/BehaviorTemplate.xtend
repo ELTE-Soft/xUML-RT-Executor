@@ -21,15 +21,16 @@ class BehaviorTemplate extends Template {
 	new(BhBehavior behavior) {
 		this.behavior = behavior
 		val generator = new BehaviorBodyGenerator
-		compiledAlfCode = generator.generate(behavior.alfResult.astRoot)
+		compiledAlfCode = generator.generate(behavior.alfResult)
 		needsContext = !compiledAlfCode.text.toString.trim.empty
 	}
 
 	override generate() '''
-		«generatedHeader(behavior.name)»
+		«generatedHeader(behavior.originalName)»
 		public class «behavior.name» extends «ActionCode.canonicalName» {
 		
 			«IF needsContext»
+				@Generated(value = { "«behavior.containerClass.originalName»" })
 				private «behavior.containerClass.name» «CONTEXT_NAME»;
 			«ENDIF»
 		

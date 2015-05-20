@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
@@ -19,7 +20,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfResult <em>Alf Result</em>}</li>
  * </ul>
@@ -29,24 +30,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBehavior {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getContainerClass() <em>Container Class</em>}' reference.
@@ -102,8 +103,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -111,11 +112,11 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -185,8 +186,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				return getName();
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				return getReference();
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				if (resolve) return getContainerClass();
 				return basicGetContainerClass();
@@ -204,8 +205,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				setName((String)newValue);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass((BhClass)newValue);
@@ -225,8 +226,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				setName(NAME_EDEFAULT);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass((BhClass)null);
@@ -246,8 +247,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				return containerClass != null;
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
@@ -266,8 +267,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (reference: ");
+		result.append(reference);
 		result.append(", alfResult: ");
 		result.append(alfResult);
 		result.append(')');

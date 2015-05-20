@@ -77,6 +77,7 @@ final class ContainerClassOfVertexQuerySpecification extends BaseGeneratedQueryS
       PVariable var_vertex = body.getOrCreateVariableByName("vertex");
       PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
       PVariable var_region = body.getOrCreateVariableByName("region");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_vertex, "vertex"), 
         new ExportedParameter(body, var_containerClassName, "containerClassName")
@@ -85,7 +86,9 @@ final class ContainerClassOfVertexQuerySpecification extends BaseGeneratedQueryS
       
       new TypeUnary(body, var_vertex, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State"), "http://www.eclipse.org/uml2/5.0.0/UML/State");
       new TypeBinary(body, CONTEXT, var_vertex, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
-      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClassName), ContainerClassOfRegionQuerySpecification.instance());
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
+      new TypeBinary(body, CONTEXT, var_containerClass, var_containerClassName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
+      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClass, var_containerClassName), ContainerClassOfRegionQuerySpecification.instance());
       bodies.add(body);
     }
     return bodies;

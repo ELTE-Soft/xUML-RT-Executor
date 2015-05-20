@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatch;
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
@@ -17,14 +18,15 @@ public abstract class EntryProcessor implements IMatchProcessor<EntryMatch> {
    * Defines the action that is to be executed on each match.
    * @param pRegion the value of pattern parameter region in the currently processed match
    * @param pState the value of pattern parameter state in the currently processed match
+   * @param pEntry the value of pattern parameter entry in the currently processed match
    * @param pEntryName the value of pattern parameter entryName in the currently processed match
    * 
    */
-  public abstract void process(final Region pRegion, final State pState, final String pEntryName);
+  public abstract void process(final Region pRegion, final State pState, final Behavior pEntry, final String pEntryName);
   
   @Override
   public void process(final EntryMatch match) {
-    process(match.getRegion(), match.getState(), match.getEntryName());
+    process(match.getRegion(), match.getState(), match.getEntry(), match.getEntryName());
     
   }
 }

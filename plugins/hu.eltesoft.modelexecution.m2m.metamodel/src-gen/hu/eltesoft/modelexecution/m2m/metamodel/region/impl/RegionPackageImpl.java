@@ -430,10 +430,8 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getReferenced());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());
-		rgStateEClass.getESuperTypes().add(theBasePackage.getReferenced());
-		rgTransitionEClass.getESuperTypes().add(theBasePackage.getReferenced());
+		rgTransitionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgMessageEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgBehaviorEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgEventEClass.getESuperTypes().add(theBasePackage.getNamed());

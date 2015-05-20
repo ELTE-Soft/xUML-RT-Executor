@@ -15,6 +15,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Operation;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.uml2.uml.Operation;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Method(cls : Class, operation : Operation, methodName) {
+ * pattern Method(cls : Class, operation : Operation, method: Behavior, methodName) {
  * 	Class.ownedOperation(cls, operation);
  * 
  * 	Operation.method(operation, method);
@@ -74,7 +75,9 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
   
   private final static int POSITION_OPERATION = 1;
   
-  private final static int POSITION_METHODNAME = 2;
+  private final static int POSITION_METHOD = 2;
+  
+  private final static int POSITION_METHODNAME = 3;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(MethodMatcher.class);
   
@@ -113,12 +116,13 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return matches represented as a MethodMatch object.
    * 
    */
-  public Collection<MethodMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return rawGetAllMatches(new Object[]{pCls, pOperation, pMethodName});
+  public Collection<MethodMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawGetAllMatches(new Object[]{pCls, pOperation, pMethod, pMethodName});
   }
   
   /**
@@ -126,12 +130,13 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return a match represented as a MethodMatch object, or null if no match is found.
    * 
    */
-  public MethodMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pMethodName});
+  public MethodMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pMethod, pMethodName});
   }
   
   /**
@@ -139,36 +144,39 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return rawHasMatch(new Object[]{pCls, pOperation, pMethodName});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawHasMatch(new Object[]{pCls, pOperation, pMethod, pMethodName});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return rawCountMatches(new Object[]{pCls, pOperation, pMethodName});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawCountMatches(new Object[]{pCls, pOperation, pMethod, pMethodName});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName, final IMatchProcessor<? super MethodMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pOperation, pMethodName}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName, final IMatchProcessor<? super MethodMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pOperation, pMethod, pMethodName}, processor);
   }
   
   /**
@@ -176,13 +184,14 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName, final IMatchProcessor<? super MethodMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pMethodName}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName, final IMatchProcessor<? super MethodMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pMethod, pMethodName}, processor);
   }
   
   /**
@@ -194,14 +203,15 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<MethodMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pMethodName});
+  public DeltaMonitor<MethodMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pMethod, pMethodName});
   }
   
   /**
@@ -210,12 +220,13 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public MethodMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return MethodMatch.newMatch(pCls, pOperation, pMethodName);
+  public MethodMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return MethodMatch.newMatch(pCls, pOperation, pMethod, pMethodName);
     
   }
   
@@ -253,8 +264,8 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final String pMethodName) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pMethodName});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final Behavior pMethod, final String pMethodName) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pMethod, pMethodName});
   }
   
   /**
@@ -291,8 +302,46 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final String pMethodName) {
-    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pMethodName});
+  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final Behavior pMethod, final String pMethodName) {
+    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pMethod, pMethodName});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for method.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Behavior> rawAccumulateAllValuesOfmethod(final Object[] parameters) {
+    Set<Behavior> results = new HashSet<Behavior>();
+    rawAccumulateAllValues(POSITION_METHOD, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for method.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Behavior> getAllValuesOfmethod() {
+    return rawAccumulateAllValuesOfmethod(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for method.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Behavior> getAllValuesOfmethod(final MethodMatch partialMatch) {
+    return rawAccumulateAllValuesOfmethod(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for method.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Behavior> getAllValuesOfmethod(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
+    return rawAccumulateAllValuesOfmethod(new Object[]{pCls, pOperation, null, pMethodName});
   }
   
   /**
@@ -329,14 +378,14 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfmethodName(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-    return rawAccumulateAllValuesOfmethodName(new Object[]{pCls, pOperation, null});
+  public Set<String> getAllValuesOfmethodName(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
+    return rawAccumulateAllValuesOfmethodName(new Object[]{pCls, pOperation, pMethod, null});
   }
   
   @Override
   protected MethodMatch tupleToMatch(final Tuple t) {
     try {
-      return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (java.lang.String) t.get(POSITION_METHODNAME));
+      return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (org.eclipse.uml2.uml.Behavior) t.get(POSITION_METHOD), (java.lang.String) t.get(POSITION_METHODNAME));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -347,7 +396,7 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
   @Override
   protected MethodMatch arrayToMatch(final Object[] match) {
     try {
-      return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (java.lang.String) match[POSITION_METHODNAME]);
+      return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Behavior) match[POSITION_METHOD], (java.lang.String) match[POSITION_METHODNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -358,7 +407,7 @@ public class MethodMatcher extends BaseMatcher<MethodMatch> {
   @Override
   protected MethodMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return MethodMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (java.lang.String) match[POSITION_METHODNAME]);
+      return MethodMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Behavior) match[POSITION_METHOD], (java.lang.String) match[POSITION_METHODNAME]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

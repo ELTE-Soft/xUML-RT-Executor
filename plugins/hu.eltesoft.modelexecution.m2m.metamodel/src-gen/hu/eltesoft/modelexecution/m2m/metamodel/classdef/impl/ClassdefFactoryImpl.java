@@ -61,6 +61,7 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_OPERATION: return createClOperation();
 			case ClassdefPackage.CL_RECEPTION: return createClReception();
 			case ClassdefPackage.CL_SIGNAL: return createClSignal();
+			case ClassdefPackage.CL_METHOD: return createClMethod();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -114,6 +115,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClSignal createClSignal() {
 		ClSignalImpl clSignal = new ClSignalImpl();
 		return clSignal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClMethod createClMethod() {
+		ClMethodImpl clMethod = new ClMethodImpl();
+		return clMethod;
 	}
 
 	/**

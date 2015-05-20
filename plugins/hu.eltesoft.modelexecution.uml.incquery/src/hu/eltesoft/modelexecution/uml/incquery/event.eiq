@@ -6,7 +6,7 @@ pattern Event(event : SignalEvent, eventName) { // TODO support different events
 	Event.name(event, eventName);
 }
 
-pattern SignalEvent(event : SignalEvent, signalName) {
+pattern SignalEvent(event : SignalEvent, signal: Signal, signalName) {
 	SignalEvent.signal(event, signal);
 	Signal.name(signal, signalName);
 }

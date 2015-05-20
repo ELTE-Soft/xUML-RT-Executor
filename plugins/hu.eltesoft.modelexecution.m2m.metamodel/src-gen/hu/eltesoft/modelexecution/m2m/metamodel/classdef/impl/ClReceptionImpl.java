@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -21,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionImpl#getSignal <em>Signal</em>}</li>
  * </ul>
  * </p>
@@ -30,24 +31,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClReception {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getSignal() <em>Signal</em>}' reference.
@@ -83,8 +84,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -92,11 +93,11 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_RECEPTION__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_RECEPTION__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -145,8 +146,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION__NAME:
-				return getName();
+			case ClassdefPackage.CL_RECEPTION__REFERENCE:
+				return getReference();
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
 				if (resolve) return getSignal();
 				return basicGetSignal();
@@ -162,8 +163,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION__NAME:
-				setName((String)newValue);
+			case ClassdefPackage.CL_RECEPTION__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
 				setSignal((ClSignal)newValue);
@@ -180,8 +181,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION__NAME:
-				setName(NAME_EDEFAULT);
+			case ClassdefPackage.CL_RECEPTION__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
 				setSignal((ClSignal)null);
@@ -198,8 +199,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case ClassdefPackage.CL_RECEPTION__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
 				return signal != null;
 		}
@@ -216,8 +217,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (reference: ");
+		result.append(reference);
 		result.append(')');
 		return result.toString();
 	}

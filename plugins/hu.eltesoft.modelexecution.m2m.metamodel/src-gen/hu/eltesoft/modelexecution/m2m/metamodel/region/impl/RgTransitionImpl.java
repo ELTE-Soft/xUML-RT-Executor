@@ -2,13 +2,13 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
-import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -42,7 +42,7 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Reference REFERENCE_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
@@ -52,7 +52,7 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * @generated
 	 * @ordered
 	 */
-	protected Reference reference = REFERENCE_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMessage() <em>Message</em>}' containment reference.
@@ -118,7 +118,7 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Reference getReference() {
+	public NamedReference getReference() {
 		return reference;
 	}
 
@@ -127,8 +127,8 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReference(Reference newReference) {
-		Reference oldReference = reference;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_TRANSITION__REFERENCE, oldReference, reference));
@@ -339,7 +339,7 @@ public class RgTransitionImpl extends MinimalEObjectImpl.Container implements Rg
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case RegionPackage.RG_TRANSITION__REFERENCE:
-				setReference((Reference)newValue);
+				setReference((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_TRANSITION__MESSAGE:
 				setMessage((RgMessage)newValue);

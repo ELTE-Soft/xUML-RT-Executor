@@ -7,12 +7,8 @@
       eSuperTypes="#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true" interface="true"
       eSuperTypes="#//TranslationObject">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Referenced" abstract="true" interface="true"
-      eSuperTypes="#//TranslationObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="reference" lowerBound="1"
-        eType="#//Reference"/>
+        eType="#//NamedReference"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="Reference" instanceClassName="hu.eltesoft.modelexecution.m2t.smap.emf.Reference"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="NamedReference" instanceClassName="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"/>
 </ecore:EPackage>
