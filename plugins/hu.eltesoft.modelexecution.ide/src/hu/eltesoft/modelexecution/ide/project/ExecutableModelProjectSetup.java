@@ -3,17 +3,21 @@ package hu.eltesoft.modelexecution.ide.project;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.launch.ClasspathRuntimeLibrary;
+import hu.eltesoft.modelexecution.runtime.BaseRuntime;
+import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -63,6 +67,7 @@ public class ExecutableModelProjectSetup {
 		createLoggingPropertiesFile(project);
 		setupClassPath(javaProject,
 				ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	private static void createLoggingPropertiesFile(IProject project) {
@@ -73,7 +78,12 @@ public class ExecutableModelProjectSetup {
 		try (OutputStreamWriter stream = new OutputStreamWriter(
 				new FileOutputStream(createdLoggingPropsFile))) {
 			createdLoggingPropsFile.createNewFile();
-			stream.append(Messages.ExecutableModelProjectSetup_default_logging_properties_file);
+			stream.append(MessageFormat
+					.format(Messages.ExecutableModelProjectSetup_default_logging_properties_file,
+							BaseRuntime.STATES_LOGGER_ID,
+							BaseRuntime.TRANSITIONS_LOGGER_ID,
+							BaseRuntime.MESSAGES_LOGGER_ID,
+							StandardOutHandler.class.getCanonicalName()));
 		} catch (IOException e) {
 			IdePlugin.logError(
 					"Error while creating logging properties file.", e); //$NON-NLS-1$
