@@ -1,4 +1,6 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.ui;
+
+import hu.eltesoft.modelexecution.ide.debug.LaunchConfigReader;
 
 import java.util.Timer;
 import java.util.TimerTask;

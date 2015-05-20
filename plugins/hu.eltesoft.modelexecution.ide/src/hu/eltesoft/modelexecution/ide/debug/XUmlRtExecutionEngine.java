@@ -4,6 +4,8 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -33,6 +35,7 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
+import org.eclipse.uml2.uml.NamedElement;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -221,14 +224,22 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		animation.setSuspendedMarker(modelElement);
 
 		// suspend just the first and only thread for now
-		MokaThread mokaThread = (MokaThread) getThreads()[0];
+		MokaThread thread = (MokaThread) getThreads()[0];
+
+		// show the current element as a stack frame
+		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget,
+				(NamedElement) modelElement);
+		frame.setThread(thread);
+		thread.setStackFrames(new IStackFrame[] { frame });
+
 		// causes debug target to be suspended
 		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
 				: DebugEvent.BREAKPOINT;
-		sendEvent(new Suspend_Event(mokaThread, eventCode,
-				new MokaThread[] { mokaThread }));
+		sendEvent(new Suspend_Event(thread, eventCode,
+				new MokaThread[] { thread }));
+
 		// causes thread to be suspended
-		mokaThread.setSuspended(true);
+		thread.setSuspended(true);
 	}
 
 	@Override
