@@ -15,7 +15,7 @@ public class XUmlRtStackFrame extends MokaStackFrame implements IPresentation {
 	public XUmlRtStackFrame(MokaDebugTarget target, NamedElement modelElement) {
 		super(target);
 		setModelElement(modelElement);
-		setName(modelElement.getName());
+		setName(modelElement.getQualifiedName());
 	}
 
 	@Override
