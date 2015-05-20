@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -292,7 +293,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public MokaThread[] getThreads() {
 		if (null == threads) {
-			MokaThread thread = new MokaThread(debugTarget);
+			XUmlRtThread thread = new XUmlRtThread(debugTarget);
 			thread.setName("Default component");
 			threads = new MokaThread[] { thread };
 		}
