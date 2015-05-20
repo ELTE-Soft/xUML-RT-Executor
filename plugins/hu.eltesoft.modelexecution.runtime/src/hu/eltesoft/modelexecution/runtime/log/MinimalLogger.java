@@ -9,9 +9,9 @@ import hu.eltesoft.modelexecution.runtime.base.Message;
  */
 public class MinimalLogger implements Logger {
 
-	private java.util.logging.Logger stateLogger;
-	private java.util.logging.Logger transitionLogger;
-	private java.util.logging.Logger messageLogger;
+	private final java.util.logging.Logger stateLogger;
+	private final java.util.logging.Logger transitionLogger;
+	private final java.util.logging.Logger messageLogger;
 
 	public MinimalLogger() {
 		this.stateLogger = java.util.logging.Logger
@@ -22,42 +22,40 @@ public class MinimalLogger implements Logger {
 				.getLogger(BaseRuntime.MESSAGES_LOGGER_ID);
 	}
 
-
 	@Override
 	public void enterState(String state) {
-		stateLogger.log(java.util.logging.Level.INFO, "Entered state " + state,
-				new Object[] { state });
+		stateLogger.log(java.util.logging.Level.INFO, "Entered state {0}",
+				state);
 	}
 
 	@Override
 	public void exitState(String state) {
-		stateLogger.log(java.util.logging.Level.INFO, "Exited state " + state,
-				new Object[] { state });
+		stateLogger
+				.log(java.util.logging.Level.INFO, "Exited state {0}", state);
 	}
 
 	@Override
 	public void transition(String eventName, String messageName, String source,
 			String target) {
-		transitionLogger.log(java.util.logging.Level.INFO, "Transition by "
-				+ messageName + "(" + eventName + ")" + ": " + source + " -> "
-				+ target,
-				new Object[] { eventName, messageName, source, target });
+		transitionLogger.log(java.util.logging.Level.INFO,
+				"Transition by {1}( {0} ): {2} -> {3}", new Object[] {
+						eventName, messageName, source, target });
 	}
 
 	@Override
 	public void messageDispatched(Class target, Message event) {
-		messageLogger.log(java.util.logging.Level.INFO, "Message " + event
-				+ " was dispatched to " + target,
-				new Object[] { target, event });
+		messageLogger.log(java.util.logging.Level.INFO,
+				"Message {1} was dispatched to {0}", new Object[] { target,
+						event });
 	}
 
 	@Override
 	public void messageQueued(Class target, Message event) {
-		messageLogger.log(java.util.logging.Level.INFO, "Message " + event
-				+ " is queued for dispatching to " + target,
-				new Object[] { target, event });
+		messageLogger.log(java.util.logging.Level.INFO,
+				"Message {1} is queued for dispatching to {0}", new Object[] {
+						target, event });
 	}
-	
+
 	@Override
 	public void close() throws Exception {
 	}
