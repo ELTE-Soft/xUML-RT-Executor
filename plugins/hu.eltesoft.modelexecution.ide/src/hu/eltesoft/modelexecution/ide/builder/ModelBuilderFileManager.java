@@ -10,11 +10,13 @@ import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -24,18 +26,32 @@ import org.eclipse.jdt.core.JavaCore;
  */
 public class ModelBuilderFileManager implements TextChangesListener {
 
-	private IProject project;
-	private IFileManagerFactory fileManagerFactory;
+	private final IProject project;
+	private final IFileManagerFactory fileManagerFactory;
+
+	private final IFileManager genSrcFileManager;
+	private final IFileManager debugSymbolsFileManager;
+	private final IFileManager binDebugFileManager;
 
 	public ModelBuilderFileManager(IProject project,
 			IFileManagerFactory fileManagerFactory) {
 		this.project = project;
 		this.fileManagerFactory = fileManagerFactory;
+
+		genSrcFileManager = createFileManager(ExecutableModelProperties::getSourceGenPath);
+		debugSymbolsFileManager = createFileManager(ExecutableModelProperties::getDebugFilesPath);
+		binDebugFileManager = createFileManager(ExecutableModelProperties::getInstrumentedClassFilesPath);
+	}
+
+	private IFileManager createFileManager(
+			Function<IProject, String> pathSelector) {
+		IPath root = project.getLocation().append(pathSelector.apply(project));
+		return fileManagerFactory.createFileManager(root.toString());
 	}
 
 	@Override
 	public void contentDeleted(String fileName) {
-		getGenSrcFileManager().remove(fileName);
+		genSrcFileManager.remove(fileName);
 	}
 
 	@Override
@@ -43,16 +59,15 @@ public class ModelBuilderFileManager implements TextChangesListener {
 			DebugSymbols symbols) {
 		try {
 			checkGenDirIsSrcDir();
-			getGenSrcFileManager().addOrUpdate(fileName,
-					output.getText().toString());
+			genSrcFileManager
+					.addOrUpdate(fileName, output.getText().toString());
 			String smap = output.getSmap().toString();
 			if (smap != null) {
-				getDebugInfoFileManager().addOrUpdateFile(
+				debugSymbolsFileManager.addOrUpdateFile(
 						fileName + ".smap", smap); //$NON-NLS-1$
 			}
 			if (symbols != null) {
-				getDebugInfoFileManager().addOrUpdateFile(
-						fileName + ".symbols", //$NON-NLS-1$
+				debugSymbolsFileManager.addOrUpdateFile(fileName + ".symbols", //$NON-NLS-1$
 						symbols);
 			}
 		} catch (IOException e) {
@@ -104,20 +119,8 @@ public class ModelBuilderFileManager implements TextChangesListener {
 	 * Deletes generated files.
 	 */
 	public void cleanUp() {
-		getGenSrcFileManager().cleanup();
-		getDebugInfoFileManager().cleanup();
+		genSrcFileManager.cleanup();
+		debugSymbolsFileManager.cleanup();
+		binDebugFileManager.cleanup();
 	}
-
-	private IFileManager getGenSrcFileManager() {
-		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProperties.getSourceGenPath(project))
-				.toString());
-	}
-
-	private IFileManager getDebugInfoFileManager() {
-		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProperties.getDebugFilesPath(project))
-				.toString());
-	}
-
 }
