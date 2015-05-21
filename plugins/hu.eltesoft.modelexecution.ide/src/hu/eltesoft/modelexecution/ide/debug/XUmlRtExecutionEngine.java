@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TimerTask;
 
@@ -246,6 +247,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	@Override
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
+			// remove stack frames from all threads before resuming
+			Arrays.stream(threads).forEach(
+					t -> t.setStackFrames(new IStackFrame[0]));
+
 			waitingForSuspend = false;
 			virtualMachine.resume();
 

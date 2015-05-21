@@ -39,6 +39,11 @@ class SignalTemplate extends Template {
 			public int hashCode() {
 				return 0;
 			}
+		
+			@Override
+			public String toString() {
+				return "«signal.originalName»";
+			}
 		}
 	'''
 }

@@ -81,9 +81,9 @@ public final class RegionOfClassQuerySpecification extends BaseGeneratedQuerySpe
         new ExportedParameter(body, var_regionName, "regionName")
       ));
       
+      
+      
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
-      
-      
       new TypeBinary(body, CONTEXT, var_cls, var_stateMachine, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "ownedBehavior"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioredClassifier.ownedBehavior");
       new TypeBinary(body, CONTEXT, var_stateMachine, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine", "region"), "http://www.eclipse.org/uml2/5.0.0/UML/StateMachine.region");
       new TypeBinary(body, CONTEXT, var_region, var_regionName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");

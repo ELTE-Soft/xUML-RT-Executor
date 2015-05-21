@@ -41,7 +41,7 @@ class ClassTemplate extends Template {
 			public static «classDefinition.name» getInstance() {
 				return instance;
 			}
-			
+		
 			@Generated(value = { "«classDefinition.region.originalName»" })
 			«classDefinition.region.name» stateMachine = new «classDefinition.region.name»(this);
 			
@@ -49,20 +49,25 @@ class ClassTemplate extends Template {
 				super(runtime);
 				instance = this; // Only for Q1
 			}
-			
+		
 			@Override
 			public void init() {
 				stateMachine.doInitialTransition();
 			}
-			
+		
 			@Override
 			public void receive(«Message.canonicalName» message) {
 				stateMachine.step(message);
 			}
-			
+		
 			«generateReceptions()»
-			
+		
 			«generateOperations()»
+		
+			@Override
+			public String toString() {
+				return "«classDefinition.originalName»";
+			}
 		}
 	'''
 

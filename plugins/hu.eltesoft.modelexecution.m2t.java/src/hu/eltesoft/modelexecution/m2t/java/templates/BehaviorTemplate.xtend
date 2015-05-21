@@ -44,6 +44,11 @@ class BehaviorTemplate extends Template {
 			public void execute() {
 				«compiledAlfCode»
 			}
+		
+			@Override
+			public String toString() {
+				return "«behavior.originalName»";
+			}
 		}
 	'''
 }
