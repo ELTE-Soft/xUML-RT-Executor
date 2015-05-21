@@ -2,10 +2,12 @@ package hu.eltesoft.modelexecution.m2t.java
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject
 import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
 import java.util.Set
+import java.util.Stack
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
@@ -24,30 +26,31 @@ class NameMapper {
 	private static val NAMED = BASE.named
 	private static val NAME = BASE.named_Name
 
-	private val Map<String, String> nameMapping = new HashMap;
-	private val Set<EObject> visited = new HashSet;
-	private var long nextId;
+	private val Map<String, String> nameMapping = new HashMap
+	private val Stack<Object> itemsToMap = new Stack
+	private val Set<Object> visited = new HashSet
 
 	def Map<String, String> mapNames(EObject object) {
-		nextId = 0
 		nameMapping.clear
 		visited.clear
-		mapNamesRecursively(object)
+
+		itemsToMap.push(object)
+		while (!itemsToMap.isEmpty) {
+			val item = itemsToMap.pop
+			if (!visited.contains(item)) {
+				visited.add(item)
+				mapName(item)
+			}
+		}
+
 		return nameMapping
 	}
 
-	private def dispatch void mapNamesRecursively(EList<?> object) {
-		for (item : object) {
-			mapNamesRecursively(item);
-		}
+	private def dispatch void mapName(EList<?> objects) {
+		objects.forEach[itemsToMap.push(it)]
 	}
 
-	private def dispatch void mapNamesRecursively(EObject object) {
-		if (visited.contains(object)) {
-			return
-		}
-		visited.add(object)
-
+	private def dispatch void mapName(TranslationObject object) {
 		val c = object.eClass
 		val ancestors = c.getEAllSuperTypes()
 		val isNamed = ancestors.contains(NAMED)
@@ -63,12 +66,15 @@ class NameMapper {
 				nameMapping.put(newName, name);
 				object.eSet(feature, newName);
 			} else if (null != value) {
-				mapNamesRecursively(value);
+				switch value {
+					EList<?>: mapName(value)
+					TranslationObject: itemsToMap.push(value)
+				}
 			}
 		}
 	}
 
-	private def dispatch void mapNamesRecursively(Object object) {
-		// Intentionally left blank.
+	private def dispatch void mapName(Object object) {
+		// intentionally left blank
 	}
 }
