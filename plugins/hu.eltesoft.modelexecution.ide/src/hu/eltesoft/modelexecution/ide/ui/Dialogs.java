@@ -91,4 +91,11 @@ public class Dialogs {
 						Messages.Dialogs_resources_missing_text));
 	}
 
+	public static void openTraceFileMissingErrorDialog() {
+		Display.getDefault().syncExec(
+				() -> MessageDialog.openError(null,
+						Messages.Dialogs_trace_file_missing_caption,
+						Messages.Dialogs_trace_file_missing_text));
+	}
+
 }

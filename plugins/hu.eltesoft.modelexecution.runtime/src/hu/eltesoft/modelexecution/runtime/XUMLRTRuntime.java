@@ -25,7 +25,6 @@ public class XUMLRTRuntime extends BaseRuntime {
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
-	public static final String OPTION_DEFAULT_TRACE = "-default-trace";
 
 	public XUMLRTRuntime(ClassLoader classLoader, Tracer tracer,
 			TraceReader traceReader, Logger logger) {
@@ -85,11 +84,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 	 */
 	public static Tracer getDefaultTraceWriter(String traceParameter) {
 		try {
-			if (traceParameter.equals(OPTION_DEFAULT_TRACE)) {
-				return new TraceWriter(defaultFileSystem());
-			} else {
-				return new TraceWriter(traceParameter, defaultFileSystem());
-			}
+			return new TraceWriter(traceParameter, defaultFileSystem());
 		} catch (IOException e) {
 			throw new RuntimeException("trace writer cannot be initialized", e);
 		}

@@ -124,7 +124,7 @@ class FolderSelector extends SelectionAdapter {
 	}
 
 	public boolean selectionValid() {
-		return selectedResource.exists();
+		return selectedResource != null && selectedResource.exists();
 	}
 
 	protected void refreshField() {

@@ -53,26 +53,35 @@ public class ExecutableModelLaunchDelegate implements
 				|| !exitChecker.launchStarting(launch)) {
 			return;
 		}
+		try {
+			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
+					.addMokaConfigs(configuration);
+			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
+					.addJavaConfigs(configuration);
+			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
+		} catch (TraceFileMissingException e) {
+			Dialogs.openTraceFileMissingErrorDialog();
+		}
+	}
+
+	private void launchProcesses(String mode, ILaunch launch,
+			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
+			ILaunchConfiguration javaConfigs) throws CoreException {
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			backgroundJavaLauncher.launch(
-					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
-					mode, launch, monitor);
+			backgroundJavaLauncher.launch(javaConfigs, mode, launch,
+					monitor);
 			Display.getDefault().asyncExec(
-					() -> launchMokaDelegate(configuration, mode, launch,
+					() -> launchMokaDelegate(mokaConfigs, mode, launch,
 							monitor));
 		} else {
-			javaDelegate.launch(
-					ModelExecutionLaunchConfig.addJavaConfigs(configuration),
-					mode, launch, monitor);
+			javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		}
 	}
 
 	private void launchMokaDelegate(ILaunchConfiguration configuration,
 			String mode, ILaunch launch, IProgressMonitor monitor) {
 		try {
-			mokaDelegate.launch(
-					ModelExecutionLaunchConfig.addMokaConfigs(configuration),
-					mode, launch, monitor);
+			mokaDelegate.launch(configuration, mode, launch, monitor);
 		} catch (Exception e) {
 			IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 		}

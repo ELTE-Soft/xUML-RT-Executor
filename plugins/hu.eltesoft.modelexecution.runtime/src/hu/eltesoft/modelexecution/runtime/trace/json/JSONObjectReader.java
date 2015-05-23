@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.trace.json;
 
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
-import hu.eltesoft.modelexecution.runtime.util.PathConverter;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -23,8 +22,7 @@ public class JSONObjectReader implements AutoCloseable {
 
 	public JSONObjectReader(String fileName, FileSystem fileSystem)
 			throws IOException {
-		reader = Files.newBufferedReader(PathConverter
-				.workspaceToProjectBasedPath(fileSystem, fileName));
+		reader = Files.newBufferedReader(fileSystem.getPath(fileName));
 		tokener = new JSONTokener(reader);
 		readNextObject();
 	}

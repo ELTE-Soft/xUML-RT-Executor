@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
-import hu.eltesoft.modelexecution.runtime.util.PathConverter;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -24,17 +22,14 @@ public class TraceWriter implements Tracer {
 			Files.createFile(outputFilePath);
 		}
 	}
-	
-	public TraceWriter(String folderName, FileSystem fileSystem) throws IOException {
-		this(PathConverter.workspaceToProjectBasedPath(
-				fileSystem, folderName));
+
+	public TraceWriter(String folderName, FileSystem fileSystem)
+			throws IOException {
+		this(fileSystem.getPath(folderName).resolve(
+				createTimestampedFileName(fileSystem)));
 	}
 
-	public TraceWriter(FileSystem fileSystem) throws IOException {
-		this(createDefaultPath(fileSystem));
-	}
-
-	private static Path createDefaultPath(FileSystem fileSystem) {
+	private static Path createTimestampedFileName(FileSystem fileSystem) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		return fileSystem.getPath(format.format(new Date()) + ".trace");
 	}

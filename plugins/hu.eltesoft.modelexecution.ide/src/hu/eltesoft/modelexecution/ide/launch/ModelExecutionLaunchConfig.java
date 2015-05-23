@@ -2,13 +2,16 @@ package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
-import java.nio.file.Paths;
-import java.util.Date;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -107,24 +110,11 @@ public class ModelExecutionLaunchConfig {
 	public static final boolean ATTR_LOGGING_DEFAULT = true;
 
 	/**
-	 * Selects the folder where events are serialized into files during tracing
-	 * ( enabled by {@linkplain #ATTR_TRACING} ).
-	 */
-	public static final String ATTR_TRACE_FOLDER = ATTR_PREFIX + "trace_folder"; //$NON-NLS-1$
-
-	/**
 	 * Selects the folder from where events are deserialized for trace replay (
 	 * enabled by {@linkplain #ATTR_REPLAY_TRACE} ).
 	 */
-	public static final String ATTR_REPLAY_TRACE_FOLDER = ATTR_PREFIX
+	public static final String ATTR_REPLAY_TRACE_FILE = ATTR_PREFIX
 			+ "replay_trace_folder"; //$NON-NLS-1$
-
-	/**
-	 * Enables traces to be put into automatically generated timestamped
-	 * resources.
-	 */
-	public static final String ATTR_DEFAULT_TRACING = ATTR_PREFIX
-			+ "default_trace_folder"; //$NON-NLS-1$
 
 	/**
 	 * Adds launch configuration attributes needed by Moka.
@@ -161,12 +151,13 @@ public class ModelExecutionLaunchConfig {
 			ILaunchConfigurationWorkingCopy configuration) {
 		try {
 			URI uri = URI.createPlatformResourceURI(
-					configuration.getAttribute(ATTR_UML_RESOURCE, ""), false); //$NON-NLS-1$
+					configuration.getAttribute(ATTR_UML_RESOURCE, EMPTY_STR),
+					false);
 			configuration.setAttribute(MokaLaunchDelegate.URI_ATTRIBUTE_NAME,
 					uri.toString());
 			configuration.setAttribute(
-					MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
-					configuration.getAttribute(ATTR_EXECUTED_CLASS_URI, "")); //$NON-NLS-1$
+					MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME, configuration
+							.getAttribute(ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while adding Moka configs", e); //$NON-NLS-1$
 		}
@@ -182,7 +173,7 @@ public class ModelExecutionLaunchConfig {
 		try {
 			configuration.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					configuration.getAttribute(ATTR_PROJECT_NAME, "")); //$NON-NLS-1$
+					configuration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR));
 			setupLaunchArgs(configuration);
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while adding Java configs", e); //$NON-NLS-1$
@@ -213,9 +204,9 @@ public class ModelExecutionLaunchConfig {
 			CmArgBuilder argsBuilder = new CmArgBuilder();
 
 			argsBuilder.append(configuration.getAttribute(ATTR_EXEC_CLASS_NAME,
-					"")); //$NON-NLS-1$
+					EMPTY_STR));
 			argsBuilder.append(configuration.getAttribute(ATTR_FEED_FUN_NAME,
-					"")); //$NON-NLS-1$
+					EMPTY_STR));
 
 			boolean logging = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_LOGGING, false);
@@ -226,21 +217,13 @@ public class ModelExecutionLaunchConfig {
 					ModelExecutionLaunchConfig.ATTR_TRACING, false);
 			if (tracing) {
 				argsBuilder.append(XUMLRTRuntime.OPTION_WRITE_TRACE);
-				if (configuration.getAttribute(ATTR_DEFAULT_TRACING, false)) {
-					argsBuilder.append(XUMLRTRuntime.OPTION_DEFAULT_TRACE);
-				} else {
-					String traceFolder = configuration.getAttribute(
-							ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER,
-							createTimestampedTraceFolder(configuration)); //$NON-NLS-1$
-					argsBuilder.append(traceFolder);
-				}
+				argsBuilder.append(getProjectTraceFolder(configuration));
 			}
 			boolean traceReplay = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, false);
 			if (traceReplay) {
-				String replayTraceFolder = configuration.getAttribute(
-						ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FOLDER,
-						EMPTY_STR); //$NON-NLS-1$
+				String replayTraceFolder = getReplayTraceFolder(configuration)
+						.orElseThrow(() -> new TraceFileMissingException());
 				argsBuilder.append(XUMLRTRuntime.OPTION_READ_TRACE);
 				argsBuilder.append(replayTraceFolder);
 			}
@@ -253,12 +236,33 @@ public class ModelExecutionLaunchConfig {
 		}
 	}
 
-	private static String createTimestampedTraceFolder(
+	private static Optional<String> getReplayTraceFolder(
 			ILaunchConfigurationWorkingCopy configuration) throws CoreException {
-		String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, "");
-		long epochSecond = new Date().toInstant().getEpochSecond();
-		return Paths.get(projectName, "traces" + epochSecond, "traces")
+		String replayFileName = configuration.getAttribute(
+				ATTR_REPLAY_TRACE_FILE, EMPTY_STR);
+		IResource resource = ResourcesPlugin.getWorkspace().getRoot()
+				.findMember(replayFileName);
+		if (resource == null) {
+			return Optional.empty();
+		}
+		return Optional.of(resource.getLocation().toString());
+	}
+
+	private static String getProjectTraceFolder(
+			ILaunchConfigurationWorkingCopy configuration) throws CoreException {
+		IProject project = getProject(configuration);
+		return project.getLocation()
+				.append(ExecutableModelProperties.getTraceFilesPath(project))
 				.toString();
+	}
+
+	private static IProject getProject(
+			ILaunchConfigurationWorkingCopy configuration) throws CoreException {
+		String projectName = configuration.getAttribute(ATTR_PROJECT_NAME,
+				EMPTY_STR);
+		return (IProject) ResourcesPlugin.getWorkspace().getRoot()
+				.findMember(projectName);
+
 	}
 
 }
