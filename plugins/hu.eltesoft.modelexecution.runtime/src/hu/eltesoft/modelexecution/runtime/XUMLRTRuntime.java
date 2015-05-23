@@ -3,26 +3,23 @@ package hu.eltesoft.modelexecution.runtime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
 import hu.eltesoft.modelexecution.runtime.log.NoLogger;
-import hu.eltesoft.modelexecution.runtime.trace.InputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
-import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+
+import org.json.JSONException;
 
 /**
  * BaseRuntime with main. Parses tracing and logging flags.
  */
 public class XUMLRTRuntime extends BaseRuntime {
-
-	private static final String TRACING_FOLDER_NAME = "traces";
-	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 1024;
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
@@ -42,18 +39,17 @@ public class XUMLRTRuntime extends BaseRuntime {
 		}
 		String clsName = args[0];
 		String feedName = args[1];
-		Tracer tracer = new NoTracer();
-		TraceReader traceReader = new NoTraceReader();
-		Logger logger = new NoLogger();
+		Tracer tracer = null;
+		TraceReader traceReader = null;
+		Logger logger = null;
 
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]));
+				tracer = getDefaultTraceWriter(args[++i]);
 				break;
 			case OPTION_READ_TRACE:
-				traceReader = new TraceReplayer(
-						getDefaultInputTraceBuffer(args[++i]));
+				traceReader = getDefaultTraceReplayer(args[++i]);
 				break;
 			case OPTION_LOG:
 				logger = new MinimalLogger();
@@ -64,43 +60,48 @@ public class XUMLRTRuntime extends BaseRuntime {
 				break;
 			}
 		}
+		if (tracer == null) {
+			tracer = new NoTracer();
+		}
+		if (traceReader == null) {
+			traceReader = new NoTraceReader();
+		}
+		if (logger == null) {
+			logger = new NoLogger();
+		}
 
 		TerminationResult result = new XUMLRTRuntime(
 				XUMLRTRuntime.class.getClassLoader(), tracer, traceReader,
 				logger).run(clsName, feedName);
+
+		tracer.close();
+		traceReader.close();
+		logger.close();
 		System.exit(result.getExitCode());
 	}
 
 	/**
 	 * Constructs a tracer that actually creates tracefiles.
 	 */
-	public static Tracer getDefaultTraceWriter(String inputFolder) {
-		return new TraceWriter(getDefaultOutputTraceBuffer(inputFolder));
-	}
-
-	private static OutputTraceBuffer getDefaultOutputTraceBuffer(
-			String folderName) {
-		if (folderName.equals(OPTION_DEFAULT_TRACE)) {
-			return new OutputTraceBuffer(DEFAULT_OUTPUT_BUFFER_SIZE,
-					defaultFileSystem());
-		} else {
-			return new OutputTraceBuffer(folderName + File.separator
-					+ TRACING_FOLDER_NAME, DEFAULT_OUTPUT_BUFFER_SIZE,
-					defaultFileSystem());
+	public static Tracer getDefaultTraceWriter(String traceParameter) {
+		try {
+			if (traceParameter.equals(OPTION_DEFAULT_TRACE)) {
+				return new TraceWriter(defaultFileSystem());
+			} else {
+				return new TraceWriter(traceParameter, defaultFileSystem());
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("trace writer cannot be initialized", e);
 		}
 	}
 
 	/**
 	 * Constructs a trace replayer that actually reads tracefiles.
 	 */
-	public static TraceReplayer getDefaultTraceReplayer(String inputFolder) {
-		return new TraceReplayer(getDefaultInputTraceBuffer(inputFolder));
-	}
-
-	private static InputTraceBuffer getDefaultInputTraceBuffer(
-			String inputFolder) {
-		return new InputTraceBuffer(inputFolder + File.separator
-				+ TRACING_FOLDER_NAME, defaultFileSystem());
+	public static TraceReplayer getDefaultTraceReplayer(String inputFolder)
+			throws ClassNotFoundException, JSONException, IOException {
+		return new TraceReplayer(inputFolder, defaultFileSystem(),
+				XUMLRTRuntime.class.getClassLoader());
 	}
 
 	private static FileSystem defaultFileSystem() {

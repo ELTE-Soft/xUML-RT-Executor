@@ -38,6 +38,8 @@ Export-Package: com.thoughtworks.xstream,
  org.eclipse.papyrus.uml.alf.services,
  org.eclipse.papyrus.uml.alf.util,
  org.eclipse.papyrus.uml.alf.validation,
+ org.json,
+ org.json.zip,
  org.xmlpull.mxp1,
  org.xmlpull.v1
 Import-Package: org.eclipse.xtext.xbase.lib

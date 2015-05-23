@@ -30,6 +30,14 @@ public class InvalidTraceException extends RuntimeException {
 		this.tracedEvent = tracedEvent;
 	}
 
+	/**
+	 * Used when the trace does not conform to the runtime (different classes
+	 * are used)
+	 */
+	public InvalidTraceException(ClassNotFoundException e) {
+		super(e);
+	}
+
 	public TargetedMessage getEvent() {
 		return event;
 	}

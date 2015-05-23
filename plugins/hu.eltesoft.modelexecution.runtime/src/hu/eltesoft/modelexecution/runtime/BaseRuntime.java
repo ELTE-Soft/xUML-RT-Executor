@@ -81,10 +81,6 @@ public abstract class BaseRuntime implements Runtime {
 		} catch (Exception e) {
 			logError(e);
 			return TerminationResult.INTERNAL_ERROR;
-		} finally {
-			traceWriter.close();
-			traceReader.close();
-			logger.close();
 		}
 	}
 

@@ -2,9 +2,14 @@ package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * An event and the class object that will receive the event. The class is
@@ -12,11 +17,16 @@ import java.util.Objects;
  * point to the same object. Currently it utilizes that only one class can
  * exist.
  */
-public class TargetedMessage {
+public class TargetedMessage implements JSONSerializable {
 
 	private java.lang.Class<?> targetClass;
 	private Message message;
 	private boolean fromOutside = false;
+
+	public TargetedMessage(JSONDecoder reader, JSONObject obj)
+			throws ClassNotFoundException, JSONException {
+		jsonDecode(reader, obj);
+	}
 
 	public TargetedMessage(ClassWithState target, Message message) {
 		super();
@@ -24,7 +34,8 @@ public class TargetedMessage {
 		this.message = message;
 	}
 
-	public static TargetedMessage createOutsideEvent(ClassWithState target, Message message) {
+	public static TargetedMessage createOutsideEvent(ClassWithState target,
+			Message message) {
 		TargetedMessage ret = new TargetedMessage(target, message);
 		ret.fromOutside = true;
 		return ret;
@@ -73,7 +84,8 @@ public class TargetedMessage {
 			return false;
 		}
 		TargetedMessage oth = (TargetedMessage) obj;
-		return targetClass.equals(oth.targetClass) && message.equals(oth.message);
+		return targetClass.equals(oth.targetClass)
+				&& message.equals(oth.message);
 	}
 
 	@Override
@@ -90,6 +102,22 @@ public class TargetedMessage {
 
 	public Message getMessage() {
 		return message;
+	}
+
+	@Override
+	public JSONObject jsonEncode() {
+		return new JSONObject()
+				.put("targetClass", targetClass.getCanonicalName())
+				.put("message", message.jsonEncode())
+				.put("fromOutside", fromOutside);
+	}
+
+	@Override
+	public void jsonDecode(JSONDecoder reader, JSONObject obj)
+			throws ClassNotFoundException, JSONException {
+		targetClass = Class.forName(obj.getString("targetClass"));
+		message = (Message) reader.decodeJSON(obj.get("message"));
+		fromOutside = obj.getBoolean("fromOutside");
 	}
 
 }
