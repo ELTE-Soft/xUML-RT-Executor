@@ -56,4 +56,9 @@ public class JSONDecoder {
 		return new TargetedMessage(this, obj);
 	}
 
+	public Class<?> decodeClass(String className)
+			throws ClassNotFoundException {
+		return classLoader.loadClass(className);
+	}
+
 }

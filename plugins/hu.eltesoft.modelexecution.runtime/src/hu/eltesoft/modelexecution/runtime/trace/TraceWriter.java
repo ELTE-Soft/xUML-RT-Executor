@@ -17,16 +17,25 @@ public class TraceWriter implements Tracer {
 	private BufferedWriter writer;
 
 	protected TraceWriter(Path outputFilePath) throws IOException {
-		writer = Files.newBufferedWriter(outputFilePath);
 		if (!Files.exists(outputFilePath)) {
+			if (outputFilePath.getParent() != null
+					&& !Files.exists(outputFilePath.getParent())) {
+				Files.createDirectories(outputFilePath.getParent());
+			}
 			Files.createFile(outputFilePath);
 		}
+		writer = Files.newBufferedWriter(outputFilePath);
 	}
 
 	public TraceWriter(String folderName, FileSystem fileSystem)
 			throws IOException {
 		this(fileSystem.getPath(folderName).resolve(
 				createTimestampedFileName(fileSystem)));
+	}
+
+	public static TraceWriter forSpecifiedFile(String fileName,
+			FileSystem fileSystem) throws IOException {
+		return new TraceWriter(fileSystem.getPath(fileName));
 	}
 
 	private static Path createTimestampedFileName(FileSystem fileSystem) {

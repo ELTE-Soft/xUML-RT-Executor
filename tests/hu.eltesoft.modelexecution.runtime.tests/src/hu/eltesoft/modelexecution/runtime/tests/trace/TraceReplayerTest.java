@@ -1,200 +1,230 @@
 package hu.eltesoft.modelexecution.runtime.tests.trace;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.DifferentDummyEvent;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
-import hu.eltesoft.modelexecution.runtime.trace.IInputTraceBuffer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
+import hu.eltesoft.modelexecution.runtime.trace.TraceMessageMismatchException;
+import hu.eltesoft.modelexecution.runtime.trace.TraceMessageUnexpectedException;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
+import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
+
+import java.nio.file.FileSystem;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.junit.Before;
 import org.junit.Test;
+
+import com.google.common.jimfs.Jimfs;
 
 public class TraceReplayerTest {
 
-	Mockery context;
-	private Logger mockLogger;
-	private IInputTraceBuffer inputBufferMock;
+	Mockery context = new Mockery();
 
-	@Before
-	public void setup() {
-		context = new Mockery();
-		mockLogger = context.mock(Logger.class);
-		inputBufferMock = context.mock(IInputTraceBuffer.class);
+	@Test
+	public void testHasEvent_WithoutMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		createEvents(fileSystem, traceFileName);
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
+		assertFalse(sut.hasEvent());
+		sut.close();
 	}
 
 	@Test
-	public void testDispatchEvent() throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-		MockClass classInstance = MockClass.getInstance();
-		DummySignal eventInstance = new DummySignal();
-		TargetedMessage te = new TargetedMessage(classInstance, eventInstance);
+	public void testHasEvent_WithMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		createEvents(fileSystem, traceFileName, new TargetedMessage(
+				new MockClass(null), new DummySignal()));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
+		assertTrue(sut.hasEvent());
+		sut.close();
+	}
+
+	@Test
+	public void testDispatchEvent_WithoutMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		createEvents(fileSystem, traceFileName);
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
+		assertException(() -> sut.dispatchEvent(null));
+		sut.close();
+	}
+
+	@Test
+	public void testDispatchEvent_WithInternalMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		createEvents(fileSystem, traceFileName, new TargetedMessage(
+				new MockClass(null), new DummySignal()));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
+		assertException(() -> sut.dispatchEvent(null),
+				TraceMessageUnexpectedException.class);
+		sut.close();
+	}
+
+	@Test
+	public void testDispatchEvent_WithExternalMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		Logger logger = context.mock(Logger.class);
+		MockClass target = new MockClass(null);
+		DummySignal message = new DummySignal();
+		createEvents(fileSystem, traceFileName,
+				TargetedMessage.createOutsideEvent(target, message));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(true));
-				oneOf(inputBufferMock).getTracedEvent();
-				will(returnValue(te));
-				oneOf(mockLogger).messageDispatched(classInstance, eventInstance);
+				oneOf(logger).messageDispatched(target, message);
 			}
 		});
-
-		sut.dispatchEvent(te, mockLogger);
-
-		context.checking(new Expectations() {
-			{
-				oneOf(inputBufferMock).close();
-			}
-		});
+		sut.dispatchEvent(logger);
 
 		sut.close();
 	}
 
 	@Test
-	public void testDispatchEvent_withTargetedEventNoExternals()
-			throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-		MockClass classInstance = MockClass.getInstance();
-		DummySignal eventInstance = new DummySignal();
-		TargetedMessage te = new TargetedMessage(classInstance, eventInstance);
+	public void testDispatchEventWithParam_WithoutMessage() throws Exception {
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		Logger logger = context.mock(Logger.class);
+		MockClass target = new MockClass(null);
+		DummySignal message = new DummySignal();
+		createEvents(fileSystem, traceFileName);
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(false));
-				oneOf(mockLogger).messageDispatched(classInstance, eventInstance);
-				oneOf(inputBufferMock).close();
+				oneOf(logger).messageDispatched(target, message);
 			}
 		});
 
-		EventSource eventSource = sut.dispatchEvent(te, mockLogger);
-		assertEquals(EventSource.Queue, eventSource);
+		assertEquals(EventSource.Queue,
+				sut.dispatchEvent(new TargetedMessage(target, message), logger));
 		sut.close();
 	}
 
 	@Test
-	public void testDispatchEvent_withTargetedEventAndDeserializedInternal()
+	public void testDispatchEventWithParam_WithSameInternalMessage()
 			throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-		MockClass classInstance = MockClass.getInstance();
-		DummySignal eventInstance1 = new DummySignal();
-		DummySignal eventInstance2 = new DummySignal();
-		TargetedMessage te = new TargetedMessage(classInstance, eventInstance1);
-		TargetedMessage te2 = new TargetedMessage(classInstance, eventInstance2);
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		Logger logger = context.mock(Logger.class);
+		MockClass target = new MockClass(null);
+		DummySignal message = new DummySignal();
+		createEvents(fileSystem, traceFileName, new TargetedMessage(target,
+				message));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(true));
-				oneOf(inputBufferMock).getTracedEvent();
-				will(returnValue(te2));
-				oneOf(mockLogger)
-						.messageDispatched(classInstance, eventInstance2);
-				oneOf(inputBufferMock).close();
+				oneOf(logger).messageDispatched(target, message);
 			}
 		});
 
-		EventSource eventSource1 = sut.dispatchEvent(te, mockLogger);
-		assertEquals(EventSource.Queue, eventSource1);
-
+		assertEquals(EventSource.Queue,
+				sut.dispatchEvent(new TargetedMessage(target, message), logger));
 		sut.close();
 	}
 
 	@Test
-	public void testDispatchEvent_withTargetedEventAndDeserializedExternal()
+	public void testDispatchEventWithParam_WithDifferentInternalMessage()
 			throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-		MockClass classInstance = MockClass.getInstance();
-		DummySignal eventInstance1 = new DummySignal();
-		DummySignal eventInstance2 = new DummySignal();
-		TargetedMessage te = new TargetedMessage(classInstance, eventInstance1);
-		TargetedMessage te2 = TargetedMessage.createOutsideEvent(classInstance,
-				eventInstance2);
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		Logger logger = context.mock(Logger.class);
+		MockClass target = new MockClass(null);
+		DummySignal message = new DummySignal();
+		createEvents(fileSystem, traceFileName, new TargetedMessage(target,
+				message));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(true));
-				oneOf(inputBufferMock).getTracedEvent();
-				will(returnValue(te2));
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(false));
-				oneOf(mockLogger)
-						.messageDispatched(classInstance, eventInstance2);
-				oneOf(mockLogger)
-						.messageDispatched(classInstance, eventInstance1);
-				oneOf(inputBufferMock).close();
+				oneOf(logger).messageDispatched(target, message);
 			}
 		});
 
-		EventSource eventSource1 = sut.dispatchEvent(te, mockLogger);
-		assertEquals(EventSource.Trace, eventSource1);
-		EventSource eventSource2 = sut.dispatchEvent(te, mockLogger);
-		assertEquals(EventSource.Queue, eventSource2);
-
+		DifferentDummyEvent message2 = new DifferentDummyEvent(1);
+		assertException(() -> sut.dispatchEvent(new TargetedMessage(target,
+				message2), logger), TraceMessageMismatchException.class);
 		sut.close();
 	}
 
 	@Test
-	public void testDispatchEvent_withTargetedEventAndDifferentDeserializedInternal()
+	public void testDispatchEventWithParam_WithExternalMessage()
 			throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-		MockClass classInstance = MockClass.getInstance();
-		DummySignal eventInstance1 = new DifferentDummyEvent(1);
-		DummySignal eventInstance2 = new DifferentDummyEvent(2);
-		TargetedMessage te1 = new TargetedMessage(classInstance, eventInstance1);
-		TargetedMessage te2 = new TargetedMessage(classInstance, eventInstance2);
+		FileSystem fileSystem = Jimfs.newFileSystem();
+		String traceFileName = "trace";
+		Logger logger = context.mock(Logger.class);
+		MockClass target = new MockClass(null);
+		DummySignal message = new DummySignal();
+		createEvents(fileSystem, traceFileName,
+				TargetedMessage.createOutsideEvent(target, message));
+		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(true));
-				oneOf(inputBufferMock).getTracedEvent();
-				will(returnValue(te2));
-				oneOf(mockLogger)
-						.messageDispatched(classInstance, eventInstance2);
-				oneOf(inputBufferMock).close();
+				oneOf(logger).messageDispatched(target, message);
 			}
 		});
 
-		try {
-			sut.dispatchEvent(te1, mockLogger);
-			throw new AssertionError(
-					"No exception thrown for dispatch without trace.");
-		} catch (RuntimeException e) {
-			// expected behavior
-		} finally {
-			sut.close();
+		DifferentDummyEvent message2 = new DifferentDummyEvent(1);
+		assertEquals(EventSource.Trace, sut.dispatchEvent(new TargetedMessage(
+				target, message2), logger));
+		sut.close();
+	}
+
+	private void createEvents(FileSystem fileSystem, String filePath,
+			TargetedMessage... messages) throws Exception {
+		TraceWriter sut = TraceWriter.forSpecifiedFile(filePath, fileSystem);
+		for (TargetedMessage message : messages) {
+			sut.traceEvent(message);
 		}
+		sut.close();
 	}
 
-	@Test
-	public void testDispatchEvent_withoutEventNoTrace() throws Exception {
-		TraceReplayer sut = new TraceReplayer(inputBufferMock);
-
-		context.checking(new Expectations() {
-			{
-				oneOf(inputBufferMock).hasMoreElems();
-				will(returnValue(false));
-				oneOf(inputBufferMock).close();
-			}
-		});
-
+	private static void assertException(Runnable toExecute,
+			Class<? extends Exception> exceptionClass) {
 		try {
-			sut.dispatchEvent(mockLogger);
-			throw new AssertionError(
-					"No exception thrown for dispatch without trace.");
-		} catch (RuntimeException e) {
-			// expected behavior
-		} finally {
-			sut.close();
+			toExecute.run();
+		} catch (Exception e) {
+			if (exceptionClass.equals(e.getClass())) {
+				// OK
+				return;
+			} else {
+				throw e;
+			}
 		}
+		fail("Expected exception of " + exceptionClass
+				+ ", but no exception raised");
+	}
+
+	private static void assertException(Runnable toExecute) {
+		try {
+			toExecute.run();
+		} catch (Exception e) {
+			// OK
+			return;
+		}
+		fail("Expected exception, but no exception raised");
 	}
 
 }

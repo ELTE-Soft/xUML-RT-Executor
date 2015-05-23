@@ -113,10 +113,10 @@ public class TargetedMessage implements JSONSerializable {
 	}
 
 	@Override
-	public void jsonDecode(JSONDecoder reader, JSONObject obj)
+	public void jsonDecode(JSONDecoder decoder, JSONObject obj)
 			throws ClassNotFoundException, JSONException {
-		targetClass = Class.forName(obj.getString("targetClass"));
-		message = (Message) reader.decodeJSON(obj.get("message"));
+		targetClass = decoder.decodeClass(obj.getString("targetClass"));
+		message = (Message) decoder.decodeJSON(obj.get("message"));
 		fromOutside = obj.getBoolean("fromOutside");
 	}
 
