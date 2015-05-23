@@ -22,12 +22,13 @@ import java.nio.file.FileSystems;
 public class XUMLRTRuntime extends BaseRuntime {
 
 	private static final String TRACING_FOLDER_NAME = "traces";
-	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 10;
+	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 1024;
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
 	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
 			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
+	public static final String OPTION_DEFAULT_TRACE = "-default-trace";
 
 	public XUMLRTRuntime(ClassLoader classLoader, Tracer tracer,
 			TraceReader traceReader, Logger logger) {
@@ -48,13 +49,11 @@ public class XUMLRTRuntime extends BaseRuntime {
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]
-						+ File.separator + TRACING_FOLDER_NAME));
+				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]));
 				break;
 			case OPTION_READ_TRACE:
 				traceReader = new TraceReplayer(
-						getDefaultInputTraceBuffer(args[++i] + File.separator
-								+ TRACING_FOLDER_NAME));
+						getDefaultInputTraceBuffer(args[++i]));
 				break;
 			case OPTION_LOG:
 				logger = new MinimalLogger();
@@ -81,8 +80,14 @@ public class XUMLRTRuntime extends BaseRuntime {
 
 	private static OutputTraceBuffer getDefaultOutputTraceBuffer(
 			String folderName) {
-		return new OutputTraceBuffer(folderName, DEFAULT_OUTPUT_BUFFER_SIZE,
-				defaultFileSystem());
+		if (folderName.equals(OPTION_DEFAULT_TRACE)) {
+			return new OutputTraceBuffer(DEFAULT_OUTPUT_BUFFER_SIZE,
+					defaultFileSystem());
+		} else {
+			return new OutputTraceBuffer(folderName + File.separator
+					+ TRACING_FOLDER_NAME, DEFAULT_OUTPUT_BUFFER_SIZE,
+					defaultFileSystem());
+		}
 	}
 
 	/**
@@ -94,7 +99,8 @@ public class XUMLRTRuntime extends BaseRuntime {
 
 	private static InputTraceBuffer getDefaultInputTraceBuffer(
 			String inputFolder) {
-		return new InputTraceBuffer(inputFolder, defaultFileSystem());
+		return new InputTraceBuffer(inputFolder + File.separator
+				+ TRACING_FOLDER_NAME, defaultFileSystem());
 	}
 
 	private static FileSystem defaultFileSystem() {

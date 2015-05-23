@@ -37,6 +37,8 @@ public class LaunchConfigTracingLoggingTab extends
 	private LaunchConfigFolderSelector traceFolderSelector;
 	private LaunchConfigFolderSelector replayFolderSelector;
 
+	private Button defaultTracing;
+
 	@Override
 	public String getId() {
 		return TAB_ID;
@@ -57,6 +59,7 @@ public class LaunchConfigTracingLoggingTab extends
 
 		comp.pack();
 		updateLaunchConfigurationDialog();
+		refresh();
 	}
 
 	private void createLoggingControl(Composite comp) {
@@ -83,22 +86,30 @@ public class LaunchConfigTracingLoggingTab extends
 			}
 		};
 	}
-
+	
 	private SelectionListener selectionTabUpdater() {
 		return new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				refresh();
 				setDirty(true);
 				updateLaunchConfigurationDialog();
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
+				refresh();
 				setDirty(true);
 				updateLaunchConfigurationDialog();
 			}
 		};
+	}
+	
+	private void refresh() {
+		defaultTracing.setEnabled(tracingEnabled.getSelection());
+		traceFolderSelector.setEnabled(tracingEnabled.getSelection() && !defaultTracing.getSelection());
+		replayFolderSelector.setEnabled(replayTrace.getSelection());
 	}
 
 	private void createTracingControl(Composite comp) {
@@ -114,6 +125,11 @@ public class LaunchConfigTracingLoggingTab extends
 				false));
 		tracingEnabled.addSelectionListener(selectionTabUpdater());
 
+		defaultTracing = new Button(group, SWT.CHECK);
+		defaultTracing.setText("Default trace directory");
+		defaultTracing.setSelection(true);
+		defaultTracing.addSelectionListener(selectionTabUpdater());
+		
 		traceFolderSelector = new LaunchConfigFolderSelector(
 				group,
 				FolderSelector.ConfigBase.WORKSPACE_BASED,
@@ -121,6 +137,7 @@ public class LaunchConfigTracingLoggingTab extends
 				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_button_text,
 				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_dialog_title,
 				ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER);
+		traceFolderSelector.setEnabled(false);
 		traceFolderSelector.addUpdateListener(tabUpdater());
 
 		group.pack();
@@ -148,7 +165,7 @@ public class LaunchConfigTracingLoggingTab extends
 
 		group.pack();
 	}
-
+	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
@@ -190,6 +207,8 @@ public class LaunchConfigTracingLoggingTab extends
 				loggingEnabled.getSelection());
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
 				tracingEnabled.getSelection());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_DEFAULT_TRACING,
+				defaultTracing.getSelection());
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 				replayTrace.getSelection());

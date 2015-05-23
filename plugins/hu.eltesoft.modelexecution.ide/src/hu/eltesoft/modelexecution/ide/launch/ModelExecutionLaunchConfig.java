@@ -5,6 +5,8 @@ import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.function.Consumer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -118,6 +120,13 @@ public class ModelExecutionLaunchConfig {
 			+ "replay_trace_folder"; //$NON-NLS-1$
 
 	/**
+	 * Enables traces to be put into automatically generated timestamped
+	 * resources.
+	 */
+	public static final String ATTR_DEFAULT_TRACING = ATTR_PREFIX
+			+ "default_trace_folder"; //$NON-NLS-1$
+
+	/**
 	 * Adds launch configuration attributes needed by Moka.
 	 */
 	public static ILaunchConfiguration addMokaConfigs(
@@ -216,12 +225,15 @@ public class ModelExecutionLaunchConfig {
 			boolean tracing = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_TRACING, false);
 			if (tracing) {
-				String traceFolder = configuration
-						.getAttribute(
-								ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER,
-								EMPTY_STR); //$NON-NLS-1$
 				argsBuilder.append(XUMLRTRuntime.OPTION_WRITE_TRACE);
-				argsBuilder.append(traceFolder);
+				if (configuration.getAttribute(ATTR_DEFAULT_TRACING, false)) {
+					argsBuilder.append(XUMLRTRuntime.OPTION_DEFAULT_TRACE);
+				} else {
+					String traceFolder = configuration.getAttribute(
+							ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER,
+							createTimestampedTraceFolder(configuration)); //$NON-NLS-1$
+					argsBuilder.append(traceFolder);
+				}
 			}
 			boolean traceReplay = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, false);
@@ -239,6 +251,14 @@ public class ModelExecutionLaunchConfig {
 		} catch (CoreException e) {
 			IdePlugin.logError("Cannot setup launch args", e); //$NON-NLS-1$
 		}
+	}
+
+	private static String createTimestampedTraceFolder(
+			ILaunchConfigurationWorkingCopy configuration) throws CoreException {
+		String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, "");
+		long epochSecond = new Date().toInstant().getEpochSecond();
+		return Paths.get(projectName, "traces" + epochSecond, "traces")
+				.toString();
 	}
 
 }

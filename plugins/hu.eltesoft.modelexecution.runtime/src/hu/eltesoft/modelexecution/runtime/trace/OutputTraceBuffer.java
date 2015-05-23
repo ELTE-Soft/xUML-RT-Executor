@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 import com.thoughtworks.xstream.XStream;
@@ -37,6 +39,15 @@ public class OutputTraceBuffer implements IOutputTraceBuffer {
 	 */
 	public OutputTraceBuffer(String folderName, int size, FileSystem fileSystem) {
 		this.folderName = folderName;
+		this.size = size;
+		this.fileSystem = fileSystem;
+	}
+
+	public OutputTraceBuffer(int size, FileSystem fileSystem) {
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+		this.folderName = "project" + fileSystem.getSeparator() + "traces"
+				+ format.format(date);
 		this.size = size;
 		this.fileSystem = fileSystem;
 	}
