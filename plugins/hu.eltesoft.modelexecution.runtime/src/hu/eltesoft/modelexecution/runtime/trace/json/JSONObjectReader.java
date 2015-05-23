@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 /**
- * A class for reading JSON objects from a given workspace-relative trace file.
+ * A class for reading JSON objects from a given trace file.
  */
 public class JSONObjectReader implements AutoCloseable {
 
