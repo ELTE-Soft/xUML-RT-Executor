@@ -19,6 +19,10 @@ import org.json.JSONObject;
  */
 public class TargetedMessage implements JSONSerializable {
 
+	private static final String JSON_KEY_FROM_OUTSIDE = "fromOutside";
+	private static final String JSON_KEY_MESSAGE = "message";
+	private static final String JSON_KEY_TARGET_CLASS = "targetClass";
+	
 	private java.lang.Class<?> targetClass;
 	private Message message;
 	private boolean fromOutside = false;
@@ -107,17 +111,17 @@ public class TargetedMessage implements JSONSerializable {
 	@Override
 	public JSONObject jsonEncode() {
 		return new JSONObject()
-				.put("targetClass", targetClass.getCanonicalName())
-				.put("message", message.jsonEncode())
-				.put("fromOutside", fromOutside);
+				.put(JSON_KEY_TARGET_CLASS, targetClass.getCanonicalName())
+				.put(JSON_KEY_MESSAGE, message.jsonEncode())
+				.put(JSON_KEY_FROM_OUTSIDE, fromOutside);
 	}
 
 	@Override
 	public void jsonDecode(JSONDecoder decoder, JSONObject obj)
 			throws ClassNotFoundException, JSONException {
-		targetClass = decoder.decodeClass(obj.getString("targetClass"));
-		message = (Message) decoder.decodeJSON(obj.get("message"));
-		fromOutside = obj.getBoolean("fromOutside");
+		targetClass = decoder.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
+		message = (Message) decoder.decodeJSON(obj.get(JSON_KEY_MESSAGE));
+		fromOutside = obj.getBoolean(JSON_KEY_FROM_OUTSIDE);
 	}
 
 }
