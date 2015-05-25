@@ -23,10 +23,12 @@ public abstract class BaseRuntime implements Runtime {
 
 	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
 	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
-	public static final String STATES_LOGGER_ID = LOGGER_ID + "StateMachine.States";
-	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + "StateMachine.Transitions";
-	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + "Events.Messages";
-	
+	public static final String STATES_LOGGER_ID = LOGGER_ID
+			+ "StateMachine.States";
+	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID
+			+ "StateMachine.Transitions";
+	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
+			+ "Events.Messages";
 
 	private Queue<TargetedMessage> queue = new LinkedList<>();
 
@@ -60,7 +62,8 @@ public abstract class BaseRuntime implements Runtime {
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
 	@Override
-	public TerminationResult run(String className, String feedName) throws Exception {
+	public TerminationResult run(String className, String feedName)
+			throws Exception {
 		try {
 			prepare(className, feedName);
 			while (!queue.isEmpty() || traceReader.hasEvent()) {
@@ -90,7 +93,8 @@ public abstract class BaseRuntime implements Runtime {
 			InvocationTargetException {
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
-		ClassWithState classInstance = (ClassWithState) constructor.newInstance(this);
+		ClassWithState classInstance = (ClassWithState) constructor
+				.newInstance(this);
 		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
@@ -117,7 +121,8 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void logTransition(String eventName, String messageName, String source, String target) {
+	public void logTransition(String eventName, String messageName,
+			String source, String target) {
 		logger.transition(eventName, messageName, source, target);
 	}
 

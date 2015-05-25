@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
-
 /**
  * An exception raised when the trace file cannot be replayed. This is an
  * exception caused by the user and must be treated separately. Can be used when

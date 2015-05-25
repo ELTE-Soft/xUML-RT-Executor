@@ -8,7 +8,6 @@ import hu.eltesoft.modelexecution.runtime.base.Message;
  */
 public class NoLogger implements Logger {
 
-
 	@Override
 	public void enterState(String state) {
 	}
@@ -18,7 +17,8 @@ public class NoLogger implements Logger {
 	}
 
 	@Override
-	public void transition(String eventName, String messageName, String source, String target) {
+	public void transition(String eventName, String messageName, String source,
+			String target) {
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class NoLogger implements Logger {
 	}
 
 	@Override
-	public void messageDispatched(ClassWithState target, Message event) {	
+	public void messageDispatched(ClassWithState target, Message event) {
 	}
 
 }

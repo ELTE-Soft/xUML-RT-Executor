@@ -44,7 +44,9 @@ public class TraceReplayer implements TraceReader {
 		} catch (JSONException e) {
 			throw new InvalidTraceException("Malformed trace", e);
 		} catch (ClassNotFoundException e) {
-			throw new InvalidTraceException("Classes in trace are not compatible with classes used by the runtime", e);
+			throw new InvalidTraceException(
+					"Classes in trace are not compatible with classes used by the runtime",
+					e);
 		}
 	}
 

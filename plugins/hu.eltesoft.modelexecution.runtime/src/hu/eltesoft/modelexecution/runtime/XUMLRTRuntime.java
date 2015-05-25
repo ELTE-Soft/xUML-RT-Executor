@@ -80,7 +80,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 	}
 
 	/**
-	 * Constructs a tracer that actually creates tracefiles.
+	 * Constructs a tracer that actually creates trace files.
 	 */
 	public static Tracer getDefaultTraceWriter(String traceParameter) {
 		try {
@@ -91,7 +91,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 	}
 
 	/**
-	 * Constructs a trace replayer that actually reads tracefiles.
+	 * Constructs a trace replayer that actually reads trace files.
 	 */
 	public static TraceReplayer getDefaultTraceReplayer(String inputFolder)
 			throws ClassNotFoundException, JSONException, IOException {

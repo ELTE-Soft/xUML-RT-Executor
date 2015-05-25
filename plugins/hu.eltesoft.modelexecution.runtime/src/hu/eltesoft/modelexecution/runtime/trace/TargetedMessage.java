@@ -22,7 +22,7 @@ public class TargetedMessage implements JSONSerializable {
 	private static final String JSON_KEY_FROM_OUTSIDE = "fromOutside";
 	private static final String JSON_KEY_MESSAGE = "message";
 	private static final String JSON_KEY_TARGET_CLASS = "targetClass";
-	
+
 	private java.lang.Class<?> targetClass;
 	private Message message;
 	private boolean fromOutside = false;

@@ -23,17 +23,16 @@ public class TraceWriterTest {
 	public void testTraceEvent() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String folderName = "traces";
-		TraceWriter sut = new TraceWriter(folderName, fileSystem);
-		sut.traceEvent(new TargetedMessage(new MockClass(null), new DummySignal()));
-		sut.close();
-		
+
+		try (TraceWriter sut = new TraceWriter(folderName, fileSystem)) {
+			sut.traceEvent(new TargetedMessage(new MockClass(null),
+					new DummySignal()));
+		}
+
 		Path path = fileSystem.getPath(folderName);
 		Stream<Path> files = Files.list(path).filter(Files::isRegularFile);
 		Optional<Path> anyFile = files.findAny();
 		assertTrue(anyFile.isPresent());
 		assertTrue(Files.readAllLines(anyFile.get()).size() > 0);
 	}
-	
-	
-	
 }

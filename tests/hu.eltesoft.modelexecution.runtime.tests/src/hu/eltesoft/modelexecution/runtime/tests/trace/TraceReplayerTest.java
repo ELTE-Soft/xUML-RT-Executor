@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.runtime.tests.trace;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.DifferentDummyEvent;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
@@ -50,28 +49,29 @@ public class TraceReplayerTest {
 		sut.close();
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testDispatchEvent_WithoutMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
 		createEvents(fileSystem, traceFileName);
-		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
-				getClass().getClassLoader());
-		assertException(() -> sut.dispatchEvent(null));
-		sut.close();
+
+		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader())) {
+			sut.dispatchEvent(null);
+		}
 	}
 
-	@Test
+	@Test(expected = TraceMessageUnexpectedException.class)
 	public void testDispatchEvent_WithInternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
 		createEvents(fileSystem, traceFileName, new TargetedMessage(
 				new MockClass(null), new DummySignal()));
-		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
-				getClass().getClassLoader());
-		assertException(() -> sut.dispatchEvent(null),
-				TraceMessageUnexpectedException.class);
-		sut.close();
+
+		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader())) {
+			sut.dispatchEvent(null);
+		}
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class TraceReplayerTest {
 		sut.close();
 	}
 
-	@Test
+	@Test(expected = TraceMessageMismatchException.class)
 	public void testDispatchEventWithParam_WithDifferentInternalMessage()
 			throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
@@ -152,19 +152,19 @@ public class TraceReplayerTest {
 		DummySignal message = new DummySignal();
 		createEvents(fileSystem, traceFileName, new TargetedMessage(target,
 				message));
-		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
-				getClass().getClassLoader());
 
-		context.checking(new Expectations() {
-			{
-				oneOf(logger).messageDispatched(target, message);
-			}
-		});
+		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
+				getClass().getClassLoader())) {
 
-		DifferentDummyEvent message2 = new DifferentDummyEvent(1);
-		assertException(() -> sut.dispatchEvent(new TargetedMessage(target,
-				message2), logger), TraceMessageMismatchException.class);
-		sut.close();
+			context.checking(new Expectations() {
+				{
+					oneOf(logger).messageDispatched(target, message);
+				}
+			});
+
+			DifferentDummyEvent message2 = new DifferentDummyEvent(1);
+			sut.dispatchEvent(new TargetedMessage(target, message2), logger);
+		}
 	}
 
 	@Test
@@ -200,31 +200,4 @@ public class TraceReplayerTest {
 		}
 		sut.close();
 	}
-
-	private static void assertException(Runnable toExecute,
-			Class<? extends Exception> exceptionClass) {
-		try {
-			toExecute.run();
-		} catch (Exception e) {
-			if (exceptionClass.equals(e.getClass())) {
-				// OK
-				return;
-			} else {
-				throw e;
-			}
-		}
-		fail("Expected exception of " + exceptionClass
-				+ ", but no exception raised");
-	}
-
-	private static void assertException(Runnable toExecute) {
-		try {
-			toExecute.run();
-		} catch (Exception e) {
-			// OK
-			return;
-		}
-		fail("Expected exception, but no exception raised");
-	}
-
 }
