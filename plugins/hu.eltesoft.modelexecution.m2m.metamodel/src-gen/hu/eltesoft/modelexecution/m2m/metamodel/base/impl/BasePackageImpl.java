@@ -7,21 +7,36 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -57,7 +72,21 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass referencedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType namedReferenceEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType referenceEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -178,8 +207,35 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getReferenced() {
+		return referencedEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getReferenced_Reference() {
+		return (EAttribute)referencedEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getNamedReference() {
 		return namedReferenceEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getReference() {
+		return referenceEDataType;
 	}
 
 	/**
@@ -217,8 +273,12 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		namedEClass = createEClass(NAMED);
 		createEAttribute(namedEClass, NAMED__REFERENCE);
 
+		referencedEClass = createEClass(REFERENCED);
+		createEAttribute(referencedEClass, REFERENCED__REFERENCE);
+
 		// Create data types
 		namedReferenceEDataType = createEDataType(NAMED_REFERENCE);
+		referenceEDataType = createEDataType(REFERENCE);
 	}
 
 	/**
@@ -251,6 +311,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Add supertypes to classes
 		modelRootEClass.getESuperTypes().add(this.getNamed());
 		namedEClass.getESuperTypes().add(this.getTranslationObject());
+		referencedEClass.getESuperTypes().add(this.getTranslationObject());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -260,8 +321,12 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		initEClass(namedEClass, Named.class, "Named", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNamed_Reference(), this.getNamedReference(), "reference", null, 1, 1, Named.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(referencedEClass, Referenced.class, "Referenced", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getReferenced_Reference(), this.getReference(), "reference", null, 1, 1, Referenced.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize data types
 		initEDataType(namedReferenceEDataType, NamedReference.class, "NamedReference", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(referenceEDataType, Reference.class, "Reference", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

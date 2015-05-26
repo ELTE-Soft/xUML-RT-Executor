@@ -18,14 +18,13 @@ public abstract class MethodProcessor implements IMatchProcessor<MethodMatch> {
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pOperation the value of pattern parameter operation in the currently processed match
    * @param pMethod the value of pattern parameter method in the currently processed match
-   * @param pMethodName the value of pattern parameter methodName in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod, final String pMethodName);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod);
   
   @Override
   public void process(final MethodMatch match) {
-    process(match.getCls(), match.getOperation(), match.getMethod(), match.getMethodName());
+    process(match.getCls(), match.getOperation(), match.getMethod());
     
   }
 }

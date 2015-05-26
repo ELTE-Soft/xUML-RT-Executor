@@ -16,14 +16,13 @@ public abstract class ContainerClassOfBehaviorProcessor implements IMatchProcess
    * Defines the action that is to be executed on each match.
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
    * @param pContainerClass the value of pattern parameter containerClass in the currently processed match
-   * @param pContainerClassName the value of pattern parameter containerClassName in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName);
+  public abstract void process(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass);
   
   @Override
   public void process(final ContainerClassOfBehaviorMatch match) {
-    process(match.getBehavior(), match.getContainerClass(), match.getContainerClassName());
+    process(match.getBehavior(), match.getContainerClass());
     
   }
 }

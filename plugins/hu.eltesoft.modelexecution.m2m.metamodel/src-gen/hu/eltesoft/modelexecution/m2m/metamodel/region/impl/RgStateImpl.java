@@ -3,17 +3,22 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -54,24 +59,44 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' reference.
+	 * The default value of the '{@link #getEntry() <em>Entry</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getEntry()
 	 * @generated
 	 * @ordered
 	 */
-	protected RgBehavior entry;
+	protected static final NamedReference ENTRY_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getExit() <em>Exit</em>}' reference.
+	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEntry()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference entry = ENTRY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getExit() <em>Exit</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExit()
 	 * @generated
 	 * @ordered
 	 */
-	protected RgBehavior exit;
+	protected static final NamedReference EXIT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getExit() <em>Exit</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExit()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference exit = EXIT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getTransitions() <em>Transitions</em>}' reference list.
@@ -128,15 +153,7 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgBehavior getEntry() {
-		if (entry != null && entry.eIsProxy()) {
-			InternalEObject oldEntry = (InternalEObject)entry;
-			entry = (RgBehavior)eResolveProxy(oldEntry);
-			if (entry != oldEntry) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_STATE__ENTRY, oldEntry, entry));
-			}
-		}
+	public NamedReference getEntry() {
 		return entry;
 	}
 
@@ -145,17 +162,8 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgBehavior basicGetEntry() {
-		return entry;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setEntry(RgBehavior newEntry) {
-		RgBehavior oldEntry = entry;
+	public void setEntry(NamedReference newEntry) {
+		NamedReference oldEntry = entry;
 		entry = newEntry;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__ENTRY, oldEntry, entry));
@@ -166,15 +174,7 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgBehavior getExit() {
-		if (exit != null && exit.eIsProxy()) {
-			InternalEObject oldExit = (InternalEObject)exit;
-			exit = (RgBehavior)eResolveProxy(oldExit);
-			if (exit != oldExit) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_STATE__EXIT, oldExit, exit));
-			}
-		}
+	public NamedReference getExit() {
 		return exit;
 	}
 
@@ -183,17 +183,8 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgBehavior basicGetExit() {
-		return exit;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setExit(RgBehavior newExit) {
-		RgBehavior oldExit = exit;
+	public void setExit(NamedReference newExit) {
+		NamedReference oldExit = exit;
 		exit = newExit;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__EXIT, oldExit, exit));
@@ -222,11 +213,9 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 			case RegionPackage.RG_STATE__REFERENCE:
 				return getReference();
 			case RegionPackage.RG_STATE__ENTRY:
-				if (resolve) return getEntry();
-				return basicGetEntry();
+				return getEntry();
 			case RegionPackage.RG_STATE__EXIT:
-				if (resolve) return getExit();
-				return basicGetExit();
+				return getExit();
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				return getTransitions();
 		}
@@ -246,10 +235,10 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 				setReference((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_STATE__ENTRY:
-				setEntry((RgBehavior)newValue);
+				setEntry((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_STATE__EXIT:
-				setExit((RgBehavior)newValue);
+				setExit((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				getTransitions().clear();
@@ -271,10 +260,10 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case RegionPackage.RG_STATE__ENTRY:
-				setEntry((RgBehavior)null);
+				setEntry(ENTRY_EDEFAULT);
 				return;
 			case RegionPackage.RG_STATE__EXIT:
-				setExit((RgBehavior)null);
+				setExit(EXIT_EDEFAULT);
 				return;
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				getTransitions().clear();
@@ -294,9 +283,9 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 			case RegionPackage.RG_STATE__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_STATE__ENTRY:
-				return entry != null;
+				return ENTRY_EDEFAULT == null ? entry != null : !ENTRY_EDEFAULT.equals(entry);
 			case RegionPackage.RG_STATE__EXIT:
-				return exit != null;
+				return EXIT_EDEFAULT == null ? exit != null : !EXIT_EDEFAULT.equals(exit);
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				return transitions != null && !transitions.isEmpty();
 		}
@@ -315,6 +304,10 @@ public class RgStateImpl extends MinimalEObjectImpl.Container implements RgState
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", entry: ");
+		result.append(entry);
+		result.append(", exit: ");
+		result.append(exit);
 		result.append(')');
 		return result.toString();
 	}

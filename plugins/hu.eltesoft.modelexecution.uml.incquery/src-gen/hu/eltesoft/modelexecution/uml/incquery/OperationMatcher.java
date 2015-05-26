@@ -28,9 +28,8 @@ import org.eclipse.uml2.uml.Operation;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Operation(cls : Class, operation : Operation, operationName) {
+ * pattern Operation(cls : Class, operation : Operation) {
  * 	Class.ownedOperation(cls, operation);
- * 	Operation.name(operation, operationName);
  * }
  * </pre></code>
  * 
@@ -72,8 +71,6 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
   
   private final static int POSITION_OPERATION = 1;
   
-  private final static int POSITION_OPERATIONNAME = 2;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(OperationMatcher.class);
   
   /**
@@ -111,12 +108,11 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return matches represented as a OperationMatch object.
    * 
    */
-  public Collection<OperationMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return rawGetAllMatches(new Object[]{pCls, pOperation, pOperationName});
+  public Collection<OperationMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return rawGetAllMatches(new Object[]{pCls, pOperation});
   }
   
   /**
@@ -124,12 +120,11 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return a match represented as a OperationMatch object, or null if no match is found.
    * 
    */
-  public OperationMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pOperationName});
+  public OperationMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation});
   }
   
   /**
@@ -137,36 +132,33 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return rawHasMatch(new Object[]{pCls, pOperation, pOperationName});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return rawHasMatch(new Object[]{pCls, pOperation});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return rawCountMatches(new Object[]{pCls, pOperation, pOperationName});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return rawCountMatches(new Object[]{pCls, pOperation});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName, final IMatchProcessor<? super OperationMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pOperation, pOperationName}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final IMatchProcessor<? super OperationMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pOperation}, processor);
   }
   
   /**
@@ -174,13 +166,12 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName, final IMatchProcessor<? super OperationMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pOperationName}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final IMatchProcessor<? super OperationMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation}, processor);
   }
   
   /**
@@ -192,14 +183,13 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<OperationMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pOperationName});
+  public DeltaMonitor<OperationMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation});
   }
   
   /**
@@ -208,12 +198,11 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return OperationMatch.newMatch(pCls, pOperation, pOperationName);
+  public OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return OperationMatch.newMatch(pCls, pOperation);
     
   }
   
@@ -251,8 +240,8 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final String pOperationName) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pOperationName});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation});
   }
   
   /**
@@ -289,52 +278,14 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final String pOperationName) {
-    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pOperationName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for operationName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfoperationName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_OPERATIONNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for operationName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfoperationName() {
-    return rawAccumulateAllValuesOfoperationName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for operationName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfoperationName(final OperationMatch partialMatch) {
-    return rawAccumulateAllValuesOfoperationName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for operationName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfoperationName(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-    return rawAccumulateAllValuesOfoperationName(new Object[]{pCls, pOperation, null});
+  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls) {
+    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null});
   }
   
   @Override
   protected OperationMatch tupleToMatch(final Tuple t) {
     try {
-      return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (java.lang.String) t.get(POSITION_OPERATIONNAME));
+      return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -345,7 +296,7 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
   @Override
   protected OperationMatch arrayToMatch(final Object[] match) {
     try {
-      return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (java.lang.String) match[POSITION_OPERATIONNAME]);
+      return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -356,7 +307,7 @@ public class OperationMatcher extends BaseMatcher<OperationMatch> {
   @Override
   protected OperationMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return OperationMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (java.lang.String) match[POSITION_OPERATIONNAME]);
+      return OperationMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -82,7 +82,6 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
       PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_alfCode = body.getOrCreateVariableByName("alfCode");
       PVariable var_langName = body.getOrCreateVariableByName("langName");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_containerClass, "containerClass"), 
@@ -90,12 +89,11 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
       new TypeBinary(body, CONTEXT, var_behavior, var_alfCode, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "body"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.body");
       new TypeBinary(body, CONTEXT, var_behavior, var_langName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "language"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.language");
-      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
-      new TypeBinary(body, CONTEXT, var_containerClass, var_containerClassName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
-      new PositivePatternCall(body, new FlatTuple(var_behavior, var_containerClass, var_containerClassName), ContainerClassOfBehaviorQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_behavior, var_containerClass), ContainerClassOfBehaviorQuerySpecification.instance());
       new ExpressionEvaluation(body, new IExpressionEvaluator() {
         @Override
         public String getShortDescription() {

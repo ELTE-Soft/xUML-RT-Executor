@@ -17,7 +17,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
  * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getReferenced()
- * @model interface="true" abstract="true"
+ * @model
  * @generated
  */
 public interface Referenced extends TranslationObject {

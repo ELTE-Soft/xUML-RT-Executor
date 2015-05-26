@@ -2,7 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,58 +24,58 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface RgTransition extends Named {
+public interface RgTransition extends Referenced {
 	/**
-	 * Returns the value of the '<em><b>Message</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Message</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Message</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Message</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Message</em>' containment reference.
-	 * @see #setMessage(RgMessage)
+	 * @return the value of the '<em>Message</em>' attribute.
+	 * @see #setMessage(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Message()
-	 * @model containment="true"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	RgMessage getMessage();
+	NamedReference getMessage();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getMessage <em>Message</em>}' containment reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getMessage <em>Message</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Message</em>' containment reference.
+	 * @param value the new value of the '<em>Message</em>' attribute.
 	 * @see #getMessage()
 	 * @generated
 	 */
-	void setMessage(RgMessage value);
+	void setMessage(NamedReference value);
 
 	/**
-	 * Returns the value of the '<em><b>Effect</b></em>' reference.
+	 * Returns the value of the '<em><b>Effect</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Effect</em>' reference isn't clear,
+	 * If the meaning of the '<em>Effect</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Effect</em>' reference.
-	 * @see #setEffect(RgBehavior)
+	 * @return the value of the '<em>Effect</em>' attribute.
+	 * @see #setEffect(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Effect()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	RgBehavior getEffect();
+	NamedReference getEffect();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEffect <em>Effect</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEffect <em>Effect</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Effect</em>' reference.
+	 * @param value the new value of the '<em>Effect</em>' attribute.
 	 * @see #getEffect()
 	 * @generated
 	 */
-	void setEffect(RgBehavior value);
+	void setEffect(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
@@ -103,29 +104,29 @@ public interface RgTransition extends Named {
 	void setTarget(RgState value);
 
 	/**
-	 * Returns the value of the '<em><b>Event</b></em>' reference.
+	 * Returns the value of the '<em><b>Event</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Event</em>' reference isn't clear,
+	 * If the meaning of the '<em>Event</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Event</em>' reference.
-	 * @see #setEvent(RgEvent)
+	 * @return the value of the '<em>Event</em>' attribute.
+	 * @see #setEvent(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Event()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	RgEvent getEvent();
+	NamedReference getEvent();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent <em>Event</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition#getEvent <em>Event</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Event</em>' reference.
+	 * @param value the new value of the '<em>Event</em>' attribute.
 	 * @see #getEvent()
 	 * @generated
 	 */
-	void setEvent(RgEvent value);
+	void setEvent(NamedReference value);
 
 } // RgTransition

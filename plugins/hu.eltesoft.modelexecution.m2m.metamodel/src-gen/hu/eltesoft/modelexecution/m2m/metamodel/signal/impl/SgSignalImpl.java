@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 

@@ -31,15 +31,12 @@ public abstract class ExitMatch extends BasePatternMatch {
   
   private Behavior fExit;
   
-  private String fExitName;
+  private static List<String> parameterNames = makeImmutableList("region", "state", "exit");
   
-  private static List<String> parameterNames = makeImmutableList("region", "state", "exit", "exitName");
-  
-  private ExitMatch(final Region pRegion, final State pState, final Behavior pExit, final String pExitName) {
+  private ExitMatch(final Region pRegion, final State pState, final Behavior pExit) {
     this.fRegion = pRegion;
     this.fState = pState;
     this.fExit = pExit;
-    this.fExitName = pExitName;
     
   }
   
@@ -48,7 +45,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     if ("region".equals(parameterName)) return this.fRegion;
     if ("state".equals(parameterName)) return this.fState;
     if ("exit".equals(parameterName)) return this.fExit;
-    if ("exitName".equals(parameterName)) return this.fExitName;
     return null;
     
   }
@@ -68,11 +64,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     
   }
   
-  public String getExitName() {
-    return this.fExitName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -86,10 +77,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     }
     if ("exit".equals(parameterName) ) {
     	this.fExit = (org.eclipse.uml2.uml.Behavior) newValue;
-    	return true;
-    }
-    if ("exitName".equals(parameterName) ) {
-    	this.fExitName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -114,12 +101,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     
   }
   
-  public void setExitName(final String pExitName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fExitName = pExitName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.Exit";
@@ -134,13 +115,13 @@ public abstract class ExitMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fState, fExit, fExitName};
+    return new Object[]{fRegion, fState, fExit};
     
   }
   
   @Override
   public ExitMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fState, fExit, fExitName) : this;
+    return isMutable() ? newMatch(fRegion, fState, fExit) : this;
     
   }
   
@@ -149,8 +130,7 @@ public abstract class ExitMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
     result.append("\"state\"=" + prettyPrintValue(fState) + ", ");
-    result.append("\"exit\"=" + prettyPrintValue(fExit) + ", ");
-    result.append("\"exitName\"=" + prettyPrintValue(fExitName));
+    result.append("\"exit\"=" + prettyPrintValue(fExit));
     return result.toString();
     
   }
@@ -162,7 +142,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
     result = prime * result + ((fState == null) ? 0 : fState.hashCode());
     result = prime * result + ((fExit == null) ? 0 : fExit.hashCode());
-    result = prime * result + ((fExitName == null) ? 0 : fExitName.hashCode());
     return result;
     
   }
@@ -188,8 +167,6 @@ public abstract class ExitMatch extends BasePatternMatch {
     else if (!fState.equals(other.fState)) return false;
     if (fExit == null) {if (other.fExit != null) return false;}
     else if (!fExit.equals(other.fExit)) return false;
-    if (fExitName == null) {if (other.fExitName != null) return false;}
-    else if (!fExitName.equals(other.fExitName)) return false;
     return true;
   }
   
@@ -212,7 +189,7 @@ public abstract class ExitMatch extends BasePatternMatch {
    * 
    */
   public static ExitMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -223,12 +200,11 @@ public abstract class ExitMatch extends BasePatternMatch {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
    * @param pExit the fixed value of pattern parameter exit, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ExitMatch newMutableMatch(final Region pRegion, final State pState, final Behavior pExit, final String pExitName) {
-    return new Mutable(pRegion, pState, pExit, pExitName);
+  public static ExitMatch newMutableMatch(final Region pRegion, final State pState, final Behavior pExit) {
+    return new Mutable(pRegion, pState, pExit);
     
   }
   
@@ -239,18 +215,17 @@ public abstract class ExitMatch extends BasePatternMatch {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
    * @param pExit the fixed value of pattern parameter exit, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ExitMatch newMatch(final Region pRegion, final State pState, final Behavior pExit, final String pExitName) {
-    return new Immutable(pRegion, pState, pExit, pExitName);
+  public static ExitMatch newMatch(final Region pRegion, final State pState, final Behavior pExit) {
+    return new Immutable(pRegion, pState, pExit);
     
   }
   
   private static final class Mutable extends ExitMatch {
-    Mutable(final Region pRegion, final State pState, final Behavior pExit, final String pExitName) {
-      super(pRegion, pState, pExit, pExitName);
+    Mutable(final Region pRegion, final State pState, final Behavior pExit) {
+      super(pRegion, pState, pExit);
       
     }
     
@@ -261,8 +236,8 @@ public abstract class ExitMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ExitMatch {
-    Immutable(final Region pRegion, final State pState, final Behavior pExit, final String pExitName) {
-      super(pRegion, pState, pExit, pExitName);
+    Immutable(final Region pRegion, final State pState, final Behavior pExit) {
+      super(pRegion, pState, pExit);
       
     }
     

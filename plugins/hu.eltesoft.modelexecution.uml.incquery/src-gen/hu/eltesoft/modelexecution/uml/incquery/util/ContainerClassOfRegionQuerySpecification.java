@@ -48,12 +48,12 @@ public final class ContainerClassOfRegionQuerySpecification extends BaseGenerate
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","containerClass","containerClassName");
+    return Arrays.asList("region","containerClass");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("containerClass", "org.eclipse.uml2.uml.Class"),new PParameter("containerClassName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("containerClass", "org.eclipse.uml2.uml.Class"));
   }
   
   @Override
@@ -63,7 +63,7 @@ public final class ContainerClassOfRegionQuerySpecification extends BaseGenerate
   
   @Override
   public ContainerClassOfRegionMatch newMatch(final Object... parameters) {
-    return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Class) parameters[1], (java.lang.String) parameters[2]);
+    return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Class) parameters[1]);
   }
   
   @Override
@@ -73,17 +73,13 @@ public final class ContainerClassOfRegionQuerySpecification extends BaseGenerate
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
       PVariable var_stateMachine = body.getOrCreateVariableByName("stateMachine");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
-        new ExportedParameter(body, var_containerClass, "containerClass"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
-      
-      new TypeBinary(body, CONTEXT, var_containerClass, var_containerClassName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_containerClass, var_stateMachine, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "ownedBehavior"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioredClassifier.ownedBehavior");
       new TypeBinary(body, CONTEXT, var_stateMachine, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine", "region"), "http://www.eclipse.org/uml2/5.0.0/UML/StateMachine.region");

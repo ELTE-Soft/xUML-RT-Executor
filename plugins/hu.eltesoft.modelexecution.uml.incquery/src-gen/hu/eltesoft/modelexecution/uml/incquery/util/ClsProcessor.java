@@ -14,14 +14,13 @@ public abstract class ClsProcessor implements IMatchProcessor<ClsMatch> {
   /**
    * Defines the action that is to be executed on each match.
    * @param pCls the value of pattern parameter cls in the currently processed match
-   * @param pClassName the value of pattern parameter className in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final String pClassName);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls);
   
   @Override
   public void process(final ClsMatch match) {
-    process(match.getCls(), match.getClassName());
+    process(match.getCls());
     
   }
 }

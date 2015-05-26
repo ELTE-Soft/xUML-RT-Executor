@@ -28,14 +28,11 @@ public abstract class SignalEventMatch extends BasePatternMatch {
   
   private Signal fSignal;
   
-  private String fSignalName;
+  private static List<String> parameterNames = makeImmutableList("event", "signal");
   
-  private static List<String> parameterNames = makeImmutableList("event", "signal", "signalName");
-  
-  private SignalEventMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
+  private SignalEventMatch(final SignalEvent pEvent, final Signal pSignal) {
     this.fEvent = pEvent;
     this.fSignal = pSignal;
-    this.fSignalName = pSignalName;
     
   }
   
@@ -43,7 +40,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("event".equals(parameterName)) return this.fEvent;
     if ("signal".equals(parameterName)) return this.fSignal;
-    if ("signalName".equals(parameterName)) return this.fSignalName;
     return null;
     
   }
@@ -58,11 +54,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
     
   }
   
-  public String getSignalName() {
-    return this.fSignalName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -72,10 +63,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
     }
     if ("signal".equals(parameterName) ) {
     	this.fSignal = (org.eclipse.uml2.uml.Signal) newValue;
-    	return true;
-    }
-    if ("signalName".equals(parameterName) ) {
-    	this.fSignalName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -94,12 +81,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
     
   }
   
-  public void setSignalName(final String pSignalName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fSignalName = pSignalName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.SignalEvent";
@@ -114,13 +95,13 @@ public abstract class SignalEventMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fEvent, fSignal, fSignalName};
+    return new Object[]{fEvent, fSignal};
     
   }
   
   @Override
   public SignalEventMatch toImmutable() {
-    return isMutable() ? newMatch(fEvent, fSignal, fSignalName) : this;
+    return isMutable() ? newMatch(fEvent, fSignal) : this;
     
   }
   
@@ -128,8 +109,7 @@ public abstract class SignalEventMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"event\"=" + prettyPrintValue(fEvent) + ", ");
-    result.append("\"signal\"=" + prettyPrintValue(fSignal) + ", ");
-    result.append("\"signalName\"=" + prettyPrintValue(fSignalName));
+    result.append("\"signal\"=" + prettyPrintValue(fSignal));
     return result.toString();
     
   }
@@ -140,7 +120,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fEvent == null) ? 0 : fEvent.hashCode());
     result = prime * result + ((fSignal == null) ? 0 : fSignal.hashCode());
-    result = prime * result + ((fSignalName == null) ? 0 : fSignalName.hashCode());
     return result;
     
   }
@@ -164,8 +143,6 @@ public abstract class SignalEventMatch extends BasePatternMatch {
     else if (!fEvent.equals(other.fEvent)) return false;
     if (fSignal == null) {if (other.fSignal != null) return false;}
     else if (!fSignal.equals(other.fSignal)) return false;
-    if (fSignalName == null) {if (other.fSignalName != null) return false;}
-    else if (!fSignalName.equals(other.fSignalName)) return false;
     return true;
   }
   
@@ -188,7 +165,7 @@ public abstract class SignalEventMatch extends BasePatternMatch {
    * 
    */
   public static SignalEventMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null);
     
   }
   
@@ -198,12 +175,11 @@ public abstract class SignalEventMatch extends BasePatternMatch {
    * 
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static SignalEventMatch newMutableMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
-    return new Mutable(pEvent, pSignal, pSignalName);
+  public static SignalEventMatch newMutableMatch(final SignalEvent pEvent, final Signal pSignal) {
+    return new Mutable(pEvent, pSignal);
     
   }
   
@@ -213,18 +189,17 @@ public abstract class SignalEventMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static SignalEventMatch newMatch(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
-    return new Immutable(pEvent, pSignal, pSignalName);
+  public static SignalEventMatch newMatch(final SignalEvent pEvent, final Signal pSignal) {
+    return new Immutable(pEvent, pSignal);
     
   }
   
   private static final class Mutable extends SignalEventMatch {
-    Mutable(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
-      super(pEvent, pSignal, pSignalName);
+    Mutable(final SignalEvent pEvent, final Signal pSignal) {
+      super(pEvent, pSignal);
       
     }
     
@@ -235,8 +210,8 @@ public abstract class SignalEventMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends SignalEventMatch {
-    Immutable(final SignalEvent pEvent, final Signal pSignal, final String pSignalName) {
-      super(pEvent, pSignal, pSignalName);
+    Immutable(final SignalEvent pEvent, final Signal pSignal) {
+      super(pEvent, pSignal);
       
     }
     

@@ -30,18 +30,15 @@ public abstract class InitialsMatch extends BasePatternMatch {
   
   private Pseudostate fInitPseudostate;
   
-  private String fInitPseudostateName;
-  
   private Transition fInitTransition;
   
   private State fFirstState;
   
-  private static List<String> parameterNames = makeImmutableList("region", "initPseudostate", "initPseudostateName", "initTransition", "firstState");
+  private static List<String> parameterNames = makeImmutableList("region", "initPseudostate", "initTransition", "firstState");
   
-  private InitialsMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
+  private InitialsMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
     this.fRegion = pRegion;
     this.fInitPseudostate = pInitPseudostate;
-    this.fInitPseudostateName = pInitPseudostateName;
     this.fInitTransition = pInitTransition;
     this.fFirstState = pFirstState;
     
@@ -51,7 +48,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("region".equals(parameterName)) return this.fRegion;
     if ("initPseudostate".equals(parameterName)) return this.fInitPseudostate;
-    if ("initPseudostateName".equals(parameterName)) return this.fInitPseudostateName;
     if ("initTransition".equals(parameterName)) return this.fInitTransition;
     if ("firstState".equals(parameterName)) return this.fFirstState;
     return null;
@@ -65,11 +61,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
   
   public Pseudostate getInitPseudostate() {
     return this.fInitPseudostate;
-    
-  }
-  
-  public String getInitPseudostateName() {
-    return this.fInitPseudostateName;
     
   }
   
@@ -94,10 +85,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
     	this.fInitPseudostate = (org.eclipse.uml2.uml.Pseudostate) newValue;
     	return true;
     }
-    if ("initPseudostateName".equals(parameterName) ) {
-    	this.fInitPseudostateName = (java.lang.String) newValue;
-    	return true;
-    }
     if ("initTransition".equals(parameterName) ) {
     	this.fInitTransition = (org.eclipse.uml2.uml.Transition) newValue;
     	return true;
@@ -119,12 +106,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
   public void setInitPseudostate(final Pseudostate pInitPseudostate) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fInitPseudostate = pInitPseudostate;
-    
-  }
-  
-  public void setInitPseudostateName(final String pInitPseudostateName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fInitPseudostateName = pInitPseudostateName;
     
   }
   
@@ -154,13 +135,13 @@ public abstract class InitialsMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fInitPseudostate, fInitPseudostateName, fInitTransition, fFirstState};
+    return new Object[]{fRegion, fInitPseudostate, fInitTransition, fFirstState};
     
   }
   
   @Override
   public InitialsMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fInitPseudostate, fInitPseudostateName, fInitTransition, fFirstState) : this;
+    return isMutable() ? newMatch(fRegion, fInitPseudostate, fInitTransition, fFirstState) : this;
     
   }
   
@@ -169,7 +150,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
     result.append("\"initPseudostate\"=" + prettyPrintValue(fInitPseudostate) + ", ");
-    result.append("\"initPseudostateName\"=" + prettyPrintValue(fInitPseudostateName) + ", ");
     result.append("\"initTransition\"=" + prettyPrintValue(fInitTransition) + ", ");
     result.append("\"firstState\"=" + prettyPrintValue(fFirstState));
     return result.toString();
@@ -182,7 +162,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
     result = prime * result + ((fInitPseudostate == null) ? 0 : fInitPseudostate.hashCode());
-    result = prime * result + ((fInitPseudostateName == null) ? 0 : fInitPseudostateName.hashCode());
     result = prime * result + ((fInitTransition == null) ? 0 : fInitTransition.hashCode());
     result = prime * result + ((fFirstState == null) ? 0 : fFirstState.hashCode());
     return result;
@@ -208,8 +187,6 @@ public abstract class InitialsMatch extends BasePatternMatch {
     else if (!fRegion.equals(other.fRegion)) return false;
     if (fInitPseudostate == null) {if (other.fInitPseudostate != null) return false;}
     else if (!fInitPseudostate.equals(other.fInitPseudostate)) return false;
-    if (fInitPseudostateName == null) {if (other.fInitPseudostateName != null) return false;}
-    else if (!fInitPseudostateName.equals(other.fInitPseudostateName)) return false;
     if (fInitTransition == null) {if (other.fInitTransition != null) return false;}
     else if (!fInitTransition.equals(other.fInitTransition)) return false;
     if (fFirstState == null) {if (other.fFirstState != null) return false;}
@@ -236,7 +213,7 @@ public abstract class InitialsMatch extends BasePatternMatch {
    * 
    */
   public static InitialsMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null, null);
+    return new Mutable(null, null, null, null);
     
   }
   
@@ -246,14 +223,13 @@ public abstract class InitialsMatch extends BasePatternMatch {
    * 
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static InitialsMatch newMutableMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return new Mutable(pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState);
+  public static InitialsMatch newMutableMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return new Mutable(pRegion, pInitPseudostate, pInitTransition, pFirstState);
     
   }
   
@@ -263,20 +239,19 @@ public abstract class InitialsMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static InitialsMatch newMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return new Immutable(pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState);
+  public static InitialsMatch newMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return new Immutable(pRegion, pInitPseudostate, pInitTransition, pFirstState);
     
   }
   
   private static final class Mutable extends InitialsMatch {
-    Mutable(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-      super(pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState);
+    Mutable(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+      super(pRegion, pInitPseudostate, pInitTransition, pFirstState);
       
     }
     
@@ -287,8 +262,8 @@ public abstract class InitialsMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends InitialsMatch {
-    Immutable(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-      super(pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState);
+    Immutable(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+      super(pRegion, pInitPseudostate, pInitTransition, pFirstState);
       
     }
     

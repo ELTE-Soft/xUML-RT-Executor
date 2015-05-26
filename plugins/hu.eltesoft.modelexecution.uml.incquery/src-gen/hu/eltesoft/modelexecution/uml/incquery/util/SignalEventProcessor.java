@@ -17,14 +17,13 @@ public abstract class SignalEventProcessor implements IMatchProcessor<SignalEven
    * Defines the action that is to be executed on each match.
    * @param pEvent the value of pattern parameter event in the currently processed match
    * @param pSignal the value of pattern parameter signal in the currently processed match
-   * @param pSignalName the value of pattern parameter signalName in the currently processed match
    * 
    */
-  public abstract void process(final SignalEvent pEvent, final Signal pSignal, final String pSignalName);
+  public abstract void process(final SignalEvent pEvent, final Signal pSignal);
   
   @Override
   public void process(final SignalEventMatch match) {
-    process(match.getEvent(), match.getSignal(), match.getSignalName());
+    process(match.getEvent(), match.getSignal());
     
   }
 }

@@ -36,7 +36,7 @@ public class ModelUtils {
 	public static String getContainerName(EObject modelElement) {
 		NamedElement container = (NamedElement) getContainer(modelElement);
 		return new NamedReference(container, container.getName())
-				.getNewIdentifier();
+				.getIdentifier();
 	}
 
 	public static EObject getContainer(EObject modelElement) {

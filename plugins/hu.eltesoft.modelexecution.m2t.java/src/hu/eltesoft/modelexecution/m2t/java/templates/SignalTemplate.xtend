@@ -19,20 +19,20 @@ class SignalTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(signal.originalName)»
-		public class «signal.name» extends «Signal.canonicalName» {
+		«generatedHeaderForClass(signal)»
+		public class «signal.identifier» extends «Signal.canonicalName» {
 		
-			public «signal.name»() {
+			public «signal.identifier»() {
 				super();
 			}
 		
-			public «signal.name»(«SignalEvent.canonicalName» event) {
+			public «signal.identifier»(«SignalEvent.canonicalName» event) {
 				super(event);
 			}
 		
 			@Override
 			public boolean equals(Object other) {
-				return null != other && other instanceof «signal.name»;
+				return null != other && other instanceof «signal.identifier»;
 			}
 		
 			@Override
@@ -42,7 +42,7 @@ class SignalTemplate extends Template {
 		
 			@Override
 			public String toString() {
-				return "«signal.originalName»";
+				return «signal.nameLiteral»;
 			}
 		}
 	'''

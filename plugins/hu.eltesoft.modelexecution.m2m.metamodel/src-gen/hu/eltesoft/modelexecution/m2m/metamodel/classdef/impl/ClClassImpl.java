@@ -3,10 +3,10 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import java.util.Collection;
@@ -16,7 +16,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -61,14 +60,24 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getRegion() <em>Region</em>}' reference.
+	 * The default value of the '{@link #getRegion() <em>Region</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getRegion()
 	 * @generated
 	 * @ordered
 	 */
-	protected ClRegion region;
+	protected static final NamedReference REGION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getRegion() <em>Region</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRegion()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference region = REGION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -135,15 +144,7 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClRegion getRegion() {
-		if (region != null && region.eIsProxy()) {
-			InternalEObject oldRegion = (InternalEObject)region;
-			region = (ClRegion)eResolveProxy(oldRegion);
-			if (region != oldRegion) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_CLASS__REGION, oldRegion, region));
-			}
-		}
+	public NamedReference getRegion() {
 		return region;
 	}
 
@@ -152,17 +153,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClRegion basicGetRegion() {
-		return region;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setRegion(ClRegion newRegion) {
-		ClRegion oldRegion = region;
+	public void setRegion(NamedReference newRegion) {
+		NamedReference oldRegion = region;
 		region = newRegion;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__REGION, oldRegion, region));
@@ -203,8 +195,7 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 			case ClassdefPackage.CL_CLASS__REFERENCE:
 				return getReference();
 			case ClassdefPackage.CL_CLASS__REGION:
-				if (resolve) return getRegion();
-				return basicGetRegion();
+				return getRegion();
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return getOperations();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -226,7 +217,7 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_CLASS__REGION:
-				setRegion((ClRegion)newValue);
+				setRegion((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -252,7 +243,7 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_CLASS__REGION:
-				setRegion((ClRegion)null);
+				setRegion(REGION_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -275,7 +266,7 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 			case ClassdefPackage.CL_CLASS__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_CLASS__REGION:
-				return region != null;
+				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -296,6 +287,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", region: ");
+		result.append(region);
 		result.append(')');
 		return result.toString();
 	}

@@ -1,10 +1,11 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -15,18 +16,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Rg Message</b></em>'.
+ * An implementation of the model object '<em><b>Referenced</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgMessageImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ReferencedImpl#getReference <em>Reference</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMessage {
+public class ReferencedImpl extends MinimalEObjectImpl.Container implements Referenced {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -35,7 +36,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	 * @generated
 	 * @ordered
 	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
+	protected static final Reference REFERENCE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
@@ -45,14 +46,14 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	 * @generated
 	 * @ordered
 	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
+	protected Reference reference = REFERENCE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected RgMessageImpl() {
+	protected ReferencedImpl() {
 		super();
 	}
 
@@ -63,7 +64,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RegionPackage.Literals.RG_MESSAGE;
+		return BasePackage.Literals.REFERENCED;
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getReference() {
+	public Reference getReference() {
 		return reference;
 	}
 
@@ -80,11 +81,11 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
+	public void setReference(Reference newReference) {
+		Reference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_MESSAGE__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.REFERENCED__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_MESSAGE__REFERENCE:
+			case BasePackage.REFERENCED__REFERENCE:
 				return getReference();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -109,8 +110,8 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_MESSAGE__REFERENCE:
-				setReference((NamedReference)newValue);
+			case BasePackage.REFERENCED__REFERENCE:
+				setReference((Reference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -124,7 +125,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_MESSAGE__REFERENCE:
+			case BasePackage.REFERENCED__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
 		}
@@ -139,7 +140,7 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_MESSAGE__REFERENCE:
+			case BasePackage.REFERENCED__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 		}
 		return super.eIsSet(featureID);
@@ -161,4 +162,4 @@ public class RgMessageImpl extends MinimalEObjectImpl.Container implements RgMes
 		return result.toString();
 	}
 
-} //RgMessageImpl
+} //ReferencedImpl

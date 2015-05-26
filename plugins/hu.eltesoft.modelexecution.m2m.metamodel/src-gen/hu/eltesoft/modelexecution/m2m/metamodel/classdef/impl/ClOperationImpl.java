@@ -3,15 +3,10 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClMethod;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -51,14 +46,24 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getMethod() <em>Method</em>}' reference.
+	 * The default value of the '{@link #getMethod() <em>Method</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getMethod()
 	 * @generated
 	 * @ordered
 	 */
-	protected ClMethod method;
+	protected static final NamedReference METHOD_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMethod() <em>Method</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMethod()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference method = METHOD_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -105,15 +110,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClMethod getMethod() {
-		if (method != null && method.eIsProxy()) {
-			InternalEObject oldMethod = (InternalEObject)method;
-			method = (ClMethod)eResolveProxy(oldMethod);
-			if (method != oldMethod) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_OPERATION__METHOD, oldMethod, method));
-			}
-		}
+	public NamedReference getMethod() {
 		return method;
 	}
 
@@ -122,17 +119,8 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClMethod basicGetMethod() {
-		return method;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMethod(ClMethod newMethod) {
-		ClMethod oldMethod = method;
+	public void setMethod(NamedReference newMethod) {
+		NamedReference oldMethod = method;
 		method = newMethod;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__METHOD, oldMethod, method));
@@ -149,8 +137,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 			case ClassdefPackage.CL_OPERATION__REFERENCE:
 				return getReference();
 			case ClassdefPackage.CL_OPERATION__METHOD:
-				if (resolve) return getMethod();
-				return basicGetMethod();
+				return getMethod();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -167,7 +154,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__METHOD:
-				setMethod((ClMethod)newValue);
+				setMethod((NamedReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -185,7 +172,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_OPERATION__METHOD:
-				setMethod((ClMethod)null);
+				setMethod(METHOD_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -202,7 +189,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 			case ClassdefPackage.CL_OPERATION__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_OPERATION__METHOD:
-				return method != null;
+				return METHOD_EDEFAULT == null ? method != null : !METHOD_EDEFAULT.equals(method);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -219,6 +206,8 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", method: ");
+		result.append(method);
 		result.append(')');
 		return result.toString();
 	}

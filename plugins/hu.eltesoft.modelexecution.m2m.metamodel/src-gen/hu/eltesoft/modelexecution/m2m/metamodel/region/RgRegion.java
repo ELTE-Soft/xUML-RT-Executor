@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -27,30 +28,30 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface RgRegion extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Container Class</b></em>' reference.
+	 * Returns the value of the '<em><b>Container Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Container Class</em>' reference isn't clear,
+	 * If the meaning of the '<em>Container Class</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Container Class</em>' reference.
-	 * @see #setContainerClass(RgClass)
+	 * @return the value of the '<em>Container Class</em>' attribute.
+	 * @see #setContainerClass(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_ContainerClass()
-	 * @model required="true"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
-	RgClass getContainerClass();
+	NamedReference getContainerClass();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainerClass <em>Container Class</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion#getContainerClass <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Container Class</em>' reference.
+	 * @param value the new value of the '<em>Container Class</em>' attribute.
 	 * @see #getContainerClass()
 	 * @generated
 	 */
-	void setContainerClass(RgClass value);
+	void setContainerClass(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Initial Pseudostate</b></em>' reference.

@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,29 +23,29 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  */
 public interface ClOperation extends Named {
 	/**
-	 * Returns the value of the '<em><b>Method</b></em>' reference.
+	 * Returns the value of the '<em><b>Method</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Method</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Method</em>' reference.
-	 * @see #setMethod(ClMethod)
+	 * @return the value of the '<em>Method</em>' attribute.
+	 * @see #setMethod(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_Method()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	ClMethod getMethod();
+	NamedReference getMethod();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Method</em>' reference.
+	 * @param value the new value of the '<em>Method</em>' attribute.
 	 * @see #getMethod()
 	 * @generated
 	 */
-	void setMethod(ClMethod value);
+	void setMethod(NamedReference value);
 
 } // ClOperation

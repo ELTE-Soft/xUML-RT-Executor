@@ -80,10 +80,6 @@ public class EventAdapterFactory extends AdapterFactoryImpl {
 				return createEvSignalEventAdapter();
 			}
 			@Override
-			public Adapter caseEvSignal(EvSignal object) {
-				return createEvSignalAdapter();
-			}
-			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -140,20 +136,6 @@ public class EventAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createEvSignalEventAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal <em>Ev Signal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal
-	 * @generated
-	 */
-	public Adapter createEvSignalAdapter() {
 		return null;
 	}
 

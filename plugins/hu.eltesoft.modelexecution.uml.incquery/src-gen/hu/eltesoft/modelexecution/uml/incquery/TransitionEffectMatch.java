@@ -31,15 +31,12 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
   
   private Behavior fEffect;
   
-  private String fEffectName;
+  private static List<String> parameterNames = makeImmutableList("region", "transition", "effect");
   
-  private static List<String> parameterNames = makeImmutableList("region", "transition", "effect", "effectName");
-  
-  private TransitionEffectMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName) {
+  private TransitionEffectMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
     this.fRegion = pRegion;
     this.fTransition = pTransition;
     this.fEffect = pEffect;
-    this.fEffectName = pEffectName;
     
   }
   
@@ -48,7 +45,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     if ("region".equals(parameterName)) return this.fRegion;
     if ("transition".equals(parameterName)) return this.fTransition;
     if ("effect".equals(parameterName)) return this.fEffect;
-    if ("effectName".equals(parameterName)) return this.fEffectName;
     return null;
     
   }
@@ -68,11 +64,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     
   }
   
-  public String getEffectName() {
-    return this.fEffectName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -86,10 +77,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     }
     if ("effect".equals(parameterName) ) {
     	this.fEffect = (org.eclipse.uml2.uml.Behavior) newValue;
-    	return true;
-    }
-    if ("effectName".equals(parameterName) ) {
-    	this.fEffectName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -114,12 +101,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     
   }
   
-  public void setEffectName(final String pEffectName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fEffectName = pEffectName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.TransitionEffect";
@@ -134,13 +115,13 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fTransition, fEffect, fEffectName};
+    return new Object[]{fRegion, fTransition, fEffect};
     
   }
   
   @Override
   public TransitionEffectMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fTransition, fEffect, fEffectName) : this;
+    return isMutable() ? newMatch(fRegion, fTransition, fEffect) : this;
     
   }
   
@@ -149,8 +130,7 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
     result.append("\"transition\"=" + prettyPrintValue(fTransition) + ", ");
-    result.append("\"effect\"=" + prettyPrintValue(fEffect) + ", ");
-    result.append("\"effectName\"=" + prettyPrintValue(fEffectName));
+    result.append("\"effect\"=" + prettyPrintValue(fEffect));
     return result.toString();
     
   }
@@ -162,7 +142,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
     result = prime * result + ((fTransition == null) ? 0 : fTransition.hashCode());
     result = prime * result + ((fEffect == null) ? 0 : fEffect.hashCode());
-    result = prime * result + ((fEffectName == null) ? 0 : fEffectName.hashCode());
     return result;
     
   }
@@ -188,8 +167,6 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
     else if (!fTransition.equals(other.fTransition)) return false;
     if (fEffect == null) {if (other.fEffect != null) return false;}
     else if (!fEffect.equals(other.fEffect)) return false;
-    if (fEffectName == null) {if (other.fEffectName != null) return false;}
-    else if (!fEffectName.equals(other.fEffectName)) return false;
     return true;
   }
   
@@ -212,7 +189,7 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
    * 
    */
   public static TransitionEffectMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -223,12 +200,11 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
    * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static TransitionEffectMatch newMutableMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName) {
-    return new Mutable(pRegion, pTransition, pEffect, pEffectName);
+  public static TransitionEffectMatch newMutableMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return new Mutable(pRegion, pTransition, pEffect);
     
   }
   
@@ -239,18 +215,17 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
    * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static TransitionEffectMatch newMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName) {
-    return new Immutable(pRegion, pTransition, pEffect, pEffectName);
+  public static TransitionEffectMatch newMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return new Immutable(pRegion, pTransition, pEffect);
     
   }
   
   private static final class Mutable extends TransitionEffectMatch {
-    Mutable(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName) {
-      super(pRegion, pTransition, pEffect, pEffectName);
+    Mutable(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+      super(pRegion, pTransition, pEffect);
       
     }
     
@@ -261,8 +236,8 @@ public abstract class TransitionEffectMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends TransitionEffectMatch {
-    Immutable(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName) {
-      super(pRegion, pTransition, pEffect, pEffectName);
+    Immutable(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+      super(pRegion, pTransition, pEffect);
       
     }
     

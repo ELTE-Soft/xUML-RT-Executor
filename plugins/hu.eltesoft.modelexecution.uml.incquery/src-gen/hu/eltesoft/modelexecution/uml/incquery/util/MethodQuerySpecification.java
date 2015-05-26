@@ -47,12 +47,12 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","operation","method","methodName");
+    return Arrays.asList("cls","operation","method");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("method", "org.eclipse.uml2.uml.Behavior"),new PParameter("methodName", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("method", "org.eclipse.uml2.uml.Behavior"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public MethodMatch newMatch(final Object... parameters) {
-    return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2], (java.lang.String) parameters[3]);
+    return MethodMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2]);
   }
   
   @Override
@@ -73,20 +73,16 @@ public final class MethodQuerySpecification extends BaseGeneratedQuerySpecificat
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
       PVariable var_method = body.getOrCreateVariableByName("method");
-      PVariable var_methodName = body.getOrCreateVariableByName("methodName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_operation, "operation"), 
-        new ExportedParameter(body, var_method, "method"), 
-        new ExportedParameter(body, var_methodName, "methodName")
+        new ExportedParameter(body, var_method, "method")
       ));
-      
       
       
       
       new TypeBinary(body, CONTEXT, var_cls, var_operation, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class", "ownedOperation"), "http://www.eclipse.org/uml2/5.0.0/UML/Class.ownedOperation");
       new TypeBinary(body, CONTEXT, var_operation, var_method, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "method"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioralFeature.method");
-      new TypeBinary(body, CONTEXT, var_method, var_methodName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

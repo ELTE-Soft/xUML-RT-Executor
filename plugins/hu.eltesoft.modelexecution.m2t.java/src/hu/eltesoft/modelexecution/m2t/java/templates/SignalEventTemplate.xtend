@@ -18,12 +18,12 @@ class SignalEventTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(event.originalName)»
-		public class «event.name» extends «SignalEvent.canonicalName» {
+		«generatedHeaderForClass(event)»
+		public class «event.identifier» extends «SignalEvent.canonicalName» {
 		
 			@Override
 			public boolean equals(Object other) {
-				return null != other && other instanceof «event.name»;
+				return null != other && other instanceof «event.identifier»;
 			}
 		
 			@Override
@@ -33,7 +33,7 @@ class SignalEventTemplate extends Template {
 		
 			@Override
 			public String toString() {
-				return "«event.originalName»";
+				return «event.nameLiteral»;
 			}
 		}
 	'''

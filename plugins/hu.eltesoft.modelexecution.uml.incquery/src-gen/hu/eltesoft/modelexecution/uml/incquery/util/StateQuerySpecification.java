@@ -48,12 +48,12 @@ public final class StateQuerySpecification extends BaseGeneratedQuerySpecificati
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","state","stateName");
+    return Arrays.asList("region","state");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"),new PParameter("stateName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"));
   }
   
   @Override
@@ -63,7 +63,7 @@ public final class StateQuerySpecification extends BaseGeneratedQuerySpecificati
   
   @Override
   public StateMatch newMatch(final Object... parameters) {
-    return StateMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (java.lang.String) parameters[2]);
+    return StateMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1]);
   }
   
   @Override
@@ -73,18 +73,14 @@ public final class StateQuerySpecification extends BaseGeneratedQuerySpecificati
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_state = body.getOrCreateVariableByName("state");
-      PVariable var_stateName = body.getOrCreateVariableByName("stateName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
-        new ExportedParameter(body, var_state, "state"), 
-        new ExportedParameter(body, var_stateName, "stateName")
+        new ExportedParameter(body, var_state, "state")
       ));
       
       
-      
-      new TypeBinary(body, CONTEXT, var_state, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
       new TypeUnary(body, var_state, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State"), "http://www.eclipse.org/uml2/5.0.0/UML/State");
-      new TypeBinary(body, CONTEXT, var_state, var_stateName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
+      new TypeBinary(body, CONTEXT, var_state, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
       bodies.add(body);
     }
     return bodies;

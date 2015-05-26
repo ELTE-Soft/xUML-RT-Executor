@@ -31,8 +31,7 @@ import org.eclipse.uml2.uml.Behavior;
  * pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
  * 	OpaqueBehavior.body(behavior, alfCode);
  * 	OpaqueBehavior.language(behavior, langName);
- * 	Class.name(containerClass, containerClassName);
- * 	find ContainerClassOfBehavior(behavior, containerClass, containerClassName);
+ * 	find ContainerClassOfBehavior(behavior, containerClass);
  * 	check(Utils.toLowerCase(langName).equals("alf"));
  * }
  * </pre></code>

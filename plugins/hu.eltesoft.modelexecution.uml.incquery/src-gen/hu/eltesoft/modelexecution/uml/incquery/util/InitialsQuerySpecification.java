@@ -49,12 +49,12 @@ public final class InitialsQuerySpecification extends BaseGeneratedQuerySpecific
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","initPseudostate","initPseudostateName","initTransition","firstState");
+    return Arrays.asList("region","initPseudostate","initTransition","firstState");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("initPseudostate", "org.eclipse.uml2.uml.Pseudostate"),new PParameter("initPseudostateName", "java.lang.String"),new PParameter("initTransition", "org.eclipse.uml2.uml.Transition"),new PParameter("firstState", "org.eclipse.uml2.uml.State"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("initPseudostate", "org.eclipse.uml2.uml.Pseudostate"),new PParameter("initTransition", "org.eclipse.uml2.uml.Transition"),new PParameter("firstState", "org.eclipse.uml2.uml.State"));
   }
   
   @Override
@@ -64,7 +64,7 @@ public final class InitialsQuerySpecification extends BaseGeneratedQuerySpecific
   
   @Override
   public InitialsMatch newMatch(final Object... parameters) {
-    return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Pseudostate) parameters[1], (java.lang.String) parameters[2], (org.eclipse.uml2.uml.Transition) parameters[3], (org.eclipse.uml2.uml.State) parameters[4]);
+    return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Pseudostate) parameters[1], (org.eclipse.uml2.uml.Transition) parameters[2], (org.eclipse.uml2.uml.State) parameters[3]);
   }
   
   @Override
@@ -74,18 +74,15 @@ public final class InitialsQuerySpecification extends BaseGeneratedQuerySpecific
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_initPseudostate = body.getOrCreateVariableByName("initPseudostate");
-      PVariable var_initPseudostateName = body.getOrCreateVariableByName("initPseudostateName");
       PVariable var_initTransition = body.getOrCreateVariableByName("initTransition");
       PVariable var_firstState = body.getOrCreateVariableByName("firstState");
       PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
         new ExportedParameter(body, var_initPseudostate, "initPseudostate"), 
-        new ExportedParameter(body, var_initPseudostateName, "initPseudostateName"), 
         new ExportedParameter(body, var_initTransition, "initTransition"), 
         new ExportedParameter(body, var_firstState, "firstState")
       ));
-      
       
       
       
@@ -94,7 +91,6 @@ public final class InitialsQuerySpecification extends BaseGeneratedQuerySpecific
       new TypeBinary(body, CONTEXT, var_initPseudostate, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
       new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.PseudostateKind.get("initial"));
       new TypeBinary(body, CONTEXT, var_initPseudostate, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate", "kind"), "http://www.eclipse.org/uml2/5.0.0/UML/Pseudostate.kind");
-      new TypeBinary(body, CONTEXT, var_initPseudostate, var_initPseudostateName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       new TypeBinary(body, CONTEXT, var_initTransition, var_initPseudostate, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "source"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.source");
       new TypeBinary(body, CONTEXT, var_initTransition, var_firstState, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "target"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.target");
       bodies.add(body);

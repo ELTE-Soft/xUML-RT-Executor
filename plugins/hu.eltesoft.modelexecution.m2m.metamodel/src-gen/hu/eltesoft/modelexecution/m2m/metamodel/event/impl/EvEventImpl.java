@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
 

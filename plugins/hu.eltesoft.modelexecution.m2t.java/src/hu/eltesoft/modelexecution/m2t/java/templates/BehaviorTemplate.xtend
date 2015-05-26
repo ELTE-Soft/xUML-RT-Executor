@@ -26,15 +26,15 @@ class BehaviorTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(behavior.originalName)»
-		public class «behavior.name» extends «ActionCode.canonicalName» {
+		«generatedHeaderForClass(behavior)»
+		public class «behavior.identifier» extends «ActionCode.canonicalName» {
 		
 			«IF needsContext»
-				@Generated(value = { "«behavior.containerClass.originalName»" })
-				private «behavior.containerClass.name» «CONTEXT_NAME»;
+				«generatedHeader(behavior.containerClass)»
+				private «behavior.containerClass.identifier» «CONTEXT_NAME»;
 			«ENDIF»
 		
-			public «behavior.name»(«behavior.containerClass.name» «CONTEXT_NAME») {
+			public «behavior.identifier»(«behavior.containerClass.identifier» «CONTEXT_NAME») {
 				«IF needsContext»
 					this.«CONTEXT_NAME» = «CONTEXT_NAME»;
 				«ENDIF»
@@ -47,7 +47,7 @@ class BehaviorTemplate extends Template {
 		
 			@Override
 			public String toString() {
-				return "«behavior.originalName»";
+				return «behavior.nameLiteral»;
 			}
 		}
 	'''

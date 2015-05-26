@@ -4,6 +4,8 @@ package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 /**
@@ -25,30 +27,30 @@ import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
  */
 public interface BhBehavior extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Container Class</b></em>' reference.
+	 * Returns the value of the '<em><b>Container Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Container Class</em>' reference isn't clear,
+	 * If the meaning of the '<em>Container Class</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Container Class</em>' reference.
-	 * @see #setContainerClass(BhClass)
+	 * @return the value of the '<em>Container Class</em>' attribute.
+	 * @see #setContainerClass(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ContainerClass()
-	 * @model required="true"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
-	BhClass getContainerClass();
+	NamedReference getContainerClass();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Container Class</em>' reference.
+	 * @param value the new value of the '<em>Container Class</em>' attribute.
 	 * @see #getContainerClass()
 	 * @generated
 	 */
-	void setContainerClass(BhClass value);
+	void setContainerClass(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Alf Result</b></em>' attribute.

@@ -27,8 +27,8 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Cls(cls : Class, className) {
- * 	Class.name(cls, className);
+ * pattern Cls(cls : Class) {
+ * 	Class(cls);
  * 	neg find IsBehavior(cls);
  * 	neg find IsStereotype(cls);
  * }
@@ -70,8 +70,6 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
   
   private final static int POSITION_CLS = 0;
   
-  private final static int POSITION_CLASSNAME = 1;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ClsMatcher.class);
   
   /**
@@ -108,71 +106,65 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return matches represented as a ClsMatch object.
    * 
    */
-  public Collection<ClsMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return rawGetAllMatches(new Object[]{pCls, pClassName});
+  public Collection<ClsMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls) {
+    return rawGetAllMatches(new Object[]{pCls});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return a match represented as a ClsMatch object, or null if no match is found.
    * 
    */
-  public ClsMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pClassName});
+  public ClsMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return rawHasMatch(new Object[]{pCls, pClassName});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls) {
+    return rawHasMatch(new Object[]{pCls});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return rawCountMatches(new Object[]{pCls, pClassName});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls) {
+    return rawCountMatches(new Object[]{pCls});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName, final IMatchProcessor<? super ClsMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pClassName}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final IMatchProcessor<? super ClsMatch> processor) {
+    rawForEachMatch(new Object[]{pCls}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName, final IMatchProcessor<? super ClsMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pClassName}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final IMatchProcessor<? super ClsMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls}, processor);
   }
   
   /**
@@ -183,14 +175,13 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ClsMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pClassName});
+  public DeltaMonitor<ClsMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls});
   }
   
   /**
@@ -198,12 +189,11 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ClsMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return ClsMatch.newMatch(pCls, pClassName);
+  public ClsMatch newMatch(final org.eclipse.uml2.uml.Class pCls) {
+    return ClsMatch.newMatch(pCls);
     
   }
   
@@ -227,66 +217,10 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
     return rawAccumulateAllValuesOfcls(emptyArray());
   }
   
-  /**
-   * Retrieve the set of values that occur in matches for cls.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final ClsMatch partialMatch) {
-    return rawAccumulateAllValuesOfcls(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for cls.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final String pClassName) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pClassName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for className.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfclassName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_CLASSNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for className.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfclassName() {
-    return rawAccumulateAllValuesOfclassName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for className.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfclassName(final ClsMatch partialMatch) {
-    return rawAccumulateAllValuesOfclassName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for className.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfclassName(final org.eclipse.uml2.uml.Class pCls) {
-    return rawAccumulateAllValuesOfclassName(new Object[]{pCls, null});
-  }
-  
   @Override
   protected ClsMatch tupleToMatch(final Tuple t) {
     try {
-      return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (java.lang.String) t.get(POSITION_CLASSNAME));
+      return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -297,7 +231,7 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
   @Override
   protected ClsMatch arrayToMatch(final Object[] match) {
     try {
-      return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (java.lang.String) match[POSITION_CLASSNAME]);
+      return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -308,7 +242,7 @@ public class ClsMatcher extends BaseMatcher<ClsMatch> {
   @Override
   protected ClsMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ClsMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (java.lang.String) match[POSITION_CLASSNAME]);
+      return ClsMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

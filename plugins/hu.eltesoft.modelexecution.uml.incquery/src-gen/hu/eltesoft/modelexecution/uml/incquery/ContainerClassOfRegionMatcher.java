@@ -28,9 +28,7 @@ import org.eclipse.uml2.uml.Region;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern
- * ContainerClassOfRegion(region : Region, containerClass : Class, containerClassName) {
- * 	Class.name(containerClass, containerClassName);
+ * pattern ContainerClassOfRegion(region : Region, containerClass : Class) {
  * 	Class.ownedBehavior(containerClass, stateMachine);
  * 	StateMachine.region(stateMachine, region);
  * }
@@ -74,8 +72,6 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
   
   private final static int POSITION_CONTAINERCLASS = 1;
   
-  private final static int POSITION_CONTAINERCLASSNAME = 2;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ContainerClassOfRegionMatcher.class);
   
   /**
@@ -113,12 +109,11 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return matches represented as a ContainerClassOfRegionMatch object.
    * 
    */
-  public Collection<ContainerClassOfRegionMatch> getAllMatches(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawGetAllMatches(new Object[]{pRegion, pContainerClass, pContainerClassName});
+  public Collection<ContainerClassOfRegionMatch> getAllMatches(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawGetAllMatches(new Object[]{pRegion, pContainerClass});
   }
   
   /**
@@ -126,12 +121,11 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return a match represented as a ContainerClassOfRegionMatch object, or null if no match is found.
    * 
    */
-  public ContainerClassOfRegionMatch getOneArbitraryMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pContainerClass, pContainerClassName});
+  public ContainerClassOfRegionMatch getOneArbitraryMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pContainerClass});
   }
   
   /**
@@ -139,36 +133,33 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawHasMatch(new Object[]{pRegion, pContainerClass, pContainerClassName});
+  public boolean hasMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawHasMatch(new Object[]{pRegion, pContainerClass});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawCountMatches(new Object[]{pRegion, pContainerClass, pContainerClassName});
+  public int countMatches(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawCountMatches(new Object[]{pRegion, pContainerClass});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfRegionMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pContainerClass, pContainerClassName}, processor);
+  public void forEachMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final IMatchProcessor<? super ContainerClassOfRegionMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pContainerClass}, processor);
   }
   
   /**
@@ -176,13 +167,12 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName, final IMatchProcessor<? super ContainerClassOfRegionMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pContainerClass, pContainerClassName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final IMatchProcessor<? super ContainerClassOfRegionMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pContainerClass}, processor);
   }
   
   /**
@@ -194,14 +184,13 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ContainerClassOfRegionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pContainerClass, pContainerClassName});
+  public DeltaMonitor<ContainerClassOfRegionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pContainerClass});
   }
   
   /**
@@ -210,12 +199,11 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
-   * @param pContainerClassName the fixed value of pattern parameter containerClassName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ContainerClassOfRegionMatch newMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return ContainerClassOfRegionMatch.newMatch(pRegion, pContainerClass, pContainerClassName);
+  public ContainerClassOfRegionMatch newMatch(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
+    return ContainerClassOfRegionMatch.newMatch(pRegion, pContainerClass);
     
   }
   
@@ -253,8 +241,8 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final org.eclipse.uml2.uml.Class pContainerClass, final String pContainerClassName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pContainerClass, pContainerClassName});
+  public Set<Region> getAllValuesOfregion(final org.eclipse.uml2.uml.Class pContainerClass) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pContainerClass});
   }
   
   /**
@@ -291,52 +279,14 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final Region pRegion, final String pContainerClassName) {
-    return rawAccumulateAllValuesOfcontainerClass(new Object[]{pRegion, null, pContainerClassName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for containerClassName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfcontainerClassName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_CONTAINERCLASSNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for containerClassName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfcontainerClassName() {
-    return rawAccumulateAllValuesOfcontainerClassName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for containerClassName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfcontainerClassName(final ContainerClassOfRegionMatch partialMatch) {
-    return rawAccumulateAllValuesOfcontainerClassName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for containerClassName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfcontainerClassName(final Region pRegion, final org.eclipse.uml2.uml.Class pContainerClass) {
-    return rawAccumulateAllValuesOfcontainerClassName(new Object[]{pRegion, pContainerClass, null});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcontainerClass(final Region pRegion) {
+    return rawAccumulateAllValuesOfcontainerClass(new Object[]{pRegion, null});
   }
   
   @Override
   protected ContainerClassOfRegionMatch tupleToMatch(final Tuple t) {
     try {
-      return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Class) t.get(POSITION_CONTAINERCLASS), (java.lang.String) t.get(POSITION_CONTAINERCLASSNAME));
+      return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Class) t.get(POSITION_CONTAINERCLASS));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -347,7 +297,7 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
   @Override
   protected ContainerClassOfRegionMatch arrayToMatch(final Object[] match) {
     try {
-      return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
+      return ContainerClassOfRegionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -358,7 +308,7 @@ public class ContainerClassOfRegionMatcher extends BaseMatcher<ContainerClassOfR
   @Override
   protected ContainerClassOfRegionMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ContainerClassOfRegionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS], (java.lang.String) match[POSITION_CONTAINERCLASSNAME]);
+      return ContainerClassOfRegionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Class) match[POSITION_CONTAINERCLASS]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

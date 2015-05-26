@@ -60,7 +60,7 @@ class NameMapper {
 
 			if (isNamed && feature.equals(REFERENCE)) {
 				val reference = value as NamedReference;
-				nameMapping.put(reference.newIdentifier, reference.originalName);
+				nameMapping.put(reference.identifier, reference.originalName);
 			} else if (null != value) {
 				switch value {
 					EList<?>: mapName(value)

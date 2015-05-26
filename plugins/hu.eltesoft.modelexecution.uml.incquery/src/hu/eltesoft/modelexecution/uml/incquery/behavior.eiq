@@ -2,53 +2,46 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern Behavior(behavior : Behavior, behaviorName) {
+pattern Behavior(behavior : Behavior) {
 	OpaqueBehavior(behavior);
-	Behavior.name(behavior, behaviorName);
 }
 
 pattern
-ContainerClassOfBehavior(behavior : Behavior, containerClass : Class, containerClassName) {
+ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 // operation
 	Operation.method(operation, behavior);
 
 	Class.ownedOperation(containerClass, operation);
-	Class.name(containerClass, containerClassName);
 } or {
 // entry
 	State.entry(state, behavior);
-	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfVertex(state, containerClassName);
+	find ContainerClassOfVertex(state, containerClass);
 
 } or {
 // exit
 	State.exit(state, behavior);
-	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfVertex(state, containerClassName);
+	find ContainerClassOfVertex(state, containerClass);
 
 } or {
 // effect
 	Transition.effect(transition, behavior);
 	Transition.container(transition, region);
-	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfRegion(region, containerClass, containerClassName); // from region.eiq
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
 
 pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
 	OpaqueBehavior.body(behavior, alfCode);
 	OpaqueBehavior.language(behavior, langName);
-	Class.name(containerClass, containerClassName);
-	find ContainerClassOfBehavior(behavior, containerClass, containerClassName);
+	find ContainerClassOfBehavior(behavior, containerClass);
 	check(Utils.toLowerCase(langName).equals("alf"));
 }
 
-private pattern ContainerClassOfVertex(vertex : Vertex, containerClassName) {
+private pattern
+ContainerClassOfVertex(vertex : Vertex, containerClass : Class) {
 	State.container(vertex, region);
-	Class.name(containerClass, containerClassName);
 
-	find ContainerClassOfRegion(region, containerClass, containerClassName); // from region.eiq
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
-

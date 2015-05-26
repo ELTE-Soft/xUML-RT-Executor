@@ -3,6 +3,8 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -25,56 +27,56 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface RgState extends Named {
 	/**
-	 * Returns the value of the '<em><b>Entry</b></em>' reference.
+	 * Returns the value of the '<em><b>Entry</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Entry</em>' reference isn't clear,
+	 * If the meaning of the '<em>Entry</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Entry</em>' reference.
-	 * @see #setEntry(RgBehavior)
+	 * @return the value of the '<em>Entry</em>' attribute.
+	 * @see #setEntry(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgState_Entry()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	RgBehavior getEntry();
+	NamedReference getEntry();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getEntry <em>Entry</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getEntry <em>Entry</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Entry</em>' reference.
+	 * @param value the new value of the '<em>Entry</em>' attribute.
 	 * @see #getEntry()
 	 * @generated
 	 */
-	void setEntry(RgBehavior value);
+	void setEntry(NamedReference value);
 
 	/**
-	 * Returns the value of the '<em><b>Exit</b></em>' reference.
+	 * Returns the value of the '<em><b>Exit</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Exit</em>' reference isn't clear,
+	 * If the meaning of the '<em>Exit</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Exit</em>' reference.
-	 * @see #setExit(RgBehavior)
+	 * @return the value of the '<em>Exit</em>' attribute.
+	 * @see #setExit(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgState_Exit()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	RgBehavior getExit();
+	NamedReference getExit();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getExit <em>Exit</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getExit <em>Exit</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Exit</em>' reference.
+	 * @param value the new value of the '<em>Exit</em>' attribute.
 	 * @see #getExit()
 	 * @generated
 	 */
-	void setExit(RgBehavior value);
+	void setExit(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Transitions</b></em>' reference list.

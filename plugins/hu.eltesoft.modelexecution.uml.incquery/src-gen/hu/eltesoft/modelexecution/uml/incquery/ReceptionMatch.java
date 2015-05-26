@@ -28,20 +28,14 @@ public abstract class ReceptionMatch extends BasePatternMatch {
   
   private Reception fReception;
   
-  private String fReceptionName;
-  
   private Signal fSignal;
   
-  private String fSignalName;
+  private static List<String> parameterNames = makeImmutableList("cls", "reception", "signal");
   
-  private static List<String> parameterNames = makeImmutableList("cls", "reception", "receptionName", "signal", "signalName");
-  
-  private ReceptionMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final String pReceptionName, final Signal pSignal, final String pSignalName) {
+  private ReceptionMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
     this.fCls = pCls;
     this.fReception = pReception;
-    this.fReceptionName = pReceptionName;
     this.fSignal = pSignal;
-    this.fSignalName = pSignalName;
     
   }
   
@@ -49,9 +43,7 @@ public abstract class ReceptionMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("reception".equals(parameterName)) return this.fReception;
-    if ("receptionName".equals(parameterName)) return this.fReceptionName;
     if ("signal".equals(parameterName)) return this.fSignal;
-    if ("signalName".equals(parameterName)) return this.fSignalName;
     return null;
     
   }
@@ -66,18 +58,8 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     
   }
   
-  public String getReceptionName() {
-    return this.fReceptionName;
-    
-  }
-  
   public Signal getSignal() {
     return this.fSignal;
-    
-  }
-  
-  public String getSignalName() {
-    return this.fSignalName;
     
   }
   
@@ -92,16 +74,8 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     	this.fReception = (org.eclipse.uml2.uml.Reception) newValue;
     	return true;
     }
-    if ("receptionName".equals(parameterName) ) {
-    	this.fReceptionName = (java.lang.String) newValue;
-    	return true;
-    }
     if ("signal".equals(parameterName) ) {
     	this.fSignal = (org.eclipse.uml2.uml.Signal) newValue;
-    	return true;
-    }
-    if ("signalName".equals(parameterName) ) {
-    	this.fSignalName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -120,21 +94,9 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     
   }
   
-  public void setReceptionName(final String pReceptionName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fReceptionName = pReceptionName;
-    
-  }
-  
   public void setSignal(final Signal pSignal) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fSignal = pSignal;
-    
-  }
-  
-  public void setSignalName(final String pSignalName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fSignalName = pSignalName;
     
   }
   
@@ -152,13 +114,13 @@ public abstract class ReceptionMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fReception, fReceptionName, fSignal, fSignalName};
+    return new Object[]{fCls, fReception, fSignal};
     
   }
   
   @Override
   public ReceptionMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fReception, fReceptionName, fSignal, fSignalName) : this;
+    return isMutable() ? newMatch(fCls, fReception, fSignal) : this;
     
   }
   
@@ -167,9 +129,7 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"reception\"=" + prettyPrintValue(fReception) + ", ");
-    result.append("\"receptionName\"=" + prettyPrintValue(fReceptionName) + ", ");
-    result.append("\"signal\"=" + prettyPrintValue(fSignal) + ", ");
-    result.append("\"signalName\"=" + prettyPrintValue(fSignalName));
+    result.append("\"signal\"=" + prettyPrintValue(fSignal));
     return result.toString();
     
   }
@@ -180,9 +140,7 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fReception == null) ? 0 : fReception.hashCode());
-    result = prime * result + ((fReceptionName == null) ? 0 : fReceptionName.hashCode());
     result = prime * result + ((fSignal == null) ? 0 : fSignal.hashCode());
-    result = prime * result + ((fSignalName == null) ? 0 : fSignalName.hashCode());
     return result;
     
   }
@@ -206,12 +164,8 @@ public abstract class ReceptionMatch extends BasePatternMatch {
     else if (!fCls.equals(other.fCls)) return false;
     if (fReception == null) {if (other.fReception != null) return false;}
     else if (!fReception.equals(other.fReception)) return false;
-    if (fReceptionName == null) {if (other.fReceptionName != null) return false;}
-    else if (!fReceptionName.equals(other.fReceptionName)) return false;
     if (fSignal == null) {if (other.fSignal != null) return false;}
     else if (!fSignal.equals(other.fSignal)) return false;
-    if (fSignalName == null) {if (other.fSignalName != null) return false;}
-    else if (!fSignalName.equals(other.fSignalName)) return false;
     return true;
   }
   
@@ -234,7 +188,7 @@ public abstract class ReceptionMatch extends BasePatternMatch {
    * 
    */
   public static ReceptionMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -244,14 +198,12 @@ public abstract class ReceptionMatch extends BasePatternMatch {
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ReceptionMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final String pReceptionName, final Signal pSignal, final String pSignalName) {
-    return new Mutable(pCls, pReception, pReceptionName, pSignal, pSignalName);
+  public static ReceptionMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return new Mutable(pCls, pReception, pSignal);
     
   }
   
@@ -261,20 +213,18 @@ public abstract class ReceptionMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ReceptionMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final String pReceptionName, final Signal pSignal, final String pSignalName) {
-    return new Immutable(pCls, pReception, pReceptionName, pSignal, pSignalName);
+  public static ReceptionMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return new Immutable(pCls, pReception, pSignal);
     
   }
   
   private static final class Mutable extends ReceptionMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final String pReceptionName, final Signal pSignal, final String pSignalName) {
-      super(pCls, pReception, pReceptionName, pSignal, pSignalName);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+      super(pCls, pReception, pSignal);
       
     }
     
@@ -285,8 +235,8 @@ public abstract class ReceptionMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ReceptionMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final String pReceptionName, final Signal pSignal, final String pSignalName) {
-      super(pCls, pReception, pReceptionName, pSignal, pSignalName);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+      super(pCls, pReception, pSignal);
       
     }
     

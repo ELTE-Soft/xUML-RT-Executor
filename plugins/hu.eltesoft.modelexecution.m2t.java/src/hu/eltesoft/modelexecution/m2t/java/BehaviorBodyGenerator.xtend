@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
@@ -15,7 +16,6 @@ import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 
 /**
  * Generates an operation body written in Alf to Java code by implementing an
@@ -94,6 +94,6 @@ class BehaviorBodyGenerator {
 
 	private def toJavaName(InvocationExpression call) {
 		var reception = references.getInvokedReception(call)
-		return new NamedReference(reception).newIdentifier
+		return NamedReference.fromUnnamed(reception).identifier
 	}
 }

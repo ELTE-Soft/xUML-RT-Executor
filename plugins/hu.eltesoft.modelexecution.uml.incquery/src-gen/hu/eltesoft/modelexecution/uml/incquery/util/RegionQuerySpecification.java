@@ -12,7 +12,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
@@ -48,12 +47,12 @@ public final class RegionQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","regionName");
+    return Arrays.asList("region");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("regionName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"));
   }
   
   @Override
@@ -63,7 +62,7 @@ public final class RegionQuerySpecification extends BaseGeneratedQuerySpecificat
   
   @Override
   public RegionMatch newMatch(final Object... parameters) {
-    return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (java.lang.String) parameters[1]);
+    return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0]);
   }
   
   @Override
@@ -72,15 +71,11 @@ public final class RegionQuerySpecification extends BaseGeneratedQuerySpecificat
     {
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
-      PVariable var_regionName = body.getOrCreateVariableByName("regionName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
-        new ExportedParameter(body, var_region, "region"), 
-        new ExportedParameter(body, var_regionName, "regionName")
+        new ExportedParameter(body, var_region, "region")
       ));
       
-      
       new TypeUnary(body, var_region, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region"), "http://www.eclipse.org/uml2/5.0.0/UML/Region");
-      new TypeBinary(body, CONTEXT, var_region, var_regionName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

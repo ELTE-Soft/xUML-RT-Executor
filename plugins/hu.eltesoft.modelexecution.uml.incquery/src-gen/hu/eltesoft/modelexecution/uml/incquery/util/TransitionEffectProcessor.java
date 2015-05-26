@@ -19,14 +19,13 @@ public abstract class TransitionEffectProcessor implements IMatchProcessor<Trans
    * @param pRegion the value of pattern parameter region in the currently processed match
    * @param pTransition the value of pattern parameter transition in the currently processed match
    * @param pEffect the value of pattern parameter effect in the currently processed match
-   * @param pEffectName the value of pattern parameter effectName in the currently processed match
    * 
    */
-  public abstract void process(final Region pRegion, final Transition pTransition, final Behavior pEffect, final String pEffectName);
+  public abstract void process(final Region pRegion, final Transition pTransition, final Behavior pEffect);
   
   @Override
   public void process(final TransitionEffectMatch match) {
-    process(match.getRegion(), match.getTransition(), match.getEffect(), match.getEffectName());
+    process(match.getRegion(), match.getTransition(), match.getEffect());
     
   }
 }

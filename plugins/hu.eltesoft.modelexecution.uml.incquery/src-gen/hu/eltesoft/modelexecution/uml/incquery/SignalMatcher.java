@@ -28,8 +28,8 @@ import org.eclipse.uml2.uml.Signal;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Signal(signal : Signal, signalName) {
- * 	Signal.name(signal, signalName);
+ * pattern Signal(signal : Signal) {
+ * 	Signal(signal);
  * }
  * </pre></code>
  * 
@@ -69,8 +69,6 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
   
   private final static int POSITION_SIGNAL = 0;
   
-  private final static int POSITION_SIGNALNAME = 1;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(SignalMatcher.class);
   
   /**
@@ -107,71 +105,65 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return matches represented as a SignalMatch object.
    * 
    */
-  public Collection<SignalMatch> getAllMatches(final Signal pSignal, final String pSignalName) {
-    return rawGetAllMatches(new Object[]{pSignal, pSignalName});
+  public Collection<SignalMatch> getAllMatches(final Signal pSignal) {
+    return rawGetAllMatches(new Object[]{pSignal});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return a match represented as a SignalMatch object, or null if no match is found.
    * 
    */
-  public SignalMatch getOneArbitraryMatch(final Signal pSignal, final String pSignalName) {
-    return rawGetOneArbitraryMatch(new Object[]{pSignal, pSignalName});
+  public SignalMatch getOneArbitraryMatch(final Signal pSignal) {
+    return rawGetOneArbitraryMatch(new Object[]{pSignal});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final String pSignalName) {
-    return rawHasMatch(new Object[]{pSignal, pSignalName});
+  public boolean hasMatch(final Signal pSignal) {
+    return rawHasMatch(new Object[]{pSignal});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final String pSignalName) {
-    return rawCountMatches(new Object[]{pSignal, pSignalName});
+  public int countMatches(final Signal pSignal) {
+    return rawCountMatches(new Object[]{pSignal});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final String pSignalName, final IMatchProcessor<? super SignalMatch> processor) {
-    rawForEachMatch(new Object[]{pSignal, pSignalName}, processor);
+  public void forEachMatch(final Signal pSignal, final IMatchProcessor<? super SignalMatch> processor) {
+    rawForEachMatch(new Object[]{pSignal}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final String pSignalName, final IMatchProcessor<? super SignalMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pSignal, pSignalName}, processor);
+  public boolean forOneArbitraryMatch(final Signal pSignal, final IMatchProcessor<? super SignalMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pSignal}, processor);
   }
   
   /**
@@ -182,14 +174,13 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<SignalMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal, final String pSignalName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal, pSignalName});
+  public DeltaMonitor<SignalMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal});
   }
   
   /**
@@ -197,12 +188,11 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public SignalMatch newMatch(final Signal pSignal, final String pSignalName) {
-    return SignalMatch.newMatch(pSignal, pSignalName);
+  public SignalMatch newMatch(final Signal pSignal) {
+    return SignalMatch.newMatch(pSignal);
     
   }
   
@@ -226,66 +216,10 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
     return rawAccumulateAllValuesOfsignal(emptyArray());
   }
   
-  /**
-   * Retrieve the set of values that occur in matches for signal.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Signal> getAllValuesOfsignal(final SignalMatch partialMatch) {
-    return rawAccumulateAllValuesOfsignal(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for signal.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Signal> getAllValuesOfsignal(final String pSignalName) {
-    return rawAccumulateAllValuesOfsignal(new Object[]{null, pSignalName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for signalName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfsignalName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_SIGNALNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for signalName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfsignalName() {
-    return rawAccumulateAllValuesOfsignalName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for signalName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfsignalName(final SignalMatch partialMatch) {
-    return rawAccumulateAllValuesOfsignalName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for signalName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfsignalName(final Signal pSignal) {
-    return rawAccumulateAllValuesOfsignalName(new Object[]{pSignal, null});
-  }
-  
   @Override
   protected SignalMatch tupleToMatch(final Tuple t) {
     try {
-      return SignalMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_SIGNALNAME));
+      return SignalMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -296,7 +230,7 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
   @Override
   protected SignalMatch arrayToMatch(final Object[] match) {
     try {
-      return SignalMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return SignalMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -307,7 +241,7 @@ public class SignalMatcher extends BaseMatcher<SignalMatch> {
   @Override
   protected SignalMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return SignalMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return SignalMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

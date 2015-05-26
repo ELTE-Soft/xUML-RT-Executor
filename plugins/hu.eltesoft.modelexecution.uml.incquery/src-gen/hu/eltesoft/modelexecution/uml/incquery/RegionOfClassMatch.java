@@ -27,14 +27,11 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
   
   private Region fRegion;
   
-  private String fRegionName;
+  private static List<String> parameterNames = makeImmutableList("cls", "region");
   
-  private static List<String> parameterNames = makeImmutableList("cls", "region", "regionName");
-  
-  private RegionOfClassMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion, final String pRegionName) {
+  private RegionOfClassMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion) {
     this.fCls = pCls;
     this.fRegion = pRegion;
-    this.fRegionName = pRegionName;
     
   }
   
@@ -42,7 +39,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("region".equals(parameterName)) return this.fRegion;
-    if ("regionName".equals(parameterName)) return this.fRegionName;
     return null;
     
   }
@@ -57,11 +53,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
     
   }
   
-  public String getRegionName() {
-    return this.fRegionName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -71,10 +62,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
     }
     if ("region".equals(parameterName) ) {
     	this.fRegion = (org.eclipse.uml2.uml.Region) newValue;
-    	return true;
-    }
-    if ("regionName".equals(parameterName) ) {
-    	this.fRegionName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -93,12 +80,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
     
   }
   
-  public void setRegionName(final String pRegionName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fRegionName = pRegionName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.RegionOfClass";
@@ -113,13 +94,13 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fRegion, fRegionName};
+    return new Object[]{fCls, fRegion};
     
   }
   
   @Override
   public RegionOfClassMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fRegion, fRegionName) : this;
+    return isMutable() ? newMatch(fCls, fRegion) : this;
     
   }
   
@@ -127,8 +108,7 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
-    result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
-    result.append("\"regionName\"=" + prettyPrintValue(fRegionName));
+    result.append("\"region\"=" + prettyPrintValue(fRegion));
     return result.toString();
     
   }
@@ -139,7 +119,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
-    result = prime * result + ((fRegionName == null) ? 0 : fRegionName.hashCode());
     return result;
     
   }
@@ -163,8 +142,6 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
     else if (!fCls.equals(other.fCls)) return false;
     if (fRegion == null) {if (other.fRegion != null) return false;}
     else if (!fRegion.equals(other.fRegion)) return false;
-    if (fRegionName == null) {if (other.fRegionName != null) return false;}
-    else if (!fRegionName.equals(other.fRegionName)) return false;
     return true;
   }
   
@@ -187,7 +164,7 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
    * 
    */
   public static RegionOfClassMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null);
     
   }
   
@@ -197,12 +174,11 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static RegionOfClassMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion, final String pRegionName) {
-    return new Mutable(pCls, pRegion, pRegionName);
+  public static RegionOfClassMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion) {
+    return new Mutable(pCls, pRegion);
     
   }
   
@@ -212,18 +188,17 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static RegionOfClassMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion, final String pRegionName) {
-    return new Immutable(pCls, pRegion, pRegionName);
+  public static RegionOfClassMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Region pRegion) {
+    return new Immutable(pCls, pRegion);
     
   }
   
   private static final class Mutable extends RegionOfClassMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Region pRegion, final String pRegionName) {
-      super(pCls, pRegion, pRegionName);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Region pRegion) {
+      super(pCls, pRegion);
       
     }
     
@@ -234,8 +209,8 @@ public abstract class RegionOfClassMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends RegionOfClassMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Region pRegion, final String pRegionName) {
-      super(pCls, pRegion, pRegionName);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Region pRegion) {
+      super(pCls, pRegion);
       
     }
     

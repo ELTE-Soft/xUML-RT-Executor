@@ -5,17 +5,12 @@ import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgBehavior;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatch;
@@ -32,19 +27,10 @@ import hu.eltesoft.modelexecution.uml.incquery.TransitionEffectMatch;
 import hu.eltesoft.modelexecution.uml.incquery.TransitionEffectMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.TransitionMatch;
 import hu.eltesoft.modelexecution.uml.incquery.TransitionMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfRegionProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.EntryProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.ExitProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.InitialsProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.RegionProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.StateProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.TransitionEffectProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.TransitionProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -59,12 +45,13 @@ import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
 
-public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
+public class RegionGenerator extends
+		AbstractGenerator<Region, RgRegion, RegionTemplate> {
 
 	private static final RegionFactory FACTORY = RegionFactory.eINSTANCE;
 
 	private final RegionMatcher regionMatcher;
-	private final ContainerClassOfRegionMatcher containerClassOfRegionMatcher;
+	private final ContainerClassOfRegionMatcher containerMatcher;
 	private final InitialsMatcher initialsMatcher;
 	private final StateMatcher stateMatcher;
 	private final EntryMatcher entryMatcher;
@@ -82,8 +69,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 			throws IncQueryException {
 		super(listener);
 		regionMatcher = RegionMatcher.on(engine);
-		containerClassOfRegionMatcher = ContainerClassOfRegionMatcher
-				.on(engine);
+		containerMatcher = ContainerClassOfRegionMatcher.on(engine);
 		initialsMatcher = InitialsMatcher.on(engine);
 		stateMatcher = StateMatcher.on(engine);
 		entryMatcher = EntryMatcher.on(engine);
@@ -102,66 +88,26 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		}
 	}
 
-	// generate translation model
-
 	@Override
 	public RgRegion generateTranslationModel(Region source)
 			throws GenerationException {
-
-		// new RgRegion
 		RgRegion root = FACTORY.createRgRegion();
 
-		// name
-		check(regionMatcher.forOneArbitraryMatch(source, null,
-				getProcessorToSetNameOfRoot(root)));
+		check(regionMatcher.forOneArbitraryMatch(source, match -> {
+			Region pRegion = match.getRegion();
+			root.setReference(new NamedReference(pRegion));
+		}));
 
-		// containerClass
-		check(containerClassOfRegionMatcher.forOneArbitraryMatch(source, null,
-				null, getProcessorToSetContainerClassOfRoot(root)));
+		check(containerMatcher.forOneArbitraryMatch(source, null, match -> {
+			Class pContainerClass = match.getContainerClass();
+			root.setContainerClass(new NamedReference(pContainerClass));
+		}));
 
 		// initialPseudoState, states
 		new StatesGenerator(source, root).generate();
 
 		return root;
 	}
-
-	private RegionProcessor getProcessorToSetNameOfRoot(RgRegion root) {
-		return new RegionProcessor() {
-
-			@Override
-			public void process(Region pRegion, String pRegionName) {
-				root.setReference(new NamedReference(pRegion, pRegionName));
-			}
-
-		};
-	}
-
-	private ContainerClassOfRegionProcessor getProcessorToSetContainerClassOfRoot(
-			RgRegion root) {
-		return new ContainerClassOfRegionProcessor() {
-
-			@Override
-			public void process(Region pRegion, Class pContainerClass,
-					String pContainerClassName) {
-				root.setContainerClass(createContainerClass(pContainerClass,
-						pContainerClassName));
-			}
-
-			private RgClass createContainerClass(Class containerClass,
-					String name) {
-				// new RgClass
-				RgClass rgClass = FACTORY.createRgClass();
-
-				// name
-				rgClass.setReference(new NamedReference(containerClass, name));
-
-				return rgClass;
-			}
-
-		};
-	}
-
-	// states generator
 
 	private class StatesGenerator {
 
@@ -176,200 +122,121 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		}
 
 		void generate() {
-			// states (without transitions)
-			stateMatcher.forEachMatch(source, null, null,
-					getProcessorToSetStatesOfRoot(root.getStates()));
+			// states without transitions
+			stateMatcher.forEachMatch(source, null, match -> {
+				manager.set(match.getState());
+			});
 
-			// initialPseudoState
-			check(initialsMatcher.forOneArbitraryMatch(source, null, null,
-					null, null, getProcessorToSetInitialPseudoStateOfRoot()));
+			check(initialsMatcher.forOneArbitraryMatch(
+					source,
+					null,
+					null,
+					null,
+					match -> {
+						Pseudostate pInitState = match.getInitPseudostate();
+						Transition pInitTransition = match.getInitTransition();
+						State pFirstState = match.getFirstState();
 
-			// (add transitions to states)
-			transitionMatcher.forEachMatch(source, null, null, null, null,
-					null, null, null, null,
-					getProcessorToSetTransitionsOfState());
+						RgInitialPseudostate rgInitialPseudostate = FACTORY
+								.createRgInitialPseudostate();
 
-		}
+						// register initial to EObject -> container name mapping
+						setContainerName(pInitState, root.getReference()
+								.getIdentifier());
 
-		private StateProcessor getProcessorToSetStatesOfRoot(
-				EList<RgState> states) {
-			return new StateProcessor() {
+						// reference
+						rgInitialPseudostate.setReference(new NamedReference(
+								pInitState));
 
-				@Override
-				public void process(Region pRegion, State pState,
-						String pStateName) {
-					manager.set(pState, pStateName);
-				}
+						// initialTransition
+						rgInitialPseudostate
+								.setInitialTransition(createTransition(
+										pInitTransition, null, null,
+										pFirstState));
+						// Event is not set. Initial transition has no explicit
+						// triggering event.
 
-			};
-		}
+						root.setInitialPseudostate(rgInitialPseudostate);
+					}));
 
-		private InitialsProcessor getProcessorToSetInitialPseudoStateOfRoot() {
-			return new InitialsProcessor() {
+			// add transitions to states
+			transitionMatcher.forEachMatch(
+					source,
+					null,
+					null,
+					null,
+					null,
+					null,
+					match -> {
+						State pSource = match.getSource();
+						Transition pTransition = match.getTransition();
+						Event pEvent = match.getEvent();
+						Signal pSignal = match.getSignal();
+						State pTarget = match.getTarget();
 
-				@Override
-				public void process(Region pRegion,
-						Pseudostate pInitPseudostate,
-						String pInitPseudostateName,
-						Transition pInitTransition, State pFirstState) {
+						RgState rgState = manager.get(pSource);
 
-					// new RgInitialPseudostate
-					RgInitialPseudostate rgInitialPseudostate = FACTORY
-							.createRgInitialPseudostate();
-
-					// register initial to EObject -> container name mapping
-					setContainerName(pInitPseudostate, root.getReference()
-							.getNewIdentifier());
-
-					// reference
-					rgInitialPseudostate.setReference(new NamedReference(
-							pInitPseudostate, pInitPseudostateName));
-
-					// initialTransition
-					rgInitialPseudostate.setInitialTransition(createTransition(
-							pInitTransition, null, null, null, null, null,
-							pFirstState));
-					// Event is not set. Initial transition has no explicit
-					// triggering event.
-
-					root.setInitialPseudostate(rgInitialPseudostate);
-				}
-
-			};
-		}
-
-		private TransitionProcessor getProcessorToSetTransitionsOfState() {
-			return new TransitionProcessor() {
-
-				@Override
-				public void process(Region pRegion, State pSource,
-						Transition pTransition, String pTransitionName,
-						Event pEvent, String pEventName, Signal pSignal,
-						String pMessageName, State pTarget) {
-
-					RgState rgState = manager.get(pSource);
-
-					rgState.getTransitions().add(
-							createTransition(pTransition, pTransitionName,
-									pEvent, pEventName, pSignal, pMessageName,
-									pTarget));
-				}
-
-			};
+						rgState.getTransitions().add(
+								createTransition(pTransition, pEvent, pSignal,
+										pTarget));
+					});
 		}
 
 		private RgTransition createTransition(Transition transition,
-				String transitionName, Event event, String eventName,
-				Signal signal, String messageName, State target) {
+				Event event, Signal signal, State target) {
 
-			// new RgTransition
 			RgTransition rgTransition = FACTORY.createRgTransition();
 
 			// register transition to EObject -> container name mapping
-			setContainerName(transition, root.getReference().getNewIdentifier());
+			setContainerName(transition, root.getReference().getIdentifier());
 
-			// reference
-			rgTransition.setReference(new NamedReference(transition,
-					transitionName));
+			rgTransition.setReference(new Reference(transition));
 
-			// message
-			if (messageName != null) { // in case of any other than the initial
-										// transition
-				rgTransition.setMessage(createMessage(signal, messageName));
+			// in case of any other than the initial transition
+			if (signal != null) {
+				rgTransition.setMessage(new NamedReference(signal));
 			}
 
-			// event
-			if (eventName != null) { // in case of any other than the initial
-										// transition
-				rgTransition.setEvent(createEvent(event, eventName));
+			// in case of any other than the initial transition
+			if (event != null) {
+				rgTransition.setEvent(new NamedReference(event));
 			}
 
-			// effect
 			transitionEffectMatcher.forOneArbitraryMatch(null, transition,
-					null, null,
-					getProcessorToSetEffectOfTransition(rgTransition));
+					null, match -> {
+						Behavior pEffect = match.getEffect();
+						rgTransition.setEffect(new NamedReference(pEffect));
+					});
 
-			// target
 			rgTransition.setTarget(manager.get(target));
 
 			return rgTransition;
 		}
 
-		private RgEvent createEvent(Event event, String name) {
-			RgEvent rgEvent = FACTORY.createRgEvent();
-			rgEvent.setReference(new NamedReference(event, name));
-			return rgEvent;
-		}
-
-		private RgMessage createMessage(Signal signal, String name) {
-			// new RgEvent
-			RgMessage rgMessage = FACTORY.createRgMessage();
-
-			// name
-			rgMessage.setReference(new NamedReference(signal, name));
-
-			return rgMessage;
-		}
-
-		private TransitionEffectProcessor getProcessorToSetEffectOfTransition(
-				RgTransition rgTransition) {
-			return new TransitionEffectProcessor() {
-
-				@Override
-				public void process(Region pRegion, Transition pTransition,
-						Behavior pEffect, String pEffectName) {
-
-					rgTransition
-							.setEffect(createBehavior(pEffect, pEffectName));
-				}
-
-			};
-		}
-
-		private RgBehavior createBehavior(Behavior behavior, String name) {
-			// new RgBehavior
-			RgBehavior rgBehavior = FACTORY.createRgBehavior();
-
-			// name
-			rgBehavior.setReference(new NamedReference(behavior, name));
-
-			return rgBehavior;
-		}
-
-		// state manager
-
 		private class StateManager {
 
-			private Map<State, RgState> map;
+			private final Map<State, RgState> map = new HashMap<>();
 
-			StateManager() {
-				map = new HashMap<>();
-			}
-
-			void set(State state, String name) {
-				// new RgState
+			void set(State state) {
 				RgState rgState = FACTORY.createRgState();
 
 				// register state to EObject -> container name mapping
-				setContainerName(state, root.getReference().getNewIdentifier());
+				setContainerName(state, root.getReference().getIdentifier());
 
-				// reference
-				rgState.setReference(new NamedReference(state, name));
+				rgState.setReference(new NamedReference(state));
 
-				// entry
-				entryMatcher.forOneArbitraryMatch(null, state, null, null,
-						getProcessorToSetEntryOfState(rgState));
+				entryMatcher.forOneArbitraryMatch(null, state, null, match -> {
+					Behavior pEntry = match.getEntry();
+					rgState.setEntry(new NamedReference(pEntry));
+				});
 
-				// exit
-				exitMatcher.forOneArbitraryMatch(null, state, null, null,
-						getProcessorToSetExitOfState(rgState));
-
-				// transitions
-				// (later)
-
-				map.put(state, rgState);
+				exitMatcher.forOneArbitraryMatch(null, state, null, match -> {
+					Behavior pExit = match.getExit();
+					rgState.setExit(new NamedReference(pExit));
+				});
 
 				root.getStates().add(rgState);
+				map.put(state, rgState);
 			}
 
 			RgState get(State state) {
@@ -377,49 +244,13 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 				check(rgState != null);
 				return rgState;
 			}
-
-			private EntryProcessor getProcessorToSetEntryOfState(RgState rgState) {
-				return new EntryProcessor() {
-
-					@Override
-					public void process(Region pRegion, State pState,
-							Behavior pEntry, String pEntryName) {
-
-						rgState.setEntry(createBehavior(pEntry, pEntryName));
-					}
-
-				};
-			}
-
-			private ExitProcessor getProcessorToSetExitOfState(RgState rgState) {
-				return new ExitProcessor() {
-
-					@Override
-					public void process(Region pRegion, State pState,
-							Behavior pExit, String pExitName) {
-
-						rgState.setExit(createBehavior(pExit, pExitName));
-					}
-
-				};
-			}
 		}
 	}
 
-	// generate text
-
 	@Override
-	public void generateText(RgRegion root) {
-		RegionTemplate template = new RegionTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getReference()
-				.getNewIdentifier(), output, symbols);
-	}
-
-	// add match update listeners
+	protected RegionTemplate createTemplate(RgRegion root) {
+		return new RegionTemplate(root);
+	};
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -448,9 +279,10 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 					@Override
 					public void notifyDisappearance(RegionMatch match) {
 						// disappearance of root: delete file
-						changeRegistry.newDeletion(match.getRegionName());
+						Region region = match.getRegion();
+						String fileName = NamedReference.getIdentifier(region);
+						changeRegistry.newDeletion(fileName);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(regionMatcher,
@@ -473,11 +305,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
-				advancedEngine.addMatchUpdateListener(
-						containerClassOfRegionMatcher,
+				advancedEngine.addMatchUpdateListener(containerMatcher,
 						containerClassOfRegionListener, false);
 			}
 
@@ -495,7 +325,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(initialsMatcher,
@@ -516,7 +345,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(stateMatcher,
@@ -537,7 +365,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(entryMatcher,
@@ -558,7 +385,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(exitMatcher,
@@ -579,7 +405,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(transitionMatcher,
@@ -600,7 +425,6 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(transitionEffectMatcher,
@@ -609,11 +433,9 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 
 			@Override
 			public boolean revert() {
-
 				advancedEngine.removeMatchUpdateListener(regionMatcher,
 						regionListener);
-				advancedEngine.removeMatchUpdateListener(
-						containerClassOfRegionMatcher,
+				advancedEngine.removeMatchUpdateListener(containerMatcher,
 						containerClassOfRegionListener);
 				advancedEngine.removeMatchUpdateListener(initialsMatcher,
 						initialsListener);
@@ -627,11 +449,8 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 						transitionListener);
 				advancedEngine.removeMatchUpdateListener(
 						transitionEffectMatcher, transitionEffectListener);
-
 				return true;
 			}
-
 		};
-
 	}
 }

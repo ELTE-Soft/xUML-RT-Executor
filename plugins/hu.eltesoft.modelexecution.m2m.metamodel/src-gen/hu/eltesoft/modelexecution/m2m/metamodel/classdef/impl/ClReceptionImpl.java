@@ -3,14 +3,13 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -51,14 +50,24 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getSignal() <em>Signal</em>}' reference.
+	 * The default value of the '{@link #getSignal() <em>Signal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSignal()
 	 * @generated
 	 * @ordered
 	 */
-	protected ClSignal signal;
+	protected static final NamedReference SIGNAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getSignal() <em>Signal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSignal()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference signal = SIGNAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -105,15 +114,7 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClSignal getSignal() {
-		if (signal != null && signal.eIsProxy()) {
-			InternalEObject oldSignal = (InternalEObject)signal;
-			signal = (ClSignal)eResolveProxy(oldSignal);
-			if (signal != oldSignal) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_RECEPTION__SIGNAL, oldSignal, signal));
-			}
-		}
+	public NamedReference getSignal() {
 		return signal;
 	}
 
@@ -122,17 +123,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClSignal basicGetSignal() {
-		return signal;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setSignal(ClSignal newSignal) {
-		ClSignal oldSignal = signal;
+	public void setSignal(NamedReference newSignal) {
+		NamedReference oldSignal = signal;
 		signal = newSignal;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_RECEPTION__SIGNAL, oldSignal, signal));
@@ -149,8 +141,7 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 			case ClassdefPackage.CL_RECEPTION__REFERENCE:
 				return getReference();
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
-				if (resolve) return getSignal();
-				return basicGetSignal();
+				return getSignal();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -167,7 +158,7 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
-				setSignal((ClSignal)newValue);
+				setSignal((NamedReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -185,7 +176,7 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
-				setSignal((ClSignal)null);
+				setSignal(SIGNAL_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -202,7 +193,7 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 			case ClassdefPackage.CL_RECEPTION__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_RECEPTION__SIGNAL:
-				return signal != null;
+				return SIGNAL_EDEFAULT == null ? signal != null : !SIGNAL_EDEFAULT.equals(signal);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -219,6 +210,8 @@ public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClR
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", signal: ");
+		result.append(signal);
 		result.append(')');
 		return result.toString();
 	}

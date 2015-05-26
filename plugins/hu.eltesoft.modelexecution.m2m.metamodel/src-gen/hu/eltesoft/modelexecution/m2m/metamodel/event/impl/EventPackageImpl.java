@@ -15,7 +15,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
@@ -28,9 +27,9 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -54,13 +53,6 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 	 * @generated
 	 */
 	private EClass evSignalEventEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass evSignalEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -163,17 +155,8 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEvSignalEvent_Signal() {
-		return (EReference)evSignalEventEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getEvSignal() {
-		return evSignalEClass;
+	public EAttribute getEvSignalEvent_Signal() {
+		return (EAttribute)evSignalEventEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -207,9 +190,7 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 		evEventEClass = createEClass(EV_EVENT);
 
 		evSignalEventEClass = createEClass(EV_SIGNAL_EVENT);
-		createEReference(evSignalEventEClass, EV_SIGNAL_EVENT__SIGNAL);
-
-		evSignalEClass = createEClass(EV_SIGNAL);
+		createEAttribute(evSignalEventEClass, EV_SIGNAL_EVENT__SIGNAL);
 	}
 
 	/**
@@ -246,15 +227,12 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 		evEventEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		evEventEClass.getESuperTypes().add(theBasePackage.getNamed());
 		evSignalEventEClass.getESuperTypes().add(this.getEvEvent());
-		evSignalEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(evEventEClass, EvEvent.class, "EvEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(evSignalEventEClass, EvSignalEvent.class, "EvSignalEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEvSignalEvent_Signal(), this.getEvSignal(), null, "signal", null, 1, 1, EvSignalEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(evSignalEClass, EvSignal.class, "EvSignal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEvSignalEvent_Signal(), theBasePackage.getNamedReference(), "signal", null, 1, 1, EvSignalEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

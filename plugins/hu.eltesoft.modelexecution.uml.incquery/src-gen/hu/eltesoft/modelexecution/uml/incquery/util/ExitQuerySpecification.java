@@ -47,12 +47,12 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","state","exit","exitName");
+    return Arrays.asList("region","state","exit");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"),new PParameter("exit", "org.eclipse.uml2.uml.Behavior"),new PParameter("exitName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("state", "org.eclipse.uml2.uml.State"),new PParameter("exit", "org.eclipse.uml2.uml.Behavior"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
   
   @Override
   public ExitMatch newMatch(final Object... parameters) {
-    return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2], (java.lang.String) parameters[3]);
+    return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2]);
   }
   
   @Override
@@ -73,20 +73,16 @@ public final class ExitQuerySpecification extends BaseGeneratedQuerySpecificatio
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_state = body.getOrCreateVariableByName("state");
       PVariable var_exit = body.getOrCreateVariableByName("exit");
-      PVariable var_exitName = body.getOrCreateVariableByName("exitName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
         new ExportedParameter(body, var_state, "state"), 
-        new ExportedParameter(body, var_exit, "exit"), 
-        new ExportedParameter(body, var_exitName, "exitName")
+        new ExportedParameter(body, var_exit, "exit")
       ));
-      
       
       
       
       new TypeBinary(body, CONTEXT, var_state, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
       new TypeBinary(body, CONTEXT, var_state, var_exit, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State", "exit"), "http://www.eclipse.org/uml2/5.0.0/UML/State.exit");
-      new TypeBinary(body, CONTEXT, var_exit, var_exitName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

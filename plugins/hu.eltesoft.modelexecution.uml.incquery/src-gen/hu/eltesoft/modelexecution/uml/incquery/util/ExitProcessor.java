@@ -19,14 +19,13 @@ public abstract class ExitProcessor implements IMatchProcessor<ExitMatch> {
    * @param pRegion the value of pattern parameter region in the currently processed match
    * @param pState the value of pattern parameter state in the currently processed match
    * @param pExit the value of pattern parameter exit in the currently processed match
-   * @param pExitName the value of pattern parameter exitName in the currently processed match
    * 
    */
-  public abstract void process(final Region pRegion, final State pState, final Behavior pExit, final String pExitName);
+  public abstract void process(final Region pRegion, final State pState, final Behavior pExit);
   
   @Override
   public void process(final ExitMatch match) {
-    process(match.getRegion(), match.getState(), match.getExit(), match.getExitName());
+    process(match.getRegion(), match.getState(), match.getExit());
     
   }
 }
