@@ -32,6 +32,11 @@ public class ExecutableModelProperties {
 
 	public static final String DEFAULT_INSTRUMENTED_CLASS_FILE_PATH = "bin-debug"; //$NON-NLS-1$
 
+	public static final String PROP_TRACES_PATH = PROPERTY_PREFIX
+			+ "traces_path";
+
+	public static final String DEFAULT_TRACES_PATH = "traces"; //$NON-NLS-1$
+
 	public static IEclipsePreferences getProperties(IProject project) {
 		IScopeContext projectScope = new ProjectScope(project);
 		return projectScope.getNode(ExecutableModelNature.NATURE_ID);
@@ -117,6 +122,31 @@ public class ExecutableModelProperties {
 	private static void setInstrumentedClassFilesPath(
 			IEclipsePreferences properties, String path) {
 		properties.put(PROP_INSTRUMENTED_CLASS_FILE_PATH, path);
+	}
+
+	// ////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Get project-based path for directory of generated trace files
+	 */
+	public static String getTraceFilesPath(IProject project) {
+		return getTraceFilesPath(getProperties(project));
+	}
+
+	private static String getTraceFilesPath(IEclipsePreferences properties) {
+		return properties.get(PROP_TRACES_PATH, DEFAULT_TRACES_PATH);
+	}
+
+	/**
+	 * Set project-based path for directory of generated trace files
+	 */
+	public static void setTraceFilesPath(IProject project, String path) {
+		setTraceFilesPath(getProperties(project), path);
+	}
+
+	private static void setTraceFilesPath(IEclipsePreferences properties,
+			String path) {
+		properties.put(PROP_TRACES_PATH, path);
 	}
 
 }

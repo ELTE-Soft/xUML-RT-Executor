@@ -41,9 +41,11 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 	private static final GridData gridDataFillBoth = new GridData(SWT.FILL,
 			SWT.FILL, true, false);
 
-	private FolderSelector generatedFilesFolderSelector;
-	private FolderSelector instrumentedClassFilesFolderSelector;
-	private FolderSelector debugFilesFolderSelector;
+	private ResourceSelector generatedFilesFolderSelector;
+	private ResourceSelector instrumentedClassFilesFolderSelector;
+	private ResourceSelector debugFilesFolderSelector;
+
+	private ResourceSelector generatedTracesFolderSelector;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -60,6 +62,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 
 		debugFilesFolderControl(preferences, properties);
 		instrumentedClassFilesFolderControl(preferences, properties);
+		generatedTracesFolderControl(preferences, properties);
 
 		return properties;
 	}
@@ -72,9 +75,9 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		generatedSourcesFolderGroup.setLayoutData(gridDataFillBoth);
 		generatedSourcesFolderGroup.setLayout(new GridLayout(1, false));
 
-		generatedFilesFolderSelector = new FolderSelector(
+		generatedFilesFolderSelector = new ResourceSelector(
 				generatedSourcesFolderGroup,
-				FolderSelector.ConfigBase.PROJECT_BASED,
+				ResourceSelector.ConfigBase.PROJECT_BASED,
 				Messages.ExecutableModelPropertiesPage_gen_sources_label,
 				Messages.ExecutableModelPropertiesPage_gen_sources_button,
 				Messages.ExecutableModelPropertiesPage_gen_sources_dialog_caption);
@@ -88,6 +91,30 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		generatedSourcesFolderGroup.pack();
 	}
 
+	private void generatedTracesFolderControl(IEclipsePreferences preferences,
+			Composite properties) {
+		Group generatedTracesFolderGroup = new Group(properties, SWT.NONE);
+		generatedTracesFolderGroup
+				.setText("Folder for generated trace files");
+		generatedTracesFolderGroup.setLayoutData(gridDataFillBoth);
+		generatedTracesFolderGroup.setLayout(new GridLayout(1, false));
+
+		generatedTracesFolderSelector = new ResourceSelector(
+				generatedTracesFolderGroup,
+				ResourceSelector.ConfigBase.WORKSPACE_BASED,
+				"Folder for generated trace files",
+				"Select",
+				"Select folder for generated trace files");
+		String tracesPath = ExecutableModelProperties
+				.getTraceFilesPath(getProject());
+		generatedTracesFolderSelector.setSelectedResource(getProject()
+				.findMember(tracesPath));
+		generatedTracesFolderSelector
+				.addUpdateListener(sel -> updateApplyButton());
+
+		generatedTracesFolderGroup.pack();
+	}
+
 	private void debugFilesFolderControl(IEclipsePreferences preferences,
 			Composite properties) {
 		Group debugFilesFolderGroup = new Group(properties, SWT.NONE);
@@ -96,9 +123,9 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		debugFilesFolderGroup.setLayoutData(gridDataFillBoth);
 		debugFilesFolderGroup.setLayout(new GridLayout(1, false));
 
-		debugFilesFolderSelector = new FolderSelector(
+		debugFilesFolderSelector = new ResourceSelector(
 				debugFilesFolderGroup,
-				FolderSelector.ConfigBase.PROJECT_BASED,
+				ResourceSelector.ConfigBase.PROJECT_BASED,
 				Messages.ExecutableModelPropertiesPage_debug_files_label,
 				Messages.ExecutableModelPropertiesPage_debug_files_button,
 				Messages.ExecutableModelPropertiesPage_debug_files_dialog_caption);
@@ -119,9 +146,9 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		instrumentedClassFolderGroup.setLayoutData(gridDataFillBoth);
 		instrumentedClassFolderGroup.setLayout(new GridLayout(1, false));
 
-		instrumentedClassFilesFolderSelector = new FolderSelector(
+		instrumentedClassFilesFolderSelector = new ResourceSelector(
 				instrumentedClassFolderGroup,
-				FolderSelector.ConfigBase.PROJECT_BASED,
+				ResourceSelector.ConfigBase.PROJECT_BASED,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_label,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_button,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_dialog_caption);
@@ -158,6 +185,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		return generatedFilesFolderSelector.selectionValid()
 				&& debugFilesFolderSelector.selectionValid()
 				&& instrumentedClassFilesFolderSelector.selectionValid()
+				&& generatedTracesFolderSelector.selectionValid()
 				&& super.isValid();
 	}
 
@@ -172,6 +200,9 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 				debugFilesFolderSelector.getSelectedResourcePath().toString());
 		ExecutableModelProperties.setInstrumentedClassFilesPath(getProject(),
 				instrumentedClassFilesFolderSelector.getSelectedResourcePath()
+						.toString());
+		ExecutableModelProperties.setTraceFilesPath(getProject(),
+				generatedTracesFolderSelector.getSelectedResourcePath()
 						.toString());
 
 		if (!newSrcGenPath.equals(oldSrcGenPath)) {

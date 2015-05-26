@@ -1,63 +1,65 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
-import hu.eltesoft.modelexecution.runtime.log.NoLogger;
-import hu.eltesoft.modelexecution.runtime.trace.InputTraceBuffer;
-import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
-import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
-import hu.eltesoft.modelexecution.runtime.trace.OutputTraceBuffer;
-import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+
+import org.json.JSONException;
 
 /**
  * BaseRuntime with main. Parses tracing and logging flags.
  */
 public class XUMLRTRuntime extends BaseRuntime {
+	public XUMLRTRuntime(ClassLoader classLoader) {
+		super(classLoader);
+	}
 
-	private static final String TRACING_FOLDER_NAME = "traces";
-	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 10;
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
-	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
-			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
+	private static final String USAGE = "java " + XUMLRTRuntime.class.getName()
+			+ " class-name feed-function-name " + "[" + OPTION_WRITE_TRACE
+			+ " output-folder] [" + OPTION_READ_TRACE + "input-folder] ["
+			+ OPTION_LOG + "]";
 
-	public XUMLRTRuntime(ClassLoader classLoader, Tracer tracer,
-			TraceReader traceReader, Logger logger) {
-		super(classLoader, tracer, traceReader, logger);
+	public static void main(String[] args) {
+
+		TerminationResult result = null;
+
+		try (XUMLRTRuntime runtime = new XUMLRTRuntime(
+				XUMLRTRuntime.class.getClassLoader())) {
+			if (args.length < 2) {
+				System.err.println("Not enough parameters. Usage: \n" + USAGE);
+			}
+			String clsName = args[0];
+			String feedName = args[1];
+			applyCommandLineArguments(args, runtime);
+			result = runtime.run(clsName, feedName);
+		} catch (Throwable e) {
+			logError("Error while running model execution", e);
+			result = TerminationResult.INTERNAL_ERROR;
+		} finally {
+			System.exit(result.getExitCode());
+		}
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		if (args.length < 2) {
-			System.err.println("Not enough parameters. Usage: \n" + USAGE);
-		}
-		String clsName = args[0];
-		String feedName = args[1];
-		Tracer tracer = new NoTracer();
-		TraceReader traceReader = new NoTraceReader();
-		Logger logger = new NoLogger();
-
+	protected static void applyCommandLineArguments(String[] args,
+			XUMLRTRuntime runtime) throws Exception {
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = new TraceWriter(getDefaultOutputTraceBuffer(args[++i]
-						+ File.separator + TRACING_FOLDER_NAME));
+				runtime.setTraceWriter(getDefaultTraceWriter(args[++i]));
 				break;
 			case OPTION_READ_TRACE:
-				traceReader = new TraceReplayer(
-						getDefaultInputTraceBuffer(args[++i] + File.separator
-								+ TRACING_FOLDER_NAME));
+				runtime.setTraceReader(getDefaultTraceReplayer(args[++i]));
 				break;
 			case OPTION_LOG:
-				logger = new MinimalLogger();
+				runtime.setLogger(new MinimalLogger());
 				break;
 			default:
 				System.err.println("Could not parse argument " + args[i]
@@ -65,36 +67,23 @@ public class XUMLRTRuntime extends BaseRuntime {
 				break;
 			}
 		}
-
-		TerminationResult result = new XUMLRTRuntime(
-				XUMLRTRuntime.class.getClassLoader(), tracer, traceReader,
-				logger).run(clsName, feedName);
-		System.exit(result.getExitCode());
 	}
 
 	/**
-	 * Constructs a tracer that actually creates tracefiles.
+	 * Constructs a tracer that actually creates trace files.
 	 */
-	public static Tracer getDefaultTraceWriter(String inputFolder) {
-		return new TraceWriter(getDefaultOutputTraceBuffer(inputFolder));
-	}
-
-	private static OutputTraceBuffer getDefaultOutputTraceBuffer(
-			String folderName) {
-		return new OutputTraceBuffer(folderName, DEFAULT_OUTPUT_BUFFER_SIZE,
-				defaultFileSystem());
+	public static Tracer getDefaultTraceWriter(String traceParameter)
+			throws IOException {
+		return new TraceWriter(traceParameter, defaultFileSystem());
 	}
 
 	/**
-	 * Constructs a trace replayer that actually reads tracefiles.
+	 * Constructs a trace replayer that actually reads trace files.
 	 */
-	public static TraceReplayer getDefaultTraceReplayer(String inputFolder) {
-		return new TraceReplayer(getDefaultInputTraceBuffer(inputFolder));
-	}
-
-	private static InputTraceBuffer getDefaultInputTraceBuffer(
-			String inputFolder) {
-		return new InputTraceBuffer(inputFolder, defaultFileSystem());
+	public static TraceReplayer getDefaultTraceReplayer(String inputFolder)
+			throws ClassNotFoundException, JSONException, IOException {
+		return new TraceReplayer(inputFolder, defaultFileSystem(),
+				XUMLRTRuntime.class.getClassLoader());
 	}
 
 	private static FileSystem defaultFileSystem() {

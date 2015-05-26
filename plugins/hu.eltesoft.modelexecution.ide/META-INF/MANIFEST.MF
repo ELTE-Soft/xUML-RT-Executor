@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="[0.8.1,0.9.0)",
  org.eclipse.emf.transaction,
  hu.eltesoft.modelexecution.filemanager,
  hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.1.0",
- hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.1.0",
+ hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.2.0",
  hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.1.0",
  hu.eltesoft.modelexecution.m2t.java;bundle-version="0.1.0",
  org.eclipse.papyrus.infra.services.labelprovider;bundle-version="1.0.1",
@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="[0.8.1,0.9.0)",
  org.eclipse.xtext.smap,
  org.eclipse.jdt.debug,
  org.eclipse.papyrus.moka.ui,
- org.eclipse.ui.console
+ org.eclipse.ui.console,
+ hu.eltesoft.modelexecution.3pp;bundle-version="0.2.0"
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: hu.eltesoft.modelexecution.ide.IdePlugin
 Export-Package: hu.eltesoft.modelexecution.ide.project

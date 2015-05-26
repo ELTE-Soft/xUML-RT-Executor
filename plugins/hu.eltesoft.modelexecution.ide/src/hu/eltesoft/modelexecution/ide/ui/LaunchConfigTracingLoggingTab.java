@@ -19,7 +19,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
@@ -34,8 +33,7 @@ public class LaunchConfigTracingLoggingTab extends
 	private Button tracingEnabled;
 	private Button replayTrace;
 
-	private LaunchConfigFolderSelector traceFolderSelector;
-	private LaunchConfigFolderSelector replayFolderSelector;
+	private LaunchConfigResourceSelector replayTraceSelector;
 
 	@Override
 	public String getId() {
@@ -50,8 +48,6 @@ public class LaunchConfigTracingLoggingTab extends
 		setControl(comp);
 
 		createLoggingControl(comp);
-		Label traceNoteLabel = new Label(comp, SWT.NONE);
-		traceNoteLabel.setText(Messages.LaunchConfigTracingLoggingTab_trace_note_label);
 		createTracingControl(comp);
 		createReplayControl(comp);
 
@@ -74,31 +70,37 @@ public class LaunchConfigTracingLoggingTab extends
 		loggingGroup.pack();
 	}
 
-	private FolderSelectorUpdateListener tabUpdater() {
-		return new FolderSelectorUpdateListener() {
+	private ResourceSelectorUpdateListener tabUpdater() {
+		return new ResourceSelectorUpdateListener() {
 			@Override
-			public void folderSelectorUpdated(IResource folder) {
+			public void resourceSelectorUpdated(IResource folder) {
 				setDirty(true);
 				updateLaunchConfigurationDialog();
 			}
 		};
 	}
-
+	
 	private SelectionListener selectionTabUpdater() {
 		return new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				refresh();
 				setDirty(true);
 				updateLaunchConfigurationDialog();
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
+				refresh();
 				setDirty(true);
 				updateLaunchConfigurationDialog();
 			}
 		};
+	}
+	
+	private void refresh() {
+		replayTraceSelector.setEnabled(replayTrace.getSelection());
 	}
 
 	private void createTracingControl(Composite comp) {
@@ -114,15 +116,6 @@ public class LaunchConfigTracingLoggingTab extends
 				false));
 		tracingEnabled.addSelectionListener(selectionTabUpdater());
 
-		traceFolderSelector = new LaunchConfigFolderSelector(
-				group,
-				FolderSelector.ConfigBase.WORKSPACE_BASED,
-				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_label,
-				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_button_text,
-				Messages.LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_dialog_title,
-				ModelExecutionLaunchConfig.ATTR_TRACE_FOLDER);
-		traceFolderSelector.addUpdateListener(tabUpdater());
-
 		group.pack();
 	}
 
@@ -137,18 +130,20 @@ public class LaunchConfigTracingLoggingTab extends
 				.setText(Messages.LaunchConfigurationTracingLoggingTab_trace_replay_label);
 		replayTrace.addSelectionListener(selectionTabUpdater());
 
-		replayFolderSelector = new LaunchConfigFolderSelector(
+		replayTraceSelector = new LaunchConfigResourceSelector(
 				group,
-				FolderSelector.ConfigBase.WORKSPACE_BASED,
+				ResourceSelector.ConfigBase.WORKSPACE_BASED,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_for_tracefiles,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_button_label,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_dialog_title,
-				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FOLDER);
-		replayFolderSelector.addUpdateListener(tabUpdater());
+				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FILE);
+		replayTraceSelector.addUpdateListener(tabUpdater());
+		replayTraceSelector.addResourceFilter(".trace", "trace files (.trace)");
+		replayTraceSelector.addResourceFilter(".*", "any file (.*)");
 
 		group.pack();
 	}
-
+	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
@@ -172,8 +167,8 @@ public class LaunchConfigTracingLoggingTab extends
 			replayTrace.setSelection(configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT));
-			traceFolderSelector.initializeFrom(configuration);
-			replayFolderSelector.initializeFrom(configuration);
+			replayTraceSelector.initializeFrom(configuration);
+			refresh();
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while initializing dialog", e); //$NON-NLS-1$
 			MessageDialog
@@ -193,8 +188,7 @@ public class LaunchConfigTracingLoggingTab extends
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 				replayTrace.getSelection());
-		traceFolderSelector.apply(configuration);
-		replayFolderSelector.apply(configuration);
+		replayTraceSelector.apply(configuration);
 	}
 
 	@Override

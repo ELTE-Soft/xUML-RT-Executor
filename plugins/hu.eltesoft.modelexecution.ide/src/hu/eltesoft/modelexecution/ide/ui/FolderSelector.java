@@ -27,6 +27,7 @@ class FolderSelector extends SelectionAdapter {
 	private Composite parent;
 	private List<FolderSelectorUpdateListener> listeners = new LinkedList<>();
 	private ConfigBase base;
+	private Button browseButton;
 
 	/**
 	 * A widget for selecting a folder in the workspace
@@ -73,10 +74,10 @@ class FolderSelector extends SelectionAdapter {
 		field.setEnabled(false);
 		field.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		Button browseUML = new Button(group, SWT.NONE);
-		browseUML.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		browseUML.setText(buttonText);
-		browseUML.addSelectionListener(this);
+		browseButton = new Button(group, SWT.NONE);
+		browseButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		browseButton.setText(buttonText);
+		browseButton.addSelectionListener(this);
 
 		group.pack();
 	}
@@ -123,7 +124,7 @@ class FolderSelector extends SelectionAdapter {
 	}
 
 	public boolean selectionValid() {
-		return selectedResource.exists();
+		return selectedResource != null && selectedResource.exists();
 	}
 
 	protected void refreshField() {
@@ -141,5 +142,9 @@ class FolderSelector extends SelectionAdapter {
 			selectedResource = resource;
 			field.setText(base.getPath(selectedResource).toString());
 		}
+	}
+	
+	public void setEnabled(boolean enabled) {
+		browseButton.setEnabled(enabled);
 	}
 }

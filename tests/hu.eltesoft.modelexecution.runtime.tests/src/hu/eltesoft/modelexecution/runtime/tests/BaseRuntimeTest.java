@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.tests;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
-import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
@@ -25,9 +24,10 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		Runtime sut = new BaseRuntime(getClass().getClassLoader(), tracerMock,
-				readerMock, loggerMock) {
-		};
+		BaseRuntime sut = new BaseRuntime(getClass().getClassLoader());
+		sut.setLogger(loggerMock);
+		sut.setTraceWriter(tracerMock);
+		sut.setTraceReader(readerMock);
 
 		context.checking(new Expectations() {
 			{
@@ -40,6 +40,7 @@ public class BaseRuntimeTest {
 		});
 
 		sut.run(MockClass.class.getCanonicalName(), "emptyFeed");
+		sut.close();
 	}
 
 	@Test
@@ -49,9 +50,10 @@ public class BaseRuntimeTest {
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
 
-		Runtime sut = new BaseRuntime(getClass().getClassLoader(), tracerMock,
-				readerMock, loggerMock) {
-		};
+		BaseRuntime sut = new BaseRuntime(getClass().getClassLoader());
+		sut.setLogger(loggerMock);
+		sut.setTraceWriter(tracerMock);
+		sut.setTraceReader(readerMock);
 
 		context.checking(new Expectations() {
 			{
@@ -71,6 +73,7 @@ public class BaseRuntimeTest {
 		});
 
 		sut.run(MockClass.class.getCanonicalName(), "feedEvent");
+		sut.close();
 	}
 
 }
