@@ -107,6 +107,9 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 	}
 
 	private void refreshFolders(String attribute) {
+		if (attribute == null) {
+			return;
+		}
 		String[] pathes = attribute.split(";");
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		try {
