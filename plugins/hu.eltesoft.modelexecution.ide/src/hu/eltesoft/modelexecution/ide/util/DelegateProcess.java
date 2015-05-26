@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.ide.util;
 
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
@@ -32,6 +34,12 @@ public class DelegateProcess implements IProcess {
 
 	public void terminate() throws DebugException {
 		process.terminate();
+
+		// let the console update the termination status
+		// see ticket #187
+		DebugEvent event = new DebugEvent(this, DebugEvent.TERMINATE);
+		DebugEvent[] eventSet = new DebugEvent[] { event };
+		DebugPlugin.getDefault().fireDebugEventSet(eventSet);
 	}
 
 	public String getLabel() {

@@ -7,6 +7,7 @@ import hu.eltesoft.modelexecution.ide.util.SDEInstaller;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
@@ -80,10 +81,17 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 					.append(res.getProjectRelativePath().removeFileExtension()
 							.removeFirstSegments(1)
 							.addFileExtension(SMAP_FILE_EXTENSION));
-			IPath newLocation = projectLoc.append(
+			IPath instrumentedBinFolder = projectLoc.append(
 					ExecutableModelProperties
-							.getInstrumentedClassFilesPath(project)).append(
+							.getInstrumentedClassFilesPath(project));
+			IPath newLocation = instrumentedBinFolder.append(
 					res.getProjectRelativePath().removeFirstSegments(1));
+			try {
+				Files.createDirectories(Paths.get(instrumentedBinFolder.toString()));
+			} catch (IOException e) {
+				IdePlugin.logError("Cannot create directories for instrumented class file", e);
+				return;
+			}
 			if (newLocation.equals(res.getLocation())
 					|| !res.getLocation().toFile().exists()) {
 				return;

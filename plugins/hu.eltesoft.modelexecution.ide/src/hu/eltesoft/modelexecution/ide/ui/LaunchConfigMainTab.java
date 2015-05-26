@@ -71,6 +71,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	private ClsMatcher classMatcher;
 	private MethodMatcher methodMatcher;
 	private Text selectedFeedFunctionField;
+	private Button browseClass;
+	private Button browseEObjectButton;
 
 	@Override
 	public String getId() {
@@ -89,6 +91,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		createFeedFunctionSelector(comp);
 
 		comp.pack();
+		updateDialog();
 	}
 
 	private void createModelSelector(Composite parent) {
@@ -144,14 +147,15 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			dialog.open();
 			Object[] selection = dialog.getResult();
 			if (selectionIsOk(dialog, selection)) {
-				selectedModelResource = (IFile) selection[0];
+				IFile selectedResource = (IFile) selection[0];
 				try {
-					if (selectedModelResource.getProject().hasNature(
+					if (selectedResource.getProject().hasNature(
 							ExecutableModelNature.NATURE_ID)) {
-						selectedModelField.setText(selectedModelResource
+						updateDialog();
+						selectedModelField.setText(selectedResource
 								.getFullPath().toString());
 						registerUMLPackageAndExtension();
-						URI uri = URI.createFileURI(selectedModelResource
+						URI uri = URI.createFileURI(selectedResource
 								.getLocation().toString());
 						resource = resourceSet.getResource(uri, true);
 
@@ -160,6 +164,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 						selectedClassField.setText("");
 						selectedFeedFunction = null;
 						selectedFeedFunctionField.setText("");
+						selectedModelResource = selectedResource;
 						updateDialog();
 					} else {
 						MessageDialog
@@ -194,6 +199,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	}
 
 	private void updateDialog() {
+		browseClass.setEnabled(selectedModelResource != null);
+		browseEObjectButton.setEnabled(selectedModelResource != null
+				&& selectedClass != null);
 		setDirty(true);
 		updateLaunchConfigurationDialog();
 	}
@@ -210,7 +218,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		selectedClassField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false));
 
-		Button browseClass = new Button(group, SWT.NONE);
+		browseClass = new Button(group, SWT.NONE);
 		browseClass
 				.setText(Messages.LaunchConfigurationMainTab_select_class_button_text);
 
@@ -268,7 +276,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		selectedFeedFunctionField.setLayoutData(new GridData(SWT.FILL,
 				SWT.CENTER, true, false));
 
-		Button browseEObjectButton = new Button(group, SWT.NONE);
+		browseEObjectButton = new Button(group, SWT.NONE);
 		browseEObjectButton
 				.setText(Messages.LaunchConfigurationMainTab_select_feed_button_text);
 
@@ -318,7 +326,12 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			uri = configuration.getAttribute(
 					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
 			if (!uri.equals(EMPTY_STR)) {
+				try {
 				resource = resourceSet.getResource(URI.createURI(uri), true);
+				} catch (Exception e) {
+					// the resource does not exist
+					return;
+				}
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
 				IResource member = workspace.getRoot().findMember(uri);
 				if (member instanceof IFile) {
@@ -339,7 +352,6 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 										EMPTY_STR));
 				selectedFeedFunctionField.setText(selectedFeedFunction
 						.getName());
-
 			}
 		} catch (Exception e) {
 			IdePlugin.logError("Cannot initialize from configuration", e); //$NON-NLS-1$

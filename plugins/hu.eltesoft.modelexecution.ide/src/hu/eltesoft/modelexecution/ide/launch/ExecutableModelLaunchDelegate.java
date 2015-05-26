@@ -119,17 +119,28 @@ public class ExecutableModelLaunchDelegate implements
 		return true;
 	}
 
-	private boolean mentionedResourcesExist(ILaunchConfiguration configuration) throws CoreException {
+	private boolean mentionedResourcesExist(ILaunchConfiguration configuration)
+			throws CoreException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		String umlResourceURI = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
-		String classURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, "");
-		String functionURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, "");
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot workspaceRoot = workspace.getRoot();
-		URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI).getLocationURI().toString());
-		EObject executedClass = resourceSet.getEObject(umlURI.appendFragment(classURIFragment), true);
-		EObject executedFunction = resourceSet.getEObject(umlURI.appendFragment(functionURIFragment), true);
-		return executedClass != null && executedFunction != null;
+		try {
+			String umlResourceURI = configuration.getAttribute(
+					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
+			String classURIFragment = configuration.getAttribute(
+					ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, "");
+			String functionURIFragment = configuration.getAttribute(
+					ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, "");
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceRoot workspaceRoot = workspace.getRoot();
+			URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI)
+					.getLocationURI().toString());
+			EObject executedClass = resourceSet.getEObject(
+					umlURI.appendFragment(classURIFragment), true);
+			EObject executedFunction = resourceSet.getEObject(
+					umlURI.appendFragment(functionURIFragment), true);
+			return executedClass != null && executedFunction != null;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	private boolean diResourceIsPresent(ILaunchConfiguration configuration,
