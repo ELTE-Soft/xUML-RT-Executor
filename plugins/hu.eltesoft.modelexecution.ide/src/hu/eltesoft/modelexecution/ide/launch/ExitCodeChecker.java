@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -97,6 +101,23 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 			Dialogs.openTraceFileInvalidErrorDialog();
 		} else if (exitValue == TerminationResult.INTERNAL_ERROR.getExitCode()) {
 			Dialogs.openRuntimeInternalErrorDialog();
+		}
+		refreshFolders(process
+				.getAttribute(ExecutableModelLaunchDelegate.PROC_ATTR_TO_REFRESH));
+	}
+
+	private void refreshFolders(String attribute) {
+		if (attribute == null) {
+			return;
+		}
+		String[] pathes = attribute.split(";");
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		try {
+		for (String path : pathes) {
+			root.findMember(path).refreshLocal(IResource.DEPTH_ONE, null);
+		}
+		} catch (CoreException e) {
+			IdePlugin.logError("Error while refreshing changed folders", e);
 		}
 	}
 }

@@ -3,7 +3,10 @@ package hu.eltesoft.modelexecution.runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
+import hu.eltesoft.modelexecution.runtime.log.NoLogger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
+import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
+import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
@@ -19,36 +22,30 @@ import java.util.Queue;
  * Executes the model using logging and tracing. Receives the name of the class
  * and the name of a static function to execute.
  */
-public abstract class BaseRuntime implements Runtime {
+public class BaseRuntime implements Runtime, AutoCloseable {
 
 	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
 	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
-	public static final String STATES_LOGGER_ID = LOGGER_ID + "StateMachine.States";
-	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + "StateMachine.Transitions";
-	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + "Events.Messages";
-	
+	public static final String STATES_LOGGER_ID = LOGGER_ID
+			+ "StateMachine.States";
+	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID
+			+ "StateMachine.Transitions";
+	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
+			+ "Events.Messages";
 
 	private Queue<TargetedMessage> queue = new LinkedList<>();
 
-	private Tracer traceWriter;
-	private TraceReader traceReader;
-	private Logger logger;
+	private Tracer traceWriter = new NoTracer();
+	private TraceReader traceReader = new NoTraceReader();
+	private Logger logger = new NoLogger();
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
 
-	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
-		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
-	}
-
-	public BaseRuntime(ClassLoader classLoader, Tracer tracer,
-			TraceReader traceReader, Logger logger) {
+	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
-		this.traceWriter = tracer;
-		this.traceReader = traceReader;
-		this.logger = logger;
 	}
-
+	
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
@@ -56,11 +53,24 @@ public abstract class BaseRuntime implements Runtime {
 		logger.messageQueued(target, message);
 	}
 
+	public void setTraceWriter(Tracer traceWriter) {
+		this.traceWriter = traceWriter;
+	}
+
+	public void setTraceReader(TraceReader traceReader) {
+		this.traceReader = traceReader;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
 	/**
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
 	@Override
-	public TerminationResult run(String className, String feedName) throws Exception {
+	public TerminationResult run(String className, String feedName)
+			throws Exception {
 		try {
 			prepare(className, feedName);
 			while (!queue.isEmpty() || traceReader.hasEvent()) {
@@ -81,10 +91,6 @@ public abstract class BaseRuntime implements Runtime {
 		} catch (Exception e) {
 			logError(e);
 			return TerminationResult.INTERNAL_ERROR;
-		} finally {
-			traceWriter.close();
-			traceReader.close();
-			logger.close();
 		}
 	}
 
@@ -94,7 +100,8 @@ public abstract class BaseRuntime implements Runtime {
 			InvocationTargetException {
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
-		ClassWithState classInstance = (ClassWithState) constructor.newInstance(this);
+		ClassWithState classInstance = (ClassWithState) constructor
+				.newInstance(this);
 		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
@@ -121,7 +128,8 @@ public abstract class BaseRuntime implements Runtime {
 	}
 
 	@Override
-	public void logTransition(String eventName, String messageName, String source, String target) {
+	public void logTransition(String eventName, String messageName,
+			String source, String target) {
 		logger.transition(eventName, messageName, source, target);
 	}
 
@@ -136,6 +144,13 @@ public abstract class BaseRuntime implements Runtime {
 	public static void logError(Throwable cause) {
 		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception", //$NON-NLS-1$
 				cause);
+	}
+
+	@Override
+	public void close() throws Exception {
+		logger.close();
+		traceWriter.close();
+		traceReader.close();
 	}
 
 }

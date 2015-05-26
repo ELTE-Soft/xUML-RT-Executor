@@ -19,6 +19,8 @@ public class Messages extends NLS {
 	public static String Dialogs_missing_di_notification_text;
 	public static String Dialogs_resources_missing_caption;
 	public static String Dialogs_resources_missing_text;
+	public static String Dialogs_trace_file_missing_caption;
+	public static String Dialogs_trace_file_missing_text;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file_location;
 	public static String ExecutableModelProjectWizard_create_new_project_description;
@@ -45,9 +47,6 @@ public class Messages extends NLS {
 	public static String LaunchConfigMainTab_model_not_in_execution_project_caption;
 	public static String LaunchConfigMainTab_model_not_in_execution_project_text;
 	public static String LaunchConfigMainTab_uml_extension_filter;
-	public static String LaunchConfigTracingLoggingTab_animation_checkbox_label;
-	public static String LaunchConfigTracingLoggingTab_animation_group_caption;
-	public static String LaunchConfigTracingLoggingTab_trace_note_label;
 	public static String LaunchConfigurationMainTab_launch_config_main_tab_caption;
 	public static String LaunchConfigurationMainTab_select_class_button_text;
 	public static String LaunchConfigurationMainTab_select_class_dialog_title;
@@ -63,9 +62,6 @@ public class Messages extends NLS {
 	public static String LaunchConfigurationMainTab_select_model_tooltip;
 	public static String LaunchConfigurationTracingLoggingTab_enable_logging_label;
 	public static String LaunchConfigurationTracingLoggingTab_enable_tracing_label;
-	public static String LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_button_text;
-	public static String LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_dialog_title;
-	public static String LaunchConfigurationTracingLoggingTab_folder_for_tracefiles_label;
 	public static String LaunchConfigurationTracingLoggingTab_logging_group_caption;
 	public static String LaunchConfigurationTracingLoggingTab_trace_replay_button_label;
 	public static String LaunchConfigurationTracingLoggingTab_trace_replay_folder_dialog_title;

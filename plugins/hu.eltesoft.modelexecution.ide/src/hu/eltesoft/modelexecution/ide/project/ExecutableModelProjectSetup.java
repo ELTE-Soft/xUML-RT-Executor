@@ -62,6 +62,7 @@ public class ExecutableModelProjectSetup {
 		IJavaProject javaProject = JavaCore.create(project);
 
 		createBinFolders(project, javaProject);
+		createTracesFolder(project, javaProject);
 		createGenSourceFolder(project,
 				ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
 		createLoggingPropertiesFile(project);
@@ -111,6 +112,11 @@ public class ExecutableModelProjectSetup {
 		smapFolder.setTeamPrivateMember(true);
 		smapFolder.setDerived(true, null);
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
+	}
+
+	private static void createTracesFolder(IProject project,
+			IJavaProject javaProject) {
+		createFolder(project, ExecutableModelProperties.getTraceFilesPath(project));
 	}
 
 	private static void createGenSourceFolder(IProject project, String name)

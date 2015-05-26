@@ -4,8 +4,8 @@ import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 
 /**
- * The class responsible for running the modeled system, and an access point
- * for features used from the system, like event queues or logging.
+ * The class responsible for running the modeled system, and an access point for
+ * features used from the system, like event queues or logging.
  */
 public interface Runtime {
 
@@ -21,7 +21,7 @@ public interface Runtime {
 			String target);
 
 	void addEventToQueue(ClassWithState target, Message message);
-	
+
 	public abstract TerminationResult run(String className, String feedName)
 			throws Exception;
 

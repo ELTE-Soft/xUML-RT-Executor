@@ -1,11 +1,13 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
+import java.io.IOException;
+
 /**
  * The tracer can store dispatched events. The events can be replayed by a
  * {@linkplain TraceReader}.
  */
 public interface Tracer extends AutoCloseable {
 
-	void traceEvent(TargetedMessage targetedEvent);
+	void traceEvent(TargetedMessage targetedEvent) throws IOException;
 
 }

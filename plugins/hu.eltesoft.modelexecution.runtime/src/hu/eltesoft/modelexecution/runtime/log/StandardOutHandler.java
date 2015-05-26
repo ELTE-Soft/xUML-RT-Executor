@@ -15,7 +15,7 @@ import java.util.logging.StreamHandler;
  * messages to the standard error stream.
  * </p>
  * 
- * <b>Configuration:</b> By default each <tt>ConsoleHandler</tt> is initialized
+ * <b>Configuration:</b> By default each <tt>StandardOutHandler</tt> is initialized
  * using the following <tt>LogManager</tt> configuration properties where
  * {@code <handler-name>} refers to the fully-qualified class name of the
  * handler. If properties are not defined (or have invalid values) then the
@@ -30,6 +30,8 @@ import java.util.logging.StreamHandler;
  * <li>&lt;handler-name&gt;.encoding the name of the character set encoding to
  * use (defaults to the default platform encoding).</li>
  * </ul>
+ * 
+ * Auto-flushes the output. 
  */
 public class StandardOutHandler extends Handler {
 
@@ -116,6 +118,7 @@ public class StandardOutHandler extends Handler {
 		} else {
 			out.publish(record);
 		}
+		flush();
 	}
 
 	@Override
