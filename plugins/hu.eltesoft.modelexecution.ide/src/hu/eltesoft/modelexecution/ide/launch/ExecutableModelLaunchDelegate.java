@@ -2,9 +2,11 @@ package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,6 +19,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -35,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
+	public static final String PROC_ATTR_TO_REFRESH = "hu.eltesoft.modelexecution.processAttributes.toRefresh";  //$NON-NLS-1$
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
 	private static final String MODEL_FILE_EXTENSION = "uml";
 	private static final String DIAGRAM_FILE_EXTENSION = "di";
@@ -68,14 +72,33 @@ public class ExecutableModelLaunchDelegate implements
 			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
 			ILaunchConfiguration javaConfigs) throws CoreException {
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			backgroundJavaLauncher.launch(javaConfigs, mode, launch,
-					monitor);
-			Display.getDefault().asyncExec(
-					() -> launchMokaDelegate(mokaConfigs, mode, launch,
-							monitor));
+			backgroundJavaLauncher.launch(javaConfigs, mode, launch, monitor);
+			Display.getDefault()
+					.asyncExec(
+							() -> launchMokaDelegate(mokaConfigs, mode, launch,
+									monitor));
 		} else {
 			javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		}
+		setFoldersToRefresh(launch, javaConfigs);
+	}
+
+	protected void setFoldersToRefresh(ILaunch launch,
+			ILaunchConfiguration javaConfigs) throws CoreException {
+		for (IProcess process : launch.getProcesses()) {
+			IProject project = getProject(javaConfigs);
+			String path = ExecutableModelProperties.getTraceFilesPath(project);
+			process.setAttribute(PROC_ATTR_TO_REFRESH, project.getFullPath()
+					+ ";" + project.findMember(path).getFullPath());
+		}
+	}
+
+	private IProject getProject(ILaunchConfiguration launchConfig)
+			throws CoreException {
+		String projectName = launchConfig.getAttribute(
+				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
+		return (IProject) ResourcesPlugin.getWorkspace().getRoot()
+				.findMember(projectName);
 	}
 
 	private void launchMokaDelegate(ILaunchConfiguration configuration,

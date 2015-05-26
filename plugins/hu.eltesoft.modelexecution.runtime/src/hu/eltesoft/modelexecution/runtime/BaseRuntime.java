@@ -3,7 +3,10 @@ package hu.eltesoft.modelexecution.runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
+import hu.eltesoft.modelexecution.runtime.log.NoLogger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
+import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
+import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
@@ -19,7 +22,7 @@ import java.util.Queue;
  * Executes the model using logging and tracing. Receives the name of the class
  * and the name of a static function to execute.
  */
-public abstract class BaseRuntime implements Runtime {
+public class BaseRuntime implements Runtime, AutoCloseable {
 
 	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
 	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
@@ -32,30 +35,34 @@ public abstract class BaseRuntime implements Runtime {
 
 	private Queue<TargetedMessage> queue = new LinkedList<>();
 
-	private Tracer traceWriter;
-	private TraceReader traceReader;
-	private Logger logger;
+	private Tracer traceWriter = new NoTracer();
+	private TraceReader traceReader = new NoTraceReader();
+	private Logger logger = new NoLogger();
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
 
-	public BaseRuntime(Tracer tracer, TraceReader traceReader, Logger logger) {
-		this(BaseRuntime.class.getClassLoader(), tracer, traceReader, logger);
-	}
-
-	public BaseRuntime(ClassLoader classLoader, Tracer tracer,
-			TraceReader traceReader, Logger logger) {
+	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
-		this.traceWriter = tracer;
-		this.traceReader = traceReader;
-		this.logger = logger;
 	}
-
+	
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
 		queue.add(targetedEvent);
 		logger.messageQueued(target, message);
+	}
+
+	public void setTraceWriter(Tracer traceWriter) {
+		this.traceWriter = traceWriter;
+	}
+
+	public void setTraceReader(TraceReader traceReader) {
+		this.traceReader = traceReader;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
 	}
 
 	/**
@@ -137,6 +144,13 @@ public abstract class BaseRuntime implements Runtime {
 	public static void logError(Throwable cause) {
 		errorLogger.log(java.util.logging.Level.SEVERE, "Unexpected exception", //$NON-NLS-1$
 				cause);
+	}
+
+	@Override
+	public void close() throws Exception {
+		logger.close();
+		traceWriter.close();
+		traceReader.close();
 	}
 
 }

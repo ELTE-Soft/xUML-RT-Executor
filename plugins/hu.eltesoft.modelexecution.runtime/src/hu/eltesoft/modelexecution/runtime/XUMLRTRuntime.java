@@ -1,11 +1,6 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
-import hu.eltesoft.modelexecution.runtime.log.NoLogger;
-import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
-import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
-import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
@@ -20,38 +15,51 @@ import org.json.JSONException;
  * BaseRuntime with main. Parses tracing and logging flags.
  */
 public class XUMLRTRuntime extends BaseRuntime {
+	public XUMLRTRuntime(ClassLoader classLoader) {
+		super(classLoader);
+	}
+
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
-	private static final String USAGE = "java Q1Runtime class-name feed-function-name "
-			+ "[-write-trace output-folder] [-read-trace input-folder] [-log]";
+	private static final String USAGE = "java " + XUMLRTRuntime.class.getName()
+			+ " class-name feed-function-name " + "[" + OPTION_WRITE_TRACE
+			+ " output-folder] [" + OPTION_READ_TRACE + "input-folder] ["
+			+ OPTION_LOG + "]";
 
-	public XUMLRTRuntime(ClassLoader classLoader, Tracer tracer,
-			TraceReader traceReader, Logger logger) {
-		super(classLoader, tracer, traceReader, logger);
+	public static void main(String[] args) {
+
+		TerminationResult result = null;
+
+		try (XUMLRTRuntime runtime = new XUMLRTRuntime(
+				XUMLRTRuntime.class.getClassLoader())) {
+			if (args.length < 2) {
+				System.err.println("Not enough parameters. Usage: \n" + USAGE);
+			}
+			String clsName = args[0];
+			String feedName = args[1];
+			applyCommandLineArguments(args, runtime);
+			result = runtime.run(clsName, feedName);
+		} catch (Throwable e) {
+			logError("Error while running model execution", e);
+			result = TerminationResult.INTERNAL_ERROR;
+		} finally {
+			System.exit(result.getExitCode());
+		}
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		if (args.length < 2) {
-			System.err.println("Not enough parameters. Usage: \n" + USAGE);
-		}
-		String clsName = args[0];
-		String feedName = args[1];
-		Tracer tracer = null;
-		TraceReader traceReader = null;
-		Logger logger = null;
-
+	protected static void applyCommandLineArguments(String[] args,
+			XUMLRTRuntime runtime) throws Exception {
 		for (int i = 2; i < args.length; ++i) {
 			switch (args[i]) {
 			case OPTION_WRITE_TRACE:
-				tracer = getDefaultTraceWriter(args[++i]);
+				runtime.setTraceWriter(getDefaultTraceWriter(args[++i]));
 				break;
 			case OPTION_READ_TRACE:
-				traceReader = getDefaultTraceReplayer(args[++i]);
+				runtime.setTraceReader(getDefaultTraceReplayer(args[++i]));
 				break;
 			case OPTION_LOG:
-				logger = new MinimalLogger();
+				runtime.setLogger(new MinimalLogger());
 				break;
 			default:
 				System.err.println("Could not parse argument " + args[i]
@@ -59,35 +67,14 @@ public class XUMLRTRuntime extends BaseRuntime {
 				break;
 			}
 		}
-		if (tracer == null) {
-			tracer = new NoTracer();
-		}
-		if (traceReader == null) {
-			traceReader = new NoTraceReader();
-		}
-		if (logger == null) {
-			logger = new NoLogger();
-		}
-
-		TerminationResult result = new XUMLRTRuntime(
-				XUMLRTRuntime.class.getClassLoader(), tracer, traceReader,
-				logger).run(clsName, feedName);
-
-		tracer.close();
-		traceReader.close();
-		logger.close();
-		System.exit(result.getExitCode());
 	}
 
 	/**
 	 * Constructs a tracer that actually creates trace files.
 	 */
-	public static Tracer getDefaultTraceWriter(String traceParameter) {
-		try {
-			return new TraceWriter(traceParameter, defaultFileSystem());
-		} catch (IOException e) {
-			throw new RuntimeException("trace writer cannot be initialized", e);
-		}
+	public static Tracer getDefaultTraceWriter(String traceParameter)
+			throws IOException {
+		return new TraceWriter(traceParameter, defaultFileSystem());
 	}
 
 	/**
