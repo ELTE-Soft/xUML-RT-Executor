@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ReferencedImpl extends MinimalEObjectImpl.Container implements Referenced {
+public abstract class ReferencedImpl extends MinimalEObjectImpl.Container implements Referenced {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

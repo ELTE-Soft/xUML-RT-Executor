@@ -10,7 +10,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="reference" lowerBound="1"
         eType="#//NamedReference"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Referenced" eSuperTypes="#//TranslationObject">
+  <eClassifiers xsi:type="ecore:EClass" name="Referenced" abstract="true" eSuperTypes="#//TranslationObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="reference" lowerBound="1"
         eType="#//Reference"/>
   </eClassifiers>

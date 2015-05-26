@@ -59,7 +59,6 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case BasePackage.REFERENCED: return createReferenced();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -97,16 +96,6 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Referenced createReferenced() {
-		ReferencedImpl referenced = new ReferencedImpl();
-		return referenced;
 	}
 
 	/**
