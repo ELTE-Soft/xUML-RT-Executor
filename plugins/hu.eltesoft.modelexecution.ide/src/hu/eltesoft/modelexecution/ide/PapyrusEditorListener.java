@@ -14,12 +14,12 @@ public class PapyrusEditorListener extends ResourceSetListenerImpl {
 	@Override
 	public void setTarget(TransactionalEditingDomain domain) {
 		super.setTarget(domain);
-		EMFResourceRegistry.editingDomainLoaded(domain);
+		EMFResourceRegistry.INSTANCE.editingDomainLoaded(domain);
 	}
 
 	@Override
 	public void unsetTarget(TransactionalEditingDomain domain) {
-		EMFResourceRegistry.editingDomainUnloaded(domain);
+		EMFResourceRegistry.INSTANCE.editingDomainUnloaded(domain);
 		super.unsetTarget(domain);
 	}
 }

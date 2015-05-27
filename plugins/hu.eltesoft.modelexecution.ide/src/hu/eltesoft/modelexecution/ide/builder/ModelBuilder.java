@@ -83,13 +83,13 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					EMFResourceRegistry.runTranslatorFor(resource,
+					EMFResourceRegistry.INSTANCE.runTranslatorFor(resource,
 							t -> queue.addAll(t.fullBuild()));
 					return true;
 				}
 			});
 
-			queue.forEach(task -> task.perform(builderFileManager));
+			performAllTasks(queue);
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while rebuilding resources", e); //$NON-NLS-1$
 		}
@@ -110,18 +110,22 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED
 							|| delta.getKind() == IResourceDelta.CHANGED) {
-						EMFResourceRegistry.runTranslatorFor(resource,
+						EMFResourceRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.addAll(t.incrementalBuild()));
 					} else if (delta.getKind() == IResourceDelta.REMOVED) {
-						EMFResourceRegistry.forgetResource(resource);
+						EMFResourceRegistry.INSTANCE.forgetResource(resource);
 					}
 					return true;
 				}
 			});
 
-			queue.forEach(task -> task.perform(builderFileManager));
+			performAllTasks(queue);
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while incremental build.", e); //$NON-NLS-1$
 		}
+	}
+
+	private void performAllTasks(final List<FileUpdateTask> queue) {
+		queue.forEach(task -> task.perform(builderFileManager));
 	}
 }
