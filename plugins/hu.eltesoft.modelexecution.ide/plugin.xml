@@ -141,4 +141,11 @@
             id="hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider">
       </classpathProvider>
    </extension>
+   <extension
+         point="org.eclipse.jdt.core.compilationParticipant">
+      <compilationParticipant
+            class="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant"
+            id="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant">
+      </compilationParticipant>
+   </extension>
 </plugin>
