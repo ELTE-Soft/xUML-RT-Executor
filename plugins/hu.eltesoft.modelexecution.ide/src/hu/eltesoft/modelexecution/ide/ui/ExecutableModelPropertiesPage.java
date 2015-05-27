@@ -94,16 +94,14 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 	private void generatedTracesFolderControl(IEclipsePreferences preferences,
 			Composite properties) {
 		Group generatedTracesFolderGroup = new Group(properties, SWT.NONE);
-		generatedTracesFolderGroup
-				.setText("Folder for generated trace files");
+		generatedTracesFolderGroup.setText("Folder for generated trace files");
 		generatedTracesFolderGroup.setLayoutData(gridDataFillBoth);
 		generatedTracesFolderGroup.setLayout(new GridLayout(1, false));
 
 		generatedTracesFolderSelector = new ResourceSelector(
 				generatedTracesFolderGroup,
-				ResourceSelector.ConfigBase.WORKSPACE_BASED,
-				"Folder for generated trace files",
-				"Select",
+				ResourceSelector.ConfigBase.PROJECT_BASED,
+				"Folder for generated trace files", "Select",
 				"Select folder for generated trace files");
 		String tracesPath = ExecutableModelProperties
 				.getTraceFilesPath(getProject());
@@ -210,6 +208,10 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 				ClasspathUtils.removeClasspathEntry(
 						JavaCore.create(getProject()),
 						getProject().findMember(oldSrcGenPath).getFullPath());
+				ClasspathUtils.addClasspathEntry(
+						JavaCore.create(getProject()),
+						JavaCore.newSourceEntry(getProject().findMember(
+								newSrcGenPath).getFullPath()));
 			} catch (JavaModelException e) {
 				IdePlugin.logError(
 						"Error while removing old source dir classpath entry.", //$NON-NLS-1$

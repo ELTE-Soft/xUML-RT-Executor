@@ -60,6 +60,7 @@ public class ModelBuilderListenerInterface {
 	 */
 	public void hookupChangeListeners() {
 		try {
+			translators.clear();
 			if (!project.isOpen()) {
 				return;
 			}
