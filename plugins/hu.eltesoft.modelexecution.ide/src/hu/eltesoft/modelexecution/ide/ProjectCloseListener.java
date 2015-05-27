@@ -17,7 +17,8 @@ public class ProjectCloseListener implements IResourceChangeListener {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResourceChangeListener listener = new ProjectCloseListener();
 		workspace.addResourceChangeListener(listener,
-				IResourceChangeEvent.PRE_CLOSE);
+				IResourceChangeEvent.PRE_CLOSE
+						| IResourceChangeEvent.PRE_DELETE);
 	}
 
 	ProjectCloseListener() {
@@ -26,7 +27,7 @@ public class ProjectCloseListener implements IResourceChangeListener {
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (!(event.getResource() instanceof IProject)) {
-			// assume that only projects can be closed
+			// watch only for projects
 			return;
 		}
 
