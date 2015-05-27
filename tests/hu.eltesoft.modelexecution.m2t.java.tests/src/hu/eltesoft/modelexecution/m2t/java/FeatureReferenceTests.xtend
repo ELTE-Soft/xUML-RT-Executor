@@ -1,12 +1,32 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import org.eclipse.uml2.uml.Class
+import org.junit.Before
 import org.junit.Test
 
 class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 
+	static val UML_TEST_MODEL_PATH = "resources/model.uml";
+
+	static val X_ID = "_WJfJQARSEeW7b7s8CAsnqQ"
+	static val Y_ID = "_gh8K0ARSEeW7b7s8CAsnqQ"
+	static val Z_ID = "_g54JsARSEeW7b7s8CAsnqQ"
+
+	var Class aClass
+
+	new() {
+		super(UML_TEST_MODEL_PATH)
+	}
+
+	@Before
+	override setUp() {
+		super.setUp()
+		aClass = namedChild(model, Class, "A")
+	}
+
 	@Test
 	def testCompilingThisExpressionStatement() {
-		assertCompilesTo("this;",
+		assertCompilesTo(aClass, "this;",
 			'''
 				«BehaviorBodyGenerator.CONTEXT_NAME»;
 			''')
@@ -14,34 +34,34 @@ class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testCompilingNameExpressionStatement() {
-		assertCompilesTo("x;",
+		assertCompilesTo(aClass, "x;",
 			'''x;
 				''')
 	}
 
 	@Test
 	def testCompilingFeatureCallOnExplicitThis() {
-		assertCompilesTo("this.x();",
+		assertCompilesTo(aClass, "this.x();",
 			'''
-				«BehaviorBodyGenerator.CONTEXT_NAME».x();
+				«BehaviorBodyGenerator.CONTEXT_NAME».«X_ID»();
 			''')
 	}
 
 	@Test
 	def testCompilingFeatureCallOnImplicitThis() {
-		assertCompilesTo("x();",
+		assertCompilesTo(aClass, "x();",
 			'''
-				«BehaviorBodyGenerator.CONTEXT_NAME».x();
+				«BehaviorBodyGenerator.CONTEXT_NAME».«X_ID»();
 			''')
 	}
 
 	@Test
 	def testCompilingMultipleStatements() {
-		assertCompilesTo(" x;  y; z;  ",
+		assertCompilesTo(aClass, " this.x();  y(); z();  ",
 			'''
-				x;
-				y;
-				z;
+				«BehaviorBodyGenerator.CONTEXT_NAME».«X_ID»();
+				«BehaviorBodyGenerator.CONTEXT_NAME».«Y_ID»();
+				«BehaviorBodyGenerator.CONTEXT_NAME».«Z_ID»();
 			''')
 	}
 }

@@ -40,6 +40,7 @@ class ModelReferenceDecorator {
 	def dispatch void visit(Block block) {
 		for (annotated : block.statement) {
 			visit(annotated.statement)
+			currentContext = context;
 		}
 	}
 
