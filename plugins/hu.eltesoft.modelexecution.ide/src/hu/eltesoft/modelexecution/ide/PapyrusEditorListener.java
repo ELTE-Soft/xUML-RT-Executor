@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
-import hu.eltesoft.modelexecution.ide.builder.ModelBuilderListenerInterface;
+import hu.eltesoft.modelexecution.ide.builder.EMFResourceRegistry;
 
 import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -12,21 +11,15 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
  */
 public class PapyrusEditorListener extends ResourceSetListenerImpl {
 
-	public static final String EDITING_DOMAIN = "hu.eltesoft.modelexecution.editingDomain"; //$NON-NLS-1$
-
 	@Override
 	public void setTarget(TransactionalEditingDomain domain) {
-		TransactionalEditingDomain.Registry.INSTANCE
-				.add(EDITING_DOMAIN, domain);
-		ModelBuilder.initializeBuilders();
-		ModelBuilderListenerInterface.hookupAllChangeListeners();
+		super.setTarget(domain);
+		EMFResourceRegistry.editingDomainLoaded(domain);
 	}
 
-	/**
-	 * Gets the active editor.
-	 */
-	public static TransactionalEditingDomain getDomain() {
-		return TransactionalEditingDomain.Registry.INSTANCE
-				.getEditingDomain(PapyrusEditorListener.EDITING_DOMAIN);
+	@Override
+	public void unsetTarget(TransactionalEditingDomain domain) {
+		EMFResourceRegistry.editingDomainUnloaded(domain);
+		super.unsetTarget(domain);
 	}
 }

@@ -23,7 +23,7 @@ public interface FileUpdateTask {
 	/**
 	 * Performs the update this task was created for.
 	 */
-	void perform();
+	void perform(TextChangesListener listener);
 
 	@Override
 	int hashCode();

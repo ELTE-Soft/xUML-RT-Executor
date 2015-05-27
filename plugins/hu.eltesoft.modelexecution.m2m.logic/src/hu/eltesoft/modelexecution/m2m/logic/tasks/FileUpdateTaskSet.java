@@ -1,9 +1,10 @@
 package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A set of {@link FileUpdateTask} instances, which keeps the original iteration
@@ -13,8 +14,8 @@ import java.util.LinkedHashSet;
 @SuppressWarnings("serial")
 public class FileUpdateTaskSet extends LinkedHashSet<FileUpdateTask> {
 
-	public FileUpdateTaskQueue asQueue() {
-		FileUpdateTaskQueue taskQueue = new FileUpdateTaskQueue();
+	public List<FileUpdateTask> asQueue() {
+		List<FileUpdateTask> taskQueue = new LinkedList<FileUpdateTask>();
 		taskQueue.addAll(this);
 		return taskQueue;
 	}

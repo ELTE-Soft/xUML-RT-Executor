@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
@@ -9,9 +8,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatch;
@@ -28,6 +26,8 @@ import hu.eltesoft.modelexecution.uml.incquery.util.OperationProcessor;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionProcessor;
 import hu.eltesoft.modelexecution.uml.incquery.util.RegionOfClassProcessor;
 
+import java.util.function.Consumer;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -35,8 +35,9 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
+public class ClassGenerator extends AbstractGenerator<Class> {
 
 	private static final ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
 
@@ -46,9 +47,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 	private final MethodMatcher methodMatcher;
 	private final ReceptionMatcher receptionMatcher;
 
-	public ClassGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public ClassGenerator(IncQueryEngine engine) throws IncQueryException {
 		clsMatcher = ClsMatcher.on(engine);
 		regionOfClassMatcher = RegionOfClassMatcher.on(engine);
 		operationMatcher = OperationMatcher.on(engine);
@@ -59,7 +58,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 	// generate translation model
 
 	@Override
-	public ClClass generateTranslationModel(Class source)
+	public Pair<String, Template> getTemplate(Class source)
 			throws GenerationException {
 		// new ClClass
 		ClClass root = FACTORY.createClClass();
@@ -80,7 +79,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		receptionMatcher.forEachMatch(source, null, null,
 				getProcessorToSetReceptionsOfRoot(root.getReceptions()));
 
-		return root;
+		return new Pair<>(root.getName(), new ClassTemplate(root));
 	}
 
 	private ClsProcessor getProcessorToSetNameOfRoot(ClClass root) {
@@ -179,16 +178,11 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 		};
 	}
 
-	// generate text
+	// run query directly
 
-	@Override
-	public void generateText(ClClass root) {
-		ClassTemplate template = new ClassTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+	public void runOn(Consumer<Class> task) {
+		clsMatcher.forEachMatch(null, null,
+				match -> task.accept(match.getCls()));
 	}
 
 	// add match update listener
@@ -268,7 +262,7 @@ public class ClassGenerator extends AbstractGenerator<Class, ClClass> {
 						operationListener, false);
 
 			}
-			
+
 			{ // set methodListener
 				methodListener = new IMatchUpdateListener<MethodMatch>() {
 

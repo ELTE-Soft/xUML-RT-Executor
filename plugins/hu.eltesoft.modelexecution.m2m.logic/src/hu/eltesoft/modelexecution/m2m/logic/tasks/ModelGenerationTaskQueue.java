@@ -7,7 +7,6 @@ import java.util.LinkedList;
  */
 @SuppressWarnings("serial")
 public class ModelGenerationTaskQueue extends
-		LinkedList<ModelGenerationTask<?, ?>> implements
+		LinkedList<ModelGenerationTask<?>> implements
 		ModelGenerationTaskCollection {
-
 }

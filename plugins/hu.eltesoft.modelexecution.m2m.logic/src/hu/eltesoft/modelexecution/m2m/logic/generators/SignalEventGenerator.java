@@ -1,14 +1,12 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalEventTemplate;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.uml.incquery.EventMatch;
 import hu.eltesoft.modelexecution.uml.incquery.EventMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalEventMatch;
@@ -16,23 +14,23 @@ import hu.eltesoft.modelexecution.uml.incquery.SignalEventMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.EventProcessor;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalEventProcessor;
 
+import java.util.function.Consumer;
+
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.SignalEvent;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class SignalEventGenerator extends
-		AbstractGenerator<SignalEvent, EvSignalEvent> {
+public class SignalEventGenerator extends AbstractGenerator<SignalEvent> {
 
 	private static final EventFactory FACTORY = EventFactory.eINSTANCE;
 
 	private final EventMatcher eventMatcher;
 	private final SignalEventMatcher signalEventMatcher;
 
-	public SignalEventGenerator(IncQueryEngine engine,
-			TextChangesListener listener) throws IncQueryException {
-		super(listener);
+	public SignalEventGenerator(IncQueryEngine engine) throws IncQueryException {
 		eventMatcher = EventMatcher.on(engine);
 		signalEventMatcher = SignalEventMatcher.on(engine);
 	}
@@ -40,16 +38,16 @@ public class SignalEventGenerator extends
 	// generate translation model
 
 	@Override
-	public EvSignalEvent generateTranslationModel(SignalEvent event)
+	public Pair<String, Template> getTemplate(SignalEvent source)
 			throws GenerationException {
 		// new EvSignalEvent
 		EvSignalEvent root = FACTORY.createEvSignalEvent();
 
 		// name, signal
-		check(eventMatcher.forOneArbitraryMatch(event, null,
+		check(eventMatcher.forOneArbitraryMatch(source, null,
 				getProcessorToSetNameAndSignalOfRoot(root)));
 
-		return root;
+		return new Pair<>(root.getName(), new SignalEventTemplate(root));
 	}
 
 	private EventProcessor getProcessorToSetNameAndSignalOfRoot(
@@ -91,16 +89,11 @@ public class SignalEventGenerator extends
 		};
 	}
 
-	// generate text
+	// run query directly
 
-	@Override
-	public void generateText(EvSignalEvent root) {
-		SignalEventTemplate template = new SignalEventTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+	public void runOn(Consumer<SignalEvent> task) {
+		signalEventMatcher.forEachMatch(null, null,
+				match -> task.accept(match.getEvent()));
 	}
 
 	// add match update listeners
@@ -158,10 +151,12 @@ public class SignalEventGenerator extends
 
 			@Override
 			public boolean revert() {
-				
-				advancedEngine.removeMatchUpdateListener(eventMatcher, eventListener);
-				advancedEngine.removeMatchUpdateListener(signalEventMatcher, signalEventListener);
-				
+
+				advancedEngine.removeMatchUpdateListener(eventMatcher,
+						eventListener);
+				advancedEngine.removeMatchUpdateListener(signalEventMatcher,
+						signalEventListener);
+
 				return true;
 			}
 

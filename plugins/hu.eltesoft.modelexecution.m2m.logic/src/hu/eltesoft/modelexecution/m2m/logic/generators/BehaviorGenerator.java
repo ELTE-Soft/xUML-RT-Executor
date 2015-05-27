@@ -1,14 +1,12 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch;
@@ -19,13 +17,16 @@ import hu.eltesoft.modelexecution.uml.incquery.util.AlfCodeProcessor;
 import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorProcessor;
 import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfBehaviorProcessor;
 
+import java.util.function.Consumer;
+
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
+public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 
 	private static final BehaviorFactory FACTORY = BehaviorFactory.eINSTANCE;
 
@@ -33,9 +34,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 	private final AlfCodeMatcher alfCodeMatcher;
 	private final ContainerClassOfBehaviorMatcher containerClassOfBehaviorMatcher;
 
-	public BehaviorGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public BehaviorGenerator(IncQueryEngine engine) throws IncQueryException {
 		behaviorMatcher = BehaviorMatcher.on(engine);
 		alfCodeMatcher = AlfCodeMatcher.on(engine);
 		containerClassOfBehaviorMatcher = ContainerClassOfBehaviorMatcher
@@ -45,7 +44,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 	// generate translation model
 
 	@Override
-	public BhBehavior generateTranslationModel(Behavior source)
+	public Pair<String, Template> getTemplate(Behavior source)
 			throws GenerationException {
 		// new BhBehavior
 		BhBehavior root = FACTORY.createBhBehavior();
@@ -65,7 +64,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 			root.setAlfCode("{}");
 		}
 
-		return root;
+		return new Pair<>(root.getName(), new BehaviorTemplate(root));
 	}
 
 	private BehaviorProcessor getProcessorToSetNameOfRoot(BhBehavior root) {
@@ -112,16 +111,11 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior, BhBehavior> {
 		};
 	}
 
-	// generate text
+	// run query directly
 
-	@Override
-	public void generateText(BhBehavior root) {
-		BehaviorTemplate template = new BehaviorTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+	public void runOn(Consumer<Behavior> task) {
+		behaviorMatcher.forEachMatch(null, null,
+				match -> task.accept(match.getBehavior()));
 	}
 
 	// add match update listeners

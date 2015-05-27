@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
@@ -12,10 +11,9 @@ import hu.eltesoft.modelexecution.m2m.metamodel.region.RgMessage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatch;
@@ -43,6 +41,7 @@ import hu.eltesoft.modelexecution.uml.incquery.util.TransitionProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -54,8 +53,9 @@ import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
+public class RegionGenerator extends AbstractGenerator<Region> {
 
 	private static final RegionFactory FACTORY = RegionFactory.eINSTANCE;
 
@@ -74,9 +74,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 	 */
 	private ChangeRegistry changeRegistry = null;
 
-	public RegionGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public RegionGenerator(IncQueryEngine engine) throws IncQueryException {
 		regionMatcher = RegionMatcher.on(engine);
 		containerClassOfRegionMatcher = ContainerClassOfRegionMatcher
 				.on(engine);
@@ -101,7 +99,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 	// generate translation model
 
 	@Override
-	public RgRegion generateTranslationModel(Region source)
+	public Pair<String, Template> getTemplate(Region source)
 			throws GenerationException {
 
 		// new RgRegion
@@ -118,7 +116,7 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		// initialPseudoState, states
 		new StatesGenerator(source, root).generate();
 
-		return root;
+		return new Pair<>(root.getName(), new RegionTemplate(root));
 	}
 
 	private RegionProcessor getProcessorToSetNameOfRoot(RgRegion root) {
@@ -396,16 +394,11 @@ public class RegionGenerator extends AbstractGenerator<Region, RgRegion> {
 		}
 	}
 
-	// generate text
+	// run query directly
 
-	@Override
-	public void generateText(RgRegion root) {
-		RegionTemplate template = new RegionTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getName(), output, symbols);
+	public void runOn(Consumer<Region> task) {
+		regionMatcher.forEachMatch(null, null,
+				match -> task.accept(match.getRegion()));
 	}
 
 	// add match update listeners
