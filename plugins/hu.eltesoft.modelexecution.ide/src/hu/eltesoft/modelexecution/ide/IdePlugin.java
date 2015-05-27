@@ -35,5 +35,7 @@ public class IdePlugin extends AbstractUIPlugin implements IStartup {
 	public void earlyStartup() {
 		IdePlugin.log = Platform.getLog(getBundle());
 		logInfo(Messages.IdePlugin_logger_start_msg);
+
+		ProjectCloseListener.setUp();
 	}
 }

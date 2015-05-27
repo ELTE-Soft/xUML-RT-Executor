@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
  * The model builder triggers the source code generation from the UML model. It
@@ -71,11 +72,22 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
+	 * Removes all generated source files.
+	 */
+	@Override
+	protected void clean(IProgressMonitor monitor) throws CoreException {
+		// TODO: remove generated classes from bin and bin-debug too?
+		builderFileManager.cleanUp();
+		builderFileManager.refreshFolder();
+	}
+
+	/**
 	 * Removes and regenerates generated files.
 	 */
 	private void fullBuild() {
-		builderFileManager.cleanUp();
 		try {
+			clean(new NullProgressMonitor());
+
 			final List<FileUpdateTask> queue = Collections
 					.synchronizedList(new LinkedList<>());
 

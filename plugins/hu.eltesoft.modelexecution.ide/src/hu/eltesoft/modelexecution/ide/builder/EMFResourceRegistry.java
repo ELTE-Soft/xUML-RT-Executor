@@ -140,7 +140,7 @@ public class EMFResourceRegistry {
 		try {
 			domain.runExclusive(() -> task.accept(translator));
 		} catch (InterruptedException e) {
-			IdePlugin.logError("Error while rebuilding resource", e);
+			IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 		} catch (NullPointerException e) {
 			// the editor had been closed while the task runs (the editor
 			// and the transaction is disposed)
@@ -175,7 +175,7 @@ public class EMFResourceRegistry {
 				ResourceSet resourceSet = new ResourceSetImpl();
 				loadedModel = resourceSet.getResource(uri, true);
 			} catch (Exception e) {
-				IdePlugin.logError("Error while rebuilding resource", e);
+				IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 				return null;
 			}
 		}
