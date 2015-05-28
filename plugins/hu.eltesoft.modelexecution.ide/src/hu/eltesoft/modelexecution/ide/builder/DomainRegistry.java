@@ -29,12 +29,18 @@ public class DomainRegistry {
 
 	public synchronized void editingDomainLoaded(
 			TransactionalEditingDomain domain) {
-		DomainResourceListener listener = new DomainResourceListener(domain);
-		listeners.put(domain, listener);
-		domain.addResourceSetListener(listener);
 		ResourceSet resourceSet = domain.getResourceSet();
 		domains.put(resourceSet, domain);
-		TranslatorRegistry.INSTANCE.resourceSetLoaded(resourceSet);
+
+		// load events will not be fired for pre-loaded resources which are
+		// already in the set
+		for (Resource resource : resourceSet.getResources()) {
+			TranslatorRegistry.INSTANCE.resourceLoaded(resource);
+		}
+
+		DomainResourceListener listener = new DomainResourceListener();
+		listeners.put(domain, listener);
+		domain.addResourceSetListener(listener);
 	}
 
 	public synchronized void editingDomainUnloaded(
@@ -43,7 +49,6 @@ public class DomainRegistry {
 		domain.removeResourceSetListener(listener);
 		ResourceSet resourceSet = domain.getResourceSet();
 		domains.remove(resourceSet);
-		TranslatorRegistry.INSTANCE.resourceSetUnloaded(resourceSet);
 	}
 
 	public synchronized TransactionalEditingDomain getDomain(
@@ -51,13 +56,10 @@ public class DomainRegistry {
 		return domains.get(resourceSet);
 	}
 
-	private class DomainResourceListener extends ResourceSetListenerImpl {
+	private static class DomainResourceListener extends ResourceSetListenerImpl {
 
-		private final ResourceSet resourceSet;
-
-		public DomainResourceListener(TransactionalEditingDomain domain) {
+		public DomainResourceListener() {
 			super(filter);
-			this.resourceSet = domain.getResourceSet();
 		}
 
 		@Override
@@ -69,13 +71,10 @@ public class DomainRegistry {
 
 				Resource resource = (Resource) notification.getNotifier();
 				if (notification.getNewBooleanValue()) {
-					TranslatorRegistry.INSTANCE.resourceLoaded(resourceSet,
-							resource);
+					TranslatorRegistry.INSTANCE.resourceLoaded(resource);
 				} else {
-					TranslatorRegistry.INSTANCE.resourceUnloaded(resourceSet,
-							resource);
+					TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
 				}
-
 			}
 		}
 	}

@@ -125,7 +125,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.addAll(t.incrementalBuild()));
 					} else if (delta.getKind() == IResourceDelta.REMOVED) {
-						TranslatorRegistry.INSTANCE.forgetResource(resource);
+						TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
 					}
 					return true;
 				}

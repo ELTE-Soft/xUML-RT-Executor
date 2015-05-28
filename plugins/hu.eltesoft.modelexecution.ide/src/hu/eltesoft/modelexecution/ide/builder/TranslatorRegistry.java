@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
@@ -19,7 +18,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 /**
- * Holds translator instances for IResources. 
+ * Holds translator instances for IResources.
  */
 public class TranslatorRegistry {
 
@@ -27,68 +26,46 @@ public class TranslatorRegistry {
 
 	public static final TranslatorRegistry INSTANCE = new TranslatorRegistry();
 
-	private final Map<ResourceSet, Map<URI, Resource>> resources = new HashMap<>();
+	private final Map<URI, Resource> resources = new HashMap<>();
 	private final Map<URI, Translator> translators = new HashMap<>();
 
 	protected TranslatorRegistry() {
 	}
 
-	public synchronized void resourceSetLoaded(ResourceSet resourceSet) {
-		Map<URI, Resource> m = resources.get(resourceSet);
-		if (null == m) {
-			m = new HashMap<>();
-			resources.put(resourceSet, m);
+	public synchronized void resourceLoaded(Resource resource) {
+		if (!isUMLResource(resource)) {
+			return;
 		}
 
-		for (Resource resource : resourceSet.getResources()) {
-			if (!isUMLResource(resource)) {
-				continue;
-			}
+		URI uri = resource.getURI();
+		resources.put(uri, resource);
+		Translator t = translatorFor(uri, Translator::createIncremental);
+		t.toIncremental(resource);
+	}
 
-			URI uri = resource.getURI();
-			m.put(uri, resource);
-
-			Translator translator = translatorFor(uri,
-					Translator::createIncremental);
-			translator.toIncremental(resource);
+	public synchronized void resourceUnloaded(Resource resource) {
+		if (!isUMLResource(resource)) {
+			return;
 		}
-	}
 
-	public synchronized void resourceSetUnloaded(ResourceSet resourceSet) {
-		resources.remove(resourceSet);
-	}
-
-	public synchronized void resourceLoaded(ResourceSet resourceSet,
-			Resource resource) {
 		URI uri = resource.getURI();
-		// m should not be null as the domain were loaded before the
-		// resource itself
-		Map<URI, Resource> m = resources.get(resourceSet);
-		m.put(uri, resource);
-	}
-
-	public synchronized void resourceUnloaded(ResourceSet resourceSet,
-			Resource resource) {
-		URI uri = resource.getURI();
-		// m should not be null as the domain will be unloaded after the
-		// resource itself
-		Map<URI, Resource> m = resources.get(resourceSet);
 		Translator translator = translators.get(uri);
 		if (null != translator) {
 			translator.dispose();
 			translators.remove(uri);
 		}
-		m.remove(uri);
+		resources.remove(uri);
 	}
 
-	public synchronized void forgetResources(IProject project) {
+	public synchronized void resourceUnloaded(IResource resource) {
 		try {
-			project.accept(new IResourceVisitor() {
+			resource.accept(new IResourceVisitor() {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					if (isUMLResource(resource)) {
-						forgetResource(resource);
+					Resource model = get(resource);
+					if (null != model) {
+						resourceUnloaded(model);
 					}
 					return true;
 				}
@@ -96,10 +73,6 @@ public class TranslatorRegistry {
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while cleaning up project resources", e); //$NON-NLS-1$
 		}
-	}
-
-	public synchronized void forgetResource(IResource file) {
-		translators.remove(fileToURI(file));
 	}
 
 	public void runTranslatorFor(IResource file, Consumer<Translator> task) {
@@ -158,7 +131,7 @@ public class TranslatorRegistry {
 	}
 
 	private Resource loadModelOnDemand(URI uri) {
-		Resource loadedModel = get(uri);
+		Resource loadedModel = resources.get(uri);
 		if (null == loadedModel) {
 			try {
 				ResourceSet resourceSet = new ResourceSetImpl();
@@ -172,17 +145,7 @@ public class TranslatorRegistry {
 	}
 
 	private Resource get(IResource file) {
-		return get(fileToURI(file));
-	}
-
-	private Resource get(URI uri) {
-		for (Map<URI, Resource> m : resources.values()) {
-			Resource resource = m.get(uri);
-			if (null != resource) {
-				return resource;
-			}
-		}
-		return null;
+		return resources.get(fileToURI(file));
 	}
 
 	private URI fileToURI(IResource file) {
