@@ -27,10 +27,10 @@ public class NamedReference extends Reference {
 	/**
 	 * Converts a UUID to a valid Java identifier.
 	 */
-	private static String uuidToIdentifier(String identifier) {
+	private static String uuidToIdentifier(String uuid) {
 		// The fragment is a generated UUID. As hyphens are not valid in Java
 		// identifiers, they are replaced by dollar signs.
-		return URI.createURI(identifier).fragment().replace('-', '$');
+		return URI.createURI(uuid).fragment().replace('-', '$');
 	}
 
 	private final String originalName;

@@ -35,6 +35,7 @@ import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Reque
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaThread;
+import org.eclipse.papyrus.moka.debug.MokaVariable;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import org.eclipse.uml2.uml.NamedElement;
@@ -154,7 +155,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	/**
 	 * The breakpoint is set on the related file. It is assumed that the file is
 	 * already loaded into the virtual machine.
-	 * 
+	 *
 	 * @param modelElement
 	 */
 	private void addVMBreakpoint(EObject modelElement) {
@@ -196,7 +197,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	/**
 	 * Suspends the current thread if there was a user-defined breakpoint here
 	 * or a previous suspension request was waiting for the next JDI breakpoint.
-	 * 
+	 *
 	 * @param modelElement
 	 *            the current element under the breakpoint
 	 * @param hasBreak
@@ -217,7 +218,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	/**
 	 * Marks the thread and the debug target as suspended.
-	 * 
+	 *
 	 * @param modelElement
 	 *            the current element under the breakpoint (currently only a
 	 *            state or transition)
@@ -307,12 +308,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public IStackFrame[] getStackFrames(IThread thread) {
-		return new IStackFrame[0];
+		return new XUmlRtStackFrame[0];
 	}
 
 	@Override
 	public IVariable[] getVariables(IDebugElement stackFrameOrValue) {
-		return new IVariable[0];
+		return new MokaVariable[0];
 	}
 
 	@Override
