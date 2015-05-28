@@ -12,14 +12,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.transaction.NotificationFilter;
-import org.eclipse.emf.transaction.ResourceSetChangeEvent;
-import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 /**
@@ -29,13 +25,7 @@ public class TranslatorRegistry {
 
 	private static final String UML_EXTENSION = "uml"; //$NON-NLS-1$
 
-	private static final NotificationFilter filter = NotificationFilter.RESOURCE_LOADED
-			.or(NotificationFilter.RESOURCE_UNLOADED);
-
 	public static final TranslatorRegistry INSTANCE = new TranslatorRegistry();
-
-	private final Map<ResourceSet, TransactionalEditingDomain> domains = new HashMap<>();
-	private final Map<TransactionalEditingDomain, DomainResourceListener> listeners = new HashMap<>();
 
 	private final Map<ResourceSet, Map<URI, Resource>> resources = new HashMap<>();
 	private final Map<URI, Translator> translators = new HashMap<>();
@@ -43,68 +33,7 @@ public class TranslatorRegistry {
 	protected TranslatorRegistry() {
 	}
 
-	private class DomainResourceListener extends ResourceSetListenerImpl {
-
-		private final ResourceSet resourceSet;
-
-		public DomainResourceListener(TransactionalEditingDomain domain) {
-			super(filter);
-			this.resourceSet = domain.getResourceSet();
-		}
-
-		@Override
-		public void resourceSetChanged(ResourceSetChangeEvent event) {
-			for (Notification notification : event.getNotifications()) {
-				if (!(notification.getNotifier() instanceof Resource)) {
-					continue;
-				}
-
-				handleResourceLoadNotification(resourceSet, notification);
-			}
-		}
-	}
-
-	// it must be synchronized as it is called from an event handler thread
-	private synchronized void handleResourceLoadNotification(
-			ResourceSet resourceSet, Notification notification) {
-		Resource resource = (Resource) notification.getNotifier();
-		URI uri = resource.getURI();
-		// m should not be null as the domain were loaded before the
-		// resource itself
-		Map<URI, Resource> m = resources.get(resourceSet);
-		boolean loaded = notification.getNewBooleanValue();
-		if (loaded) {
-			m.put(uri, resource);
-		} else {
-			Translator translator = translators.get(uri);
-			if (null != translator) {
-				translator.dispose();
-				translators.remove(uri);
-			}
-			m.remove(uri);
-		}
-	}
-
-	public synchronized void editingDomainLoaded(
-			TransactionalEditingDomain domain) {
-		DomainResourceListener listener = new DomainResourceListener(domain);
-		listeners.put(domain, listener);
-		domain.addResourceSetListener(listener);
-		ResourceSet resourceSet = domain.getResourceSet();
-		domains.put(resourceSet, domain);
-		resourceSetLoaded(resourceSet);
-	}
-
-	public synchronized void editingDomainUnloaded(
-			TransactionalEditingDomain domain) {
-		DomainResourceListener listener = listeners.get(domain);
-		domain.removeResourceSetListener(listener);
-		ResourceSet resourceSet = domain.getResourceSet();
-		domains.remove(resourceSet);
-		resourceSetUnloaded(resourceSet);
-	}
-
-	private void resourceSetLoaded(ResourceSet resourceSet) {
+	public synchronized void resourceSetLoaded(ResourceSet resourceSet) {
 		Map<URI, Resource> m = resources.get(resourceSet);
 		if (null == m) {
 			m = new HashMap<>();
@@ -125,8 +54,31 @@ public class TranslatorRegistry {
 		}
 	}
 
-	private void resourceSetUnloaded(ResourceSet resourceSet) {
+	public synchronized void resourceSetUnloaded(ResourceSet resourceSet) {
 		resources.remove(resourceSet);
+	}
+
+	public synchronized void resourceLoaded(ResourceSet resourceSet,
+			Resource resource) {
+		URI uri = resource.getURI();
+		// m should not be null as the domain were loaded before the
+		// resource itself
+		Map<URI, Resource> m = resources.get(resourceSet);
+		m.put(uri, resource);
+	}
+
+	public synchronized void resourceUnloaded(ResourceSet resourceSet,
+			Resource resource) {
+		URI uri = resource.getURI();
+		// m should not be null as the domain will be unloaded after the
+		// resource itself
+		Map<URI, Resource> m = resources.get(resourceSet);
+		Translator translator = translators.get(uri);
+		if (null != translator) {
+			translator.dispose();
+			translators.remove(uri);
+		}
+		m.remove(uri);
 	}
 
 	public synchronized void forgetResources(IProject project) {
@@ -165,7 +117,7 @@ public class TranslatorRegistry {
 
 			if (null != model) {
 				ResourceSet resourceSet = model.getResourceSet();
-				domain = domains.get(resourceSet);
+				domain = DomainRegistry.INSTANCE.getDomain(resourceSet);
 			}
 		}
 
