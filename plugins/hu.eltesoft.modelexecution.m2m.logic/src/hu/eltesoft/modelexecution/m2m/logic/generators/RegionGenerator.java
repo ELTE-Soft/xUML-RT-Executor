@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
@@ -9,6 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatch;
@@ -30,6 +30,7 @@ import hu.eltesoft.modelexecution.uml.incquery.TransitionMatcher;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
@@ -44,9 +45,9 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class RegionGenerator extends
-		AbstractGenerator<Region, RgRegion, RegionTemplate> {
+public class RegionGenerator extends AbstractGenerator<Region> {
 
 	private static final RegionFactory FACTORY = RegionFactory.eINSTANCE;
 
@@ -65,9 +66,7 @@ public class RegionGenerator extends
 	 */
 	private ChangeRegistry changeRegistry = null;
 
-	public RegionGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public RegionGenerator(IncQueryEngine engine) throws IncQueryException {
 		regionMatcher = RegionMatcher.on(engine);
 		containerMatcher = ContainerClassOfRegionMatcher.on(engine);
 		initialsMatcher = InitialsMatcher.on(engine);
@@ -89,7 +88,7 @@ public class RegionGenerator extends
 	}
 
 	@Override
-	public RgRegion generateTranslationModel(Region source)
+	public Pair<String, Template> getTemplate(Region source)
 			throws GenerationException {
 		RgRegion root = FACTORY.createRgRegion();
 
@@ -106,7 +105,8 @@ public class RegionGenerator extends
 		// initialPseudoState, states
 		new StatesGenerator(source, root).generate();
 
-		return root;
+		String rootName = NamedReference.getIdentifier(source);
+		return new Pair<>(rootName, new RegionTemplate(root));
 	}
 
 	private class StatesGenerator {
@@ -248,9 +248,10 @@ public class RegionGenerator extends
 	}
 
 	@Override
-	protected RegionTemplate createTemplate(RgRegion root) {
-		return new RegionTemplate(root);
-	};
+	public void runOn(Consumer<Region> task) {
+		regionMatcher.forEachMatch((Region) null,
+				match -> task.accept(match.getRegion()));
+	}
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -267,21 +268,24 @@ public class RegionGenerator extends
 			private final IMatchUpdateListener<TransitionMatch> transitionListener;
 			private final IMatchUpdateListener<TransitionEffectMatch> transitionEffectListener;
 
-			{ // set regionListener
+			{
+				regionMatcher.forEachMatch((Region) null,
+						match -> saveRootName(match.getRegion()));
+
 				regionListener = new IMatchUpdateListener<RegionMatch>() {
 
 					@Override
 					public void notifyAppearance(RegionMatch match) {
+						Region region = match.getRegion();
+						saveRootName(region);
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(RegionMatch match) {
-						// disappearance of root: delete file
 						Region region = match.getRegion();
-						String fileName = NamedReference.getIdentifier(region);
-						changeRegistry.newDeletion(fileName);
+						consumeRootName(region, changeRegistry::newDeletion);
 					}
 				};
 
@@ -289,7 +293,7 @@ public class RegionGenerator extends
 						regionListener, false);
 			}
 
-			{ // set containerClassOfRegionListener
+			{
 				containerClassOfRegionListener = new IMatchUpdateListener<ContainerClassOfRegionMatch>() {
 
 					@Override
@@ -311,7 +315,7 @@ public class RegionGenerator extends
 						containerClassOfRegionListener, false);
 			}
 
-			{ // set initialsListener
+			{
 				initialsListener = new IMatchUpdateListener<InitialsMatch>() {
 
 					@Override
@@ -331,7 +335,7 @@ public class RegionGenerator extends
 						initialsListener, false);
 			}
 
-			{ // set stateListener
+			{
 				stateListener = new IMatchUpdateListener<StateMatch>() {
 
 					@Override
@@ -351,7 +355,7 @@ public class RegionGenerator extends
 						stateListener, false);
 			}
 
-			{ // set entryListener
+			{
 				entryListener = new IMatchUpdateListener<EntryMatch>() {
 
 					@Override
@@ -371,7 +375,7 @@ public class RegionGenerator extends
 						entryListener, false);
 			}
 
-			{ // set exitListener
+			{
 				exitListener = new IMatchUpdateListener<ExitMatch>() {
 
 					@Override
@@ -391,7 +395,7 @@ public class RegionGenerator extends
 						exitListener, false);
 			}
 
-			{ // set transitionListener
+			{
 				transitionListener = new IMatchUpdateListener<TransitionMatch>() {
 
 					@Override
@@ -411,7 +415,7 @@ public class RegionGenerator extends
 						transitionListener, false);
 			}
 
-			{ // set transitionEffectListener
+			{
 				transitionEffectListener = new IMatchUpdateListener<TransitionEffectMatch>() {
 
 					@Override

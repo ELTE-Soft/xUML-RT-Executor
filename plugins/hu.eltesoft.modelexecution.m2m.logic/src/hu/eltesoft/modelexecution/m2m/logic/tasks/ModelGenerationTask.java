@@ -2,19 +2,20 @@ package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
 import hu.eltesoft.modelexecution.m2m.logic.generators.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 /**
  * A task to generate a translation model.
  */
-public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
+public class ModelGenerationTask<S extends EObject> {
 
 	private final S source;
-	private final Generator<S, R> generator;
+	private final Generator<S> generator;
 
-	public ModelGenerationTask(S source, Generator<S, R> generator) {
+	public ModelGenerationTask(S source, Generator<S> generator) {
 		this.source = source;
 		this.generator = generator;
 	}
@@ -28,10 +29,9 @@ public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 	 *             if a generation error occurred. It might be due to an
 	 *             inconsistent model or a missing source object
 	 */
-	public FileModificationTask<S, R> perform() throws GenerationException {
-		R root = generator.generateTranslationModel(source);
-
-		return new FileModificationTask<S, R>(root, generator);
+	public FileModificationTask perform() throws GenerationException {
+		Pair<String, Template> result = generator.getTemplate(source);
+		return new FileModificationTask(result.getKey(), result.getValue());
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ModelGenerationTask<?, ?> other = (ModelGenerationTask<?, ?>) obj;
+		ModelGenerationTask<?> other = (ModelGenerationTask<?>) obj;
 		if (source == null) {
 			if (other.source != null)
 				return false;
@@ -55,5 +55,4 @@ public class ModelGenerationTask<S extends EObject, R extends ModelRoot> {
 			return false;
 		return true;
 	}
-
 }

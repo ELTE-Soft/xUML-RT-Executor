@@ -1,11 +1,12 @@
 package hu.eltesoft.modelexecution.m2m.logic.changeregistry;
 
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
 import hu.eltesoft.modelexecution.m2m.logic.ContainerNameProvider;
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
 import hu.eltesoft.modelexecution.m2m.logic.impl.ChangeRegistryImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -17,8 +18,8 @@ public interface ChangeRegistry extends ContainerNameProvider {
 	/**
 	 * Creates a new registry.
 	 */
-	static ChangeRegistry create(TextChangesListener listener) {
-		return new ChangeRegistryImpl(listener);
+	static ChangeRegistry create() {
+		return new ChangeRegistryImpl();
 	}
 
 	/**
@@ -26,7 +27,7 @@ public interface ChangeRegistry extends ContainerNameProvider {
 	 * present with the same source object, that entry is overwritten.
 	 */
 	<S extends EObject, R extends ModelRoot> void newModification(S source,
-			Generator<S, R> generator);
+			Generator<S> generator);
 
 	/**
 	 * Registers a new deletion. If another deletion entry is already present
@@ -39,9 +40,8 @@ public interface ChangeRegistry extends ContainerNameProvider {
 	 * 
 	 * @return a queue of required file update tasks
 	 */
-	FileUpdateTaskQueue performAllChanges();
-	
-	
+	List<FileUpdateTask> performAllChanges();
+
 	/**
 	 * Clears this registry.
 	 */

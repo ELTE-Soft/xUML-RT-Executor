@@ -16,6 +16,8 @@ import org.junit.Before;
 public abstract class ModelBasedTestCase {
 
 	protected final String modelPath;
+
+	protected Resource resource;
 	protected Model model;
 
 	protected ModelBasedTestCase(String modelPath) {
@@ -24,17 +26,21 @@ public abstract class ModelBasedTestCase {
 
 	@Before
 	public void setUp() {
-		model = loadModel(modelPath);
+		resource = loadResource(modelPath);
+		model = loadModel(resource);
 	}
 
-	public Model loadModel(String path) {
+	public Resource loadResource(String path) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
 				UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
 				.put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
 		URI uri = URI.createFileURI(path);
-		Resource resource = resourceSet.getResource(uri, true);
+		return resourceSet.getResource(uri, true);
+	}
+
+	public Model loadModel(Resource resource) {
 		List<EObject> contents = resource.getContents();
 		for (EObject eobj : contents) {
 			if (eobj instanceof Model) {

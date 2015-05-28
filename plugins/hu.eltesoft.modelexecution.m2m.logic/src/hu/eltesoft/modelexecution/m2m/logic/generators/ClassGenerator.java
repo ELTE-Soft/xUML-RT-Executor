@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
@@ -8,6 +7,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
@@ -20,6 +20,8 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatch;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
 
+import java.util.function.Consumer;
+
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -30,9 +32,9 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Signal;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class ClassGenerator extends
-		AbstractGenerator<Class, ClClass, ClassTemplate> {
+public class ClassGenerator extends AbstractGenerator<Class> {
 
 	private static final ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
 
@@ -42,9 +44,7 @@ public class ClassGenerator extends
 	private final MethodMatcher methodMatcher;
 	private final ReceptionMatcher receptionMatcher;
 
-	public ClassGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public ClassGenerator(IncQueryEngine engine) throws IncQueryException {
 		clsMatcher = ClsMatcher.on(engine);
 		regionOfClassMatcher = RegionOfClassMatcher.on(engine);
 		operationMatcher = OperationMatcher.on(engine);
@@ -53,7 +53,7 @@ public class ClassGenerator extends
 	}
 
 	@Override
-	public ClClass generateTranslationModel(Class source)
+	public Pair<String, Template> getTemplate(Class source)
 			throws GenerationException {
 		ClClass root = FACTORY.createClClass();
 
@@ -75,14 +75,14 @@ public class ClassGenerator extends
 
 			// Method attribute is optional: if there is no match, the
 			// method was missing from the source model as well.
-			methodMatcher.forOneArbitraryMatch(null, pOperation, null,
-					match2 -> {
-						Behavior pMethod = match2.getMethod();
-						clOperation.setMethod(new NamedReference(pMethod));
-					});
+				methodMatcher.forOneArbitraryMatch(null, pOperation, null,
+						match2 -> {
+							Behavior pMethod = match2.getMethod();
+							clOperation.setMethod(new NamedReference(pMethod));
+						});
 
-			root.getOperations().add(clOperation);
-		});
+				root.getOperations().add(clOperation);
+			});
 
 		receptionMatcher.forEachMatch(source, null, null, match -> {
 			Reception pReception = match.getReception();
@@ -95,13 +95,15 @@ public class ClassGenerator extends
 			root.getReceptions().add(clReception);
 		});
 
-		return root;
+		String rootName = NamedReference.getIdentifier(source);
+		return new Pair<>(rootName, new ClassTemplate(root));
 	}
 
 	@Override
-	protected ClassTemplate createTemplate(ClClass root) {
-		return new ClassTemplate(root);
-	};
+	public void runOn(Consumer<Class> task) {
+		clsMatcher.forEachMatch((Class) null,
+				match -> task.accept(match.getCls()));
+	}
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -116,20 +118,23 @@ public class ClassGenerator extends
 			private final IMatchUpdateListener<ReceptionMatch> receptionListener;
 
 			{
+				clsMatcher.forEachMatch((Class) null,
+						match -> saveRootName(match.getCls()));
+
 				clsListener = new IMatchUpdateListener<ClsMatch>() {
 
 					@Override
 					public void notifyAppearance(ClsMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
+						Class cls = match.getCls();
+						saveRootName(cls);
+						changeRegistry
+								.newModification(cls, ClassGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(ClsMatch match) {
-						// disappearance of root: delete file
-						Class c = match.getCls();
-						String fileName = NamedReference.getIdentifier(c);
-						changeRegistry.newDeletion(fileName);
+						Class cls = match.getCls();
+						consumeRootName(cls, changeRegistry::newDeletion);
 					}
 				};
 

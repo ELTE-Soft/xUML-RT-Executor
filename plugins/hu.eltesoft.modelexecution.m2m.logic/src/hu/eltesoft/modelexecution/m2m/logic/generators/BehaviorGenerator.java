@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
@@ -15,15 +15,17 @@ import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher;
 
+import java.util.function.Consumer;
+
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.xtext.xbase.lib.Pair;
 
-public class BehaviorGenerator extends
-		AbstractGenerator<Behavior, BhBehavior, BehaviorTemplate> {
+public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 
 	private static final BehaviorFactory FACTORY = BehaviorFactory.eINSTANCE;
 
@@ -31,16 +33,14 @@ public class BehaviorGenerator extends
 	private final AlfCodeMatcher alfCodeMatcher;
 	private final ContainerClassOfBehaviorMatcher containerMatcher;
 
-	public BehaviorGenerator(IncQueryEngine engine, TextChangesListener listener)
-			throws IncQueryException {
-		super(listener);
+	public BehaviorGenerator(IncQueryEngine engine) throws IncQueryException {
 		behaviorMatcher = BehaviorMatcher.on(engine);
 		alfCodeMatcher = AlfCodeMatcher.on(engine);
 		containerMatcher = ContainerClassOfBehaviorMatcher.on(engine);
 	}
 
 	@Override
-	public BhBehavior generateTranslationModel(Behavior source)
+	public Pair<String, Template> getTemplate(Behavior source)
 			throws GenerationException {
 		BhBehavior root = FACTORY.createBhBehavior();
 
@@ -63,13 +63,15 @@ public class BehaviorGenerator extends
 			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
 		}
 
-		return root;
+		String rootName = NamedReference.getIdentifier(source);
+		return new Pair<>(rootName, new BehaviorTemplate(root));
 	}
 
 	@Override
-	protected BehaviorTemplate createTemplate(BhBehavior root) {
-		return new BehaviorTemplate(root);
-	};
+	public void runOn(Consumer<Behavior> task) {
+		behaviorMatcher.forEachMatch((Behavior) null,
+				match -> task.accept(match.getBehavior()));
+	}
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -82,20 +84,23 @@ public class BehaviorGenerator extends
 			private final IMatchUpdateListener<AlfCodeMatch> alfCodeListener;
 
 			{
+				behaviorMatcher.forEachMatch((Behavior) null,
+						match -> saveRootName(match.getBehavior()));
+
 				behaviorListener = new IMatchUpdateListener<BehaviorMatch>() {
 
 					@Override
 					public void notifyAppearance(BehaviorMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
+						Behavior behavior = match.getBehavior();
+						saveRootName(behavior);
+						changeRegistry.newModification(behavior,
 								BehaviorGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(BehaviorMatch match) {
-						// disappearance of root: delete file
-						Behavior b = match.getBehavior();
-						String fileName = NamedReference.getIdentifier(b);
-						changeRegistry.newDeletion(fileName);
+						Behavior behavior = match.getBehavior();
+						consumeRootName(behavior, changeRegistry::newDeletion);
 					}
 				};
 

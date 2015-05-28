@@ -18,36 +18,44 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
- * A builder that activates after the java builder runs. Takes the class files
- * that are produced by the java compiler and adds debug information to them.
+ * A builder that activates after the Java builder runs. Takes the class files
+ * that are produced by the Java compiler and adds debug information to them.
  * The debug information is produced by {@linkplain ModelBuilder}.
  */
 public class StratumBuilder extends IncrementalProjectBuilder {
 
+	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.stratumbuilder"; //$NON-NLS-1$;
+
 	private static final String CLASS_FILE_EXTENSION = "class"; //$NON-NLS-1$
 	private static final String SMAP_FILE_EXTENSION = "smap"; //$NON-NLS-1$
-	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.stratumbuilder"; //$NON-NLS-1$;
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args,
 			IProgressMonitor monitor) throws CoreException {
-
 		if (kind == AUTO_BUILD || kind == INCREMENTAL_BUILD) {
 			incrementalBuild();
 		} else if (kind == FULL_BUILD) {
 			fullBuild();
 		}
-
 		return null;
 	}
 
-	private void fullBuild() {
+	/**
+	 * Removes all generated source files.
+	 */
+	@Override
+	protected void clean(IProgressMonitor monitor) throws CoreException {
 		getFileManager().cleanup();
+	}
+
+	private void fullBuild() {
 		try {
+			clean(new NullProgressMonitor());
 			getProject().accept(res -> {
-				rebuild(res);
+				build(res);
 				return true;
 			});
 		} catch (CoreException e) {
@@ -61,7 +69,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 			delta.accept(d -> {
 				if (d.getKind() == IResourceDelta.ADDED
 						|| d.getKind() == IResourceDelta.CHANGED) {
-					rebuild(d.getResource());
+					build(d.getResource());
 				}
 				return true;
 			});
@@ -71,7 +79,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private void rebuild(IResource res) {
+	private void build(IResource res) {
 		if (res.getFileExtension() != null
 				&& res.getFileExtension().equals(CLASS_FILE_EXTENSION)) {
 			IProject project = res.getProject();
@@ -81,15 +89,19 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 					.append(res.getProjectRelativePath().removeFileExtension()
 							.removeFirstSegments(1)
 							.addFileExtension(SMAP_FILE_EXTENSION));
-			IPath instrumentedBinFolder = projectLoc.append(
-					ExecutableModelProperties
+			IPath instrumentedBinFolder = projectLoc
+					.append(ExecutableModelProperties
 							.getInstrumentedClassFilesPath(project));
-			IPath newLocation = instrumentedBinFolder.append(
-					res.getProjectRelativePath().removeFirstSegments(1));
+			IPath newLocation = instrumentedBinFolder.append(res
+					.getProjectRelativePath().removeFirstSegments(1));
 			try {
-				Files.createDirectories(Paths.get(instrumentedBinFolder.toString()));
+				Files.createDirectories(Paths.get(instrumentedBinFolder
+						.toString()));
 			} catch (IOException e) {
-				IdePlugin.logError("Cannot create directories for instrumented class file", e);
+				IdePlugin
+						.logError(
+								"Cannot create directories for instrumented class file",
+								e);
 				return;
 			}
 			if (newLocation.equals(res.getLocation())

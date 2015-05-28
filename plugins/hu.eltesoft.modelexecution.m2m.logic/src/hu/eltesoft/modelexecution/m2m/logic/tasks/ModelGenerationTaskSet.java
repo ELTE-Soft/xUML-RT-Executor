@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
  */
 @SuppressWarnings("serial")
 public class ModelGenerationTaskSet extends
-		LinkedHashSet<ModelGenerationTask<?, ?>> implements
+		LinkedHashSet<ModelGenerationTask<?>> implements
 		ModelGenerationTaskCollection {
 
 	public ModelGenerationTaskQueue asQueue() {
@@ -17,5 +17,4 @@ public class ModelGenerationTaskSet extends
 		taskQueue.addAll(this);
 		return taskQueue;
 	}
-
 }

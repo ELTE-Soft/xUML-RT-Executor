@@ -10,15 +10,13 @@ import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 public class FileDeletionTask implements FileUpdateTask {
 
 	private final String filename;
-	private final TextChangesListener listener;
 
-	public FileDeletionTask(String filename, TextChangesListener listener) {
+	public FileDeletionTask(String filename) {
 		this.filename = filename;
-		this.listener = listener;
 	}
 
 	@Override
-	public void perform() {
+	public void perform(TextChangesListener listener) {
 		listener.contentDeleted(filename);
 	}
 
@@ -43,5 +41,4 @@ public class FileDeletionTask implements FileUpdateTask {
 			return false;
 		return true;
 	}
-
 }

@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.project;
 
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
 import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
+import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +32,7 @@ public class ExecutableModelNature implements IProjectNature {
 	@Override
 	public void deconfigure() throws CoreException {
 		removeBuilders();
+		TranslatorRegistry.INSTANCE.resourceUnloaded(project);
 	}
 
 	@Override

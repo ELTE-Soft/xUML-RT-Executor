@@ -17,7 +17,9 @@ Require-Bundle: org.junit,
  org.eclipse.incquery.runtime;bundle-version="[0.8.1,0.9.0)",
  hu.eltesoft.modelexecution.m2t.smap.xtend,
  hu.eltesoft.modelexecution.m2t.java,
- hu.eltesoft.modelexecution.runtime
+ hu.eltesoft.modelexecution.runtime,
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.2.0",
+ hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.ocl.examples.pivot
 Fragment-Host: hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.1.0"

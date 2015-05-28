@@ -1,11 +1,12 @@
 package hu.eltesoft.modelexecution.m2m.logic.tasks;
 
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
 import hu.eltesoft.modelexecution.m2m.logic.generators.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -13,13 +14,13 @@ import org.eclipse.emf.ecore.EObject;
  * A collection of {@link ModelGenerationTask} instances.
  */
 public interface ModelGenerationTaskCollection extends
-		Collection<ModelGenerationTask<?, ?>> {
+		Collection<ModelGenerationTask<?>> {
 
-	default FileUpdateTaskQueue performAll() {
-		return performAll(new FileUpdateTaskQueue());
+	default List<FileUpdateTask> performAll() {
+		return new LinkedList<FileUpdateTask>();
 	}
 
-	default FileUpdateTaskQueue performAll(FileUpdateTaskQueue result) {
+	default List<FileUpdateTask> performAll(List<FileUpdateTask> result) {
 		forEach(task -> {
 			try {
 				result.add(task.perform());
@@ -30,10 +31,7 @@ public interface ModelGenerationTaskCollection extends
 		return result;
 	}
 
-	default <S extends EObject, R extends ModelRoot> boolean addNew(S source,
-			Generator<S, R> generator) {
-
-		return add(new ModelGenerationTask<S, R>(source, generator));
+	default <S extends EObject> boolean addNew(S source, Generator<S> generator) {
+		return add(new ModelGenerationTask<S>(source, generator));
 	}
-
 }
