@@ -31,10 +31,6 @@ public abstract class M2MTranslatorTestsBase {
 
 	protected BasicTextChangesListener listener = new BasicTextChangesListener();
 
-	public IncQueryEngine configureEngine(String path) {
-		return configureEngine(loadModel(path));
-	}
-
 	public IncQueryEngine configureEngine(Model model) {
 		this.model = model;
 		try {
@@ -45,7 +41,7 @@ public abstract class M2MTranslatorTestsBase {
 		}
 	}
 
-	public Model loadModel(String path) {
+	public Resource loadResource(String path) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
 				UMLPackage.eINSTANCE);
@@ -53,6 +49,11 @@ public abstract class M2MTranslatorTestsBase {
 				.put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
 		URI uri = URI.createFileURI(path);
 		Resource resource = resourceSet.getResource(uri, true);
+		return resource;
+	}
+
+	public Model loadModel(String path) {
+		Resource resource = loadResource(path);
 		List<EObject> contents = resource.getContents();
 		for (EObject eobj : contents) {
 			if (eobj instanceof Model) {
@@ -69,5 +70,4 @@ public abstract class M2MTranslatorTestsBase {
 		assertAsSets(new String[] { "A", "R1" }, listener.modifications.get(0),
 				listener.modifications.get(1));
 	}
-
 }

@@ -1,15 +1,15 @@
 package hu.eltesoft.modelexecution.m2m.logic.tests;
 
 public class ForceActivationOfListenersTests extends
-ChangeListenerM2MTranslatorIncrementalityTests {
+		ChangeListenerM2MTranslatorIncrementalityTests {
 
 	@Override
 	protected void initialize(String path) {
 		super.initialize(path);
-		
-		translator.activateListeners(true);
+
+		translator.toIncremental(loadResource(path));
 	}
-	
-	// includes tests inherited from ChangeListenerM2MTranslatorIncrementalityTests
-	
+
+	// includes tests inherited from
+	// ChangeListenerM2MTranslatorIncrementalityTests
 }

@@ -2,9 +2,8 @@ package hu.eltesoft.modelexecution.m2m.logic.tests;
 
 import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
-import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
+import hu.eltesoft.modelexecution.m2m.logic.Translator;
 
-import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -18,29 +17,21 @@ import org.junit.Test;
 public class ChangeListenerM2MTranslatorIncrementalityTests extends
 		M2MTranslatorTestsBase {
 
-	protected ChangeListenerM2MTranslator translator;
+	protected Translator translator;
 
 	private void initTranslator(String path) {
-		try {
-			translator = ChangeListenerM2MTranslator.create(
-					configureEngine(path), listener);
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-		}
+		translator = Translator.createIncremental(loadResource(path));
 	}
 
 	protected void initialize(String path) {
 		initTranslator(path);
-
-		ChangeListenerM2MTranslator changeListenerTranslator = translator;
-
-		changeListenerTranslator.fullBuild().performAll();
+		translator.fullBuild().forEach(t -> t.perform(listener));
 	}
 
 	@Test
 	public void testingIncrementalModification() {
 		initialize(UML_TEST_SIMPLE_MODEL_PATH);
-		
+
 		Class a = (Class) model.getPackagedElement("A");
 		StateMachine sm = (StateMachine) a.getOwnedBehavior("SM1");
 		Region rg = sm.getRegion("R1");
@@ -65,7 +56,7 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 
 		listener.clear();
 
-		translator.rebuild().performAll();
+		translator.incrementalBuild().forEach(t -> t.perform(listener));
 
 		assertEquals(0, listener.deletions.size());
 		assertEquals(1, listener.modifications.size());
@@ -74,7 +65,7 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 	@Test
 	public void testingIncrementalDeletion() {
 		initialize(UML_TEST_2015_Q1_MODEL_PATH);
-		
+
 		Class a = (Class) model.getPackagedElement("Class1");
 		StateMachine sm = (StateMachine) a.getOwnedBehavior("StateMachine1");
 		Region rg = sm.getRegion("Region1");
@@ -83,7 +74,7 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 
 		listener.clear();
 
-		translator.rebuild().performAll();
+		translator.incrementalBuild().forEach(t -> t.perform(listener));
 
 		assertEquals(1, listener.deletions.size());
 		assertEquals(2, listener.modifications.size());
@@ -106,7 +97,7 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 
 		listener.clear();
 
-		translator.rebuild().performAll();
+		translator.incrementalBuild().forEach(t -> t.perform(listener));
 
 		assertEquals(2, listener.deletions.size());
 		assertEquals(2, listener.modifications.size());
@@ -114,7 +105,5 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 				listener.deletions.get(0), listener.deletions.get(1));
 		assertAsSets(new String[] { "Region1", "Class1" },
 				listener.modifications.get(0), listener.modifications.get(1));
-
 	}
-
 }

@@ -2,23 +2,19 @@ package hu.eltesoft.modelexecution.m2m.logic.tests;
 
 import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTaskQueue;
-import hu.eltesoft.modelexecution.m2m.logic.SimpleM2MTranslator;
+import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
+import hu.eltesoft.modelexecution.m2m.logic.Translator;
 
-import org.eclipse.incquery.runtime.exception.IncQueryException;
+import java.util.List;
+
 import org.junit.Test;
 
 public class SimpleM2MTranslatorTests extends M2MTranslatorTestsBase {
 
-	protected SimpleM2MTranslator translator;
+	protected Translator translator;
 
 	protected void initTranslator(String path) {
-		try {
-			translator = SimpleM2MTranslator.create(configureEngine(path),
-					listener);
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-		}
+		translator = Translator.create(loadResource(path));
 	}
 
 	@Test
@@ -30,13 +26,13 @@ public class SimpleM2MTranslatorTests extends M2MTranslatorTestsBase {
 		assertEquals(0, listener.deletions.size());
 		assertEquals(0, listener.modifications.size());
 
-		FileUpdateTaskQueue taskQueue = translator.fullBuild();
+		List<FileUpdateTask> taskQueue = translator.fullBuild();
 
 		assertEquals(0, listener.deletions.size());
 		assertEquals(0, listener.modifications.size());
 		assertEquals(2, taskQueue.size());
 
-		taskQueue.performAll();
+		taskQueue.forEach(t -> t.perform(listener));
 
 		checkSimpleModelResult();
 	}
@@ -50,14 +46,14 @@ public class SimpleM2MTranslatorTests extends M2MTranslatorTestsBase {
 		assertEquals(0, listener.deletions.size());
 		assertEquals(0, listener.modifications.size());
 
-		FileUpdateTaskQueue taskQueue = translator.fullBuild();
+		List<FileUpdateTask> taskQueue = translator.fullBuild();
 
 		assertEquals(0, listener.deletions.size());
 		assertEquals(0, listener.modifications.size());
 		assertEquals(UML_TEST_2015_Q1_MODEL_EXPECTED_FILES.length,
 				taskQueue.size());
 
-		taskQueue.performAll();
+		taskQueue.forEach(t -> t.perform(listener));
 
 		assertEquals(0, listener.deletions.size());
 		assertEquals(UML_TEST_2015_Q1_MODEL_EXPECTED_FILES.length,
@@ -66,5 +62,4 @@ public class SimpleM2MTranslatorTests extends M2MTranslatorTestsBase {
 		assertAsSets(UML_TEST_2015_Q1_MODEL_EXPECTED_FILES,
 				listener.modifications.toArray(new String[0]));
 	}
-
 }

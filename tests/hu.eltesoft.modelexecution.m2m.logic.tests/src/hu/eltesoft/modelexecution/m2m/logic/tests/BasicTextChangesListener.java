@@ -1,14 +1,14 @@
 package hu.eltesoft.modelexecution.m2m.logic.tests;
 
+import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
+import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
 public class BasicTextChangesListener implements TextChangesListener {
 
@@ -27,7 +27,6 @@ public class BasicTextChangesListener implements TextChangesListener {
 	@Override
 	public void contentChanged(String filename, SourceMappedText output,
 			DebugSymbols symbols) {
-
 		this.modifications.add(filename);
 		this.outputs.add(output);
 		this.symbols.add(symbols);
@@ -35,7 +34,6 @@ public class BasicTextChangesListener implements TextChangesListener {
 
 	@Override
 	public void contentDeleted(String filename) {
-
 		this.deletions.add(filename);
 	}
 
@@ -43,7 +41,6 @@ public class BasicTextChangesListener implements TextChangesListener {
 		for (int i = 0; i < modifications.size(); ++i) {
 			print(path, modifications.get(i), outputs.get(i).toString());
 		}
-
 	}
 
 	private void print(String path, String filename, String content) {
@@ -63,5 +60,4 @@ public class BasicTextChangesListener implements TextChangesListener {
 			e.printStackTrace();
 		}
 	}
-
 }

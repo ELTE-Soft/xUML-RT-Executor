@@ -6,10 +6,11 @@ public class ReactivationOfListenersTests extends
 	@Override
 	protected void initialize(String path) {
 		super.initialize(path);
-		
-		translator.inactivateListeners();
-		translator.activateListeners(false);
+
+		translator.dispose();
+		translator.toIncremental(loadResource(path));
 	}
-	
-	// includes tests inherited from ChangeListenerM2MTranslatorIncrementalityTests
+
+	// includes tests inherited from
+	// ChangeListenerM2MTranslatorIncrementalityTests
 }

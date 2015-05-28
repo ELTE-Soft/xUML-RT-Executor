@@ -1,8 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.tests;
 
-import hu.eltesoft.modelexecution.m2m.logic.ChangeListenerM2MTranslator;
+import hu.eltesoft.modelexecution.m2m.logic.Translator;
 
-import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.junit.Test;
 
 public class ChangeListenerM2MTranslatorFullBuildTests extends
@@ -10,12 +9,7 @@ public class ChangeListenerM2MTranslatorFullBuildTests extends
 
 	@Override
 	protected void initTranslator(String path) {
-		try {
-			translator = ChangeListenerM2MTranslator.create(
-					configureEngine(path), listener);
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-		}
+		translator = Translator.createIncremental(loadResource(path));
 	}
 
 	// includes tests inherited from SimpleM2MTranslatorTests
@@ -26,24 +20,22 @@ public class ChangeListenerM2MTranslatorFullBuildTests extends
 
 		for (int i = 0; i < 3; ++i) {
 			listener.clear();
-			translator.fullBuild().performAll();
+			translator.fullBuild().forEach(t -> t.perform(listener));
 		}
 
 		checkSimpleModelResult();
-
 	}
 
 	@Test
 	public void testingRebuildAsFirstBuild() {
 		initTranslator(UML_TEST_SIMPLE_MODEL_PATH);
 
-		ChangeListenerM2MTranslator changeListenerTranslator = (ChangeListenerM2MTranslator) translator;
+		Translator changeListenerTranslator = (Translator) translator;
 
 		listener.clear();
-		changeListenerTranslator.rebuild().performAll();
+		changeListenerTranslator.incrementalBuild().forEach(
+				t -> t.perform(listener));
 
 		checkSimpleModelResult();
-
 	}
-
 }
