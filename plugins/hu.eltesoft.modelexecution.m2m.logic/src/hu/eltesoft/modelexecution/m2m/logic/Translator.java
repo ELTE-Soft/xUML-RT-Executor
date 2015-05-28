@@ -111,7 +111,10 @@ public class Translator {
 	}
 
 	public void dispose() {
-		attachListeners.revert();
+		if (upgraded) {
+			upgraded = false;
+			attachListeners.revert();
+		}
 	}
 
 	public List<FileUpdateTask> fullBuild() {
