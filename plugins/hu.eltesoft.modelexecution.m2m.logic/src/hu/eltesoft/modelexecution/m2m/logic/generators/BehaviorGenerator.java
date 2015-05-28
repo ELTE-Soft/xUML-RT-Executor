@@ -84,20 +84,23 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 			private final IMatchUpdateListener<AlfCodeMatch> alfCodeListener;
 
 			{
+				behaviorMatcher.forEachMatch((Behavior) null,
+						match -> saveRootName(match.getBehavior()));
+
 				behaviorListener = new IMatchUpdateListener<BehaviorMatch>() {
 
 					@Override
 					public void notifyAppearance(BehaviorMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
+						Behavior behavior = match.getBehavior();
+						saveRootName(behavior);
+						changeRegistry.newModification(behavior,
 								BehaviorGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(BehaviorMatch match) {
-						// disappearance of root: delete file
-						Behavior b = match.getBehavior();
-						String fileName = NamedReference.getIdentifier(b);
-						changeRegistry.newDeletion(fileName);
+						Behavior behavior = match.getBehavior();
+						consumeRootName(behavior, changeRegistry::newDeletion);
 					}
 				};
 

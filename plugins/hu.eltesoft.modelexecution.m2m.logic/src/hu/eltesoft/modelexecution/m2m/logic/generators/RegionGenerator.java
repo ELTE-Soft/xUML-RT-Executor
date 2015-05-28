@@ -269,20 +269,23 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 			private final IMatchUpdateListener<TransitionEffectMatch> transitionEffectListener;
 
 			{
+				regionMatcher.forEachMatch((Region) null,
+						match -> saveRootName(match.getRegion()));
+
 				regionListener = new IMatchUpdateListener<RegionMatch>() {
 
 					@Override
 					public void notifyAppearance(RegionMatch match) {
+						Region region = match.getRegion();
+						saveRootName(region);
 						changeRegistry.newModification(match.getRegion(),
 								RegionGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(RegionMatch match) {
-						// disappearance of root: delete file
 						Region region = match.getRegion();
-						String fileName = NamedReference.getIdentifier(region);
-						changeRegistry.newDeletion(fileName);
+						consumeRootName(region, changeRegistry::newDeletion);
 					}
 				};
 

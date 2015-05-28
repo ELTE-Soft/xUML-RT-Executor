@@ -30,6 +30,7 @@ public class Translator {
 	private final ChangeRegistry changeRegistry = ChangeRegistry.create();
 	private Resource resource;
 	private boolean incremental;
+	private boolean disposed;
 	private AdvancedIncQueryEngine engine;
 	private ReversionTask attachListeners;
 
@@ -46,6 +47,8 @@ public class Translator {
 	}
 
 	private void setupEngine() {
+		disposed = false;
+
 		try {
 			if (incremental) {
 				engine = AdvancedIncQueryEngine.from(IncQueryEngine
@@ -98,26 +101,45 @@ public class Translator {
 	}
 
 	public void toIncremental(Resource resource) {
+		checkDisposed();
+
 		if (incremental) {
 			if (this.resource == resource) {
 				// do nothing, we are already upgraded
 				return;
 			}
-			dispose();
+			incremental = false;
+			attachListeners.revert();
 		}
 
+		incremental = true;
 		this.resource = resource;
 		setupEngine();
 	}
 
-	public void dispose() {
-		if (incremental) {
-			incremental = false;
-			attachListeners.revert();
+	private void checkDisposed() {
+		if (disposed) {
+			throw new IllegalStateException(
+					"Cannot use Translator after dispose."); //$NON-NLS-1$
 		}
 	}
 
+	public void dispose() {
+		if (disposed) {
+			return;
+		}
+
+		if (incremental) {
+			attachListeners.revert();
+		} else {
+			engine.dispose();
+		}
+		disposed = true;
+	}
+
 	public List<FileUpdateTask> fullBuild() {
+		checkDisposed();
+
 		changeRegistry.clear();
 
 		ModelGenerationTaskQueue generationTaskQueue = new ModelGenerationTaskQueue();
@@ -141,10 +163,11 @@ public class Translator {
 	}
 
 	public List<FileUpdateTask> incrementalBuild() {
+		checkDisposed();
+
 		if (!incremental) {
 			return fullBuild();
 		}
-
 		return changeRegistry.performAllChanges();
 	}
 }

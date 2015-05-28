@@ -58,19 +58,22 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 			private final IMatchUpdateListener<SignalMatch> signalListener;
 
 			{
+				signalMatcher.forEachMatch((Signal) null,
+						match -> saveRootName(match.getSignal()));
+
 				signalListener = new IMatchUpdateListener<SignalMatch>() {
 					@Override
 					public void notifyAppearance(SignalMatch match) {
-						changeRegistry.newModification(match.getSignal(),
+						Signal signal = match.getSignal();
+						saveRootName(signal);
+						changeRegistry.newModification(signal,
 								SignalGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(SignalMatch match) {
-						// disappearance of root: delete file
 						Signal signal = match.getSignal();
-						String fileName = NamedReference.getIdentifier(signal);
-						changeRegistry.newDeletion(fileName);
+						consumeRootName(signal, changeRegistry::newDeletion);
 					}
 				};
 				advancedEngine.addMatchUpdateListener(signalMatcher,

@@ -118,20 +118,23 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 			private final IMatchUpdateListener<ReceptionMatch> receptionListener;
 
 			{
+				clsMatcher.forEachMatch((Class) null,
+						match -> saveRootName(match.getCls()));
+
 				clsListener = new IMatchUpdateListener<ClsMatch>() {
 
 					@Override
 					public void notifyAppearance(ClsMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
+						Class cls = match.getCls();
+						saveRootName(cls);
+						changeRegistry
+								.newModification(cls, ClassGenerator.this);
 					}
 
 					@Override
 					public void notifyDisappearance(ClsMatch match) {
-						// disappearance of root: delete file
-						Class c = match.getCls();
-						String fileName = NamedReference.getIdentifier(c);
-						changeRegistry.newDeletion(fileName);
+						Class cls = match.getCls();
+						consumeRootName(cls, changeRegistry::newDeletion);
 					}
 				};
 

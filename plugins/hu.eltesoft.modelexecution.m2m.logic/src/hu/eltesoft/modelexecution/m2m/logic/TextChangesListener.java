@@ -34,5 +34,4 @@ public interface TextChangesListener {
 	 *            deleted file
 	 */
 	void contentDeleted(String rootName);
-
 }
