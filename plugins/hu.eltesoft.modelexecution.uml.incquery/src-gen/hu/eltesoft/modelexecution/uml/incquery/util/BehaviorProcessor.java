@@ -15,14 +15,13 @@ public abstract class BehaviorProcessor implements IMatchProcessor<BehaviorMatch
   /**
    * Defines the action that is to be executed on each match.
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
-   * @param pBehaviorName the value of pattern parameter behaviorName in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior, final String pBehaviorName);
+  public abstract void process(final Behavior pBehavior);
   
   @Override
   public void process(final BehaviorMatch match) {
-    process(match.getBehavior(), match.getBehaviorName());
+    process(match.getBehavior());
     
   }
 }

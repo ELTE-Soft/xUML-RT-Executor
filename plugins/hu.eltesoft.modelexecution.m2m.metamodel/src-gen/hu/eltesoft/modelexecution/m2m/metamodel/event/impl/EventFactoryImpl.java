@@ -58,7 +58,6 @@ public class EventFactoryImpl extends EFactoryImpl implements EventFactory {
 		switch (eClass.getClassifierID()) {
 			case EventPackage.EV_EVENT: return createEvEvent();
 			case EventPackage.EV_SIGNAL_EVENT: return createEvSignalEvent();
-			case EventPackage.EV_SIGNAL: return createEvSignal();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -82,16 +81,6 @@ public class EventFactoryImpl extends EFactoryImpl implements EventFactory {
 	public EvSignalEvent createEvSignalEvent() {
 		EvSignalEventImpl evSignalEvent = new EvSignalEventImpl();
 		return evSignalEvent;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EvSignal createEvSignal() {
-		EvSignalImpl evSignal = new EvSignalImpl();
-		return evSignal;
 	}
 
 	/**

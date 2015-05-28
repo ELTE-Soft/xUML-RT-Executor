@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Operation;
 
 /**
@@ -27,14 +28,14 @@ public abstract class MethodMatch extends BasePatternMatch {
   
   private Operation fOperation;
   
-  private String fMethodName;
+  private Behavior fMethod;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "operation", "methodName");
+  private static List<String> parameterNames = makeImmutableList("cls", "operation", "method");
   
-  private MethodMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
+  private MethodMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
     this.fCls = pCls;
     this.fOperation = pOperation;
-    this.fMethodName = pMethodName;
+    this.fMethod = pMethod;
     
   }
   
@@ -42,7 +43,7 @@ public abstract class MethodMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("operation".equals(parameterName)) return this.fOperation;
-    if ("methodName".equals(parameterName)) return this.fMethodName;
+    if ("method".equals(parameterName)) return this.fMethod;
     return null;
     
   }
@@ -57,8 +58,8 @@ public abstract class MethodMatch extends BasePatternMatch {
     
   }
   
-  public String getMethodName() {
-    return this.fMethodName;
+  public Behavior getMethod() {
+    return this.fMethod;
     
   }
   
@@ -73,8 +74,8 @@ public abstract class MethodMatch extends BasePatternMatch {
     	this.fOperation = (org.eclipse.uml2.uml.Operation) newValue;
     	return true;
     }
-    if ("methodName".equals(parameterName) ) {
-    	this.fMethodName = (java.lang.String) newValue;
+    if ("method".equals(parameterName) ) {
+    	this.fMethod = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
     return false;
@@ -93,9 +94,9 @@ public abstract class MethodMatch extends BasePatternMatch {
     
   }
   
-  public void setMethodName(final String pMethodName) {
+  public void setMethod(final Behavior pMethod) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fMethodName = pMethodName;
+    this.fMethod = pMethod;
     
   }
   
@@ -113,13 +114,13 @@ public abstract class MethodMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fOperation, fMethodName};
+    return new Object[]{fCls, fOperation, fMethod};
     
   }
   
   @Override
   public MethodMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fOperation, fMethodName) : this;
+    return isMutable() ? newMatch(fCls, fOperation, fMethod) : this;
     
   }
   
@@ -128,7 +129,7 @@ public abstract class MethodMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"operation\"=" + prettyPrintValue(fOperation) + ", ");
-    result.append("\"methodName\"=" + prettyPrintValue(fMethodName));
+    result.append("\"method\"=" + prettyPrintValue(fMethod));
     return result.toString();
     
   }
@@ -139,7 +140,7 @@ public abstract class MethodMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fOperation == null) ? 0 : fOperation.hashCode());
-    result = prime * result + ((fMethodName == null) ? 0 : fMethodName.hashCode());
+    result = prime * result + ((fMethod == null) ? 0 : fMethod.hashCode());
     return result;
     
   }
@@ -163,8 +164,8 @@ public abstract class MethodMatch extends BasePatternMatch {
     else if (!fCls.equals(other.fCls)) return false;
     if (fOperation == null) {if (other.fOperation != null) return false;}
     else if (!fOperation.equals(other.fOperation)) return false;
-    if (fMethodName == null) {if (other.fMethodName != null) return false;}
-    else if (!fMethodName.equals(other.fMethodName)) return false;
+    if (fMethod == null) {if (other.fMethod != null) return false;}
+    else if (!fMethod.equals(other.fMethod)) return false;
     return true;
   }
   
@@ -197,12 +198,12 @@ public abstract class MethodMatch extends BasePatternMatch {
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static MethodMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return new Mutable(pCls, pOperation, pMethodName);
+  public static MethodMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
+    return new Mutable(pCls, pOperation, pMethod);
     
   }
   
@@ -212,18 +213,18 @@ public abstract class MethodMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pMethodName the fixed value of pattern parameter methodName, or null if not bound.
+   * @param pMethod the fixed value of pattern parameter method, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static MethodMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-    return new Immutable(pCls, pOperation, pMethodName);
+  public static MethodMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
+    return new Immutable(pCls, pOperation, pMethod);
     
   }
   
   private static final class Mutable extends MethodMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-      super(pCls, pOperation, pMethodName);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
+      super(pCls, pOperation, pMethod);
       
     }
     
@@ -234,8 +235,8 @@ public abstract class MethodMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends MethodMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pMethodName) {
-      super(pCls, pOperation, pMethodName);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Behavior pMethod) {
+      super(pCls, pOperation, pMethod);
       
     }
     

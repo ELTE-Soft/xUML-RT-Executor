@@ -15,6 +15,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
@@ -29,10 +30,9 @@ import org.eclipse.uml2.uml.State;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Entry(region : Region, state : State, entryName) {
+ * pattern Entry(region : Region, state : State, entry : Behavior) {
  * 	State.container(state, region);
  * 	State.entry(state, entry);
- * 	Behavior.name(entry, entryName);
  * }
  * </pre></code>
  * 
@@ -74,7 +74,7 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
   
   private final static int POSITION_STATE = 1;
   
-  private final static int POSITION_ENTRYNAME = 2;
+  private final static int POSITION_ENTRY = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(EntryMatcher.class);
   
@@ -113,12 +113,12 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return matches represented as a EntryMatch object.
    * 
    */
-  public Collection<EntryMatch> getAllMatches(final Region pRegion, final State pState, final String pEntryName) {
-    return rawGetAllMatches(new Object[]{pRegion, pState, pEntryName});
+  public Collection<EntryMatch> getAllMatches(final Region pRegion, final State pState, final Behavior pEntry) {
+    return rawGetAllMatches(new Object[]{pRegion, pState, pEntry});
   }
   
   /**
@@ -126,12 +126,12 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return a match represented as a EntryMatch object, or null if no match is found.
    * 
    */
-  public EntryMatch getOneArbitraryMatch(final Region pRegion, final State pState, final String pEntryName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState, pEntryName});
+  public EntryMatch getOneArbitraryMatch(final Region pRegion, final State pState, final Behavior pEntry) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState, pEntry});
   }
   
   /**
@@ -139,36 +139,36 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final State pState, final String pEntryName) {
-    return rawHasMatch(new Object[]{pRegion, pState, pEntryName});
+  public boolean hasMatch(final Region pRegion, final State pState, final Behavior pEntry) {
+    return rawHasMatch(new Object[]{pRegion, pState, pEntry});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final State pState, final String pEntryName) {
-    return rawCountMatches(new Object[]{pRegion, pState, pEntryName});
+  public int countMatches(final Region pRegion, final State pState, final Behavior pEntry) {
+    return rawCountMatches(new Object[]{pRegion, pState, pEntry});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final State pState, final String pEntryName, final IMatchProcessor<? super EntryMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pState, pEntryName}, processor);
+  public void forEachMatch(final Region pRegion, final State pState, final Behavior pEntry, final IMatchProcessor<? super EntryMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pState, pEntry}, processor);
   }
   
   /**
@@ -176,13 +176,13 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final String pEntryName, final IMatchProcessor<? super EntryMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pState, pEntryName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final Behavior pEntry, final IMatchProcessor<? super EntryMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pState, pEntry}, processor);
   }
   
   /**
@@ -194,14 +194,14 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<EntryMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState, final String pEntryName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState, pEntryName});
+  public DeltaMonitor<EntryMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState, final Behavior pEntry) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState, pEntry});
   }
   
   /**
@@ -210,12 +210,12 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pEntryName the fixed value of pattern parameter entryName, or null if not bound.
+   * @param pEntry the fixed value of pattern parameter entry, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public EntryMatch newMatch(final Region pRegion, final State pState, final String pEntryName) {
-    return EntryMatch.newMatch(pRegion, pState, pEntryName);
+  public EntryMatch newMatch(final Region pRegion, final State pState, final Behavior pEntry) {
+    return EntryMatch.newMatch(pRegion, pState, pEntry);
     
   }
   
@@ -253,8 +253,8 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final State pState, final String pEntryName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pState, pEntryName});
+  public Set<Region> getAllValuesOfregion(final State pState, final Behavior pEntry) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pState, pEntry});
   }
   
   /**
@@ -291,52 +291,52 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOfstate(final Region pRegion, final String pEntryName) {
-    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null, pEntryName});
+  public Set<State> getAllValuesOfstate(final Region pRegion, final Behavior pEntry) {
+    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null, pEntry});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for entryName.
+   * Retrieve the set of values that occur in matches for entry.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfentryName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_ENTRYNAME, parameters, results);
+  protected Set<Behavior> rawAccumulateAllValuesOfentry(final Object[] parameters) {
+    Set<Behavior> results = new HashSet<Behavior>();
+    rawAccumulateAllValues(POSITION_ENTRY, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for entryName.
+   * Retrieve the set of values that occur in matches for entry.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfentryName() {
-    return rawAccumulateAllValuesOfentryName(emptyArray());
+  public Set<Behavior> getAllValuesOfentry() {
+    return rawAccumulateAllValuesOfentry(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for entryName.
+   * Retrieve the set of values that occur in matches for entry.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfentryName(final EntryMatch partialMatch) {
-    return rawAccumulateAllValuesOfentryName(partialMatch.toArray());
+  public Set<Behavior> getAllValuesOfentry(final EntryMatch partialMatch) {
+    return rawAccumulateAllValuesOfentry(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for entryName.
+   * Retrieve the set of values that occur in matches for entry.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfentryName(final Region pRegion, final State pState) {
-    return rawAccumulateAllValuesOfentryName(new Object[]{pRegion, pState, null});
+  public Set<Behavior> getAllValuesOfentry(final Region pRegion, final State pState) {
+    return rawAccumulateAllValuesOfentry(new Object[]{pRegion, pState, null});
   }
   
   @Override
   protected EntryMatch tupleToMatch(final Tuple t) {
     try {
-      return EntryMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE), (java.lang.String) t.get(POSITION_ENTRYNAME));
+      return EntryMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE), (org.eclipse.uml2.uml.Behavior) t.get(POSITION_ENTRY));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -347,7 +347,7 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
   @Override
   protected EntryMatch arrayToMatch(final Object[] match) {
     try {
-      return EntryMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_ENTRYNAME]);
+      return EntryMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (org.eclipse.uml2.uml.Behavior) match[POSITION_ENTRY]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -358,7 +358,7 @@ public class EntryMatcher extends BaseMatcher<EntryMatch> {
   @Override
   protected EntryMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return EntryMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_ENTRYNAME]);
+      return EntryMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (org.eclipse.uml2.uml.Behavior) match[POSITION_ENTRY]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

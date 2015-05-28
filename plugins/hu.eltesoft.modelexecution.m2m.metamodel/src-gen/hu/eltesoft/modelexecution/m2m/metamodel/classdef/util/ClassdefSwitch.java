@@ -79,14 +79,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ClassdefPackage.CL_REGION: {
-				ClRegion clRegion = (ClRegion)theEObject;
-				T result = caseClRegion(clRegion);
-				if (result == null) result = caseNamed(clRegion);
-				if (result == null) result = caseTranslationObject(clRegion);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case ClassdefPackage.CL_OPERATION: {
 				ClOperation clOperation = (ClOperation)theEObject;
 				T result = caseClOperation(clOperation);
@@ -100,14 +92,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				T result = caseClReception(clReception);
 				if (result == null) result = caseNamed(clReception);
 				if (result == null) result = caseTranslationObject(clReception);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_SIGNAL: {
-				ClSignal clSignal = (ClSignal)theEObject;
-				T result = caseClSignal(clSignal);
-				if (result == null) result = caseNamed(clSignal);
-				if (result == null) result = caseTranslationObject(clSignal);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -127,21 +111,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClClass(ClClass object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Cl Region</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Cl Region</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseClRegion(ClRegion object) {
 		return null;
 	}
 
@@ -172,21 +141,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClReception(ClReception object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Cl Signal</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Cl Signal</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseClSignal(ClSignal object) {
 		return null;
 	}
 

@@ -2,7 +2,6 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern Signal(signal : Signal, signalName) {
-	Signal.name(signal, signalName);
+pattern Signal(signal : Signal) {
+	Signal(signal);
 }
-

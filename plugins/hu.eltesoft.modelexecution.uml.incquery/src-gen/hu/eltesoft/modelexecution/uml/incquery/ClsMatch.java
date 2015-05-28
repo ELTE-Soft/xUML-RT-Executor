@@ -24,31 +24,22 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 public abstract class ClsMatch extends BasePatternMatch {
   private org.eclipse.uml2.uml.Class fCls;
   
-  private String fClassName;
+  private static List<String> parameterNames = makeImmutableList("cls");
   
-  private static List<String> parameterNames = makeImmutableList("cls", "className");
-  
-  private ClsMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
+  private ClsMatch(final org.eclipse.uml2.uml.Class pCls) {
     this.fCls = pCls;
-    this.fClassName = pClassName;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
-    if ("className".equals(parameterName)) return this.fClassName;
     return null;
     
   }
   
   public org.eclipse.uml2.uml.Class getCls() {
     return this.fCls;
-    
-  }
-  
-  public String getClassName() {
-    return this.fClassName;
     
   }
   
@@ -59,10 +50,6 @@ public abstract class ClsMatch extends BasePatternMatch {
     	this.fCls = (org.eclipse.uml2.uml.Class) newValue;
     	return true;
     }
-    if ("className".equals(parameterName) ) {
-    	this.fClassName = (java.lang.String) newValue;
-    	return true;
-    }
     return false;
     
   }
@@ -70,12 +57,6 @@ public abstract class ClsMatch extends BasePatternMatch {
   public void setCls(final org.eclipse.uml2.uml.Class pCls) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fCls = pCls;
-    
-  }
-  
-  public void setClassName(final String pClassName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fClassName = pClassName;
     
   }
   
@@ -93,21 +74,20 @@ public abstract class ClsMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fClassName};
+    return new Object[]{fCls};
     
   }
   
   @Override
   public ClsMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fClassName) : this;
+    return isMutable() ? newMatch(fCls) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
-    result.append("\"className\"=" + prettyPrintValue(fClassName));
+    result.append("\"cls\"=" + prettyPrintValue(fCls));
     return result.toString();
     
   }
@@ -117,7 +97,6 @@ public abstract class ClsMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
-    result = prime * result + ((fClassName == null) ? 0 : fClassName.hashCode());
     return result;
     
   }
@@ -139,8 +118,6 @@ public abstract class ClsMatch extends BasePatternMatch {
     ClsMatch other = (ClsMatch) obj;
     if (fCls == null) {if (other.fCls != null) return false;}
     else if (!fCls.equals(other.fCls)) return false;
-    if (fClassName == null) {if (other.fClassName != null) return false;}
-    else if (!fClassName.equals(other.fClassName)) return false;
     return true;
   }
   
@@ -163,7 +140,7 @@ public abstract class ClsMatch extends BasePatternMatch {
    * 
    */
   public static ClsMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null);
     
   }
   
@@ -172,12 +149,11 @@ public abstract class ClsMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ClsMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return new Mutable(pCls, pClassName);
+  public static ClsMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls) {
+    return new Mutable(pCls);
     
   }
   
@@ -186,18 +162,17 @@ public abstract class ClsMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pClassName the fixed value of pattern parameter className, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ClsMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-    return new Immutable(pCls, pClassName);
+  public static ClsMatch newMatch(final org.eclipse.uml2.uml.Class pCls) {
+    return new Immutable(pCls);
     
   }
   
   private static final class Mutable extends ClsMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-      super(pCls, pClassName);
+    Mutable(final org.eclipse.uml2.uml.Class pCls) {
+      super(pCls);
       
     }
     
@@ -208,8 +183,8 @@ public abstract class ClsMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ClsMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final String pClassName) {
-      super(pCls, pClassName);
+    Immutable(final org.eclipse.uml2.uml.Class pCls) {
+      super(pCls);
       
     }
     

@@ -6,6 +6,7 @@ Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.xtext,
- hu.eltesoft.modelexecution.3pp;bundle-version="0.1.0",
- hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.1.0"
+ hu.eltesoft.modelexecution.3pp,
+ hu.eltesoft.modelexecution.m2t.smap.emf,
+ org.eclipse.uml2.uml
 Export-Package: hu.eltesoft.modelexecution.uml.alf

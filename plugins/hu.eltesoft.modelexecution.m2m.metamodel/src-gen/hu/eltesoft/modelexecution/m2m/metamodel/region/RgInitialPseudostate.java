@@ -3,7 +3,6 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +20,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
  * @model
  * @generated
  */
-public interface RgInitialPseudostate extends Named, Referenced {
+public interface RgInitialPseudostate extends Named {
 	/**
 	 * Returns the value of the '<em><b>Initial Transition</b></em>' reference.
 	 * <!-- begin-user-doc -->

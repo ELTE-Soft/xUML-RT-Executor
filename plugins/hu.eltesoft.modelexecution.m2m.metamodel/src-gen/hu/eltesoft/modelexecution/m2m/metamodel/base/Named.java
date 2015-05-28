@@ -11,7 +11,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getReference <em>Reference</em>}</li>
  * </ul>
  * </p>
  *
@@ -21,29 +21,29 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  */
 public interface Named extends TranslationObject {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Reference</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getNamed_Name()
-	 * @model required="true"
+	 * @return the value of the '<em>Reference</em>' attribute.
+	 * @see #setReference(NamedReference)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getNamed_Reference()
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
-	String getName();
+	NamedReference getReference();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named#getReference <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
+	 * @param value the new value of the '<em>Reference</em>' attribute.
+	 * @see #getReference()
 	 * @generated
 	 */
-	void setName(String value);
+	void setReference(NamedReference value);
 
 } // Named

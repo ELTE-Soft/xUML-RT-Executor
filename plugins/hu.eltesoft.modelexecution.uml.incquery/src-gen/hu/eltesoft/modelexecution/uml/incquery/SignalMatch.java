@@ -25,31 +25,22 @@ import org.eclipse.uml2.uml.Signal;
 public abstract class SignalMatch extends BasePatternMatch {
   private Signal fSignal;
   
-  private String fSignalName;
+  private static List<String> parameterNames = makeImmutableList("signal");
   
-  private static List<String> parameterNames = makeImmutableList("signal", "signalName");
-  
-  private SignalMatch(final Signal pSignal, final String pSignalName) {
+  private SignalMatch(final Signal pSignal) {
     this.fSignal = pSignal;
-    this.fSignalName = pSignalName;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("signal".equals(parameterName)) return this.fSignal;
-    if ("signalName".equals(parameterName)) return this.fSignalName;
     return null;
     
   }
   
   public Signal getSignal() {
     return this.fSignal;
-    
-  }
-  
-  public String getSignalName() {
-    return this.fSignalName;
     
   }
   
@@ -60,10 +51,6 @@ public abstract class SignalMatch extends BasePatternMatch {
     	this.fSignal = (org.eclipse.uml2.uml.Signal) newValue;
     	return true;
     }
-    if ("signalName".equals(parameterName) ) {
-    	this.fSignalName = (java.lang.String) newValue;
-    	return true;
-    }
     return false;
     
   }
@@ -71,12 +58,6 @@ public abstract class SignalMatch extends BasePatternMatch {
   public void setSignal(final Signal pSignal) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fSignal = pSignal;
-    
-  }
-  
-  public void setSignalName(final String pSignalName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fSignalName = pSignalName;
     
   }
   
@@ -94,21 +75,20 @@ public abstract class SignalMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fSignal, fSignalName};
+    return new Object[]{fSignal};
     
   }
   
   @Override
   public SignalMatch toImmutable() {
-    return isMutable() ? newMatch(fSignal, fSignalName) : this;
+    return isMutable() ? newMatch(fSignal) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"signal\"=" + prettyPrintValue(fSignal) + ", ");
-    result.append("\"signalName\"=" + prettyPrintValue(fSignalName));
+    result.append("\"signal\"=" + prettyPrintValue(fSignal));
     return result.toString();
     
   }
@@ -118,7 +98,6 @@ public abstract class SignalMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fSignal == null) ? 0 : fSignal.hashCode());
-    result = prime * result + ((fSignalName == null) ? 0 : fSignalName.hashCode());
     return result;
     
   }
@@ -140,8 +119,6 @@ public abstract class SignalMatch extends BasePatternMatch {
     SignalMatch other = (SignalMatch) obj;
     if (fSignal == null) {if (other.fSignal != null) return false;}
     else if (!fSignal.equals(other.fSignal)) return false;
-    if (fSignalName == null) {if (other.fSignalName != null) return false;}
-    else if (!fSignalName.equals(other.fSignalName)) return false;
     return true;
   }
   
@@ -164,7 +141,7 @@ public abstract class SignalMatch extends BasePatternMatch {
    * 
    */
   public static SignalMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null);
     
   }
   
@@ -173,12 +150,11 @@ public abstract class SignalMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static SignalMatch newMutableMatch(final Signal pSignal, final String pSignalName) {
-    return new Mutable(pSignal, pSignalName);
+  public static SignalMatch newMutableMatch(final Signal pSignal) {
+    return new Mutable(pSignal);
     
   }
   
@@ -187,18 +163,17 @@ public abstract class SignalMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static SignalMatch newMatch(final Signal pSignal, final String pSignalName) {
-    return new Immutable(pSignal, pSignalName);
+  public static SignalMatch newMatch(final Signal pSignal) {
+    return new Immutable(pSignal);
     
   }
   
   private static final class Mutable extends SignalMatch {
-    Mutable(final Signal pSignal, final String pSignalName) {
-      super(pSignal, pSignalName);
+    Mutable(final Signal pSignal) {
+      super(pSignal);
       
     }
     
@@ -209,8 +184,8 @@ public abstract class SignalMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends SignalMatch {
-    Immutable(final Signal pSignal, final String pSignalName) {
-      super(pSignal, pSignalName);
+    Immutable(final Signal pSignal) {
+      super(pSignal);
       
     }
     

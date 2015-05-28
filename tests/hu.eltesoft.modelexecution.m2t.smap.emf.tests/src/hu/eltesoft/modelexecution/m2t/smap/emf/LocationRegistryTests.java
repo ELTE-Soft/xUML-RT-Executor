@@ -9,6 +9,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,19 +17,29 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.uml2.uml.Class;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LocationRegistryTests extends ModelBasedTestCase {
 
+	private static final String UML_TEST_MODEL_PATH = "resources/model.uml";
+
 	private LocationRegistry registry;
+	private EObject aClass;
 	private Reference aClassRef;
+
+	public LocationRegistryTests() {
+		super(UML_TEST_MODEL_PATH);
+	}
 
 	@Before
 	public void setUp() {
 		super.setUp();
 		registry = new LocationRegistry();
+		aClass = namedChild(model, Class.class, "A");
 		aClassRef = new Reference(aClass);
 	}
 

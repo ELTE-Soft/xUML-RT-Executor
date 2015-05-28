@@ -4,8 +4,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.Runtime
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.Class
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.Message
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
@@ -23,53 +23,60 @@ class ClassTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(classDefinition.name)»
+		«generatedHeaderForClass(classDefinition)»
 		«IF hasStateMachine»
 			«generateClassWithState()»
 		«ELSE»
-			«generateClassWithoutName()»
+			«generateClassWithoutState()»
 		«ENDIF»
 	'''
 
 	/**
-	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
+	 * Generates a class with a state machine.
+	 * It will be a descendant of {@linkplain ClassWithState}.
 	 */
 	def generateClassWithState() '''
-		public class «classDefinition.name» extends «ClassWithState.canonicalName» {
+		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
 			// Only for Q1
-			private static «classDefinition.name» instance = null;
-			public static «classDefinition.name» getInstance() {
+			private static «classDefinition.identifier» instance = null;
+			public static «classDefinition.identifier» getInstance() {
 				return instance;
 			}
-					
-			«classDefinition.region.name» stateMachine = new «classDefinition.region.name»(this);
-					
-			public «classDefinition.name»(«Runtime.canonicalName» runtime) {
+		
+			«generatedHeader(classDefinition.region)»
+			«classDefinition.region.identifier» stateMachine = new «classDefinition.region.identifier»(this);
+			
+			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
 				super(runtime);
 				instance = this; // Only for Q1
 			}
-			
+		
 			@Override
 			public void init() {
 				stateMachine.doInitialTransition();
 			}
-					
+		
 			@Override
 			public void receive(«Message.canonicalName» message) {
 				stateMachine.step(message);
 			}
-					
+		
 			«generateReceptions()»
-					
+		
 			«generateOperations()»
+		
+			@Override
+			public String toString() {
+				return «classDefinition.nameLiteral»;
+			}
 		}
 	'''
 
 	/**
 	 * Generates a class that does not have a state machine.
 	 */
-	def generateClassWithoutName() '''
-		public class «classDefinition.name» extends «Class.canonicalName» {
+	def generateClassWithoutState() '''
+		public class «classDefinition.identifier» extends «Class.canonicalName» {
 			«generateOperations()»
 		}
 		
@@ -77,9 +84,10 @@ class ClassTemplate extends Template {
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
-			public void «operation.name»() {
+			«generatedHeader(operation)»
+			public void «operation.identifier»() {
 				«IF null != operation.method»
-					new «operation.method»(this).execute();
+					new «operation.method.identifier»(this).execute();
 				«ENDIF»
 			}
 		«ENDFOR»
@@ -87,10 +95,10 @@ class ClassTemplate extends Template {
 
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
-			public void «reception.name»() {
-				getRuntime().addEventToQueue(this, new «reception.signal.name»());
+			«generatedHeader(reception)»
+			public void «reception.identifier»() {
+				getRuntime().addEventToQueue(this, new «reception.signal.identifier»());
 			}
 		«ENDFOR»
 	'''
-
 }

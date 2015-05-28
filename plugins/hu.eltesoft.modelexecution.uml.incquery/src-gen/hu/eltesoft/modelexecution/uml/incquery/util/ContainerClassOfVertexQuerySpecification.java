@@ -51,12 +51,12 @@ final class ContainerClassOfVertexQuerySpecification extends BaseGeneratedQueryS
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("vertex","containerClassName");
+    return Arrays.asList("vertex","containerClass");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("vertex", "org.eclipse.uml2.uml.Vertex"),new PParameter("containerClassName", "java.lang.String"));
+    return Arrays.asList(new PParameter("vertex", "org.eclipse.uml2.uml.Vertex"),new PParameter("containerClass", "org.eclipse.uml2.uml.Class"));
   }
   
   @Override
@@ -75,17 +75,18 @@ final class ContainerClassOfVertexQuerySpecification extends BaseGeneratedQueryS
     {
       PBody body = new PBody(this);
       PVariable var_vertex = body.getOrCreateVariableByName("vertex");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_region = body.getOrCreateVariableByName("region");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_vertex, "vertex"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeUnary(body, var_vertex, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State"), "http://www.eclipse.org/uml2/5.0.0/UML/State");
       new TypeBinary(body, CONTEXT, var_vertex, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Vertex.container");
-      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClassName), ContainerClassOfRegionQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClass), ContainerClassOfRegionQuerySpecification.instance());
       bodies.add(body);
     }
     return bodies;

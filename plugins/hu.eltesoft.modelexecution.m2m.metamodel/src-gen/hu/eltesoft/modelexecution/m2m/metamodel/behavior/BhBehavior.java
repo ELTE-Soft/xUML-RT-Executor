@@ -4,6 +4,9 @@ package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,7 +17,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * The following features are supported:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode <em>Alf Code</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}</li>
  * </ul>
  * </p>
  *
@@ -24,55 +27,55 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  */
 public interface BhBehavior extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Container Class</b></em>' reference.
+	 * Returns the value of the '<em><b>Container Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Container Class</em>' reference isn't clear,
+	 * If the meaning of the '<em>Container Class</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Container Class</em>' reference.
-	 * @see #setContainerClass(BhClass)
+	 * @return the value of the '<em>Container Class</em>' attribute.
+	 * @see #setContainerClass(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ContainerClass()
-	 * @model required="true"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
-	BhClass getContainerClass();
+	NamedReference getContainerClass();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Container Class</em>' reference.
+	 * @param value the new value of the '<em>Container Class</em>' attribute.
 	 * @see #getContainerClass()
 	 * @generated
 	 */
-	void setContainerClass(BhClass value);
+	void setContainerClass(NamedReference value);
 
 	/**
-	 * Returns the value of the '<em><b>Alf Code</b></em>' attribute.
+	 * Returns the value of the '<em><b>Alf Result</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Alf Code</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Alf Result</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Alf Code</em>' attribute.
-	 * @see #setAlfCode(String)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_AlfCode()
-	 * @model required="true"
+	 * @return the value of the '<em>Alf Result</em>' attribute.
+	 * @see #setAlfResult(AlfAnalyzerResult)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_AlfResult()
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.behavior.AlfAnalyzerResult" required="true"
 	 * @generated
 	 */
-	String getAlfCode();
+	AlfAnalyzerResult getAlfResult();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfCode <em>Alf Code</em>}' attribute.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Alf Code</em>' attribute.
-	 * @see #getAlfCode()
+	 * @param value the new value of the '<em>Alf Result</em>' attribute.
+	 * @see #getAlfResult()
 	 * @generated
 	 */
-	void setAlfCode(String value);
+	void setAlfResult(AlfAnalyzerResult value);
 
 } // BhBehavior

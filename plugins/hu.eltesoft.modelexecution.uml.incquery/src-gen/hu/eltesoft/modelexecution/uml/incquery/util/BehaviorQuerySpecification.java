@@ -12,7 +12,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
@@ -48,12 +47,12 @@ public final class BehaviorQuerySpecification extends BaseGeneratedQuerySpecific
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","behaviorName");
+    return Arrays.asList("behavior");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("behaviorName", "java.lang.String"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"));
   }
   
   @Override
@@ -63,7 +62,7 @@ public final class BehaviorQuerySpecification extends BaseGeneratedQuerySpecific
   
   @Override
   public BehaviorMatch newMatch(final Object... parameters) {
-    return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (java.lang.String) parameters[1]);
+    return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0]);
   }
   
   @Override
@@ -72,15 +71,11 @@ public final class BehaviorQuerySpecification extends BaseGeneratedQuerySpecific
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_behaviorName = body.getOrCreateVariableByName("behaviorName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
-        new ExportedParameter(body, var_behavior, "behavior"), 
-        new ExportedParameter(body, var_behaviorName, "behaviorName")
+        new ExportedParameter(body, var_behavior, "behavior")
       ));
       
-      
       new TypeUnary(body, var_behavior, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior");
-      new TypeBinary(body, CONTEXT, var_behavior, var_behaviorName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

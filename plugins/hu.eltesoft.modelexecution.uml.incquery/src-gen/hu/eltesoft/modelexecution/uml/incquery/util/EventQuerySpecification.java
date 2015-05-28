@@ -12,7 +12,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
@@ -48,12 +47,12 @@ public final class EventQuerySpecification extends BaseGeneratedQuerySpecificati
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("event","eventName");
+    return Arrays.asList("event");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("event", "org.eclipse.uml2.uml.SignalEvent"),new PParameter("eventName", "java.lang.String"));
+    return Arrays.asList(new PParameter("event", "org.eclipse.uml2.uml.SignalEvent"));
   }
   
   @Override
@@ -63,7 +62,7 @@ public final class EventQuerySpecification extends BaseGeneratedQuerySpecificati
   
   @Override
   public EventMatch newMatch(final Object... parameters) {
-    return EventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) parameters[0], (java.lang.String) parameters[1]);
+    return EventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) parameters[0]);
   }
   
   @Override
@@ -72,15 +71,11 @@ public final class EventQuerySpecification extends BaseGeneratedQuerySpecificati
     {
       PBody body = new PBody(this);
       PVariable var_event = body.getOrCreateVariableByName("event");
-      PVariable var_eventName = body.getOrCreateVariableByName("eventName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
-        new ExportedParameter(body, var_event, "event"), 
-        new ExportedParameter(body, var_eventName, "eventName")
+        new ExportedParameter(body, var_event, "event")
       ));
       
       new TypeUnary(body, var_event, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent"), "http://www.eclipse.org/uml2/5.0.0/UML/SignalEvent");
-      
-      new TypeBinary(body, CONTEXT, var_event, var_eventName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

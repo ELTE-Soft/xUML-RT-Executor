@@ -15,6 +15,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
@@ -29,10 +30,9 @@ import org.eclipse.uml2.uml.State;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Exit(region : Region, state : State, exitName) {
+ * pattern Exit(region : Region, state : State, exit : Behavior) {
  * 	State.container(state, region);
  * 	State.exit(state, exit);
- * 	Behavior.name(exit, exitName);
  * }
  * </pre></code>
  * 
@@ -74,7 +74,7 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
   
   private final static int POSITION_STATE = 1;
   
-  private final static int POSITION_EXITNAME = 2;
+  private final static int POSITION_EXIT = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ExitMatcher.class);
   
@@ -113,12 +113,12 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return matches represented as a ExitMatch object.
    * 
    */
-  public Collection<ExitMatch> getAllMatches(final Region pRegion, final State pState, final String pExitName) {
-    return rawGetAllMatches(new Object[]{pRegion, pState, pExitName});
+  public Collection<ExitMatch> getAllMatches(final Region pRegion, final State pState, final Behavior pExit) {
+    return rawGetAllMatches(new Object[]{pRegion, pState, pExit});
   }
   
   /**
@@ -126,12 +126,12 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return a match represented as a ExitMatch object, or null if no match is found.
    * 
    */
-  public ExitMatch getOneArbitraryMatch(final Region pRegion, final State pState, final String pExitName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState, pExitName});
+  public ExitMatch getOneArbitraryMatch(final Region pRegion, final State pState, final Behavior pExit) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState, pExit});
   }
   
   /**
@@ -139,36 +139,36 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final State pState, final String pExitName) {
-    return rawHasMatch(new Object[]{pRegion, pState, pExitName});
+  public boolean hasMatch(final Region pRegion, final State pState, final Behavior pExit) {
+    return rawHasMatch(new Object[]{pRegion, pState, pExit});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final State pState, final String pExitName) {
-    return rawCountMatches(new Object[]{pRegion, pState, pExitName});
+  public int countMatches(final Region pRegion, final State pState, final Behavior pExit) {
+    return rawCountMatches(new Object[]{pRegion, pState, pExit});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final State pState, final String pExitName, final IMatchProcessor<? super ExitMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pState, pExitName}, processor);
+  public void forEachMatch(final Region pRegion, final State pState, final Behavior pExit, final IMatchProcessor<? super ExitMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pState, pExit}, processor);
   }
   
   /**
@@ -176,13 +176,13 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final String pExitName, final IMatchProcessor<? super ExitMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pState, pExitName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final Behavior pExit, final IMatchProcessor<? super ExitMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pState, pExit}, processor);
   }
   
   /**
@@ -194,14 +194,14 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ExitMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState, final String pExitName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState, pExitName});
+  public DeltaMonitor<ExitMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState, final Behavior pExit) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState, pExit});
   }
   
   /**
@@ -210,12 +210,12 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pExitName the fixed value of pattern parameter exitName, or null if not bound.
+   * @param pExit the fixed value of pattern parameter exit, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ExitMatch newMatch(final Region pRegion, final State pState, final String pExitName) {
-    return ExitMatch.newMatch(pRegion, pState, pExitName);
+  public ExitMatch newMatch(final Region pRegion, final State pState, final Behavior pExit) {
+    return ExitMatch.newMatch(pRegion, pState, pExit);
     
   }
   
@@ -253,8 +253,8 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final State pState, final String pExitName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pState, pExitName});
+  public Set<Region> getAllValuesOfregion(final State pState, final Behavior pExit) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pState, pExit});
   }
   
   /**
@@ -291,52 +291,52 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOfstate(final Region pRegion, final String pExitName) {
-    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null, pExitName});
+  public Set<State> getAllValuesOfstate(final Region pRegion, final Behavior pExit) {
+    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null, pExit});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for exitName.
+   * Retrieve the set of values that occur in matches for exit.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfexitName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_EXITNAME, parameters, results);
+  protected Set<Behavior> rawAccumulateAllValuesOfexit(final Object[] parameters) {
+    Set<Behavior> results = new HashSet<Behavior>();
+    rawAccumulateAllValues(POSITION_EXIT, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for exitName.
+   * Retrieve the set of values that occur in matches for exit.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfexitName() {
-    return rawAccumulateAllValuesOfexitName(emptyArray());
+  public Set<Behavior> getAllValuesOfexit() {
+    return rawAccumulateAllValuesOfexit(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for exitName.
+   * Retrieve the set of values that occur in matches for exit.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfexitName(final ExitMatch partialMatch) {
-    return rawAccumulateAllValuesOfexitName(partialMatch.toArray());
+  public Set<Behavior> getAllValuesOfexit(final ExitMatch partialMatch) {
+    return rawAccumulateAllValuesOfexit(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for exitName.
+   * Retrieve the set of values that occur in matches for exit.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfexitName(final Region pRegion, final State pState) {
-    return rawAccumulateAllValuesOfexitName(new Object[]{pRegion, pState, null});
+  public Set<Behavior> getAllValuesOfexit(final Region pRegion, final State pState) {
+    return rawAccumulateAllValuesOfexit(new Object[]{pRegion, pState, null});
   }
   
   @Override
   protected ExitMatch tupleToMatch(final Tuple t) {
     try {
-      return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE), (java.lang.String) t.get(POSITION_EXITNAME));
+      return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE), (org.eclipse.uml2.uml.Behavior) t.get(POSITION_EXIT));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -347,7 +347,7 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
   @Override
   protected ExitMatch arrayToMatch(final Object[] match) {
     try {
-      return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_EXITNAME]);
+      return ExitMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (org.eclipse.uml2.uml.Behavior) match[POSITION_EXIT]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -358,7 +358,7 @@ public class ExitMatcher extends BaseMatcher<ExitMatch> {
   @Override
   protected ExitMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ExitMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_EXITNAME]);
+      return ExitMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (org.eclipse.uml2.uml.Behavior) match[POSITION_EXIT]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

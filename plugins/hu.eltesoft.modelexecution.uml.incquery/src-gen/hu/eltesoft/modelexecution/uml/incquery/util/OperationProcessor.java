@@ -16,14 +16,13 @@ public abstract class OperationProcessor implements IMatchProcessor<OperationMat
    * Defines the action that is to be executed on each match.
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pOperation the value of pattern parameter operation in the currently processed match
-   * @param pOperationName the value of pattern parameter operationName in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation);
   
   @Override
   public void process(final OperationMatch match) {
-    process(match.getCls(), match.getOperation(), match.getOperationName());
+    process(match.getCls(), match.getOperation());
     
   }
 }

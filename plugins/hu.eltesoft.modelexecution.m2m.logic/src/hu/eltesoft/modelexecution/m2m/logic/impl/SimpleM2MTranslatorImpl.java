@@ -14,11 +14,6 @@ import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.EventMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.ClsProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.EventProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.RegionProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.SignalProcessor;
 
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -53,7 +48,6 @@ public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 
 	public SimpleM2MTranslatorImpl(IncQueryEngine engine,
 			TextChangesListener listener) throws IncQueryException {
-
 		this.engine = engine;
 
 		this.behaviorMatcher = BehaviorMatcher.on(engine);
@@ -67,7 +61,6 @@ public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 		this.regionGenerator = new RegionGenerator(engine, listener);
 		this.signalEventGenerator = new SignalEventGenerator(engine, listener);
 		this.signalGenerator = new SignalGenerator(engine, listener);
-
 	}
 
 	@Override
@@ -79,80 +72,22 @@ public class SimpleM2MTranslatorImpl implements SimpleM2MTranslator {
 	public FileUpdateTaskQueue fullBuild() {
 		ModelGenerationTaskQueue generationTaskQueue = new ModelGenerationTaskQueue();
 
-		behaviorMatcher.forEachMatch(null, null,
-				getProcessorToGenerateBehaviorModels(generationTaskQueue));
-		clsMatcher.forEachMatch(null, null,
-				getProcessorToGenerateClassModels(generationTaskQueue));
-		eventMatcher.forEachMatch(null, null,
-				getProcessorToGenerateEventModels(generationTaskQueue));
-		regionMatcher.forEachMatch(null, null,
-				getProcessorToGenerateRegionModels(generationTaskQueue));
-		signalMatcher.forEachMatch(null, null,
-				getProcessorToGenerateSignalModels(generationTaskQueue));
+		behaviorMatcher.forEachMatch((Behavior) null, match -> {
+			generationTaskQueue.addNew(match.getBehavior(), behaviorGenerator);
+		});
+		clsMatcher.forEachMatch((Class) null, match -> {
+			generationTaskQueue.addNew(match.getCls(), classGenerator);
+		});
+		eventMatcher.forEachMatch((SignalEvent) null, match -> {
+			generationTaskQueue.addNew(match.getEvent(), signalEventGenerator);
+		});
+		regionMatcher.forEachMatch((Region) null, match -> {
+			generationTaskQueue.addNew(match.getRegion(), regionGenerator);
+		});
+		signalMatcher.forEachMatch((Signal) null, match -> {
+			generationTaskQueue.addNew(match.getSignal(), signalGenerator);
+		});
 
-		FileUpdateTaskQueue updateTaskQueue = generationTaskQueue.performAll();
-
-		return updateTaskQueue;
+		return generationTaskQueue.performAll();
 	}
-
-	private BehaviorProcessor getProcessorToGenerateBehaviorModels(
-			ModelGenerationTaskQueue taskQueue) {
-		return new BehaviorProcessor() {
-
-			@Override
-			public void process(Behavior pBehavior, String pBehaviorName) {
-				taskQueue.addNew(pBehavior, behaviorGenerator);
-			}
-
-		};
-	}
-
-	private ClsProcessor getProcessorToGenerateClassModels(
-			ModelGenerationTaskQueue taskQueue) {
-		return new ClsProcessor() {
-
-			@Override
-			public void process(Class pCls, String pClassName) {
-				taskQueue.addNew(pCls, classGenerator);
-			}
-
-		};
-	}
-
-	private EventProcessor getProcessorToGenerateEventModels(
-			ModelGenerationTaskQueue taskQueue) {
-		return new EventProcessor() {
-
-			@Override
-			public void process(SignalEvent pEvent, String pEventName) {
-				taskQueue.addNew(pEvent, signalEventGenerator);
-			}
-
-		};
-	}
-
-	private RegionProcessor getProcessorToGenerateRegionModels(
-			ModelGenerationTaskQueue taskQueue) {
-		return new RegionProcessor() {
-
-			@Override
-			public void process(Region pRegion, String pRegionName) {
-				taskQueue.addNew(pRegion, regionGenerator);
-			}
-
-		};
-	}
-
-	private SignalProcessor getProcessorToGenerateSignalModels(
-			ModelGenerationTaskQueue taskQueue) {
-		return new SignalProcessor() {
-
-			@Override
-			public void process(Signal pSignal, String pSignalName) {
-				taskQueue.addNew(pSignal, signalGenerator);
-			}
-
-		};
-	}
-
 }

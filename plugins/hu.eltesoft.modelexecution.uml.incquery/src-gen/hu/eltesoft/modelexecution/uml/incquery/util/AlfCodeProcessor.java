@@ -15,14 +15,15 @@ public abstract class AlfCodeProcessor implements IMatchProcessor<AlfCodeMatch> 
   /**
    * Defines the action that is to be executed on each match.
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
+   * @param pContainerClass the value of pattern parameter containerClass in the currently processed match
    * @param pAlfCode the value of pattern parameter alfCode in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior, final String pAlfCode);
+  public abstract void process(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode);
   
   @Override
   public void process(final AlfCodeMatch match) {
-    process(match.getBehavior(), match.getAlfCode());
+    process(match.getBehavior(), match.getContainerClass(), match.getAlfCode());
     
   }
 }

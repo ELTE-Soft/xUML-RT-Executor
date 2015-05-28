@@ -3,27 +3,24 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalEventTemplate;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.uml.incquery.EventMatch;
 import hu.eltesoft.modelexecution.uml.incquery.EventMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalEventMatch;
 import hu.eltesoft.modelexecution.uml.incquery.SignalEventMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.EventProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.SignalEventProcessor;
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.SignalEvent;
 
 public class SignalEventGenerator extends
-		AbstractGenerator<SignalEvent, EvSignalEvent> {
+		AbstractGenerator<SignalEvent, EvSignalEvent, SignalEventTemplate> {
 
 	private static final EventFactory FACTORY = EventFactory.eINSTANCE;
 
@@ -37,73 +34,29 @@ public class SignalEventGenerator extends
 		signalEventMatcher = SignalEventMatcher.on(engine);
 	}
 
-	// generate translation model
-
 	@Override
-	public EvSignalEvent generateTranslationModel(SignalEvent event)
+	public EvSignalEvent generateTranslationModel(SignalEvent source)
 			throws GenerationException {
-		// new EvSignalEvent
 		EvSignalEvent root = FACTORY.createEvSignalEvent();
 
-		// name, signal
-		check(eventMatcher.forOneArbitraryMatch(event, null,
-				getProcessorToSetNameAndSignalOfRoot(root)));
+		check(eventMatcher.forOneArbitraryMatch(source, eventMatch -> {
+			SignalEvent pEvent = eventMatch.getEvent();
+			root.setReference(new NamedReference(pEvent));
+
+			check(signalEventMatcher.forOneArbitraryMatch(pEvent, null,
+					signalMatch -> {
+						Signal pSignal = signalMatch.getSignal();
+						root.setSignal(new NamedReference(pSignal));
+					}));
+		}));
 
 		return root;
 	}
 
-	private EventProcessor getProcessorToSetNameAndSignalOfRoot(
-			EvSignalEvent root) {
-		return new EventProcessor() {
-
-			@Override
-			public void process(SignalEvent pEvent, String pEventName) {
-				// name
-				root.setName(pEventName);
-
-				// signal
-				check(signalEventMatcher.forOneArbitraryMatch(pEvent, null,
-						getProcessorToSetNameOfRoot(root)));
-			}
-
-			private SignalEventProcessor getProcessorToSetNameOfRoot(
-					EvSignalEvent root) {
-				return new SignalEventProcessor() {
-
-					@Override
-					public void process(SignalEvent pEvent, String pSignalName) {
-						root.setSignal(createSignal(pSignalName));
-					}
-
-				};
-			}
-
-			private EvSignal createSignal(String name) {
-				// new EvSignal
-				EvSignal evSignal = FACTORY.createEvSignal();
-
-				// name
-				evSignal.setName(name);
-
-				return evSignal;
-			}
-
-		};
-	}
-
-	// generate text
-
 	@Override
-	public void generateText(EvSignalEvent root) {
-		SignalEventTemplate template = new SignalEventTemplate(root);
-
-		SourceMappedText output = template.generate();
-		DebugSymbols symbols = template.getDebugSymbols();
-
-		textChangesListener.contentChanged(root.getName(), output, symbols);
-	}
-
-	// add match update listeners
+	protected SignalEventTemplate createTemplate(EvSignalEvent root) {
+		return new SignalEventTemplate(root);
+	};
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -114,7 +67,7 @@ public class SignalEventGenerator extends
 			private final IMatchUpdateListener<EventMatch> eventListener;
 			private final IMatchUpdateListener<SignalEventMatch> signalEventListener;
 
-			{ // set eventListener
+			{
 				eventListener = new IMatchUpdateListener<EventMatch>() {
 
 					@Override
@@ -126,16 +79,17 @@ public class SignalEventGenerator extends
 					@Override
 					public void notifyDisappearance(EventMatch match) {
 						// disappearance of root: delete file
-						changeRegistry.newDeletion(match.getEventName());
+						SignalEvent event = match.getEvent();
+						String fileName = NamedReference.getIdentifier(event);
+						changeRegistry.newDeletion(fileName);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(eventMatcher,
 						eventListener, false);
 			}
 
-			{ // set signalEventListener
+			{
 				signalEventListener = new IMatchUpdateListener<SignalEventMatch>() {
 
 					@Override
@@ -149,7 +103,6 @@ public class SignalEventGenerator extends
 						changeRegistry.newModification(match.getEvent(),
 								SignalEventGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(signalEventMatcher,
@@ -158,14 +111,12 @@ public class SignalEventGenerator extends
 
 			@Override
 			public boolean revert() {
-				
-				advancedEngine.removeMatchUpdateListener(eventMatcher, eventListener);
-				advancedEngine.removeMatchUpdateListener(signalEventMatcher, signalEventListener);
-				
+				advancedEngine.removeMatchUpdateListener(eventMatcher,
+						eventListener);
+				advancedEngine.removeMatchUpdateListener(signalEventMatcher,
+						signalEventListener);
 				return true;
 			}
-
 		};
-
 	}
 }

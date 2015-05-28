@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.Utils;
+import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfBehaviorQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +17,11 @@ import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExpressionEvaluation;
+import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.PositivePatternCall;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
+import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
+import org.eclipse.incquery.runtime.matchers.tuple.FlatTuple;
 
 /**
  * A pattern-specific query specification that can instantiate AlfCodeMatcher in a type-safe way.
@@ -51,12 +55,12 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","alfCode");
+    return Arrays.asList("behavior","containerClass","alfCode");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("alfCode", "java.lang.String"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("containerClass", "org.eclipse.uml2.uml.Class"),new PParameter("alfCode", "java.lang.String"));
   }
   
   @Override
@@ -66,7 +70,7 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
   
   @Override
   public AlfCodeMatch newMatch(final Object... parameters) {
-    return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (java.lang.String) parameters[1]);
+    return AlfCodeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Class) parameters[1], (java.lang.String) parameters[2]);
   }
   
   @Override
@@ -75,16 +79,21 @@ public final class AlfCodeQuerySpecification extends BaseGeneratedQuerySpecifica
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_alfCode = body.getOrCreateVariableByName("alfCode");
       PVariable var_langName = body.getOrCreateVariableByName("langName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
+        new ExportedParameter(body, var_containerClass, "containerClass"), 
         new ExportedParameter(body, var_alfCode, "alfCode")
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
+      
       new TypeBinary(body, CONTEXT, var_behavior, var_alfCode, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "body"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.body");
       new TypeBinary(body, CONTEXT, var_behavior, var_langName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior", "language"), "http://www.eclipse.org/uml2/5.0.0/UML/OpaqueBehavior.language");
+      new PositivePatternCall(body, new FlatTuple(var_behavior, var_containerClass), ContainerClassOfBehaviorQuerySpecification.instance());
       new ExpressionEvaluation(body, new IExpressionEvaluator() {
         @Override
         public String getShortDescription() {

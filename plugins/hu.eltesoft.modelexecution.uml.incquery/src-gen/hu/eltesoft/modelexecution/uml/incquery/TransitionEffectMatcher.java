@@ -15,6 +15,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Transition;
 
@@ -30,10 +31,9 @@ import org.eclipse.uml2.uml.Transition;
  * <p>Original source:
  * <code><pre>
  * pattern
- * TransitionEffect(region : Region, transition : Transition, effectName) {
+ * TransitionEffect(region : Region, transition : Transition, effect : Behavior) {
  * 	Transition.container(transition, region);
  * 	Transition.effect(transition, effect);
- * 	Behavior.name(effect, effectName);
  * }
  * </pre></code>
  * 
@@ -75,7 +75,7 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
   
   private final static int POSITION_TRANSITION = 1;
   
-  private final static int POSITION_EFFECTNAME = 2;
+  private final static int POSITION_EFFECT = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(TransitionEffectMatcher.class);
   
@@ -114,12 +114,12 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return matches represented as a TransitionEffectMatch object.
    * 
    */
-  public Collection<TransitionEffectMatch> getAllMatches(final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return rawGetAllMatches(new Object[]{pRegion, pTransition, pEffectName});
+  public Collection<TransitionEffectMatch> getAllMatches(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return rawGetAllMatches(new Object[]{pRegion, pTransition, pEffect});
   }
   
   /**
@@ -127,12 +127,12 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return a match represented as a TransitionEffectMatch object, or null if no match is found.
    * 
    */
-  public TransitionEffectMatch getOneArbitraryMatch(final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pTransition, pEffectName});
+  public TransitionEffectMatch getOneArbitraryMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pTransition, pEffect});
   }
   
   /**
@@ -140,36 +140,36 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return rawHasMatch(new Object[]{pRegion, pTransition, pEffectName});
+  public boolean hasMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return rawHasMatch(new Object[]{pRegion, pTransition, pEffect});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return rawCountMatches(new Object[]{pRegion, pTransition, pEffectName});
+  public int countMatches(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return rawCountMatches(new Object[]{pRegion, pTransition, pEffect});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final Transition pTransition, final String pEffectName, final IMatchProcessor<? super TransitionEffectMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pTransition, pEffectName}, processor);
+  public void forEachMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect, final IMatchProcessor<? super TransitionEffectMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pTransition, pEffect}, processor);
   }
   
   /**
@@ -177,13 +177,13 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final Transition pTransition, final String pEffectName, final IMatchProcessor<? super TransitionEffectMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pTransition, pEffectName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect, final IMatchProcessor<? super TransitionEffectMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pTransition, pEffect}, processor);
   }
   
   /**
@@ -195,14 +195,14 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<TransitionEffectMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pTransition, pEffectName});
+  public DeltaMonitor<TransitionEffectMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pTransition, pEffect});
   }
   
   /**
@@ -211,12 +211,12 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pTransition the fixed value of pattern parameter transition, or null if not bound.
-   * @param pEffectName the fixed value of pattern parameter effectName, or null if not bound.
+   * @param pEffect the fixed value of pattern parameter effect, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public TransitionEffectMatch newMatch(final Region pRegion, final Transition pTransition, final String pEffectName) {
-    return TransitionEffectMatch.newMatch(pRegion, pTransition, pEffectName);
+  public TransitionEffectMatch newMatch(final Region pRegion, final Transition pTransition, final Behavior pEffect) {
+    return TransitionEffectMatch.newMatch(pRegion, pTransition, pEffect);
     
   }
   
@@ -254,8 +254,8 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final Transition pTransition, final String pEffectName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pTransition, pEffectName});
+  public Set<Region> getAllValuesOfregion(final Transition pTransition, final Behavior pEffect) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pTransition, pEffect});
   }
   
   /**
@@ -292,52 +292,52 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Transition> getAllValuesOftransition(final Region pRegion, final String pEffectName) {
-    return rawAccumulateAllValuesOftransition(new Object[]{pRegion, null, pEffectName});
+  public Set<Transition> getAllValuesOftransition(final Region pRegion, final Behavior pEffect) {
+    return rawAccumulateAllValuesOftransition(new Object[]{pRegion, null, pEffect});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for effectName.
+   * Retrieve the set of values that occur in matches for effect.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfeffectName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_EFFECTNAME, parameters, results);
+  protected Set<Behavior> rawAccumulateAllValuesOfeffect(final Object[] parameters) {
+    Set<Behavior> results = new HashSet<Behavior>();
+    rawAccumulateAllValues(POSITION_EFFECT, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for effectName.
+   * Retrieve the set of values that occur in matches for effect.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeffectName() {
-    return rawAccumulateAllValuesOfeffectName(emptyArray());
+  public Set<Behavior> getAllValuesOfeffect() {
+    return rawAccumulateAllValuesOfeffect(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for effectName.
+   * Retrieve the set of values that occur in matches for effect.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeffectName(final TransitionEffectMatch partialMatch) {
-    return rawAccumulateAllValuesOfeffectName(partialMatch.toArray());
+  public Set<Behavior> getAllValuesOfeffect(final TransitionEffectMatch partialMatch) {
+    return rawAccumulateAllValuesOfeffect(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for effectName.
+   * Retrieve the set of values that occur in matches for effect.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfeffectName(final Region pRegion, final Transition pTransition) {
-    return rawAccumulateAllValuesOfeffectName(new Object[]{pRegion, pTransition, null});
+  public Set<Behavior> getAllValuesOfeffect(final Region pRegion, final Transition pTransition) {
+    return rawAccumulateAllValuesOfeffect(new Object[]{pRegion, pTransition, null});
   }
   
   @Override
   protected TransitionEffectMatch tupleToMatch(final Tuple t) {
     try {
-      return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Transition) t.get(POSITION_TRANSITION), (java.lang.String) t.get(POSITION_EFFECTNAME));
+      return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Transition) t.get(POSITION_TRANSITION), (org.eclipse.uml2.uml.Behavior) t.get(POSITION_EFFECT));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -348,7 +348,7 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
   @Override
   protected TransitionEffectMatch arrayToMatch(final Object[] match) {
     try {
-      return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_EFFECTNAME]);
+      return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (org.eclipse.uml2.uml.Behavior) match[POSITION_EFFECT]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -359,7 +359,7 @@ public class TransitionEffectMatcher extends BaseMatcher<TransitionEffectMatch> 
   @Override
   protected TransitionEffectMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return TransitionEffectMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (java.lang.String) match[POSITION_EFFECTNAME]);
+      return TransitionEffectMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Transition) match[POSITION_TRANSITION], (org.eclipse.uml2.uml.Behavior) match[POSITION_EFFECT]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

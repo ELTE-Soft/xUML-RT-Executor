@@ -32,13 +32,11 @@ import org.eclipse.uml2.uml.Transition;
  * <p>Original source:
  * <code><pre>
  * pattern
- * Initials(region : Region, initPseudostate : Pseudostate, initPseudostateName, initTransition : Transition, firstState : State) {
+ * Initials(region : Region, initPseudostate : Pseudostate, initTransition : Transition, firstState : State) {
  * 	Pseudostate.container(initPseudostate, region);
  * 	Pseudostate.kind(initPseudostate, ::initial);
- * 	Pseudostate.name(initPseudostate, initPseudostateName);
  * 
  * 	Transition.source(initTransition, initPseudostate);
- * 
  * 	Transition.target(initTransition, firstState);
  * }
  * </pre></code>
@@ -81,11 +79,9 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
   
   private final static int POSITION_INITPSEUDOSTATE = 1;
   
-  private final static int POSITION_INITPSEUDOSTATENAME = 2;
+  private final static int POSITION_INITTRANSITION = 2;
   
-  private final static int POSITION_INITTRANSITION = 3;
-  
-  private final static int POSITION_FIRSTSTATE = 4;
+  private final static int POSITION_FIRSTSTATE = 3;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(InitialsMatcher.class);
   
@@ -124,14 +120,13 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return matches represented as a InitialsMatch object.
    * 
    */
-  public Collection<InitialsMatch> getAllMatches(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawGetAllMatches(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public Collection<InitialsMatch> getAllMatches(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawGetAllMatches(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
@@ -139,14 +134,13 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return a match represented as a InitialsMatch object, or null if no match is found.
    * 
    */
-  public InitialsMatch getOneArbitraryMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public InitialsMatch getOneArbitraryMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
@@ -154,42 +148,39 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawHasMatch(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public boolean hasMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawHasMatch(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawCountMatches(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public int countMatches(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawCountMatches(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState, final IMatchProcessor<? super InitialsMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState}, processor);
+  public void forEachMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState, final IMatchProcessor<? super InitialsMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState}, processor);
   }
   
   /**
@@ -197,15 +188,14 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState, final IMatchProcessor<? super InitialsMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState, final IMatchProcessor<? super InitialsMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState}, processor);
   }
   
   /**
@@ -217,7 +207,6 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return the delta monitor.
@@ -225,8 +214,8 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * 
    */
   @Deprecated
-  public DeltaMonitor<InitialsMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public DeltaMonitor<InitialsMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
@@ -235,14 +224,13 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pInitPseudostate the fixed value of pattern parameter initPseudostate, or null if not bound.
-   * @param pInitPseudostateName the fixed value of pattern parameter initPseudostateName, or null if not bound.
    * @param pInitTransition the fixed value of pattern parameter initTransition, or null if not bound.
    * @param pFirstState the fixed value of pattern parameter firstState, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public InitialsMatch newMatch(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return InitialsMatch.newMatch(pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState);
+  public InitialsMatch newMatch(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return InitialsMatch.newMatch(pRegion, pInitPseudostate, pInitTransition, pFirstState);
     
   }
   
@@ -280,8 +268,8 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pInitPseudostate, pInitPseudostateName, pInitTransition, pFirstState});
+  public Set<Region> getAllValuesOfregion(final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pInitPseudostate, pInitTransition, pFirstState});
   }
   
   /**
@@ -318,46 +306,8 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Pseudostate> getAllValuesOfinitPseudostate(final Region pRegion, final String pInitPseudostateName, final Transition pInitTransition, final State pFirstState) {
-    return rawAccumulateAllValuesOfinitPseudostate(new Object[]{pRegion, null, pInitPseudostateName, pInitTransition, pFirstState});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for initPseudostateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfinitPseudostateName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_INITPSEUDOSTATENAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for initPseudostateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfinitPseudostateName() {
-    return rawAccumulateAllValuesOfinitPseudostateName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for initPseudostateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfinitPseudostateName(final InitialsMatch partialMatch) {
-    return rawAccumulateAllValuesOfinitPseudostateName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for initPseudostateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfinitPseudostateName(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition, final State pFirstState) {
-    return rawAccumulateAllValuesOfinitPseudostateName(new Object[]{pRegion, pInitPseudostate, null, pInitTransition, pFirstState});
+  public Set<Pseudostate> getAllValuesOfinitPseudostate(final Region pRegion, final Transition pInitTransition, final State pFirstState) {
+    return rawAccumulateAllValuesOfinitPseudostate(new Object[]{pRegion, null, pInitTransition, pFirstState});
   }
   
   /**
@@ -394,8 +344,8 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Transition> getAllValuesOfinitTransition(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final State pFirstState) {
-    return rawAccumulateAllValuesOfinitTransition(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, null, pFirstState});
+  public Set<Transition> getAllValuesOfinitTransition(final Region pRegion, final Pseudostate pInitPseudostate, final State pFirstState) {
+    return rawAccumulateAllValuesOfinitTransition(new Object[]{pRegion, pInitPseudostate, null, pFirstState});
   }
   
   /**
@@ -432,14 +382,14 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOffirstState(final Region pRegion, final Pseudostate pInitPseudostate, final String pInitPseudostateName, final Transition pInitTransition) {
-    return rawAccumulateAllValuesOffirstState(new Object[]{pRegion, pInitPseudostate, pInitPseudostateName, pInitTransition, null});
+  public Set<State> getAllValuesOffirstState(final Region pRegion, final Pseudostate pInitPseudostate, final Transition pInitTransition) {
+    return rawAccumulateAllValuesOffirstState(new Object[]{pRegion, pInitPseudostate, pInitTransition, null});
   }
   
   @Override
   protected InitialsMatch tupleToMatch(final Tuple t) {
     try {
-      return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Pseudostate) t.get(POSITION_INITPSEUDOSTATE), (java.lang.String) t.get(POSITION_INITPSEUDOSTATENAME), (org.eclipse.uml2.uml.Transition) t.get(POSITION_INITTRANSITION), (org.eclipse.uml2.uml.State) t.get(POSITION_FIRSTSTATE));
+      return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.Pseudostate) t.get(POSITION_INITPSEUDOSTATE), (org.eclipse.uml2.uml.Transition) t.get(POSITION_INITTRANSITION), (org.eclipse.uml2.uml.State) t.get(POSITION_FIRSTSTATE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -450,7 +400,7 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
   @Override
   protected InitialsMatch arrayToMatch(final Object[] match) {
     try {
-      return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Pseudostate) match[POSITION_INITPSEUDOSTATE], (java.lang.String) match[POSITION_INITPSEUDOSTATENAME], (org.eclipse.uml2.uml.Transition) match[POSITION_INITTRANSITION], (org.eclipse.uml2.uml.State) match[POSITION_FIRSTSTATE]);
+      return InitialsMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Pseudostate) match[POSITION_INITPSEUDOSTATE], (org.eclipse.uml2.uml.Transition) match[POSITION_INITTRANSITION], (org.eclipse.uml2.uml.State) match[POSITION_FIRSTSTATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -461,7 +411,7 @@ public class InitialsMatcher extends BaseMatcher<InitialsMatch> {
   @Override
   protected InitialsMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return InitialsMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Pseudostate) match[POSITION_INITPSEUDOSTATE], (java.lang.String) match[POSITION_INITPSEUDOSTATENAME], (org.eclipse.uml2.uml.Transition) match[POSITION_INITTRANSITION], (org.eclipse.uml2.uml.State) match[POSITION_FIRSTSTATE]);
+      return InitialsMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.Pseudostate) match[POSITION_INITPSEUDOSTATE], (org.eclipse.uml2.uml.Transition) match[POSITION_INITTRANSITION], (org.eclipse.uml2.uml.State) match[POSITION_FIRSTSTATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

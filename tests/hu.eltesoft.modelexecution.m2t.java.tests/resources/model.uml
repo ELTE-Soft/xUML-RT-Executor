@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ZW7FsMc1EeSnK7LttAdTLw" name="model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_aeMPwMc1EeSnK7LttAdTLw" name="A">
+    <ownedReception xmi:type="uml:Reception" xmi:id="_WJfJQARSEeW7b7s8CAsnqQ" name="x"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_gh8K0ARSEeW7b7s8CAsnqQ" name="y"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_g54JsARSEeW7b7s8CAsnqQ" name="z"/>
+  </packagedElement>
+</uml:Model>

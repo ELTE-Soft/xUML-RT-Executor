@@ -1,31 +1,30 @@
-package hu.eltesoft.modelexecution.m2t.smap.emf;
+package hu.eltesoft.modelexecution.test.utils;
 
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.PackageableElement;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.junit.Before;
 
 public abstract class ModelBasedTestCase {
 
-	private static final String UML_TEST_MODEL_PATH = "resources/model.uml";
-
+	protected final String modelPath;
 	protected Model model;
-	protected EObject aClass;
+
+	protected ModelBasedTestCase(String modelPath) {
+		this.modelPath = modelPath;
+	}
 
 	@Before
 	public void setUp() {
-		model = loadModel(UML_TEST_MODEL_PATH);
-		aClass = firstClassFoundIn(model);
+		model = loadModel(modelPath);
 	}
 
 	public Model loadModel(String path) {
@@ -45,11 +44,13 @@ public abstract class ModelBasedTestCase {
 		return null;
 	}
 
-	public EObject firstClassFoundIn(Model model) {
-		EList<PackageableElement> elems = model.getPackagedElements();
-		for (PackageableElement elem : elems) {
-			if (elem instanceof Class) {
-				return elem;
+	@SuppressWarnings("unchecked")
+	public <T extends NamedElement> T namedChild(EObject parent,
+			java.lang.Class<T> type, String name) {
+		for (EObject child : parent.eContents()) {
+			if (type.isInstance(child)
+					&& ((NamedElement) child).getName().equals(name)) {
+				return (T) child;
 			}
 		}
 		return null;

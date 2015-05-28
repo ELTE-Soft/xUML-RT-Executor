@@ -15,6 +15,8 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Signal;
 
 /**
  * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.Reception pattern,
@@ -27,11 +29,9 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Reception(cls : Class, receptionName, signalName) {
+ * pattern Reception(cls : Class, reception : Reception, signal : Signal) {
  * 	Class.ownedReception(cls, reception);
  * 	Reception.signal(reception, signal);
- * 	Reception.name(reception, receptionName);
- * 	Signal.name(signal, signalName);
  * }
  * </pre></code>
  * 
@@ -71,9 +71,9 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
   
   private final static int POSITION_CLS = 0;
   
-  private final static int POSITION_RECEPTIONNAME = 1;
+  private final static int POSITION_RECEPTION = 1;
   
-  private final static int POSITION_SIGNALNAME = 2;
+  private final static int POSITION_SIGNAL = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ReceptionMatcher.class);
   
@@ -111,77 +111,77 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return matches represented as a ReceptionMatch object.
    * 
    */
-  public Collection<ReceptionMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return rawGetAllMatches(new Object[]{pCls, pReceptionName, pSignalName});
+  public Collection<ReceptionMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return rawGetAllMatches(new Object[]{pCls, pReception, pSignal});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return a match represented as a ReceptionMatch object, or null if no match is found.
    * 
    */
-  public ReceptionMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pReceptionName, pSignalName});
+  public ReceptionMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pReception, pSignal});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return rawHasMatch(new Object[]{pCls, pReceptionName, pSignalName});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return rawHasMatch(new Object[]{pCls, pReception, pSignal});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return rawCountMatches(new Object[]{pCls, pReceptionName, pSignalName});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return rawCountMatches(new Object[]{pCls, pReception, pSignal});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName, final IMatchProcessor<? super ReceptionMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pReceptionName, pSignalName}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal, final IMatchProcessor<? super ReceptionMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pReception, pSignal}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName, final IMatchProcessor<? super ReceptionMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pReceptionName, pSignalName}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal, final IMatchProcessor<? super ReceptionMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pReception, pSignal}, processor);
   }
   
   /**
@@ -192,15 +192,15 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ReceptionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReceptionName, pSignalName});
+  public DeltaMonitor<ReceptionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReception, pSignal});
   }
   
   /**
@@ -208,13 +208,13 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
-   * @param pReceptionName the fixed value of pattern parameter receptionName, or null if not bound.
-   * @param pSignalName the fixed value of pattern parameter signalName, or null if not bound.
+   * @param pReception the fixed value of pattern parameter reception, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ReceptionMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName) {
-    return ReceptionMatch.newMatch(pCls, pReceptionName, pSignalName);
+  public ReceptionMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal) {
+    return ReceptionMatch.newMatch(pCls, pReception, pSignal);
     
   }
   
@@ -252,90 +252,90 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final String pReceptionName, final String pSignalName) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pReceptionName, pSignalName});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Reception pReception, final Signal pSignal) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pReception, pSignal});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for receptionName.
+   * Retrieve the set of values that occur in matches for reception.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfreceptionName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_RECEPTIONNAME, parameters, results);
+  protected Set<Reception> rawAccumulateAllValuesOfreception(final Object[] parameters) {
+    Set<Reception> results = new HashSet<Reception>();
+    rawAccumulateAllValues(POSITION_RECEPTION, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for receptionName.
+   * Retrieve the set of values that occur in matches for reception.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfreceptionName() {
-    return rawAccumulateAllValuesOfreceptionName(emptyArray());
+  public Set<Reception> getAllValuesOfreception() {
+    return rawAccumulateAllValuesOfreception(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for receptionName.
+   * Retrieve the set of values that occur in matches for reception.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfreceptionName(final ReceptionMatch partialMatch) {
-    return rawAccumulateAllValuesOfreceptionName(partialMatch.toArray());
+  public Set<Reception> getAllValuesOfreception(final ReceptionMatch partialMatch) {
+    return rawAccumulateAllValuesOfreception(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for receptionName.
+   * Retrieve the set of values that occur in matches for reception.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfreceptionName(final org.eclipse.uml2.uml.Class pCls, final String pSignalName) {
-    return rawAccumulateAllValuesOfreceptionName(new Object[]{pCls, null, pSignalName});
+  public Set<Reception> getAllValuesOfreception(final org.eclipse.uml2.uml.Class pCls, final Signal pSignal) {
+    return rawAccumulateAllValuesOfreception(new Object[]{pCls, null, pSignal});
   }
   
   /**
-   * Retrieve the set of values that occur in matches for signalName.
+   * Retrieve the set of values that occur in matches for signal.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<String> rawAccumulateAllValuesOfsignalName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_SIGNALNAME, parameters, results);
+  protected Set<Signal> rawAccumulateAllValuesOfsignal(final Object[] parameters) {
+    Set<Signal> results = new HashSet<Signal>();
+    rawAccumulateAllValues(POSITION_SIGNAL, parameters, results);
     return results;
   }
   
   /**
-   * Retrieve the set of values that occur in matches for signalName.
+   * Retrieve the set of values that occur in matches for signal.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfsignalName() {
-    return rawAccumulateAllValuesOfsignalName(emptyArray());
+  public Set<Signal> getAllValuesOfsignal() {
+    return rawAccumulateAllValuesOfsignal(emptyArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for signalName.
+   * Retrieve the set of values that occur in matches for signal.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfsignalName(final ReceptionMatch partialMatch) {
-    return rawAccumulateAllValuesOfsignalName(partialMatch.toArray());
+  public Set<Signal> getAllValuesOfsignal(final ReceptionMatch partialMatch) {
+    return rawAccumulateAllValuesOfsignal(partialMatch.toArray());
   }
   
   /**
-   * Retrieve the set of values that occur in matches for signalName.
+   * Retrieve the set of values that occur in matches for signal.
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfsignalName(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName) {
-    return rawAccumulateAllValuesOfsignalName(new Object[]{pCls, pReceptionName, null});
+  public Set<Signal> getAllValuesOfsignal(final org.eclipse.uml2.uml.Class pCls, final Reception pReception) {
+    return rawAccumulateAllValuesOfsignal(new Object[]{pCls, pReception, null});
   }
   
   @Override
   protected ReceptionMatch tupleToMatch(final Tuple t) {
     try {
-      return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (java.lang.String) t.get(POSITION_RECEPTIONNAME), (java.lang.String) t.get(POSITION_SIGNALNAME));
+      return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Reception) t.get(POSITION_RECEPTION), (org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -346,7 +346,7 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
   @Override
   protected ReceptionMatch arrayToMatch(final Object[] match) {
     try {
-      return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (java.lang.String) match[POSITION_RECEPTIONNAME], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return ReceptionMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -357,7 +357,7 @@ public class ReceptionMatcher extends BaseMatcher<ReceptionMatch> {
   @Override
   protected ReceptionMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ReceptionMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (java.lang.String) match[POSITION_RECEPTIONNAME], (java.lang.String) match[POSITION_SIGNALNAME]);
+      return ReceptionMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

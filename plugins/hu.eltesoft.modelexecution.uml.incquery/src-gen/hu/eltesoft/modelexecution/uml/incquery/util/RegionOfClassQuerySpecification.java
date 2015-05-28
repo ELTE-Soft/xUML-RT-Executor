@@ -48,12 +48,12 @@ public final class RegionOfClassQuerySpecification extends BaseGeneratedQuerySpe
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","regionName");
+    return Arrays.asList("cls","region");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("regionName", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("region", "org.eclipse.uml2.uml.Region"));
   }
   
   @Override
@@ -63,7 +63,7 @@ public final class RegionOfClassQuerySpecification extends BaseGeneratedQuerySpe
   
   @Override
   public RegionOfClassMatch newMatch(final Object... parameters) {
-    return RegionOfClassMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (java.lang.String) parameters[1]);
+    return RegionOfClassMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Region) parameters[1]);
   }
   
   @Override
@@ -72,19 +72,17 @@ public final class RegionOfClassQuerySpecification extends BaseGeneratedQuerySpe
     {
       PBody body = new PBody(this);
       PVariable var_cls = body.getOrCreateVariableByName("cls");
-      PVariable var_regionName = body.getOrCreateVariableByName("regionName");
-      PVariable var_stateMachine = body.getOrCreateVariableByName("stateMachine");
       PVariable var_region = body.getOrCreateVariableByName("region");
+      PVariable var_stateMachine = body.getOrCreateVariableByName("stateMachine");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
-        new ExportedParameter(body, var_regionName, "regionName")
+        new ExportedParameter(body, var_region, "region")
       ));
       
       
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_cls, var_stateMachine, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "ownedBehavior"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioredClassifier.ownedBehavior");
       new TypeBinary(body, CONTEXT, var_stateMachine, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine", "region"), "http://www.eclipse.org/uml2/5.0.0/UML/StateMachine.region");
-      new TypeBinary(body, CONTEXT, var_region, var_regionName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

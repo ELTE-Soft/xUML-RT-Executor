@@ -15,14 +15,13 @@ public abstract class EventProcessor implements IMatchProcessor<EventMatch> {
   /**
    * Defines the action that is to be executed on each match.
    * @param pEvent the value of pattern parameter event in the currently processed match
-   * @param pEventName the value of pattern parameter eventName in the currently processed match
    * 
    */
-  public abstract void process(final SignalEvent pEvent, final String pEventName);
+  public abstract void process(final SignalEvent pEvent);
   
   @Override
   public void process(final EventMatch match) {
-    process(match.getEvent(), match.getEventName());
+    process(match.getEvent());
     
   }
 }

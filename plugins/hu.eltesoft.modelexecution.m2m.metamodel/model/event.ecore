@@ -4,8 +4,7 @@
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.event">
   <eClassifiers xsi:type="ecore:EClass" name="EvEvent" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="EvSignalEvent" eSuperTypes="#//EvEvent">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" lowerBound="1"
-        eType="#//EvSignal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="signal" lowerBound="1"
+        eType="ecore:EDataType base.ecore#//NamedReference"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EvSignal" eSuperTypes="base.ecore#//Named"/>
 </ecore:EPackage>

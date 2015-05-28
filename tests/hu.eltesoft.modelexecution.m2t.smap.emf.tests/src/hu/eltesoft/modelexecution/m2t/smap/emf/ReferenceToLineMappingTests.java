@@ -6,19 +6,30 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
 import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.uml2.uml.Class;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
+	private static final String UML_TEST_MODEL_PATH = "resources/model.uml";
+
 	private ReferenceToLineMapping mapping;
+	private EObject aClass;
+
+	public ReferenceToLineMappingTests() {
+		super(UML_TEST_MODEL_PATH);
+	}
 
 	@Before
 	public void setUp() {
 		super.setUp();
 		mapping = new ReferenceToLineMapping();
+		aClass = namedChild(model, Class.class, "A");
 	}
 
 	@Test

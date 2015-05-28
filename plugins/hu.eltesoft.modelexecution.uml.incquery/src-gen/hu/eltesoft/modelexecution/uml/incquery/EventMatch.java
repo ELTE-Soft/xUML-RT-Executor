@@ -25,31 +25,22 @@ import org.eclipse.uml2.uml.SignalEvent;
 public abstract class EventMatch extends BasePatternMatch {
   private SignalEvent fEvent;
   
-  private String fEventName;
+  private static List<String> parameterNames = makeImmutableList("event");
   
-  private static List<String> parameterNames = makeImmutableList("event", "eventName");
-  
-  private EventMatch(final SignalEvent pEvent, final String pEventName) {
+  private EventMatch(final SignalEvent pEvent) {
     this.fEvent = pEvent;
-    this.fEventName = pEventName;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("event".equals(parameterName)) return this.fEvent;
-    if ("eventName".equals(parameterName)) return this.fEventName;
     return null;
     
   }
   
   public SignalEvent getEvent() {
     return this.fEvent;
-    
-  }
-  
-  public String getEventName() {
-    return this.fEventName;
     
   }
   
@@ -60,10 +51,6 @@ public abstract class EventMatch extends BasePatternMatch {
     	this.fEvent = (org.eclipse.uml2.uml.SignalEvent) newValue;
     	return true;
     }
-    if ("eventName".equals(parameterName) ) {
-    	this.fEventName = (java.lang.String) newValue;
-    	return true;
-    }
     return false;
     
   }
@@ -71,12 +58,6 @@ public abstract class EventMatch extends BasePatternMatch {
   public void setEvent(final SignalEvent pEvent) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fEvent = pEvent;
-    
-  }
-  
-  public void setEventName(final String pEventName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fEventName = pEventName;
     
   }
   
@@ -94,21 +75,20 @@ public abstract class EventMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fEvent, fEventName};
+    return new Object[]{fEvent};
     
   }
   
   @Override
   public EventMatch toImmutable() {
-    return isMutable() ? newMatch(fEvent, fEventName) : this;
+    return isMutable() ? newMatch(fEvent) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"event\"=" + prettyPrintValue(fEvent) + ", ");
-    result.append("\"eventName\"=" + prettyPrintValue(fEventName));
+    result.append("\"event\"=" + prettyPrintValue(fEvent));
     return result.toString();
     
   }
@@ -118,7 +98,6 @@ public abstract class EventMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fEvent == null) ? 0 : fEvent.hashCode());
-    result = prime * result + ((fEventName == null) ? 0 : fEventName.hashCode());
     return result;
     
   }
@@ -140,8 +119,6 @@ public abstract class EventMatch extends BasePatternMatch {
     EventMatch other = (EventMatch) obj;
     if (fEvent == null) {if (other.fEvent != null) return false;}
     else if (!fEvent.equals(other.fEvent)) return false;
-    if (fEventName == null) {if (other.fEventName != null) return false;}
-    else if (!fEventName.equals(other.fEventName)) return false;
     return true;
   }
   
@@ -164,7 +141,7 @@ public abstract class EventMatch extends BasePatternMatch {
    * 
    */
   public static EventMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null);
     
   }
   
@@ -173,12 +150,11 @@ public abstract class EventMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static EventMatch newMutableMatch(final SignalEvent pEvent, final String pEventName) {
-    return new Mutable(pEvent, pEventName);
+  public static EventMatch newMutableMatch(final SignalEvent pEvent) {
+    return new Mutable(pEvent);
     
   }
   
@@ -187,18 +163,17 @@ public abstract class EventMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pEvent the fixed value of pattern parameter event, or null if not bound.
-   * @param pEventName the fixed value of pattern parameter eventName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static EventMatch newMatch(final SignalEvent pEvent, final String pEventName) {
-    return new Immutable(pEvent, pEventName);
+  public static EventMatch newMatch(final SignalEvent pEvent) {
+    return new Immutable(pEvent);
     
   }
   
   private static final class Mutable extends EventMatch {
-    Mutable(final SignalEvent pEvent, final String pEventName) {
-      super(pEvent, pEventName);
+    Mutable(final SignalEvent pEvent) {
+      super(pEvent);
       
     }
     
@@ -209,8 +184,8 @@ public abstract class EventMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends EventMatch {
-    Immutable(final SignalEvent pEvent, final String pEventName) {
-      super(pEvent, pEventName);
+    Immutable(final SignalEvent pEvent) {
+      super(pEvent);
       
     }
     

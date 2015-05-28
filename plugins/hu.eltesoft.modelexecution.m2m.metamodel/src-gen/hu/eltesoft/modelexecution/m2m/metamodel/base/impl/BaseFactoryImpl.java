@@ -72,6 +72,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
+			case BasePackage.NAMED_REFERENCE:
+				return createNamedReferenceFromString(eDataType, initialValue);
 			case BasePackage.REFERENCE:
 				return createReferenceFromString(eDataType, initialValue);
 			default:
@@ -87,11 +89,31 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
+			case BasePackage.NAMED_REFERENCE:
+				return convertNamedReferenceToString(eDataType, instanceValue);
 			case BasePackage.REFERENCE:
 				return convertReferenceToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NamedReference createNamedReferenceFromString(EDataType eDataType, String initialValue) {
+		return (NamedReference)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertNamedReferenceToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

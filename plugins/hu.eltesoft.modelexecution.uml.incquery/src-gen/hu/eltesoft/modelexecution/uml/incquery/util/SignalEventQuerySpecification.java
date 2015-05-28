@@ -47,12 +47,12 @@ public final class SignalEventQuerySpecification extends BaseGeneratedQuerySpeci
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("event","signalName");
+    return Arrays.asList("event","signal");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("event", "org.eclipse.uml2.uml.SignalEvent"),new PParameter("signalName", "java.lang.String"));
+    return Arrays.asList(new PParameter("event", "org.eclipse.uml2.uml.SignalEvent"),new PParameter("signal", "org.eclipse.uml2.uml.Signal"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class SignalEventQuerySpecification extends BaseGeneratedQuerySpeci
   
   @Override
   public SignalEventMatch newMatch(final Object... parameters) {
-    return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) parameters[0], (java.lang.String) parameters[1]);
+    return SignalEventMatch.newMatch((org.eclipse.uml2.uml.SignalEvent) parameters[0], (org.eclipse.uml2.uml.Signal) parameters[1]);
   }
   
   @Override
@@ -71,16 +71,14 @@ public final class SignalEventQuerySpecification extends BaseGeneratedQuerySpeci
     {
       PBody body = new PBody(this);
       PVariable var_event = body.getOrCreateVariableByName("event");
-      PVariable var_signalName = body.getOrCreateVariableByName("signalName");
       PVariable var_signal = body.getOrCreateVariableByName("signal");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_event, "event"), 
-        new ExportedParameter(body, var_signalName, "signalName")
+        new ExportedParameter(body, var_signal, "signal")
       ));
       
       
       new TypeBinary(body, CONTEXT, var_event, var_signal, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal"), "http://www.eclipse.org/uml2/5.0.0/UML/SignalEvent.signal");
-      new TypeBinary(body, CONTEXT, var_signal, var_signalName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

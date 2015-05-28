@@ -16,6 +16,7 @@ import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.PositivePatternCall;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
+import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.incquery.runtime.matchers.tuple.FlatTuple;
 
@@ -51,12 +52,12 @@ public final class ContainerClassOfBehaviorQuerySpecification extends BaseGenera
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","containerClassName");
+    return Arrays.asList("behavior","containerClass");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("containerClassName", "java.lang.String"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("containerClass", "org.eclipse.uml2.uml.Class"));
   }
   
   @Override
@@ -66,7 +67,7 @@ public final class ContainerClassOfBehaviorQuerySpecification extends BaseGenera
   
   @Override
   public ContainerClassOfBehaviorMatch newMatch(final Object... parameters) {
-    return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (java.lang.String) parameters[1]);
+    return ContainerClassOfBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Class) parameters[1]);
   }
   
   @Override
@@ -75,65 +76,66 @@ public final class ContainerClassOfBehaviorQuerySpecification extends BaseGenera
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
-      PVariable var_cls = body.getOrCreateVariableByName("cls");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
       new TypeBinary(body, CONTEXT, var_operation, var_behavior, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "method"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioralFeature.method");
-      new TypeBinary(body, CONTEXT, var_cls, var_operation, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class", "ownedOperation"), "http://www.eclipse.org/uml2/5.0.0/UML/Class.ownedOperation");
-      new TypeBinary(body, CONTEXT, var_cls, var_containerClassName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
+      new TypeBinary(body, CONTEXT, var_containerClass, var_operation, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class", "ownedOperation"), "http://www.eclipse.org/uml2/5.0.0/UML/Class.ownedOperation");
       bodies.add(body);
     }
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_state = body.getOrCreateVariableByName("state");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_state, var_behavior, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State", "entry"), "http://www.eclipse.org/uml2/5.0.0/UML/State.entry");
-      new PositivePatternCall(body, new FlatTuple(var_state, var_containerClassName), ContainerClassOfVertexQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_state, var_containerClass), ContainerClassOfVertexQuerySpecification.instance());
       bodies.add(body);
     }
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_state = body.getOrCreateVariableByName("state");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_state, var_behavior, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State", "exit"), "http://www.eclipse.org/uml2/5.0.0/UML/State.exit");
-      new PositivePatternCall(body, new FlatTuple(var_state, var_containerClassName), ContainerClassOfVertexQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_state, var_containerClass), ContainerClassOfVertexQuerySpecification.instance());
       bodies.add(body);
     }
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_containerClassName = body.getOrCreateVariableByName("containerClassName");
+      PVariable var_containerClass = body.getOrCreateVariableByName("containerClass");
       PVariable var_transition = body.getOrCreateVariableByName("transition");
       PVariable var_region = body.getOrCreateVariableByName("region");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
-        new ExportedParameter(body, var_containerClassName, "containerClassName")
+        new ExportedParameter(body, var_containerClass, "containerClass")
       ));
       
       
+      new TypeUnary(body, var_containerClass, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_transition, var_behavior, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "effect"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.effect");
       new TypeBinary(body, CONTEXT, var_transition, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.container");
-      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClassName), ContainerClassOfRegionQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_region, var_containerClass), ContainerClassOfRegionQuerySpecification.instance());
       bodies.add(body);
     }
     return bodies;

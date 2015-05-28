@@ -25,31 +25,22 @@ import org.eclipse.uml2.uml.Behavior;
 public abstract class BehaviorMatch extends BasePatternMatch {
   private Behavior fBehavior;
   
-  private String fBehaviorName;
+  private static List<String> parameterNames = makeImmutableList("behavior");
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "behaviorName");
-  
-  private BehaviorMatch(final Behavior pBehavior, final String pBehaviorName) {
+  private BehaviorMatch(final Behavior pBehavior) {
     this.fBehavior = pBehavior;
-    this.fBehaviorName = pBehaviorName;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
-    if ("behaviorName".equals(parameterName)) return this.fBehaviorName;
     return null;
     
   }
   
   public Behavior getBehavior() {
     return this.fBehavior;
-    
-  }
-  
-  public String getBehaviorName() {
-    return this.fBehaviorName;
     
   }
   
@@ -60,10 +51,6 @@ public abstract class BehaviorMatch extends BasePatternMatch {
     	this.fBehavior = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
-    if ("behaviorName".equals(parameterName) ) {
-    	this.fBehaviorName = (java.lang.String) newValue;
-    	return true;
-    }
     return false;
     
   }
@@ -71,12 +58,6 @@ public abstract class BehaviorMatch extends BasePatternMatch {
   public void setBehavior(final Behavior pBehavior) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fBehavior = pBehavior;
-    
-  }
-  
-  public void setBehaviorName(final String pBehaviorName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fBehaviorName = pBehaviorName;
     
   }
   
@@ -94,21 +75,20 @@ public abstract class BehaviorMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fBehaviorName};
+    return new Object[]{fBehavior};
     
   }
   
   @Override
   public BehaviorMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fBehaviorName) : this;
+    return isMutable() ? newMatch(fBehavior) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
-    result.append("\"behaviorName\"=" + prettyPrintValue(fBehaviorName));
+    result.append("\"behavior\"=" + prettyPrintValue(fBehavior));
     return result.toString();
     
   }
@@ -118,7 +98,6 @@ public abstract class BehaviorMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
-    result = prime * result + ((fBehaviorName == null) ? 0 : fBehaviorName.hashCode());
     return result;
     
   }
@@ -140,8 +119,6 @@ public abstract class BehaviorMatch extends BasePatternMatch {
     BehaviorMatch other = (BehaviorMatch) obj;
     if (fBehavior == null) {if (other.fBehavior != null) return false;}
     else if (!fBehavior.equals(other.fBehavior)) return false;
-    if (fBehaviorName == null) {if (other.fBehaviorName != null) return false;}
-    else if (!fBehaviorName.equals(other.fBehaviorName)) return false;
     return true;
   }
   
@@ -164,7 +141,7 @@ public abstract class BehaviorMatch extends BasePatternMatch {
    * 
    */
   public static BehaviorMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null);
     
   }
   
@@ -173,12 +150,11 @@ public abstract class BehaviorMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static BehaviorMatch newMutableMatch(final Behavior pBehavior, final String pBehaviorName) {
-    return new Mutable(pBehavior, pBehaviorName);
+  public static BehaviorMatch newMutableMatch(final Behavior pBehavior) {
+    return new Mutable(pBehavior);
     
   }
   
@@ -187,18 +163,17 @@ public abstract class BehaviorMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static BehaviorMatch newMatch(final Behavior pBehavior, final String pBehaviorName) {
-    return new Immutable(pBehavior, pBehaviorName);
+  public static BehaviorMatch newMatch(final Behavior pBehavior) {
+    return new Immutable(pBehavior);
     
   }
   
   private static final class Mutable extends BehaviorMatch {
-    Mutable(final Behavior pBehavior, final String pBehaviorName) {
-      super(pBehavior, pBehaviorName);
+    Mutable(final Behavior pBehavior) {
+      super(pBehavior);
       
     }
     
@@ -209,8 +184,8 @@ public abstract class BehaviorMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends BehaviorMatch {
-    Immutable(final Behavior pBehavior, final String pBehaviorName) {
-      super(pBehavior, pBehaviorName);
+    Immutable(final Behavior pBehavior) {
+      super(pBehavior);
       
     }
     
