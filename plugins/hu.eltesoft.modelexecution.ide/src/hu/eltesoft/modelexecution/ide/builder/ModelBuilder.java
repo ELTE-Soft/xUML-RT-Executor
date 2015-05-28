@@ -95,7 +95,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					EMFResourceRegistry.INSTANCE.runTranslatorFor(resource,
+					TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 							t -> queue.addAll(t.fullBuild()));
 					return true;
 				}
@@ -122,10 +122,10 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					IResource resource = delta.getResource();
 					if (delta.getKind() == IResourceDelta.ADDED
 							|| delta.getKind() == IResourceDelta.CHANGED) {
-						EMFResourceRegistry.INSTANCE.runTranslatorFor(resource,
+						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.addAll(t.incrementalBuild()));
 					} else if (delta.getKind() == IResourceDelta.REMOVED) {
-						EMFResourceRegistry.INSTANCE.forgetResource(resource);
+						TranslatorRegistry.INSTANCE.forgetResource(resource);
 					}
 					return true;
 				}

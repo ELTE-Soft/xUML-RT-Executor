@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.ide.project;
 
-import hu.eltesoft.modelexecution.ide.builder.EMFResourceRegistry;
+import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
 import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
 
@@ -32,7 +32,7 @@ public class ExecutableModelNature implements IProjectNature {
 	@Override
 	public void deconfigure() throws CoreException {
 		removeBuilders();
-		EMFResourceRegistry.INSTANCE.forgetResources(project);
+		TranslatorRegistry.INSTANCE.forgetResources(project);
 	}
 
 	@Override

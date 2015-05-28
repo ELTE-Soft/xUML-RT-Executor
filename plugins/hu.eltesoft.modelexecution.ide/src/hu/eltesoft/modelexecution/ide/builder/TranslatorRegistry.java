@@ -22,22 +22,25 @@ import org.eclipse.emf.transaction.ResourceSetChangeEvent;
 import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-// TODO: review synchronization
-public class EMFResourceRegistry {
+/**
+ * Holds translator instances for IResources. 
+ */
+public class TranslatorRegistry {
 
 	private static final String UML_EXTENSION = "uml"; //$NON-NLS-1$
 
 	private static final NotificationFilter filter = NotificationFilter.RESOURCE_LOADED
 			.or(NotificationFilter.RESOURCE_UNLOADED);
 
-	public static final EMFResourceRegistry INSTANCE = new EMFResourceRegistry();
+	public static final TranslatorRegistry INSTANCE = new TranslatorRegistry();
 
-	private final Map<ResourceSet, Map<URI, Resource>> resources = new HashMap<>();
 	private final Map<ResourceSet, TransactionalEditingDomain> domains = new HashMap<>();
 	private final Map<TransactionalEditingDomain, DomainResourceListener> listeners = new HashMap<>();
+
+	private final Map<ResourceSet, Map<URI, Resource>> resources = new HashMap<>();
 	private final Map<URI, Translator> translators = new HashMap<>();
 
-	EMFResourceRegistry() {
+	protected TranslatorRegistry() {
 	}
 
 	private class DomainResourceListener extends ResourceSetListenerImpl {
@@ -56,23 +59,29 @@ public class EMFResourceRegistry {
 					continue;
 				}
 
-				Resource resource = (Resource) notification.getNotifier();
-				URI uri = resource.getURI();
-				// m should not be null as the domain were loaded before the
-				// resource itself
-				Map<URI, Resource> m = resources.get(resourceSet);
-				boolean loaded = notification.getNewBooleanValue();
-				if (loaded) {
-					m.put(uri, resource);
-				} else {
-					Translator translator = translators.get(uri);
-					if (null != translator) {
-						translator.dispose();
-						translators.remove(uri);
-					}
-					m.remove(uri);
-				}
+				handleResourceLoadNotification(resourceSet, notification);
 			}
+		}
+	}
+
+	// it must be synchronized as it is called from an event handler thread
+	private synchronized void handleResourceLoadNotification(
+			ResourceSet resourceSet, Notification notification) {
+		Resource resource = (Resource) notification.getNotifier();
+		URI uri = resource.getURI();
+		// m should not be null as the domain were loaded before the
+		// resource itself
+		Map<URI, Resource> m = resources.get(resourceSet);
+		boolean loaded = notification.getNewBooleanValue();
+		if (loaded) {
+			m.put(uri, resource);
+		} else {
+			Translator translator = translators.get(uri);
+			if (null != translator) {
+				translator.dispose();
+				translators.remove(uri);
+			}
+			m.remove(uri);
 		}
 	}
 
@@ -95,7 +104,7 @@ public class EMFResourceRegistry {
 		resourceSetUnloaded(resourceSet);
 	}
 
-	private synchronized void resourceSetLoaded(ResourceSet resourceSet) {
+	private void resourceSetLoaded(ResourceSet resourceSet) {
 		Map<URI, Resource> m = resources.get(resourceSet);
 		if (null == m) {
 			m = new HashMap<>();
@@ -111,12 +120,12 @@ public class EMFResourceRegistry {
 			m.put(uri, resource);
 
 			Translator translator = translatorFor(uri,
-					Translator::createUpgraded);
-			translator.upgrade(resource);
+					Translator::createIncremental);
+			translator.toIncremental(resource);
 		}
 	}
 
-	private synchronized void resourceSetUnloaded(ResourceSet resourceSet) {
+	private void resourceSetUnloaded(ResourceSet resourceSet) {
 		resources.remove(resourceSet);
 	}
 
@@ -141,21 +150,29 @@ public class EMFResourceRegistry {
 		translators.remove(fileToURI(file));
 	}
 
-	public synchronized void runTranslatorFor(IResource file,
-			Consumer<Translator> task) {
+	public void runTranslatorFor(IResource file, Consumer<Translator> task) {
 		if (!isUMLResource(file)) {
 			return;
 		}
 
-		Translator translator = translatorFor(file);
-		Resource model = get(file);
+		Translator translator;
+		Resource model;
+		TransactionalEditingDomain domain = null;
+
+		synchronized (this) {
+			translator = translatorFor(file);
+			model = get(file);
+
+			if (null != model) {
+				ResourceSet resourceSet = model.getResourceSet();
+				domain = domains.get(resourceSet);
+			}
+		}
+
 		if (null == model) {
 			task.accept(translator);
 			return;
 		}
-
-		ResourceSet resourceSet = model.getResourceSet();
-		TransactionalEditingDomain domain = domains.get(resourceSet);
 
 		try {
 			domain.runExclusive(() -> task.accept(translator));
@@ -168,16 +185,16 @@ public class EMFResourceRegistry {
 		}
 	}
 
-	private synchronized Translator translatorFor(IResource file) {
+	private Translator translatorFor(IResource file) {
 		URI uri = fileToURI(file);
 		return translatorFor(uri);
 	}
 
-	private synchronized Translator translatorFor(URI uri) {
+	private Translator translatorFor(URI uri) {
 		return translatorFor(uri, Translator::create);
 	}
 
-	private synchronized Translator translatorFor(URI uri,
+	private Translator translatorFor(URI uri,
 			Function<Resource, Translator> createTranslator) {
 		Translator translator = translators.get(uri);
 		if (null == translator) {
@@ -188,7 +205,7 @@ public class EMFResourceRegistry {
 		return translator;
 	}
 
-	private synchronized Resource loadModelOnDemand(URI uri) {
+	private Resource loadModelOnDemand(URI uri) {
 		Resource loadedModel = get(uri);
 		if (null == loadedModel) {
 			try {
@@ -202,11 +219,11 @@ public class EMFResourceRegistry {
 		return loadedModel;
 	}
 
-	private synchronized Resource get(IResource file) {
+	private Resource get(IResource file) {
 		return get(fileToURI(file));
 	}
 
-	private synchronized Resource get(URI uri) {
+	private Resource get(URI uri) {
 		for (Map<URI, Resource> m : resources.values()) {
 			Resource resource = m.get(uri);
 			if (null != resource) {

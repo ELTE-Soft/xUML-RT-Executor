@@ -19,7 +19,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 public class Translator {
 
-	public static Translator createUpgraded(Resource resource) {
+	public static Translator createIncremental(Resource resource) {
 		return new Translator(resource, true);
 	}
 
@@ -29,7 +29,7 @@ public class Translator {
 
 	private final ChangeRegistry changeRegistry = ChangeRegistry.create();
 	private Resource resource;
-	private boolean upgraded;
+	private boolean incremental;
 	private AdvancedIncQueryEngine engine;
 	private ReversionTask attachListeners;
 
@@ -39,15 +39,15 @@ public class Translator {
 	private SignalEventGenerator signalEventGenerator;
 	private SignalGenerator signalGenerator;
 
-	private Translator(Resource resource, boolean upgraded) {
+	private Translator(Resource resource, boolean incremental) {
 		this.resource = resource;
-		this.upgraded = upgraded;
+		this.incremental = incremental;
 		setupEngine();
 	}
 
 	private void setupEngine() {
 		try {
-			if (upgraded) {
+			if (incremental) {
 				engine = AdvancedIncQueryEngine.from(IncQueryEngine
 						.on(resource));
 			} else {
@@ -60,7 +60,7 @@ public class Translator {
 			signalEventGenerator = new SignalEventGenerator(engine);
 			signalGenerator = new SignalGenerator(engine);
 
-			if (upgraded) {
+			if (incremental) {
 				attachListeners();
 			}
 		} catch (IncQueryException e) {
@@ -97,8 +97,8 @@ public class Translator {
 		};
 	}
 
-	public void upgrade(Resource resource) {
-		if (upgraded) {
+	public void toIncremental(Resource resource) {
+		if (incremental) {
 			if (this.resource == resource) {
 				// do nothing, we are already upgraded
 				return;
@@ -111,8 +111,8 @@ public class Translator {
 	}
 
 	public void dispose() {
-		if (upgraded) {
-			upgraded = false;
+		if (incremental) {
+			incremental = false;
 			attachListeners.revert();
 		}
 	}
@@ -141,7 +141,7 @@ public class Translator {
 	}
 
 	public List<FileUpdateTask> incrementalBuild() {
-		if (!upgraded) {
+		if (!incremental) {
 			return fullBuild();
 		}
 
