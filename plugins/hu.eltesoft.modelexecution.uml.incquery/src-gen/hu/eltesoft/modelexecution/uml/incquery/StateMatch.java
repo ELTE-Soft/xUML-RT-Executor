@@ -28,14 +28,11 @@ public abstract class StateMatch extends BasePatternMatch {
   
   private State fState;
   
-  private String fStateName;
+  private static List<String> parameterNames = makeImmutableList("region", "state");
   
-  private static List<String> parameterNames = makeImmutableList("region", "state", "stateName");
-  
-  private StateMatch(final Region pRegion, final State pState, final String pStateName) {
+  private StateMatch(final Region pRegion, final State pState) {
     this.fRegion = pRegion;
     this.fState = pState;
-    this.fStateName = pStateName;
     
   }
   
@@ -43,7 +40,6 @@ public abstract class StateMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("region".equals(parameterName)) return this.fRegion;
     if ("state".equals(parameterName)) return this.fState;
-    if ("stateName".equals(parameterName)) return this.fStateName;
     return null;
     
   }
@@ -58,11 +54,6 @@ public abstract class StateMatch extends BasePatternMatch {
     
   }
   
-  public String getStateName() {
-    return this.fStateName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -72,10 +63,6 @@ public abstract class StateMatch extends BasePatternMatch {
     }
     if ("state".equals(parameterName) ) {
     	this.fState = (org.eclipse.uml2.uml.State) newValue;
-    	return true;
-    }
-    if ("stateName".equals(parameterName) ) {
-    	this.fStateName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -94,12 +81,6 @@ public abstract class StateMatch extends BasePatternMatch {
     
   }
   
-  public void setStateName(final String pStateName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fStateName = pStateName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.State";
@@ -114,13 +95,13 @@ public abstract class StateMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fState, fStateName};
+    return new Object[]{fRegion, fState};
     
   }
   
   @Override
   public StateMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fState, fStateName) : this;
+    return isMutable() ? newMatch(fRegion, fState) : this;
     
   }
   
@@ -128,8 +109,7 @@ public abstract class StateMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
-    result.append("\"state\"=" + prettyPrintValue(fState) + ", ");
-    result.append("\"stateName\"=" + prettyPrintValue(fStateName));
+    result.append("\"state\"=" + prettyPrintValue(fState));
     return result.toString();
     
   }
@@ -140,7 +120,6 @@ public abstract class StateMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
     result = prime * result + ((fState == null) ? 0 : fState.hashCode());
-    result = prime * result + ((fStateName == null) ? 0 : fStateName.hashCode());
     return result;
     
   }
@@ -164,8 +143,6 @@ public abstract class StateMatch extends BasePatternMatch {
     else if (!fRegion.equals(other.fRegion)) return false;
     if (fState == null) {if (other.fState != null) return false;}
     else if (!fState.equals(other.fState)) return false;
-    if (fStateName == null) {if (other.fStateName != null) return false;}
-    else if (!fStateName.equals(other.fStateName)) return false;
     return true;
   }
   
@@ -188,7 +165,7 @@ public abstract class StateMatch extends BasePatternMatch {
    * 
    */
   public static StateMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null);
     
   }
   
@@ -198,12 +175,11 @@ public abstract class StateMatch extends BasePatternMatch {
    * 
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static StateMatch newMutableMatch(final Region pRegion, final State pState, final String pStateName) {
-    return new Mutable(pRegion, pState, pStateName);
+  public static StateMatch newMutableMatch(final Region pRegion, final State pState) {
+    return new Mutable(pRegion, pState);
     
   }
   
@@ -213,18 +189,17 @@ public abstract class StateMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static StateMatch newMatch(final Region pRegion, final State pState, final String pStateName) {
-    return new Immutable(pRegion, pState, pStateName);
+  public static StateMatch newMatch(final Region pRegion, final State pState) {
+    return new Immutable(pRegion, pState);
     
   }
   
   private static final class Mutable extends StateMatch {
-    Mutable(final Region pRegion, final State pState, final String pStateName) {
-      super(pRegion, pState, pStateName);
+    Mutable(final Region pRegion, final State pState) {
+      super(pRegion, pState);
       
     }
     
@@ -235,8 +210,8 @@ public abstract class StateMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends StateMatch {
-    Immutable(final Region pRegion, final State pState, final String pStateName) {
-      super(pRegion, pState, pStateName);
+    Immutable(final Region pRegion, final State pState) {
+      super(pRegion, pState);
       
     }
     

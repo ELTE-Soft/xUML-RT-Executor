@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,12 +31,12 @@ public interface ClOperation extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Method</em>' attribute.
-	 * @see #setMethod(String)
+	 * @see #setMethod(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_Method()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	String getMethod();
+	NamedReference getMethod();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}' attribute.
@@ -45,6 +46,6 @@ public interface ClOperation extends Named {
 	 * @see #getMethod()
 	 * @generated
 	 */
-	void setMethod(String value);
+	void setMethod(NamedReference value);
 
 } // ClOperation

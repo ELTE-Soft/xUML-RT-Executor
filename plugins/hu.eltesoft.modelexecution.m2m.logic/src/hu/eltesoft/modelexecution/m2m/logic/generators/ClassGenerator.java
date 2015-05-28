@@ -2,11 +2,10 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate;
@@ -20,21 +19,19 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatch;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.ClsProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.MethodProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.OperationProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionProcessor;
-import hu.eltesoft.modelexecution.uml.incquery.util.RegionOfClassProcessor;
 
 import java.util.function.Consumer;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 public class ClassGenerator extends AbstractGenerator<Class> {
@@ -55,137 +52,58 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 		receptionMatcher = ReceptionMatcher.on(engine);
 	}
 
-	// generate translation model
-
 	@Override
 	public Pair<String, Template> getTemplate(Class source)
 			throws GenerationException {
-		// new ClClass
 		ClClass root = FACTORY.createClClass();
 
-		// name
-		check(clsMatcher.forOneArbitraryMatch(source, null,
-				getProcessorToSetNameOfRoot(root)));
+		check(clsMatcher.forOneArbitraryMatch(source, match -> {
+			Class pCls = match.getCls();
+			root.setReference(new NamedReference(pCls));
+		}));
 
-		// region
-		regionOfClassMatcher.forOneArbitraryMatch(source, null,
-				getProcessorToSetRegionOfRoot(root));
+		regionOfClassMatcher.forOneArbitraryMatch(source, null, match -> {
+			Region pRegion = match.getRegion();
+			root.setRegion(new NamedReference(pRegion));
+		});
 
-		// operations
-		operationMatcher.forEachMatch(source, null, null,
-				getProcessorToSetOperationsOfRoot(root.getOperations()));
+		operationMatcher.forEachMatch(source, null, match -> {
+			Operation pOperation = match.getOperation();
 
-		// receptions
-		receptionMatcher.forEachMatch(source, null, null,
-				getProcessorToSetReceptionsOfRoot(root.getReceptions()));
+			ClOperation clOperation = FACTORY.createClOperation();
+			clOperation.setReference(new NamedReference(pOperation));
 
-		return new Pair<>(root.getName(), new ClassTemplate(root));
-	}
-
-	private ClsProcessor getProcessorToSetNameOfRoot(ClClass root) {
-		return new ClsProcessor() {
-
-			@Override
-			public void process(Class pCls, String pClassName) {
-				root.setName(pClassName);
-			}
-
-		};
-	}
-
-	private RegionOfClassProcessor getProcessorToSetRegionOfRoot(ClClass root) {
-		return new RegionOfClassProcessor() {
-
-			@Override
-			public void process(Class pCls, String pRegionName) {
-				// new ClRegion
-				ClRegion clRegion = FACTORY.createClRegion();
-
-				// name
-				clRegion.setName(pRegionName);
-
-				root.setRegion(clRegion);
-			}
-
-		};
-	}
-
-	private OperationProcessor getProcessorToSetOperationsOfRoot(
-			EList<ClOperation> operationsOfRoot) {
-		return new OperationProcessor() {
-
-			@Override
-			public void process(Class pCls, Operation pOperation,
-					String pOperationName) {
-				// new ClOperation
-				ClOperation clOperation = FACTORY.createClOperation();
-
-				// name
-				clOperation.setName(pOperationName);
-
-				// method
+			// Method attribute is optional: if there is no match, the
+			// method was missing from the source model as well.
 				methodMatcher.forOneArbitraryMatch(null, pOperation, null,
-						getProcessorToSetMethodOfOperation(clOperation));
-				// Method attribute is optional: if there is no match, the
-				// method was missing from the source model as well.
+						match2 -> {
+							Behavior pMethod = match2.getMethod();
+							clOperation.setMethod(new NamedReference(pMethod));
+						});
 
-				operationsOfRoot.add(clOperation);
-			}
+				root.getOperations().add(clOperation);
+			});
 
-			private MethodProcessor getProcessorToSetMethodOfOperation(
-					ClOperation clOperation) {
-				return new MethodProcessor() {
-					@Override
-					public void process(Class pCls, Operation pOperation,
-							String pMethodName) {
-						clOperation.setMethod(pMethodName);
-					}
-				};
-			}
+		receptionMatcher.forEachMatch(source, null, null, match -> {
+			Reception pReception = match.getReception();
+			Signal pSignal = match.getSignal();
 
-		};
+			ClReception clReception = FACTORY.createClReception();
+			clReception.setReference(new NamedReference(pReception));
+			clReception.setSignal(new NamedReference(pSignal));
+
+			root.getReceptions().add(clReception);
+		});
+
+		String rootName = NamedReference.getIdentifier(source);
+		return new Pair<>(rootName, new ClassTemplate(root));
 	}
 
-	private ReceptionProcessor getProcessorToSetReceptionsOfRoot(
-			EList<ClReception> receptionsOfRoot) {
-		return new ReceptionProcessor() {
-
-			@Override
-			public void process(Class pCls, String pReceptionName,
-					String pSignalName) {
-				// new ClReception
-				ClReception clReception = FACTORY.createClReception();
-
-				// name
-				clReception.setName(pReceptionName);
-
-				// signal
-				clReception.setSignal(createSignal(pSignalName));
-
-				receptionsOfRoot.add(clReception);
-			}
-
-			private ClSignal createSignal(String name) {
-				// new ClSignal
-				ClSignal clSignal = FACTORY.createClSignal();
-
-				// name
-				clSignal.setName(name);
-
-				return clSignal;
-			}
-
-		};
-	}
-
-	// run query directly
-
+	@Override
 	public void runOn(Consumer<Class> task) {
-		clsMatcher.forEachMatch(null, null,
+		clsMatcher.forEachMatch((Class) null,
 				match -> task.accept(match.getCls()));
 	}
-
-	// add match update listener
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -199,7 +117,7 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 			private final IMatchUpdateListener<MethodMatch> methodListener;
 			private final IMatchUpdateListener<ReceptionMatch> receptionListener;
 
-			{ // set clsListener
+			{
 				clsListener = new IMatchUpdateListener<ClsMatch>() {
 
 					@Override
@@ -211,16 +129,17 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 					@Override
 					public void notifyDisappearance(ClsMatch match) {
 						// disappearance of root: delete file
-						changeRegistry.newDeletion(match.getClassName());
+						Class c = match.getCls();
+						String fileName = NamedReference.getIdentifier(c);
+						changeRegistry.newDeletion(fileName);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(clsMatcher, clsListener,
 						false);
 			}
 
-			{ // set regionOfClassListener
+			{
 				regionOfClassListener = new IMatchUpdateListener<RegionOfClassMatch>() {
 
 					@Override
@@ -234,14 +153,13 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 						changeRegistry.newModification(match.getCls(),
 								ClassGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(regionOfClassMatcher,
 						regionOfClassListener, false);
 			}
 
-			{ // set operationListener
+			{
 				operationListener = new IMatchUpdateListener<OperationMatch>() {
 
 					@Override
@@ -255,15 +173,13 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 						changeRegistry.newModification(match.getCls(),
 								ClassGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(operationMatcher,
 						operationListener, false);
-
 			}
 
-			{ // set methodListener
+			{
 				methodListener = new IMatchUpdateListener<MethodMatch>() {
 
 					@Override
@@ -277,14 +193,13 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 						changeRegistry.newModification(match.getCls(),
 								ClassGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(methodMatcher,
 						methodListener, false);
 			}
 
-			{ // set receptionListener
+			{
 				receptionListener = new IMatchUpdateListener<ReceptionMatch>() {
 
 					@Override
@@ -298,7 +213,6 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 						changeRegistry.newModification(match.getCls(),
 								ClassGenerator.this);
 					}
-
 				};
 
 				advancedEngine.addMatchUpdateListener(receptionMatcher,
@@ -307,7 +221,6 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 
 			@Override
 			public boolean revert() {
-
 				advancedEngine.removeMatchUpdateListener(clsMatcher,
 						clsListener);
 				advancedEngine.removeMatchUpdateListener(regionOfClassMatcher,
@@ -318,11 +231,8 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 						methodListener);
 				advancedEngine.removeMatchUpdateListener(receptionMatcher,
 						receptionListener);
-
 				return true;
 			}
-
 		};
-
 	}
 }

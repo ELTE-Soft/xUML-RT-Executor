@@ -40,15 +40,6 @@ public interface EventFactory extends EFactory {
 	EvSignalEvent createEvSignalEvent();
 
 	/**
-	 * Returns a new object of class '<em>Ev Signal</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Ev Signal</em>'.
-	 * @generated
-	 */
-	EvSignal createEvSignal();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

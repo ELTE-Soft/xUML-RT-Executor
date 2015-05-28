@@ -57,13 +57,9 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case RegionPackage.RG_REGION: return createRgRegion();
-			case RegionPackage.RG_CLASS: return createRgClass();
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE: return createRgInitialPseudostate();
 			case RegionPackage.RG_STATE: return createRgState();
 			case RegionPackage.RG_TRANSITION: return createRgTransition();
-			case RegionPackage.RG_MESSAGE: return createRgMessage();
-			case RegionPackage.RG_BEHAVIOR: return createRgBehavior();
-			case RegionPackage.RG_EVENT: return createRgEvent();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -77,16 +73,6 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public RgRegion createRgRegion() {
 		RgRegionImpl rgRegion = new RgRegionImpl();
 		return rgRegion;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgClass createRgClass() {
-		RgClassImpl rgClass = new RgClassImpl();
-		return rgClass;
 	}
 
 	/**
@@ -117,36 +103,6 @@ public class RegionFactoryImpl extends EFactoryImpl implements RegionFactory {
 	public RgTransition createRgTransition() {
 		RgTransitionImpl rgTransition = new RgTransitionImpl();
 		return rgTransition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgMessage createRgMessage() {
-		RgMessageImpl rgMessage = new RgMessageImpl();
-		return rgMessage;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgBehavior createRgBehavior() {
-		RgBehaviorImpl rgBehavior = new RgBehaviorImpl();
-		return rgBehavior;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RgEvent createRgEvent() {
-		RgEventImpl rgEvent = new RgEventImpl();
-		return rgEvent;
 	}
 
 	/**

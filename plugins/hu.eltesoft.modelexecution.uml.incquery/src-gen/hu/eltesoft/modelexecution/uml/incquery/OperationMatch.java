@@ -27,14 +27,11 @@ public abstract class OperationMatch extends BasePatternMatch {
   
   private Operation fOperation;
   
-  private String fOperationName;
+  private static List<String> parameterNames = makeImmutableList("cls", "operation");
   
-  private static List<String> parameterNames = makeImmutableList("cls", "operation", "operationName");
-  
-  private OperationMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
+  private OperationMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
     this.fCls = pCls;
     this.fOperation = pOperation;
-    this.fOperationName = pOperationName;
     
   }
   
@@ -42,7 +39,6 @@ public abstract class OperationMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("operation".equals(parameterName)) return this.fOperation;
-    if ("operationName".equals(parameterName)) return this.fOperationName;
     return null;
     
   }
@@ -57,11 +53,6 @@ public abstract class OperationMatch extends BasePatternMatch {
     
   }
   
-  public String getOperationName() {
-    return this.fOperationName;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -71,10 +62,6 @@ public abstract class OperationMatch extends BasePatternMatch {
     }
     if ("operation".equals(parameterName) ) {
     	this.fOperation = (org.eclipse.uml2.uml.Operation) newValue;
-    	return true;
-    }
-    if ("operationName".equals(parameterName) ) {
-    	this.fOperationName = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -93,12 +80,6 @@ public abstract class OperationMatch extends BasePatternMatch {
     
   }
   
-  public void setOperationName(final String pOperationName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fOperationName = pOperationName;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.Operation";
@@ -113,13 +94,13 @@ public abstract class OperationMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fOperation, fOperationName};
+    return new Object[]{fCls, fOperation};
     
   }
   
   @Override
   public OperationMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fOperation, fOperationName) : this;
+    return isMutable() ? newMatch(fCls, fOperation) : this;
     
   }
   
@@ -127,8 +108,7 @@ public abstract class OperationMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
-    result.append("\"operation\"=" + prettyPrintValue(fOperation) + ", ");
-    result.append("\"operationName\"=" + prettyPrintValue(fOperationName));
+    result.append("\"operation\"=" + prettyPrintValue(fOperation));
     return result.toString();
     
   }
@@ -139,7 +119,6 @@ public abstract class OperationMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fOperation == null) ? 0 : fOperation.hashCode());
-    result = prime * result + ((fOperationName == null) ? 0 : fOperationName.hashCode());
     return result;
     
   }
@@ -163,8 +142,6 @@ public abstract class OperationMatch extends BasePatternMatch {
     else if (!fCls.equals(other.fCls)) return false;
     if (fOperation == null) {if (other.fOperation != null) return false;}
     else if (!fOperation.equals(other.fOperation)) return false;
-    if (fOperationName == null) {if (other.fOperationName != null) return false;}
-    else if (!fOperationName.equals(other.fOperationName)) return false;
     return true;
   }
   
@@ -187,7 +164,7 @@ public abstract class OperationMatch extends BasePatternMatch {
    * 
    */
   public static OperationMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null);
     
   }
   
@@ -197,12 +174,11 @@ public abstract class OperationMatch extends BasePatternMatch {
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static OperationMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return new Mutable(pCls, pOperation, pOperationName);
+  public static OperationMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return new Mutable(pCls, pOperation);
     
   }
   
@@ -212,18 +188,17 @@ public abstract class OperationMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
-   * @param pOperationName the fixed value of pattern parameter operationName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-    return new Immutable(pCls, pOperation, pOperationName);
+  public static OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+    return new Immutable(pCls, pOperation);
     
   }
   
   private static final class Mutable extends OperationMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-      super(pCls, pOperation, pOperationName);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+      super(pCls, pOperation);
       
     }
     
@@ -234,8 +209,8 @@ public abstract class OperationMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends OperationMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final String pOperationName) {
-      super(pCls, pOperation, pOperationName);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+      super(pCls, pOperation);
       
     }
     

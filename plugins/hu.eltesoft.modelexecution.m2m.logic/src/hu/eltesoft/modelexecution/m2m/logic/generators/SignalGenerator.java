@@ -2,13 +2,13 @@ package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatch;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.SignalProcessor;
 
 import java.util.function.Consumer;
 
@@ -29,42 +29,25 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 		signalMatcher = SignalMatcher.on(engine);
 	}
 
-	// generate translation model
-
 	@Override
 	public Pair<String, Template> getTemplate(Signal source)
 			throws GenerationException {
-
-		// new SgSignal
 		SgSignal root = FACTORY.createSgSignal();
 
-		// name
-		check(signalMatcher.forOneArbitraryMatch(source, null,
-				getPorcessorToSetNameOfRoot(root)));
+		check(signalMatcher.forOneArbitraryMatch(source, match -> {
+			Signal pSignal = match.getSignal();
+			root.setReference(new NamedReference(pSignal));
+		}));
 
-		return new Pair<>(root.getName(), new SignalTemplate(root));
+		String rootName = NamedReference.getIdentifier(source);
+		return new Pair<>(rootName, new SignalTemplate(root));
 	}
 
-	private SignalProcessor getPorcessorToSetNameOfRoot(SgSignal root) {
-		return new SignalProcessor() {
-
-			@Override
-			public void process(Signal pSignal, String pSignalName) {
-				// name
-				root.setName(pSignalName);
-			}
-
-		};
-	}
-
-	// run query directly
-
+	@Override
 	public void runOn(Consumer<Signal> task) {
-		signalMatcher.forEachMatch(null, null,
+		signalMatcher.forEachMatch((Signal) null,
 				match -> task.accept(match.getSignal()));
 	}
-
-	// add match update listeners
 
 	@Override
 	public ReversionTask addMatchUpdateListeners(
@@ -74,9 +57,8 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 
 			private final IMatchUpdateListener<SignalMatch> signalListener;
 
-			{ // set signalListener
+			{
 				signalListener = new IMatchUpdateListener<SignalMatch>() {
-
 					@Override
 					public void notifyAppearance(SignalMatch match) {
 						changeRegistry.newModification(match.getSignal(),
@@ -86,26 +68,21 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 					@Override
 					public void notifyDisappearance(SignalMatch match) {
 						// disappearance of root: delete file
-						changeRegistry.newDeletion(match.getSignalName());
+						Signal signal = match.getSignal();
+						String fileName = NamedReference.getIdentifier(signal);
+						changeRegistry.newDeletion(fileName);
 					}
-
 				};
-
 				advancedEngine.addMatchUpdateListener(signalMatcher,
 						signalListener, false);
 			}
 
 			@Override
 			public boolean revert() {
-
 				advancedEngine.removeMatchUpdateListener(signalMatcher,
 						signalListener);
-
 				return true;
 			}
-
 		};
-
 	}
-
 }

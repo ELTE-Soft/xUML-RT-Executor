@@ -17,14 +17,13 @@ public abstract class StateProcessor implements IMatchProcessor<StateMatch> {
    * Defines the action that is to be executed on each match.
    * @param pRegion the value of pattern parameter region in the currently processed match
    * @param pState the value of pattern parameter state in the currently processed match
-   * @param pStateName the value of pattern parameter stateName in the currently processed match
    * 
    */
-  public abstract void process(final Region pRegion, final State pState, final String pStateName);
+  public abstract void process(final Region pRegion, final State pState);
   
   @Override
   public void process(final StateMatch match) {
-    process(match.getRegion(), match.getState(), match.getStateName());
+    process(match.getRegion(), match.getState());
     
   }
 }

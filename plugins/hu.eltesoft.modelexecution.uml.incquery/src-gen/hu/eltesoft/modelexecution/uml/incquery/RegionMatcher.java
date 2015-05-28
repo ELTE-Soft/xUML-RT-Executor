@@ -28,8 +28,8 @@ import org.eclipse.uml2.uml.Region;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Region(region : Region, regionName) {
- * 	Region.name(region, regionName);
+ * pattern Region(region : Region) {
+ * 	Region(region);
  * }
  * </pre></code>
  * 
@@ -69,8 +69,6 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
   
   private final static int POSITION_REGION = 0;
   
-  private final static int POSITION_REGIONNAME = 1;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(RegionMatcher.class);
   
   /**
@@ -107,71 +105,65 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return matches represented as a RegionMatch object.
    * 
    */
-  public Collection<RegionMatch> getAllMatches(final Region pRegion, final String pRegionName) {
-    return rawGetAllMatches(new Object[]{pRegion, pRegionName});
+  public Collection<RegionMatch> getAllMatches(final Region pRegion) {
+    return rawGetAllMatches(new Object[]{pRegion});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return a match represented as a RegionMatch object, or null if no match is found.
    * 
    */
-  public RegionMatch getOneArbitraryMatch(final Region pRegion, final String pRegionName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pRegionName});
+  public RegionMatch getOneArbitraryMatch(final Region pRegion) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final String pRegionName) {
-    return rawHasMatch(new Object[]{pRegion, pRegionName});
+  public boolean hasMatch(final Region pRegion) {
+    return rawHasMatch(new Object[]{pRegion});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final String pRegionName) {
-    return rawCountMatches(new Object[]{pRegion, pRegionName});
+  public int countMatches(final Region pRegion) {
+    return rawCountMatches(new Object[]{pRegion});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final String pRegionName, final IMatchProcessor<? super RegionMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pRegionName}, processor);
+  public void forEachMatch(final Region pRegion, final IMatchProcessor<? super RegionMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final String pRegionName, final IMatchProcessor<? super RegionMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pRegionName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final IMatchProcessor<? super RegionMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion}, processor);
   }
   
   /**
@@ -182,14 +174,13 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<RegionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final String pRegionName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pRegionName});
+  public DeltaMonitor<RegionMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion});
   }
   
   /**
@@ -197,12 +188,11 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public RegionMatch newMatch(final Region pRegion, final String pRegionName) {
-    return RegionMatch.newMatch(pRegion, pRegionName);
+  public RegionMatch newMatch(final Region pRegion) {
+    return RegionMatch.newMatch(pRegion);
     
   }
   
@@ -226,66 +216,10 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
     return rawAccumulateAllValuesOfregion(emptyArray());
   }
   
-  /**
-   * Retrieve the set of values that occur in matches for region.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Region> getAllValuesOfregion(final RegionMatch partialMatch) {
-    return rawAccumulateAllValuesOfregion(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for region.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Region> getAllValuesOfregion(final String pRegionName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pRegionName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for regionName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfregionName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_REGIONNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for regionName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfregionName() {
-    return rawAccumulateAllValuesOfregionName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for regionName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfregionName(final RegionMatch partialMatch) {
-    return rawAccumulateAllValuesOfregionName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for regionName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfregionName(final Region pRegion) {
-    return rawAccumulateAllValuesOfregionName(new Object[]{pRegion, null});
-  }
-  
   @Override
   protected RegionMatch tupleToMatch(final Tuple t) {
     try {
-      return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (java.lang.String) t.get(POSITION_REGIONNAME));
+      return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -296,7 +230,7 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
   @Override
   protected RegionMatch arrayToMatch(final Object[] match) {
     try {
-      return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (java.lang.String) match[POSITION_REGIONNAME]);
+      return RegionMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -307,7 +241,7 @@ public class RegionMatcher extends BaseMatcher<RegionMatch> {
   @Override
   protected RegionMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return RegionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (java.lang.String) match[POSITION_REGIONNAME]);
+      return RegionMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

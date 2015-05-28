@@ -25,11 +25,15 @@ public class Reference implements Serializable {
 
 	private static final long serialVersionUID = 4842807564039793980L;
 
+	public static String toURIString(EObject referencedElement) {
+		URI eURI = EcoreUtil.getURI(referencedElement);
+		return CommonPlugin.asLocalURI(eURI).toString();
+	}
+
 	protected final String uriString;
 
 	public Reference(EObject referencedElement) {
-		URI eURI = EcoreUtil.getURI(referencedElement);
-		uriString = CommonPlugin.asLocalURI(eURI).toString();
+		uriString = toURIString(referencedElement);
 	}
 
 	protected Reference(Reference other) {

@@ -2,6 +2,8 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatch;
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Signal;
 
 /**
  * A match processor tailored for the hu.eltesoft.modelexecution.uml.incquery.Reception pattern.
@@ -14,15 +16,15 @@ public abstract class ReceptionProcessor implements IMatchProcessor<ReceptionMat
   /**
    * Defines the action that is to be executed on each match.
    * @param pCls the value of pattern parameter cls in the currently processed match
-   * @param pReceptionName the value of pattern parameter receptionName in the currently processed match
-   * @param pSignalName the value of pattern parameter signalName in the currently processed match
+   * @param pReception the value of pattern parameter reception in the currently processed match
+   * @param pSignal the value of pattern parameter signal in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final String pReceptionName, final String pSignalName);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Signal pSignal);
   
   @Override
   public void process(final ReceptionMatch match) {
-    process(match.getCls(), match.getReceptionName(), match.getSignalName());
+    process(match.getCls(), match.getReception(), match.getSignal());
     
   }
 }

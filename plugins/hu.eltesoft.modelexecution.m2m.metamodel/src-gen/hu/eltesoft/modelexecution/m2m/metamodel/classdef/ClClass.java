@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -27,30 +28,30 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ClClass extends ModelRoot, Named {
 	/**
-	 * Returns the value of the '<em><b>Region</b></em>' reference.
+	 * Returns the value of the '<em><b>Region</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Region</em>' reference isn't clear,
+	 * If the meaning of the '<em>Region</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Region</em>' reference.
-	 * @see #setRegion(ClRegion)
+	 * @return the value of the '<em>Region</em>' attribute.
+	 * @see #setRegion(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Region()
-	 * @model
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
 	 * @generated
 	 */
-	ClRegion getRegion();
+	NamedReference getRegion();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Region</em>' reference.
+	 * @param value the new value of the '<em>Region</em>' attribute.
 	 * @see #getRegion()
 	 * @generated
 	 */
-	void setRegion(ClRegion value);
+	void setRegion(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Operations</b></em>' reference list.

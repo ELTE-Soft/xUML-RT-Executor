@@ -24,8 +24,11 @@ public abstract class M2MTranslatorTestsBase {
 
 	protected static final String UML_TEST_2015_Q1_MODEL_PATH = "resources/2015_q1_model.uml";
 	protected static final String[] UML_TEST_2015_Q1_MODEL_EXPECTED_FILES = {
-			"Class1", "Region1", "Method1", "Entry1", "Exit1", "Effect0",
-			"Effect1", "Signal1", "SignalEvent1" };
+			"_b_QEcNJaEeSd5I6$OPCzVg", "_ergPUNJaEeSd5I6$OPCzVg",
+			"_1Q_ZANJbEeSd5I6$OPCzVg", "_J6gQINJbEeSd5I6$OPCzVg",
+			"_LUDdANJbEeSd5I6$OPCzVg", "_DeU24NJbEeSd5I6$OPCzVg",
+			"_9rCCkNJaEeSd5I6$OPCzVg", "_w9jDUNJaEeSd5I6$OPCzVg",
+			"_0jq1cNJaEeSd5I6$OPCzVg" };
 
 	protected Model model;
 
@@ -67,7 +70,7 @@ public abstract class M2MTranslatorTestsBase {
 		assertEquals(0, listener.deletions.size());
 		assertEquals(2, listener.modifications.size());
 
-		assertAsSets(new String[] { "A", "R1" }, listener.modifications.get(0),
+		assertAsSets(new String[] { "_aeMPwMc1EeSnK7LttAdTLw", "_lIjJENJLEeSd5I6$OPCzVg" }, listener.modifications.get(0),
 				listener.modifications.get(1));
 	}
 }

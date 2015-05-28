@@ -15,14 +15,13 @@ public abstract class RegionProcessor implements IMatchProcessor<RegionMatch> {
   /**
    * Defines the action that is to be executed on each match.
    * @param pRegion the value of pattern parameter region in the currently processed match
-   * @param pRegionName the value of pattern parameter regionName in the currently processed match
    * 
    */
-  public abstract void process(final Region pRegion, final String pRegionName);
+  public abstract void process(final Region pRegion);
   
   @Override
   public void process(final RegionMatch match) {
-    process(match.getRegion(), match.getRegionName());
+    process(match.getRegion());
     
   }
 }

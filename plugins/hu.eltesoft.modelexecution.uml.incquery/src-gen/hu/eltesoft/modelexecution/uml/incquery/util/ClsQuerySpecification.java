@@ -15,7 +15,6 @@ import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.NegativePatternCall;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.incquery.runtime.matchers.tuple.FlatTuple;
@@ -52,12 +51,12 @@ public final class ClsQuerySpecification extends BaseGeneratedQuerySpecification
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","className");
+    return Arrays.asList("cls");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("className", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"));
   }
   
   @Override
@@ -67,7 +66,7 @@ public final class ClsQuerySpecification extends BaseGeneratedQuerySpecification
   
   @Override
   public ClsMatch newMatch(final Object... parameters) {
-    return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (java.lang.String) parameters[1]);
+    return ClsMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0]);
   }
   
   @Override
@@ -76,15 +75,11 @@ public final class ClsQuerySpecification extends BaseGeneratedQuerySpecification
     {
       PBody body = new PBody(this);
       PVariable var_cls = body.getOrCreateVariableByName("cls");
-      PVariable var_className = body.getOrCreateVariableByName("className");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
-        new ExportedParameter(body, var_cls, "cls"), 
-        new ExportedParameter(body, var_className, "className")
+        new ExportedParameter(body, var_cls, "cls")
       ));
       
-      
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
-      new TypeBinary(body, CONTEXT, var_cls, var_className, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       new NegativePatternCall(body, new FlatTuple(var_cls), IsBehaviorQuerySpecification.instance().instance());
       new NegativePatternCall(body, new FlatTuple(var_cls), IsStereotypeQuerySpecification.instance().instance());
       bodies.add(body);

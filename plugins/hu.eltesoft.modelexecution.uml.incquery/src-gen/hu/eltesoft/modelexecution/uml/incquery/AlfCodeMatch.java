@@ -25,12 +25,15 @@ import org.eclipse.uml2.uml.Behavior;
 public abstract class AlfCodeMatch extends BasePatternMatch {
   private Behavior fBehavior;
   
+  private org.eclipse.uml2.uml.Class fContainerClass;
+  
   private String fAlfCode;
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "alfCode");
+  private static List<String> parameterNames = makeImmutableList("behavior", "containerClass", "alfCode");
   
-  private AlfCodeMatch(final Behavior pBehavior, final String pAlfCode) {
+  private AlfCodeMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
     this.fBehavior = pBehavior;
+    this.fContainerClass = pContainerClass;
     this.fAlfCode = pAlfCode;
     
   }
@@ -38,6 +41,7 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   @Override
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
+    if ("containerClass".equals(parameterName)) return this.fContainerClass;
     if ("alfCode".equals(parameterName)) return this.fAlfCode;
     return null;
     
@@ -45,6 +49,11 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   
   public Behavior getBehavior() {
     return this.fBehavior;
+    
+  }
+  
+  public org.eclipse.uml2.uml.Class getContainerClass() {
+    return this.fContainerClass;
     
   }
   
@@ -60,6 +69,10 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
     	this.fBehavior = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
+    if ("containerClass".equals(parameterName) ) {
+    	this.fContainerClass = (org.eclipse.uml2.uml.Class) newValue;
+    	return true;
+    }
     if ("alfCode".equals(parameterName) ) {
     	this.fAlfCode = (java.lang.String) newValue;
     	return true;
@@ -71,6 +84,12 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   public void setBehavior(final Behavior pBehavior) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fBehavior = pBehavior;
+    
+  }
+  
+  public void setContainerClass(final org.eclipse.uml2.uml.Class pContainerClass) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fContainerClass = pContainerClass;
     
   }
   
@@ -94,13 +113,13 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fAlfCode};
+    return new Object[]{fBehavior, fContainerClass, fAlfCode};
     
   }
   
   @Override
   public AlfCodeMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fAlfCode) : this;
+    return isMutable() ? newMatch(fBehavior, fContainerClass, fAlfCode) : this;
     
   }
   
@@ -108,6 +127,7 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
+    result.append("\"containerClass\"=" + prettyPrintValue(fContainerClass) + ", ");
     result.append("\"alfCode\"=" + prettyPrintValue(fAlfCode));
     return result.toString();
     
@@ -118,6 +138,7 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
+    result = prime * result + ((fContainerClass == null) ? 0 : fContainerClass.hashCode());
     result = prime * result + ((fAlfCode == null) ? 0 : fAlfCode.hashCode());
     return result;
     
@@ -140,6 +161,8 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
     AlfCodeMatch other = (AlfCodeMatch) obj;
     if (fBehavior == null) {if (other.fBehavior != null) return false;}
     else if (!fBehavior.equals(other.fBehavior)) return false;
+    if (fContainerClass == null) {if (other.fContainerClass != null) return false;}
+    else if (!fContainerClass.equals(other.fContainerClass)) return false;
     if (fAlfCode == null) {if (other.fAlfCode != null) return false;}
     else if (!fAlfCode.equals(other.fAlfCode)) return false;
     return true;
@@ -164,7 +187,7 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
    * 
    */
   public static AlfCodeMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -173,12 +196,13 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static AlfCodeMatch newMutableMatch(final Behavior pBehavior, final String pAlfCode) {
-    return new Mutable(pBehavior, pAlfCode);
+  public static AlfCodeMatch newMutableMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return new Mutable(pBehavior, pContainerClass, pAlfCode);
     
   }
   
@@ -187,18 +211,19 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pContainerClass the fixed value of pattern parameter containerClass, or null if not bound.
    * @param pAlfCode the fixed value of pattern parameter alfCode, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static AlfCodeMatch newMatch(final Behavior pBehavior, final String pAlfCode) {
-    return new Immutable(pBehavior, pAlfCode);
+  public static AlfCodeMatch newMatch(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+    return new Immutable(pBehavior, pContainerClass, pAlfCode);
     
   }
   
   private static final class Mutable extends AlfCodeMatch {
-    Mutable(final Behavior pBehavior, final String pAlfCode) {
-      super(pBehavior, pAlfCode);
+    Mutable(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+      super(pBehavior, pContainerClass, pAlfCode);
       
     }
     
@@ -209,8 +234,8 @@ public abstract class AlfCodeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends AlfCodeMatch {
-    Immutable(final Behavior pBehavior, final String pAlfCode) {
-      super(pBehavior, pAlfCode);
+    Immutable(final Behavior pBehavior, final org.eclipse.uml2.uml.Class pContainerClass, final String pAlfCode) {
+      super(pBehavior, pContainerClass, pAlfCode);
       
     }
     

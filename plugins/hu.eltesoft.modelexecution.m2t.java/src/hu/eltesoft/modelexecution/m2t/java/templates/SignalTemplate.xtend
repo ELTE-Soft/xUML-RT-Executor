@@ -4,11 +4,11 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Signal
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder
+import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.base.SignalEvent
-import org.json.JSONObject
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -21,32 +21,39 @@ class SignalTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(signal.name)»
-		public class «signal.name» extends «Signal.canonicalName» {
+		«generatedHeaderForClass(signal)»
+		public class «signal.identifier» extends «Signal.canonicalName» {
 		
-			public «signal.name»() {
+			public «signal.identifier»() {
 				super();
 			}
 		
-			public «signal.name»(«SignalEvent.canonicalName» event) {
+			public «signal.identifier»(«SignalEvent.canonicalName» event) {
 				super(event);
 			}
 		
 			@Override
 			public boolean equals(Object other) {
-				return null != other && other instanceof «signal.name»;
+				return null != other && other instanceof «signal.identifier»;
 			}
 		
 			@Override
 			public int hashCode() {
 				return 0;
 			}
-			
+		
+			@Override
+			public String toString() {
+				return «signal.nameLiteral»;
+			}
+		
 			@Override
 			public «JSONObject.canonicalName» jsonEncode() {
-				return new «JSONObject.canonicalName»().put("class", getClass().getCanonicalName());
+				«JSONObject.canonicalName» json = new «JSONObject.canonicalName»();
+				json.put("class", getClass().getCanonicalName());
+				return json;
 			}
-						
+		
 			@Override
 			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
 				// this signal has no attribute to read from json

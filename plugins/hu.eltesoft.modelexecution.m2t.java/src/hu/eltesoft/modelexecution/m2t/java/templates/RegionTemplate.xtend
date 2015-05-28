@@ -69,38 +69,57 @@ class RegionTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeader(region.name)»
-		public class «region.name» extends «StateMachineRegion.canonicalName» {
+		«generatedHeaderForClass(region)»
+		public class «region.identifier» extends «StateMachineRegion.canonicalName» {
 		
-			private enum States {
-				«initState.name», «FOR state : region.states SEPARATOR ', '»«state.name»«ENDFOR»
+			private enum State {
+				«initState.identifier»(«initState.nameLiteral»),
+				«FOR state : region.states SEPARATOR ','»
+					«state.identifier»(«state.nameLiteral»)
+				«ENDFOR»
+				;
+		
+				private final String name;
+		
+				State(String name) {
+					this.name = name;
+				}
+		
+				@Override
+				public String toString() {
+					return name;
+				}
 			}
 		
-			private «region.containerClass.name» owner;
-			private States currentState = States.«initState.name»;
+			private «region.containerClass.identifier» owner;
+			private State currentState = State.«initState.identifier»;
 		
-			public «region.name»(«region.containerClass.name» owner) {
+			public «region.identifier»(«region.containerClass.identifier» owner) {
 				this.owner = owner;
 			}
 		
 			@Override
 			public void doInitialTransition() {
 				// Initial state exit
-				owner.getRuntime().logExitState("«trace(initState, Exit)»");
+				owner.getRuntime().logExitState(«traceLiteral(initState, Exit)»);
 		
 				// Initial transition effect
-				owner.getRuntime().logTransition("<init transition>", "<init transition>", "«trace(initState.name, initTransition.reference)»", "«firstState.name»");
+				owner.getRuntime().logTransition(
+						"<init transition>",
+						"<init transition>",
+						«trace(initState.nameLiteral, initTransition.reference)»,
+						«firstState.nameLiteral»);
 				«IF null != initTransition.effect»
-					new «initTransition.effect.name»(owner).execute();
+					new «initTransition.effect.identifier»(owner).execute();
 				«ENDIF»
 		
 				// First state entry
-				owner.getRuntime().logEnterState("«trace(firstState, Entry)»");
+				owner.getRuntime().logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
-					new «firstState.entry.name»(owner).execute();
+					new «firstState.entry.identifier»(owner).execute();
 				«ENDIF»
 		
-				currentState = States.«firstState.name»;
+				currentState = State.«firstState.identifier»;
 			}
 		
 			@Override
@@ -115,7 +134,7 @@ class RegionTemplate extends Template {
 			«ENDFOR»
 			@Override
 			public String toString() {
-				return "«region.name» { currentState = " + currentState + " }";
+				return «region.nameLiteral» + " { currentState = " + currentState + " }";
 			}
 		}
 	'''
@@ -127,29 +146,33 @@ class RegionTemplate extends Template {
 		private void step«i»(«Message.canonicalName» message) {
 			switch (currentState) {
 				«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
-					case «state.name»:
+					case «state.identifier»:
 						«FOR transition : state.transitions SEPARATOR ' else '»
-							if (message instanceof «transition.message.name»)
+							if (message instanceof «transition.message.identifier»)
 							{
 								// State exit
-								owner.getRuntime().logExitState("«trace(state, Exit)»");
+								owner.getRuntime().logExitState(«traceLiteral(state, Exit)»);
 								«IF null != state.exit»
-									new «state.exit.name»(owner).execute();
+									new «state.exit.identifier»(owner).execute();
 								«ENDIF»
 							
 								// Transition effect
-								owner.getRuntime().logTransition("«transition.event.name»", "«transition.message.name»", "«trace(state.name, transition.reference)»", "«transition.target.name»");
+								owner.getRuntime().logTransition(
+										«transition.event.nameLiteral»,
+										«transition.message.nameLiteral»,
+										«trace(state.nameLiteral, transition.reference)»,
+										«transition.target.nameLiteral»);
 								«IF null != transition.effect»
-									new «transition.effect.name»(owner).execute();
+									new «transition.effect.identifier»(owner).execute();
 								«ENDIF»
 							
 								// State entry
-								owner.getRuntime().logEnterState("«trace(transition.target, Entry)»");
+								owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
 								«IF null != transition.target.entry»
-									new «transition.target.entry.name»(owner).execute();
+									new «transition.target.entry.identifier»(owner).execute();
 								«ENDIF»
 							
-								currentState = States.«transition.target.name»;
+								currentState = State.«transition.target.identifier»;
 							}
 						«ENDFOR»
 						break;

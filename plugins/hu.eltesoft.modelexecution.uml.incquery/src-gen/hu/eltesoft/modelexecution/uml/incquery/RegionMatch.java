@@ -25,31 +25,22 @@ import org.eclipse.uml2.uml.Region;
 public abstract class RegionMatch extends BasePatternMatch {
   private Region fRegion;
   
-  private String fRegionName;
+  private static List<String> parameterNames = makeImmutableList("region");
   
-  private static List<String> parameterNames = makeImmutableList("region", "regionName");
-  
-  private RegionMatch(final Region pRegion, final String pRegionName) {
+  private RegionMatch(final Region pRegion) {
     this.fRegion = pRegion;
-    this.fRegionName = pRegionName;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("region".equals(parameterName)) return this.fRegion;
-    if ("regionName".equals(parameterName)) return this.fRegionName;
     return null;
     
   }
   
   public Region getRegion() {
     return this.fRegion;
-    
-  }
-  
-  public String getRegionName() {
-    return this.fRegionName;
     
   }
   
@@ -60,10 +51,6 @@ public abstract class RegionMatch extends BasePatternMatch {
     	this.fRegion = (org.eclipse.uml2.uml.Region) newValue;
     	return true;
     }
-    if ("regionName".equals(parameterName) ) {
-    	this.fRegionName = (java.lang.String) newValue;
-    	return true;
-    }
     return false;
     
   }
@@ -71,12 +58,6 @@ public abstract class RegionMatch extends BasePatternMatch {
   public void setRegion(final Region pRegion) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fRegion = pRegion;
-    
-  }
-  
-  public void setRegionName(final String pRegionName) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fRegionName = pRegionName;
     
   }
   
@@ -94,21 +75,20 @@ public abstract class RegionMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fRegion, fRegionName};
+    return new Object[]{fRegion};
     
   }
   
   @Override
   public RegionMatch toImmutable() {
-    return isMutable() ? newMatch(fRegion, fRegionName) : this;
+    return isMutable() ? newMatch(fRegion) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"region\"=" + prettyPrintValue(fRegion) + ", ");
-    result.append("\"regionName\"=" + prettyPrintValue(fRegionName));
+    result.append("\"region\"=" + prettyPrintValue(fRegion));
     return result.toString();
     
   }
@@ -118,7 +98,6 @@ public abstract class RegionMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fRegion == null) ? 0 : fRegion.hashCode());
-    result = prime * result + ((fRegionName == null) ? 0 : fRegionName.hashCode());
     return result;
     
   }
@@ -140,8 +119,6 @@ public abstract class RegionMatch extends BasePatternMatch {
     RegionMatch other = (RegionMatch) obj;
     if (fRegion == null) {if (other.fRegion != null) return false;}
     else if (!fRegion.equals(other.fRegion)) return false;
-    if (fRegionName == null) {if (other.fRegionName != null) return false;}
-    else if (!fRegionName.equals(other.fRegionName)) return false;
     return true;
   }
   
@@ -164,7 +141,7 @@ public abstract class RegionMatch extends BasePatternMatch {
    * 
    */
   public static RegionMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null);
     
   }
   
@@ -173,12 +150,11 @@ public abstract class RegionMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static RegionMatch newMutableMatch(final Region pRegion, final String pRegionName) {
-    return new Mutable(pRegion, pRegionName);
+  public static RegionMatch newMutableMatch(final Region pRegion) {
+    return new Mutable(pRegion);
     
   }
   
@@ -187,18 +163,17 @@ public abstract class RegionMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
-   * @param pRegionName the fixed value of pattern parameter regionName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static RegionMatch newMatch(final Region pRegion, final String pRegionName) {
-    return new Immutable(pRegion, pRegionName);
+  public static RegionMatch newMatch(final Region pRegion) {
+    return new Immutable(pRegion);
     
   }
   
   private static final class Mutable extends RegionMatch {
-    Mutable(final Region pRegion, final String pRegionName) {
-      super(pRegion, pRegionName);
+    Mutable(final Region pRegion) {
+      super(pRegion);
       
     }
     
@@ -209,8 +184,8 @@ public abstract class RegionMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends RegionMatch {
-    Immutable(final Region pRegion, final String pRegionName) {
-      super(pRegion, pRegionName);
+    Immutable(final Region pRegion) {
+      super(pRegion);
       
     }
     

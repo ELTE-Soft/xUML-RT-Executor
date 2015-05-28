@@ -2,14 +2,16 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
+
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -21,9 +23,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getContainerClass <em>Container Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfCode <em>Alf Code</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfResult <em>Alf Result</em>}</li>
  * </ul>
  * </p>
  *
@@ -31,54 +33,64 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBehavior {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getContainerClass() <em>Container Class</em>}' reference.
+	 * The default value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getContainerClass()
 	 * @generated
 	 * @ordered
 	 */
-	protected BhClass containerClass;
+	protected static final NamedReference CONTAINER_CLASS_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getAlfCode() <em>Alf Code</em>}' attribute.
+	 * The cached value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlfCode()
+	 * @see #getContainerClass()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ALF_CODE_EDEFAULT = null;
+	protected NamedReference containerClass = CONTAINER_CLASS_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getAlfCode() <em>Alf Code</em>}' attribute.
+	 * The default value of the '{@link #getAlfResult() <em>Alf Result</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlfCode()
+	 * @see #getAlfResult()
 	 * @generated
 	 * @ordered
 	 */
-	protected String alfCode = ALF_CODE_EDEFAULT;
+	protected static final AlfAnalyzerResult ALF_RESULT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAlfResult() <em>Alf Result</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAlfResult()
+	 * @generated
+	 * @ordered
+	 */
+	protected AlfAnalyzerResult alfResult = ALF_RESULT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -104,8 +116,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -113,11 +125,11 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -125,15 +137,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BhClass getContainerClass() {
-		if (containerClass != null && containerClass.eIsProxy()) {
-			InternalEObject oldContainerClass = (InternalEObject)containerClass;
-			containerClass = (BhClass)eResolveProxy(oldContainerClass);
-			if (containerClass != oldContainerClass) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS, oldContainerClass, containerClass));
-			}
-		}
+	public NamedReference getContainerClass() {
 		return containerClass;
 	}
 
@@ -142,17 +146,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BhClass basicGetContainerClass() {
-		return containerClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setContainerClass(BhClass newContainerClass) {
-		BhClass oldContainerClass = containerClass;
+	public void setContainerClass(NamedReference newContainerClass) {
+		NamedReference oldContainerClass = containerClass;
 		containerClass = newContainerClass;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS, oldContainerClass, containerClass));
@@ -163,8 +158,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getAlfCode() {
-		return alfCode;
+	public AlfAnalyzerResult getAlfResult() {
+		return alfResult;
 	}
 
 	/**
@@ -172,11 +167,11 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAlfCode(String newAlfCode) {
-		String oldAlfCode = alfCode;
-		alfCode = newAlfCode;
+	public void setAlfResult(AlfAnalyzerResult newAlfResult) {
+		AlfAnalyzerResult oldAlfResult = alfResult;
+		alfResult = newAlfResult;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__ALF_CODE, oldAlfCode, alfCode));
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__ALF_RESULT, oldAlfResult, alfResult));
 	}
 
 	/**
@@ -187,13 +182,12 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				return getName();
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				return getReference();
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
-				if (resolve) return getContainerClass();
-				return basicGetContainerClass();
-			case BehaviorPackage.BH_BEHAVIOR__ALF_CODE:
-				return getAlfCode();
+				return getContainerClass();
+			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
+				return getAlfResult();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -206,14 +200,14 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				setName((String)newValue);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
-				setContainerClass((BhClass)newValue);
+				setContainerClass((NamedReference)newValue);
 				return;
-			case BehaviorPackage.BH_BEHAVIOR__ALF_CODE:
-				setAlfCode((String)newValue);
+			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
+				setAlfResult((AlfAnalyzerResult)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -227,14 +221,14 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				setName(NAME_EDEFAULT);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
-				setContainerClass((BhClass)null);
+				setContainerClass(CONTAINER_CLASS_EDEFAULT);
 				return;
-			case BehaviorPackage.BH_BEHAVIOR__ALF_CODE:
-				setAlfCode(ALF_CODE_EDEFAULT);
+			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
+				setAlfResult(ALF_RESULT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -248,12 +242,12 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
-				return containerClass != null;
-			case BehaviorPackage.BH_BEHAVIOR__ALF_CODE:
-				return ALF_CODE_EDEFAULT == null ? alfCode != null : !ALF_CODE_EDEFAULT.equals(alfCode);
+				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
+			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
+				return ALF_RESULT_EDEFAULT == null ? alfResult != null : !ALF_RESULT_EDEFAULT.equals(alfResult);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -268,10 +262,12 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", alfCode: ");
-		result.append(alfCode);
+		result.append(" (reference: ");
+		result.append(reference);
+		result.append(", containerClass: ");
+		result.append(containerClass);
+		result.append(", alfResult: ");
+		result.append(alfResult);
 		result.append(')');
 		return result.toString();
 	}

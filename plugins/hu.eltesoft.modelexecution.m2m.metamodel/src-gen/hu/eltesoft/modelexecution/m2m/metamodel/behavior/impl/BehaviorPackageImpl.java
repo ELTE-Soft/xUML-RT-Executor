@@ -9,7 +9,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
@@ -27,10 +26,12 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
 
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -53,7 +54,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass bhClassEClass = null;
+	private EDataType alfAnalyzerResultEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -147,8 +148,8 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBhBehavior_ContainerClass() {
-		return (EReference)bhBehaviorEClass.getEStructuralFeatures().get(0);
+	public EAttribute getBhBehavior_ContainerClass() {
+		return (EAttribute)bhBehaviorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBhBehavior_AlfCode() {
+	public EAttribute getBhBehavior_AlfResult() {
 		return (EAttribute)bhBehaviorEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -165,8 +166,8 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getBhClass() {
-		return bhClassEClass;
+	public EDataType getAlfAnalyzerResult() {
+		return alfAnalyzerResultEDataType;
 	}
 
 	/**
@@ -198,10 +199,11 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 
 		// Create classes and their features
 		bhBehaviorEClass = createEClass(BH_BEHAVIOR);
-		createEReference(bhBehaviorEClass, BH_BEHAVIOR__CONTAINER_CLASS);
-		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__ALF_CODE);
+		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__CONTAINER_CLASS);
+		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__ALF_RESULT);
 
-		bhClassEClass = createEClass(BH_CLASS);
+		// Create data types
+		alfAnalyzerResultEDataType = createEDataType(ALF_ANALYZER_RESULT);
 	}
 
 	/**
@@ -237,14 +239,14 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 		// Add supertypes to classes
 		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getNamed());
-		bhClassEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bhBehaviorEClass, BhBehavior.class, "BhBehavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBhBehavior_ContainerClass(), this.getBhClass(), null, "containerClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBhBehavior_AlfCode(), ecorePackage.getEString(), "alfCode", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBhBehavior_ContainerClass(), theBasePackage.getNamedReference(), "containerClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBhBehavior_AlfResult(), this.getAlfAnalyzerResult(), "alfResult", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(bhClassEClass, BhClass.class, "BhClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		// Initialize data types
+		initEDataType(alfAnalyzerResultEDataType, AlfAnalyzerResult.class, "AlfAnalyzerResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

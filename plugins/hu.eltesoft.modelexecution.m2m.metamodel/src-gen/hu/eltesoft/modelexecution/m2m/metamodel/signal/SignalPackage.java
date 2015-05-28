@@ -67,13 +67,13 @@ public interface SignalPackage extends EPackage {
 	int SG_SIGNAL = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SG_SIGNAL__NAME = BasePackage.MODEL_ROOT__NAME;
+	int SG_SIGNAL__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
 	 * The number of structural features of the '<em>Sg Signal</em>' class.

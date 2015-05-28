@@ -89,14 +89,6 @@ public class EventSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case EventPackage.EV_SIGNAL: {
-				EvSignal evSignal = (EvSignal)theEObject;
-				T result = caseEvSignal(evSignal);
-				if (result == null) result = caseNamed(evSignal);
-				if (result == null) result = caseTranslationObject(evSignal);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -128,21 +120,6 @@ public class EventSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseEvSignalEvent(EvSignalEvent object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Ev Signal</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Ev Signal</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseEvSignal(EvSignal object) {
 		return null;
 	}
 

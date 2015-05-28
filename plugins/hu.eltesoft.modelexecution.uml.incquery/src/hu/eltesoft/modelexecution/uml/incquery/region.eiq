@@ -2,67 +2,55 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-pattern Region(region : Region, regionName) {
-	Region.name(region, regionName);
+pattern Region(region : Region) {
+	Region(region);
 }
 
-pattern ContainerClassOfRegion(region : Region, containerClassName) {
-	Class.name(containerClass, containerClassName);
+pattern ContainerClassOfRegion(region : Region, containerClass : Class) {
 	Class.ownedBehavior(containerClass, stateMachine);
 	StateMachine.region(stateMachine, region);
 }
 
 pattern
-Initials(region : Region, initPseudostate : Pseudostate, initPseudostateName, initTransition : Transition, firstState : State) {
+Initials(region : Region, initPseudostate : Pseudostate, initTransition : Transition, firstState : State) {
 	Pseudostate.container(initPseudostate, region);
 	Pseudostate.kind(initPseudostate, ::initial);
-	Pseudostate.name(initPseudostate, initPseudostateName);
 
 	Transition.source(initTransition, initPseudostate);
-
 	Transition.target(initTransition, firstState);
 }
 
-pattern State(region : Region, state : State, stateName) {
+pattern State(region : Region, state : State) {
 	State.container(state, region);
-	State.name(state, stateName);
 }
 
-pattern Entry(region : Region, state : State, entryName) {
+pattern Entry(region : Region, state : State, entry : Behavior) {
 	State.container(state, region);
 	State.entry(state, entry);
-	Behavior.name(entry, entryName);
 }
 
-pattern Exit(region : Region, state : State, exitName) {
+pattern Exit(region : Region, state : State, exit : Behavior) {
 	State.container(state, region);
 	State.exit(state, exit);
-	Behavior.name(exit, exitName);
 }
 
 pattern
-Transition(region : Region, source : State, transition : Transition, eventName, messageName, target : State) {
-	find TransitionBase(region, source, transition, event, eventName, target);
+Transition(region : Region, source : State, transition : Transition, event : Event, signal : Signal, target : State) {
+	find TransitionBase(region, source, transition, event, target);
 	SignalEvent.signal(event, signal);
-	Signal.name(signal, messageName);
 }
 
 private pattern
-TransitionBase(region : Region, source : State, transition : Transition, event : Event, eventName, target : State) {
+TransitionBase(region : Region, source : State, transition : Transition, event : Event, target : State) {
 	Transition.container(transition, region);
 	Transition.source(transition, source);
 	Transition.target(transition, target);
 	Transition.trigger(transition, trigger);
 	Trigger.event(trigger, event);
-	Event.name(event, eventName);
 }
 
 pattern
-TransitionEffect(region : Region, transition : Transition, effectName) {
+TransitionEffect(region : Region, transition : Transition, effect : Behavior) {
 	Transition.container(transition, region);
 	Transition.effect(transition, effect);
-	Behavior.name(effect, effectName);
 }
-
-
-

@@ -76,10 +76,6 @@ public class BehaviorAdapterFactory extends AdapterFactoryImpl {
 				return createBhBehaviorAdapter();
 			}
 			@Override
-			public Adapter caseBhClass(BhClass object) {
-				return createBhClassAdapter();
-			}
-			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -122,20 +118,6 @@ public class BehaviorAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBhBehaviorAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass <em>Bh Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhClass
-	 * @generated
-	 */
-	public Adapter createBhClassAdapter() {
 		return null;
 	}
 

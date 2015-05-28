@@ -12,20 +12,41 @@ import hu.eltesoft.modelexecution.m2t.java.templates.SignalEventTemplate
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase
+import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
+import org.eclipse.uml2.uml.Class
+import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
 
-class TemplateSmokeTests {
+class TemplateSmokeTests extends ModelBasedTestCase {
+
+	static val UML_TEST_MODEL_PATH = "resources/model.uml";
+
+	var Class aClass
+
+	new() {
+		super(UML_TEST_MODEL_PATH)
+	}
+
+	@Before
+	override setUp() {
+		super.setUp()
+		aClass = namedChild(model, Class, "A")
+	}
+
+	def makeNewReference(String name) {
+		return new FakeNamedReference(name)
+	}
 
 	@Test
 	def testGenerateCodeForBehavior() {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
-		behavior.name = "TestBehavior"
-		behavior.alfCode = "this.TestReception();"
-		behavior.containerClass = factory.createBhClass
-		behavior.containerClass.name = "TestClass"
+		behavior.reference = makeNewReference("TestBehavior")
+		behavior.alfResult = new AlfAnalyzer().analyze("this.x();", aClass)
+		behavior.containerClass = makeNewReference("TestClass")
 		val template = new BehaviorTemplate(behavior)
 
 		assertProperlyGenerated(template.generate)
@@ -34,7 +55,7 @@ class TemplateSmokeTests {
 	@Test
 	def testGenerateCodeForClassWithoutStateMachine() {
 		val ^class = ClassdefFactory.eINSTANCE.createClClass
-		^class.name = "TestClass"
+		^class.reference = makeNewReference("TestClass")
 		val template = new ClassTemplate(^class)
 
 		assertProperlyGenerated(template.generate)
@@ -44,19 +65,17 @@ class TemplateSmokeTests {
 	def testGenerateCodeForClassWithStateMachineAndOperations() {
 		val factory = ClassdefFactory.eINSTANCE
 		val ^class = factory.createClClass
-		^class.name = "TestClass"
-		^class.region = factory.createClRegion
-		^class.region.name = "TestRegion"
+		^class.reference = makeNewReference("TestClass")
+		^class.region = makeNewReference("TestRegion")
 
 		val operation = factory.createClOperation
-		operation.name = "testOperation"
-		operation.method = "TestBehavior"
+		operation.reference = makeNewReference("testOperation")
+		operation.method = makeNewReference("TestBehavior")
 		^class.operations.add(operation)
 
 		val reception = factory.createClReception
-		reception.name = "TestReception"
-		reception.signal = factory.createClSignal
-		reception.signal.name = "TestSignal"
+		reception.reference = makeNewReference("TestReception")
+		reception.signal = makeNewReference("TestSignal")
 		^class.receptions.add(reception)
 
 		val template = new ClassTemplate(^class)
@@ -68,54 +87,41 @@ class TemplateSmokeTests {
 	def testGenerateCodeForRegion() {
 		val factory = RegionFactory.eINSTANCE
 		val region = factory.createRgRegion
-		region.name = "TestRegion"
-		region.containerClass = factory.createRgClass
-		region.containerClass.name = "TestClass"
+		region.reference = makeNewReference("TestRegion")
+		region.containerClass = makeNewReference("TestClass")
 
 		val initState = factory.createRgInitialPseudostate
-		initState.name = "InitState"
-		initState.reference = new Reference(initState)
+		initState.reference = makeNewReference("InitState")
 		region.initialPseudostate = initState
 
 		val firstState = factory.createRgState
-		firstState.name = "FirstState"
-		firstState.reference = new Reference(firstState)
-		firstState.entry = factory.createRgBehavior
-		firstState.entry.name = "FirstStateEntry"
+		firstState.reference = makeNewReference("FirstState")
+		firstState.entry = makeNewReference("FirstStateEntry")
 		region.states.add(firstState)
 
 		val secondState = factory.createRgState
-		secondState.name = "SecondState"
-		secondState.reference = new Reference(secondState)
-		secondState.exit = factory.createRgBehavior
-		secondState.exit.name = "SecondStateExit"
+		secondState.reference = makeNewReference("SecondState")
+		secondState.exit = makeNewReference("SecondStateExit")
 		region.states.add(secondState)
 
 		val initTransition = factory.createRgTransition
 		initTransition.reference = new Reference(initTransition)
 		initTransition.target = firstState
+		initTransition.effect = makeNewReference("InitEffect")
 		initState.initialTransition = initTransition
-
-		val initEffect = factory.createRgBehavior
-		initEffect.name = "InitEffect"
-		initTransition.effect = initEffect
 
 		val firstTransition = factory.createRgTransition
 		firstTransition.reference = new Reference(firstTransition)
 		firstTransition.target = secondState
-		firstTransition.message = factory.createRgMessage
-		firstTransition.message.name = "ToSecondSignal"
-		firstTransition.event = factory.createRgEvent
-		firstTransition.event.name = "ToSecondSignalEvent"
+		firstTransition.message = makeNewReference("ToSecondSignal")
+		firstTransition.event = makeNewReference("ToSecondSignalEvent")
 		firstState.transitions.add(firstTransition)
 
 		val secondTransition = factory.createRgTransition
 		secondTransition.reference = new Reference(secondTransition)
 		secondTransition.target = firstState
-		secondTransition.message = factory.createRgMessage
-		secondTransition.message.name = "ToFirstSignal"
-		secondTransition.event = factory.createRgEvent
-		secondTransition.event.name = "ToFirstSignalEvent"
+		secondTransition.message = makeNewReference("ToFirstSignal")
+		secondTransition.event = makeNewReference("ToFirstSignalEvent")
 		secondState.transitions.add(secondTransition)
 
 		val template = new RegionTemplate(region)
@@ -127,9 +133,8 @@ class TemplateSmokeTests {
 	def testGenerateCodeForSignalEvent() {
 		val factory = EventFactory.eINSTANCE
 		val event = factory.createEvSignalEvent
-		event.name = "TestEvent"
-		event.signal = factory.createEvSignal
-		event.signal.name = "TestSignal"
+		event.reference = makeNewReference("TestEvent")
+		event.signal = makeNewReference("TestSignal")
 		val template = new SignalEventTemplate(event)
 
 		assertProperlyGenerated(template.generate)
@@ -138,7 +143,7 @@ class TemplateSmokeTests {
 	@Test
 	def testGenerateCodeForSignal() {
 		val signal = SignalFactory.eINSTANCE.createSgSignal
-		signal.name = "TestSignal"
+		signal.reference = makeNewReference("TestSignal")
 		val template = new SignalTemplate(signal)
 
 		assertProperlyGenerated(template.generate)
@@ -149,4 +154,5 @@ class TemplateSmokeTests {
 		assertNotNull(result.text)
 		assertTrue(result.text.length > 0)
 	}
+
 }

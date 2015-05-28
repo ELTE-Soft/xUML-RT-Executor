@@ -2,14 +2,14 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignal;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
@@ -28,14 +28,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	/**
-	 * The cached value of the '{@link #getSignal() <em>Signal</em>}' reference.
+	 * The default value of the '{@link #getSignal() <em>Signal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSignal()
 	 * @generated
 	 * @ordered
 	 */
-	protected EvSignal signal;
+	protected static final NamedReference SIGNAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getSignal() <em>Signal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSignal()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference signal = SIGNAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -61,15 +71,7 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EvSignal getSignal() {
-		if (signal != null && signal.eIsProxy()) {
-			InternalEObject oldSignal = (InternalEObject)signal;
-			signal = (EvSignal)eResolveProxy(oldSignal);
-			if (signal != oldSignal) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EventPackage.EV_SIGNAL_EVENT__SIGNAL, oldSignal, signal));
-			}
-		}
+	public NamedReference getSignal() {
 		return signal;
 	}
 
@@ -78,17 +80,8 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EvSignal basicGetSignal() {
-		return signal;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setSignal(EvSignal newSignal) {
-		EvSignal oldSignal = signal;
+	public void setSignal(NamedReference newSignal) {
+		NamedReference oldSignal = signal;
 		signal = newSignal;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EventPackage.EV_SIGNAL_EVENT__SIGNAL, oldSignal, signal));
@@ -103,8 +96,7 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EventPackage.EV_SIGNAL_EVENT__SIGNAL:
-				if (resolve) return getSignal();
-				return basicGetSignal();
+				return getSignal();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -118,7 +110,7 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EventPackage.EV_SIGNAL_EVENT__SIGNAL:
-				setSignal((EvSignal)newValue);
+				setSignal((NamedReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -133,7 +125,7 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case EventPackage.EV_SIGNAL_EVENT__SIGNAL:
-				setSignal((EvSignal)null);
+				setSignal(SIGNAL_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -148,9 +140,25 @@ public class EvSignalEventImpl extends EvEventImpl implements EvSignalEvent {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EventPackage.EV_SIGNAL_EVENT__SIGNAL:
-				return signal != null;
+				return SIGNAL_EDEFAULT == null ? signal != null : !SIGNAL_EDEFAULT.equals(signal);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (signal: ");
+		result.append(signal);
+		result.append(')');
+		return result.toString();
 	}
 
 } //EvSignalEventImpl

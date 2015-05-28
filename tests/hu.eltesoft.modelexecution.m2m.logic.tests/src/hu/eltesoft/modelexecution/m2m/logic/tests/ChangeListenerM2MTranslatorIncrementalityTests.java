@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.tests;
 
-import static hu.eltesoft.modelexecution.m2m.logic.tests.Assert.assertAsSets;
 import static org.junit.Assert.assertEquals;
 import hu.eltesoft.modelexecution.m2m.logic.Translator;
 
@@ -76,11 +75,9 @@ public class ChangeListenerM2MTranslatorIncrementalityTests extends
 
 		translator.incrementalBuild().forEach(t -> t.perform(listener));
 
-		assertEquals(1, listener.deletions.size());
-		assertEquals(2, listener.modifications.size());
-		assertEquals("Region1", listener.deletions.get(0));
-		assertAsSets(new String[] { "RenamedRegion1", "Class1" },
-				listener.modifications.get(0), listener.modifications.get(1));
+		// nothing changes on a rename
+		assertEquals(0, listener.deletions.size());
+		assertEquals(0, listener.modifications.size());
 	}
 
 	@Test

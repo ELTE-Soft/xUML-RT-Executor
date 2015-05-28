@@ -4,6 +4,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 
@@ -326,7 +327,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
 			if (!uri.equals(EMPTY_STR)) {
 				try {
-				resource = resourceSet.getResource(URI.createURI(uri), true);
+					resource = resourceSet
+							.getResource(URI.createURI(uri), true);
 				} catch (Exception e) {
 					// the resource does not exist
 					return;
@@ -375,10 +377,12 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, projectName);
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_EXEC_CLASS_NAME,
-				selectedClass.getName());
+				new NamedReference(selectedClass, selectedClass.getName())
+						.getIdentifier());
 		configuration.setAttribute(
 				ModelExecutionLaunchConfig.ATTR_FEED_FUN_NAME,
-				selectedFeedFunction.getName());
+				new NamedReference(selectedFeedFunction, selectedFeedFunction
+						.getName()).getIdentifier());
 
 		String modelResourcePath = selectedModelResource.getFullPath()
 				.toString();
@@ -421,8 +425,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	private Object[] getAllFunctions() {
 		List<Operation> functions = new LinkedList<>();
 
-		methodMatcher.getAllMatches(selectedClass, null, null).forEach(
-				m -> functions.add(m.getOperation()));
+		methodMatcher.getAllMatches(selectedClass, null, null).forEach(m -> {
+			functions.add(m.getOperation());
+		});
 		Object[] functionArray = functions
 				.toArray(new Object[functions.size()]);
 		return functionArray;
@@ -433,5 +438,4 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		return super.isValid(launchConfig) && selectedModelResource != null
 				&& selectedClass != null && selectedFeedFunction != null;
 	}
-
 }

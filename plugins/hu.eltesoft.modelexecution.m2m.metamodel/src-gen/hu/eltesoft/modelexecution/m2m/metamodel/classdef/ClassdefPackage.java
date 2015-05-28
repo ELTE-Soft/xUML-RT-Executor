@@ -69,16 +69,16 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__NAME = BasePackage.MODEL_ROOT__NAME;
+	int CL_CLASS__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Region</b></em>' reference.
+	 * The feature id for the '<em><b>Region</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -123,43 +123,6 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClRegionImpl <em>Cl Region</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClRegionImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClRegion()
-	 * @generated
-	 */
-	int CL_REGION = 1;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_REGION__NAME = BasePackage.NAMED__NAME;
-
-	/**
-	 * The number of structural features of the '<em>Cl Region</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_REGION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Cl Region</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_REGION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -167,16 +130,16 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClOperation()
 	 * @generated
 	 */
-	int CL_OPERATION = 2;
+	int CL_OPERATION = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_OPERATION__NAME = BasePackage.NAMED__NAME;
+	int CL_OPERATION__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Method</b></em>' attribute.
@@ -213,19 +176,19 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReception()
 	 * @generated
 	 */
-	int CL_RECEPTION = 3;
+	int CL_RECEPTION = 2;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_RECEPTION__NAME = BasePackage.NAMED__NAME;
+	int CL_RECEPTION__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Signal</b></em>' reference.
+	 * The feature id for the '<em><b>Signal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -251,43 +214,6 @@ public interface ClassdefPackage extends EPackage {
 	 */
 	int CL_RECEPTION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
-	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClSignalImpl <em>Cl Signal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClSignalImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClSignal()
-	 * @generated
-	 */
-	int CL_SIGNAL = 4;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_SIGNAL__NAME = BasePackage.NAMED__NAME;
-
-	/**
-	 * The number of structural features of the '<em>Cl Signal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_SIGNAL_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Cl Signal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_SIGNAL_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
@@ -300,15 +226,15 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClClass();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Region</em>'.
+	 * @return the meta object for the attribute '<em>Region</em>'.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion()
 	 * @see #getClClass()
 	 * @generated
 	 */
-	EReference getClClass_Region();
+	EAttribute getClClass_Region();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}'.
@@ -331,16 +257,6 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClass_Receptions();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion <em>Cl Region</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Cl Region</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion
-	 * @generated
-	 */
-	EClass getClRegion();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -374,25 +290,15 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClReception();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal <em>Signal</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal <em>Signal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Signal</em>'.
+	 * @return the meta object for the attribute '<em>Signal</em>'.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal()
 	 * @see #getClReception()
 	 * @generated
 	 */
-	EReference getClReception_Signal();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal <em>Cl Signal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Cl Signal</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal
-	 * @generated
-	 */
-	EClass getClSignal();
+	EAttribute getClReception_Signal();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -428,12 +334,12 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_CLASS = eINSTANCE.getClClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Region</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Region</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CL_CLASS__REGION = eINSTANCE.getClClass_Region();
+		EAttribute CL_CLASS__REGION = eINSTANCE.getClClass_Region();
 
 		/**
 		 * The meta object literal for the '<em><b>Operations</b></em>' reference list feature.
@@ -450,16 +356,6 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS__RECEPTIONS = eINSTANCE.getClClass_Receptions();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClRegionImpl <em>Cl Region</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClRegionImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClRegion()
-		 * @generated
-		 */
-		EClass CL_REGION = eINSTANCE.getClRegion();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.
@@ -490,22 +386,12 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_RECEPTION = eINSTANCE.getClReception();
 
 		/**
-		 * The meta object literal for the '<em><b>Signal</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Signal</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CL_RECEPTION__SIGNAL = eINSTANCE.getClReception_Signal();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClSignalImpl <em>Cl Signal</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClSignalImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClSignal()
-		 * @generated
-		 */
-		EClass CL_SIGNAL = eINSTANCE.getClSignal();
+		EAttribute CL_RECEPTION__SIGNAL = eINSTANCE.getClReception_Signal();
 
 	}
 

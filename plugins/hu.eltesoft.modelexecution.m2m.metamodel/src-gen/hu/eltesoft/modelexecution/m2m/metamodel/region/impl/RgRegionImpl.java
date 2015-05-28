@@ -2,8 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.region.RgClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState;
@@ -29,7 +30,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getInitialPseudostate <em>Initial Pseudostate</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getStates <em>States</em>}</li>
@@ -40,34 +41,44 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegion {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final NamedReference REFERENCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getReference()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getContainerClass() <em>Container Class</em>}' reference.
+	 * The default value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getContainerClass()
 	 * @generated
 	 * @ordered
 	 */
-	protected RgClass containerClass;
+	protected static final NamedReference CONTAINER_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContainerClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference containerClass = CONTAINER_CLASS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getInitialPseudostate() <em>Initial Pseudostate</em>}' reference.
@@ -113,8 +124,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public NamedReference getReference() {
+		return reference;
 	}
 
 	/**
@@ -122,11 +133,11 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setReference(NamedReference newReference) {
+		NamedReference oldReference = reference;
+		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -134,15 +145,7 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgClass getContainerClass() {
-		if (containerClass != null && containerClass.eIsProxy()) {
-			InternalEObject oldContainerClass = (InternalEObject)containerClass;
-			containerClass = (RgClass)eResolveProxy(oldContainerClass);
-			if (containerClass != oldContainerClass) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RegionPackage.RG_REGION__CONTAINER_CLASS, oldContainerClass, containerClass));
-			}
-		}
+	public NamedReference getContainerClass() {
 		return containerClass;
 	}
 
@@ -151,17 +154,8 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RgClass basicGetContainerClass() {
-		return containerClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setContainerClass(RgClass newContainerClass) {
-		RgClass oldContainerClass = containerClass;
+	public void setContainerClass(NamedReference newContainerClass) {
+		NamedReference oldContainerClass = containerClass;
 		containerClass = newContainerClass;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__CONTAINER_CLASS, oldContainerClass, containerClass));
@@ -225,11 +219,10 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__NAME:
-				return getName();
+			case RegionPackage.RG_REGION__REFERENCE:
+				return getReference();
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
-				if (resolve) return getContainerClass();
-				return basicGetContainerClass();
+				return getContainerClass();
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
 				if (resolve) return getInitialPseudostate();
 				return basicGetInitialPseudostate();
@@ -248,11 +241,11 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__NAME:
-				setName((String)newValue);
+			case RegionPackage.RG_REGION__REFERENCE:
+				setReference((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
-				setContainerClass((RgClass)newValue);
+				setContainerClass((NamedReference)newValue);
 				return;
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
 				setInitialPseudostate((RgInitialPseudostate)newValue);
@@ -273,11 +266,11 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__NAME:
-				setName(NAME_EDEFAULT);
+			case RegionPackage.RG_REGION__REFERENCE:
+				setReference(REFERENCE_EDEFAULT);
 				return;
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
-				setContainerClass((RgClass)null);
+				setContainerClass(CONTAINER_CLASS_EDEFAULT);
 				return;
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
 				setInitialPseudostate((RgInitialPseudostate)null);
@@ -297,10 +290,10 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case RegionPackage.RG_REGION__REFERENCE:
+				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
-				return containerClass != null;
+				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
 				return initialPseudostate != null;
 			case RegionPackage.RG_REGION__STATES:
@@ -319,8 +312,10 @@ public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegi
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (reference: ");
+		result.append(reference);
+		result.append(", containerClass: ");
+		result.append(containerClass);
 		result.append(')');
 		return result.toString();
 	}

@@ -47,12 +47,12 @@ public final class OperationQuerySpecification extends BaseGeneratedQuerySpecifi
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","operation","operationName");
+    return Arrays.asList("cls","operation");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("operationName", "java.lang.String"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class OperationQuerySpecification extends BaseGeneratedQuerySpecifi
   
   @Override
   public OperationMatch newMatch(final Object... parameters) {
-    return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (java.lang.String) parameters[2]);
+    return OperationMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1]);
   }
   
   @Override
@@ -72,17 +72,13 @@ public final class OperationQuerySpecification extends BaseGeneratedQuerySpecifi
       PBody body = new PBody(this);
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
-      PVariable var_operationName = body.getOrCreateVariableByName("operationName");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
-        new ExportedParameter(body, var_operation, "operation"), 
-        new ExportedParameter(body, var_operationName, "operationName")
+        new ExportedParameter(body, var_operation, "operation")
       ));
       
       
-      
       new TypeBinary(body, CONTEXT, var_cls, var_operation, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class", "ownedOperation"), "http://www.eclipse.org/uml2/5.0.0/UML/Class.ownedOperation");
-      new TypeBinary(body, CONTEXT, var_operation, var_operationName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

@@ -47,12 +47,12 @@ public final class TransitionEffectQuerySpecification extends BaseGeneratedQuery
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("region","transition","effectName");
+    return Arrays.asList("region","transition","effect");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("effectName", "java.lang.String"));
+    return Arrays.asList(new PParameter("region", "org.eclipse.uml2.uml.Region"),new PParameter("transition", "org.eclipse.uml2.uml.Transition"),new PParameter("effect", "org.eclipse.uml2.uml.Behavior"));
   }
   
   @Override
@@ -62,7 +62,7 @@ public final class TransitionEffectQuerySpecification extends BaseGeneratedQuery
   
   @Override
   public TransitionEffectMatch newMatch(final Object... parameters) {
-    return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Transition) parameters[1], (java.lang.String) parameters[2]);
+    return TransitionEffectMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.Transition) parameters[1], (org.eclipse.uml2.uml.Behavior) parameters[2]);
   }
   
   @Override
@@ -72,19 +72,17 @@ public final class TransitionEffectQuerySpecification extends BaseGeneratedQuery
       PBody body = new PBody(this);
       PVariable var_region = body.getOrCreateVariableByName("region");
       PVariable var_transition = body.getOrCreateVariableByName("transition");
-      PVariable var_effectName = body.getOrCreateVariableByName("effectName");
       PVariable var_effect = body.getOrCreateVariableByName("effect");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_region, "region"), 
         new ExportedParameter(body, var_transition, "transition"), 
-        new ExportedParameter(body, var_effectName, "effectName")
+        new ExportedParameter(body, var_effect, "effect")
       ));
       
       
       
       new TypeBinary(body, CONTEXT, var_transition, var_region, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "container"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.container");
       new TypeBinary(body, CONTEXT, var_transition, var_effect, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "effect"), "http://www.eclipse.org/uml2/5.0.0/UML/Transition.effect");
-      new TypeBinary(body, CONTEXT, var_effect, var_effectName, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }
     return bodies;

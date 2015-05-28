@@ -28,9 +28,8 @@ import org.eclipse.uml2.uml.Behavior;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Behavior(behavior : Behavior, behaviorName) {
+ * pattern Behavior(behavior : Behavior) {
  * 	OpaqueBehavior(behavior);
- * 	Behavior.name(behavior, behaviorName);
  * }
  * </pre></code>
  * 
@@ -70,8 +69,6 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
   
   private final static int POSITION_BEHAVIOR = 0;
   
-  private final static int POSITION_BEHAVIORNAME = 1;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(BehaviorMatcher.class);
   
   /**
@@ -108,71 +105,65 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return matches represented as a BehaviorMatch object.
    * 
    */
-  public Collection<BehaviorMatch> getAllMatches(final Behavior pBehavior, final String pBehaviorName) {
-    return rawGetAllMatches(new Object[]{pBehavior, pBehaviorName});
+  public Collection<BehaviorMatch> getAllMatches(final Behavior pBehavior) {
+    return rawGetAllMatches(new Object[]{pBehavior});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return a match represented as a BehaviorMatch object, or null if no match is found.
    * 
    */
-  public BehaviorMatch getOneArbitraryMatch(final Behavior pBehavior, final String pBehaviorName) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pBehaviorName});
+  public BehaviorMatch getOneArbitraryMatch(final Behavior pBehavior) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior, final String pBehaviorName) {
-    return rawHasMatch(new Object[]{pBehavior, pBehaviorName});
+  public boolean hasMatch(final Behavior pBehavior) {
+    return rawHasMatch(new Object[]{pBehavior});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior, final String pBehaviorName) {
-    return rawCountMatches(new Object[]{pBehavior, pBehaviorName});
+  public int countMatches(final Behavior pBehavior) {
+    return rawCountMatches(new Object[]{pBehavior});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final String pBehaviorName, final IMatchProcessor<? super BehaviorMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior, pBehaviorName}, processor);
+  public void forEachMatch(final Behavior pBehavior, final IMatchProcessor<? super BehaviorMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final String pBehaviorName, final IMatchProcessor<? super BehaviorMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior, pBehaviorName}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final IMatchProcessor<? super BehaviorMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior}, processor);
   }
   
   /**
@@ -183,14 +174,13 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<BehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final String pBehaviorName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pBehaviorName});
+  public DeltaMonitor<BehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior});
   }
   
   /**
@@ -198,12 +188,11 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
-   * @param pBehaviorName the fixed value of pattern parameter behaviorName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public BehaviorMatch newMatch(final Behavior pBehavior, final String pBehaviorName) {
-    return BehaviorMatch.newMatch(pBehavior, pBehaviorName);
+  public BehaviorMatch newMatch(final Behavior pBehavior) {
+    return BehaviorMatch.newMatch(pBehavior);
     
   }
   
@@ -227,66 +216,10 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
     return rawAccumulateAllValuesOfbehavior(emptyArray());
   }
   
-  /**
-   * Retrieve the set of values that occur in matches for behavior.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Behavior> getAllValuesOfbehavior(final BehaviorMatch partialMatch) {
-    return rawAccumulateAllValuesOfbehavior(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for behavior.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Behavior> getAllValuesOfbehavior(final String pBehaviorName) {
-    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pBehaviorName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for behaviorName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfbehaviorName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_BEHAVIORNAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for behaviorName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfbehaviorName() {
-    return rawAccumulateAllValuesOfbehaviorName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for behaviorName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfbehaviorName(final BehaviorMatch partialMatch) {
-    return rawAccumulateAllValuesOfbehaviorName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for behaviorName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfbehaviorName(final Behavior pBehavior) {
-    return rawAccumulateAllValuesOfbehaviorName(new Object[]{pBehavior, null});
-  }
-  
   @Override
   protected BehaviorMatch tupleToMatch(final Tuple t) {
     try {
-      return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (java.lang.String) t.get(POSITION_BEHAVIORNAME));
+      return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -297,7 +230,7 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
   @Override
   protected BehaviorMatch arrayToMatch(final Object[] match) {
     try {
-      return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_BEHAVIORNAME]);
+      return BehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -308,7 +241,7 @@ public class BehaviorMatcher extends BaseMatcher<BehaviorMatch> {
   @Override
   protected BehaviorMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return BehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.String) match[POSITION_BEHAVIORNAME]);
+      return BehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

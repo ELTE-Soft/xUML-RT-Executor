@@ -29,9 +29,8 @@ import org.eclipse.uml2.uml.State;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern State(region : Region, state : State, stateName) {
+ * pattern State(region : Region, state : State) {
  * 	State.container(state, region);
- * 	State.name(state, stateName);
  * }
  * </pre></code>
  * 
@@ -73,8 +72,6 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
   
   private final static int POSITION_STATE = 1;
   
-  private final static int POSITION_STATENAME = 2;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(StateMatcher.class);
   
   /**
@@ -112,12 +109,11 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return matches represented as a StateMatch object.
    * 
    */
-  public Collection<StateMatch> getAllMatches(final Region pRegion, final State pState, final String pStateName) {
-    return rawGetAllMatches(new Object[]{pRegion, pState, pStateName});
+  public Collection<StateMatch> getAllMatches(final Region pRegion, final State pState) {
+    return rawGetAllMatches(new Object[]{pRegion, pState});
   }
   
   /**
@@ -125,12 +121,11 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return a match represented as a StateMatch object, or null if no match is found.
    * 
    */
-  public StateMatch getOneArbitraryMatch(final Region pRegion, final State pState, final String pStateName) {
-    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState, pStateName});
+  public StateMatch getOneArbitraryMatch(final Region pRegion, final State pState) {
+    return rawGetOneArbitraryMatch(new Object[]{pRegion, pState});
   }
   
   /**
@@ -138,36 +133,33 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Region pRegion, final State pState, final String pStateName) {
-    return rawHasMatch(new Object[]{pRegion, pState, pStateName});
+  public boolean hasMatch(final Region pRegion, final State pState) {
+    return rawHasMatch(new Object[]{pRegion, pState});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Region pRegion, final State pState, final String pStateName) {
-    return rawCountMatches(new Object[]{pRegion, pState, pStateName});
+  public int countMatches(final Region pRegion, final State pState) {
+    return rawCountMatches(new Object[]{pRegion, pState});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final State pState, final String pStateName, final IMatchProcessor<? super StateMatch> processor) {
-    rawForEachMatch(new Object[]{pRegion, pState, pStateName}, processor);
+  public void forEachMatch(final Region pRegion, final State pState, final IMatchProcessor<? super StateMatch> processor) {
+    rawForEachMatch(new Object[]{pRegion, pState}, processor);
   }
   
   /**
@@ -175,13 +167,12 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final String pStateName, final IMatchProcessor<? super StateMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pRegion, pState, pStateName}, processor);
+  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final IMatchProcessor<? super StateMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pRegion, pState}, processor);
   }
   
   /**
@@ -193,14 +184,13 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<StateMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState, final String pStateName) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState, pStateName});
+  public DeltaMonitor<StateMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState});
   }
   
   /**
@@ -209,12 +199,11 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @param pStateName the fixed value of pattern parameter stateName, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public StateMatch newMatch(final Region pRegion, final State pState, final String pStateName) {
-    return StateMatch.newMatch(pRegion, pState, pStateName);
+  public StateMatch newMatch(final Region pRegion, final State pState) {
+    return StateMatch.newMatch(pRegion, pState);
     
   }
   
@@ -252,8 +241,8 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final State pState, final String pStateName) {
-    return rawAccumulateAllValuesOfregion(new Object[]{null, pState, pStateName});
+  public Set<Region> getAllValuesOfregion(final State pState) {
+    return rawAccumulateAllValuesOfregion(new Object[]{null, pState});
   }
   
   /**
@@ -290,52 +279,14 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOfstate(final Region pRegion, final String pStateName) {
-    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null, pStateName});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for stateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfstateName(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_STATENAME, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for stateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfstateName() {
-    return rawAccumulateAllValuesOfstateName(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for stateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfstateName(final StateMatch partialMatch) {
-    return rawAccumulateAllValuesOfstateName(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for stateName.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfstateName(final Region pRegion, final State pState) {
-    return rawAccumulateAllValuesOfstateName(new Object[]{pRegion, pState, null});
+  public Set<State> getAllValuesOfstate(final Region pRegion) {
+    return rawAccumulateAllValuesOfstate(new Object[]{pRegion, null});
   }
   
   @Override
   protected StateMatch tupleToMatch(final Tuple t) {
     try {
-      return StateMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE), (java.lang.String) t.get(POSITION_STATENAME));
+      return StateMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -346,7 +297,7 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
   @Override
   protected StateMatch arrayToMatch(final Object[] match) {
     try {
-      return StateMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_STATENAME]);
+      return StateMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -357,7 +308,7 @@ public class StateMatcher extends BaseMatcher<StateMatch> {
   @Override
   protected StateMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return StateMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE], (java.lang.String) match[POSITION_STATENAME]);
+      return StateMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

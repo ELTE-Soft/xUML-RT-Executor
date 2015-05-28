@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,29 +23,29 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  */
 public interface ClReception extends Named {
 	/**
-	 * Returns the value of the '<em><b>Signal</b></em>' reference.
+	 * Returns the value of the '<em><b>Signal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Signal</em>' reference isn't clear,
+	 * If the meaning of the '<em>Signal</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Signal</em>' reference.
-	 * @see #setSignal(ClSignal)
+	 * @return the value of the '<em>Signal</em>' attribute.
+	 * @see #setSignal(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClReception_Signal()
-	 * @model required="true"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
-	ClSignal getSignal();
+	NamedReference getSignal();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal <em>Signal</em>}' reference.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal <em>Signal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Signal</em>' reference.
+	 * @param value the new value of the '<em>Signal</em>' attribute.
 	 * @see #getSignal()
 	 * @generated
 	 */
-	void setSignal(ClSignal value);
+	void setSignal(NamedReference value);
 
 } // ClReception

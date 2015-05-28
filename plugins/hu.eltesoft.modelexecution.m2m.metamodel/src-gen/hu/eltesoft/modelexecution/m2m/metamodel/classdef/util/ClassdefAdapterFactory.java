@@ -76,20 +76,12 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClClassAdapter();
 			}
 			@Override
-			public Adapter caseClRegion(ClRegion object) {
-				return createClRegionAdapter();
-			}
-			@Override
 			public Adapter caseClOperation(ClOperation object) {
 				return createClOperationAdapter();
 			}
 			@Override
 			public Adapter caseClReception(ClReception object) {
 				return createClReceptionAdapter();
-			}
-			@Override
-			public Adapter caseClSignal(ClSignal object) {
-				return createClSignalAdapter();
 			}
 			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
@@ -138,20 +130,6 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion <em>Cl Region</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClRegion
-	 * @generated
-	 */
-	public Adapter createClRegionAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -176,20 +154,6 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClReceptionAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal <em>Cl Signal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClSignal
-	 * @generated
-	 */
-	public Adapter createClSignalAdapter() {
 		return null;
 	}
 
