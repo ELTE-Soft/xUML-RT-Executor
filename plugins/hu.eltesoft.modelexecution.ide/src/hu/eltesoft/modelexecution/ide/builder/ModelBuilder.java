@@ -21,10 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
- * The model builder triggers the source code generation from the UML model. It
- * registers resources when they appear in the project. When the editor is used
- * it locks the editor when the model is under compilation.
- * 
+ * The model builder triggers the source code generation from the UML model.
  * Generated files are deleted on full build.
  */
 public class ModelBuilder extends IncrementalProjectBuilder {
@@ -32,10 +29,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder"; //$NON-NLS-1$
 
 	private final IFileManagerFactory fileManagerFactory;
-
 	private ModelBuilderFileManager builderFileManager;
-
-	// private final Map<IResource, IChange>
 
 	/**
 	 * Default constructor used by Eclipse
@@ -54,7 +48,6 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
-
 		builderFileManager = new ModelBuilderFileManager(getProject(),
 				fileManagerFactory);
 	}
@@ -76,7 +69,6 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
-		// TODO: remove generated classes from bin and bin-debug too?
 		builderFileManager.cleanUp();
 		builderFileManager.refreshFolder();
 	}

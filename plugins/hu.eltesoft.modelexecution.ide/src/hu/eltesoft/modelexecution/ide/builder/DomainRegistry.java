@@ -12,17 +12,15 @@ import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 /**
- * 
+ * Holds editing domains for resource sets. It maintains the translation
+ * registry for resources in the managed domains.
  */
 public class DomainRegistry {
 
-	private static final NotificationFilter filter = NotificationFilter.RESOURCE_LOADED
-			.or(NotificationFilter.RESOURCE_UNLOADED);
+	public static final DomainRegistry INSTANCE = new DomainRegistry();
 
 	private final Map<ResourceSet, TransactionalEditingDomain> domains = new HashMap<>();
 	private final Map<TransactionalEditingDomain, DomainResourceListener> listeners = new HashMap<>();
-
-	public static final DomainRegistry INSTANCE = new DomainRegistry();
 
 	protected DomainRegistry() {
 	}
@@ -56,10 +54,18 @@ public class DomainRegistry {
 		return domains.get(resourceSet);
 	}
 
+	/**
+	 * Listens for resource loading and unloading events on a resource set. It
+	 * is used to maintain the translation registry during the lifetime of a
+	 * managed domain.
+	 */
 	private static class DomainResourceListener extends ResourceSetListenerImpl {
 
+		private static final NotificationFilter FILTER = NotificationFilter.RESOURCE_LOADED
+				.or(NotificationFilter.RESOURCE_UNLOADED);
+
 		public DomainResourceListener() {
-			super(filter);
+			super(FILTER);
 		}
 
 		@Override

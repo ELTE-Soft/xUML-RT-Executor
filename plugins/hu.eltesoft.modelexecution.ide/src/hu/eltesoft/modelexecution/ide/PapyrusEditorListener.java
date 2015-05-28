@@ -6,9 +6,9 @@ import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 /**
- * Monitors active Papyrus editors to register their domain and resource set
- * into the EMF resource registry. These resources will be used by translators
- * to attach notification-based model generators.
+ * Monitors active EMF editors to register their domain into a registry. The
+ * underlying resources will be used by translators to attach notification-based
+ * model generators.
  */
 public class PapyrusEditorListener extends ResourceSetListenerImpl {
 
