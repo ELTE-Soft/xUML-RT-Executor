@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -115,6 +118,23 @@ public class EMFResourceRegistry {
 
 	private synchronized void resourceSetUnloaded(ResourceSet resourceSet) {
 		resources.remove(resourceSet);
+	}
+
+	public synchronized void forgetResources(IProject project) {
+		try {
+			project.accept(new IResourceVisitor() {
+
+				@Override
+				public boolean visit(IResource resource) throws CoreException {
+					if (isUMLResource(resource)) {
+						forgetResource(resource);
+					}
+					return true;
+				}
+			});
+		} catch (CoreException e) {
+			IdePlugin.logError("Error while cleaning up project resources", e); //$NON-NLS-1$
+		}
 	}
 
 	public synchronized void forgetResource(IResource file) {
