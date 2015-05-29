@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -25,13 +25,10 @@ public class ExecutableModelProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		try {
-			ExecutableModelProjectSetup.createProject(pageOne.getProjectName());
+			ExecutableModelProjectSetup.createProject(pageOne.getProjectName(), pageOne.getLocationPath());
 		} catch (CoreException e) {
-			MessageDialog
-					.openError(
-							null,
-							Messages.ExecutableModelProjectWizard_create_new_project_error_title,
-							Messages.ExecutableModelProjectWizard_create_new_project_error_text);
+			IdePlugin.logError("Problem while creating project", e);
+			Dialogs.openInternalErrorDialog();
 		}
 		return true;
 	}

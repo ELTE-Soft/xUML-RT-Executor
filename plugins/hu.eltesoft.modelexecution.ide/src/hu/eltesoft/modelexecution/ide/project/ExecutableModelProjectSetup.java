@@ -14,11 +14,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.ProjectDescription;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -46,16 +47,25 @@ public class ExecutableModelProjectSetup {
 
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin"; //$NON-NLS-1$
 
-	public static void createProject(String projectName) throws CoreException {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(projectName);
-
-		project.create(null);
+	/**
+	 * Creates an xUMLRt project with the given name, at the given location.
+	 */
+	public static void createProject(String projectName, IPath location)
+			throws CoreException {
+		ProjectDescription description = new ProjectDescription();
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		description.setLocation(location.append(projectName));
+		description.setName(projectName);
+		IProject project = workspace.getRoot().getProject(projectName);
+		project.create(description, null);
 		project.open(null);
-		configureProject(projectName, project);
+		configureProject(project);
 	}
 
-	private static void configureProject(String projectName, IProject project)
+	/**
+	 * Sets up natures, adds necessarry folders and sets up classpath.
+	 */
+	private static void configureProject(IProject project)
 			throws CoreException, JavaModelException {
 		setProjectNatures(project);
 
@@ -116,7 +126,8 @@ public class ExecutableModelProjectSetup {
 
 	private static void createTracesFolder(IProject project,
 			IJavaProject javaProject) {
-		createFolder(project, ExecutableModelProperties.getTraceFilesPath(project));
+		createFolder(project,
+				ExecutableModelProperties.getTraceFilesPath(project));
 	}
 
 	private static void createGenSourceFolder(IProject project, String name)

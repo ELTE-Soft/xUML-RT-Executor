@@ -71,7 +71,7 @@ public class Dialogs {
 						Messages.Dialogs_invalid_trace_file_text));
 	}
 
-	public static void openRuntimeInternalErrorDialog() {
+	public static void openInternalErrorDialog() {
 		Display.getDefault().syncExec(
 				() -> MessageDialog.openError(null,
 						Messages.Dialogs_internal_error_caption,
