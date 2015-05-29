@@ -124,7 +124,6 @@ class RegionTemplate extends Template {
 		
 			@Override
 			public void step(«Message.canonicalName» message) {
-				owner.getRuntime().logMessageDispatched(owner, message);
 				step0(message);
 			}
 		

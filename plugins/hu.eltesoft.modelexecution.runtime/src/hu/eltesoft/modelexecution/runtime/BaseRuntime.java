@@ -34,7 +34,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			+ "Events.Messages";
 
 	private Queue<TargetedMessage> queue = new LinkedList<>();
-
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
@@ -78,22 +77,25 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					TargetedMessage currQueueEvent = queue.peek();
 					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
 						queue.poll();
-						traceWriter.traceEvent(currQueueEvent);
 					}
+					traceWriter.traceEvent(currQueueEvent);
 				} else {
 					traceReader.dispatchEvent(logger);
 				}
 			}
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
-			logError("The trace file is not consistent with the current model.");
+			logError("The trace file is not consistent with the current model.", e);
 			return TerminationResult.INVALID_TRACEFILE;
 		} catch (Exception e) {
-			logError(e);
+			logError("An internal error happened", e);
 			return TerminationResult.INTERNAL_ERROR;
 		}
 	}
 
+	/**
+	 * Creates an instance of the selected class and executes it.
+	 */
 	private void prepare(String className, String feedName)
 			throws ClassNotFoundException, NoSuchMethodException,
 			InstantiationException, IllegalAccessException,
@@ -105,16 +107,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
-	}
-
-	@Override
-	public void logMessageQueued(ClassWithState target, Message event) {
-		logger.messageQueued(target, event);
-	}
-
-	@Override
-	public void logMessageDispatched(ClassWithState target, Message event) {
-		logger.messageDispatched(target, event);
 	}
 
 	@Override
@@ -138,7 +130,8 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	public static void logError(String message, Throwable cause) {
-		errorLogger.log(java.util.logging.Level.SEVERE, message, cause);
+		errorLogger.log(java.util.logging.Level.SEVERE, message);
+		errorLogger.log(java.util.logging.Level.INFO, "", cause);
 	}
 
 	public static void logError(Throwable cause) {

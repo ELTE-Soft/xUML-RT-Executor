@@ -8,10 +8,12 @@ import hu.eltesoft.modelexecution.runtime.Runtime;
 public abstract class ClassWithState extends Class {
 
 	private Runtime runtime;
+	private int instanceID;
 
-	public ClassWithState(Runtime runtime) {
+	public ClassWithState(Runtime runtime, int instanceID) {
 		super();
 		this.runtime = runtime;
+		this.instanceID = instanceID;
 	}
 
 	public abstract void init();
@@ -20,6 +22,15 @@ public abstract class ClassWithState extends Class {
 
 	public Runtime getRuntime() {
 		return runtime;
+	}
+	
+	/**
+	 * Unregisters the instance to allow garbage-collection
+	 */
+	public abstract void dispose();
+	
+	public int getInstanceID() {
+		return instanceID;
 	}
 
 }

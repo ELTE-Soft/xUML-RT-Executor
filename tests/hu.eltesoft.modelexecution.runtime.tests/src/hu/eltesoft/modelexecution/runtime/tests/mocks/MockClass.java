@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.tests.mocks;
 
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
@@ -9,15 +10,16 @@ import java.util.List;
 
 public class MockClass extends ClassWithState {
 
+	private static MockClass instance = null;
+	
 	private Runtime runtime;
 
 	public MockClass(Runtime runtime) {
-		super(runtime);
+		super(runtime, 0);
 		this.runtime = runtime;
 		instance = this;
+		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 	}
-
-	private static MockClass instance = null;
 
 	public static MockClass getInstance() {
 		return instance;
@@ -48,6 +50,10 @@ public class MockClass extends ClassWithState {
 
 	public void feedEvent() {
 		runtime.addEventToQueue(this, new DummySignal());
+	}
+
+	@Override
+	public void dispose() {
 	}
 
 }

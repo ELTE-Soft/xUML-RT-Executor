@@ -12,7 +12,7 @@ import java.nio.file.FileSystems;
 import org.json.JSONException;
 
 /**
- * BaseRuntime with main. Parses tracing and logging flags.
+ * Entry point of the model execution. Parses command line arguments.
  */
 public class XUMLRTRuntime extends BaseRuntime {
 	public XUMLRTRuntime(ClassLoader classLoader) {

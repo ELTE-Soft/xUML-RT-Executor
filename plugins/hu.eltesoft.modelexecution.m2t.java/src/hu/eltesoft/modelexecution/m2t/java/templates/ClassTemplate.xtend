@@ -7,8 +7,10 @@ import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.Message
+import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -32,43 +34,43 @@ class ClassTemplate extends Template {
 	'''
 
 	/**
-	 * Generates a class with a state machine.
-	 * It will be a descendant of {@linkplain ClassWithState}.
+	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
 	 */
 	def generateClassWithState() '''
 		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
-			// Only for Q1
-			private static «classDefinition.identifier» instance = null;
-			public static «classDefinition.identifier» getInstance() {
-				return instance;
-			}
 		
-			«generatedHeader(classDefinition.region)»
-			«classDefinition.region.identifier» stateMachine = new «classDefinition.region.identifier»(this);
-			
+			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
+											
+			private «classDefinition.region.identifier» stateMachine = new «classDefinition.region.identifier»(this);
+					
 			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
-				super(runtime);
-				instance = this; // Only for Q1
+				super(runtime, instanceCount.getAndIncrement());
+				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
 			}
-		
+			
 			@Override
 			public void init() {
 				stateMachine.doInitialTransition();
 			}
-		
+					
 			@Override
 			public void receive(«Message.canonicalName» message) {
 				stateMachine.step(message);
 			}
-		
-			«generateReceptions()»
-		
-			«generateOperations()»
-		
+								
 			@Override
-			public String toString() {
-				return «classDefinition.nameLiteral»;
+			public void dispose() {
+				// lets the instance to be garbage-collected
+				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(this);
 			}
+			
+			// receptions
+					
+			«generateReceptions()»
+					
+			// operations
+					
+			«generateOperations()»
 		}
 	'''
 
@@ -84,7 +86,6 @@ class ClassTemplate extends Template {
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
-			«generatedHeader(operation)»
 			public void «operation.identifier»() {
 				«IF null != operation.method»
 					new «operation.method.identifier»(this).execute();
@@ -95,10 +96,10 @@ class ClassTemplate extends Template {
 
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
-			«generatedHeader(reception)»
 			public void «reception.identifier»() {
 				getRuntime().addEventToQueue(this, new «reception.signal.identifier»());
 			}
 		«ENDFOR»
 	'''
+
 }

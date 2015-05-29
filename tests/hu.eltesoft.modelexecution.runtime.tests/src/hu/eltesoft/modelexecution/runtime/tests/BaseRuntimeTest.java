@@ -59,13 +59,11 @@ public class BaseRuntimeTest {
 			{
 				allowing(readerMock).hasEvent();
 				will(returnValue(false));
-				MockClass classInstance = MockClass.getInstance();
 				DummySignal event = new DummySignal();
-				TargetedMessage te = new TargetedMessage(classInstance, event);
-				oneOf(loggerMock).messageQueued(classInstance, event);
-				oneOf(readerMock).dispatchEvent(te, loggerMock);
+				oneOf(loggerMock).messageQueued(with(any(MockClass.class)), with(equal(event)));
+				oneOf(readerMock).dispatchEvent(with(any(TargetedMessage.class)), with(same(loggerMock)));
 				will(returnValue(EventSource.Queue));
-				oneOf(tracerMock).traceEvent(te);
+				oneOf(tracerMock).traceEvent(with(any(TargetedMessage.class)));
 				oneOf(tracerMock).close();
 				oneOf(readerMock).close();
 				oneOf(loggerMock).close();
