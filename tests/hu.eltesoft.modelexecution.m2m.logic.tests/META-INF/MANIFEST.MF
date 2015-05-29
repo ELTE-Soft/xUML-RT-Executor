@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.logic.tests
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Export-Package: hu.eltesoft.modelexecution.m2m.logic.tests
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.junit,
@@ -15,11 +15,11 @@ Require-Bundle: org.junit,
  org.eclipse.incquery.runtime.base;bundle-version="[0.8.1,0.9.0)",
  org.eclipse.incquery.runtime.rete;bundle-version="[0.8.1,0.9.0)",
  org.eclipse.incquery.runtime;bundle-version="[0.8.1,0.9.0)",
- hu.eltesoft.modelexecution.m2t.smap.xtend,
- hu.eltesoft.modelexecution.m2t.java,
- hu.eltesoft.modelexecution.runtime,
- hu.eltesoft.modelexecution.test.utils;bundle-version="0.2.0",
- hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.2.0"
+ hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2t.java;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.runtime;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.ocl.examples.pivot
-Fragment-Host: hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.1.0"
+Fragment-Host: hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.3.0"

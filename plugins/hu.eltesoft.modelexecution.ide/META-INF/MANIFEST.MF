@@ -2,33 +2,33 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.ide;singleton:=true
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.incquery.runtime;bundle-version="[0.8.1,0.9.0)",
+ org.eclipse.emf.transaction,
  org.eclipse.uml2.uml,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
  org.eclipse.ui;bundle-version="3.106.0",
  org.eclipse.ui.ide;bundle-version="3.10.0",
- hu.eltesoft.modelexecution.runtime;bundle-version="0.1.0",
- org.eclipse.papyrus.moka,
  org.eclipse.debug.ui,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.debug,
+ org.eclipse.papyrus.moka,
+ org.eclipse.papyrus.moka.ui,
  org.eclipse.papyrus.infra.widgets;bundle-version="1.0.1",
  org.eclipse.papyrus.infra.emf;bundle-version="1.0.1",
- org.eclipse.emf.transaction,
- hu.eltesoft.modelexecution.filemanager,
- hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.2.0",
- hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.2.0",
- hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.2.0",
- hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.2.0",
- hu.eltesoft.modelexecution.m2t.java;bundle-version="0.2.0",
  org.eclipse.papyrus.infra.services.labelprovider;bundle-version="1.0.1",
  org.eclipse.papyrus.emf.facet.custom.ui;bundle-version="1.0.1",
  org.eclipse.papyrus.emf.facet.custom.metamodel;bundle-version="1.0.1",
- org.eclipse.jdt.ui,
  org.eclipse.xtext.smap,
- org.eclipse.jdt.debug,
- org.eclipse.papyrus.moka.ui
+ hu.eltesoft.modelexecution.filemanager;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2t.java;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.runtime;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.3.0"
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: hu.eltesoft.modelexecution.ide.IdePlugin
 Export-Package: hu.eltesoft.modelexecution.ide.project

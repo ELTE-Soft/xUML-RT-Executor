@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.uml.alf.tests
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Fragment-Host: hu.eltesoft.modelexecution.uml.alf;bundle-version="0.1.0"
+Fragment-Host: hu.eltesoft.modelexecution.uml.alf;bundle-version="0.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.eclipse.uml2.uml,
- hu.eltesoft.modelexecution.test.utils
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.3.0"
 Import-Package: org.apache.log4j;version="1.2.15"

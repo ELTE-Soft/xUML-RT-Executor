@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>hu.eltesoft.modelexecution.cli</groupId>
 	<artifactId>hu.eltesoft.modelexecution.cli</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<name>hu.eltesoft.modelexecution.cli</name>
 	<description>Model Execution Command Line Interface</description>
 	<build>

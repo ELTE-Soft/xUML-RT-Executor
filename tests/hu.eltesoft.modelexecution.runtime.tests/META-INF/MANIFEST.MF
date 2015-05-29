@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.runtime.tests
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: hu.eltesoft.modelexecution.runtime;bundle-version="0.1.0",
- org.junit,
- hu.eltesoft.modelexecution.3pp,
- hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.2.0"
+Fragment-Host: hu.eltesoft.modelexecution.runtime;bundle-version="0.3.0"
+Require-Bundle: org.junit,
+ hu.eltesoft.modelexecution.3pp;bundle-version="0.3.0",
+ hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.3.0"
