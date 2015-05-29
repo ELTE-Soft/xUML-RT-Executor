@@ -13,6 +13,7 @@ import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Reception
+import org.eclipse.papyrus.uml.alf.SyntaxElement
 
 /**
  * Builds a mapping between Alf AST nodes and model references.
@@ -61,6 +62,12 @@ class ModelReferenceDecorator {
 		val name = toModelName(feature.nameBinding)
 		val referenced = lookupChild(name)
 
+		if (referenced == null) {
+			throw new UnsupportedAlfFeatureException(
+				"Referenced reception " + name +
+					" cannot be found. Only receptions that can be looked up by their name are supported now.");
+		}
+
 		// TODO: support referencing other element types
 		references.putInvokedReception(call, referenced as Reception)
 	}
@@ -71,6 +78,12 @@ class ModelReferenceDecorator {
 	def dispatch void visit(BehaviorInvocationExpression call) {
 		val name = toModelName(call.target)
 		val referenced = lookupChild(name)
+
+		if (referenced == null) {
+			throw new UnsupportedAlfFeatureException(
+				"Referenced reception " + name +
+					" cannot be found. Only receptions that can be looked up by their name are supported now.");
+		}
 
 		// TODO: support referencing other element types
 		references.putInvokedReception(call, referenced as Reception)
@@ -86,6 +99,10 @@ class ModelReferenceDecorator {
 			// TODO: this lookup mechanism is likely to be incorrect
 			currentContext = lookupChild(binding.name)
 		}
+	}
+
+	def dispatch void visit(SyntaxElement other) {
+		throw new UnsupportedAlfFeatureException(other.toString);
 	}
 
 	private def String toModelName(NameBinding binding) {

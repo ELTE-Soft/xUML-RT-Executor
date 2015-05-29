@@ -8,6 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
+import hu.eltesoft.modelexecution.uml.alf.UnsupportedAlfFeatureException;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch;
@@ -55,10 +56,14 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 		}));
 
 		if (!alfCodeMatcher.forOneArbitraryMatch(source, null, null, match -> {
-			String pAlfCode = match.getAlfCode();
-			Class pContainerClass = match.getContainerClass();
-			root.setAlfResult(new AlfAnalyzer().analyze(pAlfCode,
-					pContainerClass));
+			try {
+				String pAlfCode = match.getAlfCode();
+				Class pContainerClass = match.getContainerClass();
+				root.setAlfResult(new AlfAnalyzer().analyze(pAlfCode,
+						pContainerClass));
+			} catch (UnsupportedAlfFeatureException e) {
+				throw new GenerationException(e);
+			}
 		})) {
 			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
 		}

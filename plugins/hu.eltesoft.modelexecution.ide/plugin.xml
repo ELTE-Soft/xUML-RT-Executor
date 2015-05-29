@@ -142,10 +142,19 @@
       </classpathProvider>
    </extension>
    <extension
+         id="hu.eltesoft.modelexecution.markers.umlProblemMarker"
+         name="%markers.umlProblemMarker.name"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>   <extension
          point="org.eclipse.jdt.core.compilationParticipant">
       <compilationParticipant
             class="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant"
             id="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant">
       </compilationParticipant>
-   </extension>
-</plugin>
+   </extension></plugin>

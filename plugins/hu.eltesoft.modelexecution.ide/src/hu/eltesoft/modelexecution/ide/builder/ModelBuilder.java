@@ -4,11 +4,13 @@ import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
+import hu.eltesoft.modelexecution.m2m.logic.generators.GenerationException;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -30,6 +32,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 	private final IFileManagerFactory fileManagerFactory;
 	private ModelBuilderFileManager builderFileManager;
+	private final MarkerManager markerManager = new MarkerManager();
 
 	/**
 	 * Default constructor used by Eclipse
@@ -70,6 +73,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		builderFileManager.cleanUp();
+		markerManager.removeMarkersFromProject(getProject());
 		builderFileManager.refreshFolder();
 	}
 
@@ -80,15 +84,19 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		try {
 			clean(new NullProgressMonitor());
 
-			final List<FileUpdateTask> queue = Collections
-					.synchronizedList(new LinkedList<>());
+			final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
 
 			getProject().accept(new IResourceVisitor() {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-							t -> queue.addAll(t.fullBuild()));
+					try {
+						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
+								t -> queue.put(resource, t.fullBuild()));
+					} catch (GenerationException e) {
+						markerManager.putMarkerOnResource(resource,
+								e.getMessage());
+					}
 					return true;
 				}
 			});
@@ -105,8 +113,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	private void incrementalBuild() {
 		IResourceDelta delta = getDelta(getProject());
-		final List<FileUpdateTask> queue = Collections
-				.synchronizedList(new LinkedList<>());
+		final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
 		try {
 			delta.accept(new IResourceDeltaVisitor() {
 				@Override
@@ -115,7 +122,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					if (delta.getKind() == IResourceDelta.ADDED
 							|| delta.getKind() == IResourceDelta.CHANGED) {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-								t -> queue.addAll(t.incrementalBuild()));
+								t -> queue.put(resource, t.incrementalBuild()));
 					} else if (delta.getKind() == IResourceDelta.REMOVED) {
 						TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
 					}
@@ -129,7 +136,23 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private void performAllTasks(final List<FileUpdateTask> queue) {
-		queue.forEach(task -> task.perform(builderFileManager));
+	/**
+	 * Performs all update tasks on generated files related to a model. Will put
+	 * error marker on the uml resource if it contained elements that are not
+	 * supported.
+	 */
+	private void performAllTasks(
+			final ConcurrentMap<IResource, List<FileUpdateTask>> queue) {
+		for (Entry<IResource, List<FileUpdateTask>> entry : queue.entrySet()) {
+			try {
+				List<FileUpdateTask> task = entry.getValue();
+				task.forEach(t -> t.perform(builderFileManager));
+			} catch (GenerationException e) {
+				String message = e.getMessage();
+				IResource resource = entry.getKey();
+				markerManager.putMarkerOnResource(resource, message);
+			}
+		}
 	}
+
 }

@@ -71,7 +71,9 @@ public class TranslatorRegistry {
 				}
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while cleaning up project resources", e); //$NON-NLS-1$
+			// silently ignore, would write an error for every missing file
+			// this is a cleaunup operation, no problems could arise from
+			// skipping it for some resources that are not even in the registry
 		}
 	}
 
