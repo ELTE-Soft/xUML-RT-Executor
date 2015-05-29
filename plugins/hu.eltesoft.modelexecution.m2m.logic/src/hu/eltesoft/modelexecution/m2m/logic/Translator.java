@@ -6,8 +6,9 @@ import hu.eltesoft.modelexecution.m2m.logic.generators.ClassGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.RegionGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.SignalEventGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.SignalGenerator;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ModelGenerationTaskQueue;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,12 +28,12 @@ public class Translator {
 		return new Translator(resource, false);
 	}
 
-	private final ChangeRegistry changeRegistry = ChangeRegistry.create();
+	private final ChangeRegistry changeRegistry = new ChangeRegistry();
 	private Resource resource;
 	private boolean incremental;
 	private boolean disposed;
 	private AdvancedIncQueryEngine engine;
-	private ReversionTask attachListeners;
+	private ReversibleTask attachListeners;
 
 	private BehaviorGenerator behaviorGenerator;
 	private ClassGenerator classGenerator;
@@ -57,11 +58,7 @@ public class Translator {
 				engine = AdvancedIncQueryEngine.createUnmanagedEngine(resource);
 			}
 
-			behaviorGenerator = new BehaviorGenerator(engine);
-			classGenerator = new ClassGenerator(engine);
-			regionGenerator = new RegionGenerator(engine);
-			signalEventGenerator = new SignalEventGenerator(engine);
-			signalGenerator = new SignalGenerator(engine);
+			setupGenerators();
 
 			if (incremental) {
 				attachListeners();
@@ -71,33 +68,22 @@ public class Translator {
 		}
 	}
 
+	private void setupGenerators() throws IncQueryException {
+		behaviorGenerator = new BehaviorGenerator(engine);
+		classGenerator = new ClassGenerator(engine);
+		regionGenerator = new RegionGenerator(engine);
+		signalEventGenerator = new SignalEventGenerator(engine);
+		signalGenerator = new SignalGenerator(engine);
+	}
+
 	private void attachListeners() {
-		attachListeners = new ReversionTask() {
-
-			private final ReversionTask[] subtasks;
-
-			{
-				subtasks = new ReversionTask[5];
-				subtasks[0] = behaviorGenerator.addMatchUpdateListeners(engine,
-						changeRegistry);
-				subtasks[1] = classGenerator.addMatchUpdateListeners(engine,
-						changeRegistry);
-				subtasks[2] = regionGenerator.addMatchUpdateListeners(engine,
-						changeRegistry);
-				subtasks[3] = signalEventGenerator.addMatchUpdateListeners(
-						engine, changeRegistry);
-				subtasks[4] = signalGenerator.addMatchUpdateListeners(engine,
-						changeRegistry);
-			}
-
-			@Override
-			public boolean revert() {
-				for (ReversionTask subtask : subtasks) {
-					subtask.revert();
-				}
-				return true;
-			}
-		};
+		CompositeReversibleTask t = new CompositeReversibleTask();
+		t.add(behaviorGenerator.addListeners(engine, changeRegistry));
+		t.add(classGenerator.addListeners(engine, changeRegistry));
+		t.add(regionGenerator.addListeners(engine, changeRegistry));
+		t.add(signalEventGenerator.addListeners(engine, changeRegistry));
+		t.add(signalGenerator.addListeners(engine, changeRegistry));
+		attachListeners = t;
 	}
 
 	public void toIncremental(Resource resource) {
@@ -142,24 +128,22 @@ public class Translator {
 
 		changeRegistry.clear();
 
-		ModelGenerationTaskQueue generationTaskQueue = new ModelGenerationTaskQueue();
+		ModelGenerationTaskQueue genTasks = new ModelGenerationTaskQueue();
 
-		behaviorGenerator.runOn(behavior -> generationTaskQueue.addNew(
-				behavior, behaviorGenerator));
-		classGenerator.runOn(cls -> generationTaskQueue.addNew(cls,
-				classGenerator));
-		regionGenerator.runOn(region -> generationTaskQueue.addNew(region,
-				regionGenerator));
-		signalEventGenerator.runOn(event -> generationTaskQueue.addNew(event,
+		behaviorGenerator.runOn(behavior -> genTasks.addNew(behavior,
+				behaviorGenerator));
+		classGenerator.runOn(cls -> genTasks.addNew(cls, classGenerator));
+		regionGenerator.runOn(region -> genTasks
+				.addNew(region, regionGenerator));
+		signalEventGenerator.runOn(event -> genTasks.addNew(event,
 				signalEventGenerator));
-		signalGenerator.runOn(signal -> generationTaskQueue.addNew(signal,
-				signalGenerator));
+		signalGenerator.runOn(signal -> genTasks
+				.addNew(signal, signalGenerator));
 
-		List<FileUpdateTask> updateTaskQueue = new LinkedList<>();
-		generationTaskQueue
-				.forEach(task -> updateTaskQueue.add(task.perform()));
+		List<FileUpdateTask> updateTasks = new LinkedList<>();
+		genTasks.forEach(task -> updateTasks.add(task.perform()));
 
-		return updateTaskQueue;
+		return updateTasks;
 	}
 
 	public List<FileUpdateTask> incrementalBuild() {

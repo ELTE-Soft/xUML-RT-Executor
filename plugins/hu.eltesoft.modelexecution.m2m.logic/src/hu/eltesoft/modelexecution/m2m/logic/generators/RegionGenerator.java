@@ -1,7 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
@@ -32,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -60,12 +61,6 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 	private final TransitionMatcher transitionMatcher;
 	private final TransitionEffectMatcher transitionEffectMatcher;
 
-	/**
-	 * To manage EObject -> container name mapping. If <code>null</code>, no
-	 * mapping is required.
-	 */
-	private ChangeRegistry changeRegistry = null;
-
 	public RegionGenerator(IncQueryEngine engine) throws IncQueryException {
 		regionMatcher = RegionMatcher.on(engine);
 		containerMatcher = ContainerClassOfRegionMatcher.on(engine);
@@ -75,16 +70,6 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 		exitMatcher = ExitMatcher.on(engine);
 		transitionMatcher = TransitionMatcher.on(engine);
 		transitionEffectMatcher = TransitionEffectMatcher.on(engine);
-	}
-
-	public void setChangeRegistry(ChangeRegistry changeRegistry) {
-		this.changeRegistry = changeRegistry;
-	}
-
-	private void setContainerName(EObject modelElement, String rootName) {
-		if (changeRegistry != null) {
-			changeRegistry.setContainerName(modelElement, rootName);
-		}
 	}
 
 	@Override
@@ -140,10 +125,6 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 						RgInitialPseudostate rgInitialPseudostate = FACTORY
 								.createRgInitialPseudostate();
 
-						// register initial to EObject -> container name mapping
-						setContainerName(pInitState, root.getReference()
-								.getIdentifier());
-
 						// reference
 						rgInitialPseudostate.setReference(new NamedReference(
 								pInitState));
@@ -187,9 +168,6 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 
 			RgTransition rgTransition = FACTORY.createRgTransition();
 
-			// register transition to EObject -> container name mapping
-			setContainerName(transition, root.getReference().getIdentifier());
-
 			rgTransition.setReference(new Reference(transition));
 
 			// in case of any other than the initial transition
@@ -219,9 +197,6 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 
 			void set(State state) {
 				RgState rgState = FACTORY.createRgState();
-
-				// register state to EObject -> container name mapping
-				setContainerName(state, root.getReference().getIdentifier());
 
 				rgState.setReference(new NamedReference(state));
 
@@ -254,10 +229,10 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 	}
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(
-			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
+	public ReversibleTask addListeners(AdvancedIncQueryEngine engine,
+			ChangeRegistry changeRegistry) {
 
-		return new ReversionTask() {
+		return new ReversibleTask() {
 
 			private final IMatchUpdateListener<RegionMatch> regionListener;
 			private final IMatchUpdateListener<ContainerClassOfRegionMatch> containerClassOfRegionListener;
@@ -272,187 +247,87 @@ public class RegionGenerator extends AbstractGenerator<Region> {
 				regionMatcher.forEachMatch((Region) null,
 						match -> saveRootName(match.getRegion()));
 
-				regionListener = new IMatchUpdateListener<RegionMatch>() {
+				regionListener = new RootMatchUpdateListener<>(
+						RegionGenerator.this, changeRegistry,
+						match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(RegionMatch match) {
-						Region region = match.getRegion();
-						saveRootName(region);
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(RegionMatch match) {
-						Region region = match.getRegion();
-						consumeRootName(region, changeRegistry::newDeletion);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(regionMatcher,
-						regionListener, false);
+				engine.addMatchUpdateListener(regionMatcher, regionListener,
+						false);
 			}
 
 			{
-				containerClassOfRegionListener = new IMatchUpdateListener<ContainerClassOfRegionMatch>() {
+				containerClassOfRegionListener = new MatchUpdateListener<>(
+						RegionGenerator.this, changeRegistry,
+						match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(
-							ContainerClassOfRegionMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(
-							ContainerClassOfRegionMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(containerMatcher,
+				engine.addMatchUpdateListener(containerMatcher,
 						containerClassOfRegionListener, false);
 			}
 
 			{
-				initialsListener = new IMatchUpdateListener<InitialsMatch>() {
+				initialsListener = new MatchUpdateListener<>(
+						RegionGenerator.this, changeRegistry,
+						match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(InitialsMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(InitialsMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(initialsMatcher,
+				engine.addMatchUpdateListener(initialsMatcher,
 						initialsListener, false);
 			}
 
 			{
-				stateListener = new IMatchUpdateListener<StateMatch>() {
+				stateListener = new MatchUpdateListener<>(RegionGenerator.this,
+						changeRegistry, match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(StateMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(StateMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(stateMatcher,
-						stateListener, false);
+				engine.addMatchUpdateListener(stateMatcher, stateListener,
+						false);
 			}
 
 			{
-				entryListener = new IMatchUpdateListener<EntryMatch>() {
+				entryListener = new MatchUpdateListener<>(RegionGenerator.this,
+						changeRegistry, match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(EntryMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(EntryMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(entryMatcher,
-						entryListener, false);
+				engine.addMatchUpdateListener(entryMatcher, entryListener,
+						false);
 			}
 
 			{
-				exitListener = new IMatchUpdateListener<ExitMatch>() {
+				exitListener = new MatchUpdateListener<>(RegionGenerator.this,
+						changeRegistry, match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(ExitMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(ExitMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(exitMatcher,
-						exitListener, false);
+				engine.addMatchUpdateListener(exitMatcher, exitListener, false);
 			}
 
 			{
-				transitionListener = new IMatchUpdateListener<TransitionMatch>() {
+				transitionListener = new MatchUpdateListener<>(
+						RegionGenerator.this, changeRegistry,
+						match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(TransitionMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(TransitionMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(transitionMatcher,
+				engine.addMatchUpdateListener(transitionMatcher,
 						transitionListener, false);
 			}
 
 			{
-				transitionEffectListener = new IMatchUpdateListener<TransitionEffectMatch>() {
+				transitionEffectListener = new MatchUpdateListener<>(
+						RegionGenerator.this, changeRegistry,
+						match -> match.getRegion());
 
-					@Override
-					public void notifyAppearance(TransitionEffectMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(TransitionEffectMatch match) {
-						changeRegistry.newModification(match.getRegion(),
-								RegionGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(transitionEffectMatcher,
+				engine.addMatchUpdateListener(transitionEffectMatcher,
 						transitionEffectListener, false);
 			}
 
 			@Override
 			public boolean revert() {
-				advancedEngine.removeMatchUpdateListener(regionMatcher,
-						regionListener);
-				advancedEngine.removeMatchUpdateListener(containerMatcher,
+				engine.removeMatchUpdateListener(regionMatcher, regionListener);
+				engine.removeMatchUpdateListener(containerMatcher,
 						containerClassOfRegionListener);
-				advancedEngine.removeMatchUpdateListener(initialsMatcher,
+				engine.removeMatchUpdateListener(initialsMatcher,
 						initialsListener);
-				advancedEngine.removeMatchUpdateListener(stateMatcher,
-						stateListener);
-				advancedEngine.removeMatchUpdateListener(entryMatcher,
-						entryListener);
-				advancedEngine.removeMatchUpdateListener(exitMatcher,
-						exitListener);
-				advancedEngine.removeMatchUpdateListener(transitionMatcher,
+				engine.removeMatchUpdateListener(stateMatcher, stateListener);
+				engine.removeMatchUpdateListener(entryMatcher, entryListener);
+				engine.removeMatchUpdateListener(exitMatcher, exitListener);
+				engine.removeMatchUpdateListener(transitionMatcher,
 						transitionListener);
-				advancedEngine.removeMatchUpdateListener(
-						transitionEffectMatcher, transitionEffectListener);
+				engine.removeMatchUpdateListener(transitionEffectMatcher,
+						transitionEffectListener);
 				return true;
 			}
 		};

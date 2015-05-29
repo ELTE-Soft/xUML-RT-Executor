@@ -1,7 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
@@ -106,10 +108,10 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 	}
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(
-			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
+	public ReversibleTask addListeners(AdvancedIncQueryEngine engine,
+			ChangeRegistry changeRegistry) {
 
-		return new ReversionTask() {
+		return new ReversibleTask() {
 
 			private final IMatchUpdateListener<ClsMatch> clsListener;
 			private final IMatchUpdateListener<RegionOfClassMatch> regionOfClassListener;
@@ -121,118 +123,57 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 				clsMatcher.forEachMatch((Class) null,
 						match -> saveRootName(match.getCls()));
 
-				clsListener = new IMatchUpdateListener<ClsMatch>() {
+				clsListener = new RootMatchUpdateListener<>(
+						ClassGenerator.this, changeRegistry,
+						match -> match.getCls());
 
-					@Override
-					public void notifyAppearance(ClsMatch match) {
-						Class cls = match.getCls();
-						saveRootName(cls);
-						changeRegistry
-								.newModification(cls, ClassGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(ClsMatch match) {
-						Class cls = match.getCls();
-						consumeRootName(cls, changeRegistry::newDeletion);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(clsMatcher, clsListener,
-						false);
+				engine.addMatchUpdateListener(clsMatcher, clsListener, false);
 			}
 
 			{
-				regionOfClassListener = new IMatchUpdateListener<RegionOfClassMatch>() {
+				regionOfClassListener = new MatchUpdateListener<>(
+						ClassGenerator.this, changeRegistry,
+						match -> match.getCls());
 
-					@Override
-					public void notifyAppearance(RegionOfClassMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(RegionOfClassMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(regionOfClassMatcher,
+				engine.addMatchUpdateListener(regionOfClassMatcher,
 						regionOfClassListener, false);
 			}
 
 			{
-				operationListener = new IMatchUpdateListener<OperationMatch>() {
+				operationListener = new MatchUpdateListener<>(
+						ClassGenerator.this, changeRegistry,
+						match -> match.getCls());
 
-					@Override
-					public void notifyAppearance(OperationMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(OperationMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(operationMatcher,
+				engine.addMatchUpdateListener(operationMatcher,
 						operationListener, false);
 			}
 
 			{
-				methodListener = new IMatchUpdateListener<MethodMatch>() {
+				methodListener = new MatchUpdateListener<>(ClassGenerator.this,
+						changeRegistry, match -> match.getCls());
 
-					@Override
-					public void notifyAppearance(MethodMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(MethodMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(methodMatcher,
-						methodListener, false);
+				engine.addMatchUpdateListener(methodMatcher, methodListener,
+						false);
 			}
 
 			{
-				receptionListener = new IMatchUpdateListener<ReceptionMatch>() {
+				receptionListener = new MatchUpdateListener<>(
+						ClassGenerator.this, changeRegistry,
+						match -> match.getCls());
 
-					@Override
-					public void notifyAppearance(ReceptionMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(ReceptionMatch match) {
-						changeRegistry.newModification(match.getCls(),
-								ClassGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(receptionMatcher,
+				engine.addMatchUpdateListener(receptionMatcher,
 						receptionListener, false);
 			}
 
 			@Override
 			public boolean revert() {
-				advancedEngine.removeMatchUpdateListener(clsMatcher,
-						clsListener);
-				advancedEngine.removeMatchUpdateListener(regionOfClassMatcher,
+				engine.removeMatchUpdateListener(clsMatcher, clsListener);
+				engine.removeMatchUpdateListener(regionOfClassMatcher,
 						regionOfClassListener);
-				advancedEngine.removeMatchUpdateListener(operationMatcher,
+				engine.removeMatchUpdateListener(operationMatcher,
 						operationListener);
-				advancedEngine.removeMatchUpdateListener(methodMatcher,
-						methodListener);
-				advancedEngine.removeMatchUpdateListener(receptionMatcher,
+				engine.removeMatchUpdateListener(methodMatcher, methodListener);
+				engine.removeMatchUpdateListener(receptionMatcher,
 						receptionListener);
 				return true;
 			}

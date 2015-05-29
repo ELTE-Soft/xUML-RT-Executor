@@ -1,7 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
@@ -79,10 +81,10 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 	}
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(
-			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
+	public ReversibleTask addListeners(AdvancedIncQueryEngine engine,
+			ChangeRegistry changeRegistry) {
 
-		return new ReversionTask() {
+		return new ReversibleTask() {
 
 			private final IMatchUpdateListener<BehaviorMatch> behaviorListener;
 			private final IMatchUpdateListener<ContainerClassOfBehaviorMatch> containerClassOfBehaviorListener;
@@ -92,76 +94,39 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 				behaviorMatcher.forEachMatch((Behavior) null,
 						match -> saveRootName(match.getBehavior()));
 
-				behaviorListener = new IMatchUpdateListener<BehaviorMatch>() {
+				behaviorListener = new RootMatchUpdateListener<>(
+						BehaviorGenerator.this, changeRegistry,
+						match -> match.getBehavior());
 
-					@Override
-					public void notifyAppearance(BehaviorMatch match) {
-						Behavior behavior = match.getBehavior();
-						saveRootName(behavior);
-						changeRegistry.newModification(behavior,
-								BehaviorGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(BehaviorMatch match) {
-						Behavior behavior = match.getBehavior();
-						consumeRootName(behavior, changeRegistry::newDeletion);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(behaviorMatcher,
+				engine.addMatchUpdateListener(behaviorMatcher,
 						behaviorListener, false);
 			}
 
 			{
-				containerClassOfBehaviorListener = new IMatchUpdateListener<ContainerClassOfBehaviorMatch>() {
+				containerClassOfBehaviorListener = new MatchUpdateListener<>(
+						BehaviorGenerator.this, changeRegistry,
+						match -> match.getBehavior());
 
-					@Override
-					public void notifyAppearance(
-							ContainerClassOfBehaviorMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
-								BehaviorGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(
-							ContainerClassOfBehaviorMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
-								BehaviorGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(containerMatcher,
+				engine.addMatchUpdateListener(containerMatcher,
 						containerClassOfBehaviorListener, false);
 			}
 
 			{
-				alfCodeListener = new IMatchUpdateListener<AlfCodeMatch>() {
+				alfCodeListener = new MatchUpdateListener<>(
+						BehaviorGenerator.this, changeRegistry,
+						match -> match.getBehavior());
 
-					@Override
-					public void notifyAppearance(AlfCodeMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
-								BehaviorGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(AlfCodeMatch match) {
-						changeRegistry.newModification(match.getBehavior(),
-								BehaviorGenerator.this);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(alfCodeMatcher,
-						alfCodeListener, false);
+				engine.addMatchUpdateListener(alfCodeMatcher, alfCodeListener,
+						false);
 			}
 
 			@Override
 			public boolean revert() {
-				advancedEngine.removeMatchUpdateListener(behaviorMatcher,
+				engine.removeMatchUpdateListener(behaviorMatcher,
 						behaviorListener);
-				advancedEngine.removeMatchUpdateListener(containerMatcher,
+				engine.removeMatchUpdateListener(containerMatcher,
 						containerClassOfBehaviorListener);
-				advancedEngine.removeMatchUpdateListener(alfCodeMatcher,
+				engine.removeMatchUpdateListener(alfCodeMatcher,
 						alfCodeListener);
 				return true;
 			}

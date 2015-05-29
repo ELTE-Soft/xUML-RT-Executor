@@ -1,7 +1,8 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
@@ -53,10 +54,10 @@ public class SignalEventGenerator extends AbstractGenerator<SignalEvent> {
 	}
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(
-			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
+	public ReversibleTask addListeners(AdvancedIncQueryEngine engine,
+			ChangeRegistry changeRegistry) {
 
-		return new ReversionTask() {
+		return new ReversibleTask() {
 
 			private final IMatchUpdateListener<SignalEventMatch> signalEventListener;
 
@@ -64,30 +65,17 @@ public class SignalEventGenerator extends AbstractGenerator<SignalEvent> {
 				signalEventMatcher.forEachMatch(null, null,
 						match -> saveRootName(match.getEvent()));
 
-				signalEventListener = new IMatchUpdateListener<SignalEventMatch>() {
+				signalEventListener = new RootMatchUpdateListener<>(
+						SignalEventGenerator.this, changeRegistry,
+						match -> match.getEvent());
 
-					@Override
-					public void notifyAppearance(SignalEventMatch match) {
-						SignalEvent event = match.getEvent();
-						saveRootName(event);
-						changeRegistry.newModification(event,
-								SignalEventGenerator.this);
-					}
-
-					@Override
-					public void notifyDisappearance(SignalEventMatch match) {
-						SignalEvent event = match.getEvent();
-						consumeRootName(event, changeRegistry::newDeletion);
-					}
-				};
-
-				advancedEngine.addMatchUpdateListener(signalEventMatcher,
+				engine.addMatchUpdateListener(signalEventMatcher,
 						signalEventListener, false);
 			}
 
 			@Override
 			public boolean revert() {
-				advancedEngine.removeMatchUpdateListener(signalEventMatcher,
+				engine.removeMatchUpdateListener(signalEventMatcher,
 						signalEventListener);
 				return true;
 			}

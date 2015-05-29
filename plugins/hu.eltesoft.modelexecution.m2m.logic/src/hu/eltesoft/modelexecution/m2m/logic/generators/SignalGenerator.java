@@ -1,7 +1,8 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversionTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
@@ -50,10 +51,10 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 	}
 
 	@Override
-	public ReversionTask addMatchUpdateListeners(
-			AdvancedIncQueryEngine advancedEngine, ChangeRegistry changeRegistry) {
+	public ReversibleTask addListeners(AdvancedIncQueryEngine engine,
+			ChangeRegistry changeRegistry) {
 
-		return new ReversionTask() {
+		return new ReversibleTask() {
 
 			private final IMatchUpdateListener<SignalMatch> signalListener;
 
@@ -61,29 +62,17 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 				signalMatcher.forEachMatch((Signal) null,
 						match -> saveRootName(match.getSignal()));
 
-				signalListener = new IMatchUpdateListener<SignalMatch>() {
-					@Override
-					public void notifyAppearance(SignalMatch match) {
-						Signal signal = match.getSignal();
-						saveRootName(signal);
-						changeRegistry.newModification(signal,
-								SignalGenerator.this);
-					}
+				signalListener = new RootMatchUpdateListener<>(
+						SignalGenerator.this, changeRegistry,
+						match -> match.getSignal());
 
-					@Override
-					public void notifyDisappearance(SignalMatch match) {
-						Signal signal = match.getSignal();
-						consumeRootName(signal, changeRegistry::newDeletion);
-					}
-				};
-				advancedEngine.addMatchUpdateListener(signalMatcher,
-						signalListener, false);
+				engine.addMatchUpdateListener(signalMatcher, signalListener,
+						false);
 			}
 
 			@Override
 			public boolean revert() {
-				advancedEngine.removeMatchUpdateListener(signalMatcher,
-						signalListener);
+				engine.removeMatchUpdateListener(signalMatcher, signalListener);
 				return true;
 			}
 		};

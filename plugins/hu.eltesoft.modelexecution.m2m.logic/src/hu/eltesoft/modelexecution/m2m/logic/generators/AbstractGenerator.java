@@ -17,25 +17,18 @@ public abstract class AbstractGenerator<S extends EObject> implements
 	 */
 	private final Map<EObject, String> instanceToRootName = new HashMap<>();
 
-	protected void saveRootName(EObject object) {
+	@Override
+	public void saveRootName(S root) {
 
-		instanceToRootName.put(object, NamedReference.getIdentifier(object));
+		instanceToRootName.put(root, NamedReference.getIdentifier(root));
 	}
 
-	protected String takeRootName(EObject object) {
-		return instanceToRootName.get(object);
-	}
-
-	/**
-	 * Gets the root name of the given EObject instance, even after the
-	 * connection with the Resource is lost. The entry is erased after the
-	 * method call.
-	 */
-	protected void consumeRootName(EObject object, Consumer<String> task) {
-		String rootName = instanceToRootName.get(object);
+	@Override
+	public void consumeRootName(S root, Consumer<String> task) {
+		String rootName = instanceToRootName.get(root);
 		if (null != rootName) {
 			task.accept(rootName);
-			instanceToRootName.remove(object);
+			instanceToRootName.remove(root);
 		}
 	}
 
