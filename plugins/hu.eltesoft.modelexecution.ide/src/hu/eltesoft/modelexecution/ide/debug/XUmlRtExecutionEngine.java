@@ -178,16 +178,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		}
 
 		if (animation.getAnimate()) {
-			animation.setAnimationMarker(modelElement);
-			animation.startAnimationTimer(new TimerTask() {
+			synchronized (animation) {
+				animation.setAnimationMarker(modelElement);
+				animation.startAnimationTimer(new TimerTask() {
 
-				@Override
-				public void run() {
-					if (!suspendIfWaitingOrHasBreak(modelElement, false)) {
-						virtualMachine.resume();
+					@Override
+					public void run() {
+						if (!suspendIfWaitingOrHasBreak(modelElement, false)) {
+							virtualMachine.resume();
+						}
 					}
-				}
-			});
+				});
+			}
 			return ThreadAction.RemainSuspended;
 		}
 
