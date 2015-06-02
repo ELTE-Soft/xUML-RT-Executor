@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_GJoQcPl0EeSSDZk3hBS0AQ" name="model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_P405oPl0EeSSDZk3hBS0AQ" name="C">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_cWXYYPl0EeSSDZk3hBS0AQ" name="OperationA"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_dSu6APl0EeSSDZk3hBS0AQ" name="OperationB"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_RyrXMPl0EeSSDZk3hBS0AQ" name="SignalA"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_XnAGQPl0EeSSDZk3hBS0AQ" name="SignalB"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_TFpa8Pl0EeSSDZk3hBS0AQ" name="ReceptionA" signal="_RyrXMPl0EeSSDZk3hBS0AQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_YzAmYPl0EeSSDZk3hBS0AQ" name="ReceptionB" signal="_XnAGQPl0EeSSDZk3hBS0AQ"/>
+  </packagedElement>
+</uml:Model>

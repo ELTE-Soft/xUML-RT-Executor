@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_74TbUKFzEeS_KNX0nfvIVQ" name="BackupProfile" metaclassReference="_L3B08KGMEeS_KNX0nfvIVQ" metamodelReference="_74TbUaFzEeS_KNX0nfvIVQ">
+  <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_b8-k0aGMEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_J7IFgaInEeS_KNX0nfvIVQ" name="BackupProfile" nsURI="http:///schemas/BackupProfile/_J7IFgKInEeS_KNX0nfvIVQ/1" nsPrefix="BackupProfile">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_J7IFgqInEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/4.1.0/UML" references="_b8_L4KGMEeS_KNX0nfvIVQ"/>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_J7IskaInEeS_KNX0nfvIVQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_J7IskqInEeS_KNX0nfvIVQ" key="Version" value="0.0.2"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_J7Isk6InEeS_KNX0nfvIVQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_J7IslKInEeS_KNX0nfvIVQ" key="Copyright" value="CEA LIST"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_J7IslaInEeS_KNX0nfvIVQ" key="Date" value="2015-01-22"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_J7IslqInEeS_KNX0nfvIVQ" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_J7IFg6InEeS_KNX0nfvIVQ" name="Backup">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_J7IFhKInEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_8ypjsKFzEeS_KNX0nfvIVQ"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_J7IFhaInEeS_KNX0nfvIVQ" name="timestamp" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_J7IFh6InEeS_KNX0nfvIVQ" name="state" ordered="false" lowerBound="1" eType="_b8_L6aGMEeS_KNX0nfvIVQ"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_J7IFiaInEeS_KNX0nfvIVQ" name="base_Comment" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Comment"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EEnum" xmi:id="_J7IFi6InEeS_KNX0nfvIVQ" name="BackupState">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_J7IFjKInEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_ao9NoKGLEeS_KNX0nfvIVQ"/>
+        <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="_J7IFjaInEeS_KNX0nfvIVQ" name="SAVED"/>
+        <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="_J7IFjqInEeS_KNX0nfvIVQ" name="MERGED" value="1"/>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_b8_L4KGMEeS_KNX0nfvIVQ" name="Profile" nsURI="http:///schemas/Profile/_b8-k0KGMEeS_KNX0nfvIVQ/0" nsPrefix="Profile">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_b8_L7qGMEeS_KNX0nfvIVQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_b8_L76GMEeS_KNX0nfvIVQ" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_b8_L8KGMEeS_KNX0nfvIVQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_b8_L8aGMEeS_KNX0nfvIVQ" key="Copyright" value="CEA LIST - 2015"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_b8_L8qGMEeS_KNX0nfvIVQ" key="Date" value="2015-01-21"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_b8_L86GMEeS_KNX0nfvIVQ" key="Author" value="Jérémie Tatibouet"/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_b8_L4aGMEeS_KNX0nfvIVQ" name="Backup">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_b8_L4qGMEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_8ypjsKFzEeS_KNX0nfvIVQ"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_b8_L46GMEeS_KNX0nfvIVQ" name="timestamp" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_b8_L5aGMEeS_KNX0nfvIVQ" name="state" ordered="false" lowerBound="1" eType="_b8_L6aGMEeS_KNX0nfvIVQ"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_b8_L56GMEeS_KNX0nfvIVQ" name="base_Comment" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Comment"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EEnum" xmi:id="_b8_L6aGMEeS_KNX0nfvIVQ" name="BackupState">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_b8_L6qGMEeS_KNX0nfvIVQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_ao9NoKGLEeS_KNX0nfvIVQ"/>
+        <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="_b8_L66GMEeS_KNX0nfvIVQ" name="SAVED"/>
+        <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="_b8_L7KGMEeS_KNX0nfvIVQ" name="MERGED" value="1"/>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <elementImport xmi:type="uml:ElementImport" xmi:id="_L3B08KGMEeS_KNX0nfvIVQ" alias="Comment">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Comment"/>
+  </elementImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_74TbUaFzEeS_KNX0nfvIVQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_74TbUqFzEeS_KNX0nfvIVQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_8ypjsKFzEeS_KNX0nfvIVQ" name="Backup">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_dgi9QKF0EeS_KNX0nfvIVQ" name="timestamp">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_d_jNcKF0EeS_KNX0nfvIVQ" name="state" type="_ao9NoKGLEeS_KNX0nfvIVQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_NZd4EKGMEeS_KNX0nfvIVQ" name="base_Comment" association="_NZd4EaGMEeS_KNX0nfvIVQ">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Comment"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_ao9NoKGLEeS_KNX0nfvIVQ" name="BackupState">
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_5PM-MKGLEeS_KNX0nfvIVQ" name="SAVED"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_7t7qcKGLEeS_KNX0nfvIVQ" name="MERGED"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_NZd4EaGMEeS_KNX0nfvIVQ" name="E_Backup_Comment1" memberEnd="_NZd4EqGMEeS_KNX0nfvIVQ _NZd4EKGMEeS_KNX0nfvIVQ">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_NZd4EqGMEeS_KNX0nfvIVQ" name="extension_Backup" type="_8ypjsKFzEeS_KNX0nfvIVQ" aggregation="composite" association="_NZd4EaGMEeS_KNX0nfvIVQ"/>
+  </packagedElement>
+</uml:Profile>

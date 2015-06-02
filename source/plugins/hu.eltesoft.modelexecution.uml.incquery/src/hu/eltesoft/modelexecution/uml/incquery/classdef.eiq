@@ -1,0 +1,37 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Cls(cls : Class) {
+	Class(cls);
+	neg find IsBehavior(cls);
+	neg find IsStereotype(cls);
+}
+
+pattern RegionOfClass(cls : Class, region : Region) {
+	Class.ownedBehavior(cls, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+pattern Operation(cls : Class, operation : Operation) {
+	Class.ownedOperation(cls, operation);
+}
+
+pattern Method(cls : Class, operation : Operation, method : Behavior) {
+	Class.ownedOperation(cls, operation);
+
+	Operation.method(operation, method);
+}
+
+pattern Reception(cls : Class, reception : Reception, signal : Signal) {
+	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+}
+
+private pattern IsBehavior(behavior : Behavior) {
+	Behavior(behavior);
+}
+
+private pattern IsStereotype(stereotype : Stereotype) {
+	Stereotype(stereotype);
+}
