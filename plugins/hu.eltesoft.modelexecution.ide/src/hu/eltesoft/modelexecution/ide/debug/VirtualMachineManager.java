@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
 import hu.eltesoft.modelexecution.ide.launch.BackgroundJavaLauncher.BackgroundJavaProcess;
+import hu.eltesoft.modelexecution.ide.launch.MessageAidedTerminationDecorator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +50,10 @@ public class VirtualMachineManager implements ITerminate {
 	 */
 	private BackgroundJavaProcess getJavaProcess(ILaunch launch) {
 		for (IProcess process : launch.getProcesses()) {
+			while (process instanceof MessageAidedTerminationDecorator) {
+				process = ((MessageAidedTerminationDecorator) process)
+						.getDecoratedProcess();
+			}
 			if (process instanceof BackgroundJavaProcess) {
 				return (BackgroundJavaProcess) process;
 			}

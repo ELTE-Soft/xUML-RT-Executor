@@ -65,7 +65,8 @@ public class BackgroundJavaLauncher extends JavaLaunchDelegate implements
 		protected IDebugTarget createDebugTarget(VMRunnerConfiguration config,
 				ILaunch launch, int port, IProcess process, VirtualMachine vm) {
 			launch.removeProcess(process);
-			launch.addProcess(new BackgroundJavaProcess(process, vm));
+			launch.addProcess(new MessageAidedTerminationDecorator(
+					new BackgroundJavaProcess(process, vm)));
 			// This is not a problem, because the returned value is not used.
 			// The architecture depends on registering debug targets and
 			// processes into the launch.
