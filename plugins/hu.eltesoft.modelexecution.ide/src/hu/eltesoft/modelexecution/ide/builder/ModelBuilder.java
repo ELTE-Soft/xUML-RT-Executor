@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 public class ModelBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "hu.eltesoft.modelexecution.builders.modelbuilder"; //$NON-NLS-1$
+	private static final String MODEL_FILE_EXTENSION = "uml"; //$NON-NLS-1$
 
 	private final IFileManagerFactory fileManagerFactory;
 	private ModelBuilderFileManager builderFileManager;
@@ -90,6 +91,9 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
+					if (!isModelResource(resource)) {
+						return true;
+					}
 					try {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.put(resource, t.fullBuild()));
@@ -112,27 +116,58 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * existing .uml files.
 	 */
 	private void incrementalBuild() {
-		IResourceDelta delta = getDelta(getProject());
-		final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
 		try {
-			delta.accept(new IResourceDeltaVisitor() {
-				@Override
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					IResource resource = delta.getResource();
-					if (delta.getKind() == IResourceDelta.ADDED
-							|| delta.getKind() == IResourceDelta.CHANGED) {
-						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-								t -> queue.put(resource, t.incrementalBuild()));
-					} else if (delta.getKind() == IResourceDelta.REMOVED) {
-						TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
-					}
-					return true;
-				}
-			});
-
-			performAllTasks(queue);
+			IResourceDelta delta = getDelta(getProject());
+			final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
+			IncrementalBuildResourceDeltaVisitor visitor = new IncrementalBuildResourceDeltaVisitor(
+					queue);
+			delta.accept(visitor);
+			if (visitor.cleanAndRebuildNeeded()) {
+				fullBuild();
+			} else {
+				performAllTasks(queue);
+			}
+	
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while incremental build.", e); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Should only be used for one incremental build.
+	 */
+	private final class IncrementalBuildResourceDeltaVisitor implements
+			IResourceDeltaVisitor {
+		private final ConcurrentMap<IResource, List<FileUpdateTask>> queue;
+		private boolean needsCleanAndRebuild = false;
+	
+		private IncrementalBuildResourceDeltaVisitor(
+				ConcurrentMap<IResource, List<FileUpdateTask>> queue) {
+			this.queue = queue;
+		}
+	
+		@Override
+		public boolean visit(IResourceDelta delta) throws CoreException {
+			IResource resource = delta.getResource();
+			if (!isModelResource(resource)) {
+				return true;
+			}
+			switch (delta.getKind()) {
+			case IResourceDelta.ADDED:
+			case IResourceDelta.CHANGED:
+				TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
+						t -> queue.put(resource, t.incrementalBuild()));
+				break;
+			case IResourceDelta.REMOVED:
+				TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
+				needsCleanAndRebuild = true;
+				break;
+			}
+			return true;
+		}
+	
+		public boolean cleanAndRebuildNeeded() {
+			return needsCleanAndRebuild;
 		}
 	}
 
@@ -153,6 +188,15 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				markerManager.putMarkerOnResource(resource, message);
 			}
 		}
+	}
+
+	/**
+	 * Methods to check if it is a model file by loading does not work, we must
+	 * use extensions to distinguish model resources.
+	 */
+	private boolean isModelResource(IResource resource) {
+		String extension = resource.getFullPath().getFileExtension();
+		return extension != null && extension.equals(MODEL_FILE_EXTENSION);
 	}
 
 }
