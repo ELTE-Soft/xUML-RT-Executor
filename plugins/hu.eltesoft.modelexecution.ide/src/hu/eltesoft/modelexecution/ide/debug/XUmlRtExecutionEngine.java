@@ -281,6 +281,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			// if the machine is already terminated,
 			// it will not indicate a disconnect event
 			virtualMachine.terminate();
+			animation.removeAllMarkers();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}

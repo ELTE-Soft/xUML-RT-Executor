@@ -2,7 +2,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
-import hu.eltesoft.modelexecution.ide.launch.IProcessWithVM;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +39,10 @@ public class VirtualMachineManager implements ITerminate {
 	public VirtualMachineManager(ILaunch launch) {
 		javaProcess = getJavaProcess(launch);
 		virtualMachine = javaProcess.getVM();
+		if (virtualMachine == null) {
+			IdePlugin
+					.logError("Cannot extract virtual machine from java process");
+		}
 
 		eventHandlerThread = createEventHandlerThread();
 		eventHandlerThread.start();
