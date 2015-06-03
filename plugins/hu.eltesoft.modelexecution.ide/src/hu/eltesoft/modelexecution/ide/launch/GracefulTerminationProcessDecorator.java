@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
-import hu.eltesoft.modelexecution.runtime.BaseRuntime;
+import hu.eltesoft.modelexecution.runtime.RuntimeController;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 				process.terminate();
 			} else {
 				try {
-					streamsProxy.write(BaseRuntime.COMMAND_TERMINATE + "\n");
+					streamsProxy.write(RuntimeController.COMMAND_TERMINATE + "\n");
 				} catch (IOException e) {
 					process.terminate();
 				}
