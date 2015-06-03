@@ -44,7 +44,7 @@ public class ExecutableModelLaunchDelegate implements
 	private static final String DIAGRAM_FILE_EXTENSION = "di";
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
-	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
+	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher();
 	private BackgroundJavaLauncher backgroundJavaLauncher = new BackgroundJavaLauncher();
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;

@@ -12,6 +12,8 @@ import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,6 +34,11 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			+ "StateMachine.Transitions";
 	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
 			+ "Events.Messages";
+	
+	/**
+	 * A command that asks the runtime to terminate in a gentle way.
+	 */
+	public static final String COMMAND_TERMINATE = "TERMINATE";
 
 	private Queue<TargetedMessage> queue = new LinkedList<>();
 	private Tracer traceWriter = new NoTracer();
@@ -40,11 +47,38 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
+	private boolean terminate = false;
+
+	public BaseRuntime(ClassLoader classLoader, final BufferedReader control) {
+		this(classLoader);
+		new Thread(() -> readControlStream(control)).start();
+	}
 
 	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
-	
+
+	private void readControlStream(BufferedReader control) {
+		logInfo("Started reading control stream");
+		String controlLine;
+		try {
+			while (!terminate && (controlLine = control.readLine()) != null) {
+				logInfo("Incoming control message: " + controlLine);
+				switch (controlLine) {
+				case COMMAND_TERMINATE:
+					terminate = true;
+					logInfo("Starting termination on user request");
+					break;
+				default:
+					throw new RuntimeException(
+							"Illegal command on control stream: " + controlLine);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Error while reading control stream");
+		}
+	}
+
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
@@ -72,7 +106,8 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			throws Exception {
 		try {
 			prepare(className, feedName);
-			while (!queue.isEmpty() || traceReader.hasEvent()) {
+			while (!terminate && (!queue.isEmpty() || traceReader.hasEvent())) {
+				logInfo("Processing message");
 				if (!queue.isEmpty()) {
 					TargetedMessage currQueueEvent = queue.peek();
 					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
@@ -83,9 +118,12 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					traceReader.dispatchEvent(logger);
 				}
 			}
+			logInfo("Terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
-			logError("The trace file is not consistent with the current model.", e);
+			logError(
+					"The trace file is not consistent with the current model.",
+					e);
 			return TerminationResult.INVALID_TRACEFILE;
 		} catch (Exception e) {
 			logError("An internal error happened", e);
@@ -123,6 +161,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public void logTransition(String eventName, String messageName,
 			String source, String target) {
 		logger.transition(eventName, messageName, source, target);
+	}
+
+	public static void logInfo(String message) {
+		errorLogger.log(java.util.logging.Level.INFO, message);
 	}
 
 	public static void logError(String message) {

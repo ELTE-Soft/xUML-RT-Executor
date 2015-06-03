@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.ide.util;
 
+import hu.eltesoft.modelexecution.ide.launch.IProcessWithVM;
+
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -7,18 +9,34 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
 
+import com.sun.jdi.VirtualMachine;
+
 /**
  * An Eclipse process that acts as a proxy to the other process received as a
  * constructor argument.
  */
-public class DelegateProcess implements IProcess {
+@SuppressWarnings("restriction")
+public class ProcessDecorator implements IProcess, IProcessWithVM {
 
-	private IProcess process;
-
-	public DelegateProcess(IProcess process) {
+	protected IProcess process;
+	
+	public ProcessDecorator(IProcess process) {
 		this.process = process;
 	}
 
+	@Override
+	public VirtualMachine getVM() {
+		if (process instanceof IProcessWithVM) {
+			return ((IProcessWithVM) process).getVM();
+		} else {
+			return null;
+		}
+	}
+
+	public IProcess getDecoratedProcess() {
+		return process;
+	}
+	
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		return process.getAdapter(adapter);
@@ -35,6 +53,7 @@ public class DelegateProcess implements IProcess {
 	public void terminate() throws DebugException {
 		process.terminate();
 
+		// FIXME: remove
 		// let the console update the termination status
 		// see ticket #187
 		DebugEvent event = new DebugEvent(this, DebugEvent.TERMINATE);

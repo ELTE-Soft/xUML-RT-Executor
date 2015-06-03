@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
-import hu.eltesoft.modelexecution.ide.util.DelegateProcess;
+import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
@@ -35,8 +35,9 @@ public class BackgroundJavaLauncher extends JavaLaunchDelegate implements
 	 * background. Not a debug target but lets others access the virtual machine
 	 * object of the debugger.
 	 */
-	public static class BackgroundJavaProcess extends DelegateProcess implements
-			IProcess {
+	public static class BackgroundJavaProcess extends ProcessDecorator implements
+			IProcess, IProcessWithVM {
+		
 		private VirtualMachine vm;
 
 		public BackgroundJavaProcess(IProcess process, VirtualMachine vm) {
@@ -44,6 +45,7 @@ public class BackgroundJavaLauncher extends JavaLaunchDelegate implements
 			this.vm = vm;
 		}
 
+		@Override
 		public VirtualMachine getVM() {
 			return vm;
 		}
@@ -65,7 +67,7 @@ public class BackgroundJavaLauncher extends JavaLaunchDelegate implements
 		protected IDebugTarget createDebugTarget(VMRunnerConfiguration config,
 				ILaunch launch, int port, IProcess process, VirtualMachine vm) {
 			launch.removeProcess(process);
-			launch.addProcess(new MessageAidedTerminationDecorator(
+			launch.addProcess(new GracefulTerminationProcessDecorator(
 					new BackgroundJavaProcess(process, vm)));
 			// This is not a problem, because the returned value is not used.
 			// The architecture depends on registering debug targets and

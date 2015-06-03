@@ -6,6 +6,8 @@ import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
@@ -16,7 +18,7 @@ import org.json.JSONException;
  */
 public class XUMLRTRuntime extends BaseRuntime {
 	public XUMLRTRuntime(ClassLoader classLoader) {
-		super(classLoader);
+		super(classLoader, new BufferedReader(new InputStreamReader(System.in)));
 	}
 
 	public static final String OPTION_LOG = "-log";
@@ -28,9 +30,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 			+ OPTION_LOG + "]";
 
 	public static void main(String[] args) {
-
 		TerminationResult result = null;
-
 		try (XUMLRTRuntime runtime = new XUMLRTRuntime(
 				XUMLRTRuntime.class.getClassLoader())) {
 			if (args.length < 2) {

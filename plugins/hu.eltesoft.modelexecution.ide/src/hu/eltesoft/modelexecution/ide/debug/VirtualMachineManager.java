@@ -2,8 +2,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
-import hu.eltesoft.modelexecution.ide.launch.BackgroundJavaLauncher.BackgroundJavaProcess;
-import hu.eltesoft.modelexecution.ide.launch.MessageAidedTerminationDecorator;
+import hu.eltesoft.modelexecution.ide.launch.IProcessWithVM;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class VirtualMachineManager implements ITerminate {
 
 	private Thread eventHandlerThread;
 	private VirtualMachine virtualMachine;
-	private BackgroundJavaProcess javaProcess;
+	private IProcessWithVM javaProcess;
 
 	private List<VirtualMachineListener> eventListeners = new LinkedList<>();
 	private boolean eventsEnabled;
@@ -48,14 +47,10 @@ public class VirtualMachineManager implements ITerminate {
 	/**
 	 * Gets the background java virtual machine that operates in debug mode.
 	 */
-	private BackgroundJavaProcess getJavaProcess(ILaunch launch) {
+	private IProcessWithVM getJavaProcess(ILaunch launch) {
 		for (IProcess process : launch.getProcesses()) {
-			while (process instanceof MessageAidedTerminationDecorator) {
-				process = ((MessageAidedTerminationDecorator) process)
-						.getDecoratedProcess();
-			}
-			if (process instanceof BackgroundJavaProcess) {
-				return (BackgroundJavaProcess) process;
+			if (process instanceof IProcessWithVM) {
+				return (IProcessWithVM) process;
 			}
 		}
 		return null;
@@ -163,12 +158,7 @@ public class VirtualMachineManager implements ITerminate {
 			eventListeners.forEach(l -> l.handleVMDisconnect(event));
 			disconnectFired = true;
 
-			// notify termination of the associated Java process
-			try {
-				javaProcess.terminate();
-			} catch (DebugException e) {
-				// suppress any process termination failure
-			}
+			// the java process is already terminated at this time
 		}
 	}
 
