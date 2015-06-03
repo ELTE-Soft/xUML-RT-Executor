@@ -5,12 +5,9 @@ import hu.eltesoft.modelexecution.runtime.RuntimeController;
 
 import java.io.IOException;
 
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * This decorator changes the process to try to terminate in a gentle way.
@@ -40,15 +37,6 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 		} else {
 			process.terminate();
 		}
-
-		// let the console update the termination status
-		// see ticket #187
-		Display.getDefault().asyncExec(() -> {
-			DebugEvent event = new DebugEvent(this, DebugEvent.TERMINATE);
-			DebugEvent[] eventSet = new DebugEvent[] { event };
-			DebugPlugin.getDefault().fireDebugEventSet(eventSet);
-		});
-
 	}
 
 	public GracefulTerminationProcessDecorator(IProcess process) {
