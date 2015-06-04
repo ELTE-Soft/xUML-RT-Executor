@@ -61,10 +61,17 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	/**
-	 * Stops the execution of the runtime after the current event is dispatched.
+	 * Stops the execution of the runtime after the logs have been written out.
 	 */
 	public void terminate() {
-		terminate = true;
+		try {
+			// explicitely call close
+			close();
+		} catch (Exception e) {
+			logError("Cannot close the runtime", e);
+		}
+		logInfo("Execution terminating on user request");
+		System.exit(1);
 	}
 
 	@Override
@@ -175,9 +182,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		logger.close();
 		traceWriter.close();
 		traceReader.close();
-		for (Handler handler : errorLogger.getHandlers()) {
-			handler.flush();
-		}
 	}
 
 }

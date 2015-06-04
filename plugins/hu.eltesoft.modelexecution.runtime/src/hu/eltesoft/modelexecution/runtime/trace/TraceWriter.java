@@ -15,6 +15,7 @@ import java.util.Date;
 public class TraceWriter implements Tracer {
 
 	private BufferedWriter writer;
+	private boolean isClosed = false;
 
 	protected TraceWriter(Path outputFilePath) throws IOException {
 		if (!Files.exists(outputFilePath)) {
@@ -44,13 +45,17 @@ public class TraceWriter implements Tracer {
 	}
 
 	@Override
-	public void traceEvent(TargetedMessage event) throws IOException {
+	public synchronized void traceEvent(TargetedMessage event) throws IOException {
+		if (isClosed) {
+			return;
+		}
 		event.jsonEncode().write(writer);
 		writer.append('\n');
 	}
 
 	@Override
-	public void close() throws Exception {
+	public synchronized void close() throws Exception {
+		isClosed = true;
 		writer.close();
 	}
 
