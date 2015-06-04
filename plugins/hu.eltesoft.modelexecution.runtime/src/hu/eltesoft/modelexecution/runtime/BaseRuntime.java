@@ -18,7 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Handler;
 
 /**
  * Executes the model using logging and tracing. Receives the name of the class

@@ -7,6 +7,7 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -81,12 +82,24 @@ public class XUMLRTRuntime extends BaseRuntime {
 		}
 	}
 
-	private static InputStream createControlStream(String port) throws NumberFormatException, IOException {
+	private static InputStream createControlStream(String port)
+			throws NumberFormatException, IOException {
 		logInfo("Creating control stream: " + port);
 		if (socket != null) {
-			throw new RuntimeException("Cannot connect to multiple control streams.");
+			throw new RuntimeException(
+					"Cannot connect to multiple control streams.");
 		}
-		socket = new Socket("localhost", Integer.parseInt(port));
+		while (socket == null) {
+			try {
+				socket = new Socket("localhost", Integer.parseInt(port));
+			} catch (ConnectException e) {
+				// The server side of the socket is not ready yet
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+				}
+			}
+		}
 		return socket.getInputStream();
 	}
 
@@ -110,6 +123,5 @@ public class XUMLRTRuntime extends BaseRuntime {
 	private static FileSystem defaultFileSystem() {
 		return FileSystems.getDefault();
 	}
-	
-	
+
 }
