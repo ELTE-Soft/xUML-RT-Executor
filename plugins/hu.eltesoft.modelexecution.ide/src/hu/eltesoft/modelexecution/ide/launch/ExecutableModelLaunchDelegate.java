@@ -56,16 +56,18 @@ public class ExecutableModelLaunchDelegate implements
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		listenForLaunchTermination();
+
 		if (!launchPassesChecks(configuration, mode)
 				|| !exitChecker.launchStarting(launch)) {
 			return;
-		}
+		}	
 		try {
 			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
 					.addMokaConfigs(configuration);
 			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
 					.addJavaConfigs(configuration);
 			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
+			
 		} catch (TraceFileMissingException e) {
 			Dialogs.openTraceFileMissingErrorDialog();
 		}

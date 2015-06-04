@@ -44,23 +44,25 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
 	private boolean terminate = false;
 
-	/**
-	 * Initializes the runtime in a controlled mode. In controlled mode, the
-	 * runtime can be managed with control messages throught the control stream.
-	 */
-	public BaseRuntime(ClassLoader classLoader, InputStream control) {
-		this(classLoader);
-		RuntimeController controller = new RuntimeController(control, this);
-		controller.startListening();
-	}
-
-	/**
-	 * Initializes the runtime in an uncontrolled mode.
-	 */
 	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 
+	/**
+	 * Switches the runtime to a controlled mode. In controlled mode, the
+	 * runtime can be managed with control messages throught the control stream.
+	 * This method may be called multiple times, in this case, the runtime
+	 * responds to messages on all control streams.
+	 */
+	public void addControlStream(InputStream controlStream) {
+		RuntimeController controller = new RuntimeController(controlStream,
+				this);
+		controller.startListening();
+	}
+
+	/**
+	 * Stops the execution of the runtime after the current event is dispatched.
+	 */
 	public void terminate() {
 		terminate = true;
 	}
@@ -91,7 +93,9 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public TerminationResult run(String className, String feedName)
 			throws Exception {
 		try {
+			logInfo("Preparing system for execution");
 			prepare(className, feedName);
+			logInfo("Starting execution");
 			while (!terminate && (!queue.isEmpty() || traceReader.hasEvent())) {
 				if (!queue.isEmpty()) {
 					TargetedMessage currQueueEvent = queue.peek();
@@ -103,6 +107,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					traceReader.dispatchEvent(logger);
 				}
 			}
+			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
 			logError(

@@ -37,13 +37,13 @@ import com.sun.jdi.VirtualMachine;
 public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
-	private Function<IProcess, IProcess> processDecorator;
+	private BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator;
 	private BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator;
 	private Function<IDebugTarget, IDebugTarget> debugTargetDecorator;
 	private Supplier<IDebugTarget> debugTargetProvider;
 
 	public DecoratedJavaLauncher(
-			Function<IProcess, IProcess> processDecorator,
+			BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
 			BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator,
 			Supplier<IDebugTarget> debugTargetProvider) {
 		this.processDecorator = processDecorator;
@@ -52,7 +52,7 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 	}
 
 	public DecoratedJavaLauncher(
-			Function<IProcess, IProcess> processDecorator,
+			BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
 			BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator,
 			Function<IDebugTarget, IDebugTarget> debugTargetDecorator) {
 		this.processDecorator = processDecorator;
@@ -74,7 +74,8 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 				Map<String, String> attributes) throws CoreException {
 			IProcess process = super.newProcess(launch, p, label, attributes);
 			launch.removeProcess(process);
-			IProcess decoratedProcess = processDecorator.apply(process);
+			IProcess decoratedProcess = processDecorator.apply(process,
+					launch.getLaunchConfiguration());
 			launch.addProcess(decoratedProcess);
 			return decoratedProcess;
 		}
@@ -94,7 +95,8 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 				ILaunch launch, int port, IProcess process, VirtualMachine vm) {
 			launch.removeProcess(process);
 			launch.addProcess(debugOnlyProcessDecorator.apply(
-					processDecorator.apply(process), vm));
+					processDecorator.apply(process,
+							launch.getLaunchConfiguration()), vm));
 			IDebugTarget target = null;
 			if (debugTargetProvider == null) {
 				IDebugTarget debugTarget = super.createDebugTarget(config,
