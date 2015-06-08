@@ -4,17 +4,23 @@ package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,6 +32,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfResult <em>Alf Result</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#isIsStatic <em>Is Static</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReturnType <em>Return Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,6 +100,46 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * @ordered
 	 */
 	protected AlfAnalyzerResult alfResult = ALF_RESULT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<BhParameter> parameters;
+
+	/**
+	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsStatic()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_STATIC_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsStatic()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isStatic = IS_STATIC_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnType()
+	 * @generated
+	 * @ordered
+	 */
+	protected Type returnType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -179,6 +228,77 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<BhParameter> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectResolvingEList<BhParameter>(BhParameter.class, this, BehaviorPackage.BH_BEHAVIOR__PARAMETERS);
+		}
+		return parameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsStatic() {
+		return isStatic;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsStatic(boolean newIsStatic) {
+		boolean oldIsStatic = isStatic;
+		isStatic = newIsStatic;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__IS_STATIC, oldIsStatic, isStatic));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Type getReturnType() {
+		if (returnType != null && returnType.eIsProxy()) {
+			InternalEObject oldReturnType = (InternalEObject)returnType;
+			returnType = (Type)eResolveProxy(oldReturnType);
+			if (returnType != oldReturnType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
+			}
+		}
+		return returnType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Type basicGetReturnType() {
+		return returnType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setReturnType(Type newReturnType) {
+		Type oldReturnType = returnType;
+		returnType = newReturnType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -188,6 +308,13 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				return getContainerClass();
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
 				return getAlfResult();
+			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
+				return getParameters();
+			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
+				return isIsStatic();
+			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
+				if (resolve) return getReturnType();
+				return basicGetReturnType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -197,6 +324,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -208,6 +336,16 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
 				setAlfResult((AlfAnalyzerResult)newValue);
+				return;
+			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends BhParameter>)newValue);
+				return;
+			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
+				setIsStatic((Boolean)newValue);
+				return;
+			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
+				setReturnType((Type)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -230,6 +368,15 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
 				setAlfResult(ALF_RESULT_EDEFAULT);
 				return;
+			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
+				getParameters().clear();
+				return;
+			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
+				setIsStatic(IS_STATIC_EDEFAULT);
+				return;
+			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
+				setReturnType((Type)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -248,6 +395,12 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
 				return ALF_RESULT_EDEFAULT == null ? alfResult != null : !ALF_RESULT_EDEFAULT.equals(alfResult);
+			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
+				return isStatic != IS_STATIC_EDEFAULT;
+			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
+				return returnType != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -268,6 +421,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 		result.append(containerClass);
 		result.append(", alfResult: ");
 		result.append(alfResult);
+		result.append(", isStatic: ");
+		result.append(isStatic);
 		result.append(')');
 		return result.toString();
 	}

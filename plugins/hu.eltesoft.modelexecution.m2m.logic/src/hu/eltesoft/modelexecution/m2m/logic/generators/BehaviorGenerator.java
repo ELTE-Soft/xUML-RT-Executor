@@ -7,6 +7,7 @@ import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
+import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
@@ -15,10 +16,18 @@ import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher;
 
+
+import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher;
+
 import java.util.function.Consumer;
+
+
+
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -33,13 +42,19 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 	private static final BehaviorFactory FACTORY = BehaviorFactory.eINSTANCE;
 
 	private final BehaviorMatcher behaviorMatcher;
+	private final StaticBehaviorMatcher staticMatcher;
 	private final AlfCodeMatcher alfCodeMatcher;
 	private final ContainerClassOfBehaviorMatcher containerMatcher;
+	private final BehaviorParameterMatcher parameterMatcher;
+	private final BehaviorReturnTypeMatcher returnMatcher;
 
 	public BehaviorGenerator(IncQueryEngine engine) throws IncQueryException {
 		behaviorMatcher = BehaviorMatcher.on(engine);
+		staticMatcher = StaticBehaviorMatcher.on(engine);
 		alfCodeMatcher = AlfCodeMatcher.on(engine);
 		containerMatcher = ContainerClassOfBehaviorMatcher.on(engine);
+		parameterMatcher = BehaviorParameterMatcher.on(engine);
+		returnMatcher = BehaviorReturnTypeMatcher.on(engine);
 	}
 
 	@Override
@@ -69,9 +84,27 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 		})) {
 			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
 		}
+		
+		root.setIsStatic(staticMatcher.hasMatch(source));
+		
+		returnMatcher.forOneArbitraryMatch(source, null, match -> {
+			root.setReturnType(convertType(match.getType()));
+		});
+		
+		collectParameters(source, root);
 
 		String rootName = NamedReference.getIdentifier(source);
 		return new Pair<>(rootName, new BehaviorTemplate(root));
+	}
+
+	protected void collectParameters(Behavior source, BhBehavior root) {
+		parameterMatcher.forEachMatch(source, null, null, null, paramMatch -> {
+			BhParameter parameter = FACTORY.createBhParameter();
+			parameter.setReference(new NamedReference(paramMatch.getParameter()));
+			parameter.setType(convertType(paramMatch.getType()));
+			parameter.setDirection(convertDirection(paramMatch.getDirection()));
+			root.getParameters().add(parameter);
+		});
 	}
 
 	@Override

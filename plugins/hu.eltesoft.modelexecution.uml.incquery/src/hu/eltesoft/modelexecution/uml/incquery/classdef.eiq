@@ -19,10 +19,11 @@ pattern Operation(cls : Class, operation : Operation, isStatic) {
 }
 
 pattern
-OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+OperationParameter(cls : Class, operation : Operation, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
 	find Operation(cls, operation, _);
 	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, direction);
+	Parameter.type(parameter, type);
 	direction != ParameterDirectionKind::^return;
 }
 

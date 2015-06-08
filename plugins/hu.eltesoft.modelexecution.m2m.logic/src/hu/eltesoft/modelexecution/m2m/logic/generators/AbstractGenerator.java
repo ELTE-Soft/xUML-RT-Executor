@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.generators;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
@@ -12,6 +13,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.ValueSpecification;
 
@@ -102,6 +104,22 @@ public abstract class AbstractGenerator<S extends EObject> implements
 			ret = value.unlimitedValue();
 		}
 		return ret;
+	}
+
+	protected Direction convertDirection(ParameterDirectionKind direction) {
+		switch (direction) {
+		case INOUT_LITERAL:
+			return Direction.INOUT;
+		case IN_LITERAL:
+			return Direction.IN;
+		case OUT_LITERAL:
+			return Direction.OUT;
+		case RETURN_LITERAL:
+			return Direction.RETURN;
+		default:
+			throw new UnsupportedUMLFeatureException("Unsupported direction: "
+					+ direction);
+		}
 	}
 
 }

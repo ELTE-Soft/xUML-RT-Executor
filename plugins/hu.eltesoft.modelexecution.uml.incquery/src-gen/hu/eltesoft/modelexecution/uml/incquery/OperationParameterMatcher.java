@@ -18,6 +18,7 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.Type;
 
 /**
  * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.OperationParameter pattern,
@@ -31,10 +32,11 @@ import org.eclipse.uml2.uml.ParameterDirectionKind;
  * <p>Original source:
  * <code><pre>
  * pattern
- * OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+ * OperationParameter(cls : Class, operation : Operation, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
  * 	find Operation(cls, operation, _);
  * 	Operation.ownedParameter(operation, parameter);
  * 	Parameter.direction(parameter, direction);
+ * 	Parameter.type(parameter, type);
  * 	direction != ParameterDirectionKind::^return;
  * }
  * </pre></code>
@@ -79,7 +81,9 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
   
   private final static int POSITION_PARAMETER = 2;
   
-  private final static int POSITION_DIRECTION = 3;
+  private final static int POSITION_TYPE = 3;
+  
+  private final static int POSITION_DIRECTION = 4;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(OperationParameterMatcher.class);
   
@@ -119,12 +123,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return matches represented as a OperationParameterMatch object.
    * 
    */
-  public Collection<OperationParameterMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawGetAllMatches(new Object[]{pCls, pOperation, pParameter, pDirection});
+  public Collection<OperationParameterMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawGetAllMatches(new Object[]{pCls, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -133,12 +138,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return a match represented as a OperationParameterMatch object, or null if no match is found.
    * 
    */
-  public OperationParameterMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pParameter, pDirection});
+  public OperationParameterMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -147,12 +153,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawHasMatch(new Object[]{pCls, pOperation, pParameter, pDirection});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawHasMatch(new Object[]{pCls, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -160,12 +167,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawCountMatches(new Object[]{pCls, pOperation, pParameter, pDirection});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawCountMatches(new Object[]{pCls, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -173,12 +181,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection, final IMatchProcessor<? super OperationParameterMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pOperation, pParameter, pDirection}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection, final IMatchProcessor<? super OperationParameterMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pOperation, pParameter, pType, pDirection}, processor);
   }
   
   /**
@@ -187,13 +196,14 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection, final IMatchProcessor<? super OperationParameterMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pParameter, pDirection}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection, final IMatchProcessor<? super OperationParameterMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pParameter, pType, pDirection}, processor);
   }
   
   /**
@@ -206,14 +216,15 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<OperationParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pParameter, pDirection});
+  public DeltaMonitor<OperationParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -223,12 +234,13 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public OperationParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return OperationParameterMatch.newMatch(pCls, pOperation, pParameter, pDirection);
+  public OperationParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return OperationParameterMatch.newMatch(pCls, pOperation, pParameter, pType, pDirection);
     
   }
   
@@ -266,8 +278,8 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pParameter, pDirection});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pParameter, pType, pDirection});
   }
   
   /**
@@ -304,8 +316,8 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pParameter, pDirection});
+  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pParameter, pType, pDirection});
   }
   
   /**
@@ -342,8 +354,46 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pOperation, null, pDirection});
+  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pOperation, null, pType, pDirection});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
+    Set<Type> results = new HashSet<Type>();
+    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype() {
+    return rawAccumulateAllValuesOftype(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype(final OperationParameterMatch partialMatch) {
+    return rawAccumulateAllValuesOftype(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOftype(new Object[]{pCls, pOperation, pParameter, null, pDirection});
   }
   
   /**
@@ -380,14 +430,14 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<ParameterDirectionKind> getAllValuesOfdirection(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter) {
-    return rawAccumulateAllValuesOfdirection(new Object[]{pCls, pOperation, pParameter, null});
+  public Set<ParameterDirectionKind> getAllValuesOfdirection(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
+    return rawAccumulateAllValuesOfdirection(new Object[]{pCls, pOperation, pParameter, pType, null});
   }
   
   @Override
   protected OperationParameterMatch tupleToMatch(final Tuple t) {
     try {
-      return OperationParameterMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.ParameterDirectionKind) t.get(POSITION_DIRECTION));
+      return OperationParameterMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (org.eclipse.uml2.uml.ParameterDirectionKind) t.get(POSITION_DIRECTION));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -398,7 +448,7 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
   @Override
   protected OperationParameterMatch arrayToMatch(final Object[] match) {
     try {
-      return OperationParameterMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
+      return OperationParameterMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -409,7 +459,7 @@ public class OperationParameterMatcher extends BaseMatcher<OperationParameterMat
   @Override
   protected OperationParameterMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return OperationParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
+      return OperationParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

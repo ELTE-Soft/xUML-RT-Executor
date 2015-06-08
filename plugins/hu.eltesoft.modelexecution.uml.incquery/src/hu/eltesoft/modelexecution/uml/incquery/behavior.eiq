@@ -32,8 +32,23 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
 
-pattern BehaviorParameter(behavior : Behavior, parameter : Parameter) {
+pattern
+BehaviorParameter(behavior : Behavior, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
 	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, direction);
+	Parameter.type(parameter, type);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern BehaviorReturnType(behavior : Behavior, type : Type) {
+	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+	Parameter.type(parameter, type);
+}
+
+pattern StaticBehavior(behavior : Behavior) {
+	Behavior.specification(behavior, operation);
+	Operation.isStatic(operation, true);
 }
 
 pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {

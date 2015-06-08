@@ -4,7 +4,6 @@ import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
@@ -38,7 +37,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Region;
@@ -142,13 +140,12 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 
 	protected void collectParameters(Operation operation,
 			ClOperation clOperation) {
-		parameterMatcher.forEachMatch(null, operation, null, null,
+		parameterMatcher.forEachMatch(null, operation, null, null, null,
 				paramMatch -> {
 					ClParameter parameter = FACTORY.createClParameter();
 					parameter.setReference(new NamedReference(paramMatch
 							.getParameter()));
-					parameter.setType(convertType(paramMatch.getParameter()
-							.getType()));
+					parameter.setType(convertType(paramMatch.getType()));
 					parameter.setDirection(convertDirection(paramMatch
 							.getDirection()));
 					clOperation.getParameters().add(parameter);
@@ -166,22 +163,6 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 
 			root.getReceptions().add(clReception);
 		});
-	}
-
-	private Direction convertDirection(ParameterDirectionKind direction) {
-		switch (direction) {
-		case INOUT_LITERAL:
-			return Direction.INOUT;
-		case IN_LITERAL:
-			return Direction.IN;
-		case OUT_LITERAL:
-			return Direction.OUT;
-		case RETURN_LITERAL:
-			return Direction.RETURN;
-		default:
-			throw new UnsupportedUMLFeatureException("Unsupported direction: "
-					+ direction);
-		}
 	}
 
 	@Override

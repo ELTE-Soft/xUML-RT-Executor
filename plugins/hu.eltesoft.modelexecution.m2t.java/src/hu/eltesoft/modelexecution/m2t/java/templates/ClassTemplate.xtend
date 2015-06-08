@@ -126,7 +126,16 @@ class ClassTemplate extends Template {
 					«ENDFOR»
 					) {
 				«IF null != operation.method»
-					new «operation.method.identifier»(this).execute();
+					«operation.method.identifier» method = new «operation.method.identifier»(
+						«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
+						«FOR parameter : operation.parameters SEPARATOR ','»
+							«parameter.identifier»
+						«ENDFOR»
+						);
+					method.execute();
+					«IF operation.returnType != null»
+						return method.getReturnValue();
+					«ENDIF»
 				«ENDIF»
 			}
 		«ENDFOR»

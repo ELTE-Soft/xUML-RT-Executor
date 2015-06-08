@@ -8,6 +8,8 @@ import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.Type;
 
 /**
  * Pattern-specific match representation of the hu.eltesoft.modelexecution.uml.incquery.BehaviorParameter pattern,
@@ -28,11 +30,17 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
   
   private Parameter fParameter;
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "parameter");
+  private Type fType;
   
-  private BehaviorParameterMatch(final Behavior pBehavior, final Parameter pParameter) {
+  private ParameterDirectionKind fDirection;
+  
+  private static List<String> parameterNames = makeImmutableList("behavior", "parameter", "type", "direction");
+  
+  private BehaviorParameterMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
     this.fBehavior = pBehavior;
     this.fParameter = pParameter;
+    this.fType = pType;
+    this.fDirection = pDirection;
     
   }
   
@@ -40,6 +48,8 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
     if ("parameter".equals(parameterName)) return this.fParameter;
+    if ("type".equals(parameterName)) return this.fType;
+    if ("direction".equals(parameterName)) return this.fDirection;
     return null;
     
   }
@@ -54,6 +64,16 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
     
   }
   
+  public Type getType() {
+    return this.fType;
+    
+  }
+  
+  public ParameterDirectionKind getDirection() {
+    return this.fDirection;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -63,6 +83,14 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
     }
     if ("parameter".equals(parameterName) ) {
     	this.fParameter = (org.eclipse.uml2.uml.Parameter) newValue;
+    	return true;
+    }
+    if ("type".equals(parameterName) ) {
+    	this.fType = (org.eclipse.uml2.uml.Type) newValue;
+    	return true;
+    }
+    if ("direction".equals(parameterName) ) {
+    	this.fDirection = (org.eclipse.uml2.uml.ParameterDirectionKind) newValue;
     	return true;
     }
     return false;
@@ -81,6 +109,18 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
     
   }
   
+  public void setType(final Type pType) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fType = pType;
+    
+  }
+  
+  public void setDirection(final ParameterDirectionKind pDirection) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fDirection = pDirection;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.BehaviorParameter";
@@ -95,13 +135,13 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fParameter};
+    return new Object[]{fBehavior, fParameter, fType, fDirection};
     
   }
   
   @Override
   public BehaviorParameterMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fParameter) : this;
+    return isMutable() ? newMatch(fBehavior, fParameter, fType, fDirection) : this;
     
   }
   
@@ -109,7 +149,9 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
-    result.append("\"parameter\"=" + prettyPrintValue(fParameter));
+    result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
+    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
+    result.append("\"direction\"=" + prettyPrintValue(fDirection));
     return result.toString();
     
   }
@@ -120,6 +162,8 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
     result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
+    result = prime * result + ((fType == null) ? 0 : fType.hashCode());
+    result = prime * result + ((fDirection == null) ? 0 : fDirection.hashCode());
     return result;
     
   }
@@ -143,6 +187,10 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
     else if (!fBehavior.equals(other.fBehavior)) return false;
     if (fParameter == null) {if (other.fParameter != null) return false;}
     else if (!fParameter.equals(other.fParameter)) return false;
+    if (fType == null) {if (other.fType != null) return false;}
+    else if (!fType.equals(other.fType)) return false;
+    if (fDirection == null) {if (other.fDirection != null) return false;}
+    else if (!fDirection.equals(other.fDirection)) return false;
     return true;
   }
   
@@ -165,7 +213,7 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
    * 
    */
   public static BehaviorParameterMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null, null);
     
   }
   
@@ -175,11 +223,13 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static BehaviorParameterMatch newMutableMatch(final Behavior pBehavior, final Parameter pParameter) {
-    return new Mutable(pBehavior, pParameter);
+  public static BehaviorParameterMatch newMutableMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return new Mutable(pBehavior, pParameter, pType, pDirection);
     
   }
   
@@ -189,17 +239,19 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static BehaviorParameterMatch newMatch(final Behavior pBehavior, final Parameter pParameter) {
-    return new Immutable(pBehavior, pParameter);
+  public static BehaviorParameterMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+    return new Immutable(pBehavior, pParameter, pType, pDirection);
     
   }
   
   private static final class Mutable extends BehaviorParameterMatch {
-    Mutable(final Behavior pBehavior, final Parameter pParameter) {
-      super(pBehavior, pParameter);
+    Mutable(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+      super(pBehavior, pParameter, pType, pDirection);
       
     }
     
@@ -210,8 +262,8 @@ public abstract class BehaviorParameterMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends BehaviorParameterMatch {
-    Immutable(final Behavior pBehavior, final Parameter pParameter) {
-      super(pBehavior, pParameter);
+    Immutable(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
+      super(pBehavior, pParameter, pType, pDirection);
       
     }
     

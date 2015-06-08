@@ -7,6 +7,15 @@
         eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alfResult" lowerBound="1"
         eType="#//AlfAnalyzerResult"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//BhParameter"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="AlfAnalyzerResult" instanceClassName="hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BhParameter" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="ecore:EEnum base.ecore#//Direction"/>
+  </eClassifiers>
 </ecore:EPackage>
