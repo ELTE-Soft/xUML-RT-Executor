@@ -127,7 +127,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			} else {
 				performAllTasks(queue);
 			}
-	
+
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while incremental build.", e); //$NON-NLS-1$
 		}
@@ -140,32 +140,37 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			IResourceDeltaVisitor {
 		private final ConcurrentMap<IResource, List<FileUpdateTask>> queue;
 		private boolean needsCleanAndRebuild = false;
-	
+
 		private IncrementalBuildResourceDeltaVisitor(
 				ConcurrentMap<IResource, List<FileUpdateTask>> queue) {
 			this.queue = queue;
 		}
-	
+
 		@Override
 		public boolean visit(IResourceDelta delta) throws CoreException {
 			IResource resource = delta.getResource();
 			if (!isModelResource(resource)) {
 				return true;
 			}
-			switch (delta.getKind()) {
-			case IResourceDelta.ADDED:
-			case IResourceDelta.CHANGED:
-				TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-						t -> queue.put(resource, t.incrementalBuild()));
-				break;
-			case IResourceDelta.REMOVED:
-				TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
-				needsCleanAndRebuild = true;
-				break;
+			markerManager.removeUmlMarkersFromResource(resource);
+			try {
+				switch (delta.getKind()) {
+				case IResourceDelta.ADDED:
+				case IResourceDelta.CHANGED:
+					TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
+							t -> queue.put(resource, t.incrementalBuild()));
+					break;
+				case IResourceDelta.REMOVED:
+					TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
+					needsCleanAndRebuild = true;
+					break;
+				}
+			} catch (GenerationException e) {
+				markerManager.putMarkerOnResource(resource, e.getMessage());
 			}
 			return true;
 		}
-	
+
 		public boolean cleanAndRebuildNeeded() {
 			return needsCleanAndRebuild;
 		}
