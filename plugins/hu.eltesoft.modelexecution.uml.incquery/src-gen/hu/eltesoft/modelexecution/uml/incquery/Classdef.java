@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
-import hu.eltesoft.modelexecution.uml.incquery.AssociationMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
@@ -9,7 +8,6 @@ import hu.eltesoft.modelexecution.uml.incquery.OperationParameterMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.AssociationQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.AttributeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ClsQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.MethodQuerySpecification;
@@ -36,7 +34,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>OperationParameter</li>
  * <li>OperationReturnType</li>
  * <li>Attribute</li>
- * <li>Association</li>
  * <li>Method</li>
  * <li>Reception</li>
  * <li>IsBehavior</li>
@@ -72,7 +69,6 @@ public final class Classdef extends BaseGeneratedPatternGroup {
     querySpecifications.add(OperationParameterQuerySpecification.instance());
     querySpecifications.add(OperationReturnTypeQuerySpecification.instance());
     querySpecifications.add(AttributeQuerySpecification.instance());
-    querySpecifications.add(AssociationQuerySpecification.instance());
     querySpecifications.add(MethodQuerySpecification.instance());
     querySpecifications.add(ReceptionQuerySpecification.instance());
     
@@ -124,14 +120,6 @@ public final class Classdef extends BaseGeneratedPatternGroup {
   
   public AttributeMatcher getAttribute(final IncQueryEngine engine) throws IncQueryException {
     return AttributeMatcher.on(engine);
-  }
-  
-  public AssociationQuerySpecification getAssociation() throws IncQueryException {
-    return AssociationQuerySpecification.instance();
-  }
-  
-  public AssociationMatcher getAssociation(final IncQueryEngine engine) throws IncQueryException {
-    return AssociationMatcher.on(engine);
   }
   
   public MethodQuerySpecification getMethod() throws IncQueryException {

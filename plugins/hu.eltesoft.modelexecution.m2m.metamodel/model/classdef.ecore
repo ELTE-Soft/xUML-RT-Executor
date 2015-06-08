@@ -10,8 +10,6 @@
         eType="#//ClReception"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
         eType="#//ClAttribute"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
-        eType="#//ClAssociation"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType base.ecore#//NamedReference"/>
@@ -33,9 +31,5 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="ecore:EEnum base.ecore#//Direction"
         derived="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClAssociation" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplicity" eType="ecore:EEnum base.ecore#//Multiplicity"/>
   </eClassifiers>
 </ecore:EPackage>

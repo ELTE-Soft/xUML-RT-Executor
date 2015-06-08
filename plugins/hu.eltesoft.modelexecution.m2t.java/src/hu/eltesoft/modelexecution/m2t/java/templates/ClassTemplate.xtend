@@ -64,15 +64,11 @@ class ClassTemplate extends Template {
 				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(this);
 			}
 			
-			// attributes
+			// attributes and associations
 					
 			«generateAttributes()»
 						
 			
-			// associations
-					
-			«generateAssociations()»
-
 			// operations
 					
 			«generateOperations()»
@@ -89,15 +85,12 @@ class ClassTemplate extends Template {
 	 */
 	def generateClassWithoutState() '''
 		public class «classDefinition.identifier» extends «Class.canonicalName» {
-			// attributes
+			
+			// attributes and associations
 					
 			«generateAttributes()»
 						
 			
-			// associations
-					
-			«generateAssociations()»
-
 			// operations
 					
 			«generateOperations()»
@@ -108,12 +101,6 @@ class ClassTemplate extends Template {
 	def generateAttributes() '''
 		«FOR attribute : classDefinition.attributes»
 			«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type, attribute.multiplicity)» «attribute.identifier»;
-		«ENDFOR»
-	'''
-	
-	def generateAssociations() '''
-		«FOR association : classDefinition.associations»
-			«javaType(association.type, association.multiplicity)» «association.identifier»;
 		«ENDFOR»
 	'''
 

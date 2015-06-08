@@ -67,15 +67,6 @@ public interface ClassdefFactory extends EFactory {
 	ClParameter createClParameter();
 
 	/**
-	 * Returns a new object of class '<em>Cl Association</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Association</em>'.
-	 * @generated
-	 */
-	ClAssociation createClAssociation();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
