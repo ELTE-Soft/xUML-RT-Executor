@@ -24,7 +24,9 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 			IProject project = javaProject.getProject();
 			IWorkspaceRoot root = project.getWorkspace().getRoot();
 			IResource outputFolder = root.findMember(outputPath);
-			outputFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
+			if (outputFolder != null) {
+				outputFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
+			}
 		} catch (CoreException e) {
 			IdePlugin.logError("Unable to refresh output folder.", e);
 		}
