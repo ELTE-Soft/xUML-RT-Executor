@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -19,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getReceptions <em>Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAttributes <em>Attributes</em>}</li>
  * </ul>
  * </p>
  *
@@ -26,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ClClass extends ModelRoot, Named {
+public interface ClClass extends ModelRoot, Named, Type {
 	/**
 	 * Returns the value of the '<em><b>Region</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -84,5 +86,21 @@ public interface ClClass extends ModelRoot, Named {
 	 * @generated
 	 */
 	EList<ClReception> getReceptions();
+
+	/**
+	 * Returns the value of the '<em><b>Attributes</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attributes</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attributes</em>' reference list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Attributes()
+	 * @model
+	 * @generated
+	 */
+	EList<ClAttribute> getAttributes();
 
 } // ClClass

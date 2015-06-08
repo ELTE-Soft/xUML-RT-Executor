@@ -76,6 +76,10 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 				return createSgSignalAdapter();
 			}
 			@Override
+			public Adapter caseSgAttribute(SgAttribute object) {
+				return createSgAttributeAdapter();
+			}
+			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -118,6 +122,20 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSgSignalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute <em>Sg Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute
+	 * @generated
+	 */
+	public Adapter createSgAttributeAdapter() {
 		return null;
 	}
 

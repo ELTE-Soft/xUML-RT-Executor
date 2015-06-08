@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.*;
 
 import org.eclipse.emf.ecore.EObject;
@@ -74,6 +75,7 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				ClClass clClass = (ClClass)theEObject;
 				T result = caseClClass(clClass);
 				if (result == null) result = caseModelRoot(clClass);
+				if (result == null) result = caseType(clClass);
 				if (result == null) result = caseNamed(clClass);
 				if (result == null) result = caseTranslationObject(clClass);
 				if (result == null) result = defaultCase(theEObject);
@@ -92,6 +94,22 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				T result = caseClReception(clReception);
 				if (result == null) result = caseNamed(clReception);
 				if (result == null) result = caseTranslationObject(clReception);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_ATTRIBUTE: {
+				ClAttribute clAttribute = (ClAttribute)theEObject;
+				T result = caseClAttribute(clAttribute);
+				if (result == null) result = caseNamed(clAttribute);
+				if (result == null) result = caseTranslationObject(clAttribute);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_PARAMETER: {
+				ClParameter clParameter = (ClParameter)theEObject;
+				T result = caseClParameter(clParameter);
+				if (result == null) result = caseNamed(clParameter);
+				if (result == null) result = caseTranslationObject(clParameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -145,6 +163,36 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Attribute</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClAttribute(ClAttribute object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Parameter</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClParameter(ClParameter object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Translation Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -186,6 +234,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModelRoot(ModelRoot object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseType(Type object) {
 		return null;
 	}
 

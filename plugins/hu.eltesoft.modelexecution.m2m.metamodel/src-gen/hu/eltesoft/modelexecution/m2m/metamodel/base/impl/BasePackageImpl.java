@@ -4,12 +4,16 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
@@ -35,6 +39,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -73,6 +78,34 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * @generated
 	 */
 	private EClass referencedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass primitiveTypeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum primitiveTypesEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum directionEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -225,6 +258,51 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getType() {
+		return typeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPrimitiveType() {
+		return primitiveTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPrimitiveType_Type() {
+		return (EAttribute)primitiveTypeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getPrimitiveTypes() {
+		return primitiveTypesEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getDirection() {
+		return directionEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getNamedReference() {
 		return namedReferenceEDataType;
 	}
@@ -276,6 +354,15 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		referencedEClass = createEClass(REFERENCED);
 		createEAttribute(referencedEClass, REFERENCED__REFERENCE);
 
+		typeEClass = createEClass(TYPE);
+
+		primitiveTypeEClass = createEClass(PRIMITIVE_TYPE);
+		createEAttribute(primitiveTypeEClass, PRIMITIVE_TYPE__TYPE);
+
+		// Create enums
+		primitiveTypesEEnum = createEEnum(PRIMITIVE_TYPES);
+		directionEEnum = createEEnum(DIRECTION);
+
 		// Create data types
 		namedReferenceEDataType = createEDataType(NAMED_REFERENCE);
 		referenceEDataType = createEDataType(REFERENCE);
@@ -312,6 +399,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		modelRootEClass.getESuperTypes().add(this.getNamed());
 		namedEClass.getESuperTypes().add(this.getTranslationObject());
 		referencedEClass.getESuperTypes().add(this.getTranslationObject());
+		typeEClass.getESuperTypes().add(this.getNamed());
+		primitiveTypeEClass.getESuperTypes().add(this.getType());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -323,6 +412,23 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 
 		initEClass(referencedEClass, Referenced.class, "Referenced", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getReferenced_Reference(), this.getReference(), "reference", null, 1, 1, Referenced.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(primitiveTypeEClass, PrimitiveType.class, "PrimitiveType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPrimitiveType_Type(), this.getPrimitiveTypes(), "type", null, 0, 1, PrimitiveType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(primitiveTypesEEnum, PrimitiveTypes.class, "PrimitiveTypes");
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.INTEGER);
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.BOOLEAN);
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.STRING);
+
+		initEEnum(directionEEnum, Direction.class, "Direction");
+		addEEnumLiteral(directionEEnum, Direction.IN);
+		addEEnumLiteral(directionEEnum, Direction.OUT);
+		addEEnumLiteral(directionEEnum, Direction.INOUT);
+		addEEnumLiteral(directionEEnum, Direction.RETURN);
 
 		// Initialize data types
 		initEDataType(namedReferenceEDataType, NamedReference.class, "NamedReference", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

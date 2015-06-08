@@ -16,4 +16,19 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="NamedReference" instanceClassName="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Reference" instanceClassName="hu.eltesoft.modelexecution.m2t.smap.emf.Reference"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="PrimitiveTypes">
+    <eLiterals name="Integer" literal="Integer"/>
+    <eLiterals name="Boolean" value="1"/>
+    <eLiterals name="String" value="2" literal="String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//Named"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" eSuperTypes="#//Type">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PrimitiveTypes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Direction">
+    <eLiterals name="in"/>
+    <eLiterals name="out" value="1"/>
+    <eLiterals name="inout" value="2" literal=""/>
+    <eLiterals name="return" value="3"/>
+  </eClassifiers>
 </ecore:EPackage>

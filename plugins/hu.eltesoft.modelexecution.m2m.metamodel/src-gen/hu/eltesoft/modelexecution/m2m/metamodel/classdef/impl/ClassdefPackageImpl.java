@@ -10,8 +10,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -62,6 +64,20 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	private EClass clReceptionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass clAttributeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass clParameterEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -182,6 +198,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getClClass_Attributes() {
+		return (EReference)clClassEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClOperation() {
 		return clOperationEClass;
 	}
@@ -200,6 +225,24 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getClOperation_Parameters() {
+		return (EReference)clOperationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getClOperation_IsStatic() {
+		return (EAttribute)clOperationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClReception() {
 		return clReceptionEClass;
 	}
@@ -211,6 +254,51 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 */
 	public EAttribute getClReception_Signal() {
 		return (EAttribute)clReceptionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getClAttribute() {
+		return clAttributeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getClAttribute_Type() {
+		return (EReference)clAttributeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getClAttribute_IsStatic() {
+		return (EAttribute)clAttributeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getClParameter() {
+		return clParameterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getClParameter_Type() {
+		return (EReference)clParameterEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -245,12 +333,22 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEAttribute(clClassEClass, CL_CLASS__REGION);
 		createEReference(clClassEClass, CL_CLASS__OPERATIONS);
 		createEReference(clClassEClass, CL_CLASS__RECEPTIONS);
+		createEReference(clClassEClass, CL_CLASS__ATTRIBUTES);
 
 		clOperationEClass = createEClass(CL_OPERATION);
 		createEAttribute(clOperationEClass, CL_OPERATION__METHOD);
+		createEReference(clOperationEClass, CL_OPERATION__PARAMETERS);
+		createEAttribute(clOperationEClass, CL_OPERATION__IS_STATIC);
 
 		clReceptionEClass = createEClass(CL_RECEPTION);
 		createEAttribute(clReceptionEClass, CL_RECEPTION__SIGNAL);
+
+		clAttributeEClass = createEClass(CL_ATTRIBUTE);
+		createEReference(clAttributeEClass, CL_ATTRIBUTE__TYPE);
+		createEAttribute(clAttributeEClass, CL_ATTRIBUTE__IS_STATIC);
+
+		clParameterEClass = createEClass(CL_PARAMETER);
+		createEReference(clParameterEClass, CL_PARAMETER__TYPE);
 	}
 
 	/**
@@ -286,20 +384,33 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		// Add supertypes to classes
 		clClassEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		clClassEClass.getESuperTypes().add(theBasePackage.getNamed());
+		clClassEClass.getESuperTypes().add(theBasePackage.getType());
 		clOperationEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clReceptionEClass.getESuperTypes().add(theBasePackage.getNamed());
+		clAttributeEClass.getESuperTypes().add(theBasePackage.getNamed());
+		clParameterEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(clClassEClass, ClClass.class, "ClClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClClass_Region(), theBasePackage.getNamedReference(), "region", null, 0, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClClass_Operations(), this.getClOperation(), null, "operations", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClClass_Receptions(), this.getClReception(), null, "receptions", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getClClass_Attributes(), this.getClAttribute(), null, "attributes", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clOperationEClass, ClOperation.class, "ClOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClOperation_Method(), theBasePackage.getNamedReference(), "method", null, 0, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getClOperation_Parameters(), this.getClParameter(), null, "parameters", null, 0, -1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClOperation_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 0, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clReceptionEClass, ClReception.class, "ClReception", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClReception_Signal(), theBasePackage.getNamedReference(), "signal", null, 1, 1, ClReception.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(clAttributeEClass, ClAttribute.class, "ClAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getClAttribute_Type(), theBasePackage.getType(), null, "type", null, 0, 1, ClAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClAttribute_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 0, 1, ClAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(clParameterEClass, ClParameter.class, "ClParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getClParameter_Type(), theBasePackage.getType(), null, "type", null, 0, 1, ClParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

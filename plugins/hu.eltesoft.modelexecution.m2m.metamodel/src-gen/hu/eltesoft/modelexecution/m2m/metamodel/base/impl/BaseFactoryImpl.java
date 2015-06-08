@@ -59,6 +59,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -72,6 +73,10 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
+			case BasePackage.PRIMITIVE_TYPES:
+				return createPrimitiveTypesFromString(eDataType, initialValue);
+			case BasePackage.DIRECTION:
+				return createDirectionFromString(eDataType, initialValue);
 			case BasePackage.NAMED_REFERENCE:
 				return createNamedReferenceFromString(eDataType, initialValue);
 			case BasePackage.REFERENCE:
@@ -89,6 +94,10 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
+			case BasePackage.PRIMITIVE_TYPES:
+				return convertPrimitiveTypesToString(eDataType, instanceValue);
+			case BasePackage.DIRECTION:
+				return convertDirectionToString(eDataType, instanceValue);
 			case BasePackage.NAMED_REFERENCE:
 				return convertNamedReferenceToString(eDataType, instanceValue);
 			case BasePackage.REFERENCE:
@@ -96,6 +105,56 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PrimitiveType createPrimitiveType() {
+		PrimitiveTypeImpl primitiveType = new PrimitiveTypeImpl();
+		return primitiveType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PrimitiveTypes createPrimitiveTypesFromString(EDataType eDataType, String initialValue) {
+		PrimitiveTypes result = PrimitiveTypes.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertPrimitiveTypesToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Direction createDirectionFromString(EDataType eDataType, String initialValue) {
+		Direction result = Direction.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDirectionToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

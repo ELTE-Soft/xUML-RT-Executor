@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAttributes <em>Attributes</em>}</li>
  * </ul>
  * </p>
  *
@@ -98,6 +100,16 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * @ordered
 	 */
 	protected EList<ClReception> receptions;
+
+	/**
+	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClAttribute> attributes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -189,6 +201,18 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClAttribute> getAttributes() {
+		if (attributes == null) {
+			attributes = new EObjectResolvingEList<ClAttribute>(ClAttribute.class, this, ClassdefPackage.CL_CLASS__ATTRIBUTES);
+		}
+		return attributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -200,6 +224,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				return getOperations();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				return getReceptions();
+			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
+				return getAttributes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -227,6 +253,10 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				getReceptions().clear();
 				getReceptions().addAll((Collection<? extends ClReception>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
+				getAttributes().clear();
+				getAttributes().addAll((Collection<? extends ClAttribute>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -251,6 +281,9 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				getReceptions().clear();
 				return;
+			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
+				getAttributes().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -271,6 +304,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
 				return receptions != null && !receptions.isEmpty();
+			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
+				return attributes != null && !attributes.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -2,18 +2,30 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="classdef" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/classdef"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.classdef">
-  <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
+  <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named base.ecore#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="region" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
         eType="#//ClOperation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="receptions" upperBound="-1"
         eType="#//ClReception"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//ClAttribute"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType base.ecore#//NamedReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//ClParameter"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClReception" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signal" lowerBound="1"
         eType="ecore:EDataType base.ecore#//NamedReference"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClAttribute" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClParameter" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
   </eClassifiers>
 </ecore:EPackage>

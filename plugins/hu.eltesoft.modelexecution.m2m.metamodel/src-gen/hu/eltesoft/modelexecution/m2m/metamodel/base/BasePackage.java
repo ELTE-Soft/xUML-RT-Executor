@@ -5,6 +5,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -196,6 +197,109 @@ public interface BasePackage extends EPackage {
 	int REFERENCED_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl <em>Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getType()
+	 * @generated
+	 */
+	int TYPE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__REFERENCE = NAMED__REFERENCE;
+
+	/**
+	 * The number of structural features of the '<em>Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_FEATURE_COUNT = NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveType()
+	 * @generated
+	 */
+	int PRIMITIVE_TYPE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_TYPE__REFERENCE = TYPE__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_TYPE__TYPE = TYPE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Primitive Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_TYPE_FEATURE_COUNT = TYPE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Primitive Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
+	 * @generated
+	 */
+	int PRIMITIVE_TYPES = 6;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getDirection()
+	 * @generated
+	 */
+	int DIRECTION = 7;
+
+	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -203,7 +307,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int NAMED_REFERENCE = 4;
+	int NAMED_REFERENCE = 8;
 
 	/**
 	 * The meta object id for the '<em>Reference</em>' data type.
@@ -213,7 +317,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
 	 * @generated
 	 */
-	int REFERENCE = 5;
+	int REFERENCE = 9;
 
 
 	/**
@@ -277,6 +381,57 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getReferenced_Reference();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Type <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Type
+	 * @generated
+	 */
+	EClass getType();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType <em>Primitive Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Primitive Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
+	 * @generated
+	 */
+	EClass getPrimitiveType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType#getType()
+	 * @see #getPrimitiveType()
+	 * @generated
+	 */
+	EAttribute getPrimitiveType_Type();
+
+	/**
+	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Primitive Types</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+	 * @generated
+	 */
+	EEnum getPrimitiveTypes();
+
+	/**
+	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Direction</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
+	 * @generated
+	 */
+	EEnum getDirection();
 
 	/**
 	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference <em>Named Reference</em>}'.
@@ -378,6 +533,54 @@ public interface BasePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute REFERENCED__REFERENCE = eINSTANCE.getReferenced_Reference();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl <em>Type</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getType()
+		 * @generated
+		 */
+		EClass TYPE = eINSTANCE.getType();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveType()
+		 * @generated
+		 */
+		EClass PRIMITIVE_TYPE = eINSTANCE.getPrimitiveType();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PRIMITIVE_TYPE__TYPE = eINSTANCE.getPrimitiveType_Type();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
+		 * @generated
+		 */
+		EEnum PRIMITIVE_TYPES = eINSTANCE.getPrimitiveTypes();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getDirection()
+		 * @generated
+		 */
+		EEnum DIRECTION = eINSTANCE.getDirection();
 
 		/**
 		 * The meta object literal for the '<em>Named Reference</em>' data type.

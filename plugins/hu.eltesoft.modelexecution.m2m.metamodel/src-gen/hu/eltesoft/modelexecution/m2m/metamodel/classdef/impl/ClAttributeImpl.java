@@ -3,34 +3,35 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Operation</b></em>'.
+ * An implementation of the model object '<em><b>Cl Attribute</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl#getMethod <em>Method</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl#getParameters <em>Parameters</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl#isIsStatic <em>Is Static</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#isIsStatic <em>Is Static</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClOperation {
+public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClAttribute {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -52,34 +53,14 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMethod() <em>Method</em>}' attribute.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMethod()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final NamedReference METHOD_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMethod() <em>Method</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMethod()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference method = METHOD_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParameters()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ClParameter> parameters;
+	protected Type type;
 
 	/**
 	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
@@ -106,7 +87,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClOperationImpl() {
+	protected ClAttributeImpl() {
 		super();
 	}
 
@@ -117,7 +98,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_OPERATION;
+		return ClassdefPackage.Literals.CL_ATTRIBUTE;
 	}
 
 	/**
@@ -138,7 +119,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -146,32 +127,37 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getMethod() {
-		return method;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMethod(NamedReference newMethod) {
-		NamedReference oldMethod = method;
-		method = newMethod;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__METHOD, oldMethod, method));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<ClParameter> getParameters() {
-		if (parameters == null) {
-			parameters = new EObjectResolvingEList<ClParameter>(ClParameter.class, this, ClassdefPackage.CL_OPERATION__PARAMETERS);
+	public Type getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject)type;
+			type = (Type)eResolveProxy(oldType);
+			if (type != oldType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
+			}
 		}
-		return parameters;
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Type basicGetType() {
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setType(Type newType) {
+		Type oldType = type;
+		type = newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
 	}
 
 	/**
@@ -192,7 +178,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 		boolean oldIsStatic = isStatic;
 		isStatic = newIsStatic;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__IS_STATIC, oldIsStatic, isStatic));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__IS_STATIC, oldIsStatic, isStatic));
 	}
 
 	/**
@@ -203,13 +189,12 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE__REFERENCE:
 				return getReference();
-			case ClassdefPackage.CL_OPERATION__METHOD:
-				return getMethod();
-			case ClassdefPackage.CL_OPERATION__PARAMETERS:
-				return getParameters();
-			case ClassdefPackage.CL_OPERATION__IS_STATIC:
+			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
+				if (resolve) return getType();
+				return basicGetType();
+			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				return isIsStatic();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -220,21 +205,16 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE__REFERENCE:
 				setReference((NamedReference)newValue);
 				return;
-			case ClassdefPackage.CL_OPERATION__METHOD:
-				setMethod((NamedReference)newValue);
+			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
+				setType((Type)newValue);
 				return;
-			case ClassdefPackage.CL_OPERATION__PARAMETERS:
-				getParameters().clear();
-				getParameters().addAll((Collection<? extends ClParameter>)newValue);
-				return;
-			case ClassdefPackage.CL_OPERATION__IS_STATIC:
+			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic((Boolean)newValue);
 				return;
 		}
@@ -249,16 +229,13 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
-			case ClassdefPackage.CL_OPERATION__METHOD:
-				setMethod(METHOD_EDEFAULT);
+			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
+				setType((Type)null);
 				return;
-			case ClassdefPackage.CL_OPERATION__PARAMETERS:
-				getParameters().clear();
-				return;
-			case ClassdefPackage.CL_OPERATION__IS_STATIC:
+			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic(IS_STATIC_EDEFAULT);
 				return;
 		}
@@ -273,13 +250,11 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_OPERATION__METHOD:
-				return METHOD_EDEFAULT == null ? method != null : !METHOD_EDEFAULT.equals(method);
-			case ClassdefPackage.CL_OPERATION__PARAMETERS:
-				return parameters != null && !parameters.isEmpty();
-			case ClassdefPackage.CL_OPERATION__IS_STATIC:
+			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
+				return type != null;
+			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				return isStatic != IS_STATIC_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
@@ -297,12 +272,10 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
-		result.append(", method: ");
-		result.append(method);
 		result.append(", isStatic: ");
 		result.append(isStatic);
 		result.append(')');
 		return result.toString();
 	}
 
-} //ClOperationImpl
+} //ClAttributeImpl
