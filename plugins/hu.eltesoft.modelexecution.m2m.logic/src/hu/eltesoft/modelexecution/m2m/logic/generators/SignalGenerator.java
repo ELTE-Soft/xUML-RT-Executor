@@ -4,10 +4,12 @@ import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate;
+import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatch;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher;
 
@@ -17,6 +19,7 @@ import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.xtext.xbase.lib.Pair;
 
@@ -25,9 +28,11 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 	private static final SignalFactory FACTORY = SignalFactory.eINSTANCE;
 
 	private final SignalMatcher signalMatcher;
+	private final SignalAttributeMatcher attributeMatcher;
 
 	public SignalGenerator(IncQueryEngine engine) throws IncQueryException {
 		signalMatcher = SignalMatcher.on(engine);
+		attributeMatcher = SignalAttributeMatcher.on(engine);
 	}
 
 	@Override
@@ -38,10 +43,22 @@ public class SignalGenerator extends AbstractGenerator<Signal> {
 		check(signalMatcher.forOneArbitraryMatch(source, match -> {
 			Signal pSignal = match.getSignal();
 			root.setReference(new NamedReference(pSignal));
+
+			collectSignals(root, pSignal);
 		}));
 
 		String rootName = NamedReference.getIdentifier(source);
 		return new Pair<>(rootName, new SignalTemplate(root));
+	}
+
+	protected void collectSignals(SgSignal root, Signal pSignal) {
+		attributeMatcher.forEachMatch(pSignal, null, attributeMatch -> {
+			SgAttribute attribute = FACTORY.createSgAttribute();
+			Property matchedAttrib = attributeMatch.getAttribute();
+			attribute.setReference(new NamedReference(matchedAttrib));
+			attribute.setType(convertType(matchedAttrib.getType()));
+			root.getAttributes().add(attribute);
+		});
 	}
 
 	@Override

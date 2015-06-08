@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic;
 
 import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.generators.AbstractGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.BehaviorGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.ClassGenerator;
 import hu.eltesoft.modelexecution.m2m.logic.generators.RegionGenerator;
@@ -17,6 +18,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Class;
 
 public class Translator {
 
@@ -36,7 +38,7 @@ public class Translator {
 	private ReversibleTask attachListeners;
 
 	private BehaviorGenerator behaviorGenerator;
-	private ClassGenerator classGenerator;
+	private AbstractGenerator<Class> classGenerator;
 	private RegionGenerator regionGenerator;
 	private SignalEventGenerator signalEventGenerator;
 	private SignalGenerator signalGenerator;

@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -15,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getMethod <em>Method</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getReturnType <em>Return Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#isIsStatic <em>Is Static</em>}</li>
  * </ul>
@@ -50,6 +52,32 @@ public interface ClOperation extends Named {
 	 * @generated
 	 */
 	void setMethod(NamedReference value);
+
+	/**
+	 * Returns the value of the '<em><b>Return Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Return Type</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Return Type</em>' reference.
+	 * @see #setReturnType(Type)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_ReturnType()
+	 * @model
+	 * @generated
+	 */
+	Type getReturnType();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getReturnType <em>Return Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Return Type</em>' reference.
+	 * @see #getReturnType()
+	 * @generated
+	 */
+	void setReturnType(Type value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.

@@ -2,11 +2,15 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.*;
-
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
 
 /**

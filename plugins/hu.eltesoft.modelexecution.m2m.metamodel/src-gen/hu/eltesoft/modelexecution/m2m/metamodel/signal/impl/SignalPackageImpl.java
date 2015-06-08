@@ -27,6 +27,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -173,6 +174,15 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getSgAttribute_Multiplicity() {
+		return (EAttribute)sgAttributeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SignalFactory getSignalFactory() {
 		return (SignalFactory)getEFactoryInstance();
 	}
@@ -201,6 +211,7 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 
 		sgAttributeEClass = createEClass(SG_ATTRIBUTE);
 		createEReference(sgAttributeEClass, SG_ATTRIBUTE__TYPE);
+		createEAttribute(sgAttributeEClass, SG_ATTRIBUTE__MULTIPLICITY);
 	}
 
 	/**
@@ -240,10 +251,11 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(sgSignalEClass, SgSignal.class, "SgSignal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSgSignal_Attributes(), this.getSgAttribute(), null, "attributes", null, 0, 1, SgSignal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSgSignal_Attributes(), this.getSgAttribute(), null, "attributes", null, 0, -1, SgSignal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sgAttributeEClass, SgAttribute.class, "SgAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSgAttribute_Type(), theBasePackage.getType(), null, "type", null, 0, 1, SgAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSgAttribute_Multiplicity(), theBasePackage.getMultiplicity(), "multiplicity", null, 0, 1, SgAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

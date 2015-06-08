@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
@@ -106,6 +107,13 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * @generated
 	 */
 	private EEnum directionEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum multiplicityEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -303,6 +311,15 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EEnum getMultiplicity() {
+		return multiplicityEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getNamedReference() {
 		return namedReferenceEDataType;
 	}
@@ -362,6 +379,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Create enums
 		primitiveTypesEEnum = createEEnum(PRIMITIVE_TYPES);
 		directionEEnum = createEEnum(DIRECTION);
+		multiplicityEEnum = createEEnum(MULTIPLICITY);
 
 		// Create data types
 		namedReferenceEDataType = createEDataType(NAMED_REFERENCE);
@@ -413,7 +431,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		initEClass(referencedEClass, Referenced.class, "Referenced", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getReferenced_Reference(), this.getReference(), "reference", null, 1, 1, Referenced.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(primitiveTypeEClass, PrimitiveType.class, "PrimitiveType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPrimitiveType_Type(), this.getPrimitiveTypes(), "type", null, 0, 1, PrimitiveType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -429,6 +447,10 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		addEEnumLiteral(directionEEnum, Direction.OUT);
 		addEEnumLiteral(directionEEnum, Direction.INOUT);
 		addEEnumLiteral(directionEEnum, Direction.RETURN);
+
+		initEEnum(multiplicityEEnum, Multiplicity.class, "Multiplicity");
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.ONE);
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.MULTI);
 
 		// Initialize data types
 		initEDataType(namedReferenceEDataType, NamedReference.class, "NamedReference", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

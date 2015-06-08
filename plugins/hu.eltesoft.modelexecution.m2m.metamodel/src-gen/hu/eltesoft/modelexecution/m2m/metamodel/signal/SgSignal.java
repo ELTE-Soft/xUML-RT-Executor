@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.signal;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,28 +25,18 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 public interface SgSignal extends ModelRoot, Named {
 
 	/**
-	 * Returns the value of the '<em><b>Attributes</b></em>' reference.
+	 * Returns the value of the '<em><b>Attributes</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Attributes</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attributes</em>' reference.
-	 * @see #setAttributes(SgAttribute)
+	 * @return the value of the '<em>Attributes</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage#getSgSignal_Attributes()
 	 * @model
 	 * @generated
 	 */
-	SgAttribute getAttributes();
-
-	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal#getAttributes <em>Attributes</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Attributes</em>' reference.
-	 * @see #getAttributes()
-	 * @generated
-	 */
-	void setAttributes(SgAttribute value);
+	EList<SgAttribute> getAttributes();
 } // SgSignal

@@ -2,8 +2,10 @@ package hu.eltesoft.modelexecution.uml.incquery;
 
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.AlfCodeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorParameterQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfBehaviorQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -20,6 +22,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <p> From package hu.eltesoft.modelexecution.uml.incquery, the group contains the definition of the following patterns: <ul>
  * <li>Behavior</li>
  * <li>ContainerClassOfBehavior</li>
+ * <li>BehaviorParameter</li>
  * <li>AlfCode</li>
  * <li>ContainerClassOfVertex</li>
  * </ul>
@@ -49,6 +52,7 @@ public final class Behavior extends BaseGeneratedPatternGroup {
   private Behavior() throws IncQueryException {
     querySpecifications.add(BehaviorQuerySpecification.instance());
     querySpecifications.add(ContainerClassOfBehaviorQuerySpecification.instance());
+    querySpecifications.add(BehaviorParameterQuerySpecification.instance());
     querySpecifications.add(AlfCodeQuerySpecification.instance());
     
   }
@@ -67,6 +71,14 @@ public final class Behavior extends BaseGeneratedPatternGroup {
   
   public ContainerClassOfBehaviorMatcher getContainerClassOfBehavior(final IncQueryEngine engine) throws IncQueryException {
     return ContainerClassOfBehaviorMatcher.on(engine);
+  }
+  
+  public BehaviorParameterQuerySpecification getBehaviorParameter() throws IncQueryException {
+    return BehaviorParameterQuerySpecification.instance();
+  }
+  
+  public BehaviorParameterMatcher getBehaviorParameter(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorParameterMatcher.on(engine);
   }
   
   public AlfCodeQuerySpecification getAlfCode() throws IncQueryException {

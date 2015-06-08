@@ -3,18 +3,16 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
-
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,14 +50,14 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' reference.
+	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getAttributes()
 	 * @generated
 	 * @ordered
 	 */
-	protected SgAttribute attributes;
+	protected EList<SgAttribute> attributes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -106,37 +104,11 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SgAttribute getAttributes() {
-		if (attributes != null && attributes.eIsProxy()) {
-			InternalEObject oldAttributes = (InternalEObject)attributes;
-			attributes = (SgAttribute)eResolveProxy(oldAttributes);
-			if (attributes != oldAttributes) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SignalPackage.SG_SIGNAL__ATTRIBUTES, oldAttributes, attributes));
-			}
+	public EList<SgAttribute> getAttributes() {
+		if (attributes == null) {
+			attributes = new EObjectResolvingEList<SgAttribute>(SgAttribute.class, this, SignalPackage.SG_SIGNAL__ATTRIBUTES);
 		}
 		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public SgAttribute basicGetAttributes() {
-		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAttributes(SgAttribute newAttributes) {
-		SgAttribute oldAttributes = attributes;
-		attributes = newAttributes;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SignalPackage.SG_SIGNAL__ATTRIBUTES, oldAttributes, attributes));
 	}
 
 	/**
@@ -150,8 +122,7 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 			case SignalPackage.SG_SIGNAL__REFERENCE:
 				return getReference();
 			case SignalPackage.SG_SIGNAL__ATTRIBUTES:
-				if (resolve) return getAttributes();
-				return basicGetAttributes();
+				return getAttributes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -161,6 +132,7 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -168,7 +140,8 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 				setReference((NamedReference)newValue);
 				return;
 			case SignalPackage.SG_SIGNAL__ATTRIBUTES:
-				setAttributes((SgAttribute)newValue);
+				getAttributes().clear();
+				getAttributes().addAll((Collection<? extends SgAttribute>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -186,7 +159,7 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case SignalPackage.SG_SIGNAL__ATTRIBUTES:
-				setAttributes((SgAttribute)null);
+				getAttributes().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -203,7 +176,7 @@ public class SgSignalImpl extends MinimalEObjectImpl.Container implements SgSign
 			case SignalPackage.SG_SIGNAL__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case SignalPackage.SG_SIGNAL__ATTRIBUTES:
-				return attributes != null;
+				return attributes != null && !attributes.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

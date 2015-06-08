@@ -27,11 +27,14 @@ public abstract class OperationMatch extends BasePatternMatch {
   
   private Operation fOperation;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "operation");
+  private Boolean fIsStatic;
   
-  private OperationMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
+  private static List<String> parameterNames = makeImmutableList("cls", "operation", "isStatic");
+  
+  private OperationMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic) {
     this.fCls = pCls;
     this.fOperation = pOperation;
+    this.fIsStatic = pIsStatic;
     
   }
   
@@ -39,6 +42,7 @@ public abstract class OperationMatch extends BasePatternMatch {
   public Object get(final String parameterName) {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("operation".equals(parameterName)) return this.fOperation;
+    if ("isStatic".equals(parameterName)) return this.fIsStatic;
     return null;
     
   }
@@ -53,6 +57,11 @@ public abstract class OperationMatch extends BasePatternMatch {
     
   }
   
+  public Boolean getIsStatic() {
+    return this.fIsStatic;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -62,6 +71,10 @@ public abstract class OperationMatch extends BasePatternMatch {
     }
     if ("operation".equals(parameterName) ) {
     	this.fOperation = (org.eclipse.uml2.uml.Operation) newValue;
+    	return true;
+    }
+    if ("isStatic".equals(parameterName) ) {
+    	this.fIsStatic = (java.lang.Boolean) newValue;
     	return true;
     }
     return false;
@@ -80,6 +93,12 @@ public abstract class OperationMatch extends BasePatternMatch {
     
   }
   
+  public void setIsStatic(final Boolean pIsStatic) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fIsStatic = pIsStatic;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.Operation";
@@ -94,13 +113,13 @@ public abstract class OperationMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fOperation};
+    return new Object[]{fCls, fOperation, fIsStatic};
     
   }
   
   @Override
   public OperationMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fOperation) : this;
+    return isMutable() ? newMatch(fCls, fOperation, fIsStatic) : this;
     
   }
   
@@ -108,7 +127,8 @@ public abstract class OperationMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
-    result.append("\"operation\"=" + prettyPrintValue(fOperation));
+    result.append("\"operation\"=" + prettyPrintValue(fOperation) + ", ");
+    result.append("\"isStatic\"=" + prettyPrintValue(fIsStatic));
     return result.toString();
     
   }
@@ -119,6 +139,7 @@ public abstract class OperationMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fOperation == null) ? 0 : fOperation.hashCode());
+    result = prime * result + ((fIsStatic == null) ? 0 : fIsStatic.hashCode());
     return result;
     
   }
@@ -142,6 +163,8 @@ public abstract class OperationMatch extends BasePatternMatch {
     else if (!fCls.equals(other.fCls)) return false;
     if (fOperation == null) {if (other.fOperation != null) return false;}
     else if (!fOperation.equals(other.fOperation)) return false;
+    if (fIsStatic == null) {if (other.fIsStatic != null) return false;}
+    else if (!fIsStatic.equals(other.fIsStatic)) return false;
     return true;
   }
   
@@ -164,7 +187,7 @@ public abstract class OperationMatch extends BasePatternMatch {
    * 
    */
   public static OperationMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -174,11 +197,12 @@ public abstract class OperationMatch extends BasePatternMatch {
    * 
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static OperationMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-    return new Mutable(pCls, pOperation);
+  public static OperationMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic) {
+    return new Mutable(pCls, pOperation, pIsStatic);
     
   }
   
@@ -188,17 +212,18 @@ public abstract class OperationMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-    return new Immutable(pCls, pOperation);
+  public static OperationMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic) {
+    return new Immutable(pCls, pOperation, pIsStatic);
     
   }
   
   private static final class Mutable extends OperationMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-      super(pCls, pOperation);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic) {
+      super(pCls, pOperation, pIsStatic);
       
     }
     
@@ -209,8 +234,8 @@ public abstract class OperationMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends OperationMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-      super(pCls, pOperation);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic) {
+      super(pCls, pOperation, pIsStatic);
       
     }
     

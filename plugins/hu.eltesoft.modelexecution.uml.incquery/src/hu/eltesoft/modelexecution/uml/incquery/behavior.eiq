@@ -32,6 +32,10 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
 
+pattern BehaviorParameter(behavior : Behavior, parameter : Parameter) {
+	Behavior.ownedParameter(behavior, parameter);
+}
+
 pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
 	OpaqueBehavior.body(behavior, alfCode);
 	OpaqueBehavior.language(behavior, langName);

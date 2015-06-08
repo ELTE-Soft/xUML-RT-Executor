@@ -21,7 +21,7 @@
     <eLiterals name="Boolean" value="1"/>
     <eLiterals name="String" value="2" literal="String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//Named"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PrimitiveTypes"/>
   </eClassifiers>
@@ -30,5 +30,9 @@
     <eLiterals name="out" value="1"/>
     <eLiterals name="inout" value="2" literal=""/>
     <eLiterals name="return" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Multiplicity">
+    <eLiterals name="One"/>
+    <eLiterals name="Multi" value="1"/>
   </eClassifiers>
 </ecore:EPackage>

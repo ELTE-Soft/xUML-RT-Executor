@@ -16,13 +16,14 @@ public abstract class OperationProcessor implements IMatchProcessor<OperationMat
    * Defines the action that is to be executed on each match.
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pOperation the value of pattern parameter operation in the currently processed match
+   * @param pIsStatic the value of pattern parameter isStatic in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pIsStatic);
   
   @Override
   public void process(final OperationMatch match) {
-    process(match.getCls(), match.getOperation());
+    process(match.getCls(), match.getOperation(), match.getIsStatic());
     
   }
 }

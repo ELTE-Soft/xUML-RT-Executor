@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
@@ -15,6 +16,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getType <em>Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#isIsStatic <em>Is Static</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getMultiplicity <em>Multiplicity</em>}</li>
  * </ul>
  * </p>
  *
@@ -74,5 +76,34 @@ public interface ClAttribute extends Named {
 	 * @generated
 	 */
 	void setIsStatic(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Multiplicity</b></em>' attribute.
+	 * The literals are from the enumeration {@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multiplicity</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiplicity</em>' attribute.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @see #setMultiplicity(Multiplicity)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClAttribute_Multiplicity()
+	 * @model
+	 * @generated
+	 */
+	Multiplicity getMultiplicity();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getMultiplicity <em>Multiplicity</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiplicity</em>' attribute.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @see #getMultiplicity()
+	 * @generated
+	 */
+	void setMultiplicity(Multiplicity value);
 
 } // ClAttribute

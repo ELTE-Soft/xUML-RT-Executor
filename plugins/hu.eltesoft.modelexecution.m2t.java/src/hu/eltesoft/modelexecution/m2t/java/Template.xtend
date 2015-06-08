@@ -1,13 +1,18 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
 import java.util.Collections
 import java.util.Date
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.ecore.EObject
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -120,4 +125,73 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
+	
+	/**
+	 * Create java type from a primitive type
+	 */
+	dispatch def javaType(PrimitiveType type) {
+		javaPrimitiveType(type.type);
+	}
+	
+	/**
+	 * Create java type from a data class
+	 */
+	dispatch def javaType(Type type) {
+		type.reference.identifier
+	}
+	
+	/**
+	 * Create java type from a primitive type with direction
+	 */
+	dispatch def javaType(PrimitiveType type, Direction direction) {
+		genTypeWithDirection(direction, javaPrimitiveType(type.type));
+	}
+	
+	/**
+	 * Create java type from a data class with direction
+	 */
+	dispatch def javaType(Type type, Direction direction) {
+		genTypeWithDirection(direction, type.reference.identifier)
+	}
+	/**
+	 * Create java type from a primitive type with multiplicity
+	 */
+	dispatch def javaType(PrimitiveType type, Multiplicity multiplicity) {
+		val baseType = javaPrimitiveType(type.type);
+		genTypeWithMultiplicity(multiplicity, baseType)
+	}
+	
+	/**
+	 * Create java type from a data class with multiplicity
+	 */
+	dispatch def javaType(Type type, Multiplicity multiplicity) {
+		genTypeWithMultiplicity(multiplicity, type.reference.identifier)
+	}
+	
+	def genTypeWithMultiplicity(Multiplicity mult, CharSequence baseType) {
+		// FIXME: wrong code is generated from the following
+//		switch (mult) {
+//			case MULTI: ArrayList.canonicalName + "<" + baseType + ">"
+//			case ONE: baseType
+//		}
+		baseType
+	}
+	
+		def genTypeWithDirection(Direction direction, CharSequence baseType) {
+		// FIXME: wrong code is generated from the following
+//		switch (mult) {
+//			case OUT, INOUT: Reference.canonicalName + "<" + baseType + ">"
+//			default: baseType
+//		}
+		baseType
+	}
+	
+	def javaPrimitiveType(PrimitiveTypes primType) {
+		switch (primType) {
+			case BOOLEAN: "Boolean"
+			case INTEGER: "Integer"
+			case STRING: "String"
+		}
+	}
+	
 }

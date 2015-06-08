@@ -10,7 +10,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  *
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getType()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Type extends Named {

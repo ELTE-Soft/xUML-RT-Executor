@@ -300,6 +300,16 @@ public interface BasePackage extends EPackage {
 	int DIRECTION = 7;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+	 * @generated
+	 */
+	int MULTIPLICITY = 8;
+
+	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -307,7 +317,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int NAMED_REFERENCE = 8;
+	int NAMED_REFERENCE = 9;
 
 	/**
 	 * The meta object id for the '<em>Reference</em>' data type.
@@ -317,7 +327,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
 	 * @generated
 	 */
-	int REFERENCE = 9;
+	int REFERENCE = 10;
 
 
 	/**
@@ -432,6 +442,16 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getDirection();
+
+	/**
+	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Multiplicity</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @generated
+	 */
+	EEnum getMultiplicity();
 
 	/**
 	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference <em>Named Reference</em>}'.
@@ -581,6 +601,16 @@ public interface BasePackage extends EPackage {
 		 * @generated
 		 */
 		EEnum DIRECTION = eINSTANCE.getDirection();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+		 * @generated
+		 */
+		EEnum MULTIPLICITY = eINSTANCE.getMultiplicity();
 
 		/**
 		 * The meta object literal for the '<em>Named Reference</em>' data type.

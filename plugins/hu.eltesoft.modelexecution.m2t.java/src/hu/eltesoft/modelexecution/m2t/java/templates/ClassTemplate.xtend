@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
@@ -10,7 +11,6 @@ import hu.eltesoft.modelexecution.runtime.base.Message
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -64,13 +64,23 @@ class ClassTemplate extends Template {
 				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(this);
 			}
 			
+			// attributes
+					
+			«generateAttributes()»
+						
+			
+			// associations
+					
+			«generateAssociations()»
+
+			// operations
+					
+			«generateOperations()»
+			
 			// receptions
 					
 			«generateReceptions()»
 					
-			// operations
-					
-			«generateOperations()»
 		}
 	'''
 
@@ -79,14 +89,42 @@ class ClassTemplate extends Template {
 	 */
 	def generateClassWithoutState() '''
 		public class «classDefinition.identifier» extends «Class.canonicalName» {
+			// attributes
+					
+			«generateAttributes()»
+						
+			
+			// associations
+					
+			«generateAssociations()»
+
+			// operations
+					
 			«generateOperations()»
 		}
 		
 	'''
+	
+	def generateAttributes() '''
+		«FOR attribute : classDefinition.attributes»
+			«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type, attribute.multiplicity)» «attribute.identifier»;
+		«ENDFOR»
+	'''
+	
+	def generateAssociations() '''
+		«FOR association : classDefinition.associations»
+			«javaType(association.type, association.multiplicity)» «association.identifier»;
+		«ENDFOR»
+	'''
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
-			public void «operation.identifier»() {
+			public «IF operation.isStatic»static«ENDIF»
+			       «IF operation.returnType != null»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+					«FOR parameter : operation.parameters SEPARATOR ','»
+						«javaType(parameter.type, parameter.direction)» «parameter.identifier»
+					«ENDFOR»
+					) {
 				«IF null != operation.method»
 					new «operation.method.identifier»(this).execute();
 				«ENDIF»

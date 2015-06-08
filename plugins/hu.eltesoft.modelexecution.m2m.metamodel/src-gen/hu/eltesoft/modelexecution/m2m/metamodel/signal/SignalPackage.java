@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.signal;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -77,7 +78,7 @@ public interface SignalPackage extends EPackage {
 	int SG_SIGNAL__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Attributes</b></em>' reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -133,13 +134,22 @@ public interface SignalPackage extends EPackage {
 	int SG_ATTRIBUTE__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Multiplicity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SG_ATTRIBUTE__MULTIPLICITY = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Sg Attribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SG_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int SG_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Sg Attribute</em>' class.
@@ -162,10 +172,10 @@ public interface SignalPackage extends EPackage {
 	EClass getSgSignal();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal#getAttributes <em>Attributes</em>}'.
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal#getAttributes <em>Attributes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Attributes</em>'.
+	 * @return the meta object for the reference list '<em>Attributes</em>'.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal#getAttributes()
 	 * @see #getSgSignal()
 	 * @generated
@@ -192,6 +202,17 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSgAttribute_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute#getMultiplicity <em>Multiplicity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Multiplicity</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute#getMultiplicity()
+	 * @see #getSgAttribute()
+	 * @generated
+	 */
+	EAttribute getSgAttribute_Multiplicity();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -226,7 +247,7 @@ public interface SignalPackage extends EPackage {
 		 */
 		EClass SG_SIGNAL = eINSTANCE.getSgSignal();
 		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Attributes</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -248,6 +269,13 @@ public interface SignalPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SG_ATTRIBUTE__TYPE = eINSTANCE.getSgAttribute_Type();
+		/**
+		 * The meta object literal for the '<em><b>Multiplicity</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SG_ATTRIBUTE__MULTIPLICITY = eINSTANCE.getSgAttribute_Multiplicity();
 
 	}
 

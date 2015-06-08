@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getMultiplicity <em>Multiplicity</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,6 +62,26 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * @ordered
 	 */
 	protected Type type;
+
+	/**
+	 * The default value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiplicity()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.ONE;
+
+	/**
+	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiplicity()
+	 * @generated
+	 * @ordered
+	 */
+	protected Multiplicity multiplicity = MULTIPLICITY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -144,6 +166,27 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Multiplicity getMultiplicity() {
+		return multiplicity;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMultiplicity(Multiplicity newMultiplicity) {
+		Multiplicity oldMultiplicity = multiplicity;
+		multiplicity = newMultiplicity == null ? MULTIPLICITY_EDEFAULT : newMultiplicity;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SignalPackage.SG_ATTRIBUTE__MULTIPLICITY, oldMultiplicity, multiplicity));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -152,6 +195,8 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
+			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
+				return getMultiplicity();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -169,6 +214,9 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 				return;
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				setType((Type)newValue);
+				return;
+			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
+				setMultiplicity((Multiplicity)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -188,6 +236,9 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				setType((Type)null);
 				return;
+			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
+				setMultiplicity(MULTIPLICITY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -204,6 +255,8 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				return type != null;
+			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
+				return multiplicity != MULTIPLICITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -220,6 +273,8 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", multiplicity: ");
+		result.append(multiplicity);
 		result.append(')');
 		return result.toString();
 	}

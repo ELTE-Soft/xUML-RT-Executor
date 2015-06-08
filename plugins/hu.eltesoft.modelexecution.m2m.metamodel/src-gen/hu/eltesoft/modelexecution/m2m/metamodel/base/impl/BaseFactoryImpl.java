@@ -2,17 +2,20 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.*;
-
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -59,6 +62,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case BasePackage.TYPE: return createType();
 			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -77,6 +81,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 				return createPrimitiveTypesFromString(eDataType, initialValue);
 			case BasePackage.DIRECTION:
 				return createDirectionFromString(eDataType, initialValue);
+			case BasePackage.MULTIPLICITY:
+				return createMultiplicityFromString(eDataType, initialValue);
 			case BasePackage.NAMED_REFERENCE:
 				return createNamedReferenceFromString(eDataType, initialValue);
 			case BasePackage.REFERENCE:
@@ -98,6 +104,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 				return convertPrimitiveTypesToString(eDataType, instanceValue);
 			case BasePackage.DIRECTION:
 				return convertDirectionToString(eDataType, instanceValue);
+			case BasePackage.MULTIPLICITY:
+				return convertMultiplicityToString(eDataType, instanceValue);
 			case BasePackage.NAMED_REFERENCE:
 				return convertNamedReferenceToString(eDataType, instanceValue);
 			case BasePackage.REFERENCE:
@@ -105,6 +113,16 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Type createType() {
+		TypeImpl type = new TypeImpl();
+		return type;
 	}
 
 	/**
@@ -154,6 +172,26 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * @generated
 	 */
 	public String convertDirectionToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Multiplicity createMultiplicityFromString(EDataType eDataType, String initialValue) {
+		Multiplicity result = Multiplicity.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertMultiplicityToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

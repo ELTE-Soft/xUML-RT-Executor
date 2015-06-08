@@ -13,8 +13,40 @@ pattern RegionOfClass(cls : Class, region : Region) {
 	StateMachine.region(stateMachine, region);
 }
 
-pattern Operation(cls : Class, operation : Operation) {
+pattern Operation(cls : Class, operation : Operation, isStatic) {
 	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern
+OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern OperationReturnType(cls : Class, operation : Operation, type : Type) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+	Parameter.type(parameter, type);
+}
+
+pattern Attribute(cls: Class, attribute : Property, isStatic, type : Type)  {
+	find Cls(cls);
+	Class.ownedAttribute(cls, attribute);
+	Property.isStatic(attribute, isStatic);
+	Property.type(attribute, type);
+}
+
+pattern Association(cls: Class, association : Association, type : Type, lower, upper)  {
+	find Cls(cls);
+	Association.memberEnd(association, property);
+	Class.ownedAttribute(cls, property);
+	Property.type(property, type);
+	Property.lowerValue(property, lower);
+	Property.upperValue(property, upper);
 }
 
 pattern Method(cls : Class, operation : Operation, method : Behavior) {

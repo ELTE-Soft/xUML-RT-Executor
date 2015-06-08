@@ -10,6 +10,10 @@ public class GenerationException extends RuntimeException {
 		super(cause);
 	}
 	
+	public GenerationException(String msg) {
+		super(msg);
+	}
+
 	@Override
 	public String getMessage() {
 		if (getCause() != null) {

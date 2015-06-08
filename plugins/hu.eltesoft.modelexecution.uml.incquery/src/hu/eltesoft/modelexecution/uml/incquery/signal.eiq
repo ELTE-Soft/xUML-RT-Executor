@@ -5,3 +5,8 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 pattern Signal(signal : Signal) {
 	Signal(signal);
 }
+
+pattern SignalAttribute(signal : Signal, attribute : Property) {
+	find Signal(signal);
+	Signal.ownedAttribute(signal, attribute);
+}

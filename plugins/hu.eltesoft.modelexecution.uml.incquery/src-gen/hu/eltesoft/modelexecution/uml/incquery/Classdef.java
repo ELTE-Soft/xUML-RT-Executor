@@ -1,13 +1,21 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
+import hu.eltesoft.modelexecution.uml.incquery.AssociationMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.OperationParameterMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.util.AssociationQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.AttributeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ClsQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.MethodQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.OperationParameterQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.OperationQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnTypeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.RegionOfClassQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -25,6 +33,10 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>Cls</li>
  * <li>RegionOfClass</li>
  * <li>Operation</li>
+ * <li>OperationParameter</li>
+ * <li>OperationReturnType</li>
+ * <li>Attribute</li>
+ * <li>Association</li>
  * <li>Method</li>
  * <li>Reception</li>
  * <li>IsBehavior</li>
@@ -57,6 +69,10 @@ public final class Classdef extends BaseGeneratedPatternGroup {
     querySpecifications.add(ClsQuerySpecification.instance());
     querySpecifications.add(RegionOfClassQuerySpecification.instance());
     querySpecifications.add(OperationQuerySpecification.instance());
+    querySpecifications.add(OperationParameterQuerySpecification.instance());
+    querySpecifications.add(OperationReturnTypeQuerySpecification.instance());
+    querySpecifications.add(AttributeQuerySpecification.instance());
+    querySpecifications.add(AssociationQuerySpecification.instance());
     querySpecifications.add(MethodQuerySpecification.instance());
     querySpecifications.add(ReceptionQuerySpecification.instance());
     
@@ -84,6 +100,38 @@ public final class Classdef extends BaseGeneratedPatternGroup {
   
   public OperationMatcher getOperation(final IncQueryEngine engine) throws IncQueryException {
     return OperationMatcher.on(engine);
+  }
+  
+  public OperationParameterQuerySpecification getOperationParameter() throws IncQueryException {
+    return OperationParameterQuerySpecification.instance();
+  }
+  
+  public OperationParameterMatcher getOperationParameter(final IncQueryEngine engine) throws IncQueryException {
+    return OperationParameterMatcher.on(engine);
+  }
+  
+  public OperationReturnTypeQuerySpecification getOperationReturnType() throws IncQueryException {
+    return OperationReturnTypeQuerySpecification.instance();
+  }
+  
+  public OperationReturnTypeMatcher getOperationReturnType(final IncQueryEngine engine) throws IncQueryException {
+    return OperationReturnTypeMatcher.on(engine);
+  }
+  
+  public AttributeQuerySpecification getAttribute() throws IncQueryException {
+    return AttributeQuerySpecification.instance();
+  }
+  
+  public AttributeMatcher getAttribute(final IncQueryEngine engine) throws IncQueryException {
+    return AttributeMatcher.on(engine);
+  }
+  
+  public AssociationQuerySpecification getAssociation() throws IncQueryException {
+    return AssociationQuerySpecification.instance();
+  }
+  
+  public AssociationMatcher getAssociation(final IncQueryEngine engine) throws IncQueryException {
+    return AssociationMatcher.on(engine);
   }
   
   public MethodQuerySpecification getMethod() throws IncQueryException {

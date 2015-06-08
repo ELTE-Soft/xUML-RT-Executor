@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getDirection <em>Direction</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,6 +62,26 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * @ordered
 	 */
 	protected Type type;
+
+	/**
+	 * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDirection()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Direction DIRECTION_EDEFAULT = Direction.IN;
+
+	/**
+	 * The cached value of the '{@link #getDirection() <em>Direction</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDirection()
+	 * @generated
+	 * @ordered
+	 */
+	protected Direction direction = DIRECTION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -144,6 +166,27 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Direction getDirection() {
+		return direction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDirection(Direction newDirection) {
+		Direction oldDirection = direction;
+		direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_PARAMETER__DIRECTION, oldDirection, direction));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -152,6 +195,8 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 			case ClassdefPackage.CL_PARAMETER__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
+			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+				return getDirection();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -169,6 +214,9 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 				return;
 			case ClassdefPackage.CL_PARAMETER__TYPE:
 				setType((Type)newValue);
+				return;
+			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+				setDirection((Direction)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -188,6 +236,9 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 			case ClassdefPackage.CL_PARAMETER__TYPE:
 				setType((Type)null);
 				return;
+			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+				setDirection(DIRECTION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -204,6 +255,8 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_PARAMETER__TYPE:
 				return type != null;
+			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+				return direction != DIRECTION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -220,6 +273,8 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
+		result.append(", direction: ");
+		result.append(direction);
 		result.append(')');
 		return result.toString();
 	}
