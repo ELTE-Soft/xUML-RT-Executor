@@ -195,7 +195,9 @@ public class VirtualMachineManager implements ITerminate {
 	@Override
 	public void terminate() throws DebugException {
 		virtualMachine.dispose();
-		// the Java process will be terminated by the disconnect event of the vm
+		// the java process may receive the termination signal multiple times,
+		// because disconnect event can also send one
+		javaProcess.terminate();
 	}
 
 	public void resume() {
