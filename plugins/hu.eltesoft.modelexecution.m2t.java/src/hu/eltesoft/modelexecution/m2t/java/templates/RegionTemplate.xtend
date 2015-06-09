@@ -73,8 +73,10 @@ class RegionTemplate extends Template {
 		public class «region.identifier» extends «StateMachineRegion.canonicalName» {
 		
 			private enum State {
+				«generatedHeader(initState)»
 				«initState.identifier»(«initState.nameLiteral»),
 				«FOR state : region.states SEPARATOR ','»
+					«generatedHeader(state)»
 					«state.identifier»(«state.nameLiteral»)
 				«ENDFOR»
 				;

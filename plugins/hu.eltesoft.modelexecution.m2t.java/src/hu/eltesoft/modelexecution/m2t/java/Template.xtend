@@ -13,6 +13,8 @@ import java.util.Date
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.ecore.EObject
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
+import java.util.ArrayList
+import hu.eltesoft.modelexecution.runtime.Reference
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -169,21 +171,17 @@ abstract class Template extends EmfTraceExtensions {
 	}
 	
 	def genTypeWithMultiplicity(Multiplicity mult, CharSequence baseType) {
-		// FIXME: wrong code is generated from the following
-//		switch (mult) {
-//			case MULTI: ArrayList.canonicalName + "<" + baseType + ">"
-//			case ONE: baseType
-//		}
-		baseType
+		switch (mult) {
+			case MULTI: ArrayList.canonicalName + "<" + baseType + ">"
+			case ONE: baseType
+		}
 	}
 	
-		def genTypeWithDirection(Direction direction, CharSequence baseType) {
-		// FIXME: wrong code is generated from the following
-//		switch (mult) {
-//			case OUT, INOUT: Reference.canonicalName + "<" + baseType + ">"
-//			default: baseType
-//		}
-		baseType
+	def genTypeWithDirection(Direction direction, CharSequence baseType) {
+		switch (direction) {
+			case OUT , case INOUT: Reference.canonicalName + "<" + baseType + ">"
+			default: baseType
+		}
 	}
 	
 	def javaPrimitiveType(PrimitiveTypes primType) {

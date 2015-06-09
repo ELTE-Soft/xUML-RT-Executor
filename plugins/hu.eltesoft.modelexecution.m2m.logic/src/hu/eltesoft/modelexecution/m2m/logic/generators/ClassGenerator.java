@@ -28,6 +28,8 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatch;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
@@ -37,6 +39,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Region;
@@ -140,16 +143,21 @@ public class ClassGenerator extends AbstractGenerator<Class> {
 
 	protected void collectParameters(Operation operation,
 			ClOperation clOperation) {
+		// in the original order
+		Map<Integer, ClParameter> parameters = new TreeMap<>();
+
 		parameterMatcher.forEachMatch(null, operation, null, null, null,
 				paramMatch -> {
 					ClParameter parameter = FACTORY.createClParameter();
-					parameter.setReference(new NamedReference(paramMatch
-							.getParameter()));
+					Parameter matchedParam = paramMatch.getParameter();
+					parameter.setReference(new NamedReference(matchedParam));
 					parameter.setType(convertType(paramMatch.getType()));
 					parameter.setDirection(convertDirection(paramMatch
 							.getDirection()));
-					clOperation.getParameters().add(parameter);
+					parameters.put(getFeatureElementIndex(matchedParam),
+							parameter);
 				});
+		clOperation.getParameters().addAll(parameters.values());
 	}
 
 	protected void collectReceptions(Class source, ClClass root) {

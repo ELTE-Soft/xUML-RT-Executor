@@ -8,10 +8,12 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
@@ -22,6 +24,20 @@ public abstract class AbstractGenerator<S extends EObject> implements
 
 	protected static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
 	
+	/**
+	 * Gets the index of an element in a multi-valued feature. The index is only
+	 * unique in a given feature.
+	 */
+	protected static int getFeatureElementIndex(EObject elem) {
+		EStructuralFeature containingFeature = elem.eContainingFeature();
+		Object featureContent = elem.eContainer().eGet(containingFeature);
+		if (featureContent instanceof List<?>) {
+			return ((List<?>) featureContent).indexOf(elem);
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * A mapping between EObject instances and their EObject id. It is a subset
 	 * inverse of ResourceImpl#intrinsicIDToEObjectMap, with extended lifetime.

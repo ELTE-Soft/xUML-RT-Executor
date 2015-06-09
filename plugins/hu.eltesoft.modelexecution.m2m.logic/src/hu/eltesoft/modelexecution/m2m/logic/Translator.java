@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 
 public class Translator {
@@ -37,7 +38,7 @@ public class Translator {
 	private AdvancedIncQueryEngine engine;
 	private ReversibleTask attachListeners;
 
-	private BehaviorGenerator behaviorGenerator;
+	private AbstractGenerator<Behavior> behaviorGenerator;
 	private AbstractGenerator<Class> classGenerator;
 	private RegionGenerator regionGenerator;
 	private SignalEventGenerator signalEventGenerator;

@@ -20,14 +20,11 @@ import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher;
-
-
 import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
-
-
-
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -35,6 +32,7 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 public class BehaviorGenerator extends AbstractGenerator<Behavior> {
@@ -84,13 +82,13 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 		})) {
 			root.setAlfResult(new AlfAnalyzer().analyze("{}"));
 		}
-		
+
 		root.setIsStatic(staticMatcher.hasMatch(source));
-		
+
 		returnMatcher.forOneArbitraryMatch(source, null, match -> {
 			root.setReturnType(convertType(match.getType()));
 		});
-		
+
 		collectParameters(source, root);
 
 		String rootName = NamedReference.getIdentifier(source);
@@ -98,13 +96,22 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 	}
 
 	protected void collectParameters(Behavior source, BhBehavior root) {
-		parameterMatcher.forEachMatch(source, null, null, null, paramMatch -> {
-			BhParameter parameter = FACTORY.createBhParameter();
-			parameter.setReference(new NamedReference(paramMatch.getParameter()));
-			parameter.setType(convertType(paramMatch.getType()));
-			parameter.setDirection(convertDirection(paramMatch.getDirection()));
-			root.getParameters().add(parameter);
-		});
+		// in the original order
+		Map<Integer, BhParameter> parameters = new TreeMap<>();
+
+		parameterMatcher.forEachMatch(source, null, null, null,
+				paramMatch -> {
+					BhParameter parameter = FACTORY.createBhParameter();
+					Parameter matchedParam = paramMatch.getParameter();
+					parameter.setReference(new NamedReference(matchedParam));
+					parameter.setType(convertType(paramMatch.getType()));
+					parameter.setDirection(convertDirection(paramMatch
+							.getDirection()));
+					root.getParameters().add(parameter);
+					parameters.put(getFeatureElementIndex(matchedParam),
+							parameter);
+				});
+		root.getParameters().addAll(parameters.values());
 	}
 
 	@Override

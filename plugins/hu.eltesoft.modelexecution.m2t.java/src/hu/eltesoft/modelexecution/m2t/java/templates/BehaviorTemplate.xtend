@@ -37,6 +37,7 @@ class BehaviorTemplate extends Template {
 				}
 			«ENDIF»
 			«FOR param : behavior.parameters»
+				«generatedHeader(param)»
 				«javaType(param.type, param.direction)» «param.identifier»;
 			«ENDFOR»
 		
@@ -50,6 +51,7 @@ class BehaviorTemplate extends Template {
 					«IF !behavior.parameters.empty»,«ENDIF»
 				«ENDIF»
 				«FOR param : behavior.parameters SEPARATOR ','»
+					«generatedHeader(param)»
 					«javaType(param.type, param.direction)» «param.identifier»
 				«ENDFOR»
 				) {

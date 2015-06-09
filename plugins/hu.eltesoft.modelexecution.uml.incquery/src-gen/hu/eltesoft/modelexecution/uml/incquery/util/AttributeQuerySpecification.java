@@ -85,11 +85,11 @@ public final class AttributeQuerySpecification extends BaseGeneratedQuerySpecifi
         new ExportedParameter(body, var_type, "type")
       ));
       
-      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
       
       
       new PositivePatternCall(body, new FlatTuple(var_cls), ClsQuerySpecification.instance());
+      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_cls, var_attribute, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StructuredClassifier", "ownedAttribute"), "http://www.eclipse.org/uml2/5.0.0/UML/StructuredClassifier.ownedAttribute");
       new TypeBinary(body, CONTEXT, var_attribute, var_isStatic, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Feature", "isStatic"), "http://www.eclipse.org/uml2/5.0.0/UML/Feature.isStatic");
       new TypeBinary(body, CONTEXT, var_attribute, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");

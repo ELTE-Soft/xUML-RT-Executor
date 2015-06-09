@@ -100,15 +100,20 @@ class ClassTemplate extends Template {
 	
 	def generateAttributes() '''
 		«FOR attribute : classDefinition.attributes»
+		
+			«generatedHeader(attribute)»
 			«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type, attribute.multiplicity)» «attribute.identifier»;
 		«ENDFOR»
 	'''
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
+		
+			«generatedHeader(operation)»
 			public «IF operation.isStatic»static«ENDIF»
 			       «IF operation.returnType != null»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
 					«FOR parameter : operation.parameters SEPARATOR ','»
+						«generatedHeader(parameter)»
 						«javaType(parameter.type, parameter.direction)» «parameter.identifier»
 					«ENDFOR»
 					) {
@@ -130,6 +135,8 @@ class ClassTemplate extends Template {
 
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
+		
+			«generatedHeader(reception)»
 			public void «reception.identifier»() {
 				getRuntime().addEventToQueue(this, new «reception.signal.identifier»());
 			}
