@@ -98,7 +98,7 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 	protected void collectParameters(Behavior source, BhBehavior root) {
 		// in the original order
 		Map<Integer, BhParameter> parameters = new TreeMap<>();
-
+		
 		parameterMatcher.forEachMatch(source, null, null, null,
 				paramMatch -> {
 					BhParameter parameter = FACTORY.createBhParameter();
@@ -107,7 +107,6 @@ public class BehaviorGenerator extends AbstractGenerator<Behavior> {
 					parameter.setType(convertType(paramMatch.getType()));
 					parameter.setDirection(convertDirection(paramMatch
 							.getDirection()));
-					root.getParameters().add(parameter);
 					parameters.put(getFeatureElementIndex(matchedParam),
 							parameter);
 				});
