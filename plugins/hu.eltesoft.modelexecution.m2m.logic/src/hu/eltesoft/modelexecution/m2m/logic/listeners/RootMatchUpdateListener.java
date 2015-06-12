@@ -1,36 +1,39 @@
 package hu.eltesoft.modelexecution.m2m.logic.listeners;
 
-import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
-import java.util.function.Function;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
+import org.eclipse.uml2.uml.NamedElement;
 
 /**
  * A match update listener which is intended to be used with root m2m model
  * elements. Every object disappearance will indicate a delete operation in the
  * change registry.
  */
-public class RootMatchUpdateListener<M extends IPatternMatch, S extends EObject>
-		extends MatchUpdateListener<M, S> {
+public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPatternMatch>
+		extends MatchUpdateListener<UML, Match> {
 
-	public RootMatchUpdateListener(Generator<S> generator,
-			ChangeRegistry changeRegistry, Function<M, S> selector) {
-		super(generator, changeRegistry, selector);
+	private final RootNameStorage rootNames;
+
+	public RootMatchUpdateListener(
+			RootElementTranslator<UML, ?, Match> builder,
+			ChangeRegistry changes, RootNameStorage rootNames) {
+		super(builder, changes);
+		this.rootNames = rootNames;
 	}
 
 	@Override
-	public void notifyAppearance(M match) {
-		S root = selector.apply(match);
-		generator.saveRootName(root);
-		changeRegistry.newModification(root, generator);
+	public void notifyAppearance(Match match) {
+		UML root = extractRoot(match);
+		rootNames.saveRootName(root);
+		changes.registerUpdate(root, builder);
 	}
 
 	@Override
-	public void notifyDisappearance(M match) {
-		S root = selector.apply(match);
-		generator.consumeRootName(root, changeRegistry::newDeletion);
+	public void notifyDisappearance(Match match) {
+		UML root = extractRoot(match);
+		rootNames.consumeRootName(root, changes::registerDelete);
 	}
 }

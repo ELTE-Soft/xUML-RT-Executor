@@ -28,9 +28,9 @@ import org.eclipse.uml2.uml.Behavior;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern StaticBehavior(behavior : Behavior) {
+ * pattern StaticBehavior(behavior : Behavior, isStatic) {
  * 	Behavior.specification(behavior, operation);
- * 	Operation.isStatic(operation, true);
+ * 	Operation.isStatic(operation, isStatic);
  * }
  * </pre></code>
  * 
@@ -70,6 +70,8 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
   
   private final static int POSITION_BEHAVIOR = 0;
   
+  private final static int POSITION_ISSTATIC = 1;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(StaticBehaviorMatcher.class);
   
   /**
@@ -106,65 +108,71 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return matches represented as a StaticBehaviorMatch object.
    * 
    */
-  public Collection<StaticBehaviorMatch> getAllMatches(final Behavior pBehavior) {
-    return rawGetAllMatches(new Object[]{pBehavior});
+  public Collection<StaticBehaviorMatch> getAllMatches(final Behavior pBehavior, final Boolean pIsStatic) {
+    return rawGetAllMatches(new Object[]{pBehavior, pIsStatic});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return a match represented as a StaticBehaviorMatch object, or null if no match is found.
    * 
    */
-  public StaticBehaviorMatch getOneArbitraryMatch(final Behavior pBehavior) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior});
+  public StaticBehaviorMatch getOneArbitraryMatch(final Behavior pBehavior, final Boolean pIsStatic) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pIsStatic});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior) {
-    return rawHasMatch(new Object[]{pBehavior});
+  public boolean hasMatch(final Behavior pBehavior, final Boolean pIsStatic) {
+    return rawHasMatch(new Object[]{pBehavior, pIsStatic});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior) {
-    return rawCountMatches(new Object[]{pBehavior});
+  public int countMatches(final Behavior pBehavior, final Boolean pIsStatic) {
+    return rawCountMatches(new Object[]{pBehavior, pIsStatic});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final IMatchProcessor<? super StaticBehaviorMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior}, processor);
+  public void forEachMatch(final Behavior pBehavior, final Boolean pIsStatic, final IMatchProcessor<? super StaticBehaviorMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior, pIsStatic}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final IMatchProcessor<? super StaticBehaviorMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final Boolean pIsStatic, final IMatchProcessor<? super StaticBehaviorMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior, pIsStatic}, processor);
   }
   
   /**
@@ -175,13 +183,14 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
    * See {@link DeltaMonitor} for details.
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<StaticBehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior});
+  public DeltaMonitor<StaticBehaviorMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final Boolean pIsStatic) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pIsStatic});
   }
   
   /**
@@ -189,11 +198,12 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public StaticBehaviorMatch newMatch(final Behavior pBehavior) {
-    return StaticBehaviorMatch.newMatch(pBehavior);
+  public StaticBehaviorMatch newMatch(final Behavior pBehavior, final Boolean pIsStatic) {
+    return StaticBehaviorMatch.newMatch(pBehavior, pIsStatic);
     
   }
   
@@ -217,10 +227,66 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
     return rawAccumulateAllValuesOfbehavior(emptyArray());
   }
   
+  /**
+   * Retrieve the set of values that occur in matches for behavior.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Behavior> getAllValuesOfbehavior(final StaticBehaviorMatch partialMatch) {
+    return rawAccumulateAllValuesOfbehavior(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for behavior.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Behavior> getAllValuesOfbehavior(final Boolean pIsStatic) {
+    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pIsStatic});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for isStatic.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfisStatic(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ISSTATIC, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for isStatic.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfisStatic() {
+    return rawAccumulateAllValuesOfisStatic(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for isStatic.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfisStatic(final StaticBehaviorMatch partialMatch) {
+    return rawAccumulateAllValuesOfisStatic(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for isStatic.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfisStatic(final Behavior pBehavior) {
+    return rawAccumulateAllValuesOfisStatic(new Object[]{pBehavior, null});
+  }
+  
   @Override
   protected StaticBehaviorMatch tupleToMatch(final Tuple t) {
     try {
-      return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR));
+      return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (java.lang.Boolean) t.get(POSITION_ISSTATIC));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -231,7 +297,7 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
   @Override
   protected StaticBehaviorMatch arrayToMatch(final Object[] match) {
     try {
-      return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR]);
+      return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.Boolean) match[POSITION_ISSTATIC]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -242,7 +308,7 @@ public class StaticBehaviorMatcher extends BaseMatcher<StaticBehaviorMatch> {
   @Override
   protected StaticBehaviorMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return StaticBehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR]);
+      return StaticBehaviorMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (java.lang.Boolean) match[POSITION_ISSTATIC]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

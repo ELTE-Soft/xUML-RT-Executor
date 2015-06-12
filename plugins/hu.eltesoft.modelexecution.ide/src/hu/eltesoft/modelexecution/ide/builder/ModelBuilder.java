@@ -3,8 +3,8 @@ package hu.eltesoft.modelexecution.ide.builder;
 import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
-import hu.eltesoft.modelexecution.m2m.logic.generators.GenerationException;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 
 import java.util.List;
 import java.util.Map;
@@ -85,7 +85,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		try {
 			clean(new NullProgressMonitor());
 
-			final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
+			final ConcurrentMap<IResource, List<SourceCodeTask>> queue = new ConcurrentHashMap<>();
 
 			getProject().accept(new IResourceVisitor() {
 
@@ -96,7 +96,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					}
 					try {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-								t -> queue.put(resource, t.fullBuild()));
+								t -> queue.put(resource, t.fullTranslation()));
 					} catch (GenerationException e) {
 						markerManager.putMarkerOnResource(resource,
 								e.getMessage());
@@ -118,7 +118,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	private void incrementalBuild() {
 		try {
 			IResourceDelta delta = getDelta(getProject());
-			final ConcurrentMap<IResource, List<FileUpdateTask>> queue = new ConcurrentHashMap<>();
+			final ConcurrentMap<IResource, List<SourceCodeTask>> queue = new ConcurrentHashMap<>();
 			IncrementalBuildResourceDeltaVisitor visitor = new IncrementalBuildResourceDeltaVisitor(
 					queue);
 			delta.accept(visitor);
@@ -138,11 +138,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 */
 	private final class IncrementalBuildResourceDeltaVisitor implements
 			IResourceDeltaVisitor {
-		private final ConcurrentMap<IResource, List<FileUpdateTask>> queue;
+		private final ConcurrentMap<IResource, List<SourceCodeTask>> queue;
 		private boolean needsCleanAndRebuild = false;
 
 		private IncrementalBuildResourceDeltaVisitor(
-				ConcurrentMap<IResource, List<FileUpdateTask>> queue) {
+				ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
 			this.queue = queue;
 		}
 
@@ -158,7 +158,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 				case IResourceDelta.ADDED:
 				case IResourceDelta.CHANGED:
 					TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
-							t -> queue.put(resource, t.incrementalBuild()));
+							t -> queue.put(resource, t.incrementalTranslation()));
 					break;
 				case IResourceDelta.REMOVED:
 					TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
@@ -182,10 +182,10 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * supported.
 	 */
 	private void performAllTasks(
-			final ConcurrentMap<IResource, List<FileUpdateTask>> queue) {
-		for (Entry<IResource, List<FileUpdateTask>> entry : queue.entrySet()) {
+			final ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
+		for (Entry<IResource, List<SourceCodeTask>> entry : queue.entrySet()) {
 			try {
-				List<FileUpdateTask> task = entry.getValue();
+				List<SourceCodeTask> task = entry.getValue();
 				task.forEach(t -> t.perform(builderFileManager));
 			} catch (GenerationException e) {
 				String message = e.getMessage();

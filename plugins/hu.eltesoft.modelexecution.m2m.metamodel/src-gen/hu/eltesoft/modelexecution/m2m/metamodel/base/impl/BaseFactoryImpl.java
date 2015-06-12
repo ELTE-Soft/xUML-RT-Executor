@@ -2,20 +2,17 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.*;
+
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**

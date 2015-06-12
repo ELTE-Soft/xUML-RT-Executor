@@ -9,8 +9,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**

@@ -5,9 +5,10 @@ package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

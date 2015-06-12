@@ -2,16 +2,13 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base.util;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.*;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
+
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**

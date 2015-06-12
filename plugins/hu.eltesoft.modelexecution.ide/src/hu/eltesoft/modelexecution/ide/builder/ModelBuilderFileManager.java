@@ -5,7 +5,7 @@ import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.JavaCore;
 /**
  * File operation interface for {@linkplain ModelBuilder}.
  */
-public class ModelBuilderFileManager implements TextChangesListener {
+public class ModelBuilderFileManager implements SourceCodeChangeListener {
 
 	private IProject project;
 	private IFileManagerFactory fileManagerFactory;
@@ -34,12 +34,12 @@ public class ModelBuilderFileManager implements TextChangesListener {
 	}
 
 	@Override
-	public void contentDeleted(String fileName) {
+	public void sourceCodeDeleted(String fileName) {
 		getGenSrcFileManager().remove(fileName);
 	}
 
 	@Override
-	public void contentChanged(String fileName, SourceMappedText output,
+	public void sourceCodeChanged(String fileName, SourceMappedText output,
 			DebugSymbols symbols) {
 		try {
 			checkGenDirIsSrcDir();

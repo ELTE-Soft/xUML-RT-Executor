@@ -12,7 +12,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.ConstantValue;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
@@ -49,12 +48,12 @@ public final class StaticBehaviorQuerySpecification extends BaseGeneratedQuerySp
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior");
+    return Arrays.asList("behavior","isStatic");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("isStatic", "java.lang.Boolean"));
   }
   
   @Override
@@ -64,7 +63,7 @@ public final class StaticBehaviorQuerySpecification extends BaseGeneratedQuerySp
   
   @Override
   public StaticBehaviorMatch newMatch(final Object... parameters) {
-    return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0]);
+    return StaticBehaviorMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (java.lang.Boolean) parameters[1]);
   }
   
   @Override
@@ -73,16 +72,17 @@ public final class StaticBehaviorQuerySpecification extends BaseGeneratedQuerySp
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
+      PVariable var_isStatic = body.getOrCreateVariableByName("isStatic");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
-      PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
-        new ExportedParameter(body, var_behavior, "behavior")
+        new ExportedParameter(body, var_behavior, "behavior"), 
+        new ExportedParameter(body, var_isStatic, "isStatic")
       ));
       
+      
       new TypeBinary(body, CONTEXT, var_behavior, var_operation, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior", "specification"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior.specification");
-      new ConstantValue(body, var__virtual_1_, true);
       new TypeUnary(body, var_operation, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation"), "http://www.eclipse.org/uml2/5.0.0/UML/Operation");
-      new TypeBinary(body, CONTEXT, var_operation, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Feature", "isStatic"), "http://www.eclipse.org/uml2/5.0.0/UML/Feature.isStatic");
+      new TypeBinary(body, CONTEXT, var_operation, var_isStatic, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Feature", "isStatic"), "http://www.eclipse.org/uml2/5.0.0/UML/Feature.isStatic");
       bodies.add(body);
     }
     return bodies;

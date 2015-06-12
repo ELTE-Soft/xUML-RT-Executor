@@ -17,4 +17,4 @@ Require-Bundle:
  hu.eltesoft.modelexecution.uml.alf;bundle-version="0.3.0",
  hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.3.0"
 Export-Package: hu.eltesoft.modelexecution.m2m.logic,
- hu.eltesoft.modelexecution.m2m.logic.generators
+ hu.eltesoft.modelexecution.m2m.logic.translators

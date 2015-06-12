@@ -54,7 +54,7 @@ class SignalTemplate extends Template {
 			public String toString() {
 				return «signal.nameLiteral»
 					«FOR attribute : signal.attributes SEPARATOR '+","'»
-						 + "«attribute.reference.originalName»: " + «attribute.identifier»
+						 + «attribute.nameLiteral» + ": " + «attribute.identifier»
 					«ENDFOR»;
 			}
 		

@@ -13,8 +13,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;

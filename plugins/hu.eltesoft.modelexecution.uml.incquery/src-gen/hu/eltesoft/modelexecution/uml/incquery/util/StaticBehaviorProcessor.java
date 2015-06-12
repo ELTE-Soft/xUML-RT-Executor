@@ -15,13 +15,14 @@ public abstract class StaticBehaviorProcessor implements IMatchProcessor<StaticB
   /**
    * Defines the action that is to be executed on each match.
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
+   * @param pIsStatic the value of pattern parameter isStatic in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior);
+  public abstract void process(final Behavior pBehavior, final Boolean pIsStatic);
   
   @Override
   public void process(final StaticBehaviorMatch match) {
-    process(match.getBehavior());
+    process(match.getBehavior(), match.getIsStatic());
     
   }
 }

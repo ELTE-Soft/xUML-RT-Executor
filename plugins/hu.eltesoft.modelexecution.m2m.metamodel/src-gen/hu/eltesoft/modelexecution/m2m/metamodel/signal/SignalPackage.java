@@ -104,7 +104,6 @@ public interface SignalPackage extends EPackage {
 	 */
 	int SG_SIGNAL_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl <em>Sg Attribute</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -246,6 +245,7 @@ public interface SignalPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SG_SIGNAL = eINSTANCE.getSgSignal();
+
 		/**
 		 * The meta object literal for the '<em><b>Attributes</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
@@ -253,6 +253,7 @@ public interface SignalPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SG_SIGNAL__ATTRIBUTES = eINSTANCE.getSgSignal_Attributes();
+
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl <em>Sg Attribute</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -262,6 +263,7 @@ public interface SignalPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SG_ATTRIBUTE = eINSTANCE.getSgAttribute();
+
 		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
@@ -269,6 +271,7 @@ public interface SignalPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SG_ATTRIBUTE__TYPE = eINSTANCE.getSgAttribute_Type();
+
 		/**
 		 * The meta object literal for the '<em><b>Multiplicity</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->

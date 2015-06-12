@@ -3,23 +3,26 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
+
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**

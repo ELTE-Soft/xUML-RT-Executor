@@ -50,7 +50,8 @@ TransitionBase(region : Region, source : State, transition : Transition, event :
 }
 
 pattern
-TransitionEffect(region : Region, transition : Transition, effect : Behavior) {
+TransitionEffect(region : Region, state : State, transition : Transition, effect : Behavior) {
+	Transition.source(transition, state);
 	Transition.container(transition, region);
 	Transition.effect(transition, effect);
 }

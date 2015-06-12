@@ -250,7 +250,6 @@ public interface ClassdefPackage extends EPackage {
 	 */
 	int CL_RECEPTION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl <em>Cl Attribute</em>}' class.
 	 * <!-- begin-user-doc -->

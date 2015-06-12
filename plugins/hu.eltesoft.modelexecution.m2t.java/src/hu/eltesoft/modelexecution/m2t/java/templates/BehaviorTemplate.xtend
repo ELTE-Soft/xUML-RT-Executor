@@ -19,6 +19,7 @@ class BehaviorTemplate extends Template {
 	val boolean needsContext
 
 	new(BhBehavior behavior) {
+		super(behavior)
 		this.behavior = behavior
 		val generator = new BehaviorBodyGenerator
 		compiledAlfCode = generator.generate(behavior.alfResult)

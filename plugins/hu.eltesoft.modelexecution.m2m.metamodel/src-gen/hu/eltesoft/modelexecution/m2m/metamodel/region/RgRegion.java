@@ -90,7 +90,7 @@ public interface RgRegion extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>States</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgRegion_States()
-	 * @model required="true"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	EList<RgState> getStates();

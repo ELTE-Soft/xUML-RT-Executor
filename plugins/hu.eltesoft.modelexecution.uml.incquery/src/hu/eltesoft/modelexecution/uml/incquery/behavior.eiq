@@ -46,9 +46,9 @@ pattern BehaviorReturnType(behavior : Behavior, type : Type) {
 	Parameter.type(parameter, type);
 }
 
-pattern StaticBehavior(behavior : Behavior) {
+pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Behavior.specification(behavior, operation);
-	Operation.isStatic(operation, true);
+	Operation.isStatic(operation, isStatic);
 }
 
 pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {

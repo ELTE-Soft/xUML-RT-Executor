@@ -5,6 +5,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -64,7 +65,7 @@ public interface ClClass extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Operations</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Operations()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<ClOperation> getOperations();
@@ -80,7 +81,7 @@ public interface ClClass extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Receptions</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Receptions()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<ClReception> getReceptions();
@@ -96,7 +97,7 @@ public interface ClClass extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attributes</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Attributes()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<ClAttribute> getAttributes();

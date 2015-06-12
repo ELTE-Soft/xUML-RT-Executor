@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
@@ -8,13 +9,14 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
-import java.util.Collections
+import hu.eltesoft.modelexecution.runtime.Reference
+import java.util.ArrayList
 import java.util.Date
 import org.apache.commons.lang.StringEscapeUtils
-import org.eclipse.emf.ecore.EObject
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
-import java.util.ArrayList
-import hu.eltesoft.modelexecution.runtime.Reference
+
+import static hu.eltesoft.modelexecution.m2m.metamodel.base.Direction.*
+import static hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity.*
+import static hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes.*
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -26,6 +28,7 @@ import hu.eltesoft.modelexecution.runtime.Reference
 abstract class Template extends EmfTraceExtensions {
 
 	private val DebugSymbols debugSymbols;
+	private val String rootName;
 
 	/**
 	 * Call only after the generate method, as its location registry will only
@@ -35,14 +38,14 @@ abstract class Template extends EmfTraceExtensions {
 		return debugSymbols
 	}
 
-	new() {
-		val nameMapping = Collections.EMPTY_MAP
-		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+	def String getRootName() {
+		return rootName
 	}
 
-	new(EObject genModel) {
+	new(Named genModel) {
 		val nameMapping = new NameMapper().mapNames(genModel)
 		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+		rootName = genModel.identifier
 	}
 
 	/**
@@ -127,34 +130,35 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
-	
+
 	/**
 	 * Create java type from a primitive type
 	 */
 	dispatch def javaType(PrimitiveType type) {
 		javaPrimitiveType(type.type);
 	}
-	
+
 	/**
 	 * Create java type from a data class
 	 */
 	dispatch def javaType(Type type) {
 		type.reference.identifier
 	}
-	
+
 	/**
 	 * Create java type from a primitive type with direction
 	 */
 	dispatch def javaType(PrimitiveType type, Direction direction) {
 		genTypeWithDirection(direction, javaPrimitiveType(type.type));
 	}
-	
+
 	/**
 	 * Create java type from a data class with direction
 	 */
 	dispatch def javaType(Type type, Direction direction) {
 		genTypeWithDirection(direction, type.reference.identifier)
 	}
+
 	/**
 	 * Create java type from a primitive type with multiplicity
 	 */
@@ -162,28 +166,29 @@ abstract class Template extends EmfTraceExtensions {
 		val baseType = javaPrimitiveType(type.type);
 		genTypeWithMultiplicity(multiplicity, baseType)
 	}
-	
+
 	/**
 	 * Create java type from a data class with multiplicity
 	 */
 	dispatch def javaType(Type type, Multiplicity multiplicity) {
 		genTypeWithMultiplicity(multiplicity, type.reference.identifier)
 	}
-	
+
 	def genTypeWithMultiplicity(Multiplicity mult, CharSequence baseType) {
 		switch (mult) {
 			case MULTI: ArrayList.canonicalName + "<" + baseType + ">"
 			case ONE: baseType
 		}
 	}
-	
+
 	def genTypeWithDirection(Direction direction, CharSequence baseType) {
 		switch (direction) {
-			case OUT , case INOUT: Reference.canonicalName + "<" + baseType + ">"
+			case OUT,
+			case INOUT: Reference.canonicalName + "<" + baseType + ">"
 			default: baseType
 		}
 	}
-	
+
 	def javaPrimitiveType(PrimitiveTypes primType) {
 		switch (primType) {
 			case BOOLEAN: "Boolean"
@@ -191,5 +196,5 @@ abstract class Template extends EmfTraceExtensions {
 			case STRING: "String"
 		}
 	}
-	
+
 }

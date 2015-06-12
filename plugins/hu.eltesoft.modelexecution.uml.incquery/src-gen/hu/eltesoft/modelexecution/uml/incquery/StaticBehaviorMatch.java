@@ -25,22 +25,31 @@ import org.eclipse.uml2.uml.Behavior;
 public abstract class StaticBehaviorMatch extends BasePatternMatch {
   private Behavior fBehavior;
   
-  private static List<String> parameterNames = makeImmutableList("behavior");
+  private Boolean fIsStatic;
   
-  private StaticBehaviorMatch(final Behavior pBehavior) {
+  private static List<String> parameterNames = makeImmutableList("behavior", "isStatic");
+  
+  private StaticBehaviorMatch(final Behavior pBehavior, final Boolean pIsStatic) {
     this.fBehavior = pBehavior;
+    this.fIsStatic = pIsStatic;
     
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
+    if ("isStatic".equals(parameterName)) return this.fIsStatic;
     return null;
     
   }
   
   public Behavior getBehavior() {
     return this.fBehavior;
+    
+  }
+  
+  public Boolean getIsStatic() {
+    return this.fIsStatic;
     
   }
   
@@ -51,6 +60,10 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
     	this.fBehavior = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
+    if ("isStatic".equals(parameterName) ) {
+    	this.fIsStatic = (java.lang.Boolean) newValue;
+    	return true;
+    }
     return false;
     
   }
@@ -58,6 +71,12 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
   public void setBehavior(final Behavior pBehavior) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fBehavior = pBehavior;
+    
+  }
+  
+  public void setIsStatic(final Boolean pIsStatic) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fIsStatic = pIsStatic;
     
   }
   
@@ -75,20 +94,21 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior};
+    return new Object[]{fBehavior, fIsStatic};
     
   }
   
   @Override
   public StaticBehaviorMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior) : this;
+    return isMutable() ? newMatch(fBehavior, fIsStatic) : this;
     
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"behavior\"=" + prettyPrintValue(fBehavior));
+    result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
+    result.append("\"isStatic\"=" + prettyPrintValue(fIsStatic));
     return result.toString();
     
   }
@@ -98,6 +118,7 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
+    result = prime * result + ((fIsStatic == null) ? 0 : fIsStatic.hashCode());
     return result;
     
   }
@@ -119,6 +140,8 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
     StaticBehaviorMatch other = (StaticBehaviorMatch) obj;
     if (fBehavior == null) {if (other.fBehavior != null) return false;}
     else if (!fBehavior.equals(other.fBehavior)) return false;
+    if (fIsStatic == null) {if (other.fIsStatic != null) return false;}
+    else if (!fIsStatic.equals(other.fIsStatic)) return false;
     return true;
   }
   
@@ -141,7 +164,7 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
    * 
    */
   public static StaticBehaviorMatch newEmptyMatch() {
-    return new Mutable(null);
+    return new Mutable(null, null);
     
   }
   
@@ -150,11 +173,12 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static StaticBehaviorMatch newMutableMatch(final Behavior pBehavior) {
-    return new Mutable(pBehavior);
+  public static StaticBehaviorMatch newMutableMatch(final Behavior pBehavior, final Boolean pIsStatic) {
+    return new Mutable(pBehavior, pIsStatic);
     
   }
   
@@ -163,17 +187,18 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static StaticBehaviorMatch newMatch(final Behavior pBehavior) {
-    return new Immutable(pBehavior);
+  public static StaticBehaviorMatch newMatch(final Behavior pBehavior, final Boolean pIsStatic) {
+    return new Immutable(pBehavior, pIsStatic);
     
   }
   
   private static final class Mutable extends StaticBehaviorMatch {
-    Mutable(final Behavior pBehavior) {
-      super(pBehavior);
+    Mutable(final Behavior pBehavior, final Boolean pIsStatic) {
+      super(pBehavior, pIsStatic);
       
     }
     
@@ -184,8 +209,8 @@ public abstract class StaticBehaviorMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends StaticBehaviorMatch {
-    Immutable(final Behavior pBehavior) {
-      super(pBehavior);
+    Immutable(final Behavior pBehavior, final Boolean pIsStatic) {
+      super(pBehavior, pIsStatic);
       
     }
     

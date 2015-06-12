@@ -7,8 +7,8 @@
         eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialPseudostate" lowerBound="1"
         eType="#//RgInitialPseudostate"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="states" lowerBound="1"
-        upperBound="-1" eType="#//RgState"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" ordered="false"
+        lowerBound="1" upperBound="-1" eType="#//RgState"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgInitialPseudostate" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialTransition" lowerBound="1"
@@ -17,8 +17,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="RgState" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="entry" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="exit" eType="ecore:EDataType base.ecore#//NamedReference"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
-        eType="#//RgTransition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" ordered="false"
+        upperBound="-1" eType="#//RgTransition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgTransition" eSuperTypes="base.ecore#//Referenced">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType base.ecore#//NamedReference"/>
