@@ -2,27 +2,19 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
-
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -142,7 +134,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * @generated
 	 * @ordered
 	 */
-	protected Type returnType;
+	protected FullType returnType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -264,10 +256,10 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getReturnType() {
+	public FullType getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject)returnType;
-			returnType = (Type)eResolveProxy(oldReturnType);
+			returnType = (FullType)eResolveProxy(oldReturnType);
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
@@ -281,7 +273,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetReturnType() {
+	public FullType basicGetReturnType() {
 		return returnType;
 	}
 
@@ -290,8 +282,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReturnType(Type newReturnType) {
-		Type oldReturnType = returnType;
+	public void setReturnType(FullType newReturnType) {
+		FullType oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
@@ -348,7 +340,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				setIsStatic((Boolean)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
-				setReturnType((Type)newValue);
+				setReturnType((FullType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -378,7 +370,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				setIsStatic(IS_STATIC_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
-				setReturnType((Type)null);
+				setReturnType((FullType)null);
 				return;
 		}
 		super.eUnset(featureID);

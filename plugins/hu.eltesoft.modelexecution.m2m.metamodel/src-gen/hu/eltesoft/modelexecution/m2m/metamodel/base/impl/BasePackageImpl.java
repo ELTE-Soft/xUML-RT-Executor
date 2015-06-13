@@ -2,11 +2,15 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
@@ -42,6 +46,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -99,7 +104,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum primitiveTypesEEnum = null;
+	private EClass fullTypeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -113,7 +118,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum multiplicityEEnum = null;
+	private EEnum primitiveTypesEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -176,6 +181,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		isInited = true;
 
 		// Obtain or create and register interdependencies
+		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
 		EventPackageImpl theEventPackage = (EventPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) instanceof EventPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) : EventPackage.eINSTANCE);
@@ -184,6 +190,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 
 		// Create package meta-data objects
 		theBasePackage.createPackageContents();
+		theAssociationPackage.createPackageContents();
 		theBehaviorPackage.createPackageContents();
 		theClassdefPackage.createPackageContents();
 		theEventPackage.createPackageContents();
@@ -192,6 +199,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 
 		// Initialize created meta-data
 		theBasePackage.initializePackageContents();
+		theAssociationPackage.initializePackageContents();
 		theBehaviorPackage.initializePackageContents();
 		theClassdefPackage.initializePackageContents();
 		theEventPackage.initializePackageContents();
@@ -293,8 +301,53 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getPrimitiveTypes() {
-		return primitiveTypesEEnum;
+	public EClass getFullType() {
+		return fullTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getFullType_BaseType() {
+		return (EReference)fullTypeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFullType_LowerBound() {
+		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFullType_UpperBound() {
+		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFullType_IsOrdered() {
+		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFullType_IsUnique() {
+		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -311,8 +364,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getMultiplicity() {
-		return multiplicityEEnum;
+	public EEnum getPrimitiveTypes() {
+		return primitiveTypesEEnum;
 	}
 
 	/**
@@ -376,10 +429,16 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		primitiveTypeEClass = createEClass(PRIMITIVE_TYPE);
 		createEAttribute(primitiveTypeEClass, PRIMITIVE_TYPE__TYPE);
 
+		fullTypeEClass = createEClass(FULL_TYPE);
+		createEReference(fullTypeEClass, FULL_TYPE__BASE_TYPE);
+		createEAttribute(fullTypeEClass, FULL_TYPE__LOWER_BOUND);
+		createEAttribute(fullTypeEClass, FULL_TYPE__UPPER_BOUND);
+		createEAttribute(fullTypeEClass, FULL_TYPE__IS_ORDERED);
+		createEAttribute(fullTypeEClass, FULL_TYPE__IS_UNIQUE);
+
 		// Create enums
-		primitiveTypesEEnum = createEEnum(PRIMITIVE_TYPES);
 		directionEEnum = createEEnum(DIRECTION);
-		multiplicityEEnum = createEEnum(MULTIPLICITY);
+		primitiveTypesEEnum = createEEnum(PRIMITIVE_TYPES);
 
 		// Create data types
 		namedReferenceEDataType = createEDataType(NAMED_REFERENCE);
@@ -419,6 +478,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		referencedEClass.getESuperTypes().add(this.getTranslationObject());
 		typeEClass.getESuperTypes().add(this.getNamed());
 		primitiveTypeEClass.getESuperTypes().add(this.getType());
+		fullTypeEClass.getESuperTypes().add(this.getTranslationObject());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -436,21 +496,24 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		initEClass(primitiveTypeEClass, PrimitiveType.class, "PrimitiveType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPrimitiveType_Type(), this.getPrimitiveTypes(), "type", null, 0, 1, PrimitiveType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		// Initialize enums and add enum literals
-		initEEnum(primitiveTypesEEnum, PrimitiveTypes.class, "PrimitiveTypes");
-		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.INTEGER);
-		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.BOOLEAN);
-		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.STRING);
+		initEClass(fullTypeEClass, FullType.class, "FullType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFullType_BaseType(), this.getType(), null, "baseType", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFullType_LowerBound(), ecorePackage.getEInt(), "lowerBound", "1", 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFullType_UpperBound(), ecorePackage.getEInt(), "upperBound", "1", 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFullType_IsOrdered(), ecorePackage.getEBoolean(), "isOrdered", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFullType_IsUnique(), ecorePackage.getEBoolean(), "isUnique", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		// Initialize enums and add enum literals
 		initEEnum(directionEEnum, Direction.class, "Direction");
 		addEEnumLiteral(directionEEnum, Direction.IN);
 		addEEnumLiteral(directionEEnum, Direction.OUT);
 		addEEnumLiteral(directionEEnum, Direction.INOUT);
-		addEEnumLiteral(directionEEnum, Direction.RETURN);
 
-		initEEnum(multiplicityEEnum, Multiplicity.class, "Multiplicity");
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.ONE);
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.MULTI);
+		initEEnum(primitiveTypesEEnum, PrimitiveTypes.class, "PrimitiveTypes");
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.INTEGER);
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.BOOLEAN);
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.STRING);
+		addEEnumLiteral(primitiveTypesEEnum, PrimitiveTypes.REAL);
 
 		// Initialize data types
 		initEDataType(namedReferenceEDataType, NamedReference.class, "NamedReference", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

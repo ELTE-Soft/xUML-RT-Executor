@@ -3,24 +3,18 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -35,6 +29,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAssociations <em>Associations</em>}</li>
  * </ul>
  * </p>
  *
@@ -110,6 +105,16 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * @ordered
 	 */
 	protected EList<ClAttribute> attributes;
+
+	/**
+	 * The cached value of the '{@link #getAssociations() <em>Associations</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociations()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClAssociation> associations;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -213,6 +218,18 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClAssociation> getAssociations() {
+		if (associations == null) {
+			associations = new EObjectResolvingEList<ClAssociation>(ClAssociation.class, this, ClassdefPackage.CL_CLASS__ASSOCIATIONS);
+		}
+		return associations;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -226,6 +243,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				return getReceptions();
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				return getAttributes();
+			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
+				return getAssociations();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -257,6 +276,10 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				getAttributes().clear();
 				getAttributes().addAll((Collection<? extends ClAttribute>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
+				getAssociations().clear();
+				getAssociations().addAll((Collection<? extends ClAssociation>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -284,6 +307,9 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				getAttributes().clear();
 				return;
+			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
+				getAssociations().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -306,6 +332,8 @@ public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass
 				return receptions != null && !receptions.isEmpty();
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				return attributes != null && !attributes.isEmpty();
+			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
+				return associations != null && !associations.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

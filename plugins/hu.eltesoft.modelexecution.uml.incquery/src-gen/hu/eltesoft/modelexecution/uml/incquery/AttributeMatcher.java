@@ -16,7 +16,6 @@ import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Type;
 
 /**
  * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.Attribute pattern,
@@ -29,11 +28,12 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Attribute(cls: Class, attribute : Property, isStatic, type : Type)  {
+ * // attributes
+ * 
+ * pattern Attribute(cls: Class, attribute : Property, isStatic)  {
  * 	find Cls(cls);
  * 	Class.ownedAttribute(cls, attribute);
  * 	Property.isStatic(attribute, isStatic);
- * 	Property.type(attribute, type);
  * }
  * </pre></code>
  * 
@@ -77,8 +77,6 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
   
   private final static int POSITION_ISSTATIC = 2;
   
-  private final static int POSITION_TYPE = 3;
-  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(AttributeMatcher.class);
   
   /**
@@ -117,12 +115,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return matches represented as a AttributeMatch object.
    * 
    */
-  public Collection<AttributeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawGetAllMatches(new Object[]{pCls, pAttribute, pIsStatic, pType});
+  public Collection<AttributeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return rawGetAllMatches(new Object[]{pCls, pAttribute, pIsStatic});
   }
   
   /**
@@ -131,12 +128,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return a match represented as a AttributeMatch object, or null if no match is found.
    * 
    */
-  public AttributeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pAttribute, pIsStatic, pType});
+  public AttributeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pAttribute, pIsStatic});
   }
   
   /**
@@ -145,12 +141,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawHasMatch(new Object[]{pCls, pAttribute, pIsStatic, pType});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return rawHasMatch(new Object[]{pCls, pAttribute, pIsStatic});
   }
   
   /**
@@ -158,12 +153,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawCountMatches(new Object[]{pCls, pAttribute, pIsStatic, pType});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return rawCountMatches(new Object[]{pCls, pAttribute, pIsStatic});
   }
   
   /**
@@ -171,12 +165,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType, final IMatchProcessor<? super AttributeMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pAttribute, pIsStatic, pType}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final IMatchProcessor<? super AttributeMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pAttribute, pIsStatic}, processor);
   }
   
   /**
@@ -185,13 +178,12 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType, final IMatchProcessor<? super AttributeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pAttribute, pIsStatic, pType}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final IMatchProcessor<? super AttributeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pAttribute, pIsStatic}, processor);
   }
   
   /**
@@ -204,14 +196,13 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<AttributeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pAttribute, pIsStatic, pType});
+  public DeltaMonitor<AttributeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pAttribute, pIsStatic});
   }
   
   /**
@@ -221,12 +212,11 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public AttributeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return AttributeMatch.newMatch(pCls, pAttribute, pIsStatic, pType);
+  public AttributeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return AttributeMatch.newMatch(pCls, pAttribute, pIsStatic);
     
   }
   
@@ -264,8 +254,8 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pAttribute, pIsStatic, pType});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Property pAttribute, final Boolean pIsStatic) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pAttribute, pIsStatic});
   }
   
   /**
@@ -302,8 +292,8 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Property> getAllValuesOfattribute(final org.eclipse.uml2.uml.Class pCls, final Boolean pIsStatic, final Type pType) {
-    return rawAccumulateAllValuesOfattribute(new Object[]{pCls, null, pIsStatic, pType});
+  public Set<Property> getAllValuesOfattribute(final org.eclipse.uml2.uml.Class pCls, final Boolean pIsStatic) {
+    return rawAccumulateAllValuesOfattribute(new Object[]{pCls, null, pIsStatic});
   }
   
   /**
@@ -340,52 +330,14 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Boolean> getAllValuesOfisStatic(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawAccumulateAllValuesOfisStatic(new Object[]{pCls, pAttribute, null, pType});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
-    Set<Type> results = new HashSet<Type>();
-    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype() {
-    return rawAccumulateAllValuesOftype(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final AttributeMatch partialMatch) {
-    return rawAccumulateAllValuesOftype(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
-    return rawAccumulateAllValuesOftype(new Object[]{pCls, pAttribute, pIsStatic, null});
+  public Set<Boolean> getAllValuesOfisStatic(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute) {
+    return rawAccumulateAllValuesOfisStatic(new Object[]{pCls, pAttribute, null});
   }
   
   @Override
   protected AttributeMatch tupleToMatch(final Tuple t) {
     try {
-      return AttributeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (java.lang.Boolean) t.get(POSITION_ISSTATIC), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE));
+      return AttributeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (java.lang.Boolean) t.get(POSITION_ISSTATIC));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -396,7 +348,7 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
   @Override
   protected AttributeMatch arrayToMatch(final Object[] match) {
     try {
-      return AttributeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (java.lang.Boolean) match[POSITION_ISSTATIC], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return AttributeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (java.lang.Boolean) match[POSITION_ISSTATIC]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -407,7 +359,7 @@ public class AttributeMatcher extends BaseMatcher<AttributeMatch> {
   @Override
   protected AttributeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return AttributeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (java.lang.Boolean) match[POSITION_ISSTATIC], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return AttributeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (java.lang.Boolean) match[POSITION_ISSTATIC]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -46,17 +46,7 @@ public enum Direction implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	INOUT(2, "inout", ""),
-
-	/**
-	 * The '<em><b>Return</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #RETURN_VALUE
-	 * @generated
-	 * @ordered
-	 */
-	RETURN(3, "return", "return");
+	INOUT(2, "inout", "inout");
 
 	/**
 	 * The '<em><b>In</b></em>' literal value.
@@ -97,26 +87,11 @@ public enum Direction implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #INOUT
-	 * @model name="inout" literal=""
+	 * @model name="inout"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int INOUT_VALUE = 2;
-
-	/**
-	 * The '<em><b>Return</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Return</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @see #RETURN
-	 * @model name="return"
-	 * @generated
-	 * @ordered
-	 */
-	public static final int RETURN_VALUE = 3;
 
 	/**
 	 * An array of all the '<em><b>Direction</b></em>' enumerators.
@@ -129,7 +104,6 @@ public enum Direction implements Enumerator {
 			IN,
 			OUT,
 			INOUT,
-			RETURN,
 		};
 
 	/**
@@ -183,7 +157,6 @@ public enum Direction implements Enumerator {
 			case IN_VALUE: return IN;
 			case OUT_VALUE: return OUT;
 			case INOUT_VALUE: return INOUT;
-			case RETURN_VALUE: return RETURN;
 		}
 		return null;
 	}

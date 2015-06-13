@@ -61,6 +61,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 		switch (eClass.getClassifierID()) {
 			case BasePackage.TYPE: return createType();
 			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
+			case BasePackage.FULL_TYPE: return createFullType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -74,12 +75,10 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case BasePackage.PRIMITIVE_TYPES:
-				return createPrimitiveTypesFromString(eDataType, initialValue);
 			case BasePackage.DIRECTION:
 				return createDirectionFromString(eDataType, initialValue);
-			case BasePackage.MULTIPLICITY:
-				return createMultiplicityFromString(eDataType, initialValue);
+			case BasePackage.PRIMITIVE_TYPES:
+				return createPrimitiveTypesFromString(eDataType, initialValue);
 			case BasePackage.NAMED_REFERENCE:
 				return createNamedReferenceFromString(eDataType, initialValue);
 			case BasePackage.REFERENCE:
@@ -97,12 +96,10 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case BasePackage.PRIMITIVE_TYPES:
-				return convertPrimitiveTypesToString(eDataType, instanceValue);
 			case BasePackage.DIRECTION:
 				return convertDirectionToString(eDataType, instanceValue);
-			case BasePackage.MULTIPLICITY:
-				return convertMultiplicityToString(eDataType, instanceValue);
+			case BasePackage.PRIMITIVE_TYPES:
+				return convertPrimitiveTypesToString(eDataType, instanceValue);
 			case BasePackage.NAMED_REFERENCE:
 				return convertNamedReferenceToString(eDataType, instanceValue);
 			case BasePackage.REFERENCE:
@@ -137,19 +134,9 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PrimitiveTypes createPrimitiveTypesFromString(EDataType eDataType, String initialValue) {
-		PrimitiveTypes result = PrimitiveTypes.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertPrimitiveTypesToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
+	public FullType createFullType() {
+		FullTypeImpl fullType = new FullTypeImpl();
+		return fullType;
 	}
 
 	/**
@@ -177,8 +164,8 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Multiplicity createMultiplicityFromString(EDataType eDataType, String initialValue) {
-		Multiplicity result = Multiplicity.get(initialValue);
+	public PrimitiveTypes createPrimitiveTypesFromString(EDataType eDataType, String initialValue) {
+		PrimitiveTypes result = PrimitiveTypes.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -188,7 +175,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertMultiplicityToString(EDataType eDataType, Object instanceValue) {
+	public String convertPrimitiveTypesToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

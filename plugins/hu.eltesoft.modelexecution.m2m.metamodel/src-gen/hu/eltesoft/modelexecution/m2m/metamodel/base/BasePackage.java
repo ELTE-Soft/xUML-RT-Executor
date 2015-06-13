@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -280,14 +281,77 @@ public interface BasePackage extends EPackage {
 	int PRIMITIVE_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl <em>Full Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getFullType()
 	 * @generated
 	 */
-	int PRIMITIVE_TYPES = 6;
+	int FULL_TYPE = 6;
+
+	/**
+	 * The feature id for the '<em><b>Base Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE__BASE_TYPE = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE__LOWER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE__UPPER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Ordered</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE__IS_ORDERED = TRANSLATION_OBJECT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Is Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE__IS_UNIQUE = TRANSLATION_OBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>Full Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of operations of the '<em>Full Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FULL_TYPE_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
@@ -300,14 +364,14 @@ public interface BasePackage extends EPackage {
 	int DIRECTION = 7;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}' enum.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
 	 * @generated
 	 */
-	int MULTIPLICITY = 8;
+	int PRIMITIVE_TYPES = 8;
 
 	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
@@ -424,14 +488,69 @@ public interface BasePackage extends EPackage {
 	EAttribute getPrimitiveType_Type();
 
 	/**
-	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}'.
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType <em>Full Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Primitive Types</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+	 * @return the meta object for class '<em>Full Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType
 	 * @generated
 	 */
-	EEnum getPrimitiveTypes();
+	EClass getFullType();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getBaseType <em>Base Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Base Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getBaseType()
+	 * @see #getFullType()
+	 * @generated
+	 */
+	EReference getFullType_BaseType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getLowerBound <em>Lower Bound</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Lower Bound</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getLowerBound()
+	 * @see #getFullType()
+	 * @generated
+	 */
+	EAttribute getFullType_LowerBound();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getUpperBound <em>Upper Bound</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Upper Bound</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getUpperBound()
+	 * @see #getFullType()
+	 * @generated
+	 */
+	EAttribute getFullType_UpperBound();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsOrdered <em>Is Ordered</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Ordered</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsOrdered()
+	 * @see #getFullType()
+	 * @generated
+	 */
+	EAttribute getFullType_IsOrdered();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsUnique <em>Is Unique</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Unique</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsUnique()
+	 * @see #getFullType()
+	 * @generated
+	 */
+	EAttribute getFullType_IsUnique();
 
 	/**
 	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}'.
@@ -444,14 +563,14 @@ public interface BasePackage extends EPackage {
 	EEnum getDirection();
 
 	/**
-	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}'.
+	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Multiplicity</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @return the meta object for enum '<em>Primitive Types</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
 	 * @generated
 	 */
-	EEnum getMultiplicity();
+	EEnum getPrimitiveTypes();
 
 	/**
 	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference <em>Named Reference</em>}'.
@@ -583,14 +702,54 @@ public interface BasePackage extends EPackage {
 		EAttribute PRIMITIVE_TYPE__TYPE = eINSTANCE.getPrimitiveType_Type();
 
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl <em>Full Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getFullType()
 		 * @generated
 		 */
-		EEnum PRIMITIVE_TYPES = eINSTANCE.getPrimitiveTypes();
+		EClass FULL_TYPE = eINSTANCE.getFullType();
+
+		/**
+		 * The meta object literal for the '<em><b>Base Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FULL_TYPE__BASE_TYPE = eINSTANCE.getFullType_BaseType();
+
+		/**
+		 * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FULL_TYPE__LOWER_BOUND = eINSTANCE.getFullType_LowerBound();
+
+		/**
+		 * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FULL_TYPE__UPPER_BOUND = eINSTANCE.getFullType_UpperBound();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Ordered</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FULL_TYPE__IS_ORDERED = eINSTANCE.getFullType_IsOrdered();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Unique</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FULL_TYPE__IS_UNIQUE = eINSTANCE.getFullType_IsUnique();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
@@ -603,14 +762,14 @@ public interface BasePackage extends EPackage {
 		EEnum DIRECTION = eINSTANCE.getDirection();
 
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}' enum.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
 		 * @generated
 		 */
-		EEnum MULTIPLICITY = eINSTANCE.getMultiplicity();
+		EEnum PRIMITIVE_TYPES = eINSTANCE.getPrimitiveTypes();
 
 		/**
 		 * The meta object literal for the '<em>Named Reference</em>' data type.

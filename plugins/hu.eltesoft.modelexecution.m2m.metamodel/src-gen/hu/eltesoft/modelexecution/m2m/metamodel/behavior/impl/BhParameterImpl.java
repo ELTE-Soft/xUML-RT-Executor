@@ -3,8 +3,8 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
@@ -61,7 +61,7 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 	 * @generated
 	 * @ordered
 	 */
-	protected Type type;
+	protected FullType type;
 
 	/**
 	 * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute.
@@ -128,10 +128,10 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getType() {
+	public FullType getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (Type)eResolveProxy(oldType);
+			type = (FullType)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BehaviorPackage.BH_PARAMETER__TYPE, oldType, type));
@@ -145,7 +145,7 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetType() {
+	public FullType basicGetType() {
 		return type;
 	}
 
@@ -154,8 +154,8 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Type newType) {
-		Type oldType = type;
+	public void setType(FullType newType) {
+		FullType oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_PARAMETER__TYPE, oldType, type));
@@ -213,7 +213,7 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 				setReference((NamedReference)newValue);
 				return;
 			case BehaviorPackage.BH_PARAMETER__TYPE:
-				setType((Type)newValue);
+				setType((FullType)newValue);
 				return;
 			case BehaviorPackage.BH_PARAMETER__DIRECTION:
 				setDirection((Direction)newValue);
@@ -234,7 +234,7 @@ public class BhParameterImpl extends MinimalEObjectImpl.Container implements BhP
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_PARAMETER__TYPE:
-				setType((Type)null);
+				setType((FullType)null);
 				return;
 			case BehaviorPackage.BH_PARAMETER__DIRECTION:
 				setDirection(DIRECTION_EDEFAULT);

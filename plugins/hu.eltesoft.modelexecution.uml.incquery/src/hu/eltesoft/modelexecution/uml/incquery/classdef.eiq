@@ -8,50 +8,6 @@ pattern Cls(cls : Class) {
 	neg find IsStereotype(cls);
 }
 
-pattern RegionOfClass(cls : Class, region : Region) {
-	Class.ownedBehavior(cls, stateMachine);
-	StateMachine.region(stateMachine, region);
-}
-
-pattern Operation(cls : Class, operation : Operation, isStatic) {
-	Class.ownedOperation(cls, operation);
-	Operation.isStatic(operation, isStatic);
-}
-
-pattern
-OperationParameter(cls : Class, operation : Operation, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
-	find Operation(cls, operation, _);
-	Operation.ownedParameter(operation, parameter);
-	Parameter.direction(parameter, direction);
-	Parameter.type(parameter, type);
-	direction != ParameterDirectionKind::^return;
-}
-
-pattern OperationReturnType(cls : Class, operation : Operation, type : Type) {
-	find Operation(cls, operation, _);
-	Operation.ownedParameter(operation, parameter);
-	Parameter.direction(parameter, ParameterDirectionKind::^return);
-	Parameter.type(parameter, type);
-}
-
-pattern Attribute(cls: Class, attribute : Property, isStatic, type : Type)  {
-	find Cls(cls);
-	Class.ownedAttribute(cls, attribute);
-	Property.isStatic(attribute, isStatic);
-	Property.type(attribute, type);
-}
-
-pattern Method(cls : Class, operation : Operation, method : Behavior) {
-	Class.ownedOperation(cls, operation);
-
-	Operation.method(operation, method);
-}
-
-pattern Reception(cls : Class, reception : Reception, signal : Signal) {
-	Class.ownedReception(cls, reception);
-	Reception.signal(reception, signal);
-}
-
 private pattern IsBehavior(behavior : Behavior) {
 	Behavior(behavior);
 }
@@ -59,3 +15,117 @@ private pattern IsBehavior(behavior : Behavior) {
 private pattern IsStereotype(stereotype : Stereotype) {
 	Stereotype(stereotype);
 }
+
+// state machine
+
+pattern RegionOfClass(cls : Class, region : Region) {
+	Class.ownedBehavior(cls, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+// attributes
+
+pattern Attribute(cls: Class, attribute : Property, isStatic)  {
+	find Cls(cls);
+	Class.ownedAttribute(cls, attribute);
+	Property.isStatic(attribute, isStatic);
+}
+
+pattern AttributeType(cls: Class, attribute : Property, type : Type) {
+	find Attribute(cls, attribute, _);
+	Property.type(attribute, type);
+}
+
+pattern AttributeLowerBound(cls: Class, attribute : Property, type : Type, lowerBound: ValueSpecification) {
+	find AttributeType(cls, attribute, type);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern AttributeUpperBound(cls: Class, attribute : Property, type : Type, upperBound: ValueSpecification) {
+	find AttributeType(cls, attribute, type);
+	Property.upperValue(attribute, upperBound);
+}
+
+// operations
+
+pattern Operation(cls : Class, operation : Operation, isStatic) {
+	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern
+OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern OperationParameterType(cls: Class, operation : Operation, parameter : Parameter, type : Type) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+}
+
+pattern OperationParameterLowerBound(cls: Class, operation : Operation, parameter : Parameter, type : Type, lowerBound: ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern OperationParameterUpperBound(cls: Class, operation : Operation, parameter : Parameter, type : Type, upperBound: ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type);
+	Parameter.upperValue(parameter, upperBound);
+} 
+
+private pattern OperationReturn(cls: Class, operation : Operation, parameter : Parameter) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+}
+
+pattern OperationReturnType(cls : Class, operation : Operation, type : Type) {
+	find OperationReturn(cls, operation, parameter);
+	Parameter.type(parameter, type);
+}
+
+pattern OperationReturnLowerBound(cls: Class, operation : Operation, type : Type, lowerBound: ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern OperationReturnUpperBound(cls: Class, operation : Operation, type : Type, upperBound: ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type);
+	Parameter.upperValue(parameter, upperBound);
+} 
+
+pattern Method(cls : Class, operation : Operation, method : Behavior) {
+	Class.ownedOperation(cls, operation);
+	Operation.method(operation, method);
+}
+
+// receptions
+
+pattern Reception(cls : Class, reception : Reception, signal : Signal) {
+	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+}
+
+// class associations
+
+pattern ClassAssociation(cls: Class, end: Property) {
+	find AssociationEndType(_, end, cls);
+}
+
+pattern ClassAssociationType(cls: Class, end: Property, type : Association) {
+	find AssociationEndType(type, end, cls);
+}
+
+pattern ClassAssociationLowerBound(cls: Class, end: Property, type : Association, lowerBound: ValueSpecification) {
+	find AssociationEndLowerBound(type, end, cls, lowerBound);
+}
+
+pattern ClassAssociationUpperBound(cls: Class, end: Property, type : Association, upperBound: ValueSpecification) {
+	find AssociationEndLowerBound(type, end, cls, upperBound);
+}
+

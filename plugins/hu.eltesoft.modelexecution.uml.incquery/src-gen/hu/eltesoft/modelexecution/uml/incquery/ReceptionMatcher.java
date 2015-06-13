@@ -29,6 +29,8 @@ import org.eclipse.uml2.uml.Signal;
  * 
  * <p>Original source:
  * <code><pre>
+ * // receptions
+ * 
  * pattern Reception(cls : Class, reception : Reception, signal : Signal) {
  * 	Class.ownedReception(cls, reception);
  * 	Reception.signal(reception, signal);

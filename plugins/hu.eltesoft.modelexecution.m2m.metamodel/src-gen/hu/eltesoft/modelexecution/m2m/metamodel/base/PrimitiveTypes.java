@@ -46,7 +46,15 @@ public enum PrimitiveTypes implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	STRING(2, "String", "String");
+	STRING(2, "String", "String"), /**
+	 * The '<em><b>Real</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #REAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	REAL(3, "Real", "Real");
 
 	/**
 	 * The '<em><b>Integer</b></em>' literal value.
@@ -94,6 +102,21 @@ public enum PrimitiveTypes implements Enumerator {
 	public static final int STRING_VALUE = 2;
 
 	/**
+	 * The '<em><b>Real</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Real</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #REAL
+	 * @model name="Real"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int REAL_VALUE = 3;
+
+	/**
 	 * An array of all the '<em><b>Primitive Types</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -104,6 +127,7 @@ public enum PrimitiveTypes implements Enumerator {
 			INTEGER,
 			BOOLEAN,
 			STRING,
+			REAL,
 		};
 
 	/**
@@ -157,6 +181,7 @@ public enum PrimitiveTypes implements Enumerator {
 			case INTEGER_VALUE: return INTEGER;
 			case BOOLEAN_VALUE: return BOOLEAN;
 			case STRING_VALUE: return STRING;
+			case REAL_VALUE: return REAL;
 		}
 		return null;
 	}

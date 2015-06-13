@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnTypeMatch;
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
 import org.eclipse.uml2.uml.Behavior;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Type;
 
 /**
@@ -16,14 +17,15 @@ public abstract class BehaviorReturnTypeProcessor implements IMatchProcessor<Beh
   /**
    * Defines the action that is to be executed on each match.
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
+   * @param pParameter the value of pattern parameter parameter in the currently processed match
    * @param pType the value of pattern parameter type in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior, final Type pType);
+  public abstract void process(final Behavior pBehavior, final Parameter pParameter, final Type pType);
   
   @Override
   public void process(final BehaviorReturnTypeMatch match) {
-    process(match.getBehavior(), match.getType());
+    process(match.getBehavior(), match.getParameter(), match.getType());
     
   }
 }

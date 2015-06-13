@@ -92,6 +92,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClParameterAdapter();
 			}
 			@Override
+			public Adapter caseClAssociation(ClAssociation object) {
+				return createClAssociationAdapter();
+			}
+			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -190,6 +194,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClParameterAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation <em>Cl Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
+	 * @generated
+	 */
+	public Adapter createClAssociationAdapter() {
 		return null;
 	}
 

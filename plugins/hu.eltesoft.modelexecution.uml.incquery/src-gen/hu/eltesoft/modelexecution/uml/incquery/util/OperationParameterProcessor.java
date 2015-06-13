@@ -5,7 +5,6 @@ import org.eclipse.incquery.runtime.api.IMatchProcessor;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
-import org.eclipse.uml2.uml.Type;
 
 /**
  * A match processor tailored for the hu.eltesoft.modelexecution.uml.incquery.OperationParameter pattern.
@@ -20,15 +19,14 @@ public abstract class OperationParameterProcessor implements IMatchProcessor<Ope
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pOperation the value of pattern parameter operation in the currently processed match
    * @param pParameter the value of pattern parameter parameter in the currently processed match
-   * @param pType the value of pattern parameter type in the currently processed match
    * @param pDirection the value of pattern parameter direction in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final ParameterDirectionKind pDirection);
   
   @Override
   public void process(final OperationParameterMatch match) {
-    process(match.getCls(), match.getOperation(), match.getParameter(), match.getType(), match.getDirection());
+    process(match.getCls(), match.getOperation(), match.getParameter(), match.getDirection());
     
   }
 }

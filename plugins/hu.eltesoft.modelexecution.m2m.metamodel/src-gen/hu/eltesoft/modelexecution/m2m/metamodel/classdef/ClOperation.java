@@ -2,9 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -63,12 +63,12 @@ public interface ClOperation extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Return Type</em>' reference.
-	 * @see #setReturnType(Type)
+	 * @see #setReturnType(FullType)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_ReturnType()
 	 * @model
 	 * @generated
 	 */
-	Type getReturnType();
+	FullType getReturnType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getReturnType <em>Return Type</em>}' reference.
@@ -78,7 +78,7 @@ public interface ClOperation extends Named {
 	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setReturnType(Type value);
+	void setReturnType(FullType value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.

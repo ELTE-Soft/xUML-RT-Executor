@@ -2,8 +2,8 @@ package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
 import hu.eltesoft.modelexecution.m2m.logic.UnsupportedUMLFeatureException;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
@@ -28,6 +28,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 		extends ModelMapper<UML, Trans, Match> {
 
 	protected static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
+	protected static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
 
 	public RootElementTranslator(IncQueryEngine engine)
 			throws IncQueryException {
@@ -74,36 +75,22 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 			case "PrimitiveTypes::Boolean":
 				primType.setType(PrimitiveTypes.BOOLEAN);
 				break;
+			case "PrimitiveTypes::Real":
+				primType.setType(PrimitiveTypes.REAL);
+				break;
 			default:
 				throw new UnsupportedUMLFeatureException(
 						"Invalid primitive type: " + type.getQualifiedName());
 			}
 			return primType;
-		} else if (type instanceof Class) {
+		} else {
 			Type classType = BASE_FACTORY.createType();
 			classType.setReference(new NamedReference(type));
 			return classType;
-		} else {
-			throw new UnsupportedUMLFeatureException("Invalid type: "
-					+ type.getQualifiedName());
 		}
 	}
 
-	/**
-	 * Converts multiplicity given by lower and upper bounds to metamodel
-	 * multiplicity.
-	 */
-	protected Multiplicity convert(ValueSpecification lowerValue,
-			ValueSpecification upperValue) {
-		if ((lowerValue == null || integerValue(lowerValue) == 1)
-				&& (upperValue == null || integerValue(upperValue) == 1)) {
-			return Multiplicity.ONE;
-		} else {
-			return Multiplicity.MULTI;
-		}
-	}
-
-	protected Integer integerValue(ValueSpecification value) {
+	protected Integer toInt(ValueSpecification value) {
 		int ret;
 		try {
 			ret = value.integerValue();
@@ -121,8 +108,6 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 			return Direction.IN;
 		case OUT_LITERAL:
 			return Direction.OUT;
-		case RETURN_LITERAL:
-			return Direction.RETURN;
 		default:
 			throw new UnsupportedUMLFeatureException("Unsupported direction: "
 					+ direction);

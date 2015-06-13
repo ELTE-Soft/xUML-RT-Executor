@@ -7,7 +7,6 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Type;
 
 /**
  * Pattern-specific match representation of the hu.eltesoft.modelexecution.uml.incquery.Attribute pattern,
@@ -30,15 +29,12 @@ public abstract class AttributeMatch extends BasePatternMatch {
   
   private Boolean fIsStatic;
   
-  private Type fType;
+  private static List<String> parameterNames = makeImmutableList("cls", "attribute", "isStatic");
   
-  private static List<String> parameterNames = makeImmutableList("cls", "attribute", "isStatic", "type");
-  
-  private AttributeMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
+  private AttributeMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
     this.fCls = pCls;
     this.fAttribute = pAttribute;
     this.fIsStatic = pIsStatic;
-    this.fType = pType;
     
   }
   
@@ -47,7 +43,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("attribute".equals(parameterName)) return this.fAttribute;
     if ("isStatic".equals(parameterName)) return this.fIsStatic;
-    if ("type".equals(parameterName)) return this.fType;
     return null;
     
   }
@@ -67,11 +62,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     
   }
   
-  public Type getType() {
-    return this.fType;
-    
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -85,10 +75,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     }
     if ("isStatic".equals(parameterName) ) {
     	this.fIsStatic = (java.lang.Boolean) newValue;
-    	return true;
-    }
-    if ("type".equals(parameterName) ) {
-    	this.fType = (org.eclipse.uml2.uml.Type) newValue;
     	return true;
     }
     return false;
@@ -113,12 +99,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     
   }
   
-  public void setType(final Type pType) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fType = pType;
-    
-  }
-  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.Attribute";
@@ -133,13 +113,13 @@ public abstract class AttributeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fAttribute, fIsStatic, fType};
+    return new Object[]{fCls, fAttribute, fIsStatic};
     
   }
   
   @Override
   public AttributeMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fAttribute, fIsStatic, fType) : this;
+    return isMutable() ? newMatch(fCls, fAttribute, fIsStatic) : this;
     
   }
   
@@ -148,8 +128,7 @@ public abstract class AttributeMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"attribute\"=" + prettyPrintValue(fAttribute) + ", ");
-    result.append("\"isStatic\"=" + prettyPrintValue(fIsStatic) + ", ");
-    result.append("\"type\"=" + prettyPrintValue(fType));
+    result.append("\"isStatic\"=" + prettyPrintValue(fIsStatic));
     return result.toString();
     
   }
@@ -161,7 +140,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fAttribute == null) ? 0 : fAttribute.hashCode());
     result = prime * result + ((fIsStatic == null) ? 0 : fIsStatic.hashCode());
-    result = prime * result + ((fType == null) ? 0 : fType.hashCode());
     return result;
     
   }
@@ -187,8 +165,6 @@ public abstract class AttributeMatch extends BasePatternMatch {
     else if (!fAttribute.equals(other.fAttribute)) return false;
     if (fIsStatic == null) {if (other.fIsStatic != null) return false;}
     else if (!fIsStatic.equals(other.fIsStatic)) return false;
-    if (fType == null) {if (other.fType != null) return false;}
-    else if (!fType.equals(other.fType)) return false;
     return true;
   }
   
@@ -211,7 +187,7 @@ public abstract class AttributeMatch extends BasePatternMatch {
    * 
    */
   public static AttributeMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -222,12 +198,11 @@ public abstract class AttributeMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static AttributeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return new Mutable(pCls, pAttribute, pIsStatic, pType);
+  public static AttributeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return new Mutable(pCls, pAttribute, pIsStatic);
     
   }
   
@@ -238,18 +213,17 @@ public abstract class AttributeMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pIsStatic the fixed value of pattern parameter isStatic, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static AttributeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-    return new Immutable(pCls, pAttribute, pIsStatic, pType);
+  public static AttributeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+    return new Immutable(pCls, pAttribute, pIsStatic);
     
   }
   
   private static final class Mutable extends AttributeMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-      super(pCls, pAttribute, pIsStatic, pType);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+      super(pCls, pAttribute, pIsStatic);
       
     }
     
@@ -260,8 +234,8 @@ public abstract class AttributeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends AttributeMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic, final Type pType) {
-      super(pCls, pAttribute, pIsStatic, pType);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pIsStatic) {
+      super(pCls, pAttribute, pIsStatic);
       
     }
     

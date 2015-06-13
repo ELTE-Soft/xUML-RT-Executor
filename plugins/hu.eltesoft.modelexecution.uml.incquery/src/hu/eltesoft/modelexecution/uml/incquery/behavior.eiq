@@ -32,18 +32,47 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
 
-pattern
-BehaviorParameter(behavior : Behavior, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
+pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, direction);
-	Parameter.type(parameter, type);
 	direction != ParameterDirectionKind::^return;
 }
 
-pattern BehaviorReturnType(behavior : Behavior, type : Type) {
+pattern
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type) {
+	find BehaviorParameter(behavior, parameter, _);
+	Parameter.type(parameter, type);
+}
+
+pattern
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
+}
+
+pattern
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type);
+	Parameter.upperValue(parameter, upperBound);
 }
 
 pattern StaticBehavior(behavior : Behavior, isStatic) {

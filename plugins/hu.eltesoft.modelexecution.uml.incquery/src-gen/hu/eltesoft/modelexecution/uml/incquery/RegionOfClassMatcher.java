@@ -28,6 +28,8 @@ import org.eclipse.uml2.uml.Region;
  * 
  * <p>Original source:
  * <code><pre>
+ * // state machine
+ * 
  * pattern RegionOfClass(cls : Class, region : Region) {
  * 	Class.ownedBehavior(cls, stateMachine);
  * 	StateMachine.region(stateMachine, region);

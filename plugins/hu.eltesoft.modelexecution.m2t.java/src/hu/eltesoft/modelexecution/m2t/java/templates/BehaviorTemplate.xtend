@@ -31,15 +31,15 @@ class BehaviorTemplate extends Template {
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
 		
 			«IF behavior.returnType != null»
-				private «behavior.returnType.identifier» ret;
+				private «typeConverter.javaType(behavior.returnType)» ret;
 				
-				public «behavior.returnType.identifier» getReturnValue() {
+				public «typeConverter.javaType(behavior.returnType)» getReturnValue() {
 					return ret;
 				}
 			«ENDIF»
 			«FOR param : behavior.parameters»
 				«generatedHeader(param)»
-				«javaType(param.type, param.direction)» «param.identifier»;
+				«typeConverter.javaType(param.type)» «param.identifier»;
 			«ENDFOR»
 		
 			«IF needsContext»
@@ -53,7 +53,7 @@ class BehaviorTemplate extends Template {
 				«ENDIF»
 				«FOR param : behavior.parameters SEPARATOR ','»
 					«generatedHeader(param)»
-					«javaType(param.type, param.direction)» «param.identifier»
+					«typeConverter.javaType(param.type)» «param.identifier»
 				«ENDFOR»
 				) {
 				«IF needsContext»

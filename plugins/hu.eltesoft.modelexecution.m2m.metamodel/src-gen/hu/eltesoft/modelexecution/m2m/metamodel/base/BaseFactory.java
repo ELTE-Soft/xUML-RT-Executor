@@ -40,6 +40,15 @@ public interface BaseFactory extends EFactory {
 	PrimitiveType createPrimitiveType();
 
 	/**
+	 * Returns a new object of class '<em>Full Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Full Type</em>'.
+	 * @generated
+	 */
+	FullType createFullType();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

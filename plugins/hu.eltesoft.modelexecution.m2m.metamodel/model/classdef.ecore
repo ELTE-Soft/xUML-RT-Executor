@@ -10,10 +10,12 @@
         upperBound="-1" eType="#//ClReception"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
         upperBound="-1" eType="#//ClAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
+        eType="#//ClAssociation"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType base.ecore#//NamedReference"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//FullType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//ClParameter"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -23,13 +25,15 @@
         eType="ecore:EDataType base.ecore#//NamedReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClAttribute" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplicity" eType="ecore:EEnum base.ecore#//Multiplicity"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClParameter" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="ecore:EEnum base.ecore#//Direction"
         derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClAssociation" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//FullType"/>
   </eClassifiers>
 </ecore:EPackage>

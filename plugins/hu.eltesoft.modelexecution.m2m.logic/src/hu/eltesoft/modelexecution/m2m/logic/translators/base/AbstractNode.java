@@ -74,7 +74,8 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		List<PParameter> parameters = matcher.getSpecification()
 				.getParameters();
 		if (parameters.size() < types.size() + 1) {
-			throw new RuntimeException("Matcher must have at least "
+			throw new RuntimeException("The pattern "
+					+ matcher.getPatternName() + " must have at least "
 					+ (types.size() + 1) + " parameters");
 		}
 		for (int i = 0; i < types.size(); i++) {

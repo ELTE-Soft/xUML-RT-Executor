@@ -48,12 +48,12 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","type");
+    return Arrays.asList("behavior","parameter","type");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("type", "org.eclipse.uml2.uml.Type"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"));
   }
   
   @Override
@@ -63,7 +63,7 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
   
   @Override
   public BehaviorReturnTypeMatch newMatch(final Object... parameters) {
-    return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Type) parameters[1]);
+    return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2]);
   }
   
   @Override
@@ -72,13 +72,15 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
     {
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
-      PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
+      PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
+        new ExportedParameter(body, var_parameter, "parameter"), 
         new ExportedParameter(body, var_type, "type")
       ));
+      
       
       
       new TypeBinary(body, CONTEXT, var_behavior, var_parameter, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior", "ownedParameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior.ownedParameter");

@@ -2,9 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -27,7 +26,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#getType <em>Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#isIsStatic <em>Is Static</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl#getMultiplicity <em>Multiplicity</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,7 +60,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * @generated
 	 * @ordered
 	 */
-	protected Type type;
+	protected FullType type;
 
 	/**
 	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
@@ -83,26 +81,6 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * @ordered
 	 */
 	protected boolean isStatic = IS_STATIC_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMultiplicity()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.ONE;
-
-	/**
-	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMultiplicity()
-	 * @generated
-	 * @ordered
-	 */
-	protected Multiplicity multiplicity = MULTIPLICITY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -149,10 +127,10 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getType() {
+	public FullType getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (Type)eResolveProxy(oldType);
+			type = (FullType)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
@@ -166,7 +144,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetType() {
+	public FullType basicGetType() {
 		return type;
 	}
 
@@ -175,8 +153,8 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Type newType) {
-		Type oldType = type;
+	public void setType(FullType newType) {
+		FullType oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
@@ -208,27 +186,6 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Multiplicity getMultiplicity() {
-		return multiplicity;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMultiplicity(Multiplicity newMultiplicity) {
-		Multiplicity oldMultiplicity = multiplicity;
-		multiplicity = newMultiplicity == null ? MULTIPLICITY_EDEFAULT : newMultiplicity;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__MULTIPLICITY, oldMultiplicity, multiplicity));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -239,8 +196,6 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				return basicGetType();
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				return isIsStatic();
-			case ClassdefPackage.CL_ATTRIBUTE__MULTIPLICITY:
-				return getMultiplicity();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -257,13 +212,10 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
-				setType((Type)newValue);
+				setType((FullType)newValue);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic((Boolean)newValue);
-				return;
-			case ClassdefPackage.CL_ATTRIBUTE__MULTIPLICITY:
-				setMultiplicity((Multiplicity)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -281,13 +233,10 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
-				setType((Type)null);
+				setType((FullType)null);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic(IS_STATIC_EDEFAULT);
-				return;
-			case ClassdefPackage.CL_ATTRIBUTE__MULTIPLICITY:
-				setMultiplicity(MULTIPLICITY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -307,8 +256,6 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				return type != null;
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				return isStatic != IS_STATIC_EDEFAULT;
-			case ClassdefPackage.CL_ATTRIBUTE__MULTIPLICITY:
-				return multiplicity != MULTIPLICITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -327,8 +274,6 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 		result.append(reference);
 		result.append(", isStatic: ");
 		result.append(isStatic);
-		result.append(", multiplicity: ");
-		result.append(multiplicity);
 		result.append(')');
 		return result.toString();
 	}

@@ -71,14 +71,14 @@ class SignalTemplate extends Template {
 			@Override
 			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
 				«FOR attribute : signal.attributes SEPARATOR ','»
-					this.«attribute.identifier» = («javaType(attribute.type, attribute.multiplicity)») obj.get("«attribute.identifier»");
+					this.«attribute.identifier» = («typeConverter.javaType(attribute.type)») obj.get("«attribute.identifier»");
 				«ENDFOR»
 			}
 			
 			// attributes
 			
 			«FOR attribute : signal.attributes»
-				«javaType(attribute.type, attribute.multiplicity)» «attribute.identifier»;
+				«typeConverter.javaType(attribute.type)» «attribute.identifier»;
 			«ENDFOR»
 		}
 	'''

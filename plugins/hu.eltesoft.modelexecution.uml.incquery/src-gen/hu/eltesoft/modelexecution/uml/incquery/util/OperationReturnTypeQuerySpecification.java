@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatch;
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.OperationQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +13,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
-import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.ConstantValue;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.PositivePatternCall;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
@@ -78,9 +77,7 @@ public final class OperationReturnTypeQuerySpecification extends BaseGeneratedQu
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_operation = body.getOrCreateVariableByName("operation");
       PVariable var_type = body.getOrCreateVariableByName("type");
-      PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
-      PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_operation, "operation"), 
@@ -89,12 +86,10 @@ public final class OperationReturnTypeQuerySpecification extends BaseGeneratedQu
       
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
-      
-      new PositivePatternCall(body, new FlatTuple(var_cls, var_operation, var___0_), OperationQuerySpecification.instance());
       new TypeUnary(body, var_operation, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation"), "http://www.eclipse.org/uml2/5.0.0/UML/Operation");
-      new TypeBinary(body, CONTEXT, var_operation, var_parameter, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioralFeature.ownedParameter");
-      new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
-      new TypeBinary(body, CONTEXT, var_parameter, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter.direction");
+      
+      new PositivePatternCall(body, new FlatTuple(var_cls, var_operation, var_parameter), OperationReturnQuerySpecification.instance());
+      new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
       bodies.add(body);
     }

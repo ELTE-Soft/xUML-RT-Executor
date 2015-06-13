@@ -64,9 +64,13 @@ class ClassTemplate extends Template {
 				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(this);
 			}
 			
-			// attributes and associations
+			// attributes
 					
 			«generateAttributes()»
+						
+			// associations
+					
+			«generateAssociations()»
 						
 			
 			// operations
@@ -86,11 +90,14 @@ class ClassTemplate extends Template {
 	def generateClassWithoutState() '''
 		public class «classDefinition.identifier» extends «Class.canonicalName» {
 			
-			// attributes and associations
+			// attributes
 					
 			«generateAttributes()»
-						
 			
+			// associations
+					
+			«generateAssociations()»
+									
 			// operations
 					
 			«generateOperations()»
@@ -102,7 +109,15 @@ class ClassTemplate extends Template {
 		«FOR attribute : classDefinition.attributes»
 		
 			«generatedHeader(attribute)»
-			«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type, attribute.multiplicity)» «attribute.identifier»;
+			«IF attribute.isStatic»static«ENDIF» «typeConverter.javaType(attribute.type)» «attribute.identifier»;
+		«ENDFOR»
+	'''
+	
+	def generateAssociations() '''
+		«FOR association : classDefinition.associations»
+		
+			«generatedHeader(association)»
+			«typeConverter.javaType(association.type)» «association.identifier»;
 		«ENDFOR»
 	'''
 
@@ -111,10 +126,10 @@ class ClassTemplate extends Template {
 		
 			«generatedHeader(operation)»
 			public «IF operation.isStatic»static«ENDIF»
-			       «IF operation.returnType != null»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+			       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
 					«FOR parameter : operation.parameters SEPARATOR ','»
 						«generatedHeader(parameter)»
-						«javaType(parameter.type, parameter.direction)» «parameter.identifier»
+						«typeConverter.javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
 					) {
 				«IF null != operation.method»

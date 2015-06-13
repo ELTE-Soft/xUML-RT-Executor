@@ -36,6 +36,7 @@ public class ResourceTranslator {
 	private AdvancedIncQueryEngine engine;
 	private ReversibleTask attachListeners;
 
+	private AssociationTranslator associationTranslator;
 	private BehaviorTranslator behaviorTranslator;
 	private ClassTranslator classTranslator;
 	private RegionTranslator regionTranslator;
@@ -73,6 +74,7 @@ public class ResourceTranslator {
 	}
 
 	private void setupGenerators() throws IncQueryException {
+		associationTranslator = new AssociationTranslator(engine);
 		behaviorTranslator = new BehaviorTranslator(engine);
 		classTranslator = new ClassTranslator(engine);
 		regionTranslator = new RegionTranslator(engine);
@@ -84,6 +86,7 @@ public class ResourceTranslator {
 		CompositeReversibleTask task = new CompositeReversibleTask();
 		ListenerContext context = new ListenerContext(engine, changes,
 				rootNames);
+		task.add(associationTranslator.addListeners(context));
 		task.add(behaviorTranslator.addListeners(context));
 		task.add(classTranslator.addListeners(context));
 		task.add(regionTranslator.addListeners(context));
@@ -135,6 +138,7 @@ public class ResourceTranslator {
 		changes.clear();
 
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
+		performBatchTranslation(updateTasks, associationTranslator);
 		performBatchTranslation(updateTasks, behaviorTranslator);
 		performBatchTranslation(updateTasks, classTranslator);
 		performBatchTranslation(updateTasks, regionTranslator);

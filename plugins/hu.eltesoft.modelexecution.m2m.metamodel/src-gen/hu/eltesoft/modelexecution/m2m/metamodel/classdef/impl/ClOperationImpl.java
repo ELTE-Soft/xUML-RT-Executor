@@ -2,8 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
@@ -89,7 +89,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * @generated
 	 * @ordered
 	 */
-	protected Type returnType;
+	protected FullType returnType;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
@@ -187,10 +187,10 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getReturnType() {
+	public FullType getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject)returnType;
-			returnType = (Type)eResolveProxy(oldReturnType);
+			returnType = (FullType)eResolveProxy(oldReturnType);
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_OPERATION__RETURN_TYPE, oldReturnType, returnType));
@@ -204,7 +204,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetReturnType() {
+	public FullType basicGetReturnType() {
 		return returnType;
 	}
 
@@ -213,8 +213,8 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReturnType(Type newReturnType) {
-		Type oldReturnType = returnType;
+	public void setReturnType(FullType newReturnType) {
+		FullType oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__RETURN_TYPE, oldReturnType, returnType));
@@ -292,7 +292,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setMethod((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__RETURN_TYPE:
-				setReturnType((Type)newValue);
+				setReturnType((FullType)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__PARAMETERS:
 				getParameters().clear();
@@ -320,7 +320,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setMethod(METHOD_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_OPERATION__RETURN_TYPE:
-				setReturnType((Type)null);
+				setReturnType((FullType)null);
 				return;
 			case ClassdefPackage.CL_OPERATION__PARAMETERS:
 				getParameters().clear();

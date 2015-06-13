@@ -2,13 +2,11 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
-
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
-
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -135,12 +133,12 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Return Type</em>' reference.
-	 * @see #setReturnType(Type)
+	 * @see #setReturnType(FullType)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ReturnType()
 	 * @model
 	 * @generated
 	 */
-	Type getReturnType();
+	FullType getReturnType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType <em>Return Type</em>}' reference.
@@ -150,6 +148,6 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setReturnType(Type value);
+	void setReturnType(FullType value);
 
 } // BhBehavior

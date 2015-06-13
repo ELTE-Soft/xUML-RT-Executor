@@ -114,13 +114,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Associations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -288,22 +297,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_ATTRIBUTE__IS_STATIC = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Multiplicity</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ATTRIBUTE__MULTIPLICITY = BasePackage.NAMED_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Cl Attribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int CL_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Cl Attribute</em>' class.
@@ -371,6 +371,53 @@ public interface ClassdefPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
+	 * @generated
+	 */
+	int CL_ASSOCIATION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__REFERENCE = BasePackage.NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -423,6 +470,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClass_Attributes();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations <em>Associations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Associations</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EReference getClClass_Associations();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -532,17 +590,6 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClAttribute_IsStatic();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getMultiplicity <em>Multiplicity</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Multiplicity</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getMultiplicity()
-	 * @see #getClAttribute()
-	 * @generated
-	 */
-	EAttribute getClAttribute_Multiplicity();
-
-	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter <em>Cl Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -573,6 +620,27 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClParameter_Direction();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation <em>Cl Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Association</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
+	 * @generated
+	 */
+	EClass getClAssociation();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation#getType()
+	 * @see #getClAssociation()
+	 * @generated
+	 */
+	EReference getClAssociation_Type();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -638,6 +706,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS__ATTRIBUTES = eINSTANCE.getClClass_Attributes();
+
+		/**
+		 * The meta object literal for the '<em><b>Associations</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_CLASS__ASSOCIATIONS = eINSTANCE.getClClass_Associations();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.
@@ -726,14 +802,6 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_ATTRIBUTE__IS_STATIC = eINSTANCE.getClAttribute_IsStatic();
 
 		/**
-		 * The meta object literal for the '<em><b>Multiplicity</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CL_ATTRIBUTE__MULTIPLICITY = eINSTANCE.getClAttribute_Multiplicity();
-
-		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl <em>Cl Parameter</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -758,6 +826,24 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_PARAMETER__DIRECTION = eINSTANCE.getClParameter_Direction();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
+		 * @generated
+		 */
+		EClass CL_ASSOCIATION = eINSTANCE.getClAssociation();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_ASSOCIATION__TYPE = eINSTANCE.getClAssociation_Type();
 
 	}
 

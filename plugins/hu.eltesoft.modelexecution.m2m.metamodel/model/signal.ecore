@@ -7,7 +7,6 @@
         eType="#//SgAttribute"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SgAttribute" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplicity" eType="ecore:EEnum base.ecore#//Multiplicity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
   </eClassifiers>
 </ecore:EPackage>

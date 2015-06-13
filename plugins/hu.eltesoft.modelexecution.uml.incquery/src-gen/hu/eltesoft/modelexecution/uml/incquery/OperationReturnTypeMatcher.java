@@ -30,9 +30,7 @@ import org.eclipse.uml2.uml.Type;
  * <p>Original source:
  * <code><pre>
  * pattern OperationReturnType(cls : Class, operation : Operation, type : Type) {
- * 	find Operation(cls, operation, _);
- * 	Operation.ownedParameter(operation, parameter);
- * 	Parameter.direction(parameter, ParameterDirectionKind::^return);
+ * 	find OperationReturn(cls, operation, parameter);
  * 	Parameter.type(parameter, type);
  * }
  * </pre></code>

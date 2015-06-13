@@ -7,6 +7,7 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Behavior;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Type;
 
 /**
@@ -26,12 +27,15 @@ import org.eclipse.uml2.uml.Type;
 public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   private Behavior fBehavior;
   
+  private Parameter fParameter;
+  
   private Type fType;
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "type");
+  private static List<String> parameterNames = makeImmutableList("behavior", "parameter", "type");
   
-  private BehaviorReturnTypeMatch(final Behavior pBehavior, final Type pType) {
+  private BehaviorReturnTypeMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
     this.fBehavior = pBehavior;
+    this.fParameter = pParameter;
     this.fType = pType;
     
   }
@@ -39,6 +43,7 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   @Override
   public Object get(final String parameterName) {
     if ("behavior".equals(parameterName)) return this.fBehavior;
+    if ("parameter".equals(parameterName)) return this.fParameter;
     if ("type".equals(parameterName)) return this.fType;
     return null;
     
@@ -46,6 +51,11 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   
   public Behavior getBehavior() {
     return this.fBehavior;
+    
+  }
+  
+  public Parameter getParameter() {
+    return this.fParameter;
     
   }
   
@@ -61,6 +71,10 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     	this.fBehavior = (org.eclipse.uml2.uml.Behavior) newValue;
     	return true;
     }
+    if ("parameter".equals(parameterName) ) {
+    	this.fParameter = (org.eclipse.uml2.uml.Parameter) newValue;
+    	return true;
+    }
     if ("type".equals(parameterName) ) {
     	this.fType = (org.eclipse.uml2.uml.Type) newValue;
     	return true;
@@ -72,6 +86,12 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   public void setBehavior(final Behavior pBehavior) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fBehavior = pBehavior;
+    
+  }
+  
+  public void setParameter(final Parameter pParameter) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fParameter = pParameter;
     
   }
   
@@ -95,13 +115,13 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fType};
+    return new Object[]{fBehavior, fParameter, fType};
     
   }
   
   @Override
   public BehaviorReturnTypeMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fType) : this;
+    return isMutable() ? newMatch(fBehavior, fParameter, fType) : this;
     
   }
   
@@ -109,6 +129,7 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
     result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
+    result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
     result.append("\"type\"=" + prettyPrintValue(fType));
     return result.toString();
     
@@ -119,6 +140,7 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
+    result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
     result = prime * result + ((fType == null) ? 0 : fType.hashCode());
     return result;
     
@@ -141,6 +163,8 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     BehaviorReturnTypeMatch other = (BehaviorReturnTypeMatch) obj;
     if (fBehavior == null) {if (other.fBehavior != null) return false;}
     else if (!fBehavior.equals(other.fBehavior)) return false;
+    if (fParameter == null) {if (other.fParameter != null) return false;}
+    else if (!fParameter.equals(other.fParameter)) return false;
     if (fType == null) {if (other.fType != null) return false;}
     else if (!fType.equals(other.fType)) return false;
     return true;
@@ -165,7 +189,7 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * 
    */
   public static BehaviorReturnTypeMatch newEmptyMatch() {
-    return new Mutable(null, null);
+    return new Mutable(null, null, null);
     
   }
   
@@ -174,12 +198,13 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * Fields of the mutable match can be filled to create a partial match, usable as matcher input.
    * 
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static BehaviorReturnTypeMatch newMutableMatch(final Behavior pBehavior, final Type pType) {
-    return new Mutable(pBehavior, pType);
+  public static BehaviorReturnTypeMatch newMutableMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
+    return new Mutable(pBehavior, pParameter, pType);
     
   }
   
@@ -188,18 +213,19 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
+   * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Type pType) {
-    return new Immutable(pBehavior, pType);
+  public static BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
+    return new Immutable(pBehavior, pParameter, pType);
     
   }
   
   private static final class Mutable extends BehaviorReturnTypeMatch {
-    Mutable(final Behavior pBehavior, final Type pType) {
-      super(pBehavior, pType);
+    Mutable(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
+      super(pBehavior, pParameter, pType);
       
     }
     
@@ -210,8 +236,8 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends BehaviorReturnTypeMatch {
-    Immutable(final Behavior pBehavior, final Type pType) {
-      super(pBehavior, pType);
+    Immutable(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
+      super(pBehavior, pParameter, pType);
       
     }
     

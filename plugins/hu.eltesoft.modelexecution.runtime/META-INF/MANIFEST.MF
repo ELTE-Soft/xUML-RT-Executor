@@ -8,6 +8,7 @@ Export-Package: hu.eltesoft.modelexecution.runtime,
  hu.eltesoft.modelexecution.runtime.base,
  hu.eltesoft.modelexecution.runtime.log,
  hu.eltesoft.modelexecution.runtime.trace,
- hu.eltesoft.modelexecution.runtime.trace.json
+ hu.eltesoft.modelexecution.runtime.trace.json,
+ hu.eltesoft.modelexecution.runtime.values
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: hu.eltesoft.modelexecution.3pp;bundle-version="0.3.0"

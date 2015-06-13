@@ -18,7 +18,6 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
-import org.eclipse.uml2.uml.Type;
 
 /**
  * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.BehaviorParameter pattern,
@@ -31,11 +30,9 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern
- * BehaviorParameter(behavior : Behavior, parameter : Parameter, type : Type, direction : ParameterDirectionKind) {
+ * pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
  * 	Behavior.ownedParameter(behavior, parameter);
  * 	Parameter.direction(parameter, direction);
- * 	Parameter.type(parameter, type);
  * 	direction != ParameterDirectionKind::^return;
  * }
  * </pre></code>
@@ -78,9 +75,7 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
   
   private final static int POSITION_PARAMETER = 1;
   
-  private final static int POSITION_TYPE = 2;
-  
-  private final static int POSITION_DIRECTION = 3;
+  private final static int POSITION_DIRECTION = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(BehaviorParameterMatcher.class);
   
@@ -119,13 +114,12 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return matches represented as a BehaviorParameterMatch object.
    * 
    */
-  public Collection<BehaviorParameterMatch> getAllMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawGetAllMatches(new Object[]{pBehavior, pParameter, pType, pDirection});
+  public Collection<BehaviorParameterMatch> getAllMatches(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawGetAllMatches(new Object[]{pBehavior, pParameter, pDirection});
   }
   
   /**
@@ -133,13 +127,12 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return a match represented as a BehaviorParameterMatch object, or null if no match is found.
    * 
    */
-  public BehaviorParameterMatch getOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType, pDirection});
+  public BehaviorParameterMatch getOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pParameter, pDirection});
   }
   
   /**
@@ -147,39 +140,36 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * under any possible substitution of the unspecified parameters (if any).
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawHasMatch(new Object[]{pBehavior, pParameter, pType, pDirection});
+  public boolean hasMatch(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawHasMatch(new Object[]{pBehavior, pParameter, pDirection});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawCountMatches(new Object[]{pBehavior, pParameter, pType, pDirection});
+  public int countMatches(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawCountMatches(new Object[]{pBehavior, pParameter, pDirection});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection, final IMatchProcessor<? super BehaviorParameterMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior, pParameter, pType, pDirection}, processor);
+  public void forEachMatch(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection, final IMatchProcessor<? super BehaviorParameterMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior, pParameter, pDirection}, processor);
   }
   
   /**
@@ -187,14 +177,13 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection, final IMatchProcessor<? super BehaviorParameterMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType, pDirection}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection, final IMatchProcessor<? super BehaviorParameterMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior, pParameter, pDirection}, processor);
   }
   
   /**
@@ -206,15 +195,14 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<BehaviorParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pParameter, pType, pDirection});
+  public DeltaMonitor<BehaviorParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pParameter, pDirection});
   }
   
   /**
@@ -223,13 +211,12 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pDirection the fixed value of pattern parameter direction, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public BehaviorParameterMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return BehaviorParameterMatch.newMatch(pBehavior, pParameter, pType, pDirection);
+  public BehaviorParameterMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return BehaviorParameterMatch.newMatch(pBehavior, pParameter, pDirection);
     
   }
   
@@ -267,8 +254,8 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Behavior> getAllValuesOfbehavior(final Parameter pParameter, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pParameter, pType, pDirection});
+  public Set<Behavior> getAllValuesOfbehavior(final Parameter pParameter, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pParameter, pDirection});
   }
   
   /**
@@ -305,46 +292,8 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Parameter> getAllValuesOfparameter(final Behavior pBehavior, final Type pType, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOfparameter(new Object[]{pBehavior, null, pType, pDirection});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
-    Set<Type> results = new HashSet<Type>();
-    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype() {
-    return rawAccumulateAllValuesOftype(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final BehaviorParameterMatch partialMatch) {
-    return rawAccumulateAllValuesOftype(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final Behavior pBehavior, final Parameter pParameter, final ParameterDirectionKind pDirection) {
-    return rawAccumulateAllValuesOftype(new Object[]{pBehavior, pParameter, null, pDirection});
+  public Set<Parameter> getAllValuesOfparameter(final Behavior pBehavior, final ParameterDirectionKind pDirection) {
+    return rawAccumulateAllValuesOfparameter(new Object[]{pBehavior, null, pDirection});
   }
   
   /**
@@ -381,14 +330,14 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<ParameterDirectionKind> getAllValuesOfdirection(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawAccumulateAllValuesOfdirection(new Object[]{pBehavior, pParameter, pType, null});
+  public Set<ParameterDirectionKind> getAllValuesOfdirection(final Behavior pBehavior, final Parameter pParameter) {
+    return rawAccumulateAllValuesOfdirection(new Object[]{pBehavior, pParameter, null});
   }
   
   @Override
   protected BehaviorParameterMatch tupleToMatch(final Tuple t) {
     try {
-      return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (org.eclipse.uml2.uml.ParameterDirectionKind) t.get(POSITION_DIRECTION));
+      return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.ParameterDirectionKind) t.get(POSITION_DIRECTION));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -399,7 +348,7 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
   @Override
   protected BehaviorParameterMatch arrayToMatch(final Object[] match) {
     try {
-      return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
+      return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -410,7 +359,7 @@ public class BehaviorParameterMatcher extends BaseMatcher<BehaviorParameterMatch
   @Override
   protected BehaviorParameterMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return BehaviorParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
+      return BehaviorParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ParameterDirectionKind) match[POSITION_DIRECTION]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

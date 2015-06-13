@@ -3,8 +3,8 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,12 +33,12 @@ public interface BhParameter extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(Type)
+	 * @see #setType(FullType)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhParameter_Type()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
-	Type getType();
+	FullType getType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter#getType <em>Type</em>}' reference.
@@ -48,7 +48,7 @@ public interface BhParameter extends Named {
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(Type value);
+	void setType(FullType value);
 
 	/**
 	 * Returns the value of the '<em><b>Direction</b></em>' attribute.
@@ -63,7 +63,7 @@ public interface BhParameter extends Named {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Direction
 	 * @see #setDirection(Direction)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhParameter_Direction()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
 	Direction getDirection();

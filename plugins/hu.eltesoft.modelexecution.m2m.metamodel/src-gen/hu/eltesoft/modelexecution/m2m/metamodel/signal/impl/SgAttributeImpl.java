@@ -2,9 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
@@ -26,7 +25,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getType <em>Type</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getMultiplicity <em>Multiplicity</em>}</li>
  * </ul>
  * </p>
  *
@@ -61,27 +59,7 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * @generated
 	 * @ordered
 	 */
-	protected Type type;
-
-	/**
-	 * The default value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMultiplicity()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.ONE;
-
-	/**
-	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMultiplicity()
-	 * @generated
-	 * @ordered
-	 */
-	protected Multiplicity multiplicity = MULTIPLICITY_EDEFAULT;
+	protected FullType type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -128,10 +106,10 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getType() {
+	public FullType getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (Type)eResolveProxy(oldType);
+			type = (FullType)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SignalPackage.SG_ATTRIBUTE__TYPE, oldType, type));
@@ -145,7 +123,7 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetType() {
+	public FullType basicGetType() {
 		return type;
 	}
 
@@ -154,32 +132,11 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Type newType) {
-		Type oldType = type;
+	public void setType(FullType newType) {
+		FullType oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, SignalPackage.SG_ATTRIBUTE__TYPE, oldType, type));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Multiplicity getMultiplicity() {
-		return multiplicity;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMultiplicity(Multiplicity newMultiplicity) {
-		Multiplicity oldMultiplicity = multiplicity;
-		multiplicity = newMultiplicity == null ? MULTIPLICITY_EDEFAULT : newMultiplicity;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SignalPackage.SG_ATTRIBUTE__MULTIPLICITY, oldMultiplicity, multiplicity));
 	}
 
 	/**
@@ -195,8 +152,6 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
-			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
-				return getMultiplicity();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -213,10 +168,7 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 				setReference((NamedReference)newValue);
 				return;
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
-				setType((Type)newValue);
-				return;
-			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
-				setMultiplicity((Multiplicity)newValue);
+				setType((FullType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -234,10 +186,7 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
-				setType((Type)null);
-				return;
-			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
-				setMultiplicity(MULTIPLICITY_EDEFAULT);
+				setType((FullType)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -255,8 +204,6 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case SignalPackage.SG_ATTRIBUTE__TYPE:
 				return type != null;
-			case SignalPackage.SG_ATTRIBUTE__MULTIPLICITY:
-				return multiplicity != MULTIPLICITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -273,8 +220,6 @@ public class SgAttributeImpl extends MinimalEObjectImpl.Container implements SgA
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (reference: ");
 		result.append(reference);
-		result.append(", multiplicity: ");
-		result.append(multiplicity);
 		result.append(')');
 		return result.toString();
 	}

@@ -10,3 +10,19 @@ pattern SignalAttribute(signal : Signal, attribute : Property) {
 	find Signal(signal);
 	Signal.ownedAttribute(signal, attribute);
 }
+
+pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type) {
+	find SignalAttribute(signal, attribute);
+	Property.type(attribute, type);
+}
+
+
+pattern SignalAttributeLowerBound(signal : Signal, attribute : Property, type : Type, lowerBound : ValueSpecification) {
+	find SignalAttributeType(signal, attribute, type);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, type : Type, upperBound : ValueSpecification) {
+	find SignalAttributeType(signal, attribute, type);
+	Property.upperValue(attribute, upperBound);
+}

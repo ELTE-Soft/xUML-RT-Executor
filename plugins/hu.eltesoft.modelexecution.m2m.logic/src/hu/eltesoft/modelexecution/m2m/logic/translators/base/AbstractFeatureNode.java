@@ -29,8 +29,9 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 
 	private final List<Consumer<AbstractFeatureNode<?, ?>>> childInvocations = new ArrayList<>();
 
-	public AbstractFeatureNode(List<String> typeNames, EStructuralFeature feature,
-			BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
+	public AbstractFeatureNode(List<String> typeNames,
+			EStructuralFeature feature, BaseMatcher<Match> matcher,
+			Function<Match, Trans> transform) {
 		super(typeNames, matcher, transform);
 		this.feature = feature;
 	}
@@ -40,6 +41,13 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		Match filterMatch = matcher.newEmptyMatch();
 		for (int i = 0; i < stack.size(); ++i) {
 			filterMatch.set(i, stack.get(i));
+		}
+		if (parentObject.eClass() != feature.getEContainingClass()) {
+			throw new RuntimeException("Feature '" + feature.getName()
+					+ "' has the container class of '"
+					+ feature.getEContainingClass().getName()
+					+ "' but received a '" + parentObject.eClass().getName()
+					+ "' to integrate into.");
 		}
 
 		boolean hasNoValue = true;
@@ -61,9 +69,14 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		}
 
 		if (feature.isRequired() && hasNoValue) {
-			throw new GenerationException("Required feature not found: "
-					+ feature.getName() + " in "
-					+ feature.getEContainingClass().getName());
+			Object defaultValue = feature.getDefaultValue();
+			if (defaultValue != null) {
+				parentObject.eSet(feature, defaultValue);
+			} else {
+				throw new GenerationException("Required feature not found: "
+						+ feature.getName() + " in "
+						+ feature.getEContainingClass().getName());
+			}
 		}
 
 		childNodes.forEach(node -> {

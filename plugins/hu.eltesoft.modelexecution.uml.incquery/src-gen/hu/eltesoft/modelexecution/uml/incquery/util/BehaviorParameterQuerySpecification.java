@@ -49,12 +49,12 @@ public final class BehaviorParameterQuerySpecification extends BaseGeneratedQuer
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","parameter","type","direction");
+    return Arrays.asList("behavior","parameter","direction");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("direction", "org.eclipse.uml2.uml.ParameterDirectionKind"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("direction", "org.eclipse.uml2.uml.ParameterDirectionKind"));
   }
   
   @Override
@@ -64,7 +64,7 @@ public final class BehaviorParameterQuerySpecification extends BaseGeneratedQuer
   
   @Override
   public BehaviorParameterMatch newMatch(final Object... parameters) {
-    return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2], (org.eclipse.uml2.uml.ParameterDirectionKind) parameters[3]);
+    return BehaviorParameterMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.ParameterDirectionKind) parameters[2]);
   }
   
   @Override
@@ -74,24 +74,20 @@ public final class BehaviorParameterQuerySpecification extends BaseGeneratedQuer
       PBody body = new PBody(this);
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
-      PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_direction = body.getOrCreateVariableByName("direction");
-      PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
+      PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
-        new ExportedParameter(body, var_type, "type"), 
         new ExportedParameter(body, var_direction, "direction")
       ));
       
       
       
-      
       new TypeBinary(body, CONTEXT, var_behavior, var_parameter, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior", "ownedParameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior.ownedParameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_direction, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter.direction");
-      new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
-      new ConstantValue(body, var__virtual_3_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
-      new Inequality(body, var_direction, var__virtual_3_);
+      new ConstantValue(body, var__virtual_2_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
+      new Inequality(body, var_direction, var__virtual_2_);
       bodies.add(body);
     }
     return bodies;

@@ -11,11 +11,12 @@
         eType="#//BhParameter"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//FullType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="AlfAnalyzerResult" instanceClassName="hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult"/>
   <eClassifiers xsi:type="ecore:EClass" name="BhParameter" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//Type"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="ecore:EEnum base.ecore#//Direction"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//FullType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" lowerBound="1"
+        eType="ecore:EEnum base.ecore#//Direction"/>
   </eClassifiers>
 </ecore:EPackage>
