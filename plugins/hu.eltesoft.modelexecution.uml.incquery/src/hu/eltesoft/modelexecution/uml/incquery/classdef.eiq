@@ -31,19 +31,19 @@ pattern Attribute(cls: Class, attribute : Property, isStatic)  {
 	Property.isStatic(attribute, isStatic);
 }
 
-pattern AttributeType(cls: Class, attribute : Property, type : Type, ordered, unique) {
+pattern AttributeType(cls: Class, attribute : Property, type, ordered, unique) {
 	find Attribute(cls, attribute, _);
 	Property.type(attribute, type);
 	Property.isOrdered(attribute, ordered);
 	Property.isUnique(attribute, unique);
 }
 
-pattern AttributeLowerBound(cls: Class, attribute : Property, type : Type, lowerBound: ValueSpecification) {
+pattern AttributeLowerBound(cls: Class, attribute : Property, type, lowerBound: ValueSpecification) {
 	find AttributeType(cls, attribute, type, _, _);
 	Property.lowerValue(attribute, lowerBound);
 }
 
-pattern AttributeUpperBound(cls: Class, attribute : Property, type : Type, upperBound: ValueSpecification) {
+pattern AttributeUpperBound(cls: Class, attribute : Property, type, upperBound: ValueSpecification) {
 	find AttributeType(cls, attribute, type, _, _);
 	Property.upperValue(attribute, upperBound);
 }
