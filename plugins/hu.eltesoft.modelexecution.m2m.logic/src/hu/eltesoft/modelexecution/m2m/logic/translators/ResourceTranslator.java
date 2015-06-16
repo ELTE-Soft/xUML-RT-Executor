@@ -17,6 +17,13 @@ import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 
+/**
+ * This translator converts model resources into a set of translational models
+ * and finally to templates. Collects translators for different kind of root
+ * elements (UML elements that are translated into separate java files), and
+ * handles the resource-specific conversion details concerning incremental
+ * changes.
+ */
 public class ResourceTranslator {
 
 	public static ResourceTranslator createIncremental(Resource resource) {
@@ -36,12 +43,7 @@ public class ResourceTranslator {
 	private AdvancedIncQueryEngine engine;
 	private ReversibleTask attachListeners;
 
-	private AssociationTranslator associationTranslator;
-	private BehaviorTranslator behaviorTranslator;
-	private ClassTranslator classTranslator;
-	private RegionTranslator regionTranslator;
-	private SignalEventTranslator signalEventTranslator;
-	private SignalTranslator signalTranslator;
+	private List<RootElementTranslator<?, ?, ?>> translators;
 
 	private ResourceTranslator(Resource resource, boolean incremental) {
 		this.resource = resource;
@@ -63,7 +65,7 @@ public class ResourceTranslator {
 				engine = AdvancedIncQueryEngine.createUnmanagedEngine(resource);
 			}
 
-			setupGenerators();
+			setupTranslators();
 
 			if (incremental) {
 				attachListeners();
@@ -73,25 +75,23 @@ public class ResourceTranslator {
 		}
 	}
 
-	private void setupGenerators() throws IncQueryException {
-		associationTranslator = new AssociationTranslator(engine);
-		behaviorTranslator = new BehaviorTranslator(engine);
-		classTranslator = new ClassTranslator(engine);
-		regionTranslator = new RegionTranslator(engine);
-		signalEventTranslator = new SignalEventTranslator(engine);
-		signalTranslator = new SignalTranslator(engine);
+	private void setupTranslators() throws IncQueryException {
+		translators = new LinkedList<>();
+		translators.add(new AssociationTranslator(engine));
+		translators.add(new BehaviorTranslator(engine));
+		translators.add(new ClassTranslator(engine));
+		translators.add(new RegionTranslator(engine));
+		translators.add(new SignalEventTranslator(engine));
+		translators.add(new SignalTranslator(engine));
 	}
 
 	private void attachListeners() {
 		CompositeReversibleTask task = new CompositeReversibleTask();
 		ListenerContext context = new ListenerContext(engine, changes,
 				rootNames);
-		task.add(associationTranslator.addListeners(context));
-		task.add(behaviorTranslator.addListeners(context));
-		task.add(classTranslator.addListeners(context));
-		task.add(regionTranslator.addListeners(context));
-		task.add(signalEventTranslator.addListeners(context));
-		task.add(signalTranslator.addListeners(context));
+		for (RootElementTranslator<?, ?, ?> translator : translators) {
+			task.add(translator.addListeners(context));
+		}
 		attachListeners = task;
 	}
 
@@ -138,12 +138,9 @@ public class ResourceTranslator {
 		changes.clear();
 
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
-		performBatchTranslation(updateTasks, associationTranslator);
-		performBatchTranslation(updateTasks, behaviorTranslator);
-		performBatchTranslation(updateTasks, classTranslator);
-		performBatchTranslation(updateTasks, regionTranslator);
-		performBatchTranslation(updateTasks, signalEventTranslator);
-		performBatchTranslation(updateTasks, signalTranslator);
+		for (RootElementTranslator<?, ?, ?> translator : translators) {
+			performBatchTranslation(updateTasks, translator);
+		}
 		return updateTasks;
 	}
 

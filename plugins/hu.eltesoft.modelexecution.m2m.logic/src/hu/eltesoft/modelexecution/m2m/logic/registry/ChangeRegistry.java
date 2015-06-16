@@ -15,7 +15,13 @@ import java.util.Set;
 import org.eclipse.uml2.uml.NamedElement;
 
 /**
- * A change registry to record changes in the model and perform them later.
+ * A change registry to record incremental changes of the model (usually done by
+ * an editor) and update the generated java files when the changes are committed
+ * (by saving the model).
+ * 
+ * Contains {@linkplain TranslationTask}s that encapsulate the changed root
+ * elements (UML elements that are translated into separate java files) and the
+ * builder that can convert them. Also contains simpler deletion tasks.
  */
 public class ChangeRegistry {
 
@@ -46,8 +52,8 @@ public class ChangeRegistry {
 	}
 
 	/**
-	 * Performs model-to-model transformation according to the previously
-	 * registered changes and clears this registry.
+	 * Performs uml-model-to-translational-model transformation according to the
+	 * previously registered changes and clears this registry.
 	 */
 	public synchronized List<SourceCodeTask> performTranslation() {
 		List<SourceCodeTask> tasks = new ArrayList<>();

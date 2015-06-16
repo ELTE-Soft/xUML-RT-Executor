@@ -8,7 +8,15 @@ import hu.eltesoft.modelexecution.m2t.java.Template;
 import org.eclipse.uml2.uml.NamedElement;
 
 /**
- * A task to generate a translation model.
+ * A task to update the translational model. On {@linkplain #perform()}
+ * generates the translational model from the contained source using the
+ * contained builder.
+ * 
+ * Ensures type safety by wrapping the source element with a builder of the
+ * corresponding type.
+ * 
+ * This task is intended to be executed locking the editing domain, to ensure
+ * that the model is not changed while the operation runs.
  */
 class TranslationTask<UML extends NamedElement> {
 
@@ -23,10 +31,10 @@ class TranslationTask<UML extends NamedElement> {
 	/**
 	 * Performs the model generation this task was created for.
 	 * 
-	 * @return a source code update task to perform the required updates in the
+	 * @return A source code update task to perform the required updates in the
 	 *         textual representation of the original model
 	 * @throws GenerationException
-	 *             if a generation error occurred, due to an inconsistent model
+	 *             If a generation error occurred, due to an inconsistent model
 	 *             or a missing source object
 	 */
 	public UpdateSourceCodeTask perform() throws GenerationException {

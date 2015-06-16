@@ -22,6 +22,10 @@ import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 
+/**
+ * A node of the translator tree that corresponds to a feature of the
+ * translational model.
+ */
 public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		extends AbstractNode<Trans, Match> {
 

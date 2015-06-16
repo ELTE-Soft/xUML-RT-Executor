@@ -10,6 +10,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 
+/**
+ * A node of the translation tree that corresponds to a feature that's element
+ * is a data type of the translational model rather than a primitive type or
+ * wrapped native java type.
+ */
 public class EObjectFeatureNode<Trans extends EObject, Match extends IPatternMatch>
 		extends AbstractFeatureNode<Trans, Match> {
 

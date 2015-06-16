@@ -12,16 +12,7 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
 /**
- * While constructing the trasnformation from the UML model to the Translational
- * model we assume that the patterns are structured as the following:
- * 
- * The first parameter is the root element, from which a source file will be
- * generated.
- *
- * If the current element is in the nth level of the feature tree, the first n-1
- * parameters of the pattern are the ancestors of the current element.
- * 
- * The nth parameter in the pattern is the current element.
+
  */
 public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 

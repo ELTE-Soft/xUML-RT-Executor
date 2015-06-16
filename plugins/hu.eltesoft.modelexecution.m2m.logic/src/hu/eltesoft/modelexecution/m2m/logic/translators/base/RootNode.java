@@ -9,6 +9,9 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.uml2.uml.NamedElement;
 
+/**
+ * The root element of the translation tree.
+ */
 public class RootNode<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch>
 		extends AbstractNode<Trans, Match> {
 

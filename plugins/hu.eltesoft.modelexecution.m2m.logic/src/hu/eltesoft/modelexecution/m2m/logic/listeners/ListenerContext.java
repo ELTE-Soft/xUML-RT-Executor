@@ -5,6 +5,10 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 
+/**
+ * Parameter object needed to setup or remove incremental change listeners of a
+ * translator.
+ */
 public class ListenerContext {
 
 	private final AdvancedIncQueryEngine engine;

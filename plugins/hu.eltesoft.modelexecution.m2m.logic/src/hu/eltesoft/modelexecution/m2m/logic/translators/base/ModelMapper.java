@@ -22,6 +22,10 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 
+/**
+ * A class for mapping UML elements into the translational model. These are
+ * created by the translation tree.
+ */
 public abstract class ModelMapper<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch> {
 
 	private final RootNode<UML, Trans, Match> root;
