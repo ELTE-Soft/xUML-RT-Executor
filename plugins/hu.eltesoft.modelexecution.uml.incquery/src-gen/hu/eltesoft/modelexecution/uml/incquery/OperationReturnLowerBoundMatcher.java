@@ -32,7 +32,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <code><pre>
  * pattern OperationReturnLowerBound(cls: Class, operation : Operation, type : Type, lowerBound: ValueSpecification) {
  * 	find OperationReturn(cls, operation, parameter);
- * 	find OperationReturnType(cls, operation, type);
+ * 	find OperationReturnType(cls, operation, type, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }
  * </pre></code>

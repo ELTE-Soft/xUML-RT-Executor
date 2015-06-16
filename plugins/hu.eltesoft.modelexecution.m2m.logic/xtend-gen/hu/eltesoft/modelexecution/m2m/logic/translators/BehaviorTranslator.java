@@ -107,6 +107,10 @@ public class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavi
           Type _type = it.getType();
           hu.eltesoft.modelexecution.m2m.metamodel.base.Type _convert = BehaviorTranslator.this.convert(_type);
           elem.setBaseType(_convert);
+          Boolean _ordered = it.getOrdered();
+          elem.setIsOrdered((_ordered).booleanValue());
+          Boolean _unique = it.getUnique();
+          elem.setIsUnique((_unique).booleanValue());
           return elem;
         }
       };
@@ -137,6 +141,10 @@ public class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavi
           Type _type = it.getType();
           hu.eltesoft.modelexecution.m2m.metamodel.base.Type _convert = BehaviorTranslator.this.convert(_type);
           elem.setBaseType(_convert);
+          Boolean _ordered = it.getOrdered();
+          elem.setIsOrdered((_ordered).booleanValue());
+          Boolean _unique = it.getUnique();
+          elem.setIsUnique((_unique).booleanValue());
           return elem;
         }
       };

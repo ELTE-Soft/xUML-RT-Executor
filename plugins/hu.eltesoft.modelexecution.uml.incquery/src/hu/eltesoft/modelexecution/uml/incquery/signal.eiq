@@ -11,18 +11,20 @@ pattern SignalAttribute(signal : Signal, attribute : Property) {
 	Signal.ownedAttribute(signal, attribute);
 }
 
-pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type) {
+pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type, ordered, unique) {
 	find SignalAttribute(signal, attribute);
 	Property.type(attribute, type);
+	Property.isOrdered(attribute, ordered);
+	Property.isUnique(attribute, unique);
 }
 
 
 pattern SignalAttributeLowerBound(signal : Signal, attribute : Property, type : Type, lowerBound : ValueSpecification) {
-	find SignalAttributeType(signal, attribute, type);
+	find SignalAttributeType(signal, attribute, type, _, _);
 	Property.lowerValue(attribute, lowerBound);
 }
 
 pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, type : Type, upperBound : ValueSpecification) {
-	find SignalAttributeType(signal, attribute, type);
+	find SignalAttributeType(signal, attribute, type, _, _);
 	Property.upperValue(attribute, upperBound);
 }

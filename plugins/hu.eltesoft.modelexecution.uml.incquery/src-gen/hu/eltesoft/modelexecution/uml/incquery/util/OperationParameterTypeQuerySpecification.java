@@ -51,12 +51,12 @@ public final class OperationParameterTypeQuerySpecification extends BaseGenerate
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","operation","parameter","type");
+    return Arrays.asList("cls","operation","parameter","type","ordered","unique");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("operation", "org.eclipse.uml2.uml.Operation"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("ordered", "java.lang.Boolean"),new PParameter("unique", "java.lang.Boolean"));
   }
   
   @Override
@@ -66,7 +66,7 @@ public final class OperationParameterTypeQuerySpecification extends BaseGenerate
   
   @Override
   public OperationParameterTypeMatch newMatch(final Object... parameters) {
-    return OperationParameterTypeMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2], (org.eclipse.uml2.uml.Type) parameters[3]);
+    return OperationParameterTypeMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Operation) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2], (org.eclipse.uml2.uml.Type) parameters[3], (java.lang.Boolean) parameters[4], (java.lang.Boolean) parameters[5]);
   }
   
   @Override
@@ -78,12 +78,16 @@ public final class OperationParameterTypeQuerySpecification extends BaseGenerate
       PVariable var_operation = body.getOrCreateVariableByName("operation");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
       PVariable var_type = body.getOrCreateVariableByName("type");
+      PVariable var_ordered = body.getOrCreateVariableByName("ordered");
+      PVariable var_unique = body.getOrCreateVariableByName("unique");
       PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_operation, "operation"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
-        new ExportedParameter(body, var_type, "type")
+        new ExportedParameter(body, var_type, "type"), 
+        new ExportedParameter(body, var_ordered, "ordered"), 
+        new ExportedParameter(body, var_unique, "unique")
       ));
       
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
@@ -91,9 +95,13 @@ public final class OperationParameterTypeQuerySpecification extends BaseGenerate
       new TypeUnary(body, var_operation, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation"), "http://www.eclipse.org/uml2/5.0.0/UML/Operation");
       
       
+      
+      
       new PositivePatternCall(body, new FlatTuple(var_cls, var_operation, var_parameter, var___0_), OperationParameterQuerySpecification.instance());
       new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
+      new TypeBinary(body, CONTEXT, var_parameter, var_ordered, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isOrdered"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isOrdered");
+      new TypeBinary(body, CONTEXT, var_parameter, var_unique, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isUnique");
       bodies.add(body);
     }
     return bodies;

@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <p>Original source:
  * <code><pre>
  * pattern AttributeUpperBound(cls: Class, attribute : Property, type : Type, upperBound: ValueSpecification) {
- * 	find AttributeType(cls, attribute, type);
+ * 	find AttributeType(cls, attribute, type, _, _);
  * 	Property.upperValue(attribute, upperBound);
  * }
  * </pre></code>

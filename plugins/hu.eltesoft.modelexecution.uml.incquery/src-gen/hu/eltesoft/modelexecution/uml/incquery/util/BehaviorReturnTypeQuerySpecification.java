@@ -48,12 +48,12 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","parameter","type");
+    return Arrays.asList("behavior","parameter","type","ordered","unique");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("ordered", "java.lang.Boolean"),new PParameter("unique", "java.lang.Boolean"));
   }
   
   @Override
@@ -63,7 +63,7 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
   
   @Override
   public BehaviorReturnTypeMatch newMatch(final Object... parameters) {
-    return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2]);
+    return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2], (java.lang.Boolean) parameters[3], (java.lang.Boolean) parameters[4]);
   }
   
   @Override
@@ -74,12 +74,18 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
       PVariable var_type = body.getOrCreateVariableByName("type");
+      PVariable var_ordered = body.getOrCreateVariableByName("ordered");
+      PVariable var_unique = body.getOrCreateVariableByName("unique");
       PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
-        new ExportedParameter(body, var_type, "type")
+        new ExportedParameter(body, var_type, "type"), 
+        new ExportedParameter(body, var_ordered, "ordered"), 
+        new ExportedParameter(body, var_unique, "unique")
       ));
+      
+      
       
       
       
@@ -87,6 +93,8 @@ public final class BehaviorReturnTypeQuerySpecification extends BaseGeneratedQue
       new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
       new TypeBinary(body, CONTEXT, var_parameter, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter.direction");
       new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
+      new TypeBinary(body, CONTEXT, var_parameter, var_ordered, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isOrdered"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isOrdered");
+      new TypeBinary(body, CONTEXT, var_parameter, var_unique, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isUnique");
       bodies.add(body);
     }
     return bodies;

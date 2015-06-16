@@ -54,6 +54,8 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		val parameterType = parameterNode.onEObject(PACKAGE.bhParameter_Type, BehaviorParameterTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		parameterType.on(BASE_PACKAGE.fullType_LowerBound, BehaviorParameterLowerBoundMatcher.on(engine)) [
@@ -66,6 +68,8 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		val returnNode = rootNode.onEObject(PACKAGE.bhBehavior_ReturnType, BehaviorReturnTypeMatcher.on(engine))[
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		returnNode.on(BASE_PACKAGE.fullType_LowerBound, BehaviorReturnLowerBoundMatcher.on(engine)) [

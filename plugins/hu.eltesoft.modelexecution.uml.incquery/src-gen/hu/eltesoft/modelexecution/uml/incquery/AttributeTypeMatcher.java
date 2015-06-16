@@ -29,9 +29,11 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern AttributeType(cls: Class, attribute : Property, type : Type) {
+ * pattern AttributeType(cls: Class, attribute : Property, type : Type, ordered, unique) {
  * 	find Attribute(cls, attribute, _);
  * 	Property.type(attribute, type);
+ * 	Property.isOrdered(attribute, ordered);
+ * 	Property.isUnique(attribute, unique);
  * }
  * </pre></code>
  * 
@@ -75,6 +77,10 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
   
   private final static int POSITION_TYPE = 2;
   
+  private final static int POSITION_ORDERED = 3;
+  
+  private final static int POSITION_UNIQUE = 4;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(AttributeTypeMatcher.class);
   
   /**
@@ -113,11 +119,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return matches represented as a AttributeTypeMatch object.
    * 
    */
-  public Collection<AttributeTypeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawGetAllMatches(new Object[]{pCls, pAttribute, pType});
+  public Collection<AttributeTypeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetAllMatches(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -126,11 +134,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return a match represented as a AttributeTypeMatch object, or null if no match is found.
    * 
    */
-  public AttributeTypeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pAttribute, pType});
+  public AttributeTypeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -139,11 +149,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawHasMatch(new Object[]{pCls, pAttribute, pType});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawHasMatch(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -151,11 +163,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawCountMatches(new Object[]{pCls, pAttribute, pType});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawCountMatches(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -163,11 +177,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final IMatchProcessor<? super AttributeTypeMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pAttribute, pType}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super AttributeTypeMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -176,12 +192,14 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final IMatchProcessor<? super AttributeTypeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pAttribute, pType}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super AttributeTypeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pAttribute, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -194,13 +212,15 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<AttributeTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pAttribute, pType});
+  public DeltaMonitor<AttributeTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -210,11 +230,13 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public AttributeTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType) {
-    return AttributeTypeMatch.newMatch(pCls, pAttribute, pType);
+  public AttributeTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return AttributeTypeMatch.newMatch(pCls, pAttribute, pType, pOrdered, pUnique);
     
   }
   
@@ -252,8 +274,8 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Property pAttribute, final Type pType) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pAttribute, pType});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -290,8 +312,8 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Property> getAllValuesOfattribute(final org.eclipse.uml2.uml.Class pCls, final Type pType) {
-    return rawAccumulateAllValuesOfattribute(new Object[]{pCls, null, pType});
+  public Set<Property> getAllValuesOfattribute(final org.eclipse.uml2.uml.Class pCls, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfattribute(new Object[]{pCls, null, pType, pOrdered, pUnique});
   }
   
   /**
@@ -328,14 +350,90 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute) {
-    return rawAccumulateAllValuesOftype(new Object[]{pCls, pAttribute, null});
+  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOftype(new Object[]{pCls, pAttribute, null, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfordered(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ORDERED, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered() {
+    return rawAccumulateAllValuesOfordered(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final AttributeTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfordered(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfordered(new Object[]{pCls, pAttribute, pType, null, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfunique(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_UNIQUE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique() {
+    return rawAccumulateAllValuesOfunique(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final AttributeTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfunique(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final org.eclipse.uml2.uml.Class pCls, final Property pAttribute, final Type pType, final Boolean pOrdered) {
+    return rawAccumulateAllValuesOfunique(new Object[]{pCls, pAttribute, pType, pOrdered, null});
   }
   
   @Override
   protected AttributeTypeMatch tupleToMatch(final Tuple t) {
     try {
-      return AttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE));
+      return AttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (java.lang.Boolean) t.get(POSITION_ORDERED), (java.lang.Boolean) t.get(POSITION_UNIQUE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -346,7 +444,7 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
   @Override
   protected AttributeTypeMatch arrayToMatch(final Object[] match) {
     try {
-      return AttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return AttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -357,7 +455,7 @@ public class AttributeTypeMatcher extends BaseMatcher<AttributeTypeMatch> {
   @Override
   protected AttributeTypeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return AttributeTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return AttributeTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

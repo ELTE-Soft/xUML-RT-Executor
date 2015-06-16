@@ -20,13 +20,15 @@ public abstract class OperationParameterTypeProcessor implements IMatchProcessor
    * @param pOperation the value of pattern parameter operation in the currently processed match
    * @param pParameter the value of pattern parameter parameter in the currently processed match
    * @param pType the value of pattern parameter type in the currently processed match
+   * @param pOrdered the value of pattern parameter ordered in the currently processed match
+   * @param pUnique the value of pattern parameter unique in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique);
   
   @Override
   public void process(final OperationParameterTypeMatch match) {
-    process(match.getCls(), match.getOperation(), match.getParameter(), match.getType());
+    process(match.getCls(), match.getOperation(), match.getParameter(), match.getType(), match.getOrdered(), match.getUnique());
     
   }
 }

@@ -30,9 +30,11 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type) {
+ * pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type, ordered, unique) {
  * 	find SignalAttribute(signal, attribute);
  * 	Property.type(attribute, type);
+ * 	Property.isOrdered(attribute, ordered);
+ * 	Property.isUnique(attribute, unique);
  * }
  * </pre></code>
  * 
@@ -76,6 +78,10 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
   
   private final static int POSITION_TYPE = 2;
   
+  private final static int POSITION_ORDERED = 3;
+  
+  private final static int POSITION_UNIQUE = 4;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(SignalAttributeTypeMatcher.class);
   
   /**
@@ -114,11 +120,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return matches represented as a SignalAttributeTypeMatch object.
    * 
    */
-  public Collection<SignalAttributeTypeMatch> getAllMatches(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawGetAllMatches(new Object[]{pSignal, pAttribute, pType});
+  public Collection<SignalAttributeTypeMatch> getAllMatches(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetAllMatches(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -127,11 +135,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return a match represented as a SignalAttributeTypeMatch object, or null if no match is found.
    * 
    */
-  public SignalAttributeTypeMatch getOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType});
+  public SignalAttributeTypeMatch getOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -140,11 +150,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawHasMatch(new Object[]{pSignal, pAttribute, pType});
+  public boolean hasMatch(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawHasMatch(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -152,11 +164,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawCountMatches(new Object[]{pSignal, pAttribute, pType});
+  public int countMatches(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawCountMatches(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -164,11 +178,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final Property pAttribute, final Type pType, final IMatchProcessor<? super SignalAttributeTypeMatch> processor) {
-    rawForEachMatch(new Object[]{pSignal, pAttribute, pType}, processor);
+  public void forEachMatch(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super SignalAttributeTypeMatch> processor) {
+    rawForEachMatch(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -177,12 +193,14 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType, final IMatchProcessor<? super SignalAttributeTypeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType}, processor);
+  public boolean forOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super SignalAttributeTypeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -195,13 +213,15 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<SignalAttributeTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal, pAttribute, pType});
+  public DeltaMonitor<SignalAttributeTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -211,11 +231,13 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public SignalAttributeTypeMatch newMatch(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return SignalAttributeTypeMatch.newMatch(pSignal, pAttribute, pType);
+  public SignalAttributeTypeMatch newMatch(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return SignalAttributeTypeMatch.newMatch(pSignal, pAttribute, pType, pOrdered, pUnique);
     
   }
   
@@ -253,8 +275,8 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Signal> getAllValuesOfsignal(final Property pAttribute, final Type pType) {
-    return rawAccumulateAllValuesOfsignal(new Object[]{null, pAttribute, pType});
+  public Set<Signal> getAllValuesOfsignal(final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfsignal(new Object[]{null, pAttribute, pType, pOrdered, pUnique});
   }
   
   /**
@@ -291,8 +313,8 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Property> getAllValuesOfattribute(final Signal pSignal, final Type pType) {
-    return rawAccumulateAllValuesOfattribute(new Object[]{pSignal, null, pType});
+  public Set<Property> getAllValuesOfattribute(final Signal pSignal, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfattribute(new Object[]{pSignal, null, pType, pOrdered, pUnique});
   }
   
   /**
@@ -329,14 +351,90 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Type> getAllValuesOftype(final Signal pSignal, final Property pAttribute) {
-    return rawAccumulateAllValuesOftype(new Object[]{pSignal, pAttribute, null});
+  public Set<Type> getAllValuesOftype(final Signal pSignal, final Property pAttribute, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOftype(new Object[]{pSignal, pAttribute, null, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfordered(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ORDERED, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered() {
+    return rawAccumulateAllValuesOfordered(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final SignalAttributeTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfordered(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfordered(new Object[]{pSignal, pAttribute, pType, null, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfunique(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_UNIQUE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique() {
+    return rawAccumulateAllValuesOfunique(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final SignalAttributeTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfunique(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered) {
+    return rawAccumulateAllValuesOfunique(new Object[]{pSignal, pAttribute, pType, pOrdered, null});
   }
   
   @Override
   protected SignalAttributeTypeMatch tupleToMatch(final Tuple t) {
     try {
-      return SignalAttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE));
+      return SignalAttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (java.lang.Boolean) t.get(POSITION_ORDERED), (java.lang.Boolean) t.get(POSITION_UNIQUE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -347,7 +445,7 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
   @Override
   protected SignalAttributeTypeMatch arrayToMatch(final Object[] match) {
     try {
-      return SignalAttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return SignalAttributeTypeMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -358,7 +456,7 @@ public class SignalAttributeTypeMatcher extends BaseMatcher<SignalAttributeTypeM
   @Override
   protected SignalAttributeTypeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return SignalAttributeTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return SignalAttributeTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

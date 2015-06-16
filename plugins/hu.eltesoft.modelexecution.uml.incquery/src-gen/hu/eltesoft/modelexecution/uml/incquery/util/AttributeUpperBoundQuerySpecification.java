@@ -78,6 +78,8 @@ public final class AttributeUpperBoundQuerySpecification extends BaseGeneratedQu
       PVariable var_attribute = body.getOrCreateVariableByName("attribute");
       PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
+      PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_attribute, "attribute"), 
@@ -91,7 +93,7 @@ public final class AttributeUpperBoundQuerySpecification extends BaseGeneratedQu
       
       new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Type"), "http://www.eclipse.org/uml2/5.0.0/UML/Type");
       
-      new PositivePatternCall(body, new FlatTuple(var_cls, var_attribute, var_type), AttributeTypeQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_cls, var_attribute, var_type, var___0_, var___1_), AttributeTypeQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_attribute, var_upperBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.upperValue");
       bodies.add(body);
     }

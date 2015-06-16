@@ -14,16 +14,21 @@ import java.util.HashSet
 
 import static hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes.*
 
+/** This class converts translational-model-level types to Java types. */
 class TypeConverter {
-	
+
 	dispatch def String javaType(FullType type) {
 		val baseType = javaType(type.baseType)
-		if (type.isOrdered) {
-			ArrayList.canonicalName + "<" + baseType + ">"
-		} else if (type.isUnique) {
-			HashSet.canonicalName + "<" + baseType + ">"
+		if (type.lowerBound != 1 || type.upperBound != 1) {
+			if (type.isOrdered) {
+				ArrayList.canonicalName + "<" + baseType + ">"
+			} else if (type.isUnique) {
+				HashSet.canonicalName + "<" + baseType + ">"
+			} else {
+				Multiset.canonicalName + "<" + baseType + ">"
+			}
 		} else {
-			Multiset.canonicalName + "<" + baseType + ">"
+			baseType
 		}
 	}
 
@@ -43,5 +48,5 @@ class TypeConverter {
 			case REAL: MutableReal.canonicalName
 		}
 	}
-	
+
 }

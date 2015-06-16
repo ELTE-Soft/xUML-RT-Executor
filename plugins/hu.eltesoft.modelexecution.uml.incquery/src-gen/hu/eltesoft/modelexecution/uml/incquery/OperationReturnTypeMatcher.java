@@ -29,9 +29,11 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern OperationReturnType(cls : Class, operation : Operation, type : Type) {
+ * pattern OperationReturnType(cls : Class, operation : Operation, type : Type, ordered, unique) {
  * 	find OperationReturn(cls, operation, parameter);
  * 	Parameter.type(parameter, type);
+ * 	Parameter.isOrdered(parameter, ordered);
+ * 	Parameter.isUnique(parameter, unique);
  * }
  * </pre></code>
  * 
@@ -75,6 +77,10 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
   
   private final static int POSITION_TYPE = 2;
   
+  private final static int POSITION_ORDERED = 3;
+  
+  private final static int POSITION_UNIQUE = 4;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(OperationReturnTypeMatcher.class);
   
   /**
@@ -113,11 +119,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return matches represented as a OperationReturnTypeMatch object.
    * 
    */
-  public Collection<OperationReturnTypeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return rawGetAllMatches(new Object[]{pCls, pOperation, pType});
+  public Collection<OperationReturnTypeMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetAllMatches(new Object[]{pCls, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -126,11 +134,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return a match represented as a OperationReturnTypeMatch object, or null if no match is found.
    * 
    */
-  public OperationReturnTypeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pType});
+  public OperationReturnTypeMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -139,11 +149,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return rawHasMatch(new Object[]{pCls, pOperation, pType});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawHasMatch(new Object[]{pCls, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -151,11 +163,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return rawCountMatches(new Object[]{pCls, pOperation, pType});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawCountMatches(new Object[]{pCls, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -163,11 +177,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final IMatchProcessor<? super OperationReturnTypeMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pOperation, pType}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super OperationReturnTypeMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pOperation, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -176,12 +192,14 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final IMatchProcessor<? super OperationReturnTypeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pType}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super OperationReturnTypeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pOperation, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -194,13 +212,15 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<OperationReturnTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pType});
+  public DeltaMonitor<OperationReturnTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -210,11 +230,13 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public OperationReturnTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType) {
-    return OperationReturnTypeMatch.newMatch(pCls, pOperation, pType);
+  public OperationReturnTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return OperationReturnTypeMatch.newMatch(pCls, pOperation, pType, pOrdered, pUnique);
     
   }
   
@@ -252,8 +274,8 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final Type pType) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pType});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Operation pOperation, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pOperation, pType, pOrdered, pUnique});
   }
   
   /**
@@ -290,8 +312,8 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final Type pType) {
-    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pType});
+  public Set<Operation> getAllValuesOfoperation(final org.eclipse.uml2.uml.Class pCls, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfoperation(new Object[]{pCls, null, pType, pOrdered, pUnique});
   }
   
   /**
@@ -328,14 +350,90 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation) {
-    return rawAccumulateAllValuesOftype(new Object[]{pCls, pOperation, null});
+  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOftype(new Object[]{pCls, pOperation, null, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfordered(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ORDERED, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered() {
+    return rawAccumulateAllValuesOfordered(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final OperationReturnTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfordered(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfordered(new Object[]{pCls, pOperation, pType, null, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfunique(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_UNIQUE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique() {
+    return rawAccumulateAllValuesOfunique(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final OperationReturnTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfunique(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Type pType, final Boolean pOrdered) {
+    return rawAccumulateAllValuesOfunique(new Object[]{pCls, pOperation, pType, pOrdered, null});
   }
   
   @Override
   protected OperationReturnTypeMatch tupleToMatch(final Tuple t) {
     try {
-      return OperationReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE));
+      return OperationReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Operation) t.get(POSITION_OPERATION), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (java.lang.Boolean) t.get(POSITION_ORDERED), (java.lang.Boolean) t.get(POSITION_UNIQUE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -346,7 +444,7 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
   @Override
   protected OperationReturnTypeMatch arrayToMatch(final Object[] match) {
     try {
-      return OperationReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return OperationReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -357,7 +455,7 @@ public class OperationReturnTypeMatcher extends BaseMatcher<OperationReturnTypeM
   @Override
   protected OperationReturnTypeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return OperationReturnTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return OperationReturnTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Operation) match[POSITION_OPERATION], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

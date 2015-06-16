@@ -42,13 +42,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		for (int i = 0; i < stack.size(); ++i) {
 			filterMatch.set(i, stack.get(i));
 		}
-		if (parentObject.eClass() != feature.getEContainingClass()) {
-			throw new RuntimeException("Feature '" + feature.getName()
-					+ "' has the container class of '"
-					+ feature.getEContainingClass().getName()
-					+ "' but received a '" + parentObject.eClass().getName()
-					+ "' to integrate into.");
-		}
+		checkCorrectFeatureIsSet(parentObject);
 
 		boolean hasNoValue = true;
 		if (feature.isMany()) {
@@ -68,21 +62,32 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 			hasNoValue = null == parentObject.eGet(feature);
 		}
 
+		// If the metamodel feature had a default value, it had been set when
+		// the parent object was created.
 		if (feature.isRequired() && hasNoValue) {
-			Object defaultValue = feature.getDefaultValue();
-			if (defaultValue != null) {
-				parentObject.eSet(feature, defaultValue);
-			} else {
-				throw new GenerationException("Required feature not found: "
-						+ feature.getName() + " in "
-						+ feature.getEContainingClass().getName());
-			}
+			throw new GenerationException("Required feature not found: "
+					+ feature.getName() + " in "
+					+ feature.getEContainingClass().getName());
 		}
 
 		childNodes.forEach(node -> {
 			childInvocations.forEach(invocation -> invocation.accept(node));
 		});
 		childInvocations.clear();
+	}
+
+	// If the parent object's class is not the same as the feature's
+	// containing class, the translation was built incorrectly. We cannot
+	// find this kind of error earlier conveniently, because it is specified
+	// with a template parameter.
+	private void checkCorrectFeatureIsSet(EObject parentObject) {
+		if (parentObject.eClass() != feature.getEContainingClass()) {
+			throw new RuntimeException("Feature '" + feature.getName()
+					+ "' has the container class of '"
+					+ feature.getEContainingClass().getName()
+					+ "' but received a '" + parentObject.eClass().getName()
+					+ "' to integrate into.");
+		}
 	}
 
 	protected abstract void processOrderedMultiFeature(Match filterMatch,

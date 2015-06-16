@@ -33,7 +33,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <code><pre>
  * pattern
  * BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
- * 	find BehaviorParameterType(behavior, parameter, type);
+ * 	find BehaviorParameterType(behavior, parameter, type, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }
  * </pre></code>

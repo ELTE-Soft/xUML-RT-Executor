@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <p>Original source:
  * <code><pre>
  * pattern AttributeLowerBound(cls: Class, attribute : Property, type : Type, lowerBound: ValueSpecification) {
- * 	find AttributeType(cls, attribute, type);
+ * 	find AttributeType(cls, attribute, type, _, _);
  * 	Property.lowerValue(attribute, lowerBound);
  * }
  * </pre></code>

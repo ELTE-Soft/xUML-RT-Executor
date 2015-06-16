@@ -32,7 +32,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <code><pre>
  * pattern OperationReturnUpperBound(cls: Class, operation : Operation, type : Type, upperBound: ValueSpecification) {
  * 	find OperationReturn(cls, operation, parameter);
- * 	find OperationReturnType(cls, operation, type);
+ * 	find OperationReturnType(cls, operation, type, _, _);
  * 	Parameter.upperValue(parameter, upperBound);
  * }
  * </pre></code>

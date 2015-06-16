@@ -19,13 +19,15 @@ public abstract class SignalAttributeTypeProcessor implements IMatchProcessor<Si
    * @param pSignal the value of pattern parameter signal in the currently processed match
    * @param pAttribute the value of pattern parameter attribute in the currently processed match
    * @param pType the value of pattern parameter type in the currently processed match
+   * @param pOrdered the value of pattern parameter ordered in the currently processed match
+   * @param pUnique the value of pattern parameter unique in the currently processed match
    * 
    */
-  public abstract void process(final Signal pSignal, final Property pAttribute, final Type pType);
+  public abstract void process(final Signal pSignal, final Property pAttribute, final Type pType, final Boolean pOrdered, final Boolean pUnique);
   
   @Override
   public void process(final SignalAttributeTypeMatch match) {
-    process(match.getSignal(), match.getAttribute(), match.getType());
+    process(match.getSignal(), match.getAttribute(), match.getType(), match.getOrdered(), match.getUnique());
     
   }
 }

@@ -51,12 +51,12 @@ public final class BehaviorParameterTypeQuerySpecification extends BaseGenerated
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("behavior","parameter","type");
+    return Arrays.asList("behavior","parameter","type","ordered","unique");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"));
+    return Arrays.asList(new PParameter("behavior", "org.eclipse.uml2.uml.Behavior"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("ordered", "java.lang.Boolean"),new PParameter("unique", "java.lang.Boolean"));
   }
   
   @Override
@@ -66,7 +66,7 @@ public final class BehaviorParameterTypeQuerySpecification extends BaseGenerated
   
   @Override
   public BehaviorParameterTypeMatch newMatch(final Object... parameters) {
-    return BehaviorParameterTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2]);
+    return BehaviorParameterTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) parameters[0], (org.eclipse.uml2.uml.Parameter) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2], (java.lang.Boolean) parameters[3], (java.lang.Boolean) parameters[4]);
   }
   
   @Override
@@ -77,19 +77,27 @@ public final class BehaviorParameterTypeQuerySpecification extends BaseGenerated
       PVariable var_behavior = body.getOrCreateVariableByName("behavior");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
       PVariable var_type = body.getOrCreateVariableByName("type");
+      PVariable var_ordered = body.getOrCreateVariableByName("ordered");
+      PVariable var_unique = body.getOrCreateVariableByName("unique");
       PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
-        new ExportedParameter(body, var_type, "type")
+        new ExportedParameter(body, var_type, "type"), 
+        new ExportedParameter(body, var_ordered, "ordered"), 
+        new ExportedParameter(body, var_unique, "unique")
       ));
       
       new TypeUnary(body, var_behavior, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior");
       
-      new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
+      
+      
       
       new PositivePatternCall(body, new FlatTuple(var_behavior, var_parameter, var___0_), BehaviorParameterQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
+      new TypeBinary(body, CONTEXT, var_parameter, var_ordered, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isOrdered"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isOrdered");
+      new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
+      new TypeBinary(body, CONTEXT, var_parameter, var_unique, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isUnique");
       bodies.add(body);
     }
     return bodies;

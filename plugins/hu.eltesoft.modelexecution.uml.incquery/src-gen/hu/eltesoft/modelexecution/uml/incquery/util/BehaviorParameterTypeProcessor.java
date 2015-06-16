@@ -19,13 +19,15 @@ public abstract class BehaviorParameterTypeProcessor implements IMatchProcessor<
    * @param pBehavior the value of pattern parameter behavior in the currently processed match
    * @param pParameter the value of pattern parameter parameter in the currently processed match
    * @param pType the value of pattern parameter type in the currently processed match
+   * @param pOrdered the value of pattern parameter ordered in the currently processed match
+   * @param pUnique the value of pattern parameter unique in the currently processed match
    * 
    */
-  public abstract void process(final Behavior pBehavior, final Parameter pParameter, final Type pType);
+  public abstract void process(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique);
   
   @Override
   public void process(final BehaviorParameterTypeMatch match) {
-    process(match.getBehavior(), match.getParameter(), match.getType());
+    process(match.getBehavior(), match.getParameter(), match.getType(), match.getOrdered(), match.getUnique());
     
   }
 }

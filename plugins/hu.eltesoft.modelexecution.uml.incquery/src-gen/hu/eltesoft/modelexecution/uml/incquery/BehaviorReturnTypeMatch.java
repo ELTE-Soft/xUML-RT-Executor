@@ -31,12 +31,18 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   
   private Type fType;
   
-  private static List<String> parameterNames = makeImmutableList("behavior", "parameter", "type");
+  private Boolean fOrdered;
   
-  private BehaviorReturnTypeMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
+  private Boolean fUnique;
+  
+  private static List<String> parameterNames = makeImmutableList("behavior", "parameter", "type", "ordered", "unique");
+  
+  private BehaviorReturnTypeMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
     this.fBehavior = pBehavior;
     this.fParameter = pParameter;
     this.fType = pType;
+    this.fOrdered = pOrdered;
+    this.fUnique = pUnique;
     
   }
   
@@ -45,6 +51,8 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     if ("behavior".equals(parameterName)) return this.fBehavior;
     if ("parameter".equals(parameterName)) return this.fParameter;
     if ("type".equals(parameterName)) return this.fType;
+    if ("ordered".equals(parameterName)) return this.fOrdered;
+    if ("unique".equals(parameterName)) return this.fUnique;
     return null;
     
   }
@@ -64,6 +72,16 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     
   }
   
+  public Boolean getOrdered() {
+    return this.fOrdered;
+    
+  }
+  
+  public Boolean getUnique() {
+    return this.fUnique;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -77,6 +95,14 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     }
     if ("type".equals(parameterName) ) {
     	this.fType = (org.eclipse.uml2.uml.Type) newValue;
+    	return true;
+    }
+    if ("ordered".equals(parameterName) ) {
+    	this.fOrdered = (java.lang.Boolean) newValue;
+    	return true;
+    }
+    if ("unique".equals(parameterName) ) {
+    	this.fUnique = (java.lang.Boolean) newValue;
     	return true;
     }
     return false;
@@ -101,6 +127,18 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     
   }
   
+  public void setOrdered(final Boolean pOrdered) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fOrdered = pOrdered;
+    
+  }
+  
+  public void setUnique(final Boolean pUnique) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fUnique = pUnique;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnType";
@@ -115,13 +153,13 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fBehavior, fParameter, fType};
+    return new Object[]{fBehavior, fParameter, fType, fOrdered, fUnique};
     
   }
   
   @Override
   public BehaviorReturnTypeMatch toImmutable() {
-    return isMutable() ? newMatch(fBehavior, fParameter, fType) : this;
+    return isMutable() ? newMatch(fBehavior, fParameter, fType, fOrdered, fUnique) : this;
     
   }
   
@@ -130,7 +168,9 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"behavior\"=" + prettyPrintValue(fBehavior) + ", ");
     result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
-    result.append("\"type\"=" + prettyPrintValue(fType));
+    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
+    result.append("\"ordered\"=" + prettyPrintValue(fOrdered) + ", ");
+    result.append("\"unique\"=" + prettyPrintValue(fUnique));
     return result.toString();
     
   }
@@ -142,6 +182,8 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     result = prime * result + ((fBehavior == null) ? 0 : fBehavior.hashCode());
     result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
     result = prime * result + ((fType == null) ? 0 : fType.hashCode());
+    result = prime * result + ((fOrdered == null) ? 0 : fOrdered.hashCode());
+    result = prime * result + ((fUnique == null) ? 0 : fUnique.hashCode());
     return result;
     
   }
@@ -167,6 +209,10 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
     else if (!fParameter.equals(other.fParameter)) return false;
     if (fType == null) {if (other.fType != null) return false;}
     else if (!fType.equals(other.fType)) return false;
+    if (fOrdered == null) {if (other.fOrdered != null) return false;}
+    else if (!fOrdered.equals(other.fOrdered)) return false;
+    if (fUnique == null) {if (other.fUnique != null) return false;}
+    else if (!fUnique.equals(other.fUnique)) return false;
     return true;
   }
   
@@ -189,7 +235,7 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * 
    */
   public static BehaviorReturnTypeMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null, null, null, null);
     
   }
   
@@ -200,11 +246,13 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static BehaviorReturnTypeMatch newMutableMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return new Mutable(pBehavior, pParameter, pType);
+  public static BehaviorReturnTypeMatch newMutableMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Mutable(pBehavior, pParameter, pType, pOrdered, pUnique);
     
   }
   
@@ -215,17 +263,19 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return new Immutable(pBehavior, pParameter, pType);
+  public static BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Immutable(pBehavior, pParameter, pType, pOrdered, pUnique);
     
   }
   
   private static final class Mutable extends BehaviorReturnTypeMatch {
-    Mutable(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-      super(pBehavior, pParameter, pType);
+    Mutable(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pBehavior, pParameter, pType, pOrdered, pUnique);
       
     }
     
@@ -236,8 +286,8 @@ public abstract class BehaviorReturnTypeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends BehaviorReturnTypeMatch {
-    Immutable(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-      super(pBehavior, pParameter, pType);
+    Immutable(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pBehavior, pParameter, pType, pOrdered, pUnique);
       
     }
     

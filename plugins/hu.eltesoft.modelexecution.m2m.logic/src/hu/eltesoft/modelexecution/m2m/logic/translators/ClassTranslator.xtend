@@ -62,6 +62,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val attributeType = attributeNode.onEObject(PACKAGE.clAttribute_Type, AttributeTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		attributeType.on(BASE_PACKAGE.fullType_LowerBound, AttributeLowerBoundMatcher.on(engine)) [
@@ -91,6 +93,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val parameterTypeNode = parameterNode.onEObject(PACKAGE.clParameter_Type, OperationParameterTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		parameterTypeNode.on(BASE_PACKAGE.fullType_LowerBound, OperationParameterLowerBoundMatcher.on(engine)) [
@@ -105,6 +109,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val operationReturn = operationNode.onEObject(PACKAGE.clOperation_ReturnType, OperationReturnTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		operationReturn.on(BASE_PACKAGE.fullType_LowerBound, OperationReturnLowerBoundMatcher.on(engine)) [
@@ -130,6 +136,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val assocType = assocNode.onEObject(PACKAGE.clAssociation_Type, ClassAssociationTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+//			elem.isOrdered = ordered
+//			elem.isUnique = unique
 			return elem
 		]
 		assocType.on(BASE_PACKAGE.fullType_LowerBound, ClassAssociationLowerBoundMatcher.on(engine)) [

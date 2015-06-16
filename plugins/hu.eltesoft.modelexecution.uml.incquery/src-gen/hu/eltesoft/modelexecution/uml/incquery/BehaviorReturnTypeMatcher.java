@@ -31,10 +31,12 @@ import org.eclipse.uml2.uml.Type;
  * <p>Original source:
  * <code><pre>
  * pattern
- * BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type) {
+ * BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
  * 	Behavior.ownedParameter(behavior, parameter);
  * 	Parameter.direction(parameter, ParameterDirectionKind::^return);
  * 	Parameter.type(parameter, type);
+ * 	Parameter.isOrdered(parameter, ordered);
+ * 	Parameter.isUnique(parameter, unique);
  * }
  * </pre></code>
  * 
@@ -78,6 +80,10 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
   
   private final static int POSITION_TYPE = 2;
   
+  private final static int POSITION_ORDERED = 3;
+  
+  private final static int POSITION_UNIQUE = 4;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(BehaviorReturnTypeMatcher.class);
   
   /**
@@ -116,11 +122,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return matches represented as a BehaviorReturnTypeMatch object.
    * 
    */
-  public Collection<BehaviorReturnTypeMatch> getAllMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawGetAllMatches(new Object[]{pBehavior, pParameter, pType});
+  public Collection<BehaviorReturnTypeMatch> getAllMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetAllMatches(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -129,11 +137,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return a match represented as a BehaviorReturnTypeMatch object, or null if no match is found.
    * 
    */
-  public BehaviorReturnTypeMatch getOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType});
+  public BehaviorReturnTypeMatch getOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -142,11 +152,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawHasMatch(new Object[]{pBehavior, pParameter, pType});
+  public boolean hasMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawHasMatch(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -154,11 +166,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawCountMatches(new Object[]{pBehavior, pParameter, pType});
+  public int countMatches(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawCountMatches(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -166,11 +180,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final IMatchProcessor<? super BehaviorReturnTypeMatch> processor) {
-    rawForEachMatch(new Object[]{pBehavior, pParameter, pType}, processor);
+  public void forEachMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super BehaviorReturnTypeMatch> processor) {
+    rawForEachMatch(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -179,12 +195,14 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final IMatchProcessor<? super BehaviorReturnTypeMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType}, processor);
+  public boolean forOneArbitraryMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super BehaviorReturnTypeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -197,13 +215,15 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<BehaviorReturnTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pParameter, pType});
+  public DeltaMonitor<BehaviorReturnTypeMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pBehavior, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -213,11 +233,13 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @param pBehavior the fixed value of pattern parameter behavior, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType) {
-    return BehaviorReturnTypeMatch.newMatch(pBehavior, pParameter, pType);
+  public BehaviorReturnTypeMatch newMatch(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return BehaviorReturnTypeMatch.newMatch(pBehavior, pParameter, pType, pOrdered, pUnique);
     
   }
   
@@ -255,8 +277,8 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Behavior> getAllValuesOfbehavior(final Parameter pParameter, final Type pType) {
-    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pParameter, pType});
+  public Set<Behavior> getAllValuesOfbehavior(final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfbehavior(new Object[]{null, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -293,8 +315,8 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Parameter> getAllValuesOfparameter(final Behavior pBehavior, final Type pType) {
-    return rawAccumulateAllValuesOfparameter(new Object[]{pBehavior, null, pType});
+  public Set<Parameter> getAllValuesOfparameter(final Behavior pBehavior, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfparameter(new Object[]{pBehavior, null, pType, pOrdered, pUnique});
   }
   
   /**
@@ -331,14 +353,90 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Type> getAllValuesOftype(final Behavior pBehavior, final Parameter pParameter) {
-    return rawAccumulateAllValuesOftype(new Object[]{pBehavior, pParameter, null});
+  public Set<Type> getAllValuesOftype(final Behavior pBehavior, final Parameter pParameter, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOftype(new Object[]{pBehavior, pParameter, null, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfordered(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ORDERED, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered() {
+    return rawAccumulateAllValuesOfordered(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final BehaviorReturnTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfordered(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfordered(new Object[]{pBehavior, pParameter, pType, null, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfunique(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_UNIQUE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique() {
+    return rawAccumulateAllValuesOfunique(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final BehaviorReturnTypeMatch partialMatch) {
+    return rawAccumulateAllValuesOfunique(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final Behavior pBehavior, final Parameter pParameter, final Type pType, final Boolean pOrdered) {
+    return rawAccumulateAllValuesOfunique(new Object[]{pBehavior, pParameter, pType, pOrdered, null});
   }
   
   @Override
   protected BehaviorReturnTypeMatch tupleToMatch(final Tuple t) {
     try {
-      return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE));
+      return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) t.get(POSITION_BEHAVIOR), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (java.lang.Boolean) t.get(POSITION_ORDERED), (java.lang.Boolean) t.get(POSITION_UNIQUE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -349,7 +447,7 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
   @Override
   protected BehaviorReturnTypeMatch arrayToMatch(final Object[] match) {
     try {
-      return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return BehaviorReturnTypeMatch.newMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -360,7 +458,7 @@ public class BehaviorReturnTypeMatcher extends BaseMatcher<BehaviorReturnTypeMat
   @Override
   protected BehaviorReturnTypeMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return BehaviorReturnTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE]);
+      return BehaviorReturnTypeMatch.newMutableMatch((org.eclipse.uml2.uml.Behavior) match[POSITION_BEHAVIOR], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

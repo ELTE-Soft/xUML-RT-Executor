@@ -32,7 +32,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <p>Original source:
  * <code><pre>
  * pattern SignalAttributeLowerBound(signal : Signal, attribute : Property, type : Type, lowerBound : ValueSpecification) {
- * 	find SignalAttributeType(signal, attribute, type);
+ * 	find SignalAttributeType(signal, attribute, type, _, _);
  * 	Property.lowerValue(attribute, lowerBound);
  * }
  * </pre></code>

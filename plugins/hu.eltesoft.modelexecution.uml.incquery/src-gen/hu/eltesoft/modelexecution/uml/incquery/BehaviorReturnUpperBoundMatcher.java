@@ -33,7 +33,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <code><pre>
  * pattern
  * BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
- * 	find BehaviorReturnType(behavior, parameter, type);
+ * 	find BehaviorReturnType(behavior, parameter, type, _, _);
  * 	Parameter.upperValue(parameter, upperBound);
  * }
  * </pre></code>

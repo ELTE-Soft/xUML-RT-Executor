@@ -39,6 +39,8 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 		val typeNode = attributeNode.on(PACKAGE.sgAttribute_Type, SignalAttributeTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
 		typeNode.on(BASE_PACKAGE.fullType_LowerBound, SignalAttributeLowerBoundMatcher.on(engine)) [

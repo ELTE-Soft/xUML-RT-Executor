@@ -39,39 +39,43 @@ pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction 
 }
 
 pattern
-BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type) {
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	find BehaviorParameter(behavior, parameter, _);
 	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
 }
 
 pattern
 BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
-	find BehaviorParameterType(behavior, parameter, type);
+	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
 BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
-	find BehaviorParameterType(behavior, parameter, type);
+	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
 
 pattern
-BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type) {
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
 }
 
 pattern
 BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
-	find BehaviorReturnType(behavior, parameter, type);
+	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
 BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
-	find BehaviorReturnType(behavior, parameter, type);
+	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
 

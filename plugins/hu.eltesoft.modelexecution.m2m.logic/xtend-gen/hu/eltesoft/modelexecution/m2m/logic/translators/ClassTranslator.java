@@ -126,6 +126,10 @@ public class ClassTranslator extends RootElementTranslator<org.eclipse.uml2.uml.
         Type _type = it.getType();
         hu.eltesoft.modelexecution.m2m.metamodel.base.Type _convert = ClassTranslator.this.convert(_type);
         elem.setBaseType(_convert);
+        Boolean _ordered = it.getOrdered();
+        elem.setIsOrdered((_ordered).booleanValue());
+        Boolean _unique = it.getUnique();
+        elem.setIsUnique((_unique).booleanValue());
         return elem;
       }
     };
@@ -185,6 +189,10 @@ public class ClassTranslator extends RootElementTranslator<org.eclipse.uml2.uml.
         Type _type = it.getType();
         hu.eltesoft.modelexecution.m2m.metamodel.base.Type _convert = ClassTranslator.this.convert(_type);
         elem.setBaseType(_convert);
+        Boolean _ordered = it.getOrdered();
+        elem.setIsOrdered((_ordered).booleanValue());
+        Boolean _unique = it.getUnique();
+        elem.setIsUnique((_unique).booleanValue());
         return elem;
       }
     };
@@ -215,6 +223,10 @@ public class ClassTranslator extends RootElementTranslator<org.eclipse.uml2.uml.
         Type _type = it.getType();
         hu.eltesoft.modelexecution.m2m.metamodel.base.Type _convert = ClassTranslator.this.convert(_type);
         elem.setBaseType(_convert);
+        Boolean _ordered = it.getOrdered();
+        elem.setIsOrdered((_ordered).booleanValue());
+        Boolean _unique = it.getUnique();
+        elem.setIsUnique((_unique).booleanValue());
         return elem;
       }
     };

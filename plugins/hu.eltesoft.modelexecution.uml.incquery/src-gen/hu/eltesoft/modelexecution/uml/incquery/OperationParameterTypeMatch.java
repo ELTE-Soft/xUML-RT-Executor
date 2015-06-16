@@ -33,13 +33,19 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
   
   private Type fType;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "operation", "parameter", "type");
+  private Boolean fOrdered;
   
-  private OperationParameterTypeMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
+  private Boolean fUnique;
+  
+  private static List<String> parameterNames = makeImmutableList("cls", "operation", "parameter", "type", "ordered", "unique");
+  
+  private OperationParameterTypeMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
     this.fCls = pCls;
     this.fOperation = pOperation;
     this.fParameter = pParameter;
     this.fType = pType;
+    this.fOrdered = pOrdered;
+    this.fUnique = pUnique;
     
   }
   
@@ -49,6 +55,8 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     if ("operation".equals(parameterName)) return this.fOperation;
     if ("parameter".equals(parameterName)) return this.fParameter;
     if ("type".equals(parameterName)) return this.fType;
+    if ("ordered".equals(parameterName)) return this.fOrdered;
+    if ("unique".equals(parameterName)) return this.fUnique;
     return null;
     
   }
@@ -73,6 +81,16 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     
   }
   
+  public Boolean getOrdered() {
+    return this.fOrdered;
+    
+  }
+  
+  public Boolean getUnique() {
+    return this.fUnique;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -90,6 +108,14 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     }
     if ("type".equals(parameterName) ) {
     	this.fType = (org.eclipse.uml2.uml.Type) newValue;
+    	return true;
+    }
+    if ("ordered".equals(parameterName) ) {
+    	this.fOrdered = (java.lang.Boolean) newValue;
+    	return true;
+    }
+    if ("unique".equals(parameterName) ) {
+    	this.fUnique = (java.lang.Boolean) newValue;
     	return true;
     }
     return false;
@@ -120,6 +146,18 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     
   }
   
+  public void setOrdered(final Boolean pOrdered) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fOrdered = pOrdered;
+    
+  }
+  
+  public void setUnique(final Boolean pUnique) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fUnique = pUnique;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.OperationParameterType";
@@ -134,13 +172,13 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fOperation, fParameter, fType};
+    return new Object[]{fCls, fOperation, fParameter, fType, fOrdered, fUnique};
     
   }
   
   @Override
   public OperationParameterTypeMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fOperation, fParameter, fType) : this;
+    return isMutable() ? newMatch(fCls, fOperation, fParameter, fType, fOrdered, fUnique) : this;
     
   }
   
@@ -150,7 +188,9 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"operation\"=" + prettyPrintValue(fOperation) + ", ");
     result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
-    result.append("\"type\"=" + prettyPrintValue(fType));
+    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
+    result.append("\"ordered\"=" + prettyPrintValue(fOrdered) + ", ");
+    result.append("\"unique\"=" + prettyPrintValue(fUnique));
     return result.toString();
     
   }
@@ -163,6 +203,8 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     result = prime * result + ((fOperation == null) ? 0 : fOperation.hashCode());
     result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
     result = prime * result + ((fType == null) ? 0 : fType.hashCode());
+    result = prime * result + ((fOrdered == null) ? 0 : fOrdered.hashCode());
+    result = prime * result + ((fUnique == null) ? 0 : fUnique.hashCode());
     return result;
     
   }
@@ -190,6 +232,10 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
     else if (!fParameter.equals(other.fParameter)) return false;
     if (fType == null) {if (other.fType != null) return false;}
     else if (!fType.equals(other.fType)) return false;
+    if (fOrdered == null) {if (other.fOrdered != null) return false;}
+    else if (!fOrdered.equals(other.fOrdered)) return false;
+    if (fUnique == null) {if (other.fUnique != null) return false;}
+    else if (!fUnique.equals(other.fUnique)) return false;
     return true;
   }
   
@@ -212,7 +258,7 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
    * 
    */
   public static OperationParameterTypeMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null);
+    return new Mutable(null, null, null, null, null, null);
     
   }
   
@@ -224,11 +270,13 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static OperationParameterTypeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
-    return new Mutable(pCls, pOperation, pParameter, pType);
+  public static OperationParameterTypeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Mutable(pCls, pOperation, pParameter, pType, pOrdered, pUnique);
     
   }
   
@@ -240,17 +288,19 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
    * @param pOperation the fixed value of pattern parameter operation, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static OperationParameterTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
-    return new Immutable(pCls, pOperation, pParameter, pType);
+  public static OperationParameterTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Immutable(pCls, pOperation, pParameter, pType, pOrdered, pUnique);
     
   }
   
   private static final class Mutable extends OperationParameterTypeMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
-      super(pCls, pOperation, pParameter, pType);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pOperation, pParameter, pType, pOrdered, pUnique);
       
     }
     
@@ -261,8 +311,8 @@ public abstract class OperationParameterTypeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends OperationParameterTypeMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType) {
-      super(pCls, pOperation, pParameter, pType);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Operation pOperation, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pOperation, pParameter, pType, pOrdered, pUnique);
       
     }
     

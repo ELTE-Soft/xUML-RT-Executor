@@ -78,6 +78,8 @@ public final class BehaviorReturnLowerBoundQuerySpecification extends BaseGenera
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
       PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_lowerBound = body.getOrCreateVariableByName("lowerBound");
+      PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_behavior, "behavior"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
@@ -87,11 +89,11 @@ public final class BehaviorReturnLowerBoundQuerySpecification extends BaseGenera
       
       new TypeUnary(body, var_behavior, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior");
       
-      new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
       
       new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Type"), "http://www.eclipse.org/uml2/5.0.0/UML/Type");
       
-      new PositivePatternCall(body, new FlatTuple(var_behavior, var_parameter, var_type), BehaviorReturnTypeQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_behavior, var_parameter, var_type, var___0_, var___1_), BehaviorReturnTypeQuerySpecification.instance());
+      new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_lowerBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.lowerValue");
       bodies.add(body);
     }
