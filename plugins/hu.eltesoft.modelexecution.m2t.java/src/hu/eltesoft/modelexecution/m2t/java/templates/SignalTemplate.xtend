@@ -9,7 +9,6 @@ import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder
 import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import java.util.Objects
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -31,31 +30,6 @@ class SignalTemplate extends Template {
 		
 			public «signal.identifier»(«SignalEvent.canonicalName» event) {
 				super(event);
-			}
-		
-			@Override
-			public boolean equals(Object obj) {
-				if (null == obj || !(obj instanceof «signal.identifier»)) {
-					return false;
-				}
-				«signal.identifier» other = («signal.identifier») obj;
-				return true
-					«FOR attribute : signal.attributes»
-						&& «attribute.identifier» == other.«attribute.identifier»
-					«ENDFOR»;
-			}
-		
-			@Override
-			public int hashCode() {
-				return «Objects.canonicalName».hash(«FOR attribute : signal.attributes SEPARATOR ','»«attribute.identifier»«ENDFOR»);
-			}
-		
-			@Override
-			public String toString() {
-				return «signal.nameLiteral»
-					«FOR attribute : signal.attributes SEPARATOR '+","'»
-						 + «attribute.nameLiteral» + ": " + «attribute.identifier»
-					«ENDFOR»;
 			}
 		
 			@Override
