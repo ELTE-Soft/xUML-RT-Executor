@@ -24,12 +24,26 @@ class SignalTemplate extends Template {
 		«generatedHeaderForClass(signal)»
 		public class «signal.identifier» extends «Signal.canonicalName» {
 		
-			public «signal.identifier»() {
+			public «signal.identifier»(
+				«FOR attribute : signal.attributes SEPARATOR ','»
+					«typeConverter.javaType(attribute.type)» «attribute.identifier»
+				«ENDFOR»
+			) {
 				super();
+				«FOR attribute : signal.attributes»
+					this.«attribute.identifier» = «attribute.identifier»;
+				«ENDFOR»
 			}
 		
-			public «signal.identifier»(«SignalEvent.canonicalName» event) {
+			public «signal.identifier»(«SignalEvent.canonicalName» event
+				«FOR attribute : signal.attributes»
+					, «typeConverter.javaType(attribute.type)» «attribute.identifier»
+				«ENDFOR»
+			) {
 				super(event);
+				«FOR attribute : signal.attributes»
+					this.«attribute.identifier» = «attribute.identifier»;
+				«ENDFOR»
 			}
 		
 			@Override

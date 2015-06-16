@@ -23,6 +23,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ClReception" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signal" lowerBound="1"
         eType="ecore:EDataType base.ecore#//NamedReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//ClReceptionParameter"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClAttribute" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
@@ -35,5 +37,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClAssociation" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//FullType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClReceptionParameter" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
   </eClassifiers>
 </ecore:EPackage>

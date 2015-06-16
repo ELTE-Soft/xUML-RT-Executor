@@ -134,9 +134,9 @@ class ClassTemplate extends Template {
 					) {
 				«IF null != operation.method»
 					«operation.method.identifier» method = new «operation.method.identifier»(
-						«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
-						«FOR parameter : operation.parameters SEPARATOR ','»
-							«parameter.identifier»
+						«IF !operation.isStatic»this«ENDIF»
+						«FOR parameter : operation.parameters»
+							, «parameter.identifier»
 						«ENDFOR»
 						);
 					method.execute();
@@ -152,8 +152,18 @@ class ClassTemplate extends Template {
 		«FOR reception : classDefinition.receptions»
 		
 			«generatedHeader(reception)»
-			public void «reception.identifier»() {
-				getRuntime().addEventToQueue(this, new «reception.signal.identifier»());
+			public void «reception.identifier»(
+				«FOR parameter : reception.parameters SEPARATOR ','»
+					«generatedHeader(parameter)»
+					«typeConverter.javaType(parameter.type)» «parameter.identifier»
+				«ENDFOR»
+			) {
+				«reception.signal.identifier» signal = new «reception.signal.identifier»(
+					«FOR parameter : reception.parameters SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+				);
+				getRuntime().addEventToQueue(this, signal);
 			}
 		«ENDFOR»
 	'''

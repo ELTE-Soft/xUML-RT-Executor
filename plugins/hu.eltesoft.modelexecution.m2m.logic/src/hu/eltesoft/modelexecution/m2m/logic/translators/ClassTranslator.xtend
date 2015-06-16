@@ -30,6 +30,10 @@ import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterTypeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
@@ -46,13 +50,11 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			root.setReference(new NamedReference(cls));
 			return root;
 		]
-		
+
 		// state machine
-		
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
-		
+
 		// attributes
-		
 		val attributeNode = rootNode.onEObject(PACKAGE.clClass_Attributes, AttributeMatcher.on(engine)) [
 			val elem = FACTORY.createClAttribute
 			elem.reference = new NamedReference(attribute)
@@ -72,25 +74,24 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		attributeType.on(BASE_PACKAGE.fullType_UpperBound, AttributeUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-		
+
 		// operations
-		
 		val operationNode = rootNode.onEObject(PACKAGE.clClass_Operations, OperationMatcher.on(engine)) [
 			val elem = FACTORY.createClOperation
 			elem.reference = new NamedReference(operation)
 			elem.isStatic = isStatic
 			return elem
 		]
-		
+
 		// operation parameters
-		
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperation_Parameters, OperationParameterMatcher.on(engine)) [
 			val elem = FACTORY.createClParameter
 			elem.reference = new NamedReference(parameter)
 			elem.direction = direction.convert
 			return elem
 		]
-		val parameterTypeNode = parameterNode.onEObject(PACKAGE.clParameter_Type, OperationParameterTypeMatcher.on(engine)) [
+		val parameterTypeNode = parameterNode.onEObject(PACKAGE.clParameter_Type,
+			OperationParameterTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
@@ -103,10 +104,10 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		parameterTypeNode.on(BASE_PACKAGE.fullType_UpperBound, OperationParameterUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-		
+
 		// operation return type
-		
-		val operationReturn = operationNode.onEObject(PACKAGE.clOperation_ReturnType, OperationReturnTypeMatcher.on(engine)) [
+		val operationReturn = operationNode.onEObject(PACKAGE.clOperation_ReturnType,
+			OperationReturnTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
@@ -119,15 +120,13 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		operationReturn.on(BASE_PACKAGE.fullType_UpperBound, OperationReturnUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-		
+
 		// operation method
-		
 		operationNode.on(PACKAGE.clOperation_Method, MethodMatcher.on(engine)) [
 			new NamedReference(method)
 		]
-		
+
 		// associations
-		
 		val assocNode = rootNode.onEObject(PACKAGE.clClass_Associations, ClassAssociationMatcher.on(engine)) [
 			val elem = FACTORY.createClAssociation
 			elem.reference = new NamedReference(end)
@@ -136,8 +135,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val assocType = assocNode.onEObject(PACKAGE.clAssociation_Type, ClassAssociationTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createFullType
 			elem.baseType = type.convert
-//			elem.isOrdered = ordered
-//			elem.isUnique = unique
+			//			elem.isOrdered = ordered
+			//			elem.isUnique = unique
 			return elem
 		]
 		assocType.on(BASE_PACKAGE.fullType_LowerBound, ClassAssociationLowerBoundMatcher.on(engine)) [
@@ -146,19 +145,38 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		assocType.on(BASE_PACKAGE.fullType_UpperBound, ClassAssociationUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-		
+
 		//  receptions
-		
-		rootNode.onEObject(PACKAGE.clClass_Receptions, ReceptionMatcher.on(engine)) [
+		val receptionNode = rootNode.onEObject(PACKAGE.clClass_Receptions, ReceptionMatcher.on(engine)) [
 			val elem = FACTORY.createClReception
 			elem.reference = new NamedReference(reception)
 			elem.signal = new NamedReference(signal)
 			return elem
 		]
+		val receptionParameter = receptionNode.onEObject(PACKAGE.clReception_Parameters,
+			ReceptionParameterMatcher.on(engine)) [
+			val elem = FACTORY.createClReceptionParameter
+			elem.reference = new NamedReference(parameter)
+			return elem
+		]
+		val receptionType = receptionParameter.onEObject(PACKAGE.clReceptionParameter_Type, ReceptionParameterTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createFullType
+			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
+			return elem
+		]
+		receptionType.on(BASE_PACKAGE.fullType_LowerBound, ReceptionParameterLowerBoundMatcher.on(engine)) [
+			lowerBound.toInt
+		]
+		receptionType.on(BASE_PACKAGE.fullType_UpperBound, ReceptionParameterUpperBoundMatcher.on(engine)) [
+			upperBound.toInt
+		]
+
 		return rootNode;
 	}
 
-	override createTemplate(ClClass cls) { 
+	override createTemplate(ClClass cls) {
 		new ClassTemplate(cls)
 	}
 }

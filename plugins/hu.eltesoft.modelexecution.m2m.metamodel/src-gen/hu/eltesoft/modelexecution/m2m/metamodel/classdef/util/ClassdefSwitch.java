@@ -119,6 +119,14 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ClassdefPackage.CL_RECEPTION_PARAMETER: {
+				ClReceptionParameter clReceptionParameter = (ClReceptionParameter)theEObject;
+				T result = caseClReceptionParameter(clReceptionParameter);
+				if (result == null) result = caseNamed(clReceptionParameter);
+				if (result == null) result = caseTranslationObject(clReceptionParameter);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -210,6 +218,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClAssociation(ClAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClReceptionParameter(ClReceptionParameter object) {
 		return null;
 	}
 

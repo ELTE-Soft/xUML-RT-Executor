@@ -5,15 +5,11 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 

@@ -19,6 +19,10 @@ import hu.eltesoft.modelexecution.uml.incquery.OperationReturnLowerBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterTypeMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.AttributeLowerBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.AttributeQuerySpecification;
@@ -38,6 +42,10 @@ import hu.eltesoft.modelexecution.uml.incquery.util.OperationQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnLowerBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnTypeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnUpperBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterTypeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.RegionOfClassQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -71,6 +79,10 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>OperationReturnUpperBound</li>
  * <li>Method</li>
  * <li>Reception</li>
+ * <li>ReceptionParameter</li>
+ * <li>ReceptionParameterType</li>
+ * <li>ReceptionParameterLowerBound</li>
+ * <li>ReceptionParameterUpperBound</li>
  * <li>ClassAssociation</li>
  * <li>ClassAssociationType</li>
  * <li>ClassAssociationLowerBound</li>
@@ -116,6 +128,10 @@ public final class Classdef extends BaseGeneratedPatternGroup {
     querySpecifications.add(OperationReturnUpperBoundQuerySpecification.instance());
     querySpecifications.add(MethodQuerySpecification.instance());
     querySpecifications.add(ReceptionQuerySpecification.instance());
+    querySpecifications.add(ReceptionParameterQuerySpecification.instance());
+    querySpecifications.add(ReceptionParameterTypeQuerySpecification.instance());
+    querySpecifications.add(ReceptionParameterLowerBoundQuerySpecification.instance());
+    querySpecifications.add(ReceptionParameterUpperBoundQuerySpecification.instance());
     querySpecifications.add(ClassAssociationQuerySpecification.instance());
     querySpecifications.add(ClassAssociationTypeQuerySpecification.instance());
     querySpecifications.add(ClassAssociationLowerBoundQuerySpecification.instance());
@@ -249,6 +265,38 @@ public final class Classdef extends BaseGeneratedPatternGroup {
   
   public ReceptionMatcher getReception(final IncQueryEngine engine) throws IncQueryException {
     return ReceptionMatcher.on(engine);
+  }
+  
+  public ReceptionParameterQuerySpecification getReceptionParameter() throws IncQueryException {
+    return ReceptionParameterQuerySpecification.instance();
+  }
+  
+  public ReceptionParameterMatcher getReceptionParameter(final IncQueryEngine engine) throws IncQueryException {
+    return ReceptionParameterMatcher.on(engine);
+  }
+  
+  public ReceptionParameterTypeQuerySpecification getReceptionParameterType() throws IncQueryException {
+    return ReceptionParameterTypeQuerySpecification.instance();
+  }
+  
+  public ReceptionParameterTypeMatcher getReceptionParameterType(final IncQueryEngine engine) throws IncQueryException {
+    return ReceptionParameterTypeMatcher.on(engine);
+  }
+  
+  public ReceptionParameterLowerBoundQuerySpecification getReceptionParameterLowerBound() throws IncQueryException {
+    return ReceptionParameterLowerBoundQuerySpecification.instance();
+  }
+  
+  public ReceptionParameterLowerBoundMatcher getReceptionParameterLowerBound(final IncQueryEngine engine) throws IncQueryException {
+    return ReceptionParameterLowerBoundMatcher.on(engine);
+  }
+  
+  public ReceptionParameterUpperBoundQuerySpecification getReceptionParameterUpperBound() throws IncQueryException {
+    return ReceptionParameterUpperBoundQuerySpecification.instance();
+  }
+  
+  public ReceptionParameterUpperBoundMatcher getReceptionParameterUpperBound(final IncQueryEngine engine) throws IncQueryException {
+    return ReceptionParameterUpperBoundMatcher.on(engine);
   }
   
   public ClassAssociationQuerySpecification getClassAssociation() throws IncQueryException {

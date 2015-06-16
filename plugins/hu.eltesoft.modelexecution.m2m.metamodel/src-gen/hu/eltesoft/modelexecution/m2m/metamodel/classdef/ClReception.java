@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +15,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
  * The following features are supported:
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getSignal <em>Signal</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getParameters <em>Parameters</em>}</li>
  * </ul>
  * </p>
  *
@@ -47,5 +49,21 @@ public interface ClReception extends Named {
 	 * @generated
 	 */
 	void setSignal(NamedReference value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameters</em>' reference list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClReception_Parameters()
+	 * @model
+	 * @generated
+	 */
+	EList<ClReceptionParameter> getParameters();
 
 } // ClReception

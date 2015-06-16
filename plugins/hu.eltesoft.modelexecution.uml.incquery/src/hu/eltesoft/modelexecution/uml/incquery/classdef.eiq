@@ -117,6 +117,32 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 	Reception.signal(reception, signal);
 }
 
+pattern
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter) {
+	find Reception(cls, reception, _);
+	Reception.ownedParameter(reception, parameter);
+	Parameter.direction(parameter, direction);
+	direction == ParameterDirectionKind::in;
+}
+
+pattern ReceptionParameterType(cls: Class, reception : Reception, parameter : Parameter, type : Type, ordered, unique) {
+	find ReceptionParameter(cls, reception, parameter);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern ReceptionParameterLowerBound(cls: Class, reception : Reception, parameter : Parameter, type : Type, lowerBound: ValueSpecification) {
+	find ReceptionParameterType(cls, reception, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern ReceptionParameterUpperBound(cls: Class, reception : Reception, parameter : Parameter, type : Type, upperBound: ValueSpecification) {
+	find ReceptionParameterType(cls, reception, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+} 
+
+
 // class associations
 
 pattern ClassAssociation(cls: Class, end: Property) {

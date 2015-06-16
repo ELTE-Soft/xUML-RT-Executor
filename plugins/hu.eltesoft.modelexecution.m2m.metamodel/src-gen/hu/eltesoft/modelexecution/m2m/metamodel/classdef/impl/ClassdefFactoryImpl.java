@@ -62,6 +62,7 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
 			case ClassdefPackage.CL_PARAMETER: return createClParameter();
 			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
+			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -125,6 +126,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClAssociation createClAssociation() {
 		ClAssociationImpl clAssociation = new ClAssociationImpl();
 		return clAssociation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClReceptionParameter createClReceptionParameter() {
+		ClReceptionParameterImpl clReceptionParameter = new ClReceptionParameterImpl();
+		return clReceptionParameter;
 	}
 
 	/**

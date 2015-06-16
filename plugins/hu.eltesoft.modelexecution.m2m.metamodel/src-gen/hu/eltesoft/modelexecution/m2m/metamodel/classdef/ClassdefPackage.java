@@ -242,13 +242,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_RECEPTION__SIGNAL = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION__PARAMETERS = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Cl Reception</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_RECEPTION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int CL_RECEPTION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Cl Reception</em>' class.
@@ -418,6 +427,53 @@ public interface ClassdefPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl <em>Cl Reception Parameter</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
+	 * @generated
+	 */
+	int CL_RECEPTION_PARAMETER = 6;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__REFERENCE = BasePackage.NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Reception Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Reception Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -558,6 +614,17 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClReception_Signal();
 
 	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Parameters</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception#getParameters()
+	 * @see #getClReception()
+	 * @generated
+	 */
+	EReference getClReception_Parameters();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute <em>Cl Attribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -641,6 +708,27 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClAssociation_Type();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter <em>Cl Reception Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Reception Parameter</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter
+	 * @generated
+	 */
+	EClass getClReceptionParameter();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter#getType()
+	 * @see #getClReceptionParameter()
+	 * @generated
+	 */
+	EReference getClReceptionParameter_Type();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -776,6 +864,14 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_RECEPTION__SIGNAL = eINSTANCE.getClReception_Signal();
 
 		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_RECEPTION__PARAMETERS = eINSTANCE.getClReception_Parameters();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl <em>Cl Attribute</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -844,6 +940,24 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_ASSOCIATION__TYPE = eINSTANCE.getClAssociation_Type();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl <em>Cl Reception Parameter</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
+		 * @generated
+		 */
+		EClass CL_RECEPTION_PARAMETER = eINSTANCE.getClReceptionParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_RECEPTION_PARAMETER__TYPE = eINSTANCE.getClReceptionParameter_Type();
 
 	}
 

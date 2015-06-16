@@ -20,6 +20,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
@@ -90,6 +91,13 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	private EClass clAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass clReceptionParameterEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -294,6 +302,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getClReception_Parameters() {
+		return (EReference)clReceptionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClAttribute() {
 		return clAttributeEClass;
 	}
@@ -366,6 +383,24 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getClReceptionParameter() {
+		return clReceptionParameterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getClReceptionParameter_Type() {
+		return (EReference)clReceptionParameterEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ClassdefFactory getClassdefFactory() {
 		return (ClassdefFactory)getEFactoryInstance();
 	}
@@ -404,6 +439,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		clReceptionEClass = createEClass(CL_RECEPTION);
 		createEAttribute(clReceptionEClass, CL_RECEPTION__SIGNAL);
+		createEReference(clReceptionEClass, CL_RECEPTION__PARAMETERS);
 
 		clAttributeEClass = createEClass(CL_ATTRIBUTE);
 		createEReference(clAttributeEClass, CL_ATTRIBUTE__TYPE);
@@ -415,6 +451,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		clAssociationEClass = createEClass(CL_ASSOCIATION);
 		createEReference(clAssociationEClass, CL_ASSOCIATION__TYPE);
+
+		clReceptionParameterEClass = createEClass(CL_RECEPTION_PARAMETER);
+		createEReference(clReceptionParameterEClass, CL_RECEPTION_PARAMETER__TYPE);
 	}
 
 	/**
@@ -455,6 +494,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		clAttributeEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clParameterEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clAssociationEClass.getESuperTypes().add(theBasePackage.getNamed());
+		clReceptionParameterEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(clClassEClass, ClClass.class, "ClClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -472,6 +512,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		initEClass(clReceptionEClass, ClReception.class, "ClReception", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClReception_Signal(), theBasePackage.getNamedReference(), "signal", null, 1, 1, ClReception.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getClReception_Parameters(), this.getClReceptionParameter(), null, "parameters", null, 0, -1, ClReception.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clAttributeEClass, ClAttribute.class, "ClAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClAttribute_Type(), theBasePackage.getFullType(), null, "type", null, 0, 1, ClAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -483,6 +524,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		initEClass(clAssociationEClass, ClAssociation.class, "ClAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClAssociation_Type(), theBasePackage.getFullType(), null, "type", null, 1, 1, ClAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(clReceptionParameterEClass, ClReceptionParameter.class, "ClReceptionParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getClReceptionParameter_Type(), theBasePackage.getFullType(), null, "type", null, 0, 1, ClReceptionParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
