@@ -1,14 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java
 
-import com.google.common.collect.Multiset
+import com.google.common.collect.HashMultiset
 import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
-import hu.eltesoft.modelexecution.runtime.values.MutableBool
-import hu.eltesoft.modelexecution.runtime.values.MutableInt
-import hu.eltesoft.modelexecution.runtime.values.MutableReal
-import hu.eltesoft.modelexecution.runtime.values.MutableString
+import java.math.BigInteger
 import java.util.ArrayList
 import java.util.HashSet
 
@@ -19,16 +16,12 @@ class TypeConverter {
 
 	dispatch def String javaType(FullType type) {
 		val baseType = javaType(type.baseType)
-		if (type.lowerBound != 1 || type.upperBound != 1) {
-			if (type.isOrdered) {
-				ArrayList.canonicalName + "<" + baseType + ">"
-			} else if (type.isUnique) {
-				HashSet.canonicalName + "<" + baseType + ">"
-			} else {
-				Multiset.canonicalName + "<" + baseType + ">"
-			}
+		if (type.isOrdered) {
+			ArrayList.canonicalName + "<" + baseType + ">"
+		} else if (type.isUnique) {
+			HashSet.canonicalName + "<" + baseType + ">"
 		} else {
-			baseType
+			HashMultiset.canonicalName + "<" + baseType + ">"
 		}
 	}
 
@@ -42,23 +35,24 @@ class TypeConverter {
 
 	def javaPrimitiveType(PrimitiveTypes primType) {
 		switch (primType) {
-			case BOOLEAN: MutableBool.canonicalName
-			case INTEGER: MutableInt.canonicalName
-			case STRING: MutableString.canonicalName
-			case REAL: MutableReal.canonicalName
+			case BOOLEAN: Boolean.canonicalName
+			case INTEGER: BigInteger.canonicalName
+			case STRING: String.canonicalName
+			case REAL: Double.canonicalName
 		}
 	}
 
 	def createEmpty(FullType toCreate) {
+		val expectedNum = if (toCreate.upperBound == 1) "1" else ""
 		if (toCreate.isOrdered) {
-			"new " + ArrayList.canonicalName + "<>()"
+			"new " + ArrayList.canonicalName + "<>(" + expectedNum + ")"
 		} else if (toCreate.isUnique) {
-			"new " + HashSet.canonicalName + "<>()"
+			"new " + HashSet.canonicalName + "<>(" + expectedNum + ")"
 		} else {
-			Multiset.canonicalName + ".create()"
+			HashMultiset.canonicalName + ".create(" + expectedNum + ")"
 		}
 	}
-	
+
 	def scalarType(FullType type) {
 		return javaType(type.baseType)
 	}

@@ -77,7 +77,8 @@ class SignalTemplate extends Template {
 			// attributes
 			
 			«FOR attribute : signal.attributes»
-				«typeConverter.javaType(attribute.type)» «attribute.identifier»;
+				«typeConverter.javaType(attribute.type)» «attribute.identifier»
+					= «typeConverter.createEmpty(attribute.type)»;
 			«ENDFOR»
 		}
 	'''

@@ -104,65 +104,68 @@ class ClassTemplate extends Template {
 		}
 		
 	'''
-	
+
 	def generateAttributes() '''
 		«FOR attribute : classDefinition.attributes»
-		
-			«generatedHeader(attribute)»
-			«IF attribute.isStatic»static«ENDIF» «typeConverter.javaType(attribute.type)» «attribute.identifier»;
+			
+				«generatedHeader(attribute)»
+				«IF attribute.isStatic»static«ENDIF» «typeConverter.javaType(attribute.type)» «attribute.identifier» 
+					= «typeConverter.createEmpty(attribute.type)»;
 		«ENDFOR»
 	'''
-	
+
 	def generateAssociations() '''
 		«FOR association : classDefinition.associations»
-		
-			«generatedHeader(association)»
-			«typeConverter.javaType(association.type)» «association.identifier»;
+			
+				«generatedHeader(association)»
+				«typeConverter.javaType(association.type)» «association.identifier» 
+					= «typeConverter.createEmpty(association.type)»;
 		«ENDFOR»
 	'''
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
-		
-			«generatedHeader(operation)»
-			public «IF operation.isStatic»static«ENDIF»
-			       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
-					«FOR parameter : operation.parameters SEPARATOR ','»
-						«generatedHeader(parameter)»
-						«typeConverter.javaType(parameter.type)» «parameter.identifier»
-					«ENDFOR»
-			) {
-				«IF null != operation.method»
-					
-					«IF operation.returnType != null»return«ENDIF»
-						«operation.method.identifier».execute(
-							«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
-							«FOR parameter : operation.parameters SEPARATOR ','»
-								«parameter.identifier»
-							«ENDFOR»
+			
+				«generatedHeader(operation)»
+				public «IF operation.isStatic»static«ENDIF»
+				       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.
+			identifier»(
+						«FOR parameter : operation.parameters SEPARATOR ','»
+							«generatedHeader(parameter)»
+							«typeConverter.javaType(parameter.type)» «parameter.identifier»
+						«ENDFOR»
+				) {
+					«IF null != operation.method»
+						
+						«IF operation.returnType != null»return«ENDIF»
+							«operation.method.identifier».execute(
+						«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
+						«FOR parameter : operation.parameters SEPARATOR ','»
+							«parameter.identifier»
+						«ENDFOR»
 						);
-				«ENDIF»
-			}
+					«ENDIF»
+				}
 		«ENDFOR»
 	'''
 
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
-		
-			«generatedHeader(reception)»
-			public void «reception.identifier»(
-				«FOR parameter : reception.parameters SEPARATOR ','»
-					«generatedHeader(parameter)»
-					«typeConverter.javaType(parameter.type)» «parameter.identifier»
-				«ENDFOR»
-			) {
-				«reception.signal.identifier» signal = new «reception.signal.identifier»(
+			
+				«generatedHeader(reception)»
+				public void «reception.identifier»(
 					«FOR parameter : reception.parameters SEPARATOR ','»
-						«parameter.identifier»
+						«generatedHeader(parameter)»
+						«typeConverter.javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
-				);
-				getRuntime().addEventToQueue(this, signal);
-			}
+				) {
+					«reception.signal.identifier» signal = new «reception.signal.identifier»(
+						«FOR parameter : reception.parameters SEPARATOR ','»
+							«parameter.identifier»
+						«ENDFOR»
+					);
+					getRuntime().addEventToQueue(this, signal);
+				}
 		«ENDFOR»
 	'''
 

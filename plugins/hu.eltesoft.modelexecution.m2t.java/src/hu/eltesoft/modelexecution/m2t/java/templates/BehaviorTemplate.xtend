@@ -38,6 +38,10 @@ class BehaviorTemplate extends Template {
 				«ENDFOR»
 			) {
 				«compiledAlfCode»
+				«IF behavior.returnType != null»
+					// walkaround while we are not generating actual action code
+					return null;
+				«ENDIF»
 			}
 		}
 	'''

@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
 import java.util.Date
 import org.apache.commons.lang.StringEscapeUtils
+import javax.annotation.Generated
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -51,17 +52,16 @@ abstract class Template extends EmfTraceExtensions {
 	protected def CharSequence original_generate() ''''''
 
 	protected def generatedHeaderForClass(Named root) '''
-		import javax.annotation.Generated;
-		
-		@Generated(date = "«new Date().toString»", value = { «root.nameLiteral» })
+		@«Generated.canonicalName»(date = "«new Date().toString»", value = { «root.nameLiteral» })
+		@«SuppressWarnings.canonicalName»("all")
 	'''
 
 	protected def generatedHeader(Named named) '''
-		@Generated(value = { «named.nameLiteral» })
+		@«Generated.canonicalName»(value = { «named.nameLiteral» })
 	'''
 
 	protected def generatedHeader(NamedReference reference) '''
-		@Generated(value = { «reference.nameLiteral» })
+		@«Generated.canonicalName»(value = { «reference.nameLiteral» })
 	'''
 
 	/**
