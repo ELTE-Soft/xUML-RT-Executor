@@ -29,8 +29,7 @@ import org.eclipse.uml2.uml.Property;
  * <p>Original source:
  * <code><pre>
  * // class associations
- * 
- * pattern ClassAssociation(cls: Class, end: Property) {
+ * pattern ClassAssociation(cls : Class, end : Property) {
  * 	find AssociationEndType(_, end, cls);
  * }
  * </pre></code>

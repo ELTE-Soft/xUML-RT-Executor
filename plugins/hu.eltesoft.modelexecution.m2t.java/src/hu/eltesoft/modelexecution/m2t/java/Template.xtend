@@ -53,6 +53,8 @@ abstract class Template extends EmfTraceExtensions {
 
 	protected def generatedHeaderForClass(Named root) '''
 		@«Generated.canonicalName»(date = "«new Date().toString»", value = { «root.nameLiteral» })
+		// there can be casts to generic types, only "all" does 
+		// not generate a warning for unnecessary @SuppressWarnings
 		@«SuppressWarnings.canonicalName»("all")
 	'''
 
@@ -120,7 +122,7 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
-	
+
 	def getTypeConverter() {
 		typeConverter
 	}

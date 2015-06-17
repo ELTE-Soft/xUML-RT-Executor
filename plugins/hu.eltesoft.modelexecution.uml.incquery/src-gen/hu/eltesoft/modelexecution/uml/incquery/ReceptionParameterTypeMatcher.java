@@ -30,7 +30,8 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern ReceptionParameterType(cls: Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
+ * pattern
+ * ReceptionParameterType(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
  * 	find ReceptionParameter(cls, reception, parameter);
  * 	Parameter.type(parameter, type);
  * 	Parameter.isOrdered(parameter, ordered);

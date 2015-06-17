@@ -29,7 +29,7 @@ import org.eclipse.uml2.uml.Property;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern AssociationEnd(association: Association, end: Property) {
+ * pattern AssociationEnd(association : Association, end : Property) {
  * 	find Association(association);
  * 	find Cls(cls);
  * 	Association.ownedEnd(association, end);

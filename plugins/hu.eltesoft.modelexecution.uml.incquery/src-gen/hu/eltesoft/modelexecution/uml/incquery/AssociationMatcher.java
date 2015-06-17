@@ -28,7 +28,7 @@ import org.eclipse.uml2.uml.Association;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern Association(association: Association) {
+ * pattern Association(association : Association) {
  * 	Association(association);
  * }
  * </pre></code>

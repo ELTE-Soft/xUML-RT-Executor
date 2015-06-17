@@ -30,8 +30,11 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern ClassAssociationLowerBound(cls: Class, end: Property, type : Association, lowerBound: ValueSpecification) {
- * 	find AssociationEndLowerBound(type, end, cls, lowerBound);
+ * pattern
+ * ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound : ValueSpecification) {
+ * 	find ClassAssociationType(cls, end, type);
+ * 	find AssociationOtherEnd(end, otherEnd);
+ * 	Property.lowerValue(otherEnd, lowerBound);
  * }
  * </pre></code>
  * 

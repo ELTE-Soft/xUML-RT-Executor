@@ -29,7 +29,8 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern AttributeType(cls: Class, attribute : Property, type, ordered, unique) {
+ * pattern
+ * AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
  * 	find Attribute(cls, attribute, _);
  * 	Property.type(attribute, type);
  * 	Property.isOrdered(attribute, ordered);

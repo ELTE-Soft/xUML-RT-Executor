@@ -1,14 +1,12 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
-import hu.eltesoft.modelexecution.uml.incquery.AssociationEndLowerBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.AssociationEndMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.AssociationEndTypeMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.AssociationEndUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.AssociationMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.AssociationEndLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.AssociationOtherEndMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.AssociationEndQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.AssociationEndTypeQuerySpecification;
-import hu.eltesoft.modelexecution.uml.incquery.util.AssociationEndUpperBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.AssociationOtherEndQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.AssociationQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
@@ -25,8 +23,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>Association</li>
  * <li>AssociationEnd</li>
  * <li>AssociationEndType</li>
- * <li>AssociationEndLowerBound</li>
- * <li>AssociationEndUpperBound</li>
+ * <li>AssociationOtherEnd</li>
  * </ul>
  * 
  * @see IPatternGroup
@@ -55,8 +52,7 @@ public final class Association extends BaseGeneratedPatternGroup {
     querySpecifications.add(AssociationQuerySpecification.instance());
     querySpecifications.add(AssociationEndQuerySpecification.instance());
     querySpecifications.add(AssociationEndTypeQuerySpecification.instance());
-    querySpecifications.add(AssociationEndLowerBoundQuerySpecification.instance());
-    querySpecifications.add(AssociationEndUpperBoundQuerySpecification.instance());
+    querySpecifications.add(AssociationOtherEndQuerySpecification.instance());
     
   }
   
@@ -84,19 +80,11 @@ public final class Association extends BaseGeneratedPatternGroup {
     return AssociationEndTypeMatcher.on(engine);
   }
   
-  public AssociationEndLowerBoundQuerySpecification getAssociationEndLowerBound() throws IncQueryException {
-    return AssociationEndLowerBoundQuerySpecification.instance();
+  public AssociationOtherEndQuerySpecification getAssociationOtherEnd() throws IncQueryException {
+    return AssociationOtherEndQuerySpecification.instance();
   }
   
-  public AssociationEndLowerBoundMatcher getAssociationEndLowerBound(final IncQueryEngine engine) throws IncQueryException {
-    return AssociationEndLowerBoundMatcher.on(engine);
-  }
-  
-  public AssociationEndUpperBoundQuerySpecification getAssociationEndUpperBound() throws IncQueryException {
-    return AssociationEndUpperBoundQuerySpecification.instance();
-  }
-  
-  public AssociationEndUpperBoundMatcher getAssociationEndUpperBound(final IncQueryEngine engine) throws IncQueryException {
-    return AssociationEndUpperBoundMatcher.on(engine);
+  public AssociationOtherEndMatcher getAssociationOtherEnd(final IncQueryEngine engine) throws IncQueryException {
+    return AssociationOtherEndMatcher.on(engine);
   }
 }

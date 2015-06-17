@@ -29,7 +29,6 @@ import org.eclipse.uml2.uml.Operation;
  * <p>Original source:
  * <code><pre>
  * // operations
- * 
  * pattern Operation(cls : Class, operation : Operation, isStatic) {
  * 	Class.ownedOperation(cls, operation);
  * 	Operation.isStatic(operation, isStatic);

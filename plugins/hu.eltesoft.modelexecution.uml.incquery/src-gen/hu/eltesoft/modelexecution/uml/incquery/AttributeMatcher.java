@@ -29,8 +29,7 @@ import org.eclipse.uml2.uml.Property;
  * <p>Original source:
  * <code><pre>
  * // attributes
- * 
- * pattern Attribute(cls: Class, attribute : Property, isStatic)  {
+ * pattern Attribute(cls : Class, attribute : Property, isStatic) {
  * 	find Cls(cls);
  * 	Class.ownedAttribute(cls, attribute);
  * 	Property.isStatic(attribute, isStatic);

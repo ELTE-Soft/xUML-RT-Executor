@@ -3,7 +3,8 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.AssociationEndLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.AssociationOtherEndQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ClassAssociationTypeQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.eclipse.incquery.runtime.matchers.psystem.PBody;
 import org.eclipse.incquery.runtime.matchers.psystem.PVariable;
 import org.eclipse.incquery.runtime.matchers.psystem.basicdeferred.ExportedParameter;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.PositivePatternCall;
+import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeBinary;
 import org.eclipse.incquery.runtime.matchers.psystem.basicenumerables.TypeUnary;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.incquery.runtime.matchers.tuple.FlatTuple;
@@ -77,6 +79,7 @@ public final class ClassAssociationUpperBoundQuerySpecification extends BaseGene
       PVariable var_end = body.getOrCreateVariableByName("end");
       PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
+      PVariable var_otherEnd = body.getOrCreateVariableByName("otherEnd");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_end, "end"), 
@@ -90,8 +93,10 @@ public final class ClassAssociationUpperBoundQuerySpecification extends BaseGene
       
       new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association"), "http://www.eclipse.org/uml2/5.0.0/UML/Association");
       
-      new TypeUnary(body, var_upperBound, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ValueSpecification"), "http://www.eclipse.org/uml2/5.0.0/UML/ValueSpecification");
-      new PositivePatternCall(body, new FlatTuple(var_type, var_end, var_cls, var_upperBound), AssociationEndLowerBoundQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_cls, var_end, var_type), ClassAssociationTypeQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_end, var_otherEnd), AssociationOtherEndQuerySpecification.instance());
+      new TypeUnary(body, var_otherEnd, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property"), "http://www.eclipse.org/uml2/5.0.0/UML/Property");
+      new TypeBinary(body, CONTEXT, var_otherEnd, var_upperBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.upperValue");
       bodies.add(body);
     }
     return bodies;

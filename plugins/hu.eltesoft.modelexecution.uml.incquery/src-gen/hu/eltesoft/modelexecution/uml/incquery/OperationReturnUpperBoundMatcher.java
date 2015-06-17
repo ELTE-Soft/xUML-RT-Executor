@@ -30,7 +30,8 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern OperationReturnUpperBound(cls: Class, operation : Operation, type, upperBound: ValueSpecification) {
+ * pattern
+ * OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound : ValueSpecification) {
  * 	find OperationReturn(cls, operation, parameter);
  * 	find OperationReturnType(cls, operation, type, _, _);
  * 	Parameter.upperValue(parameter, upperBound);

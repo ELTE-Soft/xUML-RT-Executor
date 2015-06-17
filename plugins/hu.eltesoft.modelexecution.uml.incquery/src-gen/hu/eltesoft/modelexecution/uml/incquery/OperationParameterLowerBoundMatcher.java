@@ -31,7 +31,8 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern OperationParameterLowerBound(cls: Class, operation : Operation, parameter : Parameter, type, lowerBound: ValueSpecification) {
+ * pattern
+ * OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type, lowerBound : ValueSpecification) {
  * 	find OperationParameterType(cls, operation, parameter, type, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }
