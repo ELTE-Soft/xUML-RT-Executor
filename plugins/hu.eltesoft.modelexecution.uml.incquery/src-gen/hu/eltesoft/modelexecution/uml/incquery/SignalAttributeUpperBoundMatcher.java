@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, type : Type, upperBound : ValueSpecification) {
+ * pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, type, upperBound : ValueSpecification) {
  * 	find SignalAttributeType(signal, attribute, type, _, _);
  * 	Property.upperValue(attribute, upperBound);
  * }

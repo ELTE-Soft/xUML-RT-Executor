@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.Type;
  * <p>Original source:
  * <code><pre>
  * pattern
- * BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
+ * BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
  * 	Behavior.ownedParameter(behavior, parameter);
  * 	Parameter.direction(parameter, ParameterDirectionKind::^return);
  * 	Parameter.type(parameter, type);

@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern ReceptionParameterLowerBound(cls: Class, reception : Reception, parameter : Parameter, type : Type, lowerBound: ValueSpecification) {
+ * pattern ReceptionParameterLowerBound(cls: Class, reception : Reception, parameter : Parameter, type, lowerBound: ValueSpecification) {
  * 	find ReceptionParameterType(cls, reception, parameter, type, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }

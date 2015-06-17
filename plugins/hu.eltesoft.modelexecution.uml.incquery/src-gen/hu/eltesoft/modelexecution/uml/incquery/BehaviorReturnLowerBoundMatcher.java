@@ -32,7 +32,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <p>Original source:
  * <code><pre>
  * pattern
- * BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
+ * BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
  * 	find BehaviorReturnType(behavior, parameter, type, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }

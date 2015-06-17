@@ -29,7 +29,7 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern OperationReturnType(cls : Class, operation : Operation, type : Type, ordered, unique) {
+ * pattern OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
  * 	find OperationReturn(cls, operation, parameter);
  * 	Parameter.type(parameter, type);
  * 	Parameter.isOrdered(parameter, ordered);

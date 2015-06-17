@@ -94,7 +94,6 @@ public final class ReceptionParameterLowerBoundQuerySpecification extends BaseGe
       new TypeUnary(body, var_reception, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception"), "http://www.eclipse.org/uml2/5.0.0/UML/Reception");
       
       
-      new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Type"), "http://www.eclipse.org/uml2/5.0.0/UML/Type");
       
       new PositivePatternCall(body, new FlatTuple(var_cls, var_reception, var_parameter, var_type, var___0_, var___1_), ReceptionParameterTypeQuerySpecification.instance());
       new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");

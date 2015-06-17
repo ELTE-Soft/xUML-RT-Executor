@@ -90,7 +90,6 @@ public final class BehaviorParameterUpperBoundQuerySpecification extends BaseGen
       new TypeUnary(body, var_behavior, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior"), "http://www.eclipse.org/uml2/5.0.0/UML/Behavior");
       
       
-      new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Type"), "http://www.eclipse.org/uml2/5.0.0/UML/Type");
       
       new PositivePatternCall(body, new FlatTuple(var_behavior, var_parameter, var_type, var___0_, var___1_), BehaviorParameterTypeQuerySpecification.instance());
       new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");

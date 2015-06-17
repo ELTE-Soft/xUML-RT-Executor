@@ -30,7 +30,7 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern OperationParameterType(cls: Class, operation : Operation, parameter : Parameter, type : Type, ordered, unique) {
+ * pattern OperationParameterType(cls: Class, operation : Operation, parameter : Parameter, type, ordered, unique) {
  * 	find OperationParameter(cls, operation, parameter, _);
  * 	Parameter.type(parameter, type);
  * 	Parameter.isOrdered(parameter, ordered);

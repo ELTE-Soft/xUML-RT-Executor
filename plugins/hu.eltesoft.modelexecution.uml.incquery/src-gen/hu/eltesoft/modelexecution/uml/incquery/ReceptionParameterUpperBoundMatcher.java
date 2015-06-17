@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern ReceptionParameterUpperBound(cls: Class, reception : Reception, parameter : Parameter, type : Type, upperBound: ValueSpecification) {
+ * pattern ReceptionParameterUpperBound(cls: Class, reception : Reception, parameter : Parameter, type, upperBound: ValueSpecification) {
  * 	find ReceptionParameterType(cls, reception, parameter, type, _, _);
  * 	Parameter.upperValue(parameter, upperBound);
  * }

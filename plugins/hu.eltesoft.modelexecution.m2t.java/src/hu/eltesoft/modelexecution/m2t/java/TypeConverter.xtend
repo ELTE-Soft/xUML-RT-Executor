@@ -49,4 +49,18 @@ class TypeConverter {
 		}
 	}
 
+	def createEmpty(FullType toCreate) {
+		if (toCreate.isOrdered) {
+			"new " + ArrayList.canonicalName + "<>()"
+		} else if (toCreate.isUnique) {
+			"new " + HashSet.canonicalName + "<>()"
+		} else {
+			Multiset.canonicalName + ".create()"
+		}
+	}
+	
+	def scalarType(FullType type) {
+		return javaType(type.baseType)
+	}
+
 }

@@ -88,9 +88,9 @@ public final class ReceptionParameterQuerySpecification extends BaseGeneratedQue
       
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
+      new TypeUnary(body, var_reception, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception"), "http://www.eclipse.org/uml2/5.0.0/UML/Reception");
       
       new PositivePatternCall(body, new FlatTuple(var_cls, var_reception, var___0_), ReceptionQuerySpecification.instance());
-      new TypeUnary(body, var_reception, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception"), "http://www.eclipse.org/uml2/5.0.0/UML/Reception");
       new TypeBinary(body, CONTEXT, var_reception, var_parameter, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioralFeature.ownedParameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_direction, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter.direction");
       new ConstantValue(body, var_direction, org.eclipse.uml2.uml.ParameterDirectionKind.get("in"));

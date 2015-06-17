@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.Type;
  * <p>Original source:
  * <code><pre>
  * pattern
- * BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
+ * BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
  * 	find BehaviorParameter(behavior, parameter, _);
  * 	Parameter.type(parameter, type);
  * 	Parameter.isOrdered(parameter, ordered);

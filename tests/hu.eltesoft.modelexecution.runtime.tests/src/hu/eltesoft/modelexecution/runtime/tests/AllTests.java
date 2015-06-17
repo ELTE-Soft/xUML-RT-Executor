@@ -9,6 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ BaseRuntimeTest.class, TraceWriterTest.class,
-		TraceReplayerTest.class })
+		TraceReplayerTest.class, JSONTest.class })
 public class AllTests {
 }

@@ -30,7 +30,7 @@ import org.eclipse.uml2.uml.Type;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern SignalAttributeType(signal : Signal, attribute : Property, type : Type, ordered, unique) {
+ * pattern SignalAttributeType(signal : Signal, attribute : Property, type, ordered, unique) {
  * 	find SignalAttribute(signal, attribute);
  * 	Property.type(attribute, type);
  * 	Property.isOrdered(attribute, ordered);

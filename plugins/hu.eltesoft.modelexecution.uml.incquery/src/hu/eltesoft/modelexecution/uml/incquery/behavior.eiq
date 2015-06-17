@@ -39,7 +39,7 @@ pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction 
 }
 
 pattern
-BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
 	find BehaviorParameter(behavior, parameter, _);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -47,19 +47,19 @@ BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, o
 }
 
 pattern
-BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
 
 pattern
-BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
@@ -68,13 +68,13 @@ BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, orde
 }
 
 pattern
-BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
