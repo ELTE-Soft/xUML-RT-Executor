@@ -16,28 +16,32 @@ class BehaviorTemplate extends Template {
 
 	val BhBehavior behavior
 	val SourceMappedText compiledAlfCode
+	val boolean returns
 
 	new(BhBehavior behavior) {
 		super(behavior)
 		this.behavior = behavior
 		val generator = new BehaviorBodyGenerator
+		returns = behavior.returnType != null
 		compiledAlfCode = generator.generate(behavior.alfResult)
 	}
 
 	override generate() '''
-		/** Class for implementing behavior «behavior.javadoc» */
+		/** Class for implementing behavior «behavior.javadoc» 
+		 */
 		«generatedHeaderForClass(behavior)»
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
 				
-			/** Static method implementing behavior «behavior.javadoc» */
-			public static «IF behavior.returnType != null»«typeConverter.javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
+			/** Static method implementing behavior «behavior.javadoc» 
+			 «IF returns»* @param «CONTEXT_NAME» Behavior parameter for passing context«ENDIF»
+			 «javadocParams(behavior.parameters)»
+			 */
+			public static «IF returns»«typeConverter.javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
 				«IF !behavior.isStatic»«behavior.containerClass.identifier» 
-					/** Behavior parameter for passing context */
 					«CONTEXT_NAME»
 					«IF !behavior.parameters.empty»,«ENDIF»
 				«ENDIF»
 				«FOR param : behavior.parameters SEPARATOR ','»
-					/** Behavior parameter «param.javadoc» */
 					«typeConverter.javaType(param.type)» «param.identifier»
 				«ENDFOR»
 			) {

@@ -130,12 +130,13 @@ class ClassTemplate extends Template {
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
 			
-				/** Method for operation «operation.javadoc» */
+				/** Method for operation «operation.javadoc» 
+				 «javadocParams(operation.parameters)»
+			     */
 				public «IF operation.isStatic»static«ENDIF»
 				       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.
 			identifier»(
 						«FOR parameter : operation.parameters SEPARATOR ','»
-							/** Parameter for operation parameter «parameter.javadoc» */
 							«typeConverter.javaType(parameter.type)» «parameter.identifier»
 						«ENDFOR»
 				) {
@@ -156,10 +157,11 @@ class ClassTemplate extends Template {
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
 			
-				/** Method for reception «reception.javadoc» */
+				/** Method for reception «reception.javadoc» 
+				 «javadocParams(reception.parameters)» 
+				 */
 				public void «reception.identifier»(
 					«FOR parameter : reception.parameters SEPARATOR ','»
-						/** Parameter for reception parameter «parameter.javadoc» */
 						«typeConverter.javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
 				) {

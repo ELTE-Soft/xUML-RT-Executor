@@ -119,7 +119,7 @@ class RegionTemplate extends Template {
 				// First state entry
 				owner.getRuntime().logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
-					new «firstState.entry.identifier»(owner).execute();
+					«firstState.entry.identifier».execute(owner);
 				«ENDIF»
 		
 				currentState = State.«firstState.identifier»;
@@ -155,7 +155,7 @@ class RegionTemplate extends Template {
 								// State exit
 								owner.getRuntime().logExitState(«traceLiteral(state, Exit)»);
 								«IF null != state.exit»
-									new «state.exit.identifier»(owner).execute();
+									«state.exit.identifier».execute(owner);
 								«ENDIF»
 							
 								// Transition effect
@@ -165,13 +165,13 @@ class RegionTemplate extends Template {
 										«trace(state.nameLiteral, transition.reference)»,
 										«transition.target.nameLiteral»);
 								«IF null != transition.effect»
-									new «transition.effect.identifier»(owner).execute();
+									«transition.effect.identifier».execute(owner);
 								«ENDIF»
 							
 								// State entry
 								owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
 								«IF null != transition.target.entry»
-									new «transition.target.entry.identifier»(owner).execute();
+									«transition.target.entry.identifier».execute(owner);
 								«ENDIF»
 							
 								currentState = State.«transition.target.identifier»;

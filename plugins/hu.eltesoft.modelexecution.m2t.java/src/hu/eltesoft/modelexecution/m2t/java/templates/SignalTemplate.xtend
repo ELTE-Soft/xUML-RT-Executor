@@ -26,6 +26,9 @@ class SignalTemplate extends Template {
 		«generatedHeaderForClass(signal)»
 		public class «signal.identifier» extends «Signal.canonicalName» {
 		
+			/** Constructs a signal «signal.javadoc» from a reception
+			 «javadocParams(signal.attributes)»
+			 */
 			public «signal.identifier»(
 				«FOR attribute : signal.attributes SEPARATOR ','»
 					«typeConverter.javaType(attribute.type)» «attribute.identifier»
@@ -37,6 +40,10 @@ class SignalTemplate extends Template {
 				«ENDFOR»
 			}
 		
+			/** Constructs a signal «signal.javadoc» in an event
+			 * @param event The event that wraps the signal
+			 «javadocParams(signal.attributes)»
+			 */
 			public «signal.identifier»(«SignalEvent.canonicalName» event
 				«FOR attribute : signal.attributes»
 					, «typeConverter.javaType(attribute.type)» «attribute.identifier»
@@ -61,17 +68,7 @@ class SignalTemplate extends Template {
 			@Override
 			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
 				«FOR attribute : signal.attributes SEPARATOR ','»
-					«IF attribute.type.lowerBound == 1 && attribute.type.upperBound == 1»
-						this.«attribute.identifier» = («typeConverter.javaType(attribute.type)») obj.get("«attribute.identifier»");
-					«ELSE»
-						«JSONArray.canonicalName» «attribute.identifier»_array = obj.getJSONArray("«attribute.identifier»");
-						«typeConverter.javaType(attribute.type)» «attribute.identifier» = «typeConverter.createEmpty(attribute.type)»;
-						for (int i = 0; i < «attribute.identifier»_array.length(); i++) {
-							«attribute.identifier».add((«typeConverter.scalarType(attribute.type)») «attribute.identifier»_array.get(i));
-						}
-						this.«attribute.identifier» = «attribute.identifier»;
-					«ENDIF»
-					
+					forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), «attribute.identifier»::add);
 				«ENDFOR»
 			}
 			

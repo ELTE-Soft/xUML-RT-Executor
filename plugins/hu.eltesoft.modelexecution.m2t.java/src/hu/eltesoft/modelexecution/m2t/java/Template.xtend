@@ -5,8 +5,9 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
 import java.util.Date
-import org.apache.commons.lang.StringEscapeUtils
 import javax.annotation.Generated
+import org.apache.commons.lang.StringEscapeUtils
+import org.eclipse.emf.common.util.EList
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -54,9 +55,6 @@ abstract class Template extends EmfTraceExtensions {
 	protected def generatedHeaderForClass(Named root) '''
 		@«Generated.canonicalName»(date = "«new Date().toString»", value = { "«this.class.canonicalName»" }, comments = «root.
 			nameLiteral»)
-		// there can be casts to generic types, only "all" does 
-		// not generate a warning for unnecessary @SuppressWarnings
-		@«SuppressWarnings.canonicalName»("all")
 	'''
 
 	/**
@@ -79,6 +77,11 @@ abstract class Template extends EmfTraceExtensions {
 		literal(reference.originalName)
 	}
 	
+	def javadocParams(EList<? extends Named> params) '''
+		«FOR param : params»
+			* @param «param.identifier» «param.javadoc»
+		«ENDFOR»
+	'''
 	
 	def javadoc(Named named) {
 		"<b>" + javadocEscape(named.reference.originalName) + "</b>"
