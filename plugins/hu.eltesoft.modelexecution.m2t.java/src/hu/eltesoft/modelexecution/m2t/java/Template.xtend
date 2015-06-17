@@ -52,18 +52,11 @@ abstract class Template extends EmfTraceExtensions {
 	protected def CharSequence original_generate() ''''''
 
 	protected def generatedHeaderForClass(Named root) '''
-		@«Generated.canonicalName»(date = "«new Date().toString»", value = { «root.nameLiteral» })
+		@«Generated.canonicalName»(date = "«new Date().toString»", value = { "«this.class.canonicalName»" }, comments = «root.
+			nameLiteral»)
 		// there can be casts to generic types, only "all" does 
 		// not generate a warning for unnecessary @SuppressWarnings
 		@«SuppressWarnings.canonicalName»("all")
-	'''
-
-	protected def generatedHeader(Named named) '''
-		@«Generated.canonicalName»(value = { «named.nameLiteral» })
-	'''
-
-	protected def generatedHeader(NamedReference reference) '''
-		@«Generated.canonicalName»(value = { «reference.nameLiteral» })
 	'''
 
 	/**
@@ -85,7 +78,21 @@ abstract class Template extends EmfTraceExtensions {
 	def nameLiteral(NamedReference reference) {
 		literal(reference.originalName)
 	}
-
+	
+	
+	def javadoc(Named named) {
+		"<b>" + javadocEscape(named.reference.originalName) + "</b>"
+	}
+	
+	def javadocEscape(String toEscape) {
+		val htmlEscaped = StringEscapeUtils.escapeHtml(toEscape)
+		if (htmlEscaped != null) {
+			htmlEscaped.replace("*/", "{@literal */}").replace("@", "{@literal @}")
+		} else {
+			""
+		}
+	}
+	
 	/**
 	 * Helps tracing location information of Named objects.
 	 * Prints out the name of the object, while the contained EMF reference will

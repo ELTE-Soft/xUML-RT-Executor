@@ -25,7 +25,6 @@ class ClassTemplate extends Template {
 	}
 
 	override generate() '''
-		«generatedHeaderForClass(classDefinition)»
 		«IF hasStateMachine»
 			«generateClassWithState()»
 		«ELSE»
@@ -37,12 +36,15 @@ class ClassTemplate extends Template {
 	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
 	 */
 	def generateClassWithState() '''
+		/** Class for UML class «classDefinition.javadoc» */
+		«generatedHeaderForClass(classDefinition)»
 		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
 		
 			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
 											
 			private «classDefinition.region.identifier» stateMachine = new «classDefinition.region.identifier»(this);
 					
+			/** Constructor for UML class «classDefinition.javadoc» */
 			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
 				super(runtime, instanceCount.getAndIncrement());
 				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
@@ -88,6 +90,8 @@ class ClassTemplate extends Template {
 	 * Generates a class that does not have a state machine.
 	 */
 	def generateClassWithoutState() '''
+		/** Data class for UML class «classDefinition.javadoc» */
+		«generatedHeaderForClass(classDefinition)»
 		public class «classDefinition.identifier» extends «Class.canonicalName» {
 			
 			// attributes
@@ -108,7 +112,7 @@ class ClassTemplate extends Template {
 	def generateAttributes() '''
 		«FOR attribute : classDefinition.attributes»
 			
-				«generatedHeader(attribute)»
+				/** Attribute for UML attribute «attribute.javadoc» */
 				«IF attribute.isStatic»static«ENDIF» «typeConverter.javaType(attribute.type)» «attribute.identifier» 
 					= «typeConverter.createEmpty(attribute.type)»;
 		«ENDFOR»
@@ -117,7 +121,7 @@ class ClassTemplate extends Template {
 	def generateAssociations() '''
 		«FOR association : classDefinition.associations»
 			
-				«generatedHeader(association)»
+				/** Attribute for association «association.javadoc» */
 				«typeConverter.javaType(association.type)» «association.identifier» 
 					= «typeConverter.createEmpty(association.type)»;
 		«ENDFOR»
@@ -126,12 +130,12 @@ class ClassTemplate extends Template {
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
 			
-				«generatedHeader(operation)»
+				/** Method for operation «operation.javadoc» */
 				public «IF operation.isStatic»static«ENDIF»
 				       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.
 			identifier»(
 						«FOR parameter : operation.parameters SEPARATOR ','»
-							«generatedHeader(parameter)»
+							/** Parameter for operation parameter «parameter.javadoc» */
 							«typeConverter.javaType(parameter.type)» «parameter.identifier»
 						«ENDFOR»
 				) {
@@ -152,10 +156,10 @@ class ClassTemplate extends Template {
 	def generateReceptions() '''
 		«FOR reception : classDefinition.receptions»
 			
-				«generatedHeader(reception)»
+				/** Method for reception «reception.javadoc» */
 				public void «reception.identifier»(
 					«FOR parameter : reception.parameters SEPARATOR ','»
-						«generatedHeader(parameter)»
+						/** Parameter for reception parameter «parameter.javadoc» */
 						«typeConverter.javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
 				) {

@@ -22,6 +22,7 @@ class SignalTemplate extends Template {
 	}
 
 	override generate() '''
+		/** Class for signal «signal.javadoc» */
 		«generatedHeaderForClass(signal)»
 		public class «signal.identifier» extends «Signal.canonicalName» {
 		
@@ -77,6 +78,7 @@ class SignalTemplate extends Template {
 			// attributes
 			
 			«FOR attribute : signal.attributes»
+				/** Attribute for signal attribute «attribute.javadoc» */
 				«typeConverter.javaType(attribute.type)» «attribute.identifier»
 					= «typeConverter.createEmpty(attribute.type)»;
 			«ENDFOR»

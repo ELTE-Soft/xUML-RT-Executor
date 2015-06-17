@@ -18,6 +18,7 @@ class SignalEventTemplate extends Template {
 	}
 
 	override generate() '''
+		/** Class for event «event.javadoc» */
 		«generatedHeaderForClass(event)»
 		public class «event.identifier» extends «SignalEvent.canonicalName» {
 		

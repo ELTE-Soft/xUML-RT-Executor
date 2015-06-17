@@ -25,15 +25,19 @@ class BehaviorTemplate extends Template {
 	}
 
 	override generate() '''
+		/** Class for implementing behavior «behavior.javadoc» */
 		«generatedHeaderForClass(behavior)»
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
 				
+			/** Static method implementing behavior «behavior.javadoc» */
 			public static «IF behavior.returnType != null»«typeConverter.javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
-				«IF !behavior.isStatic»«behavior.containerClass.identifier» «CONTEXT_NAME»
+				«IF !behavior.isStatic»«behavior.containerClass.identifier» 
+					/** Behavior parameter for passing context */
+					«CONTEXT_NAME»
 					«IF !behavior.parameters.empty»,«ENDIF»
 				«ENDIF»
 				«FOR param : behavior.parameters SEPARATOR ','»
-					«generatedHeader(param)»
+					/** Behavior parameter «param.javadoc» */
 					«typeConverter.javaType(param.type)» «param.identifier»
 				«ENDFOR»
 			) {

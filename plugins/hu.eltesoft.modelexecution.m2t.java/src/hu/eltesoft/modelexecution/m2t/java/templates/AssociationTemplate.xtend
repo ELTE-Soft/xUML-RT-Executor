@@ -18,14 +18,16 @@ class AssociationTemplate extends Template {
 	}
 	
 	override generate() '''
+		/** Association class for association «association.javadoc» */
 		«generatedHeaderForClass(association)»
 		class «association.identifier» extends «Association.canonicalName» {
 			
 			«FOR end : association.ends»
+				/** Attribute for association end «end.javadoc» */
 				public «typeConverter.javaType(end.type)» «end.identifier»;
 			«ENDFOR»
 			
-			private «association.identifier»(«endParams()») {
+			public «association.identifier»(«endParams()») {
 				«FOR end : association.ends»
 					this.«end.identifier» = «end.identifier»;
 				«ENDFOR»
