@@ -6,9 +6,10 @@ public class MutableInt {
 
 	private BigInteger value;
 
-	public MutableInt(BigInteger value) {
+	public MutableInt(int value) {
 		super();
-		this.value = value;
+		
+		this.value = BigInteger.valueOf(value);
 	}
 
 	public BigInteger getValue() {

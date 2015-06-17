@@ -16,6 +16,9 @@ import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.papyrus.uml.alf.Tuple
+import org.eclipse.papyrus.uml.alf.ReturnStatement
+import org.eclipse.papyrus.uml.alf.NaturalLiteralExpression
+import hu.eltesoft.modelexecution.runtime.values.MutableInt
 
 /**
  * Generates an operation body written in Alf to Java code by implementing an
@@ -54,6 +57,12 @@ class BehaviorBodyGenerator {
 		visit(stmt.expression)
 		builder.append(";")
 	}
+	
+	private def dispatch void visit(ReturnStatement stmt) {
+		builder.append("return ");
+		visit(stmt.expression)
+		builder.append(";")
+	}
 
 	/**
 	 * Handle feature invocation on an explicit this expression.
@@ -82,6 +91,14 @@ class BehaviorBodyGenerator {
 
 	private def dispatch void visit(NameExpression expr) {
 		builder.append(toJavaName(expr.name))
+	}
+	
+	private def dispatch void visit(NaturalLiteralExpression expr) {
+		builder.append("new ")
+		builder.append(MutableInt.canonicalName)
+		builder.append("(")
+		builder.append(expr.image)
+		builder.append(")")
 	}
 
 	private def dispatch void visit(Tuple tuple) {

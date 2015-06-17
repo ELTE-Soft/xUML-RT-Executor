@@ -8,12 +8,14 @@ import org.eclipse.papyrus.uml.alf.ExpressionStatement
 import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
 import org.eclipse.papyrus.uml.alf.NameBinding
 import org.eclipse.papyrus.uml.alf.NameExpression
+import org.eclipse.papyrus.uml.alf.NaturalLiteralExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
+import org.eclipse.papyrus.uml.alf.ReturnStatement
+import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Reception
-import org.eclipse.papyrus.uml.alf.SyntaxElement
 
 /**
  * Builds a mapping between Alf AST nodes and model references.
@@ -51,6 +53,10 @@ class ModelReferenceDecorator {
 
 	def dispatch void visit(ExpressionStatement stmt) {
 		visit(stmt.expression)
+	}
+	
+	def dispatch void visit(ReturnStatement ret) {
+		visit(ret.expression)
 	}
 
 	/**
@@ -99,6 +105,9 @@ class ModelReferenceDecorator {
 			// TODO: this lookup mechanism is likely to be incorrect
 			currentContext = lookupChild(binding.name)
 		}
+	}
+	
+	def dispatch void visit(NaturalLiteralExpression lit) {
 	}
 
 	def dispatch void visit(SyntaxElement other) {

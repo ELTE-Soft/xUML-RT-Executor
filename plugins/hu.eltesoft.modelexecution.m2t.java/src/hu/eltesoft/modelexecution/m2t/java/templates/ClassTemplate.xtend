@@ -131,18 +131,16 @@ class ClassTemplate extends Template {
 						«generatedHeader(parameter)»
 						«typeConverter.javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
-					) {
+			) {
 				«IF null != operation.method»
-					«operation.method.identifier» method = new «operation.method.identifier»(
-						«IF !operation.isStatic»this«ENDIF»
-						«FOR parameter : operation.parameters»
-							, «parameter.identifier»
-						«ENDFOR»
+					
+					«IF operation.returnType != null»return«ENDIF»
+						«operation.method.identifier».execute(
+							«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
+							«FOR parameter : operation.parameters SEPARATOR ','»
+								«parameter.identifier»
+							«ENDFOR»
 						);
-					method.execute();
-					«IF operation.returnType != null»
-						return method.getReturnValue();
-					«ENDIF»
 				«ENDIF»
 			}
 		«ENDFOR»

@@ -16,38 +16,19 @@ class BehaviorTemplate extends Template {
 
 	val BhBehavior behavior
 	val SourceMappedText compiledAlfCode
-	val boolean needsContext
 
 	new(BhBehavior behavior) {
 		super(behavior)
 		this.behavior = behavior
 		val generator = new BehaviorBodyGenerator
 		compiledAlfCode = generator.generate(behavior.alfResult)
-		needsContext = !compiledAlfCode.text.toString.trim.empty && !behavior.isStatic
 	}
 
 	override generate() '''
 		«generatedHeaderForClass(behavior)»
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
-		
-			«IF behavior.returnType != null»
-				private «typeConverter.javaType(behavior.returnType)» ret;
 				
-				public «typeConverter.javaType(behavior.returnType)» getReturnValue() {
-					return ret;
-				}
-			«ENDIF»
-			«FOR param : behavior.parameters»
-				«generatedHeader(param)»
-				«typeConverter.javaType(param.type)» «param.identifier»;
-			«ENDFOR»
-		
-			«IF needsContext»
-				«generatedHeader(behavior.containerClass)»
-				private «behavior.containerClass.identifier» «CONTEXT_NAME»;
-			«ENDIF»
-		
-			public «behavior.identifier»(
+			public static «IF behavior.returnType != null»«typeConverter.javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
 				«IF !behavior.isStatic»«behavior.containerClass.identifier» «CONTEXT_NAME»
 					«IF !behavior.parameters.empty»,«ENDIF»
 				«ENDIF»
@@ -55,23 +36,8 @@ class BehaviorTemplate extends Template {
 					«generatedHeader(param)»
 					«typeConverter.javaType(param.type)» «param.identifier»
 				«ENDFOR»
-				) {
-				«IF needsContext»
-					this.«CONTEXT_NAME» = «CONTEXT_NAME»;
-				«ENDIF»
-				«FOR param : behavior.parameters»
-					this.«param.identifier» = «param.identifier»;
-				«ENDFOR»
-			}
-		
-			@Override
-			public void execute() {
+			) {
 				«compiledAlfCode»
-			}
-		
-			@Override
-			public String toString() {
-				return «behavior.nameLiteral»;
 			}
 		}
 	'''
