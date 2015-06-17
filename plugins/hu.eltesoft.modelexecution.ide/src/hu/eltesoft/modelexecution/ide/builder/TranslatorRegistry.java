@@ -32,6 +32,9 @@ public class TranslatorRegistry {
 	protected TranslatorRegistry() {
 	}
 
+	/**
+	 * This is an idempotent operation.
+	 */
 	public synchronized void resourceLoaded(Resource resource) {
 		if (!isUMLResource(resource)) {
 			return;

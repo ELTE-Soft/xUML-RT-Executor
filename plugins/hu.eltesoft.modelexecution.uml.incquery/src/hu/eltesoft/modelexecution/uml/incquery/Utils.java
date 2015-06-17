@@ -12,10 +12,5 @@ public class Utils {
 	public static String toLowerCase(String str) {
 		return str.toLowerCase();
 	}
-	
-	@Pure
-	public static boolean isExternalEntity(org.eclipse.uml2.uml.Class cls) {
-		return false;
-	}
 
 }

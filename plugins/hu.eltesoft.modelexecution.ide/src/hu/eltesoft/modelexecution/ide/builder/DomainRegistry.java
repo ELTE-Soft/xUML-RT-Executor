@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,15 +31,29 @@ public class DomainRegistry {
 		ResourceSet resourceSet = domain.getResourceSet();
 		domains.put(resourceSet, domain);
 
-		// load events will not be fired for pre-loaded resources which are
-		// already in the set
-		for (Resource resource : resourceSet.getResources()) {
-			TranslatorRegistry.INSTANCE.resourceLoaded(resource);
-		}
-
 		DomainResourceListener listener = new DomainResourceListener();
 		listeners.put(domain, listener);
 		domain.addResourceSetListener(listener);
+
+		// load events will not be fired for pre-loaded resources which are
+		// already in the set
+		loadPreloadedResources(resourceSet);
+	}
+
+	private void loadPreloadedResources(ResourceSet resourceSet) {
+		boolean success = false;
+		do {
+			// this list can be modified concurrently, in this case, try to
+			// iterate again
+			try {
+				for (Resource resource : resourceSet.getResources()) {
+					TranslatorRegistry.INSTANCE.resourceLoaded(resource);
+				}
+				success = true;
+			} catch (ConcurrentModificationException e) {
+				// try again
+			}
+		} while (!success);
 	}
 
 	public synchronized void editingDomainUnloaded(
