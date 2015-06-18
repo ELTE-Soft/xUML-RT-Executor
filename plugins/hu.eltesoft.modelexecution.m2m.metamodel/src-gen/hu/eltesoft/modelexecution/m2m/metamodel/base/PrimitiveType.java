@@ -19,7 +19,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  * @model
  * @generated
  */
-public interface PrimitiveType extends Type {
+public interface PrimitiveType extends ScalarType {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' attribute.
 	 * The literals are from the enumeration {@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes}.

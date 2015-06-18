@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class PrimitiveTypeImpl extends TypeImpl implements PrimitiveType {
+public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->

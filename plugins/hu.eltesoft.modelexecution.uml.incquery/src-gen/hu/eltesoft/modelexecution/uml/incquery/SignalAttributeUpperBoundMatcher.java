@@ -17,7 +17,6 @@ import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Signal;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.ValueSpecification;
 
 /**
@@ -31,8 +30,8 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, type, upperBound : ValueSpecification) {
- * 	find SignalAttributeType(signal, attribute, type, _, _);
+ * pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
+ * 	find SignalAttribute(signal, attribute, _, _, _);
  * 	Property.upperValue(attribute, upperBound);
  * }
  * </pre></code>
@@ -75,9 +74,7 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
   
   private final static int POSITION_ATTRIBUTE = 1;
   
-  private final static int POSITION_TYPE = 2;
-  
-  private final static int POSITION_UPPERBOUND = 3;
+  private final static int POSITION_UPPERBOUND = 2;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(SignalAttributeUpperBoundMatcher.class);
   
@@ -116,13 +113,12 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return matches represented as a SignalAttributeUpperBoundMatch object.
    * 
    */
-  public Collection<SignalAttributeUpperBoundMatch> getAllMatches(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawGetAllMatches(new Object[]{pSignal, pAttribute, pType, pUpperBound});
+  public Collection<SignalAttributeUpperBoundMatch> getAllMatches(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawGetAllMatches(new Object[]{pSignal, pAttribute, pUpperBound});
   }
   
   /**
@@ -130,13 +126,12 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return a match represented as a SignalAttributeUpperBoundMatch object, or null if no match is found.
    * 
    */
-  public SignalAttributeUpperBoundMatch getOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawGetOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType, pUpperBound});
+  public SignalAttributeUpperBoundMatch getOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawGetOneArbitraryMatch(new Object[]{pSignal, pAttribute, pUpperBound});
   }
   
   /**
@@ -144,39 +139,36 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * under any possible substitution of the unspecified parameters (if any).
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawHasMatch(new Object[]{pSignal, pAttribute, pType, pUpperBound});
+  public boolean hasMatch(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawHasMatch(new Object[]{pSignal, pAttribute, pUpperBound});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawCountMatches(new Object[]{pSignal, pAttribute, pType, pUpperBound});
+  public int countMatches(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawCountMatches(new Object[]{pSignal, pAttribute, pUpperBound});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound, final IMatchProcessor<? super SignalAttributeUpperBoundMatch> processor) {
-    rawForEachMatch(new Object[]{pSignal, pAttribute, pType, pUpperBound}, processor);
+  public void forEachMatch(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound, final IMatchProcessor<? super SignalAttributeUpperBoundMatch> processor) {
+    rawForEachMatch(new Object[]{pSignal, pAttribute, pUpperBound}, processor);
   }
   
   /**
@@ -184,14 +176,13 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound, final IMatchProcessor<? super SignalAttributeUpperBoundMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pSignal, pAttribute, pType, pUpperBound}, processor);
+  public boolean forOneArbitraryMatch(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound, final IMatchProcessor<? super SignalAttributeUpperBoundMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pSignal, pAttribute, pUpperBound}, processor);
   }
   
   /**
@@ -203,15 +194,14 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<SignalAttributeUpperBoundMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal, pAttribute, pType, pUpperBound});
+  public DeltaMonitor<SignalAttributeUpperBoundMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pSignal, pAttribute, pUpperBound});
   }
   
   /**
@@ -220,13 +210,12 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pAttribute the fixed value of pattern parameter attribute, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public SignalAttributeUpperBoundMatch newMatch(final Signal pSignal, final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return SignalAttributeUpperBoundMatch.newMatch(pSignal, pAttribute, pType, pUpperBound);
+  public SignalAttributeUpperBoundMatch newMatch(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
+    return SignalAttributeUpperBoundMatch.newMatch(pSignal, pAttribute, pUpperBound);
     
   }
   
@@ -264,8 +253,8 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Signal> getAllValuesOfsignal(final Property pAttribute, final Type pType, final ValueSpecification pUpperBound) {
-    return rawAccumulateAllValuesOfsignal(new Object[]{null, pAttribute, pType, pUpperBound});
+  public Set<Signal> getAllValuesOfsignal(final Property pAttribute, final ValueSpecification pUpperBound) {
+    return rawAccumulateAllValuesOfsignal(new Object[]{null, pAttribute, pUpperBound});
   }
   
   /**
@@ -302,46 +291,8 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Property> getAllValuesOfattribute(final Signal pSignal, final Type pType, final ValueSpecification pUpperBound) {
-    return rawAccumulateAllValuesOfattribute(new Object[]{pSignal, null, pType, pUpperBound});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
-    Set<Type> results = new HashSet<Type>();
-    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype() {
-    return rawAccumulateAllValuesOftype(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final SignalAttributeUpperBoundMatch partialMatch) {
-    return rawAccumulateAllValuesOftype(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final Signal pSignal, final Property pAttribute, final ValueSpecification pUpperBound) {
-    return rawAccumulateAllValuesOftype(new Object[]{pSignal, pAttribute, null, pUpperBound});
+  public Set<Property> getAllValuesOfattribute(final Signal pSignal, final ValueSpecification pUpperBound) {
+    return rawAccumulateAllValuesOfattribute(new Object[]{pSignal, null, pUpperBound});
   }
   
   /**
@@ -378,14 +329,14 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<ValueSpecification> getAllValuesOfupperBound(final Signal pSignal, final Property pAttribute, final Type pType) {
-    return rawAccumulateAllValuesOfupperBound(new Object[]{pSignal, pAttribute, pType, null});
+  public Set<ValueSpecification> getAllValuesOfupperBound(final Signal pSignal, final Property pAttribute) {
+    return rawAccumulateAllValuesOfupperBound(new Object[]{pSignal, pAttribute, null});
   }
   
   @Override
   protected SignalAttributeUpperBoundMatch tupleToMatch(final Tuple t) {
     try {
-      return SignalAttributeUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (org.eclipse.uml2.uml.ValueSpecification) t.get(POSITION_UPPERBOUND));
+      return SignalAttributeUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) t.get(POSITION_SIGNAL), (org.eclipse.uml2.uml.Property) t.get(POSITION_ATTRIBUTE), (org.eclipse.uml2.uml.ValueSpecification) t.get(POSITION_UPPERBOUND));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -396,7 +347,7 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
   @Override
   protected SignalAttributeUpperBoundMatch arrayToMatch(final Object[] match) {
     try {
-      return SignalAttributeUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_UPPERBOUND]);
+      return SignalAttributeUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_UPPERBOUND]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -407,7 +358,7 @@ public class SignalAttributeUpperBoundMatcher extends BaseMatcher<SignalAttribut
   @Override
   protected SignalAttributeUpperBoundMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return SignalAttributeUpperBoundMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_UPPERBOUND]);
+      return SignalAttributeUpperBoundMatch.newMutableMatch((org.eclipse.uml2.uml.Signal) match[POSITION_SIGNAL], (org.eclipse.uml2.uml.Property) match[POSITION_ATTRIBUTE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_UPPERBOUND]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

@@ -13,6 +13,7 @@ import hu.eltesoft.modelexecution.uml.incquery.AssociationMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Association
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType
 
 class AssociationTranslator extends RootElementTranslator<Association, AsAssociation, AssociationMatch> {
 
@@ -35,7 +36,7 @@ class AssociationTranslator extends RootElementTranslator<Association, AsAssocia
 			return elem
 		]
 		endNode.on(PACKAGE.asAssociationEnd_Type, AssociationEndTypeMatcher.on(engine)) [
-			cls.convert
+			cls.convert as ReferencedType
 		]
 		
 		return rootNode

@@ -59,9 +59,13 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case BasePackage.TRANSLATION_OBJECT: return createTranslationObject();
+			case BasePackage.TYPED: return createTyped();
 			case BasePackage.TYPE: return createType();
 			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
-			case BasePackage.FULL_TYPE: return createFullType();
+			case BasePackage.REFERENCED_TYPE: return createReferencedType();
+			case BasePackage.PARAMETER: return createParameter();
+			case BasePackage.MULTIPLICITY: return createMultiplicity();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -114,6 +118,26 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TranslationObject createTranslationObject() {
+		TranslationObjectImpl translationObject = new TranslationObjectImpl();
+		return translationObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Typed createTyped() {
+		TypedImpl typed = new TypedImpl();
+		return typed;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Type createType() {
 		TypeImpl type = new TypeImpl();
 		return type;
@@ -134,9 +158,29 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType createFullType() {
-		FullTypeImpl fullType = new FullTypeImpl();
-		return fullType;
+	public ReferencedType createReferencedType() {
+		ReferencedTypeImpl referencedType = new ReferencedTypeImpl();
+		return referencedType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter createParameter() {
+		ParameterImpl parameter = new ParameterImpl();
+		return parameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Multiplicity createMultiplicity() {
+		MultiplicityImpl multiplicity = new MultiplicityImpl();
+		return multiplicity;
 	}
 
 	/**

@@ -142,61 +142,6 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhParameterImpl <em>Bh Parameter</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhParameterImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getBhParameter()
-	 * @generated
-	 */
-	int BH_PARAMETER = 1;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BH_PARAMETER__REFERENCE = BasePackage.NAMED__REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BH_PARAMETER__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Direction</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BH_PARAMETER__DIRECTION = BasePackage.NAMED_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Bh Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BH_PARAMETER_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of operations of the '<em>Bh Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BH_PARAMETER_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '<em>Alf Analyzer Result</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -204,7 +149,7 @@ public interface BehaviorPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getAlfAnalyzerResult()
 	 * @generated
 	 */
-	int ALF_ANALYZER_RESULT = 2;
+	int ALF_ANALYZER_RESULT = 1;
 
 
 	/**
@@ -271,38 +216,6 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBhBehavior_ReturnType();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter <em>Bh Parameter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Bh Parameter</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter
-	 * @generated
-	 */
-	EClass getBhParameter();
-
-	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter#getType()
-	 * @see #getBhParameter()
-	 * @generated
-	 */
-	EReference getBhParameter_Type();
-
-	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter#getDirection <em>Direction</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Direction</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter#getDirection()
-	 * @see #getBhParameter()
-	 * @generated
-	 */
-	EAttribute getBhParameter_Direction();
 
 	/**
 	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult <em>Alf Analyzer Result</em>}'.
@@ -387,32 +300,6 @@ public interface BehaviorPackage extends EPackage {
 		 * @generated
 		 */
 		EReference BH_BEHAVIOR__RETURN_TYPE = eINSTANCE.getBhBehavior_ReturnType();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhParameterImpl <em>Bh Parameter</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhParameterImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getBhParameter()
-		 * @generated
-		 */
-		EClass BH_PARAMETER = eINSTANCE.getBhParameter();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference BH_PARAMETER__TYPE = eINSTANCE.getBhParameter_Type();
-
-		/**
-		 * The meta object literal for the '<em><b>Direction</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute BH_PARAMETER__DIRECTION = eINSTANCE.getBhParameter_Direction();
 
 		/**
 		 * The meta object literal for the '<em>Alf Analyzer Result</em>' data type.

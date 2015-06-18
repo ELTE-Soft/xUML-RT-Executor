@@ -244,13 +244,14 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 		sgSignalEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		sgSignalEClass.getESuperTypes().add(theBasePackage.getNamed());
 		sgAttributeEClass.getESuperTypes().add(theBasePackage.getNamed());
+		sgAttributeEClass.getESuperTypes().add(theBasePackage.getMultiplicity());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(sgSignalEClass, SgSignal.class, "SgSignal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSgSignal_Attributes(), this.getSgAttribute(), null, "attributes", null, 0, -1, SgSignal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sgAttributeEClass, SgAttribute.class, "SgAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSgAttribute_Type(), theBasePackage.getFullType(), null, "type", null, 0, 1, SgAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSgAttribute_Type(), theBasePackage.getPrimitiveType(), null, "type", null, 1, 1, SgAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

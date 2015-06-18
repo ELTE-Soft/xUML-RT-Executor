@@ -52,12 +52,12 @@ public final class ReceptionParameterQuerySpecification extends BaseGeneratedQue
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","reception","parameter");
+    return Arrays.asList("cls","reception","parameter","type","ordered","unique");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("reception", "org.eclipse.uml2.uml.Reception"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("reception", "org.eclipse.uml2.uml.Reception"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("ordered", "java.lang.Boolean"),new PParameter("unique", "java.lang.Boolean"));
   }
   
   @Override
@@ -67,7 +67,7 @@ public final class ReceptionParameterQuerySpecification extends BaseGeneratedQue
   
   @Override
   public ReceptionParameterMatch newMatch(final Object... parameters) {
-    return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Reception) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2]);
+    return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Reception) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2], (org.eclipse.uml2.uml.Type) parameters[3], (java.lang.Boolean) parameters[4], (java.lang.Boolean) parameters[5]);
   }
   
   @Override
@@ -78,22 +78,34 @@ public final class ReceptionParameterQuerySpecification extends BaseGeneratedQue
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_reception = body.getOrCreateVariableByName("reception");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
+      PVariable var_type = body.getOrCreateVariableByName("type");
+      PVariable var_ordered = body.getOrCreateVariableByName("ordered");
+      PVariable var_unique = body.getOrCreateVariableByName("unique");
       PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       PVariable var_direction = body.getOrCreateVariableByName("direction");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_reception, "reception"), 
-        new ExportedParameter(body, var_parameter, "parameter")
+        new ExportedParameter(body, var_parameter, "parameter"), 
+        new ExportedParameter(body, var_type, "type"), 
+        new ExportedParameter(body, var_ordered, "ordered"), 
+        new ExportedParameter(body, var_unique, "unique")
       ));
       
       new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
       new TypeUnary(body, var_reception, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception"), "http://www.eclipse.org/uml2/5.0.0/UML/Reception");
       
+      
+      
+      
       new PositivePatternCall(body, new FlatTuple(var_cls, var_reception, var___0_), ReceptionQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_reception, var_parameter, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter"), "http://www.eclipse.org/uml2/5.0.0/UML/BehavioralFeature.ownedParameter");
       new TypeBinary(body, CONTEXT, var_parameter, var_direction, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter.direction");
       new ConstantValue(body, var_direction, org.eclipse.uml2.uml.ParameterDirectionKind.get("in"));
+      new TypeBinary(body, CONTEXT, var_parameter, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
+      new TypeBinary(body, CONTEXT, var_parameter, var_ordered, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isOrdered"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isOrdered");
+      new TypeBinary(body, CONTEXT, var_parameter, var_unique, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isUnique");
       bodies.add(body);
     }
     return bodies;

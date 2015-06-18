@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

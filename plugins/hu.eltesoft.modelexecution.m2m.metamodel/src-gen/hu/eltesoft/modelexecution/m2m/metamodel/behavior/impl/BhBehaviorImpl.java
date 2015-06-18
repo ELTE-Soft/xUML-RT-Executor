@@ -2,19 +2,28 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
+
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -35,7 +44,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBehavior {
+public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -104,7 +113,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<BhParameter> parameters;
+	protected EList<Parameter> parameters;
 
 	/**
 	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
@@ -134,7 +143,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * @generated
 	 * @ordered
 	 */
-	protected FullType returnType;
+	protected Type returnType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -223,9 +232,9 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<BhParameter> getParameters() {
+	public EList<Parameter> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectResolvingEList<BhParameter>(BhParameter.class, this, BehaviorPackage.BH_BEHAVIOR__PARAMETERS);
+			parameters = new EObjectResolvingEList<Parameter>(Parameter.class, this, BehaviorPackage.BH_BEHAVIOR__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -256,10 +265,10 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType getReturnType() {
+	public Type getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject)returnType;
-			returnType = (FullType)eResolveProxy(oldReturnType);
+			returnType = (Type)eResolveProxy(oldReturnType);
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
@@ -273,7 +282,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType basicGetReturnType() {
+	public Type basicGetReturnType() {
 		return returnType;
 	}
 
@@ -282,8 +291,8 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReturnType(FullType newReturnType) {
-		FullType oldReturnType = returnType;
+	public void setReturnType(Type newReturnType) {
+		Type oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE, oldReturnType, returnType));
@@ -334,13 +343,13 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection<? extends BhParameter>)newValue);
+				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
 				setIsStatic((Boolean)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
-				setReturnType((FullType)newValue);
+				setReturnType((Type)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -370,7 +379,7 @@ public class BhBehaviorImpl extends MinimalEObjectImpl.Container implements BhBe
 				setIsStatic(IS_STATIC_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
-				setReturnType((FullType)null);
+				setReturnType((Type)null);
 				return;
 		}
 		super.eUnset(featureID);

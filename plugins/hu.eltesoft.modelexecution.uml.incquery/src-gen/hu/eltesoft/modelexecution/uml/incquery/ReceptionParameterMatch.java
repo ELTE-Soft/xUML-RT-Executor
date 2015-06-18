@@ -8,6 +8,7 @@ import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Type;
 
 /**
  * Pattern-specific match representation of the hu.eltesoft.modelexecution.uml.incquery.ReceptionParameter pattern,
@@ -30,12 +31,21 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
   
   private Parameter fParameter;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "reception", "parameter");
+  private Type fType;
   
-  private ReceptionParameterMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
+  private Boolean fOrdered;
+  
+  private Boolean fUnique;
+  
+  private static List<String> parameterNames = makeImmutableList("cls", "reception", "parameter", "type", "ordered", "unique");
+  
+  private ReceptionParameterMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
     this.fCls = pCls;
     this.fReception = pReception;
     this.fParameter = pParameter;
+    this.fType = pType;
+    this.fOrdered = pOrdered;
+    this.fUnique = pUnique;
     
   }
   
@@ -44,6 +54,9 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("reception".equals(parameterName)) return this.fReception;
     if ("parameter".equals(parameterName)) return this.fParameter;
+    if ("type".equals(parameterName)) return this.fType;
+    if ("ordered".equals(parameterName)) return this.fOrdered;
+    if ("unique".equals(parameterName)) return this.fUnique;
     return null;
     
   }
@@ -63,6 +76,21 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     
   }
   
+  public Type getType() {
+    return this.fType;
+    
+  }
+  
+  public Boolean getOrdered() {
+    return this.fOrdered;
+    
+  }
+  
+  public Boolean getUnique() {
+    return this.fUnique;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -76,6 +104,18 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     }
     if ("parameter".equals(parameterName) ) {
     	this.fParameter = (org.eclipse.uml2.uml.Parameter) newValue;
+    	return true;
+    }
+    if ("type".equals(parameterName) ) {
+    	this.fType = (org.eclipse.uml2.uml.Type) newValue;
+    	return true;
+    }
+    if ("ordered".equals(parameterName) ) {
+    	this.fOrdered = (java.lang.Boolean) newValue;
+    	return true;
+    }
+    if ("unique".equals(parameterName) ) {
+    	this.fUnique = (java.lang.Boolean) newValue;
     	return true;
     }
     return false;
@@ -100,6 +140,24 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     
   }
   
+  public void setType(final Type pType) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fType = pType;
+    
+  }
+  
+  public void setOrdered(final Boolean pOrdered) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fOrdered = pOrdered;
+    
+  }
+  
+  public void setUnique(final Boolean pUnique) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fUnique = pUnique;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.ReceptionParameter";
@@ -114,13 +172,13 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fReception, fParameter};
+    return new Object[]{fCls, fReception, fParameter, fType, fOrdered, fUnique};
     
   }
   
   @Override
   public ReceptionParameterMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fReception, fParameter) : this;
+    return isMutable() ? newMatch(fCls, fReception, fParameter, fType, fOrdered, fUnique) : this;
     
   }
   
@@ -129,7 +187,10 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"reception\"=" + prettyPrintValue(fReception) + ", ");
-    result.append("\"parameter\"=" + prettyPrintValue(fParameter));
+    result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
+    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
+    result.append("\"ordered\"=" + prettyPrintValue(fOrdered) + ", ");
+    result.append("\"unique\"=" + prettyPrintValue(fUnique));
     return result.toString();
     
   }
@@ -141,6 +202,9 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fReception == null) ? 0 : fReception.hashCode());
     result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
+    result = prime * result + ((fType == null) ? 0 : fType.hashCode());
+    result = prime * result + ((fOrdered == null) ? 0 : fOrdered.hashCode());
+    result = prime * result + ((fUnique == null) ? 0 : fUnique.hashCode());
     return result;
     
   }
@@ -166,6 +230,12 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
     else if (!fReception.equals(other.fReception)) return false;
     if (fParameter == null) {if (other.fParameter != null) return false;}
     else if (!fParameter.equals(other.fParameter)) return false;
+    if (fType == null) {if (other.fType != null) return false;}
+    else if (!fType.equals(other.fType)) return false;
+    if (fOrdered == null) {if (other.fOrdered != null) return false;}
+    else if (!fOrdered.equals(other.fOrdered)) return false;
+    if (fUnique == null) {if (other.fUnique != null) return false;}
+    else if (!fUnique.equals(other.fUnique)) return false;
     return true;
   }
   
@@ -188,7 +258,7 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
    * 
    */
   public static ReceptionParameterMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null, null, null, null, null);
     
   }
   
@@ -199,11 +269,14 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ReceptionParameterMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return new Mutable(pCls, pReception, pParameter);
+  public static ReceptionParameterMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Mutable(pCls, pReception, pParameter, pType, pOrdered, pUnique);
     
   }
   
@@ -214,17 +287,20 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ReceptionParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return new Immutable(pCls, pReception, pParameter);
+  public static ReceptionParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Immutable(pCls, pReception, pParameter, pType, pOrdered, pUnique);
     
   }
   
   private static final class Mutable extends ReceptionParameterMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-      super(pCls, pReception, pParameter);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pReception, pParameter, pType, pOrdered, pUnique);
       
     }
     
@@ -235,8 +311,8 @@ public abstract class ReceptionParameterMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ReceptionParameterMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-      super(pCls, pReception, pParameter);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pReception, pParameter, pType, pOrdered, pUnique);
       
     }
     

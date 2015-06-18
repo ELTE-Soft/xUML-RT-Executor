@@ -103,7 +103,6 @@ public interface AssociationPackage extends EPackage {
 	 */
 	int AS_ASSOCIATION_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationEndImpl <em>As Association End</em>}' class.
 	 * <!-- begin-user-doc -->

@@ -3,7 +3,8 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.eltesoft.modelexecution.m2m.metamodel/src-gen"
     modelPluginID="hu.eltesoft.modelexecution.m2m.metamodel" modelName="Translation metamodels"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    bundleManifest="false" complianceLevel="8.0" copyrightFields="false" operationReflection="true"
+    importOrganizing="true">
   <foreignModel>base.ecore</foreignModel>
   <foreignModel>behavior.ecore</foreignModel>
   <foreignModel>classdef.ecore</foreignModel>
@@ -16,6 +17,9 @@
     <genClasses ecoreClass="association.ecore#//AsAssociation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference association.ecore#//AsAssociation/ends"/>
     </genClasses>
+    <genClasses ecoreClass="association.ecore#//AsAssociationEnd">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference association.ecore#//AsAssociationEnd/type"/>
+    </genClasses>
   </genPackages>
   <genPackages prefix="Base" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="base.ecore#/">
@@ -24,18 +28,14 @@
       <genEnumLiterals ecoreEnumLiteral="base.ecore#//Direction/out"/>
       <genEnumLiterals ecoreEnumLiteral="base.ecore#//Direction/inout"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="base.ecore#//Multiplicity">
-      <genEnumLiterals ecoreEnumLiteral="base.ecore#//Multiplicity/One"/>
-      <genEnumLiterals ecoreEnumLiteral="base.ecore#//Multiplicity/Multi"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="base.ecore#//PrimitiveTypes">
       <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Integer"/>
       <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Boolean"/>
       <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/String"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Real"/>
     </genEnums>
     <genDataTypes ecoreDataType="base.ecore#//NamedReference"/>
     <genDataTypes ecoreDataType="base.ecore#//Reference"/>
-    <genClasses image="false" ecoreClass="base.ecore#//TranslationObject"/>
     <genClasses image="false" ecoreClass="base.ecore#//ModelRoot"/>
     <genClasses image="false" ecoreClass="base.ecore#//Named">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Named/reference"/>
@@ -43,13 +43,23 @@
     <genClasses image="false" ecoreClass="base.ecore#//Referenced">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Referenced/reference"/>
     </genClasses>
-    <genClasses ecoreClass="base.ecore#//Type"/>
+    <genClasses ecoreClass="base.ecore#//Typed">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//Typed/type"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//Type">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//Type/baseType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/isOrdered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/isUnique"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="base.ecore#//ScalarType"/>
     <genClasses ecoreClass="base.ecore#//PrimitiveType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//PrimitiveType/type"/>
     </genClasses>
-    <genClasses ecoreClass="base.ecore#//FullType">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//FullType/baseType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//FullType/multiplicity"/>
+    <genClasses ecoreClass="base.ecore#//ReferencedType"/>
+    <genClasses ecoreClass="base.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Parameter/direction"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Behavior" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
@@ -61,10 +71,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/parameters"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/isStatic"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/returnType"/>
-    </genClasses>
-    <genClasses ecoreClass="behavior.ecore#//BhParameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhParameter/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhParameter/direction"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Classdef" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
@@ -84,15 +90,14 @@
     </genClasses>
     <genClasses ecoreClass="classdef.ecore#//ClReception">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute classdef.ecore#//ClReception/signal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClReception/parameters"/>
     </genClasses>
     <genClasses ecoreClass="classdef.ecore#//ClAttribute">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClAttribute/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClAttribute/isStatic"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClAttribute/multiplicity"/>
     </genClasses>
-    <genClasses ecoreClass="classdef.ecore#//ClParameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClParameter/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClParameter/direction"/>
+    <genClasses ecoreClass="classdef.ecore#//ClAssociation"/>
+    <genClasses ecoreClass="classdef.ecore#//ClReceptionParameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClReceptionParameter/type"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Event" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
@@ -129,9 +134,6 @@
     <genClasses ecoreClass="signal.ecore#//SgSignal">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgSignal/attributes"/>
     </genClasses>
-    <genClasses ecoreClass="signal.ecore#//SgAttribute">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgAttribute/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute signal.ecore#//SgAttribute/multiplicity"/>
-    </genClasses>
+    <genClasses ecoreClass="signal.ecore#//SgAttribute"/>
   </genPackages>
 </genmodel:GenModel>

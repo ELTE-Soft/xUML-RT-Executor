@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.logic.translators.TypeSubtranslator;
+import hu.eltesoft.modelexecution.m2m.logic.translators.TypeConverter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	protected static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
 	protected static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
-	protected TypeSubtranslator typeTranslator = new TypeSubtranslator();
+	protected TypeConverter typeTranslator = new TypeConverter();
 
 	public RootElementTranslator(IncQueryEngine engine)
 			throws IncQueryException {
@@ -59,7 +59,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	// delegates for conversions by subtranslators
 
-	public Type convert(org.eclipse.uml2.uml.Type type) {
+	public ScalarType convert(org.eclipse.uml2.uml.Type type) {
 		return typeTranslator.convert(type);
 	}
 

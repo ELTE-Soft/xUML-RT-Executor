@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatch;
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeTypeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -51,12 +51,12 @@ public final class SignalAttributeLowerBoundQuerySpecification extends BaseGener
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("signal","attribute","type","lowerBound");
+    return Arrays.asList("signal","attribute","lowerBound");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("signal", "org.eclipse.uml2.uml.Signal"),new PParameter("attribute", "org.eclipse.uml2.uml.Property"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("lowerBound", "org.eclipse.uml2.uml.ValueSpecification"));
+    return Arrays.asList(new PParameter("signal", "org.eclipse.uml2.uml.Signal"),new PParameter("attribute", "org.eclipse.uml2.uml.Property"),new PParameter("lowerBound", "org.eclipse.uml2.uml.ValueSpecification"));
   }
   
   @Override
@@ -66,7 +66,7 @@ public final class SignalAttributeLowerBoundQuerySpecification extends BaseGener
   
   @Override
   public SignalAttributeLowerBoundMatch newMatch(final Object... parameters) {
-    return SignalAttributeLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) parameters[0], (org.eclipse.uml2.uml.Property) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2], (org.eclipse.uml2.uml.ValueSpecification) parameters[3]);
+    return SignalAttributeLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Signal) parameters[0], (org.eclipse.uml2.uml.Property) parameters[1], (org.eclipse.uml2.uml.ValueSpecification) parameters[2]);
   }
   
   @Override
@@ -76,14 +76,13 @@ public final class SignalAttributeLowerBoundQuerySpecification extends BaseGener
       PBody body = new PBody(this);
       PVariable var_signal = body.getOrCreateVariableByName("signal");
       PVariable var_attribute = body.getOrCreateVariableByName("attribute");
-      PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_lowerBound = body.getOrCreateVariableByName("lowerBound");
       PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_signal, "signal"), 
         new ExportedParameter(body, var_attribute, "attribute"), 
-        new ExportedParameter(body, var_type, "type"), 
         new ExportedParameter(body, var_lowerBound, "lowerBound")
       ));
       
@@ -91,8 +90,7 @@ public final class SignalAttributeLowerBoundQuerySpecification extends BaseGener
       
       new TypeUnary(body, var_attribute, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property"), "http://www.eclipse.org/uml2/5.0.0/UML/Property");
       
-      
-      new PositivePatternCall(body, new FlatTuple(var_signal, var_attribute, var_type, var___0_, var___1_), SignalAttributeTypeQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_signal, var_attribute, var___0_, var___1_, var___2_), SignalAttributeQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_attribute, var_lowerBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.lowerValue");
       bodies.add(body);
     }

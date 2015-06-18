@@ -371,7 +371,6 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Add supertypes to classes
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRoot());
-		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgTransitionEClass.getESuperTypes().add(theBasePackage.getReferenced());
@@ -391,7 +390,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(rgTransitionEClass, RgTransition.class, "RgTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgTransition_Effect(), theBasePackage.getNamedReference(), "effect", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgTransition_Target(), this.getRgState(), null, "target", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgTransition_Event(), theBasePackage.getNamedReference(), "event", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

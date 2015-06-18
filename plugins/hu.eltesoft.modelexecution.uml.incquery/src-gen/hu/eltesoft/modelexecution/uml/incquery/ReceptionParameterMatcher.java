@@ -17,6 +17,7 @@ import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Type;
 
 /**
  * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.ReceptionParameter pattern,
@@ -30,11 +31,14 @@ import org.eclipse.uml2.uml.Reception;
  * <p>Original source:
  * <code><pre>
  * pattern
- * ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter) {
+ * ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
  * 	find Reception(cls, reception, _);
  * 	Reception.ownedParameter(reception, parameter);
  * 	Parameter.direction(parameter, direction);
  * 	direction == ParameterDirectionKind::in;
+ * 	Parameter.type(parameter, type);
+ * 	Parameter.isOrdered(parameter, ordered);
+ * 	Parameter.isUnique(parameter, unique);
  * }
  * </pre></code>
  * 
@@ -78,6 +82,12 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
   
   private final static int POSITION_PARAMETER = 2;
   
+  private final static int POSITION_TYPE = 3;
+  
+  private final static int POSITION_ORDERED = 4;
+  
+  private final static int POSITION_UNIQUE = 5;
+  
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ReceptionParameterMatcher.class);
   
   /**
@@ -116,11 +126,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return matches represented as a ReceptionParameterMatch object.
    * 
    */
-  public Collection<ReceptionParameterMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return rawGetAllMatches(new Object[]{pCls, pReception, pParameter});
+  public Collection<ReceptionParameterMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetAllMatches(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -129,11 +142,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return a match represented as a ReceptionParameterMatch object, or null if no match is found.
    * 
    */
-  public ReceptionParameterMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pReception, pParameter});
+  public ReceptionParameterMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -142,11 +158,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return rawHasMatch(new Object[]{pCls, pReception, pParameter});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawHasMatch(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -154,11 +173,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return rawCountMatches(new Object[]{pCls, pReception, pParameter});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawCountMatches(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -166,11 +188,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final IMatchProcessor<? super ReceptionParameterMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pReception, pParameter}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super ReceptionParameterMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -179,12 +204,15 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final IMatchProcessor<? super ReceptionParameterMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pReception, pParameter}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique, final IMatchProcessor<? super ReceptionParameterMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique}, processor);
   }
   
   /**
@@ -197,13 +225,16 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ReceptionParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReception, pParameter});
+  public DeltaMonitor<ReceptionParameterMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -213,11 +244,14 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
+   * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ReceptionParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
-    return ReceptionParameterMatch.newMatch(pCls, pReception, pParameter);
+  public ReceptionParameterMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return ReceptionParameterMatch.newMatch(pCls, pReception, pParameter, pType, pOrdered, pUnique);
     
   }
   
@@ -255,8 +289,8 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Reception pReception, final Parameter pParameter) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pReception, pParameter});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pReception, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -293,8 +327,8 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Reception> getAllValuesOfreception(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter) {
-    return rawAccumulateAllValuesOfreception(new Object[]{pCls, null, pParameter});
+  public Set<Reception> getAllValuesOfreception(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfreception(new Object[]{pCls, null, pParameter, pType, pOrdered, pUnique});
   }
   
   /**
@@ -331,14 +365,128 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Reception pReception) {
-    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pReception, null});
+  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Type pType, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pReception, null, pType, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
+    Set<Type> results = new HashSet<Type>();
+    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype() {
+    return rawAccumulateAllValuesOftype(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype(final ReceptionParameterMatch partialMatch) {
+    return rawAccumulateAllValuesOftype(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for type.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Boolean pOrdered, final Boolean pUnique) {
+    return rawAccumulateAllValuesOftype(new Object[]{pCls, pReception, pParameter, null, pOrdered, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfordered(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_ORDERED, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered() {
+    return rawAccumulateAllValuesOfordered(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final ReceptionParameterMatch partialMatch) {
+    return rawAccumulateAllValuesOfordered(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ordered.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfordered(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pUnique) {
+    return rawAccumulateAllValuesOfordered(new Object[]{pCls, pReception, pParameter, pType, null, pUnique});
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Boolean> rawAccumulateAllValuesOfunique(final Object[] parameters) {
+    Set<Boolean> results = new HashSet<Boolean>();
+    rawAccumulateAllValues(POSITION_UNIQUE, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique() {
+    return rawAccumulateAllValuesOfunique(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final ReceptionParameterMatch partialMatch) {
+    return rawAccumulateAllValuesOfunique(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for unique.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Boolean> getAllValuesOfunique(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final Boolean pOrdered) {
+    return rawAccumulateAllValuesOfunique(new Object[]{pCls, pReception, pParameter, pType, pOrdered, null});
   }
   
   @Override
   protected ReceptionParameterMatch tupleToMatch(final Tuple t) {
     try {
-      return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Reception) t.get(POSITION_RECEPTION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER));
+      return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Reception) t.get(POSITION_RECEPTION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (java.lang.Boolean) t.get(POSITION_ORDERED), (java.lang.Boolean) t.get(POSITION_UNIQUE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -349,7 +497,7 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
   @Override
   protected ReceptionParameterMatch arrayToMatch(final Object[] match) {
     try {
-      return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER]);
+      return ReceptionParameterMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -360,7 +508,7 @@ public class ReceptionParameterMatcher extends BaseMatcher<ReceptionParameterMat
   @Override
   protected ReceptionParameterMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ReceptionParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER]);
+      return ReceptionParameterMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (java.lang.Boolean) match[POSITION_ORDERED], (java.lang.Boolean) match[POSITION_UNIQUE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

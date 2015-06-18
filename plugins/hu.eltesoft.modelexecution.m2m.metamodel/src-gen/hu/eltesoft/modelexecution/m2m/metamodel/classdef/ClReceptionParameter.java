@@ -2,8 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +22,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface ClReceptionParameter extends Named {
+public interface ClReceptionParameter extends Named, Multiplicity {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -31,12 +32,12 @@ public interface ClReceptionParameter extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(FullType)
+	 * @see #setType(PrimitiveType)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClReceptionParameter_Type()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
-	FullType getType();
+	PrimitiveType getType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter#getType <em>Type</em>}' reference.
@@ -46,6 +47,6 @@ public interface ClReceptionParameter extends Named {
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(FullType value);
+	void setType(PrimitiveType value);
 
 } // ClReceptionParameter

@@ -3,7 +3,6 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.region;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import org.eclipse.emf.common.util.EList;
@@ -26,7 +25,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RgRegion extends ModelRoot, Named {
+public interface RgRegion extends ModelRoot {
 	/**
 	 * Returns the value of the '<em><b>Container Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->

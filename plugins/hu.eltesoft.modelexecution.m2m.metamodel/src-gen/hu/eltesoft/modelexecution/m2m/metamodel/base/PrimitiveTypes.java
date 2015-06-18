@@ -46,7 +46,9 @@ public enum PrimitiveTypes implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	STRING(2, "String", "String"), /**
+	STRING(2, "String", "String"),
+
+	/**
 	 * The '<em><b>Real</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -7,6 +7,6 @@
         eType="#//AsAssociationEnd"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AsAssociationEnd" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//Named"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//ReferencedType"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -59,10 +59,10 @@ public interface BasePackage extends EPackage {
 	BasePackage eINSTANCE = hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject <em>Translation Object</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl <em>Translation Object</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getTranslationObject()
 	 * @generated
 	 */
@@ -198,6 +198,43 @@ public interface BasePackage extends EPackage {
 	int REFERENCED_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypedImpl <em>Typed</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypedImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getTyped()
+	 * @generated
+	 */
+	int TYPED = 4;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPED__TYPE = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Typed</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPED_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Typed</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPED_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -205,16 +242,52 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 4;
+	int TYPE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__REFERENCE = NAMED__REFERENCE;
+	int TYPE__LOWER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__UPPER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Is Ordered</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__IS_ORDERED = TRANSLATION_OBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__IS_UNIQUE = TRANSLATION_OBJECT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Base Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__BASE_TYPE = TRANSLATION_OBJECT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Type</em>' class.
@@ -223,7 +296,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_FEATURE_COUNT = NAMED_FEATURE_COUNT + 0;
+	int TYPE_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Type</em>' class.
@@ -232,7 +305,35 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
+	int TYPE_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ScalarTypeImpl <em>Scalar Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ScalarTypeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getScalarType()
+	 * @generated
+	 */
+	int SCALAR_TYPE = 6;
+
+	/**
+	 * The number of structural features of the '<em>Scalar Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCALAR_TYPE_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>Scalar Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCALAR_TYPE_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
@@ -242,16 +343,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveType()
 	 * @generated
 	 */
-	int PRIMITIVE_TYPE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PRIMITIVE_TYPE__REFERENCE = TYPE__REFERENCE;
+	int PRIMITIVE_TYPE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -260,7 +352,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PRIMITIVE_TYPE__TYPE = TYPE_FEATURE_COUNT + 0;
+	int PRIMITIVE_TYPE__TYPE = SCALAR_TYPE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Primitive Type</em>' class.
@@ -269,7 +361,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PRIMITIVE_TYPE_FEATURE_COUNT = TYPE_FEATURE_COUNT + 1;
+	int PRIMITIVE_TYPE_FEATURE_COUNT = SCALAR_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Primitive Type</em>' class.
@@ -278,26 +370,109 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PRIMITIVE_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
+	int PRIMITIVE_TYPE_OPERATION_COUNT = SCALAR_TYPE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl <em>Full Type</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ReferencedTypeImpl <em>Referenced Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getFullType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ReferencedTypeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReferencedType()
 	 * @generated
 	 */
-	int FULL_TYPE = 6;
+	int REFERENCED_TYPE = 8;
 
 	/**
-	 * The feature id for the '<em><b>Base Type</b></em>' reference.
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE__BASE_TYPE = TRANSLATION_OBJECT_FEATURE_COUNT + 0;
+	int REFERENCED_TYPE__REFERENCE = SCALAR_TYPE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Referenced Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCED_TYPE_FEATURE_COUNT = SCALAR_TYPE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Referenced Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCED_TYPE_OPERATION_COUNT = SCALAR_TYPE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl <em>Parameter</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getParameter()
+	 * @generated
+	 */
+	int PARAMETER = 9;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__REFERENCE = NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__TYPE = NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Direction</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__DIRECTION = NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_FEATURE_COUNT = NAMED_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl <em>Multiplicity</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+	 * @generated
+	 */
+	int MULTIPLICITY = 10;
 
 	/**
 	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
@@ -306,7 +481,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE__LOWER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 1;
+	int MULTIPLICITY__LOWER_BOUND = 0;
 
 	/**
 	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
@@ -315,7 +490,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE__UPPER_BOUND = TRANSLATION_OBJECT_FEATURE_COUNT + 2;
+	int MULTIPLICITY__UPPER_BOUND = 1;
 
 	/**
 	 * The feature id for the '<em><b>Is Ordered</b></em>' attribute.
@@ -324,7 +499,7 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE__IS_ORDERED = TRANSLATION_OBJECT_FEATURE_COUNT + 3;
+	int MULTIPLICITY__IS_ORDERED = 2;
 
 	/**
 	 * The feature id for the '<em><b>Is Unique</b></em>' attribute.
@@ -333,25 +508,25 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE__IS_UNIQUE = TRANSLATION_OBJECT_FEATURE_COUNT + 4;
+	int MULTIPLICITY__IS_UNIQUE = 3;
 
 	/**
-	 * The number of structural features of the '<em>Full Type</em>' class.
+	 * The number of structural features of the '<em>Multiplicity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE_FEATURE_COUNT = TRANSLATION_OBJECT_FEATURE_COUNT + 5;
+	int MULTIPLICITY_FEATURE_COUNT = 4;
 
 	/**
-	 * The number of operations of the '<em>Full Type</em>' class.
+	 * The number of operations of the '<em>Multiplicity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FULL_TYPE_OPERATION_COUNT = TRANSLATION_OBJECT_OPERATION_COUNT + 0;
+	int MULTIPLICITY_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
@@ -361,7 +536,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 7;
+	int DIRECTION = 11;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
@@ -371,7 +546,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
 	 * @generated
 	 */
-	int PRIMITIVE_TYPES = 8;
+	int PRIMITIVE_TYPES = 12;
 
 	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
@@ -381,7 +556,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int NAMED_REFERENCE = 9;
+	int NAMED_REFERENCE = 13;
 
 	/**
 	 * The meta object id for the '<em>Reference</em>' data type.
@@ -391,7 +566,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
 	 * @generated
 	 */
-	int REFERENCE = 10;
+	int REFERENCE = 14;
 
 
 	/**
@@ -457,6 +632,27 @@ public interface BasePackage extends EPackage {
 	EAttribute getReferenced_Reference();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Typed <em>Typed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Typed</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Typed
+	 * @generated
+	 */
+	EClass getTyped();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Typed#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Typed#getType()
+	 * @see #getTyped()
+	 * @generated
+	 */
+	EReference getTyped_Type();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -465,6 +661,27 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getType();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Type#getBaseType <em>Base Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Base Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Type#getBaseType()
+	 * @see #getType()
+	 * @generated
+	 */
+	EReference getType_BaseType();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType <em>Scalar Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Scalar Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
+	 * @generated
+	 */
+	EClass getScalarType();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType <em>Primitive Type</em>}'.
@@ -488,69 +705,89 @@ public interface BasePackage extends EPackage {
 	EAttribute getPrimitiveType_Type();
 
 	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType <em>Full Type</em>}'.
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType <em>Referenced Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Full Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType
+	 * @return the meta object for class '<em>Referenced Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType
 	 * @generated
 	 */
-	EClass getFullType();
+	EClass getReferencedType();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getBaseType <em>Base Type</em>}'.
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter <em>Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Base Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getBaseType()
-	 * @see #getFullType()
+	 * @return the meta object for class '<em>Parameter</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter
 	 * @generated
 	 */
-	EReference getFullType_BaseType();
+	EClass getParameter();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getLowerBound <em>Lower Bound</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter#getDirection <em>Direction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Direction</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter#getDirection()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Direction();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Multiplicity</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @generated
+	 */
+	EClass getMultiplicity();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getLowerBound <em>Lower Bound</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Lower Bound</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getLowerBound()
-	 * @see #getFullType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getLowerBound()
+	 * @see #getMultiplicity()
 	 * @generated
 	 */
-	EAttribute getFullType_LowerBound();
+	EAttribute getMultiplicity_LowerBound();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getUpperBound <em>Upper Bound</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getUpperBound <em>Upper Bound</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Upper Bound</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#getUpperBound()
-	 * @see #getFullType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getUpperBound()
+	 * @see #getMultiplicity()
 	 * @generated
 	 */
-	EAttribute getFullType_UpperBound();
+	EAttribute getMultiplicity_UpperBound();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsOrdered <em>Is Ordered</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsOrdered <em>Is Ordered</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Ordered</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsOrdered()
-	 * @see #getFullType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsOrdered()
+	 * @see #getMultiplicity()
 	 * @generated
 	 */
-	EAttribute getFullType_IsOrdered();
+	EAttribute getMultiplicity_IsOrdered();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsUnique <em>Is Unique</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsUnique <em>Is Unique</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Unique</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.FullType#isIsUnique()
-	 * @see #getFullType()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsUnique()
+	 * @see #getMultiplicity()
 	 * @generated
 	 */
-	EAttribute getFullType_IsUnique();
+	EAttribute getMultiplicity_IsUnique();
 
 	/**
 	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}'.
@@ -618,10 +855,10 @@ public interface BasePackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject <em>Translation Object</em>}' class.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl <em>Translation Object</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl
 		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getTranslationObject()
 		 * @generated
 		 */
@@ -674,6 +911,24 @@ public interface BasePackage extends EPackage {
 		EAttribute REFERENCED__REFERENCE = eINSTANCE.getReferenced_Reference();
 
 		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypedImpl <em>Typed</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypedImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getTyped()
+		 * @generated
+		 */
+		EClass TYPED = eINSTANCE.getTyped();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPED__TYPE = eINSTANCE.getTyped_Type();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl <em>Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -682,6 +937,24 @@ public interface BasePackage extends EPackage {
 		 * @generated
 		 */
 		EClass TYPE = eINSTANCE.getType();
+
+		/**
+		 * The meta object literal for the '<em><b>Base Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPE__BASE_TYPE = eINSTANCE.getType_BaseType();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ScalarTypeImpl <em>Scalar Type</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ScalarTypeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getScalarType()
+		 * @generated
+		 */
+		EClass SCALAR_TYPE = eINSTANCE.getScalarType();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
@@ -702,22 +975,42 @@ public interface BasePackage extends EPackage {
 		EAttribute PRIMITIVE_TYPE__TYPE = eINSTANCE.getPrimitiveType_Type();
 
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl <em>Full Type</em>}' class.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ReferencedTypeImpl <em>Referenced Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.FullTypeImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getFullType()
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ReferencedTypeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReferencedType()
 		 * @generated
 		 */
-		EClass FULL_TYPE = eINSTANCE.getFullType();
+		EClass REFERENCED_TYPE = eINSTANCE.getReferencedType();
 
 		/**
-		 * The meta object literal for the '<em><b>Base Type</b></em>' reference feature.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl <em>Parameter</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getParameter()
+		 * @generated
+		 */
+		EClass PARAMETER = eINSTANCE.getParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Direction</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FULL_TYPE__BASE_TYPE = eINSTANCE.getFullType_BaseType();
+		EAttribute PARAMETER__DIRECTION = eINSTANCE.getParameter_Direction();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl <em>Multiplicity</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getMultiplicity()
+		 * @generated
+		 */
+		EClass MULTIPLICITY = eINSTANCE.getMultiplicity();
 
 		/**
 		 * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
@@ -725,7 +1018,7 @@ public interface BasePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FULL_TYPE__LOWER_BOUND = eINSTANCE.getFullType_LowerBound();
+		EAttribute MULTIPLICITY__LOWER_BOUND = eINSTANCE.getMultiplicity_LowerBound();
 
 		/**
 		 * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
@@ -733,7 +1026,7 @@ public interface BasePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FULL_TYPE__UPPER_BOUND = eINSTANCE.getFullType_UpperBound();
+		EAttribute MULTIPLICITY__UPPER_BOUND = eINSTANCE.getMultiplicity_UpperBound();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Ordered</b></em>' attribute feature.
@@ -741,7 +1034,7 @@ public interface BasePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FULL_TYPE__IS_ORDERED = eINSTANCE.getFullType_IsOrdered();
+		EAttribute MULTIPLICITY__IS_ORDERED = eINSTANCE.getMultiplicity_IsOrdered();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Unique</b></em>' attribute feature.
@@ -749,7 +1042,7 @@ public interface BasePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FULL_TYPE__IS_UNIQUE = eINSTANCE.getFullType_IsUnique();
+		EAttribute MULTIPLICITY__IS_UNIQUE = eINSTANCE.getMultiplicity_IsUnique();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.

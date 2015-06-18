@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.uml.incquery.util;
 import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatch;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterTypeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -51,12 +51,12 @@ public final class ReceptionParameterUpperBoundQuerySpecification extends BaseGe
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("cls","reception","parameter","type","upperBound");
+    return Arrays.asList("cls","reception","parameter","upperBound");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("reception", "org.eclipse.uml2.uml.Reception"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("upperBound", "org.eclipse.uml2.uml.ValueSpecification"));
+    return Arrays.asList(new PParameter("cls", "org.eclipse.uml2.uml.Class"),new PParameter("reception", "org.eclipse.uml2.uml.Reception"),new PParameter("parameter", "org.eclipse.uml2.uml.Parameter"),new PParameter("upperBound", "org.eclipse.uml2.uml.ValueSpecification"));
   }
   
   @Override
@@ -66,7 +66,7 @@ public final class ReceptionParameterUpperBoundQuerySpecification extends BaseGe
   
   @Override
   public ReceptionParameterUpperBoundMatch newMatch(final Object... parameters) {
-    return ReceptionParameterUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Reception) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2], (org.eclipse.uml2.uml.Type) parameters[3], (org.eclipse.uml2.uml.ValueSpecification) parameters[4]);
+    return ReceptionParameterUpperBoundMatch.newMatch((org.eclipse.uml2.uml.Class) parameters[0], (org.eclipse.uml2.uml.Reception) parameters[1], (org.eclipse.uml2.uml.Parameter) parameters[2], (org.eclipse.uml2.uml.ValueSpecification) parameters[3]);
   }
   
   @Override
@@ -77,15 +77,14 @@ public final class ReceptionParameterUpperBoundQuerySpecification extends BaseGe
       PVariable var_cls = body.getOrCreateVariableByName("cls");
       PVariable var_reception = body.getOrCreateVariableByName("reception");
       PVariable var_parameter = body.getOrCreateVariableByName("parameter");
-      PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
       PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
       PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
         new ExportedParameter(body, var_reception, "reception"), 
         new ExportedParameter(body, var_parameter, "parameter"), 
-        new ExportedParameter(body, var_type, "type"), 
         new ExportedParameter(body, var_upperBound, "upperBound")
       ));
       
@@ -93,10 +92,9 @@ public final class ReceptionParameterUpperBoundQuerySpecification extends BaseGe
       
       new TypeUnary(body, var_reception, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception"), "http://www.eclipse.org/uml2/5.0.0/UML/Reception");
       
-      
-      
-      new PositivePatternCall(body, new FlatTuple(var_cls, var_reception, var_parameter, var_type, var___0_, var___1_), ReceptionParameterTypeQuerySpecification.instance());
       new TypeUnary(body, var_parameter, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter"), "http://www.eclipse.org/uml2/5.0.0/UML/Parameter");
+      
+      new PositivePatternCall(body, new FlatTuple(var_cls, var_reception, var_parameter, var___0_, var___1_, var___2_), ReceptionParameterQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_parameter, var_upperBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.upperValue");
       bodies.add(body);
     }

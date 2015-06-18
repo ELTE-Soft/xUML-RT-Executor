@@ -2,9 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -63,12 +64,12 @@ public interface ClOperation extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Return Type</em>' reference.
-	 * @see #setReturnType(FullType)
+	 * @see #setReturnType(Type)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_ReturnType()
 	 * @model
 	 * @generated
 	 */
-	FullType getReturnType();
+	Type getReturnType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#getReturnType <em>Return Type</em>}' reference.
@@ -78,11 +79,11 @@ public interface ClOperation extends Named {
 	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setReturnType(FullType value);
+	void setReturnType(Type value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.
-	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter}.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
@@ -94,7 +95,7 @@ public interface ClOperation extends Named {
 	 * @model
 	 * @generated
 	 */
-	EList<ClParameter> getParameters();
+	EList<Parameter> getParameters();
 
 	/**
 	 * Returns the value of the '<em><b>Is Static</b></em>' attribute.
@@ -107,7 +108,7 @@ public interface ClOperation extends Named {
 	 * @return the value of the '<em>Is Static</em>' attribute.
 	 * @see #setIsStatic(boolean)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClOperation_IsStatic()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
 	boolean isIsStatic();

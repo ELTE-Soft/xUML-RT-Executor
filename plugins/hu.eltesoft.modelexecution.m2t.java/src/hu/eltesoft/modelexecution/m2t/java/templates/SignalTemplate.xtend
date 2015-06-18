@@ -31,7 +31,7 @@ class SignalTemplate extends Template {
 			 */
 			public «signal.identifier»(
 				«FOR attribute : signal.attributes SEPARATOR ','»
-					«typeConverter.javaType(attribute.type)» «attribute.identifier»
+					«javaType(attribute.type, attribute)» «attribute.identifier»
 				«ENDFOR»
 			) {
 				super();
@@ -46,7 +46,7 @@ class SignalTemplate extends Template {
 			 */
 			public «signal.identifier»(«SignalEvent.canonicalName» event
 				«FOR attribute : signal.attributes»
-					, «typeConverter.javaType(attribute.type)» «attribute.identifier»
+					, «javaType(attribute.type, attribute)» «attribute.identifier»
 				«ENDFOR»
 			) {
 				super(event);
@@ -68,7 +68,7 @@ class SignalTemplate extends Template {
 			@Override
 			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
 				«FOR attribute : signal.attributes SEPARATOR ','»
-					forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), «attribute.identifier»::add);
+					forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), «javaType(attribute.type)».class, «attribute.identifier»::add);
 				«ENDFOR»
 			}
 			
@@ -76,8 +76,8 @@ class SignalTemplate extends Template {
 			
 			«FOR attribute : signal.attributes»
 				/** Attribute for signal attribute «attribute.javadoc» */
-				«typeConverter.javaType(attribute.type)» «attribute.identifier»
-					= «typeConverter.createEmpty(attribute.type)»;
+				«javaType(attribute.type, attribute)» «attribute.identifier»
+					= «createEmpty(attribute)»;
 			«ENDFOR»
 		}
 	'''

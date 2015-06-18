@@ -1,7 +1,10 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
 import java.util.Date
@@ -18,9 +21,9 @@ import org.eclipse.emf.common.util.EList
  */
 abstract class Template extends EmfTraceExtensions {
 
-	private val DebugSymbols debugSymbols;
-	private val String rootName;
-	private val TypeConverter typeConverter = new TypeConverter;
+	private val DebugSymbols debugSymbols
+	private val String rootName
+	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 
 	/**
 	 * Call only after the generate method, as its location registry will only
@@ -53,8 +56,7 @@ abstract class Template extends EmfTraceExtensions {
 	protected def CharSequence original_generate() ''''''
 
 	protected def generatedHeaderForClass(Named root) '''
-		@«Generated.canonicalName»(date = "«new Date().toString»", value = { "«this.class.canonicalName»" }, comments = «root.
-			nameLiteral»)
+		@«Generated.canonicalName»(date = "«new Date().toString»", value = {}, comments = «root.nameLiteral»)
 	'''
 
 	/**
@@ -76,17 +78,23 @@ abstract class Template extends EmfTraceExtensions {
 	def nameLiteral(NamedReference reference) {
 		literal(reference.originalName)
 	}
-	
+
 	def javadocParams(EList<? extends Named> params) '''
 		«FOR param : params»
 			* @param «param.identifier» «param.javadoc»
 		«ENDFOR»
 	'''
-	
+
+	/**
+	 * Escapes and emphasizes original names of elements
+	 */
 	def javadoc(Named named) {
 		"<b>" + javadocEscape(named.reference.originalName) + "</b>"
 	}
-	
+
+	/**
+	 * Escapes a string to be used in javadoc
+	 */
 	def javadocEscape(String toEscape) {
 		val htmlEscaped = StringEscapeUtils.escapeHtml(toEscape)
 		if (htmlEscaped != null) {
@@ -95,7 +103,7 @@ abstract class Template extends EmfTraceExtensions {
 			""
 		}
 	}
-	
+
 	/**
 	 * Helps tracing location information of Named objects.
 	 * Prints out the name of the object, while the contained EMF reference will
@@ -132,9 +140,21 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
+	
+	def javaType(Type type) {
+		typeConverter.javaType(type)
+	}
+	
+	def javaType(ScalarType type) {
+		typeConverter.javaType(type)
+	}
+	
+	def javaType(ScalarType type, Multiplicity mult) {
+		typeConverter.javaType(type, mult)
+	}
 
-	def getTypeConverter() {
-		typeConverter
+	def createEmpty(Multiplicity type) {
+		typeConverter.createEmpty(type)
 	}
 
 }

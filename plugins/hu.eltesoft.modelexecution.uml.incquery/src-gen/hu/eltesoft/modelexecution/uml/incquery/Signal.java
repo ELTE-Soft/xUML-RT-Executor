@@ -2,12 +2,10 @@ package hu.eltesoft.modelexecution.uml.incquery;
 
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeLowerBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeQuerySpecification;
-import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeTypeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -24,7 +22,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <p> From package hu.eltesoft.modelexecution.uml.incquery, the group contains the definition of the following patterns: <ul>
  * <li>Signal</li>
  * <li>SignalAttribute</li>
- * <li>SignalAttributeType</li>
  * <li>SignalAttributeLowerBound</li>
  * <li>SignalAttributeUpperBound</li>
  * </ul>
@@ -54,7 +51,6 @@ public final class Signal extends BaseGeneratedPatternGroup {
   private Signal() throws IncQueryException {
     querySpecifications.add(SignalQuerySpecification.instance());
     querySpecifications.add(SignalAttributeQuerySpecification.instance());
-    querySpecifications.add(SignalAttributeTypeQuerySpecification.instance());
     querySpecifications.add(SignalAttributeLowerBoundQuerySpecification.instance());
     querySpecifications.add(SignalAttributeUpperBoundQuerySpecification.instance());
     
@@ -74,14 +70,6 @@ public final class Signal extends BaseGeneratedPatternGroup {
   
   public SignalAttributeMatcher getSignalAttribute(final IncQueryEngine engine) throws IncQueryException {
     return SignalAttributeMatcher.on(engine);
-  }
-  
-  public SignalAttributeTypeQuerySpecification getSignalAttributeType() throws IncQueryException {
-    return SignalAttributeTypeQuerySpecification.instance();
-  }
-  
-  public SignalAttributeTypeMatcher getSignalAttributeType(final IncQueryEngine engine) throws IncQueryException {
-    return SignalAttributeTypeMatcher.on(engine);
   }
   
   public SignalAttributeLowerBoundQuerySpecification getSignalAttributeLowerBound() throws IncQueryException {

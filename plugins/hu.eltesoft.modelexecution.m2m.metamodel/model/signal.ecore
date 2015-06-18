@@ -6,7 +6,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
         eType="#//SgAttribute"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SgAttribute" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass base.ecore#//FullType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SgAttribute" eSuperTypes="base.ecore#//Named base.ecore#//Multiplicity">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//PrimitiveType"/>
   </eClassifiers>
 </ecore:EPackage>

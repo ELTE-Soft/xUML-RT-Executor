@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.association;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,12 +31,12 @@ public interface AsAssociationEnd extends Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(Named)
+	 * @see #setType(ReferencedType)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage#getAsAssociationEnd_Type()
 	 * @model required="true"
 	 * @generated
 	 */
-	Named getType();
+	ReferencedType getType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationEnd#getType <em>Type</em>}' reference.
@@ -45,6 +46,6 @@ public interface AsAssociationEnd extends Named {
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(Named value);
+	void setType(ReferencedType value);
 
 } // AsAssociationEnd

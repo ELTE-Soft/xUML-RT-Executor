@@ -1,34 +1,37 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Parameter</b></em>'.
+ * An implementation of the model object '<em><b>Parameter</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getType <em>Type</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl#getDirection <em>Direction</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.ParameterImpl#getDirection <em>Direction</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClParameter {
+public class ParameterImpl extends TranslationObjectImpl implements Parameter {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,7 +60,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * @generated
 	 * @ordered
 	 */
-	protected FullType type;
+	protected Type type;
 
 	/**
 	 * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute.
@@ -84,7 +87,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClParameterImpl() {
+	protected ParameterImpl() {
 		super();
 	}
 
@@ -95,7 +98,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_PARAMETER;
+		return BasePackage.Literals.PARAMETER;
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_PARAMETER__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.PARAMETER__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -124,13 +127,13 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType getType() {
+	public Type getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (FullType)eResolveProxy(oldType);
+			type = (Type)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_PARAMETER__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BasePackage.PARAMETER__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -141,7 +144,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType basicGetType() {
+	public Type basicGetType() {
 		return type;
 	}
 
@@ -150,11 +153,11 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(FullType newType) {
-		FullType oldType = type;
+	public void setType(Type newType) {
+		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_PARAMETER__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.PARAMETER__TYPE, oldType, type));
 	}
 
 	/**
@@ -175,7 +178,7 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 		Direction oldDirection = direction;
 		direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_PARAMETER__DIRECTION, oldDirection, direction));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.PARAMETER__DIRECTION, oldDirection, direction));
 	}
 
 	/**
@@ -186,12 +189,12 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_PARAMETER__REFERENCE:
+			case BasePackage.PARAMETER__REFERENCE:
 				return getReference();
-			case ClassdefPackage.CL_PARAMETER__TYPE:
+			case BasePackage.PARAMETER__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
-			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+			case BasePackage.PARAMETER__DIRECTION:
 				return getDirection();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -205,13 +208,13 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_PARAMETER__REFERENCE:
+			case BasePackage.PARAMETER__REFERENCE:
 				setReference((NamedReference)newValue);
 				return;
-			case ClassdefPackage.CL_PARAMETER__TYPE:
-				setType((FullType)newValue);
+			case BasePackage.PARAMETER__TYPE:
+				setType((Type)newValue);
 				return;
-			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+			case BasePackage.PARAMETER__DIRECTION:
 				setDirection((Direction)newValue);
 				return;
 		}
@@ -226,13 +229,13 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_PARAMETER__REFERENCE:
+			case BasePackage.PARAMETER__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
-			case ClassdefPackage.CL_PARAMETER__TYPE:
-				setType((FullType)null);
+			case BasePackage.PARAMETER__TYPE:
+				setType((Type)null);
 				return;
-			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+			case BasePackage.PARAMETER__DIRECTION:
 				setDirection(DIRECTION_EDEFAULT);
 				return;
 		}
@@ -247,14 +250,46 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_PARAMETER__REFERENCE:
+			case BasePackage.PARAMETER__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_PARAMETER__TYPE:
+			case BasePackage.PARAMETER__TYPE:
 				return type != null;
-			case ClassdefPackage.CL_PARAMETER__DIRECTION:
+			case BasePackage.PARAMETER__DIRECTION:
 				return direction != DIRECTION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (derivedFeatureID) {
+				case BasePackage.PARAMETER__TYPE: return BasePackage.TYPED__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (baseFeatureID) {
+				case BasePackage.TYPED__TYPE: return BasePackage.PARAMETER__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -275,4 +310,4 @@ public class ClParameterImpl extends MinimalEObjectImpl.Container implements ClP
 		return result.toString();
 	}
 
-} //ClParameterImpl
+} //ParameterImpl

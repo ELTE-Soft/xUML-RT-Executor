@@ -2,8 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,7 +13,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getType <em>Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#isIsStatic <em>Is Static</em>}</li>
  * </ul>
  * </p>
@@ -22,33 +21,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface ClAttribute extends Named {
-	/**
-	 * Returns the value of the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Type</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(FullType)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClAttribute_Type()
-	 * @model
-	 * @generated
-	 */
-	FullType getType();
-
-	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getType <em>Type</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' reference.
-	 * @see #getType()
-	 * @generated
-	 */
-	void setType(FullType value);
-
+public interface ClAttribute extends Named, Typed {
 	/**
 	 * Returns the value of the '<em><b>Is Static</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -60,7 +33,7 @@ public interface ClAttribute extends Named {
 	 * @return the value of the '<em>Is Static</em>' attribute.
 	 * @see #setIsStatic(boolean)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClAttribute_IsStatic()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
 	boolean isIsStatic();

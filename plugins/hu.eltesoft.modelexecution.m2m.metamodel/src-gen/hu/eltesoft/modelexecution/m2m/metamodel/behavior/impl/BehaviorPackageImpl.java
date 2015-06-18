@@ -13,7 +13,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
@@ -54,13 +53,6 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * @generated
 	 */
 	private EClass bhBehaviorEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass bhParameterEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -209,33 +201,6 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getBhParameter() {
-		return bhParameterEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getBhParameter_Type() {
-		return (EReference)bhParameterEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getBhParameter_Direction() {
-		return (EAttribute)bhParameterEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EDataType getAlfAnalyzerResult() {
 		return alfAnalyzerResultEDataType;
 	}
@@ -275,10 +240,6 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__IS_STATIC);
 		createEReference(bhBehaviorEClass, BH_BEHAVIOR__RETURN_TYPE);
 
-		bhParameterEClass = createEClass(BH_PARAMETER);
-		createEReference(bhParameterEClass, BH_PARAMETER__TYPE);
-		createEAttribute(bhParameterEClass, BH_PARAMETER__DIRECTION);
-
 		// Create data types
 		alfAnalyzerResultEDataType = createEDataType(ALF_ANALYZER_RESULT);
 	}
@@ -315,20 +276,14 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 
 		// Add supertypes to classes
 		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getModelRoot());
-		bhBehaviorEClass.getESuperTypes().add(theBasePackage.getNamed());
-		bhParameterEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bhBehaviorEClass, BhBehavior.class, "BhBehavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBhBehavior_ContainerClass(), theBasePackage.getNamedReference(), "containerClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBhBehavior_AlfResult(), this.getAlfAnalyzerResult(), "alfResult", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBhBehavior_Parameters(), this.getBhParameter(), null, "parameters", null, 0, -1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBhBehavior_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 0, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBhBehavior_ReturnType(), theBasePackage.getFullType(), null, "returnType", null, 0, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(bhParameterEClass, BhParameter.class, "BhParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBhParameter_Type(), theBasePackage.getFullType(), null, "type", null, 1, 1, BhParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBhParameter_Direction(), theBasePackage.getDirection(), "direction", null, 1, 1, BhParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBhBehavior_Parameters(), theBasePackage.getParameter(), null, "parameters", null, 0, -1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBhBehavior_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBhBehavior_ReturnType(), theBasePackage.getType(), null, "returnType", null, 0, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(alfAnalyzerResultEDataType, AlfAnalyzerResult.class, "AlfAnalyzerResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

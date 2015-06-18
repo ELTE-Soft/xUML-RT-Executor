@@ -85,7 +85,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 	// find this kind of error earlier conveniently, because it is specified
 	// with a template parameter.
 	private void checkCorrectFeatureIsSet(EObject parentObject) {
-		if (parentObject.eClass() != feature.getEContainingClass()) {
+		if (!feature.getEContainingClass().isInstance(parentObject)) {
 			throw new RuntimeException("Feature '" + feature.getName()
 					+ "' has the container class of '"
 					+ feature.getEContainingClass().getName()

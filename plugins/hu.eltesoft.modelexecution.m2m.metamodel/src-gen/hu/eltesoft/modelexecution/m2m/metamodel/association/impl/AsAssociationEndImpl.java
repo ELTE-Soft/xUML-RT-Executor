@@ -4,13 +4,18 @@ package hu.eltesoft.modelexecution.m2m.metamodel.association.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationEnd;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implements AsAssociationEnd {
+public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAssociationEnd {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -55,7 +60,7 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 * @ordered
 	 */
-	protected Named type;
+	protected ReferencedType type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -102,10 +107,10 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Named getType() {
+	public ReferencedType getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (Named)eResolveProxy(oldType);
+			type = (ReferencedType)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AssociationPackage.AS_ASSOCIATION_END__TYPE, oldType, type));
@@ -119,7 +124,7 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Named basicGetType() {
+	public ReferencedType basicGetType() {
 		return type;
 	}
 
@@ -128,8 +133,8 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Named newType) {
-		Named oldType = type;
+	public void setType(ReferencedType newType) {
+		ReferencedType oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_END__TYPE, oldType, type));
@@ -164,7 +169,7 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 				setReference((NamedReference)newValue);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
-				setType((Named)newValue);
+				setType((ReferencedType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -182,7 +187,7 @@ public class AsAssociationEndImpl extends MinimalEObjectImpl.Container implement
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
-				setType((Named)null);
+				setType((ReferencedType)null);
 				return;
 		}
 		super.eUnset(featureID);

@@ -2,8 +2,12 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -14,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +34,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClAttribute {
+public class ClAttributeImpl extends TranslationObjectImpl implements ClAttribute {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -60,7 +63,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * @generated
 	 * @ordered
 	 */
-	protected FullType type;
+	protected Type type;
 
 	/**
 	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
@@ -127,10 +130,10 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType getType() {
+	public Type getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (FullType)eResolveProxy(oldType);
+			type = (Type)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
@@ -144,7 +147,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType basicGetType() {
+	public Type basicGetType() {
 		return type;
 	}
 
@@ -153,8 +156,8 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(FullType newType) {
-		FullType oldType = type;
+	public void setType(Type newType) {
+		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE__TYPE, oldType, type));
@@ -212,7 +215,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
-				setType((FullType)newValue);
+				setType((Type)newValue);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic((Boolean)newValue);
@@ -233,7 +236,7 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__TYPE:
-				setType((FullType)null);
+				setType((Type)null);
 				return;
 			case ClassdefPackage.CL_ATTRIBUTE__IS_STATIC:
 				setIsStatic(IS_STATIC_EDEFAULT);
@@ -258,6 +261,38 @@ public class ClAttributeImpl extends MinimalEObjectImpl.Container implements ClA
 				return isStatic != IS_STATIC_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (derivedFeatureID) {
+				case ClassdefPackage.CL_ATTRIBUTE__TYPE: return BasePackage.TYPED__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (baseFeatureID) {
+				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ATTRIBUTE__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

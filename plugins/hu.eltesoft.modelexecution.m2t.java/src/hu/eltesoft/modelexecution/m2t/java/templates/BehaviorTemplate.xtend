@@ -36,13 +36,13 @@ class BehaviorTemplate extends Template {
 			 «IF returns»* @param «CONTEXT_NAME» Behavior parameter for passing context«ENDIF»
 			 «javadocParams(behavior.parameters)»
 			 */
-			public static «IF returns»«typeConverter.javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
+			public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
 				«IF !behavior.isStatic»«behavior.containerClass.identifier» 
 					«CONTEXT_NAME»
 					«IF !behavior.parameters.empty»,«ENDIF»
 				«ENDIF»
 				«FOR param : behavior.parameters SEPARATOR ','»
-					«typeConverter.javaType(param.type)» «param.identifier»
+					«javaType(param.type)» «param.identifier»
 				«ENDFOR»
 			) {
 				«compiledAlfCode»

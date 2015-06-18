@@ -18,13 +18,15 @@ public abstract class ClassAssociationTypeProcessor implements IMatchProcessor<C
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pEnd the value of pattern parameter end in the currently processed match
    * @param pType the value of pattern parameter type in the currently processed match
+   * @param pOrdered the value of pattern parameter ordered in the currently processed match
+   * @param pUnique the value of pattern parameter unique in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique);
   
   @Override
   public void process(final ClassAssociationTypeMatch match) {
-    process(match.getCls(), match.getEnd(), match.getType());
+    process(match.getCls(), match.getEnd(), match.getType(), match.getOrdered(), match.getUnique());
     
   }
 }

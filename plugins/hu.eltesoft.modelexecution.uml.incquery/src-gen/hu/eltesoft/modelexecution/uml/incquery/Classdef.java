@@ -21,7 +21,6 @@ import hu.eltesoft.modelexecution.uml.incquery.OperationReturnUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterTypeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.AttributeLowerBoundQuerySpecification;
@@ -44,7 +43,6 @@ import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnTypeQuerySpec
 import hu.eltesoft.modelexecution.uml.incquery.util.OperationReturnUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterLowerBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterQuerySpecification;
-import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterTypeQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionParameterUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ReceptionQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.RegionOfClassQuerySpecification;
@@ -80,7 +78,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>Method</li>
  * <li>Reception</li>
  * <li>ReceptionParameter</li>
- * <li>ReceptionParameterType</li>
  * <li>ReceptionParameterLowerBound</li>
  * <li>ReceptionParameterUpperBound</li>
  * <li>ClassAssociation</li>
@@ -129,7 +126,6 @@ public final class Classdef extends BaseGeneratedPatternGroup {
     querySpecifications.add(MethodQuerySpecification.instance());
     querySpecifications.add(ReceptionQuerySpecification.instance());
     querySpecifications.add(ReceptionParameterQuerySpecification.instance());
-    querySpecifications.add(ReceptionParameterTypeQuerySpecification.instance());
     querySpecifications.add(ReceptionParameterLowerBoundQuerySpecification.instance());
     querySpecifications.add(ReceptionParameterUpperBoundQuerySpecification.instance());
     querySpecifications.add(ClassAssociationQuerySpecification.instance());
@@ -273,14 +269,6 @@ public final class Classdef extends BaseGeneratedPatternGroup {
   
   public ReceptionParameterMatcher getReceptionParameter(final IncQueryEngine engine) throws IncQueryException {
     return ReceptionParameterMatcher.on(engine);
-  }
-  
-  public ReceptionParameterTypeQuerySpecification getReceptionParameterType() throws IncQueryException {
-    return ReceptionParameterTypeQuerySpecification.instance();
-  }
-  
-  public ReceptionParameterTypeMatcher getReceptionParameterType(final IncQueryEngine engine) throws IncQueryException {
-    return ReceptionParameterTypeMatcher.on(engine);
   }
   
   public ReceptionParameterLowerBoundQuerySpecification getReceptionParameterLowerBound() throws IncQueryException {

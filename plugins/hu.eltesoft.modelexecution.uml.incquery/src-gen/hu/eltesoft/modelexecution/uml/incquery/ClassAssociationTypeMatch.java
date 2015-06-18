@@ -30,12 +30,18 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
   
   private Association fType;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "end", "type");
+  private Boolean fOrdered;
   
-  private ClassAssociationTypeMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType) {
+  private Boolean fUnique;
+  
+  private static List<String> parameterNames = makeImmutableList("cls", "end", "type", "ordered", "unique");
+  
+  private ClassAssociationTypeMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique) {
     this.fCls = pCls;
     this.fEnd = pEnd;
     this.fType = pType;
+    this.fOrdered = pOrdered;
+    this.fUnique = pUnique;
     
   }
   
@@ -44,6 +50,8 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     if ("cls".equals(parameterName)) return this.fCls;
     if ("end".equals(parameterName)) return this.fEnd;
     if ("type".equals(parameterName)) return this.fType;
+    if ("ordered".equals(parameterName)) return this.fOrdered;
+    if ("unique".equals(parameterName)) return this.fUnique;
     return null;
     
   }
@@ -63,6 +71,16 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     
   }
   
+  public Boolean getOrdered() {
+    return this.fOrdered;
+    
+  }
+  
+  public Boolean getUnique() {
+    return this.fUnique;
+    
+  }
+  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -76,6 +94,14 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     }
     if ("type".equals(parameterName) ) {
     	this.fType = (org.eclipse.uml2.uml.Association) newValue;
+    	return true;
+    }
+    if ("ordered".equals(parameterName) ) {
+    	this.fOrdered = (java.lang.Boolean) newValue;
+    	return true;
+    }
+    if ("unique".equals(parameterName) ) {
+    	this.fUnique = (java.lang.Boolean) newValue;
     	return true;
     }
     return false;
@@ -100,6 +126,18 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     
   }
   
+  public void setOrdered(final Boolean pOrdered) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fOrdered = pOrdered;
+    
+  }
+  
+  public void setUnique(final Boolean pUnique) {
+    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
+    this.fUnique = pUnique;
+    
+  }
+  
   @Override
   public String patternName() {
     return "hu.eltesoft.modelexecution.uml.incquery.ClassAssociationType";
@@ -114,13 +152,13 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fEnd, fType};
+    return new Object[]{fCls, fEnd, fType, fOrdered, fUnique};
     
   }
   
   @Override
   public ClassAssociationTypeMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fEnd, fType) : this;
+    return isMutable() ? newMatch(fCls, fEnd, fType, fOrdered, fUnique) : this;
     
   }
   
@@ -129,7 +167,9 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"end\"=" + prettyPrintValue(fEnd) + ", ");
-    result.append("\"type\"=" + prettyPrintValue(fType));
+    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
+    result.append("\"ordered\"=" + prettyPrintValue(fOrdered) + ", ");
+    result.append("\"unique\"=" + prettyPrintValue(fUnique));
     return result.toString();
     
   }
@@ -141,6 +181,8 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fEnd == null) ? 0 : fEnd.hashCode());
     result = prime * result + ((fType == null) ? 0 : fType.hashCode());
+    result = prime * result + ((fOrdered == null) ? 0 : fOrdered.hashCode());
+    result = prime * result + ((fUnique == null) ? 0 : fUnique.hashCode());
     return result;
     
   }
@@ -166,6 +208,10 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
     else if (!fEnd.equals(other.fEnd)) return false;
     if (fType == null) {if (other.fType != null) return false;}
     else if (!fType.equals(other.fType)) return false;
+    if (fOrdered == null) {if (other.fOrdered != null) return false;}
+    else if (!fOrdered.equals(other.fOrdered)) return false;
+    if (fUnique == null) {if (other.fUnique != null) return false;}
+    else if (!fUnique.equals(other.fUnique)) return false;
     return true;
   }
   
@@ -188,7 +234,7 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
    * 
    */
   public static ClassAssociationTypeMatch newEmptyMatch() {
-    return new Mutable(null, null, null);
+    return new Mutable(null, null, null, null, null);
     
   }
   
@@ -199,11 +245,13 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pEnd the fixed value of pattern parameter end, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ClassAssociationTypeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType) {
-    return new Mutable(pCls, pEnd, pType);
+  public static ClassAssociationTypeMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Mutable(pCls, pEnd, pType, pOrdered, pUnique);
     
   }
   
@@ -214,17 +262,19 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pEnd the fixed value of pattern parameter end, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
+   * @param pOrdered the fixed value of pattern parameter ordered, or null if not bound.
+   * @param pUnique the fixed value of pattern parameter unique, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ClassAssociationTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType) {
-    return new Immutable(pCls, pEnd, pType);
+  public static ClassAssociationTypeMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique) {
+    return new Immutable(pCls, pEnd, pType, pOrdered, pUnique);
     
   }
   
   private static final class Mutable extends ClassAssociationTypeMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType) {
-      super(pCls, pEnd, pType);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pEnd, pType, pOrdered, pUnique);
       
     }
     
@@ -235,8 +285,8 @@ public abstract class ClassAssociationTypeMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends ClassAssociationTypeMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType) {
-      super(pCls, pEnd, pType);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Property pEnd, final Association pType, final Boolean pOrdered, final Boolean pUnique) {
+      super(pCls, pEnd, pType, pOrdered, pUnique);
       
     }
     

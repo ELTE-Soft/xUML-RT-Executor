@@ -8,7 +8,6 @@ import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Reception;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.ValueSpecification;
 
 /**
@@ -32,17 +31,14 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
   
   private Parameter fParameter;
   
-  private Type fType;
-  
   private ValueSpecification fUpperBound;
   
-  private static List<String> parameterNames = makeImmutableList("cls", "reception", "parameter", "type", "upperBound");
+  private static List<String> parameterNames = makeImmutableList("cls", "reception", "parameter", "upperBound");
   
-  private ReceptionParameterUpperBoundMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound) {
+  private ReceptionParameterUpperBoundMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound) {
     this.fCls = pCls;
     this.fReception = pReception;
     this.fParameter = pParameter;
-    this.fType = pType;
     this.fUpperBound = pUpperBound;
     
   }
@@ -52,7 +48,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     if ("cls".equals(parameterName)) return this.fCls;
     if ("reception".equals(parameterName)) return this.fReception;
     if ("parameter".equals(parameterName)) return this.fParameter;
-    if ("type".equals(parameterName)) return this.fType;
     if ("upperBound".equals(parameterName)) return this.fUpperBound;
     return null;
     
@@ -70,11 +65,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
   
   public Parameter getParameter() {
     return this.fParameter;
-    
-  }
-  
-  public Type getType() {
-    return this.fType;
     
   }
   
@@ -96,10 +86,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     }
     if ("parameter".equals(parameterName) ) {
     	this.fParameter = (org.eclipse.uml2.uml.Parameter) newValue;
-    	return true;
-    }
-    if ("type".equals(parameterName) ) {
-    	this.fType = (org.eclipse.uml2.uml.Type) newValue;
     	return true;
     }
     if ("upperBound".equals(parameterName) ) {
@@ -128,12 +114,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     
   }
   
-  public void setType(final Type pType) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fType = pType;
-    
-  }
-  
   public void setUpperBound(final ValueSpecification pUpperBound) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fUpperBound = pUpperBound;
@@ -154,13 +134,13 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fCls, fReception, fParameter, fType, fUpperBound};
+    return new Object[]{fCls, fReception, fParameter, fUpperBound};
     
   }
   
   @Override
   public ReceptionParameterUpperBoundMatch toImmutable() {
-    return isMutable() ? newMatch(fCls, fReception, fParameter, fType, fUpperBound) : this;
+    return isMutable() ? newMatch(fCls, fReception, fParameter, fUpperBound) : this;
     
   }
   
@@ -170,7 +150,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     result.append("\"cls\"=" + prettyPrintValue(fCls) + ", ");
     result.append("\"reception\"=" + prettyPrintValue(fReception) + ", ");
     result.append("\"parameter\"=" + prettyPrintValue(fParameter) + ", ");
-    result.append("\"type\"=" + prettyPrintValue(fType) + ", ");
     result.append("\"upperBound\"=" + prettyPrintValue(fUpperBound));
     return result.toString();
     
@@ -183,7 +162,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     result = prime * result + ((fCls == null) ? 0 : fCls.hashCode());
     result = prime * result + ((fReception == null) ? 0 : fReception.hashCode());
     result = prime * result + ((fParameter == null) ? 0 : fParameter.hashCode());
-    result = prime * result + ((fType == null) ? 0 : fType.hashCode());
     result = prime * result + ((fUpperBound == null) ? 0 : fUpperBound.hashCode());
     return result;
     
@@ -210,8 +188,6 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
     else if (!fReception.equals(other.fReception)) return false;
     if (fParameter == null) {if (other.fParameter != null) return false;}
     else if (!fParameter.equals(other.fParameter)) return false;
-    if (fType == null) {if (other.fType != null) return false;}
-    else if (!fType.equals(other.fType)) return false;
     if (fUpperBound == null) {if (other.fUpperBound != null) return false;}
     else if (!fUpperBound.equals(other.fUpperBound)) return false;
     return true;
@@ -236,7 +212,7 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
    * 
    */
   public static ReceptionParameterUpperBoundMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null, null);
+    return new Mutable(null, null, null, null);
     
   }
   
@@ -247,13 +223,12 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static ReceptionParameterUpperBoundMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound) {
-    return new Mutable(pCls, pReception, pParameter, pType, pUpperBound);
+  public static ReceptionParameterUpperBoundMatch newMutableMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound) {
+    return new Mutable(pCls, pReception, pParameter, pUpperBound);
     
   }
   
@@ -264,19 +239,18 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pUpperBound the fixed value of pattern parameter upperBound, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static ReceptionParameterUpperBoundMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound) {
-    return new Immutable(pCls, pReception, pParameter, pType, pUpperBound);
+  public static ReceptionParameterUpperBoundMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound) {
+    return new Immutable(pCls, pReception, pParameter, pUpperBound);
     
   }
   
   private static final class Mutable extends ReceptionParameterUpperBoundMatch {
-    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound) {
-      super(pCls, pReception, pParameter, pType, pUpperBound);
+    Mutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound) {
+      super(pCls, pReception, pParameter, pUpperBound);
       
     }
     
@@ -287,8 +261,8 @@ public abstract class ReceptionParameterUpperBoundMatch extends BasePatternMatch
   }
   
   private static final class Immutable extends ReceptionParameterUpperBoundMatch {
-    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound) {
-      super(pCls, pReception, pParameter, pType, pUpperBound);
+    Immutable(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound) {
+      super(pCls, pReception, pParameter, pUpperBound);
       
     }
     

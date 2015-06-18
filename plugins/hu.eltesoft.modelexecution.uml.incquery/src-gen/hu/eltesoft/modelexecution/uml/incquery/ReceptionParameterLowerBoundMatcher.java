@@ -17,7 +17,6 @@ import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Reception;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.ValueSpecification;
 
 /**
@@ -32,8 +31,8 @@ import org.eclipse.uml2.uml.ValueSpecification;
  * <p>Original source:
  * <code><pre>
  * pattern
- * ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, type, lowerBound : ValueSpecification) {
- * 	find ReceptionParameterType(cls, reception, parameter, type, _, _);
+ * ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound : ValueSpecification) {
+ * 	find ReceptionParameter(cls, reception, parameter, _, _, _);
  * 	Parameter.lowerValue(parameter, lowerBound);
  * }
  * </pre></code>
@@ -78,9 +77,7 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
   
   private final static int POSITION_PARAMETER = 2;
   
-  private final static int POSITION_TYPE = 3;
-  
-  private final static int POSITION_LOWERBOUND = 4;
+  private final static int POSITION_LOWERBOUND = 3;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(ReceptionParameterLowerBoundMatcher.class);
   
@@ -120,13 +117,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return matches represented as a ReceptionParameterLowerBoundMatch object.
    * 
    */
-  public Collection<ReceptionParameterLowerBoundMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawGetAllMatches(new Object[]{pCls, pReception, pParameter, pType, pLowerBound});
+  public Collection<ReceptionParameterLowerBoundMatch> getAllMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawGetAllMatches(new Object[]{pCls, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -135,13 +131,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return a match represented as a ReceptionParameterLowerBoundMatch object, or null if no match is found.
    * 
    */
-  public ReceptionParameterLowerBoundMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawGetOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pType, pLowerBound});
+  public ReceptionParameterLowerBoundMatch getOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawGetOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -150,13 +145,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawHasMatch(new Object[]{pCls, pReception, pParameter, pType, pLowerBound});
+  public boolean hasMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawHasMatch(new Object[]{pCls, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -164,13 +158,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawCountMatches(new Object[]{pCls, pReception, pParameter, pType, pLowerBound});
+  public int countMatches(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawCountMatches(new Object[]{pCls, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -178,13 +171,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound, final IMatchProcessor<? super ReceptionParameterLowerBoundMatch> processor) {
-    rawForEachMatch(new Object[]{pCls, pReception, pParameter, pType, pLowerBound}, processor);
+  public void forEachMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound, final IMatchProcessor<? super ReceptionParameterLowerBoundMatch> processor) {
+    rawForEachMatch(new Object[]{pCls, pReception, pParameter, pLowerBound}, processor);
   }
   
   /**
@@ -193,14 +185,13 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound, final IMatchProcessor<? super ReceptionParameterLowerBoundMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pType, pLowerBound}, processor);
+  public boolean forOneArbitraryMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound, final IMatchProcessor<? super ReceptionParameterLowerBoundMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCls, pReception, pParameter, pLowerBound}, processor);
   }
   
   /**
@@ -213,15 +204,14 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return the delta monitor.
    * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
    * 
    */
   @Deprecated
-  public DeltaMonitor<ReceptionParameterLowerBoundMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReception, pParameter, pType, pLowerBound});
+  public DeltaMonitor<ReceptionParameterLowerBoundMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pCls, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -231,13 +221,12 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @param pCls the fixed value of pattern parameter cls, or null if not bound.
    * @param pReception the fixed value of pattern parameter reception, or null if not bound.
    * @param pParameter the fixed value of pattern parameter parameter, or null if not bound.
-   * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param pLowerBound the fixed value of pattern parameter lowerBound, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public ReceptionParameterLowerBoundMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return ReceptionParameterLowerBoundMatch.newMatch(pCls, pReception, pParameter, pType, pLowerBound);
+  public ReceptionParameterLowerBoundMatch newMatch(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return ReceptionParameterLowerBoundMatch.newMatch(pCls, pReception, pParameter, pLowerBound);
     
   }
   
@@ -275,8 +264,8 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawAccumulateAllValuesOfcls(new Object[]{null, pReception, pParameter, pType, pLowerBound});
+  public Set<org.eclipse.uml2.uml.Class> getAllValuesOfcls(final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawAccumulateAllValuesOfcls(new Object[]{null, pReception, pParameter, pLowerBound});
   }
   
   /**
@@ -313,8 +302,8 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Reception> getAllValuesOfreception(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter, final Type pType, final ValueSpecification pLowerBound) {
-    return rawAccumulateAllValuesOfreception(new Object[]{pCls, null, pParameter, pType, pLowerBound});
+  public Set<Reception> getAllValuesOfreception(final org.eclipse.uml2.uml.Class pCls, final Parameter pParameter, final ValueSpecification pLowerBound) {
+    return rawAccumulateAllValuesOfreception(new Object[]{pCls, null, pParameter, pLowerBound});
   }
   
   /**
@@ -351,46 +340,8 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Type pType, final ValueSpecification pLowerBound) {
-    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pReception, null, pType, pLowerBound});
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<Type> rawAccumulateAllValuesOftype(final Object[] parameters) {
-    Set<Type> results = new HashSet<Type>();
-    rawAccumulateAllValues(POSITION_TYPE, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype() {
-    return rawAccumulateAllValuesOftype(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final ReceptionParameterLowerBoundMatch partialMatch) {
-    return rawAccumulateAllValuesOftype(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for type.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Type> getAllValuesOftype(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pLowerBound) {
-    return rawAccumulateAllValuesOftype(new Object[]{pCls, pReception, pParameter, null, pLowerBound});
+  public Set<Parameter> getAllValuesOfparameter(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final ValueSpecification pLowerBound) {
+    return rawAccumulateAllValuesOfparameter(new Object[]{pCls, pReception, null, pLowerBound});
   }
   
   /**
@@ -427,14 +378,14 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<ValueSpecification> getAllValuesOflowerBound(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType) {
-    return rawAccumulateAllValuesOflowerBound(new Object[]{pCls, pReception, pParameter, pType, null});
+  public Set<ValueSpecification> getAllValuesOflowerBound(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter) {
+    return rawAccumulateAllValuesOflowerBound(new Object[]{pCls, pReception, pParameter, null});
   }
   
   @Override
   protected ReceptionParameterLowerBoundMatch tupleToMatch(final Tuple t) {
     try {
-      return ReceptionParameterLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Reception) t.get(POSITION_RECEPTION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.Type) t.get(POSITION_TYPE), (org.eclipse.uml2.uml.ValueSpecification) t.get(POSITION_LOWERBOUND));
+      return ReceptionParameterLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Class) t.get(POSITION_CLS), (org.eclipse.uml2.uml.Reception) t.get(POSITION_RECEPTION), (org.eclipse.uml2.uml.Parameter) t.get(POSITION_PARAMETER), (org.eclipse.uml2.uml.ValueSpecification) t.get(POSITION_LOWERBOUND));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -445,7 +396,7 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
   @Override
   protected ReceptionParameterLowerBoundMatch arrayToMatch(final Object[] match) {
     try {
-      return ReceptionParameterLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_LOWERBOUND]);
+      return ReceptionParameterLowerBoundMatch.newMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_LOWERBOUND]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -456,7 +407,7 @@ public class ReceptionParameterLowerBoundMatcher extends BaseMatcher<ReceptionPa
   @Override
   protected ReceptionParameterLowerBoundMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return ReceptionParameterLowerBoundMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.Type) match[POSITION_TYPE], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_LOWERBOUND]);
+      return ReceptionParameterLowerBoundMatch.newMutableMatch((org.eclipse.uml2.uml.Class) match[POSITION_CLS], (org.eclipse.uml2.uml.Reception) match[POSITION_RECEPTION], (org.eclipse.uml2.uml.Parameter) match[POSITION_PARAMETER], (org.eclipse.uml2.uml.ValueSpecification) match[POSITION_LOWERBOUND]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

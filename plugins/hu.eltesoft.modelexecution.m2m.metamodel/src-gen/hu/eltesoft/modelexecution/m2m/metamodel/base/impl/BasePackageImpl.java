@@ -9,15 +9,19 @@ import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPack
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 
@@ -90,7 +94,21 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass typedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass typeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass scalarTypeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -104,7 +122,21 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass fullTypeEClass = null;
+	private EClass referencedTypeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass parameterEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass multiplicityEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -274,8 +306,44 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTyped() {
+		return typedEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTyped_Type() {
+		return (EReference)typedEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getType() {
 		return typeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getType_BaseType() {
+		return (EReference)typeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScalarType() {
+		return scalarTypeEClass;
 	}
 
 	/**
@@ -301,8 +369,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getFullType() {
-		return fullTypeEClass;
+	public EClass getReferencedType() {
+		return referencedTypeEClass;
 	}
 
 	/**
@@ -310,8 +378,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFullType_BaseType() {
-		return (EReference)fullTypeEClass.getEStructuralFeatures().get(0);
+	public EClass getParameter() {
+		return parameterEClass;
 	}
 
 	/**
@@ -319,8 +387,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getFullType_LowerBound() {
-		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(1);
+	public EAttribute getParameter_Direction() {
+		return (EAttribute)parameterEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -328,8 +396,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getFullType_UpperBound() {
-		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(2);
+	public EClass getMultiplicity() {
+		return multiplicityEClass;
 	}
 
 	/**
@@ -337,8 +405,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getFullType_IsOrdered() {
-		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(3);
+	public EAttribute getMultiplicity_LowerBound() {
+		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -346,8 +414,26 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getFullType_IsUnique() {
-		return (EAttribute)fullTypeEClass.getEStructuralFeatures().get(4);
+	public EAttribute getMultiplicity_UpperBound() {
+		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMultiplicity_IsOrdered() {
+		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMultiplicity_IsUnique() {
+		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -424,17 +510,27 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		referencedEClass = createEClass(REFERENCED);
 		createEAttribute(referencedEClass, REFERENCED__REFERENCE);
 
+		typedEClass = createEClass(TYPED);
+		createEReference(typedEClass, TYPED__TYPE);
+
 		typeEClass = createEClass(TYPE);
+		createEReference(typeEClass, TYPE__BASE_TYPE);
+
+		scalarTypeEClass = createEClass(SCALAR_TYPE);
 
 		primitiveTypeEClass = createEClass(PRIMITIVE_TYPE);
 		createEAttribute(primitiveTypeEClass, PRIMITIVE_TYPE__TYPE);
 
-		fullTypeEClass = createEClass(FULL_TYPE);
-		createEReference(fullTypeEClass, FULL_TYPE__BASE_TYPE);
-		createEAttribute(fullTypeEClass, FULL_TYPE__LOWER_BOUND);
-		createEAttribute(fullTypeEClass, FULL_TYPE__UPPER_BOUND);
-		createEAttribute(fullTypeEClass, FULL_TYPE__IS_ORDERED);
-		createEAttribute(fullTypeEClass, FULL_TYPE__IS_UNIQUE);
+		referencedTypeEClass = createEClass(REFERENCED_TYPE);
+
+		parameterEClass = createEClass(PARAMETER);
+		createEAttribute(parameterEClass, PARAMETER__DIRECTION);
+
+		multiplicityEClass = createEClass(MULTIPLICITY);
+		createEAttribute(multiplicityEClass, MULTIPLICITY__LOWER_BOUND);
+		createEAttribute(multiplicityEClass, MULTIPLICITY__UPPER_BOUND);
+		createEAttribute(multiplicityEClass, MULTIPLICITY__IS_ORDERED);
+		createEAttribute(multiplicityEClass, MULTIPLICITY__IS_UNIQUE);
 
 		// Create enums
 		directionEEnum = createEEnum(DIRECTION);
@@ -476,12 +572,17 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		modelRootEClass.getESuperTypes().add(this.getNamed());
 		namedEClass.getESuperTypes().add(this.getTranslationObject());
 		referencedEClass.getESuperTypes().add(this.getTranslationObject());
-		typeEClass.getESuperTypes().add(this.getNamed());
-		primitiveTypeEClass.getESuperTypes().add(this.getType());
-		fullTypeEClass.getESuperTypes().add(this.getTranslationObject());
+		typedEClass.getESuperTypes().add(this.getTranslationObject());
+		typeEClass.getESuperTypes().add(this.getTranslationObject());
+		typeEClass.getESuperTypes().add(this.getMultiplicity());
+		primitiveTypeEClass.getESuperTypes().add(this.getScalarType());
+		referencedTypeEClass.getESuperTypes().add(this.getScalarType());
+		referencedTypeEClass.getESuperTypes().add(this.getNamed());
+		parameterEClass.getESuperTypes().add(this.getNamed());
+		parameterEClass.getESuperTypes().add(this.getTyped());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(modelRootEClass, ModelRoot.class, "ModelRoot", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -491,17 +592,27 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		initEClass(referencedEClass, Referenced.class, "Referenced", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getReferenced_Reference(), this.getReference(), "reference", null, 1, 1, Referenced.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(typedEClass, Typed.class, "Typed", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTyped_Type(), this.getType(), null, "type", null, 1, 1, Typed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getType_BaseType(), this.getScalarType(), null, "baseType", null, 1, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(scalarTypeEClass, ScalarType.class, "ScalarType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(primitiveTypeEClass, PrimitiveType.class, "PrimitiveType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPrimitiveType_Type(), this.getPrimitiveTypes(), "type", null, 0, 1, PrimitiveType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(fullTypeEClass, FullType.class, "FullType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFullType_BaseType(), this.getType(), null, "baseType", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getFullType_LowerBound(), ecorePackage.getEInt(), "lowerBound", "1", 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getFullType_UpperBound(), ecorePackage.getEInt(), "upperBound", "1", 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getFullType_IsOrdered(), ecorePackage.getEBoolean(), "isOrdered", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getFullType_IsUnique(), ecorePackage.getEBoolean(), "isUnique", null, 1, 1, FullType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(referencedTypeEClass, ReferencedType.class, "ReferencedType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getParameter_Direction(), this.getDirection(), "direction", null, 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(multiplicityEClass, Multiplicity.class, "Multiplicity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMultiplicity_LowerBound(), ecorePackage.getEInt(), "lowerBound", "1", 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultiplicity_UpperBound(), ecorePackage.getEInt(), "upperBound", "1", 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultiplicity_IsOrdered(), ecorePackage.getEBoolean(), "isOrdered", null, 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultiplicity_IsUnique(), ecorePackage.getEBoolean(), "isUnique", null, 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(directionEEnum, Direction.class, "Direction");

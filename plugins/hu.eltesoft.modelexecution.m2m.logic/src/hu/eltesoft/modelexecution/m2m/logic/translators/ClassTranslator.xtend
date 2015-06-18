@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
@@ -10,8 +11,10 @@ import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeUpperBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationTypeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher
@@ -24,16 +27,13 @@ import hu.eltesoft.modelexecution.uml.incquery.OperationReturnLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationReturnUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterTypeMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
@@ -61,17 +61,17 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			elem.isStatic = isStatic
 			return elem;
 		]
-		val attributeType = attributeNode.onEObject(PACKAGE.clAttribute_Type, AttributeTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
+		val attributeType = attributeNode.onEObject(BASE_PACKAGE.typed_Type, AttributeTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		attributeType.on(BASE_PACKAGE.fullType_LowerBound, AttributeLowerBoundMatcher.on(engine)) [
+		attributeType.on(BASE_PACKAGE.multiplicity_LowerBound, AttributeLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		attributeType.on(BASE_PACKAGE.fullType_UpperBound, AttributeUpperBoundMatcher.on(engine)) [
+		attributeType.on(BASE_PACKAGE.multiplicity_UpperBound, AttributeUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 
@@ -85,39 +85,39 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// operation parameters
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperation_Parameters, OperationParameterMatcher.on(engine)) [
-			val elem = FACTORY.createClParameter
+			val elem = BASE_FACTORY.createParameter
 			elem.reference = new NamedReference(parameter)
 			elem.direction = direction.convert
 			return elem
 		]
-		val parameterTypeNode = parameterNode.onEObject(PACKAGE.clParameter_Type,
+		val parameterTypeNode = parameterNode.onEObject(BASE_PACKAGE.typed_Type,
 			OperationParameterTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		parameterTypeNode.on(BASE_PACKAGE.fullType_LowerBound, OperationParameterLowerBoundMatcher.on(engine)) [
+		parameterTypeNode.on(BASE_PACKAGE.multiplicity_LowerBound, OperationParameterLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		parameterTypeNode.on(BASE_PACKAGE.fullType_UpperBound, OperationParameterUpperBoundMatcher.on(engine)) [
+		parameterTypeNode.on(BASE_PACKAGE.multiplicity_UpperBound, OperationParameterUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 
 		// operation return type
 		val operationReturn = operationNode.onEObject(PACKAGE.clOperation_ReturnType,
 			OperationReturnTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		operationReturn.on(BASE_PACKAGE.fullType_LowerBound, OperationReturnLowerBoundMatcher.on(engine)) [
+		operationReturn.on(BASE_PACKAGE.multiplicity_LowerBound, OperationReturnLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		operationReturn.on(BASE_PACKAGE.fullType_UpperBound, OperationReturnUpperBoundMatcher.on(engine)) [
+		operationReturn.on(BASE_PACKAGE.multiplicity_UpperBound, OperationReturnUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 
@@ -132,17 +132,17 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			elem.reference = new NamedReference(end)
 			return elem
 		]
-		val assocType = assocNode.onEObject(PACKAGE.clAssociation_Type, ClassAssociationTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
+		val assocType = assocNode.onEObject(BASE_PACKAGE.typed_Type, ClassAssociationTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
-			//			elem.isOrdered = ordered
-			//			elem.isUnique = unique
+			elem.isOrdered = ordered
+			elem.isUnique = unique
 			return elem
 		]
-		assocType.on(BASE_PACKAGE.fullType_LowerBound, ClassAssociationLowerBoundMatcher.on(engine)) [
+		assocType.on(BASE_PACKAGE.multiplicity_LowerBound, ClassAssociationLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		assocType.on(BASE_PACKAGE.fullType_UpperBound, ClassAssociationUpperBoundMatcher.on(engine)) [
+		assocType.on(BASE_PACKAGE.multiplicity_UpperBound, ClassAssociationUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 
@@ -157,19 +157,15 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			ReceptionParameterMatcher.on(engine)) [
 			val elem = FACTORY.createClReceptionParameter
 			elem.reference = new NamedReference(parameter)
-			return elem
-		]
-		val receptionType = receptionParameter.onEObject(PACKAGE.clReceptionParameter_Type, ReceptionParameterTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
-			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
+			elem.type = type.convert as PrimitiveType
 			return elem
 		]
-		receptionType.on(BASE_PACKAGE.fullType_LowerBound, ReceptionParameterLowerBoundMatcher.on(engine)) [
+		receptionParameter.on(BASE_PACKAGE.multiplicity_LowerBound, ReceptionParameterLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		receptionType.on(BASE_PACKAGE.fullType_UpperBound, ReceptionParameterUpperBoundMatcher.on(engine)) [
+		receptionParameter.on(BASE_PACKAGE.multiplicity_UpperBound, ReceptionParameterUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 

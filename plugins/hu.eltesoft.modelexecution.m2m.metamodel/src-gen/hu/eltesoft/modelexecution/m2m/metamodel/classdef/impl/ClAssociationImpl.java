@@ -2,8 +2,12 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -14,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ClAssociationImpl extends MinimalEObjectImpl.Container implements ClAssociation {
+public class ClAssociationImpl extends TranslationObjectImpl implements ClAssociation {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -59,7 +62,7 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 	 * @generated
 	 * @ordered
 	 */
-	protected FullType type;
+	protected Type type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -106,10 +109,10 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType getType() {
+	public Type getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (FullType)eResolveProxy(oldType);
+			type = (Type)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
@@ -123,7 +126,7 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType basicGetType() {
+	public Type basicGetType() {
 		return type;
 	}
 
@@ -132,8 +135,8 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(FullType newType) {
-		FullType oldType = type;
+	public void setType(Type newType) {
+		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
@@ -168,7 +171,7 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 				setReference((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				setType((FullType)newValue);
+				setType((Type)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -186,7 +189,7 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 				setReference(REFERENCE_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				setType((FullType)null);
+				setType((Type)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -206,6 +209,38 @@ public class ClAssociationImpl extends MinimalEObjectImpl.Container implements C
 				return type != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (derivedFeatureID) {
+				case ClassdefPackage.CL_ASSOCIATION__TYPE: return BasePackage.TYPED__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Typed.class) {
+			switch (baseFeatureID) {
+				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ASSOCIATION__TYPE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

@@ -249,7 +249,7 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 		initEReference(getAsAssociation_Ends(), this.getAsAssociationEnd(), null, "ends", null, 2, 2, AsAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(asAssociationEndEClass, AsAssociationEnd.class, "AsAssociationEnd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAsAssociationEnd_Type(), theBasePackage.getNamed(), null, "type", null, 1, 1, AsAssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAsAssociationEnd_Type(), theBasePackage.getReferencedType(), null, "type", null, 1, 1, AsAssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

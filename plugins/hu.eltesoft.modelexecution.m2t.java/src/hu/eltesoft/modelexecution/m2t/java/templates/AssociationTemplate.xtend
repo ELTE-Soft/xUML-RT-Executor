@@ -24,7 +24,7 @@ class AssociationTemplate extends Template {
 			
 			«FOR end : association.ends»
 				/** Attribute for association end «end.javadoc» */
-				public «typeConverter.javaType(end.type)» «end.identifier»;
+				public «javaType(end.type)» «end.identifier»;
 			«ENDFOR»
 			
 			public «association.identifier»(«endParams()») {
@@ -32,13 +32,12 @@ class AssociationTemplate extends Template {
 					this.«end.identifier» = «end.identifier»;
 				«ENDFOR»
 			}
-		
 		}
 	'''
 	
 	def endParams() '''
 		«FOR end : association.ends SEPARATOR ','»
-			«typeConverter.javaType(end.type)» «end.identifier»
+			«javaType(end.type)» «end.identifier»
 		«ENDFOR»
 	'''
 	

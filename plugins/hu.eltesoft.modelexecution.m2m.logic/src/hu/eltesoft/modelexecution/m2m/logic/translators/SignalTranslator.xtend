@@ -2,13 +2,13 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher
-import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatch
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher
@@ -24,9 +24,9 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 	new(IncQueryEngine engine) throws IncQueryException {
 		super(engine)
 	}
-	
+
 	override protected buildMapper(IncQueryEngine engine) throws IncQueryException {
-		val rootNode = fromRoot(SignalMatcher.on(engine)) [ 
+		val rootNode = fromRoot(SignalMatcher.on(engine)) [
 			val root = FACTORY.createSgSignal
 			root.reference = new NamedReference(signal)
 			return root
@@ -34,28 +34,23 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 		val attributeNode = rootNode.onEObject(PACKAGE.sgSignal_Attributes, SignalAttributeMatcher.on(engine)) [
 			val elem = FACTORY.createSgAttribute
 			elem.reference = new NamedReference(attribute)
-			return elem
-		]
-		val typeNode = attributeNode.on(PACKAGE.sgAttribute_Type, SignalAttributeTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
-			elem.baseType = type.convert
+			elem.type = type.convert as PrimitiveType
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		typeNode.on(BASE_PACKAGE.fullType_LowerBound, SignalAttributeLowerBoundMatcher.on(engine)) [
+		attributeNode.on(BASE_PACKAGE.multiplicity_LowerBound, SignalAttributeLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		typeNode.on(BASE_PACKAGE.fullType_UpperBound, SignalAttributeUpperBoundMatcher.on(engine)) [
+		attributeNode.on(BASE_PACKAGE.multiplicity_UpperBound, SignalAttributeUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-		
+
 		return rootNode
 	}
-	
-	
+
 	override createTemplate(SgSignal signal) {
 		return new SignalTemplate(signal)
 	}
-	
+
 }

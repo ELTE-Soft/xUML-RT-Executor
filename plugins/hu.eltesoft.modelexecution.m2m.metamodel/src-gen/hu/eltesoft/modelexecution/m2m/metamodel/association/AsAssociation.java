@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.association;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

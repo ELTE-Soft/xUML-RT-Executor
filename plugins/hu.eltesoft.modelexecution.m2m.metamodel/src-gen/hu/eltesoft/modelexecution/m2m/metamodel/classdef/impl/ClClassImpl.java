@@ -3,18 +3,26 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -35,7 +43,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ClClassImpl extends MinimalEObjectImpl.Container implements ClClass {
+public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -79,6 +79,8 @@ public final class ClassAssociationUpperBoundQuerySpecification extends BaseGene
       PVariable var_end = body.getOrCreateVariableByName("end");
       PVariable var_type = body.getOrCreateVariableByName("type");
       PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
+      PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
       PVariable var_otherEnd = body.getOrCreateVariableByName("otherEnd");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_cls, "cls"), 
@@ -93,7 +95,7 @@ public final class ClassAssociationUpperBoundQuerySpecification extends BaseGene
       
       new TypeUnary(body, var_type, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association"), "http://www.eclipse.org/uml2/5.0.0/UML/Association");
       
-      new PositivePatternCall(body, new FlatTuple(var_cls, var_end, var_type), ClassAssociationTypeQuerySpecification.instance());
+      new PositivePatternCall(body, new FlatTuple(var_cls, var_end, var_type, var___0_, var___1_), ClassAssociationTypeQuerySpecification.instance());
       new PositivePatternCall(body, new FlatTuple(var_end, var_otherEnd), AssociationOtherEndQuerySpecification.instance());
       new TypeUnary(body, var_otherEnd, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property"), "http://www.eclipse.org/uml2/5.0.0/UML/Property");
       new TypeBinary(body, CONTEXT, var_otherEnd, var_upperBound, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.upperValue");

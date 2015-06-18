@@ -2,11 +2,13 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import java.util.Collection;
@@ -19,7 +21,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
@@ -40,7 +41,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClOperation {
+public class ClOperationImpl extends TranslationObjectImpl implements ClOperation {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -89,7 +90,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * @generated
 	 * @ordered
 	 */
-	protected FullType returnType;
+	protected Type returnType;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
@@ -99,7 +100,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ClParameter> parameters;
+	protected EList<Parameter> parameters;
 
 	/**
 	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
@@ -187,10 +188,10 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType getReturnType() {
+	public Type getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject)returnType;
-			returnType = (FullType)eResolveProxy(oldReturnType);
+			returnType = (Type)eResolveProxy(oldReturnType);
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_OPERATION__RETURN_TYPE, oldReturnType, returnType));
@@ -204,7 +205,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FullType basicGetReturnType() {
+	public Type basicGetReturnType() {
 		return returnType;
 	}
 
@@ -213,8 +214,8 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReturnType(FullType newReturnType) {
-		FullType oldReturnType = returnType;
+	public void setReturnType(Type newReturnType) {
+		Type oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION__RETURN_TYPE, oldReturnType, returnType));
@@ -225,9 +226,9 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ClParameter> getParameters() {
+	public EList<Parameter> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectResolvingEList<ClParameter>(ClParameter.class, this, ClassdefPackage.CL_OPERATION__PARAMETERS);
+			parameters = new EObjectResolvingEList<Parameter>(Parameter.class, this, ClassdefPackage.CL_OPERATION__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -292,11 +293,11 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setMethod((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__RETURN_TYPE:
-				setReturnType((FullType)newValue);
+				setReturnType((Type)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection<? extends ClParameter>)newValue);
+				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
 			case ClassdefPackage.CL_OPERATION__IS_STATIC:
 				setIsStatic((Boolean)newValue);
@@ -320,7 +321,7 @@ public class ClOperationImpl extends MinimalEObjectImpl.Container implements ClO
 				setMethod(METHOD_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_OPERATION__RETURN_TYPE:
-				setReturnType((FullType)null);
+				setReturnType((Type)null);
 				return;
 			case ClassdefPackage.CL_OPERATION__PARAMETERS:
 				getParameters().clear();

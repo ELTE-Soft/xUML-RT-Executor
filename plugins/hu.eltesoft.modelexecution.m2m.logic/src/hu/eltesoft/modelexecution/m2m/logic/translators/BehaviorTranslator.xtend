@@ -46,36 +46,37 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		rootNode.on(PACKAGE.bhBehavior_IsStatic, StaticBehaviorMatcher.on(engine))[isStatic]
 
 		val parameterNode = rootNode.onEObject(PACKAGE.bhBehavior_Parameters, BehaviorParameterMatcher.on(engine)) [
-			val bhParameter = FACTORY.createBhParameter
+			val bhParameter = BASE_FACTORY.createParameter
 			bhParameter.reference = new NamedReference(parameter)
 			bhParameter.direction = direction.convert
 			return bhParameter;
 		]
-		val parameterType = parameterNode.onEObject(PACKAGE.bhParameter_Type, BehaviorParameterTypeMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createFullType
+		val parameterType = parameterNode.onEObject(BASE_PACKAGE.typed_Type, BehaviorParameterTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		parameterType.on(BASE_PACKAGE.fullType_LowerBound, BehaviorParameterLowerBoundMatcher.on(engine)) [
+		parameterType.on(BASE_PACKAGE.multiplicity_LowerBound, BehaviorParameterLowerBoundMatcher.on(engine)) [
 			lowerBound.toInt
 		]
-		parameterType.on(BASE_PACKAGE.fullType_UpperBound, BehaviorParameterUpperBoundMatcher.on(engine)) [
+		parameterType.on(BASE_PACKAGE.multiplicity_UpperBound, BehaviorParameterUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 
 		val returnNode = rootNode.onEObject(PACKAGE.bhBehavior_ReturnType, BehaviorReturnTypeMatcher.on(engine))[
-			val elem = BASE_FACTORY.createFullType
+			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		returnNode.on(BASE_PACKAGE.fullType_LowerBound, BehaviorReturnLowerBoundMatcher.on(engine)) [
+		returnNode.on(BASE_PACKAGE.multiplicity_LowerBound, BehaviorReturnLowerBoundMatcher.on(engine)
+		) [
 			lowerBound.toInt
 		]
-		returnNode.on(BASE_PACKAGE.fullType_UpperBound, BehaviorReturnUpperBoundMatcher.on(engine)) [
+		returnNode.on(BASE_PACKAGE.multiplicity_UpperBound, BehaviorReturnUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
 

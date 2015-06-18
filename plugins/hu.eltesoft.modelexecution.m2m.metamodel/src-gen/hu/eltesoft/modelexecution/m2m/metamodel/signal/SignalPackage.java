@@ -123,13 +123,49 @@ public interface SignalPackage extends EPackage {
 	int SG_ATTRIBUTE__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SG_ATTRIBUTE__LOWER_BOUND = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SG_ATTRIBUTE__UPPER_BOUND = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Is Ordered</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SG_ATTRIBUTE__IS_ORDERED = BasePackage.NAMED_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SG_ATTRIBUTE__IS_UNIQUE = BasePackage.NAMED_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SG_ATTRIBUTE__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int SG_ATTRIBUTE__TYPE = BasePackage.NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Sg Attribute</em>' class.
@@ -138,7 +174,7 @@ public interface SignalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SG_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int SG_ATTRIBUTE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Sg Attribute</em>' class.

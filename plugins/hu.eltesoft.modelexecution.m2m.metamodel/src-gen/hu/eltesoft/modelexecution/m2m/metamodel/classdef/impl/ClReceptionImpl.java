@@ -4,18 +4,22 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -33,7 +37,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ClReceptionImpl extends MinimalEObjectImpl.Container implements ClReception {
+public class ClReceptionImpl extends TranslationObjectImpl implements ClReception {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -60,7 +60,6 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_OPERATION: return createClOperation();
 			case ClassdefPackage.CL_RECEPTION: return createClReception();
 			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
-			case ClassdefPackage.CL_PARAMETER: return createClParameter();
 			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
 			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
 			default:
@@ -106,16 +105,6 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClAttribute createClAttribute() {
 		ClAttributeImpl clAttribute = new ClAttributeImpl();
 		return clAttribute;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ClParameter createClParameter() {
-		ClParameterImpl clParameter = new ClParameterImpl();
-		return clParameter;
 	}
 
 	/**

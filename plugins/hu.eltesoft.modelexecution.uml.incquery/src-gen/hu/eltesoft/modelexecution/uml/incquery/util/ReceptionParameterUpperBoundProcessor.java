@@ -4,7 +4,6 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatch
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Reception;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.ValueSpecification;
 
 /**
@@ -20,15 +19,14 @@ public abstract class ReceptionParameterUpperBoundProcessor implements IMatchPro
    * @param pCls the value of pattern parameter cls in the currently processed match
    * @param pReception the value of pattern parameter reception in the currently processed match
    * @param pParameter the value of pattern parameter parameter in the currently processed match
-   * @param pType the value of pattern parameter type in the currently processed match
    * @param pUpperBound the value of pattern parameter upperBound in the currently processed match
    * 
    */
-  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final Type pType, final ValueSpecification pUpperBound);
+  public abstract void process(final org.eclipse.uml2.uml.Class pCls, final Reception pReception, final Parameter pParameter, final ValueSpecification pUpperBound);
   
   @Override
   public void process(final ReceptionParameterUpperBoundMatch match) {
-    process(match.getCls(), match.getReception(), match.getParameter(), match.getType(), match.getUpperBound());
+    process(match.getCls(), match.getReception(), match.getParameter(), match.getUpperBound());
     
   }
 }

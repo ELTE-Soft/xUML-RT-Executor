@@ -2,11 +2,13 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.FullType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
+
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -29,7 +31,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface BhBehavior extends ModelRoot, Named {
+public interface BhBehavior extends ModelRoot {
 	/**
 	 * Returns the value of the '<em><b>Container Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -84,7 +86,7 @@ public interface BhBehavior extends ModelRoot, Named {
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.
-	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhParameter}.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
@@ -96,7 +98,7 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * @model
 	 * @generated
 	 */
-	EList<BhParameter> getParameters();
+	EList<Parameter> getParameters();
 
 	/**
 	 * Returns the value of the '<em><b>Is Static</b></em>' attribute.
@@ -109,7 +111,7 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * @return the value of the '<em>Is Static</em>' attribute.
 	 * @see #setIsStatic(boolean)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_IsStatic()
-	 * @model unique="false"
+	 * @model unique="false" required="true"
 	 * @generated
 	 */
 	boolean isIsStatic();
@@ -133,12 +135,12 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Return Type</em>' reference.
-	 * @see #setReturnType(FullType)
+	 * @see #setReturnType(Type)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ReturnType()
 	 * @model
 	 * @generated
 	 */
-	FullType getReturnType();
+	Type getReturnType();
 
 	/**
 	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType <em>Return Type</em>}' reference.
@@ -148,6 +150,6 @@ public interface BhBehavior extends ModelRoot, Named {
 	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setReturnType(FullType value);
+	void setReturnType(Type value);
 
 } // BhBehavior

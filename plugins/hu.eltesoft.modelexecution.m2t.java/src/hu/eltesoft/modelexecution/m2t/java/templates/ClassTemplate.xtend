@@ -11,6 +11,7 @@ import hu.eltesoft.modelexecution.runtime.base.Message
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -93,17 +94,14 @@ class ClassTemplate extends Template {
 		/** Data class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
 		public class «classDefinition.identifier» extends «Class.canonicalName» {
-			
+		
 			// attributes
-					
 			«generateAttributes()»
-			
+		
 			// associations
-					
 			«generateAssociations()»
-									
+		
 			// operations
-					
 			«generateOperations()»
 		}
 		
@@ -111,46 +109,42 @@ class ClassTemplate extends Template {
 
 	def generateAttributes() '''
 		«FOR attribute : classDefinition.attributes»
-			
-				/** Attribute for UML attribute «attribute.javadoc» */
-				«IF attribute.isStatic»static«ENDIF» «typeConverter.javaType(attribute.type)» «attribute.identifier» 
-					= «typeConverter.createEmpty(attribute.type)»;
+			/** Attribute for UML attribute «attribute.javadoc» */
+			«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» 
+				= «createEmpty(attribute.type)»;
 		«ENDFOR»
 	'''
 
 	def generateAssociations() '''
 		«FOR association : classDefinition.associations»
-			
-				/** Attribute for association «association.javadoc» */
-				«typeConverter.javaType(association.type)» «association.identifier» 
-					= «typeConverter.createEmpty(association.type)»;
+			/** Attribute for association «association.javadoc» */
+			«javaType(association.type)» «association.identifier» 
+				= «createEmpty(association.type)»;
 		«ENDFOR»
 	'''
 
 	def generateOperations() '''
 		«FOR operation : classDefinition.operations»
-			
-				/** Method for operation «operation.javadoc» 
-				 «javadocParams(operation.parameters)»
-			     */
-				public «IF operation.isStatic»static«ENDIF»
-				       «IF operation.returnType != null»«typeConverter.javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.
-			identifier»(
-						«FOR parameter : operation.parameters SEPARATOR ','»
-							«typeConverter.javaType(parameter.type)» «parameter.identifier»
-						«ENDFOR»
+			/** Method for operation «operation.javadoc» 
+			 «javadocParams(operation.parameters)»
+			 */
+			public «IF operation.isStatic»static«ENDIF»
+				«IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+					«FOR parameter : operation.parameters SEPARATOR ','»
+						«javaType(parameter.type)» «parameter.identifier»
+					«ENDFOR»
 				) {
-					«IF null != operation.method»
+					«IF operation.hasBody»
 						
 						«IF operation.returnType != null»return«ENDIF»
 							«operation.method.identifier».execute(
-						«IF !operation.isStatic»this«IF !operation.parameters.empty»,«ENDIF»«ENDIF»
-						«FOR parameter : operation.parameters SEPARATOR ','»
-							«parameter.identifier»
-						«ENDFOR»
-						);
-					«ENDIF»
-				}
+					«IF !operation.isStatic»this«IF operation.hasParameters»,«ENDIF»«ENDIF»
+					«FOR parameter : operation.parameters SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+					);
+			«ENDIF»
+			}
 		«ENDFOR»
 	'''
 
@@ -162,7 +156,7 @@ class ClassTemplate extends Template {
 				 */
 				public void «reception.identifier»(
 					«FOR parameter : reception.parameters SEPARATOR ','»
-						«typeConverter.javaType(parameter.type)» «parameter.identifier»
+						«javaType(parameter.type, parameter)» «parameter.identifier»
 					«ENDFOR»
 				) {
 					«reception.signal.identifier» signal = new «reception.signal.identifier»(
@@ -174,5 +168,17 @@ class ClassTemplate extends Template {
 				}
 		«ENDFOR»
 	'''
+
+	def returns(ClOperation op) {
+		op.returnType != null
+	}
+	
+	def hasBody(ClOperation op) {
+		op.method != null
+	}
+	
+	def hasParameters(ClOperation op) {
+		!op.parameters.empty
+	}
 
 }

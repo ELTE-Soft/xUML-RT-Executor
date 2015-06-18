@@ -124,30 +124,25 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 }
 
 pattern
-ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter) {
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
 	find Reception(cls, reception, _);
 	Reception.ownedParameter(reception, parameter);
 	Parameter.direction(parameter, direction);
 	direction == ParameterDirectionKind::in;
-}
-
-pattern
-ReceptionParameterType(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
-	find ReceptionParameter(cls, reception, parameter);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
 	Parameter.isUnique(parameter, unique);
 }
 
 pattern
-ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, type, lowerBound : ValueSpecification) {
-	find ReceptionParameterType(cls, reception, parameter, type, _, _);
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, type, upperBound : ValueSpecification) {
-	find ReceptionParameterType(cls, reception, parameter, type, _, _);
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
 
@@ -157,20 +152,22 @@ pattern ClassAssociation(cls : Class, end : Property) {
 }
 
 pattern
-ClassAssociationType(cls : Class, end : Property, type : Association) {
+ClassAssociationType(cls : Class, end : Property, type : Association, ordered, unique) {
 	find AssociationEndType(type, end, cls);
+	Property.isOrdered(end, ordered);
+	Property.isUnique(end, unique);
 }
 
 pattern
 ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound : ValueSpecification) {
-	find ClassAssociationType(cls, end, type);
+	find ClassAssociationType(cls, end, type, _, _);
 	find AssociationOtherEnd(end, otherEnd);
 	Property.lowerValue(otherEnd, lowerBound);
 }
 
 pattern
 ClassAssociationUpperBound(cls : Class, end : Property, type : Association, upperBound : ValueSpecification) {
-	find ClassAssociationType(cls, end, type);
+	find ClassAssociationType(cls, end, type, _, _);
 	find AssociationOtherEnd(end, otherEnd);
 	Property.upperValue(otherEnd, upperBound);
 }

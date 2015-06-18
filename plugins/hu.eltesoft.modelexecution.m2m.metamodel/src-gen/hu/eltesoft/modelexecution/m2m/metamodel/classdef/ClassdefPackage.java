@@ -324,62 +324,6 @@ public interface ClassdefPackage extends EPackage {
 	int CL_ATTRIBUTE_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl <em>Cl Parameter</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClParameter()
-	 * @generated
-	 */
-	int CL_PARAMETER = 4;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_PARAMETER__REFERENCE = BasePackage.NAMED__REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_PARAMETER__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Direction</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_PARAMETER__DIRECTION = BasePackage.NAMED_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Cl Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_PARAMETER_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of operations of the '<em>Cl Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_PARAMETER_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
-
-
-	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -387,7 +331,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
 	 * @generated
 	 */
-	int CL_ASSOCIATION = 5;
+	int CL_ASSOCIATION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -425,7 +369,6 @@ public interface ClassdefPackage extends EPackage {
 	 */
 	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl <em>Cl Reception Parameter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -434,7 +377,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
 	 * @generated
 	 */
-	int CL_RECEPTION_PARAMETER = 6;
+	int CL_RECEPTION_PARAMETER = 5;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -446,13 +389,49 @@ public interface ClassdefPackage extends EPackage {
 	int CL_RECEPTION_PARAMETER__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__LOWER_BOUND = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__UPPER_BOUND = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Is Ordered</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__IS_ORDERED = BasePackage.NAMED_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_RECEPTION_PARAMETER__IS_UNIQUE = BasePackage.NAMED_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_RECEPTION_PARAMETER__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int CL_RECEPTION_PARAMETER__TYPE = BasePackage.NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Cl Reception Parameter</em>' class.
@@ -461,7 +440,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_RECEPTION_PARAMETER_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int CL_RECEPTION_PARAMETER_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Cl Reception Parameter</em>' class.
@@ -635,17 +614,6 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClAttribute();
 
 	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#getType()
-	 * @see #getClAttribute()
-	 * @generated
-	 */
-	EReference getClAttribute_Type();
-
-	/**
 	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#isIsStatic <em>Is Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -657,38 +625,6 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClAttribute_IsStatic();
 
 	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter <em>Cl Parameter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Cl Parameter</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter
-	 * @generated
-	 */
-	EClass getClParameter();
-
-	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter#getType()
-	 * @see #getClParameter()
-	 * @generated
-	 */
-	EReference getClParameter_Type();
-
-	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter#getDirection <em>Direction</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Direction</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClParameter#getDirection()
-	 * @see #getClParameter()
-	 * @generated
-	 */
-	EAttribute getClParameter_Direction();
-
-	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation <em>Cl Association</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -697,17 +633,6 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getClAssociation();
-
-	/**
-	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation#getType()
-	 * @see #getClAssociation()
-	 * @generated
-	 */
-	EReference getClAssociation_Type();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter <em>Cl Reception Parameter</em>}'.
@@ -882,46 +807,12 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_ATTRIBUTE = eINSTANCE.getClAttribute();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CL_ATTRIBUTE__TYPE = eINSTANCE.getClAttribute_Type();
-
-		/**
 		 * The meta object literal for the '<em><b>Is Static</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute CL_ATTRIBUTE__IS_STATIC = eINSTANCE.getClAttribute_IsStatic();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl <em>Cl Parameter</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClParameterImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClParameter()
-		 * @generated
-		 */
-		EClass CL_PARAMETER = eINSTANCE.getClParameter();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CL_PARAMETER__TYPE = eINSTANCE.getClParameter_Type();
-
-		/**
-		 * The meta object literal for the '<em><b>Direction</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CL_PARAMETER__DIRECTION = eINSTANCE.getClParameter_Direction();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
@@ -932,14 +823,6 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CL_ASSOCIATION = eINSTANCE.getClAssociation();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CL_ASSOCIATION__TYPE = eINSTANCE.getClAssociation_Type();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl <em>Cl Reception Parameter</em>}' class.

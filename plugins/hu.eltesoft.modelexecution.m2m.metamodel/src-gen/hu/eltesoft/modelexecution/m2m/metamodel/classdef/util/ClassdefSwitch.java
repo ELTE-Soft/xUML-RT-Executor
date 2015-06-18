@@ -3,8 +3,10 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.util;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.*;
 
@@ -99,15 +101,8 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				ClAttribute clAttribute = (ClAttribute)theEObject;
 				T result = caseClAttribute(clAttribute);
 				if (result == null) result = caseNamed(clAttribute);
+				if (result == null) result = caseTyped(clAttribute);
 				if (result == null) result = caseTranslationObject(clAttribute);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_PARAMETER: {
-				ClParameter clParameter = (ClParameter)theEObject;
-				T result = caseClParameter(clParameter);
-				if (result == null) result = caseNamed(clParameter);
-				if (result == null) result = caseTranslationObject(clParameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -115,6 +110,7 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				ClAssociation clAssociation = (ClAssociation)theEObject;
 				T result = caseClAssociation(clAssociation);
 				if (result == null) result = caseNamed(clAssociation);
+				if (result == null) result = caseTyped(clAssociation);
 				if (result == null) result = caseTranslationObject(clAssociation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -123,6 +119,7 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				ClReceptionParameter clReceptionParameter = (ClReceptionParameter)theEObject;
 				T result = caseClReceptionParameter(clReceptionParameter);
 				if (result == null) result = caseNamed(clReceptionParameter);
+				if (result == null) result = caseMultiplicity(clReceptionParameter);
 				if (result == null) result = caseTranslationObject(clReceptionParameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -188,21 +185,6 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClAttribute(ClAttribute object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Cl Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Cl Parameter</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseClParameter(ClParameter object) {
 		return null;
 	}
 
@@ -278,6 +260,36 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModelRoot(ModelRoot object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Typed</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Typed</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTyped(Typed object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiplicity(Multiplicity object) {
 		return null;
 	}
 

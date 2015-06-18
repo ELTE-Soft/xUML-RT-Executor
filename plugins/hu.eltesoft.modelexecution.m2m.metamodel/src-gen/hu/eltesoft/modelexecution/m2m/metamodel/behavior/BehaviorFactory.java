@@ -31,15 +31,6 @@ public interface BehaviorFactory extends EFactory {
 	BhBehavior createBhBehavior();
 
 	/**
-	 * Returns a new object of class '<em>Bh Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Bh Parameter</em>'.
-	 * @generated
-	 */
-	BhParameter createBhParameter();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

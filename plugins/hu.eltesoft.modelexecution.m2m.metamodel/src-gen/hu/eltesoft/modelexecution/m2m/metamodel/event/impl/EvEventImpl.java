@@ -4,6 +4,8 @@ package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
 
@@ -12,7 +14,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +28,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class EvEventImpl extends MinimalEObjectImpl.Container implements EvEvent {
+public class EvEventImpl extends TranslationObjectImpl implements EvEvent {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

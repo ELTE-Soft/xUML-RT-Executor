@@ -50,12 +50,12 @@ public final class SignalAttributeQuerySpecification extends BaseGeneratedQueryS
   
   @Override
   public List<String> getParameterNames() {
-    return Arrays.asList("signal","attribute");
+    return Arrays.asList("signal","attribute","type","ordered","unique");
   }
   
   @Override
   public List<PParameter> getParameters() {
-    return Arrays.asList(new PParameter("signal", "org.eclipse.uml2.uml.Signal"),new PParameter("attribute", "org.eclipse.uml2.uml.Property"));
+    return Arrays.asList(new PParameter("signal", "org.eclipse.uml2.uml.Signal"),new PParameter("attribute", "org.eclipse.uml2.uml.Property"),new PParameter("type", "org.eclipse.uml2.uml.Type"),new PParameter("ordered", "java.lang.Boolean"),new PParameter("unique", "java.lang.Boolean"));
   }
   
   @Override
@@ -65,7 +65,7 @@ public final class SignalAttributeQuerySpecification extends BaseGeneratedQueryS
   
   @Override
   public SignalAttributeMatch newMatch(final Object... parameters) {
-    return SignalAttributeMatch.newMatch((org.eclipse.uml2.uml.Signal) parameters[0], (org.eclipse.uml2.uml.Property) parameters[1]);
+    return SignalAttributeMatch.newMatch((org.eclipse.uml2.uml.Signal) parameters[0], (org.eclipse.uml2.uml.Property) parameters[1], (org.eclipse.uml2.uml.Type) parameters[2], (java.lang.Boolean) parameters[3], (java.lang.Boolean) parameters[4]);
   }
   
   @Override
@@ -75,14 +75,26 @@ public final class SignalAttributeQuerySpecification extends BaseGeneratedQueryS
       PBody body = new PBody(this);
       PVariable var_signal = body.getOrCreateVariableByName("signal");
       PVariable var_attribute = body.getOrCreateVariableByName("attribute");
+      PVariable var_type = body.getOrCreateVariableByName("type");
+      PVariable var_ordered = body.getOrCreateVariableByName("ordered");
+      PVariable var_unique = body.getOrCreateVariableByName("unique");
       body.setExportedParameters(Arrays.<ExportedParameter>asList(
         new ExportedParameter(body, var_signal, "signal"), 
-        new ExportedParameter(body, var_attribute, "attribute")
+        new ExportedParameter(body, var_attribute, "attribute"), 
+        new ExportedParameter(body, var_type, "type"), 
+        new ExportedParameter(body, var_ordered, "ordered"), 
+        new ExportedParameter(body, var_unique, "unique")
       ));
+      
+      
+      
       
       
       new PositivePatternCall(body, new FlatTuple(var_signal), SignalQuerySpecification.instance());
       new TypeBinary(body, CONTEXT, var_signal, var_attribute, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal", "ownedAttribute"), "http://www.eclipse.org/uml2/5.0.0/UML/Signal.ownedAttribute");
+      new TypeBinary(body, CONTEXT, var_attribute, var_type, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type"), "http://www.eclipse.org/uml2/5.0.0/UML/TypedElement.type");
+      new TypeBinary(body, CONTEXT, var_attribute, var_ordered, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isOrdered"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isOrdered");
+      new TypeBinary(body, CONTEXT, var_attribute, var_unique, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique"), "http://www.eclipse.org/uml2/5.0.0/UML/MultiplicityElement.isUnique");
       bodies.add(body);
     }
     return bodies;
