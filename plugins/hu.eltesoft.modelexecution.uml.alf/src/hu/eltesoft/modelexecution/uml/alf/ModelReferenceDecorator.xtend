@@ -9,11 +9,11 @@ import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
 import org.eclipse.papyrus.uml.alf.NameBinding
 import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
+import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Reception
-import org.eclipse.papyrus.uml.alf.SyntaxElement
 
 /**
  * Builds a mapping between Alf AST nodes and model references.

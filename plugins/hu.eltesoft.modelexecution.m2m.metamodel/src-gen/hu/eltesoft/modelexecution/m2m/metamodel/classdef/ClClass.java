@@ -3,7 +3,6 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import org.eclipse.emf.common.util.EList;
@@ -19,6 +18,8 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getReceptions <em>Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations <em>Associations</em>}</li>
  * </ul>
  * </p>
  *
@@ -26,7 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ClClass extends ModelRoot, Named {
+public interface ClClass extends ModelRoot {
 	/**
 	 * Returns the value of the '<em><b>Region</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -64,7 +65,7 @@ public interface ClClass extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Operations</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Operations()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<ClOperation> getOperations();
@@ -80,9 +81,41 @@ public interface ClClass extends ModelRoot, Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Receptions</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Receptions()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<ClReception> getReceptions();
+
+	/**
+	 * Returns the value of the '<em><b>Attributes</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attributes</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attributes</em>' reference list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Attributes()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	EList<ClAttribute> getAttributes();
+
+	/**
+	 * Returns the value of the '<em><b>Associations</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Associations</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Associations</em>' reference list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Associations()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	EList<ClAssociation> getAssociations();
 
 } // ClClass

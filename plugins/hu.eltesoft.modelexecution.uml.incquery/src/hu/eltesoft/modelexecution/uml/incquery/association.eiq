@@ -1,0 +1,26 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern Association(association : Association) {
+	Association(association);
+}
+
+pattern AssociationEnd(association : Association, end : Property) {
+	find Association(association);
+	find Cls(cls);
+	Association.ownedEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern
+AssociationEndType(association : Association, end : Property, cls : Class) {
+	find AssociationEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
+	Association.ownedEnd(association, end);
+	Association.ownedEnd(association, otherEnd);
+	end != otherEnd;
+}

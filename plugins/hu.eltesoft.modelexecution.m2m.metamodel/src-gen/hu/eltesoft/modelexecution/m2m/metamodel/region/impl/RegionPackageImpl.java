@@ -2,6 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
@@ -118,6 +122,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		isInited = true;
 
 		// Obtain or create and register interdependencies
+		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BasePackageImpl theBasePackage = (BasePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) instanceof BasePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) : BasePackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
@@ -126,6 +131,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Create package meta-data objects
 		theRegionPackage.createPackageContents();
+		theAssociationPackage.createPackageContents();
 		theBasePackage.createPackageContents();
 		theBehaviorPackage.createPackageContents();
 		theClassdefPackage.createPackageContents();
@@ -134,6 +140,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Initialize created meta-data
 		theRegionPackage.initializePackageContents();
+		theAssociationPackage.initializePackageContents();
 		theBasePackage.initializePackageContents();
 		theBehaviorPackage.initializePackageContents();
 		theClassdefPackage.initializePackageContents();
@@ -364,7 +371,6 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 
 		// Add supertypes to classes
 		rgRegionEClass.getESuperTypes().add(theBasePackage.getModelRoot());
-		rgRegionEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgInitialPseudostateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgStateEClass.getESuperTypes().add(theBasePackage.getNamed());
 		rgTransitionEClass.getESuperTypes().add(theBasePackage.getReferenced());
@@ -373,7 +379,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEClass(rgRegionEClass, RgRegion.class, "RgRegion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRgRegion_ContainerClass(), theBasePackage.getNamedReference(), "containerClass", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgRegion_InitialPseudostate(), this.getRgInitialPseudostate(), null, "initialPseudostate", null, 1, 1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRgRegion_States(), this.getRgState(), null, "states", null, 1, -1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRgRegion_States(), this.getRgState(), null, "states", null, 1, -1, RgRegion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(rgInitialPseudostateEClass, RgInitialPseudostate.class, "RgInitialPseudostate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRgInitialPseudostate_InitialTransition(), this.getRgTransition(), null, "initialTransition", null, 1, 1, RgInitialPseudostate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -381,10 +387,10 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEClass(rgStateEClass, RgState.class, "RgState", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRgState_Entry(), theBasePackage.getNamedReference(), "entry", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgState_Exit(), theBasePackage.getNamedReference(), "exit", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(rgTransitionEClass, RgTransition.class, "RgTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgTransition_Effect(), theBasePackage.getNamedReference(), "effect", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgTransition_Target(), this.getRgState(), null, "target", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgTransition_Event(), theBasePackage.getNamedReference(), "event", null, 0, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

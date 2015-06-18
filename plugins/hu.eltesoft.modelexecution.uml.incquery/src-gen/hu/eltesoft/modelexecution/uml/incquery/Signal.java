@@ -1,6 +1,12 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
+import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.SignalAttributeUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.SignalQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
@@ -15,6 +21,9 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * 
  * <p> From package hu.eltesoft.modelexecution.uml.incquery, the group contains the definition of the following patterns: <ul>
  * <li>Signal</li>
+ * <li>SignalAttribute</li>
+ * <li>SignalAttributeLowerBound</li>
+ * <li>SignalAttributeUpperBound</li>
  * </ul>
  * 
  * @see IPatternGroup
@@ -41,6 +50,9 @@ public final class Signal extends BaseGeneratedPatternGroup {
   
   private Signal() throws IncQueryException {
     querySpecifications.add(SignalQuerySpecification.instance());
+    querySpecifications.add(SignalAttributeQuerySpecification.instance());
+    querySpecifications.add(SignalAttributeLowerBoundQuerySpecification.instance());
+    querySpecifications.add(SignalAttributeUpperBoundQuerySpecification.instance());
     
   }
   
@@ -50,5 +62,29 @@ public final class Signal extends BaseGeneratedPatternGroup {
   
   public SignalMatcher getSignal(final IncQueryEngine engine) throws IncQueryException {
     return SignalMatcher.on(engine);
+  }
+  
+  public SignalAttributeQuerySpecification getSignalAttribute() throws IncQueryException {
+    return SignalAttributeQuerySpecification.instance();
+  }
+  
+  public SignalAttributeMatcher getSignalAttribute(final IncQueryEngine engine) throws IncQueryException {
+    return SignalAttributeMatcher.on(engine);
+  }
+  
+  public SignalAttributeLowerBoundQuerySpecification getSignalAttributeLowerBound() throws IncQueryException {
+    return SignalAttributeLowerBoundQuerySpecification.instance();
+  }
+  
+  public SignalAttributeLowerBoundMatcher getSignalAttributeLowerBound(final IncQueryEngine engine) throws IncQueryException {
+    return SignalAttributeLowerBoundMatcher.on(engine);
+  }
+  
+  public SignalAttributeUpperBoundQuerySpecification getSignalAttributeUpperBound() throws IncQueryException {
+    return SignalAttributeUpperBoundQuerySpecification.instance();
+  }
+  
+  public SignalAttributeUpperBoundMatcher getSignalAttributeUpperBound(final IncQueryEngine engine) throws IncQueryException {
+    return SignalAttributeUpperBoundMatcher.on(engine);
   }
 }

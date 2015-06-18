@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.util;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
@@ -76,6 +77,10 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 				return createSgSignalAdapter();
 			}
 			@Override
+			public Adapter caseSgAttribute(SgAttribute object) {
+				return createSgAttributeAdapter();
+			}
+			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
 				return createTranslationObjectAdapter();
 			}
@@ -86,6 +91,10 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseModelRoot(ModelRoot object) {
 				return createModelRootAdapter();
+			}
+			@Override
+			public Adapter caseMultiplicity(Multiplicity object) {
+				return createMultiplicityAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -118,6 +127,20 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSgSignalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute <em>Sg Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute
+	 * @generated
+	 */
+	public Adapter createSgAttributeAdapter() {
 		return null;
 	}
 
@@ -160,6 +183,20 @@ public class SignalAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createModelRootAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
+	 * @generated
+	 */
+	public Adapter createMultiplicityAdapter() {
 		return null;
 	}
 

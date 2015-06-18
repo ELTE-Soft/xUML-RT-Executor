@@ -4,6 +4,8 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion;
@@ -19,7 +21,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
@@ -39,7 +40,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class RgRegionImpl extends MinimalEObjectImpl.Container implements RgRegion {
+public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -15,9 +15,9 @@ import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.RootDirCreationFailed;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
 import hu.eltesoft.modelexecution.filemanager.FileManager;
-import hu.eltesoft.modelexecution.m2m.logic.FileUpdateTask;
-import hu.eltesoft.modelexecution.m2m.logic.TextChangesListener;
-import hu.eltesoft.modelexecution.m2m.logic.Translator;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
@@ -463,9 +463,9 @@ public class ConsoleModelRunner {
 
 			boolean[] anyErrorsDuringGeneration = { false };
 
-			TextChangesListener listener = new TextChangesListener() {
+			SourceCodeChangeListener listener = new SourceCodeChangeListener() {
 				@Override
-				public void contentChanged(String qualifiedName,
+				public void sourceCodeChanged(String qualifiedName,
 						SourceMappedText smTxt, DebugSymbols symbols) {
 					String fileText = smTxt.getText().toString();
 					try {
@@ -482,12 +482,12 @@ public class ConsoleModelRunner {
 				};
 
 				@Override
-				public void contentDeleted(String qualifiedName) {
+				public void sourceCodeDeleted(String qualifiedName) {
 					fileMan.remove(qualifiedName);
 				}
 			};
-			Translator translator = Translator.create(resource);
-			List<FileUpdateTask> taskQueue = translator.fullBuild();
+			ResourceTranslator translator = ResourceTranslator.create(resource);
+			List<SourceCodeTask> taskQueue = translator.fullTranslation();
 
 			verboseTimeMsg(cmd, Message.ANALYSING_MODEL);
 			taskQueue.forEach(t -> t.perform(listener));

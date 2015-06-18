@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2m.logic.Translator;
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +27,14 @@ public class TranslatorRegistry {
 	public static final TranslatorRegistry INSTANCE = new TranslatorRegistry();
 
 	private final Map<URI, Resource> resources = new HashMap<>();
-	private final Map<URI, Translator> translators = new HashMap<>();
+	private final Map<URI, ResourceTranslator> translators = new HashMap<>();
 
 	protected TranslatorRegistry() {
 	}
 
+	/**
+	 * This is an idempotent operation.
+	 */
 	public synchronized void resourceLoaded(Resource resource) {
 		if (!isUMLResource(resource)) {
 			return;
@@ -39,7 +42,7 @@ public class TranslatorRegistry {
 
 		URI uri = resource.getURI();
 		resources.put(uri, resource);
-		Translator t = translatorFor(uri, Translator::createIncremental);
+		ResourceTranslator t = translatorFor(uri, ResourceTranslator::createIncremental);
 		t.toIncremental(resource);
 	}
 
@@ -49,7 +52,7 @@ public class TranslatorRegistry {
 		}
 
 		URI uri = resource.getURI();
-		Translator translator = translators.get(uri);
+		ResourceTranslator translator = translators.get(uri);
 		if (null != translator) {
 			translator.dispose();
 			translators.remove(uri);
@@ -77,12 +80,12 @@ public class TranslatorRegistry {
 		}
 	}
 
-	public void runTranslatorFor(IResource file, Consumer<Translator> task) {
+	public void runTranslatorFor(IResource file, Consumer<ResourceTranslator> task) {
 		if (!isUMLResource(file)) {
 			return;
 		}
 
-		Translator translator;
+		ResourceTranslator translator;
 		Resource model;
 		TransactionalEditingDomain domain = null;
 
@@ -112,18 +115,18 @@ public class TranslatorRegistry {
 		}
 	}
 
-	private Translator translatorFor(IResource file) {
+	private ResourceTranslator translatorFor(IResource file) {
 		URI uri = fileToURI(file);
 		return translatorFor(uri);
 	}
 
-	private Translator translatorFor(URI uri) {
-		return translatorFor(uri, Translator::create);
+	private ResourceTranslator translatorFor(URI uri) {
+		return translatorFor(uri, ResourceTranslator::create);
 	}
 
-	private Translator translatorFor(URI uri,
-			Function<Resource, Translator> createTranslator) {
-		Translator translator = translators.get(uri);
+	private ResourceTranslator translatorFor(URI uri,
+			Function<Resource, ResourceTranslator> createTranslator) {
+		ResourceTranslator translator = translators.get(uri);
 		if (null == translator) {
 			Resource model = loadModelOnDemand(uri);
 			translator = createTranslator.apply(model);

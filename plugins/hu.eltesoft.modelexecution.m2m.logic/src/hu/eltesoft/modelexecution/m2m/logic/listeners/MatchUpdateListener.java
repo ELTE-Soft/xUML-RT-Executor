@@ -1,13 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.listeners;
 
-import hu.eltesoft.modelexecution.m2m.logic.changeregistry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.generators.Generator;
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
-import java.util.function.Function;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
+import org.eclipse.uml2.uml.NamedElement;
 
 /**
  * Update listener applied by generators to keep the change registry in sync
@@ -15,27 +13,30 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
  * case of object removals, this class is intended to use with non-m2m-root
  * model elements.
  */
-public class MatchUpdateListener<M extends IPatternMatch, S extends EObject>
-		implements IMatchUpdateListener<M> {
+public class MatchUpdateListener<UML extends NamedElement, Match extends IPatternMatch>
+		implements IMatchUpdateListener<Match> {
 
-	protected final Generator<S> generator;
-	protected final ChangeRegistry changeRegistry;
-	protected final Function<M, S> selector;
+	protected final RootElementTranslator<UML, ?, ?> builder;
+	protected final ChangeRegistry changes;
 
-	public MatchUpdateListener(Generator<S> generator,
-			ChangeRegistry changeRegistry, Function<M, S> selector) {
-		this.generator = generator;
-		this.changeRegistry = changeRegistry;
-		this.selector = selector;
+	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> builder,
+			ChangeRegistry changes) {
+		this.builder = builder;
+		this.changes = changes;
 	}
 
 	@Override
-	public void notifyAppearance(M match) {
-		changeRegistry.newModification(selector.apply(match), generator);
+	public void notifyAppearance(Match match) {
+		changes.registerUpdate(extractRoot(match), builder);
 	}
 
 	@Override
-	public void notifyDisappearance(M match) {
-		changeRegistry.newModification(selector.apply(match), generator);
+	public void notifyDisappearance(Match match) {
+		changes.registerUpdate(extractRoot(match), builder);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected UML extractRoot(Match match) {
+		return (UML) match.get(0);
 	}
 }

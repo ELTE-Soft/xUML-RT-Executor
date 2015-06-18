@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -96,13 +97,40 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR__ALF_RESULT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BH_BEHAVIOR__PARAMETERS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BH_BEHAVIOR__IS_STATIC = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Return Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BH_BEHAVIOR__RETURN_TYPE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Bh Behavior</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Bh Behavior</em>' class.
@@ -155,6 +183,39 @@ public interface BehaviorPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getBhBehavior_AlfResult();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Parameters</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParameters()
+	 * @see #getBhBehavior()
+	 * @generated
+	 */
+	EReference getBhBehavior_Parameters();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isIsStatic <em>Is Static</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Static</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isIsStatic()
+	 * @see #getBhBehavior()
+	 * @generated
+	 */
+	EAttribute getBhBehavior_IsStatic();
+
+	/**
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType <em>Return Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Return Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType()
+	 * @see #getBhBehavior()
+	 * @generated
+	 */
+	EReference getBhBehavior_ReturnType();
 
 	/**
 	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult <em>Alf Analyzer Result</em>}'.
@@ -215,6 +276,30 @@ public interface BehaviorPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute BH_BEHAVIOR__ALF_RESULT = eINSTANCE.getBhBehavior_AlfResult();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BH_BEHAVIOR__PARAMETERS = eINSTANCE.getBhBehavior_Parameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Static</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BH_BEHAVIOR__IS_STATIC = eINSTANCE.getBhBehavior_IsStatic();
+
+		/**
+		 * The meta object literal for the '<em><b>Return Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BH_BEHAVIOR__RETURN_TYPE = eINSTANCE.getBhBehavior_ReturnType();
 
 		/**
 		 * The meta object literal for the '<em>Alf Analyzer Result</em>' data type.

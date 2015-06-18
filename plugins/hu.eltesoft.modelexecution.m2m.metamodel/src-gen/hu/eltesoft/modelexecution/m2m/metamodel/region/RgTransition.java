@@ -36,7 +36,7 @@ public interface RgTransition extends Referenced {
 	 * @return the value of the '<em>Message</em>' attribute.
 	 * @see #setMessage(NamedReference)
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgTransition_Message()
-	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
 	NamedReference getMessage();

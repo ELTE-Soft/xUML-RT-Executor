@@ -5,6 +5,4 @@ package hu.eltesoft.modelexecution.runtime.base;
  */
 public abstract class ActionCode {
 
-	public abstract void execute();
-
 }

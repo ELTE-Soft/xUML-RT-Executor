@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="base" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/base"
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.base">
-  <eClassifiers xsi:type="ecore:EClass" name="TranslationObject" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TranslationObject"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModelRoot" abstract="true" interface="true"
       eSuperTypes="#//Named"/>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true" interface="true"
@@ -16,4 +16,41 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="NamedReference" instanceClassName="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Reference" instanceClassName="hu.eltesoft.modelexecution.m2t.smap.emf.Reference"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Direction">
+    <eLiterals name="in"/>
+    <eLiterals name="out" value="1"/>
+    <eLiterals name="inout" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Typed" eSuperTypes="#//TranslationObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//TranslationObject #//Multiplicity">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="baseType" lowerBound="1"
+        eType="#//ScalarType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScalarType" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" eSuperTypes="#//ScalarType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PrimitiveTypes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PrimitiveTypes">
+    <eLiterals name="Integer" literal="Integer"/>
+    <eLiterals name="Boolean" value="1"/>
+    <eLiterals name="String" value="2" literal="String"/>
+    <eLiterals name="Real" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferencedType" eSuperTypes="#//ScalarType #//Named"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//Named #//Typed">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" lowerBound="1"
+        eType="#//Direction"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Multiplicity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isOrdered" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
 </ecore:EPackage>

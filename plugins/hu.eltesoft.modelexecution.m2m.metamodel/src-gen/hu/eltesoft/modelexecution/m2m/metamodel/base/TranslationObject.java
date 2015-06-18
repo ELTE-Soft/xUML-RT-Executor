@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getTranslationObject()
- * @model interface="true" abstract="true"
+ * @model
  * @generated
  */
 public interface TranslationObject extends EObject {

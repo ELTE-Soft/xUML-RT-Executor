@@ -57,6 +57,7 @@ public class SignalFactoryImpl extends EFactoryImpl implements SignalFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case SignalPackage.SG_SIGNAL: return createSgSignal();
+			case SignalPackage.SG_ATTRIBUTE: return createSgAttribute();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -70,6 +71,16 @@ public class SignalFactoryImpl extends EFactoryImpl implements SignalFactory {
 	public SgSignal createSgSignal() {
 		SgSignalImpl sgSignal = new SgSignalImpl();
 		return sgSignal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SgAttribute createSgAttribute() {
+		SgAttributeImpl sgAttribute = new SgAttributeImpl();
+		return sgAttribute;
 	}
 
 	/**

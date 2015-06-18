@@ -31,7 +31,6 @@ import org.eclipse.uml2.uml.Operation;
  * <code><pre>
  * pattern Method(cls : Class, operation : Operation, method : Behavior) {
  * 	Class.ownedOperation(cls, operation);
- * 
  * 	Operation.method(operation, method);
  * }
  * </pre></code>

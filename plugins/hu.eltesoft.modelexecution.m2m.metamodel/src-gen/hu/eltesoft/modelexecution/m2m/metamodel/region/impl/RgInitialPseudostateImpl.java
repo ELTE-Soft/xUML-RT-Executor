@@ -4,6 +4,8 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition;
@@ -14,7 +16,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class RgInitialPseudostateImpl extends MinimalEObjectImpl.Container implements RgInitialPseudostate {
+public class RgInitialPseudostateImpl extends TranslationObjectImpl implements RgInitialPseudostate {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->

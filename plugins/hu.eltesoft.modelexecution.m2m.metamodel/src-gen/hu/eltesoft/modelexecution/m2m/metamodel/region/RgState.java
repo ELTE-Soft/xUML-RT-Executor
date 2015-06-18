@@ -89,7 +89,7 @@ public interface RgState extends Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Transitions</em>' reference list.
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgState_Transitions()
-	 * @model
+	 * @model ordered="false"
 	 * @generated
 	 */
 	EList<RgTransition> getTransitions();

@@ -94,6 +94,58 @@ public class BaseSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case BasePackage.TYPED: {
+				Typed typed = (Typed)theEObject;
+				T result = caseTyped(typed);
+				if (result == null) result = caseTranslationObject(typed);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.TYPE: {
+				Type type = (Type)theEObject;
+				T result = caseType(type);
+				if (result == null) result = caseTranslationObject(type);
+				if (result == null) result = caseMultiplicity(type);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.SCALAR_TYPE: {
+				ScalarType scalarType = (ScalarType)theEObject;
+				T result = caseScalarType(scalarType);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.PRIMITIVE_TYPE: {
+				PrimitiveType primitiveType = (PrimitiveType)theEObject;
+				T result = casePrimitiveType(primitiveType);
+				if (result == null) result = caseScalarType(primitiveType);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.REFERENCED_TYPE: {
+				ReferencedType referencedType = (ReferencedType)theEObject;
+				T result = caseReferencedType(referencedType);
+				if (result == null) result = caseScalarType(referencedType);
+				if (result == null) result = caseNamed(referencedType);
+				if (result == null) result = caseTranslationObject(referencedType);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.PARAMETER: {
+				Parameter parameter = (Parameter)theEObject;
+				T result = caseParameter(parameter);
+				if (result == null) result = caseNamed(parameter);
+				if (result == null) result = caseTyped(parameter);
+				if (result == null) result = caseTranslationObject(parameter);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BasePackage.MULTIPLICITY: {
+				Multiplicity multiplicity = (Multiplicity)theEObject;
+				T result = caseMultiplicity(multiplicity);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -155,6 +207,111 @@ public class BaseSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseReferenced(Referenced object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Typed</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Typed</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTyped(Typed object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseType(Type object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Scalar Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Scalar Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseScalarType(ScalarType object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Primitive Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Primitive Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePrimitiveType(PrimitiveType object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Referenced Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Referenced Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReferencedType(ReferencedType object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseParameter(Parameter object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiplicity(Multiplicity object) {
 		return null;
 	}
 

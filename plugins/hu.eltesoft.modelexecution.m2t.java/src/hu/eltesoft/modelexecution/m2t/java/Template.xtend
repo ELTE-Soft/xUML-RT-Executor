@@ -1,13 +1,16 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
-import java.util.Collections
 import java.util.Date
+import javax.annotation.Generated
 import org.apache.commons.lang.StringEscapeUtils
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.common.util.EList
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -18,7 +21,9 @@ import org.eclipse.emf.ecore.EObject
  */
 abstract class Template extends EmfTraceExtensions {
 
-	private val DebugSymbols debugSymbols;
+	private val DebugSymbols debugSymbols
+	private val String rootName
+	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 
 	/**
 	 * Call only after the generate method, as its location registry will only
@@ -28,14 +33,14 @@ abstract class Template extends EmfTraceExtensions {
 		return debugSymbols
 	}
 
-	new() {
-		val nameMapping = Collections.EMPTY_MAP
-		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+	def String getRootName() {
+		return rootName
 	}
 
-	new(EObject genModel) {
+	new(Named genModel) {
 		val nameMapping = new NameMapper().mapNames(genModel)
 		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+		rootName = genModel.identifier
 	}
 
 	/**
@@ -51,17 +56,7 @@ abstract class Template extends EmfTraceExtensions {
 	protected def CharSequence original_generate() ''''''
 
 	protected def generatedHeaderForClass(Named root) '''
-		import javax.annotation.Generated;
-		
-		@Generated(date = "«new Date().toString»", value = { «root.nameLiteral» })
-	'''
-
-	protected def generatedHeader(Named named) '''
-		@Generated(value = { «named.nameLiteral» })
-	'''
-
-	protected def generatedHeader(NamedReference reference) '''
-		@Generated(value = { «reference.nameLiteral» })
+		@«Generated.canonicalName»(date = "«new Date().toString»", value = {}, comments = «root.nameLiteral»)
 	'''
 
 	/**
@@ -82,6 +77,31 @@ abstract class Template extends EmfTraceExtensions {
 
 	def nameLiteral(NamedReference reference) {
 		literal(reference.originalName)
+	}
+
+	def javadocParams(EList<? extends Named> params) '''
+		«FOR param : params»
+			* @param «param.identifier» «param.javadoc»
+		«ENDFOR»
+	'''
+
+	/**
+	 * Escapes and emphasizes original names of elements
+	 */
+	def javadoc(Named named) {
+		"<b>" + javadocEscape(named.reference.originalName) + "</b>"
+	}
+
+	/**
+	 * Escapes a string to be used in javadoc
+	 */
+	def javadocEscape(String toEscape) {
+		val htmlEscaped = StringEscapeUtils.escapeHtml(toEscape)
+		if (htmlEscaped != null) {
+			htmlEscaped.replace("*/", "{@literal */}").replace("@", "{@literal @}")
+		} else {
+			""
+		}
 	}
 
 	/**
@@ -120,4 +140,21 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
+	
+	def javaType(Type type) {
+		typeConverter.javaType(type)
+	}
+	
+	def javaType(ScalarType type) {
+		typeConverter.javaType(type)
+	}
+	
+	def javaType(ScalarType type, Multiplicity mult) {
+		typeConverter.javaType(type, mult)
+	}
+
+	def createEmpty(Multiplicity type) {
+		typeConverter.createEmpty(type)
+	}
+
 }

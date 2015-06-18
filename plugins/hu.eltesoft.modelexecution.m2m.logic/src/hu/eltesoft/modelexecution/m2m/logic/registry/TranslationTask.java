@@ -1,0 +1,44 @@
+package hu.eltesoft.modelexecution.m2m.logic.registry;
+
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
+import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
+import hu.eltesoft.modelexecution.m2t.java.Template;
+
+import org.eclipse.uml2.uml.NamedElement;
+
+/**
+ * A task to update the translational model. On {@linkplain #perform()}
+ * generates the translational model from the contained source using the
+ * contained builder.
+ * 
+ * Ensures type safety by wrapping the source element with a builder of the
+ * corresponding type.
+ * 
+ * This task is intended to be executed locking the editing domain, to ensure
+ * that the model is not changed while the operation runs.
+ */
+class TranslationTask<UML extends NamedElement> {
+
+	private final UML source;
+	private final RootElementTranslator<UML, ?, ?> builder;
+
+	public TranslationTask(UML source, RootElementTranslator<UML, ?, ?> builder) {
+		this.source = source;
+		this.builder = builder;
+	}
+
+	/**
+	 * Performs the model generation this task was created for.
+	 * 
+	 * @return A source code update task to perform the required updates in the
+	 *         textual representation of the original model
+	 * @throws GenerationException
+	 *             If a generation error occurred, due to an inconsistent model
+	 *             or a missing source object
+	 */
+	public UpdateSourceCodeTask perform() throws GenerationException {
+		Template template = builder.getTemplate(source);
+		return new UpdateSourceCodeTask(template);
+	}
+}

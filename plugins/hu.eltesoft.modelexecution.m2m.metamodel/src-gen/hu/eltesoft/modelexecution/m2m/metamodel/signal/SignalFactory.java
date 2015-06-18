@@ -31,6 +31,15 @@ public interface SignalFactory extends EFactory {
 	SgSignal createSgSignal();
 
 	/**
+	 * Returns a new object of class '<em>Sg Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Sg Attribute</em>'.
+	 * @generated
+	 */
+	SgAttribute createSgAttribute();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

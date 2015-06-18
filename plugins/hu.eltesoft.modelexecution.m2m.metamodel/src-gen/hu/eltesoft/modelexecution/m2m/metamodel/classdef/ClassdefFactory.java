@@ -49,6 +49,33 @@ public interface ClassdefFactory extends EFactory {
 	ClReception createClReception();
 
 	/**
+	 * Returns a new object of class '<em>Cl Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Attribute</em>'.
+	 * @generated
+	 */
+	ClAttribute createClAttribute();
+
+	/**
+	 * Returns a new object of class '<em>Cl Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Association</em>'.
+	 * @generated
+	 */
+	ClAssociation createClAssociation();
+
+	/**
+	 * Returns a new object of class '<em>Cl Reception Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Reception Parameter</em>'.
+	 * @generated
+	 */
+	ClReceptionParameter createClReceptionParameter();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

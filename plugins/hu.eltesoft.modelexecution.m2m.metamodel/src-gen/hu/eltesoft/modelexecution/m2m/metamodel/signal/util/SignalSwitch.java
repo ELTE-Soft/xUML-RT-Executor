@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.util;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
@@ -79,6 +80,15 @@ public class SignalSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case SignalPackage.SG_ATTRIBUTE: {
+				SgAttribute sgAttribute = (SgAttribute)theEObject;
+				T result = caseSgAttribute(sgAttribute);
+				if (result == null) result = caseNamed(sgAttribute);
+				if (result == null) result = caseMultiplicity(sgAttribute);
+				if (result == null) result = caseTranslationObject(sgAttribute);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -95,6 +105,21 @@ public class SignalSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseSgSignal(SgSignal object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Sg Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Sg Attribute</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSgAttribute(SgAttribute object) {
 		return null;
 	}
 
@@ -140,6 +165,21 @@ public class SignalSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModelRoot(ModelRoot object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiplicity(Multiplicity object) {
 		return null;
 	}
 

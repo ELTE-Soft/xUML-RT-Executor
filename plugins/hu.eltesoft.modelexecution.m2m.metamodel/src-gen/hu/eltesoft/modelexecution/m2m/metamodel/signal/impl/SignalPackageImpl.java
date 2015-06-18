@@ -2,6 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
@@ -22,12 +26,14 @@ import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -44,6 +50,13 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 	 * @generated
 	 */
 	private EClass sgSignalEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sgAttributeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -92,6 +105,7 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 		isInited = true;
 
 		// Obtain or create and register interdependencies
+		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BasePackageImpl theBasePackage = (BasePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) instanceof BasePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) : BasePackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
@@ -100,6 +114,7 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 
 		// Create package meta-data objects
 		theSignalPackage.createPackageContents();
+		theAssociationPackage.createPackageContents();
 		theBasePackage.createPackageContents();
 		theBehaviorPackage.createPackageContents();
 		theClassdefPackage.createPackageContents();
@@ -108,6 +123,7 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 
 		// Initialize created meta-data
 		theSignalPackage.initializePackageContents();
+		theAssociationPackage.initializePackageContents();
 		theBasePackage.initializePackageContents();
 		theBehaviorPackage.initializePackageContents();
 		theClassdefPackage.initializePackageContents();
@@ -130,6 +146,33 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 	 */
 	public EClass getSgSignal() {
 		return sgSignalEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSgSignal_Attributes() {
+		return (EReference)sgSignalEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSgAttribute() {
+		return sgAttributeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSgAttribute_Type() {
+		return (EReference)sgAttributeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -161,6 +204,10 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 
 		// Create classes and their features
 		sgSignalEClass = createEClass(SG_SIGNAL);
+		createEReference(sgSignalEClass, SG_SIGNAL__ATTRIBUTES);
+
+		sgAttributeEClass = createEClass(SG_ATTRIBUTE);
+		createEReference(sgAttributeEClass, SG_ATTRIBUTE__TYPE);
 	}
 
 	/**
@@ -196,9 +243,15 @@ public class SignalPackageImpl extends EPackageImpl implements SignalPackage {
 		// Add supertypes to classes
 		sgSignalEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		sgSignalEClass.getESuperTypes().add(theBasePackage.getNamed());
+		sgAttributeEClass.getESuperTypes().add(theBasePackage.getNamed());
+		sgAttributeEClass.getESuperTypes().add(theBasePackage.getMultiplicity());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(sgSignalEClass, SgSignal.class, "SgSignal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSgSignal_Attributes(), this.getSgAttribute(), null, "attributes", null, 0, -1, SgSignal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sgAttributeEClass, SgAttribute.class, "SgAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSgAttribute_Type(), theBasePackage.getPrimitiveType(), null, "type", null, 1, 1, SgAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -3,7 +3,6 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.event;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,5 +14,5 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  * @model
  * @generated
  */
-public interface EvEvent extends ModelRoot, Named {
+public interface EvEvent extends ModelRoot {
 } // EvEvent

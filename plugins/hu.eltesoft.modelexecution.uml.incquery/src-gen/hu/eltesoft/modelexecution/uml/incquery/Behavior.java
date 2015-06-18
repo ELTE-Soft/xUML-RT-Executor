@@ -2,10 +2,26 @@ package hu.eltesoft.modelexecution.uml.incquery;
 
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterLowerBoundMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterTypeMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterUpperBoundMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnLowerBoundMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnTypeMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnUpperBoundMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.AlfCodeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorParameterLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorParameterQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorParameterTypeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorParameterUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorReturnLowerBoundQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorReturnTypeQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.BehaviorReturnUpperBoundQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfBehaviorQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.StaticBehaviorQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -20,6 +36,14 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <p> From package hu.eltesoft.modelexecution.uml.incquery, the group contains the definition of the following patterns: <ul>
  * <li>Behavior</li>
  * <li>ContainerClassOfBehavior</li>
+ * <li>BehaviorParameter</li>
+ * <li>BehaviorParameterType</li>
+ * <li>BehaviorParameterLowerBound</li>
+ * <li>BehaviorParameterUpperBound</li>
+ * <li>BehaviorReturnType</li>
+ * <li>BehaviorReturnLowerBound</li>
+ * <li>BehaviorReturnUpperBound</li>
+ * <li>StaticBehavior</li>
  * <li>AlfCode</li>
  * <li>ContainerClassOfVertex</li>
  * </ul>
@@ -49,6 +73,14 @@ public final class Behavior extends BaseGeneratedPatternGroup {
   private Behavior() throws IncQueryException {
     querySpecifications.add(BehaviorQuerySpecification.instance());
     querySpecifications.add(ContainerClassOfBehaviorQuerySpecification.instance());
+    querySpecifications.add(BehaviorParameterQuerySpecification.instance());
+    querySpecifications.add(BehaviorParameterTypeQuerySpecification.instance());
+    querySpecifications.add(BehaviorParameterLowerBoundQuerySpecification.instance());
+    querySpecifications.add(BehaviorParameterUpperBoundQuerySpecification.instance());
+    querySpecifications.add(BehaviorReturnTypeQuerySpecification.instance());
+    querySpecifications.add(BehaviorReturnLowerBoundQuerySpecification.instance());
+    querySpecifications.add(BehaviorReturnUpperBoundQuerySpecification.instance());
+    querySpecifications.add(StaticBehaviorQuerySpecification.instance());
     querySpecifications.add(AlfCodeQuerySpecification.instance());
     
   }
@@ -67,6 +99,70 @@ public final class Behavior extends BaseGeneratedPatternGroup {
   
   public ContainerClassOfBehaviorMatcher getContainerClassOfBehavior(final IncQueryEngine engine) throws IncQueryException {
     return ContainerClassOfBehaviorMatcher.on(engine);
+  }
+  
+  public BehaviorParameterQuerySpecification getBehaviorParameter() throws IncQueryException {
+    return BehaviorParameterQuerySpecification.instance();
+  }
+  
+  public BehaviorParameterMatcher getBehaviorParameter(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorParameterMatcher.on(engine);
+  }
+  
+  public BehaviorParameterTypeQuerySpecification getBehaviorParameterType() throws IncQueryException {
+    return BehaviorParameterTypeQuerySpecification.instance();
+  }
+  
+  public BehaviorParameterTypeMatcher getBehaviorParameterType(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorParameterTypeMatcher.on(engine);
+  }
+  
+  public BehaviorParameterLowerBoundQuerySpecification getBehaviorParameterLowerBound() throws IncQueryException {
+    return BehaviorParameterLowerBoundQuerySpecification.instance();
+  }
+  
+  public BehaviorParameterLowerBoundMatcher getBehaviorParameterLowerBound(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorParameterLowerBoundMatcher.on(engine);
+  }
+  
+  public BehaviorParameterUpperBoundQuerySpecification getBehaviorParameterUpperBound() throws IncQueryException {
+    return BehaviorParameterUpperBoundQuerySpecification.instance();
+  }
+  
+  public BehaviorParameterUpperBoundMatcher getBehaviorParameterUpperBound(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorParameterUpperBoundMatcher.on(engine);
+  }
+  
+  public BehaviorReturnTypeQuerySpecification getBehaviorReturnType() throws IncQueryException {
+    return BehaviorReturnTypeQuerySpecification.instance();
+  }
+  
+  public BehaviorReturnTypeMatcher getBehaviorReturnType(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorReturnTypeMatcher.on(engine);
+  }
+  
+  public BehaviorReturnLowerBoundQuerySpecification getBehaviorReturnLowerBound() throws IncQueryException {
+    return BehaviorReturnLowerBoundQuerySpecification.instance();
+  }
+  
+  public BehaviorReturnLowerBoundMatcher getBehaviorReturnLowerBound(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorReturnLowerBoundMatcher.on(engine);
+  }
+  
+  public BehaviorReturnUpperBoundQuerySpecification getBehaviorReturnUpperBound() throws IncQueryException {
+    return BehaviorReturnUpperBoundQuerySpecification.instance();
+  }
+  
+  public BehaviorReturnUpperBoundMatcher getBehaviorReturnUpperBound(final IncQueryEngine engine) throws IncQueryException {
+    return BehaviorReturnUpperBoundMatcher.on(engine);
+  }
+  
+  public StaticBehaviorQuerySpecification getStaticBehavior() throws IncQueryException {
+    return StaticBehaviorQuerySpecification.instance();
+  }
+  
+  public StaticBehaviorMatcher getStaticBehavior(final IncQueryEngine engine) throws IncQueryException {
+    return StaticBehaviorMatcher.on(engine);
   }
   
   public AlfCodeQuerySpecification getAlfCode() throws IncQueryException {
