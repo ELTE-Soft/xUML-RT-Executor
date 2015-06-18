@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
 public class ModelExecutionLaunchConfig {
@@ -116,6 +117,9 @@ public class ModelExecutionLaunchConfig {
 	public static final String ATTR_REPLAY_TRACE_FILE = ATTR_PREFIX
 			+ "replay_trace_folder"; //$NON-NLS-1$
 
+	public static final String ATTR_CONTROL_PORT = ATTR_PREFIX
+			+ "control_port";
+
 	/**
 	 * Adds launch configuration attributes needed by Moka.
 	 */
@@ -174,6 +178,8 @@ public class ModelExecutionLaunchConfig {
 			configuration.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 					configuration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR));
+			int controlPort = SocketUtil.findFreePort();
+			configuration.setAttribute(ATTR_CONTROL_PORT, controlPort);
 			setupLaunchArgs(configuration);
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while adding Java configs", e); //$NON-NLS-1$
@@ -226,6 +232,12 @@ public class ModelExecutionLaunchConfig {
 						.orElseThrow(() -> new TraceFileMissingException());
 				argsBuilder.append(XUMLRTRuntime.OPTION_READ_TRACE);
 				argsBuilder.append(replayTraceFolder);
+			}
+
+			int controlPort = configuration.getAttribute(ATTR_CONTROL_PORT, -1);
+			if (controlPort != -1) {
+				argsBuilder.append(XUMLRTRuntime.OPTION_CONTROL_SOCK);
+				argsBuilder.append(controlPort);
 			}
 
 			configuration.setAttribute(

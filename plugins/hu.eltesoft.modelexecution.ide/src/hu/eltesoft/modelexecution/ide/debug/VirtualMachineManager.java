@@ -2,7 +2,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
-import hu.eltesoft.modelexecution.ide.launch.BackgroundJavaLauncher.BackgroundJavaProcess;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class VirtualMachineManager implements ITerminate {
 
 	private Thread eventHandlerThread;
 	private VirtualMachine virtualMachine;
-	private BackgroundJavaProcess javaProcess;
+	private IProcessWithVM javaProcess;
 
 	private List<VirtualMachineListener> eventListeners = new LinkedList<>();
 	private boolean eventsEnabled;
@@ -39,6 +39,10 @@ public class VirtualMachineManager implements ITerminate {
 	public VirtualMachineManager(ILaunch launch) {
 		javaProcess = getJavaProcess(launch);
 		virtualMachine = javaProcess.getVM();
+		if (virtualMachine == null) {
+			IdePlugin
+					.logError("Cannot extract virtual machine from java process");
+		}
 
 		eventHandlerThread = createEventHandlerThread();
 		eventHandlerThread.start();
@@ -47,10 +51,10 @@ public class VirtualMachineManager implements ITerminate {
 	/**
 	 * Gets the background java virtual machine that operates in debug mode.
 	 */
-	private BackgroundJavaProcess getJavaProcess(ILaunch launch) {
+	private IProcessWithVM getJavaProcess(ILaunch launch) {
 		for (IProcess process : launch.getProcesses()) {
-			if (process instanceof BackgroundJavaProcess) {
-				return (BackgroundJavaProcess) process;
+			if (process instanceof IProcessWithVM) {
+				return (IProcessWithVM) process;
 			}
 		}
 		return null;
@@ -158,12 +162,7 @@ public class VirtualMachineManager implements ITerminate {
 			eventListeners.forEach(l -> l.handleVMDisconnect(event));
 			disconnectFired = true;
 
-			// notify termination of the associated Java process
-			try {
-				javaProcess.terminate();
-			} catch (DebugException e) {
-				// suppress any process termination failure
-			}
+			// the java process is already terminated at this time
 		}
 	}
 
@@ -196,7 +195,9 @@ public class VirtualMachineManager implements ITerminate {
 	@Override
 	public void terminate() throws DebugException {
 		virtualMachine.dispose();
-		// the Java process will be terminated by the disconnect event of the vm
+		// the java process may receive the termination signal multiple times,
+		// because disconnect event can also send one
+		javaProcess.terminate();
 	}
 
 	public void resume() {

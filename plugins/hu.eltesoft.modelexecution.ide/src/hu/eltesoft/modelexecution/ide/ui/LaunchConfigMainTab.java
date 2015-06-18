@@ -345,7 +345,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 								.getAttribute(
 										ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
 										EMPTY_STR));
-				selectedClassField.setText(selectedClass.getName());
+				if (selectedClass != null) {
+					selectedClassField.setText(selectedClass.getName());
+				}
 				selectedFeedFunction = (Operation) resource
 						.getEObject(configuration
 								.getAttribute(

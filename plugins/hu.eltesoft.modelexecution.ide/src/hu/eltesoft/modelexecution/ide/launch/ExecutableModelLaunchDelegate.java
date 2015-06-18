@@ -2,6 +2,8 @@ package hu.eltesoft.modelexecution.ide.launch;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
+import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
+import hu.eltesoft.modelexecution.ide.launch.process.GracefulTerminationProcessDecorator;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 
@@ -38,14 +40,15 @@ import org.eclipse.swt.widgets.Display;
 public class ExecutableModelLaunchDelegate implements
 		ILaunchConfigurationDelegate {
 
-	public static final String PROC_ATTR_TO_REFRESH = "hu.eltesoft.modelexecution.processAttributes.toRefresh";  //$NON-NLS-1$
+	public static final String PROC_ATTR_TO_REFRESH = "hu.eltesoft.modelexecution.processAttributes.toRefresh"; //$NON-NLS-1$
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
 	private static final String MODEL_FILE_EXTENSION = "uml";
 	private static final String DIAGRAM_FILE_EXTENSION = "di";
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
-	private JavaLaunchDelegate javaDelegate = new JavaLaunchDelegate();
-	private BackgroundJavaLauncher backgroundJavaLauncher = new BackgroundJavaLauncher();
+	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher(
+			GracefulTerminationProcessDecorator::new,
+			DebuggingProcessDecorator::new, () -> null);
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;
 
@@ -53,16 +56,18 @@ public class ExecutableModelLaunchDelegate implements
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		listenForLaunchTermination();
+
 		if (!launchPassesChecks(configuration, mode)
 				|| !exitChecker.launchStarting(launch)) {
 			return;
-		}
+		}	
 		try {
 			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
 					.addMokaConfigs(configuration);
 			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
 					.addJavaConfigs(configuration);
 			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
+			
 		} catch (TraceFileMissingException e) {
 			Dialogs.openTraceFileMissingErrorDialog();
 		}
@@ -71,14 +76,12 @@ public class ExecutableModelLaunchDelegate implements
 	private void launchProcesses(String mode, ILaunch launch,
 			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
 			ILaunchConfiguration javaConfigs) throws CoreException {
+		javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			backgroundJavaLauncher.launch(javaConfigs, mode, launch, monitor);
 			Display.getDefault()
 					.asyncExec(
 							() -> launchMokaDelegate(mokaConfigs, mode, launch,
 									monitor));
-		} else {
-			javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		}
 		setFoldersToRefresh(launch, javaConfigs);
 	}

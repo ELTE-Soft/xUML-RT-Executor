@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,11 +41,38 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
+	private boolean terminate = false;
 
 	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
-	
+
+	/**
+	 * Switches the runtime to a controlled mode. In controlled mode, the
+	 * runtime can be managed with control messages throught the control stream.
+	 * This method may be called multiple times, in this case, the runtime
+	 * responds to messages on all control streams.
+	 */
+	public void addControlStream(InputStream controlStream) {
+		RuntimeController controller = new RuntimeController(controlStream,
+				this);
+		controller.startListening();
+	}
+
+	/**
+	 * Stops the execution of the runtime after the logs have been written out.
+	 */
+	public void terminate() {
+		try {
+			// explicitely call close
+			close();
+		} catch (Exception e) {
+			logError("Cannot close the runtime", e);
+		}
+		logInfo("Execution terminating on user request");
+		System.exit(1);
+	}
+
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
@@ -71,8 +99,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public TerminationResult run(String className, String feedName)
 			throws Exception {
 		try {
+			logInfo("Preparing system for execution");
 			prepare(className, feedName);
-			while (!queue.isEmpty() || traceReader.hasEvent()) {
+			logInfo("Starting execution");
+			while (!terminate && (!queue.isEmpty() || traceReader.hasEvent())) {
 				if (!queue.isEmpty()) {
 					TargetedMessage currQueueEvent = queue.peek();
 					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
@@ -83,9 +113,12 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					traceReader.dispatchEvent(logger);
 				}
 			}
+			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
-			logError("The trace file is not consistent with the current model.", e);
+			logError(
+					"The trace file is not consistent with the current model.",
+					e);
 			return TerminationResult.INVALID_TRACEFILE;
 		} catch (Exception e) {
 			logError("An internal error happened", e);
@@ -123,6 +156,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public void logTransition(String eventName, String messageName,
 			String source, String target) {
 		logger.transition(eventName, messageName, source, target);
+	}
+
+	public static void logInfo(String message) {
+		errorLogger.log(java.util.logging.Level.INFO, message);
 	}
 
 	public static void logError(String message) {

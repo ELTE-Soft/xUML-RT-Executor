@@ -125,6 +125,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 
 	@Override
 	public void handleVMDisconnect(VMDisconnectEvent event) {
+		forceTermination();
+	}
+
+	private void forceTermination() {
 		try {
 			// force the debug target to send a termination request,
 			// which will be handled by the terminate method below
@@ -171,6 +175,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
 		EObject modelElement = reference.resolve(resourceSet);
+		if (null == modelElement) {
+			// forces the termination when the editor is closed
+			forceTermination();
+			return ThreadAction.ShouldResume;
+		}
 
 		boolean hasBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
 		if (suspendIfWaitingOrHasBreak(modelElement, hasBreak)) {
@@ -281,6 +290,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 			// if the machine is already terminated,
 			// it will not indicate a disconnect event
 			virtualMachine.terminate();
+			animation.removeAllMarkers();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}
