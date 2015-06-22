@@ -54,7 +54,10 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		List<PParameter> parameters = matcher.getSpecification()
 				.getParameters();
 		LinkedList<String> extendedTypes = new LinkedList<>(types);
-		extendedTypes.add(parameters.get(types.size()).getTypeName());
+		// allow simple (marker) queries, that does not add a new type to the stack
+		if (parameters.size() > types.size()) {
+			extendedTypes.add(parameters.get(types.size()).getTypeName());
+		}
 		return extendedTypes;
 	}
 
@@ -64,10 +67,10 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 	protected void checkMatcherParams(BaseMatcher<?> matcher) {
 		List<PParameter> parameters = matcher.getSpecification()
 				.getParameters();
-		if (parameters.size() < types.size() + 1) {
+		if (parameters.size() < types.size()) {
 			throw new RuntimeException("The pattern "
 					+ matcher.getPatternName() + " must have at least "
-					+ (types.size() + 1) + " parameters");
+					+ types.size() + " parameters");
 		}
 		for (int i = 0; i < types.size(); i++) {
 			if (!parameters.get(i).getTypeName().equals(types.get(i))) {

@@ -19,6 +19,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="exit" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" ordered="false"
         upperBound="-1" eType="#//RgTransition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTermination" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RgTransition" eSuperTypes="base.ecore#//Referenced">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" lowerBound="1"

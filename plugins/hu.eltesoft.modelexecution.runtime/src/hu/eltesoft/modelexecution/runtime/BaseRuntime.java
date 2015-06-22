@@ -16,8 +16,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Executes the model using logging and tracing. Receives the name of the class
@@ -34,14 +33,13 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
 			+ "Events.Messages";
 
-	private Queue<TargetedMessage> queue = new LinkedList<>();
+	private LinkedBlockingDeque<TargetedMessage> queue = new LinkedBlockingDeque<>();
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
 	private ClassLoader classLoader;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
-	private boolean terminate = false;
 
 	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
@@ -69,14 +67,13 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		} catch (Exception e) {
 			logError("Cannot close the runtime", e);
 		}
-		logInfo("Execution terminating on user request");
 		System.exit(1);
 	}
 
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
-		queue.add(targetedEvent);
+		queue.addLast(targetedEvent);
 		logger.messageQueued(target, message);
 	}
 
@@ -102,19 +99,21 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			logInfo("Preparing system for execution");
 			prepare(className, feedName);
 			logInfo("Starting execution");
-			while (!terminate && (!queue.isEmpty() || traceReader.hasEvent())) {
-				if (!queue.isEmpty()) {
-					TargetedMessage currQueueEvent = queue.peek();
-					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
-						queue.poll();
-					}
-					traceWriter.traceEvent(currQueueEvent);
-				} else {
+			while (true) {
+				// events read from trace will not be written to trace
+				if (queue.isEmpty() && traceReader.hasEvent()) {
 					traceReader.dispatchEvent(logger);
+				} else {
+					// if queue is empty, take blocks
+					TargetedMessage currQueueEvent = queue.take();
+					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
+						// put back the event to the original position
+						queue.addFirst(currQueueEvent);
+					} else {
+						traceWriter.traceEvent(currQueueEvent);
+					}
 				}
 			}
-			logInfo("Execution terminated successfully");
-			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
 			logError(
 					"The trace file is not consistent with the current model.",
@@ -127,12 +126,14 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	/**
-	 * Creates an instance of the selected class and executes it.
+	 * Registers the runtime in the {@link InstanceRegistry}. Creates an
+	 * instance of the selected class and executes it.
 	 */
 	private void prepare(String className, String feedName)
 			throws ClassNotFoundException, NoSuchMethodException,
 			InstantiationException, IllegalAccessException,
 			InvocationTargetException {
+		InstanceRegistry.getInstanceRegistry().setRuntime(this);
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
 		ClassWithState classInstance = (ClassWithState) constructor

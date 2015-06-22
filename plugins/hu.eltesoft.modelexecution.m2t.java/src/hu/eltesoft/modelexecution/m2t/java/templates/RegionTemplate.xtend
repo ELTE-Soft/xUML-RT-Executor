@@ -121,6 +121,11 @@ class RegionTemplate extends Template {
 				«IF null != firstState.entry»
 					«firstState.entry.identifier».execute(owner);
 				«ENDIF»
+				
+				«IF firstState.isTermination»
+					// The class cannot get more events
+					owner.dispose();
+				«ENDIF»
 		
 				currentState = State.«firstState.identifier»;
 			}
@@ -172,6 +177,11 @@ class RegionTemplate extends Template {
 								owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
 								«IF null != transition.target.entry»
 									«transition.target.entry.identifier».execute(owner);
+								«ENDIF»
+								
+								«IF transition.target.isTermination»
+									// The class cannot get more events
+									owner.dispose();
 								«ENDIF»
 							
 								currentState = State.«transition.target.identifier»;

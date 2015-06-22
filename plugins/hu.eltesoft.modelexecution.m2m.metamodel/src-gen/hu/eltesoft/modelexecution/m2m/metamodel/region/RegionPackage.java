@@ -215,13 +215,22 @@ public interface RegionPackage extends EPackage {
 	int RG_STATE__TRANSITIONS = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Is Termination</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_STATE__IS_TERMINATION = BasePackage.NAMED_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Rg State</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Rg State</em>' class.
@@ -414,6 +423,17 @@ public interface RegionPackage extends EPackage {
 	EReference getRgState_Transitions();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsTermination <em>Is Termination</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Termination</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsTermination()
+	 * @see #getRgState()
+	 * @generated
+	 */
+	EAttribute getRgState_IsTermination();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition <em>Rg Transition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -575,6 +595,14 @@ public interface RegionPackage extends EPackage {
 		 * @generated
 		 */
 		EReference RG_STATE__TRANSITIONS = eINSTANCE.getRgState_Transitions();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Termination</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RG_STATE__IS_TERMINATION = eINSTANCE.getRgState_IsTermination();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl <em>Rg Transition</em>}' class.

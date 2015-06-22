@@ -14,9 +14,6 @@
   <extension id="hu.eltesoft.modelexecution.uml.incquery.Event" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Event" id="hu.eltesoft.modelexecution.uml.incquery.Event"/>
   </extension>
-  <extension id="hu.eltesoft.modelexecution.uml.incquery.Event" point="org.eclipse.incquery.runtime.queryspecification">
-    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Event" id="hu.eltesoft.modelexecution.uml.incquery.Event"/>
-  </extension>
   <extension id="hu.eltesoft.modelexecution.uml.incquery.Behavior" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Behavior" id="hu.eltesoft.modelexecution.uml.incquery.Behavior"/>
   </extension>

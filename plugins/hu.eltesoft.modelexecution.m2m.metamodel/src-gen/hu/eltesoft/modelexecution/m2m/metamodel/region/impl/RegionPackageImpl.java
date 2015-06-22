@@ -251,6 +251,15 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getRgState_IsTermination() {
+		return (EAttribute)rgStateEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRgTransition() {
 		return rgTransitionEClass;
 	}
@@ -331,6 +340,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		createEAttribute(rgStateEClass, RG_STATE__ENTRY);
 		createEAttribute(rgStateEClass, RG_STATE__EXIT);
 		createEReference(rgStateEClass, RG_STATE__TRANSITIONS);
+		createEAttribute(rgStateEClass, RG_STATE__IS_TERMINATION);
 
 		rgTransitionEClass = createEClass(RG_TRANSITION);
 		createEAttribute(rgTransitionEClass, RG_TRANSITION__MESSAGE);
@@ -388,6 +398,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEAttribute(getRgState_Entry(), theBasePackage.getNamedReference(), "entry", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgState_Exit(), theBasePackage.getNamedReference(), "exit", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getRgState_IsTermination(), ecorePackage.getEBoolean(), "isTermination", "false", 1, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(rgTransitionEClass, RgTransition.class, "RgTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

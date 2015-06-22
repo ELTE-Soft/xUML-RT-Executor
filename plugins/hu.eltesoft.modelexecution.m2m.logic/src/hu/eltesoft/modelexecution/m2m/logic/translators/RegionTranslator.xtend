@@ -22,6 +22,7 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Region
 import org.eclipse.uml2.uml.State
+import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatcher
 
 class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMatch> {
 
@@ -52,6 +53,9 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 		]
 		stateNode.on(PACKAGE.rgState_Entry, EntryMatcher.on(engine)) [new NamedReference(entry)]
 		stateNode.on(PACKAGE.rgState_Exit, ExitMatcher.on(engine)) [new NamedReference(exit)]
+		stateNode.on(PACKAGE.rgState_IsTermination, TerminationStateMatcher.on(engine)) [
+			true
+		]
 
 		// it must be done after state map is populated
 		val transitionNode = stateNode.onEObject(PACKAGE.rgState_Transitions, TransitionMatcher.on(engine)) [
