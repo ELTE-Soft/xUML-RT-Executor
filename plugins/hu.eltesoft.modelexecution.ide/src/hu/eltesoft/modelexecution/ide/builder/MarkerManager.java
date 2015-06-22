@@ -18,6 +18,9 @@ public class MarkerManager {
 	 * Puts an UML marker on the given resource if there is none.
 	 */
 	public void putMarkerOnResource(IResource resource, String message) {
+		if (!resource.exists()) {
+			return;
+		}
 		try {
 			if (resource.findMarkers(UML_MARKER_ID, true, IResource.DEPTH_ZERO).length == 0) {
 				IMarker marker = resource.createMarker(UML_MARKER_ID);
@@ -35,6 +38,9 @@ public class MarkerManager {
 	 * Removes all UML markers from a resource
 	 */
 	public void removeUmlMarkersFromResource(IResource resource) {
+		if (!resource.exists()) {
+			return;
+		}
 		try {
 			IMarker[] markers = resource.findMarkers(UML_MARKER_ID, true,
 					IResource.DEPTH_ZERO);
