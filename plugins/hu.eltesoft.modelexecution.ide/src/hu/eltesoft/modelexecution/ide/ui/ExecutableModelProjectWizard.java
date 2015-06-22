@@ -25,7 +25,8 @@ public class ExecutableModelProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		try {
-			ExecutableModelProjectSetup.createProject(pageOne.getProjectName(), pageOne.getLocationPath());
+			
+			ExecutableModelProjectSetup.createProject(pageOne.getProjectName(), pageOne.getLocationURI());
 		} catch (CoreException e) {
 			IdePlugin.logError("Problem while creating project", e);
 			Dialogs.openInternalErrorDialog();

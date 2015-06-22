@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +51,11 @@ public class ExecutableModelProjectSetup {
 	/**
 	 * Creates an xUMLRt project with the given name, at the given location.
 	 */
-	public static void createProject(String projectName, IPath location)
+	public static void createProject(String projectName, URI location)
 			throws CoreException {
 		ProjectDescription description = new ProjectDescription();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		description.setLocation(location.append(projectName));
+		description.setLocationURI(location);
 		description.setName(projectName);
 		IProject project = workspace.getRoot().getProject(projectName);
 		project.create(description, null);
@@ -63,7 +64,7 @@ public class ExecutableModelProjectSetup {
 	}
 
 	/**
-	 * Sets up natures, adds necessarry folders and sets up classpath.
+	 * Sets up natures, adds necessary folders and sets up classpath.
 	 */
 	private static void configureProject(IProject project)
 			throws CoreException, JavaModelException {
