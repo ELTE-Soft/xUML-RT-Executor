@@ -8,37 +8,31 @@ import hu.eltesoft.modelexecution.m2t.java.Template;
 import org.eclipse.uml2.uml.NamedElement;
 
 /**
- * A task to update the translational model. On {@linkplain #perform()}
- * generates the translational model from the contained source using the
- * contained builder.
- * 
- * Ensures type safety by wrapping the source element with a builder of the
- * corresponding type.
- * 
- * This task is intended to be executed locking the editing domain, to ensure
- * that the model is not changed while the operation runs.
+ * A task to generate a translation model.
  */
 class TranslationTask<UML extends NamedElement> {
 
 	private final UML source;
-	private final RootElementTranslator<UML, ?, ?> builder;
+	private final RootElementTranslator<UML, ?, ?> translator;
 
-	public TranslationTask(UML source, RootElementTranslator<UML, ?, ?> builder) {
+	public TranslationTask(UML source,
+			RootElementTranslator<UML, ?, ?> translator) {
 		this.source = source;
-		this.builder = builder;
+		this.translator = translator;
 	}
 
 	/**
 	 * Performs the model generation this task was created for.
 	 * 
-	 * @return A source code update task to perform the required updates in the
+	 * @return a source code update task to perform the required updates in the
 	 *         textual representation of the original model
 	 * @throws GenerationException
-	 *             If a generation error occurred, due to an inconsistent model
+	 *             if a generation error occurred, due to an inconsistent model
 	 *             or a missing source object
 	 */
 	public UpdateSourceCodeTask perform() throws GenerationException {
-		Template template = builder.getTemplate(source);
-		return new UpdateSourceCodeTask(template);
+		String rootName = translator.getRootName(source);
+		Template template = translator.getTemplate(source);
+		return new UpdateSourceCodeTask(rootName, template);
 	}
 }

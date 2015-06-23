@@ -16,23 +16,23 @@ import org.eclipse.uml2.uml.NamedElement;
 public class MatchUpdateListener<UML extends NamedElement, Match extends IPatternMatch>
 		implements IMatchUpdateListener<Match> {
 
-	protected final RootElementTranslator<UML, ?, ?> builder;
+	protected final RootElementTranslator<UML, ?, ?> translator;
 	protected final ChangeRegistry changes;
 
-	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> builder,
+	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> translator,
 			ChangeRegistry changes) {
-		this.builder = builder;
+		this.translator = translator;
 		this.changes = changes;
 	}
 
 	@Override
 	public void notifyAppearance(Match match) {
-		changes.registerUpdate(extractRoot(match), builder);
+		changes.registerUpdate(extractRoot(match), translator);
 	}
 
 	@Override
 	public void notifyDisappearance(Match match) {
-		changes.registerUpdate(extractRoot(match), builder);
+		changes.registerUpdate(extractRoot(match), translator);
 	}
 
 	@SuppressWarnings("unchecked")

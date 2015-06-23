@@ -7,6 +7,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate
+import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeTypeMatcher
@@ -174,5 +175,11 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 	override createTemplate(ClClass cls) {
 		new ClassTemplate(cls)
+	}
+
+	override shouldMap(Class cls) {
+
+		// do not generate code for external entities using this builder
+		!Stereotypes.isExternalEntity(cls)
 	}
 }

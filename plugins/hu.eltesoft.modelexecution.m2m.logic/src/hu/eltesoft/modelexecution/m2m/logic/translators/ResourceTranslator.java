@@ -79,7 +79,9 @@ public class ResourceTranslator {
 		translators = new LinkedList<>();
 		translators.add(new AssociationTranslator(engine));
 		translators.add(new BehaviorTranslator(engine));
+		translators.add(new CallableProxyTranslator(engine));
 		translators.add(new ClassTranslator(engine));
+		translators.add(new ExternalEntityTranslator(engine));
 		translators.add(new RegionTranslator(engine));
 		translators.add(new SignalEventTranslator(engine));
 		translators.add(new SignalTranslator(engine));
@@ -145,9 +147,10 @@ public class ResourceTranslator {
 	}
 
 	private void performBatchTranslation(List<SourceCodeTask> updateTasks,
-			RootElementTranslator<?, ?, ?> builder) {
-		builder.getAllTemplates().forEach(
-				t -> updateTasks.add(new UpdateSourceCodeTask(t)));
+			RootElementTranslator<?, ?, ?> translator) {
+		translator.getAllTemplates().forEach((rootName, template) -> {
+			updateTasks.add(new UpdateSourceCodeTask(rootName, template));
+		});
 	}
 
 	public List<SourceCodeTask> incrementalTranslation() {

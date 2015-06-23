@@ -3,38 +3,25 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.event.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EvSignalEvent;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -104,11 +91,16 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 
 		isInited = true;
 
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
+
 		// Obtain or create and register interdependencies
 		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BasePackageImpl theBasePackage = (BasePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) instanceof BasePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) : BasePackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
+		hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl theCallablePackage = (hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
+		hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl theExternalPackage = (hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eINSTANCE);
 		RegionPackageImpl theRegionPackage = (RegionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) instanceof RegionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) : RegionPackage.eINSTANCE);
 		SignalPackageImpl theSignalPackage = (SignalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) instanceof SignalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) : SignalPackage.eINSTANCE);
 
@@ -117,7 +109,9 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 		theAssociationPackage.createPackageContents();
 		theBasePackage.createPackageContents();
 		theBehaviorPackage.createPackageContents();
+		theCallablePackage.createPackageContents();
 		theClassdefPackage.createPackageContents();
+		theExternalPackage.createPackageContents();
 		theRegionPackage.createPackageContents();
 		theSignalPackage.createPackageContents();
 
@@ -126,7 +120,9 @@ public class EventPackageImpl extends EPackageImpl implements EventPackage {
 		theAssociationPackage.initializePackageContents();
 		theBasePackage.initializePackageContents();
 		theBehaviorPackage.initializePackageContents();
+		theCallablePackage.initializePackageContents();
 		theClassdefPackage.initializePackageContents();
+		theExternalPackage.initializePackageContents();
 		theRegionPackage.initializePackageContents();
 		theSignalPackage.initializePackageContents();
 

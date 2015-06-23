@@ -2,6 +2,8 @@ package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.external.ExternalEntityException;
+import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistry;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.log.NoLogger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
@@ -43,8 +45,11 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
 	private boolean terminate = false;
 
+	private final ExternalEntityRegistry externalEntities;
+
 	public BaseRuntime(ClassLoader classLoader) {
 		this.classLoader = classLoader;
+		externalEntities = new ExternalEntityRegistry(classLoader);
 	}
 
 	/**
@@ -120,6 +125,9 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					"The trace file is not consistent with the current model.",
 					e);
 			return TerminationResult.INVALID_TRACEFILE;
+		} catch (ExternalEntityException e) {
+			logError("Invalid external entity.", e);
+			return TerminationResult.INVALID_EXTERNAL_ENTITY;
 		} catch (Exception e) {
 			logError("An internal error happened", e);
 			return TerminationResult.INTERNAL_ERROR;
@@ -183,4 +191,8 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		traceReader.close();
 	}
 
+	@Override
+	public <Impl> Impl getExternalEntity(Class<? super Impl> entityClass) {
+		return externalEntities.getInstance(entityClass);
+	}
 }

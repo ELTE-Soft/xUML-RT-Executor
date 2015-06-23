@@ -21,6 +21,11 @@ public class NamedReference extends Reference {
 	 * Calculate the identifier for an EMF object without creating a reference.
 	 */
 	public static String getIdentifier(EObject referencedElement) {
+		if (null == referencedElement.eResource()) {
+			// EObject identifier is unavailable after it is unlinked from its
+			// containing resource.
+			return null;
+		}
 		return uuidToIdentifier(toURIString(referencedElement));
 	}
 

@@ -8,8 +8,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.eclipse.incquery.runtime.api.IPatternMatch;
@@ -37,9 +37,13 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	protected abstract Template createTemplate(Trans trans);
 
-	public List<Template> getAllTemplates() {
-		List<Template> templates = new ArrayList<>();
-		getAllModels().forEach(model -> templates.add(createTemplate(model)));
+	public Map<String, Template> getAllTemplates() {
+		Map<String, Template> templates = new HashMap<>();
+		getSourceModels().forEach(source -> {
+			String rootName = getRootName(source);
+			Template template = getTemplate(source);
+			templates.put(rootName, template);
+		});
 		return templates;
 	}
 

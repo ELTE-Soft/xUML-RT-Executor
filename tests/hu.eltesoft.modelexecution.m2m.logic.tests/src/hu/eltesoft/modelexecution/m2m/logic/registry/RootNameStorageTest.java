@@ -31,7 +31,7 @@ public class RootNameStorageTest extends ModelBasedTestCase {
 
 	@Test
 	public void testConsumeRemovesTheName() {
-		rootNames.saveRootName(class1);
+		rootNames.saveRootName(class1, NamedReference.getIdentifier(class1));
 		List<String> consumed = new ArrayList<>();
 		rootNames.consumeRootName(class1, name -> consumed.add(name));
 		rootNames.consumeRootName(class1, name -> consumed.add(name));
@@ -43,7 +43,7 @@ public class RootNameStorageTest extends ModelBasedTestCase {
 	@Test
 	public void testUnableToSaveDestroyedObject() {
 		class1.destroy();
-		rootNames.saveRootName(class1);
+		rootNames.saveRootName(class1, NamedReference.getIdentifier(class1));
 		List<String> consumed = new ArrayList<>();
 		rootNames.consumeRootName(class1, name -> consumed.add(name));
 

@@ -13,6 +13,8 @@ public class Messages extends NLS {
 	public static String Dialogs_executionEnginePreferenceChange_text;
 	public static String Dialogs_internal_error_caption;
 	public static String Dialogs_internal_error_text;
+	public static String Dialogs_invalid_external_entity_caption;
+	public static String Dialogs_invalid_external_entity_text;
 	public static String Dialogs_invalid_trace_file_caption;
 	public static String Dialogs_invalid_trace_file_text;
 	public static String Dialogs_missing_di_notification_caption;

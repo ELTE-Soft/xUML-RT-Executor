@@ -22,8 +22,10 @@ public class Dialogs {
 			result = new MessageDialog(null,
 					Messages.Dialogs_another_debug_launch_caption, null,
 					Messages.Dialogs_another_debug_launch_text,
-					MessageDialog.QUESTION, new String[] { Messages.Dialogs_another_debug_abort_button,
-							Messages.Dialogs_another_debug_force_button }, 0).open() == 1;
+					MessageDialog.QUESTION, new String[] {
+							Messages.Dialogs_another_debug_abort_button,
+							Messages.Dialogs_another_debug_force_button }, 0)
+					.open() == 1;
 		}
 
 		public boolean getResult() {
@@ -69,6 +71,13 @@ public class Dialogs {
 				() -> MessageDialog.openError(null,
 						Messages.Dialogs_invalid_trace_file_caption,
 						Messages.Dialogs_invalid_trace_file_text));
+	}
+
+	public static void openExternalEntityInvalidErrorDialog() {
+		Display.getDefault().syncExec(
+				() -> MessageDialog.openError(null,
+						Messages.Dialogs_invalid_external_entity_caption,
+						Messages.Dialogs_invalid_external_entity_text));
 	}
 
 	public static void openInternalErrorDialog() {
