@@ -112,9 +112,9 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		return meta;
 	}
 
-	public ReversibleTask addListeners(RootElementTranslator<?, ?, ?> builder,
-			ListenerContext context) {
-		return new AddListenerTask(builder, context);
+	public ReversibleTask addListeners(
+			RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
+		return new AddListenerTask(translator, context);
 	}
 
 	private final class AddListenerTask extends CompositeReversibleTask {
@@ -122,16 +122,16 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		private final ListenerContext context;
 		private final IMatchUpdateListener<Match> listener;
 
-		public AddListenerTask(RootElementTranslator<?, ?, ?> builder,
+		public AddListenerTask(RootElementTranslator<?, ?, ?> translator,
 				ListenerContext context) {
 			this.context = context;
 			AdvancedIncQueryEngine engine = context.getEngine();
 			ChangeRegistry changes = context.getChanges();
 
-			listener = new MatchUpdateListener<>(builder, changes);
+			listener = new MatchUpdateListener<>(translator, changes);
 			engine.addMatchUpdateListener(matcher, listener, false);
-			childNodes
-					.forEach(node -> add(node.addListeners(builder, context)));
+			childNodes.forEach(node -> add(node.addListeners(translator,
+					context)));
 		}
 
 		@Override

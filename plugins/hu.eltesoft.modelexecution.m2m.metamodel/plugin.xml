@@ -28,6 +28,14 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated translation -->
       <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/callable"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
             uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/classdef"
             class="hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage"
             genModel="model/translation.genmodel"/>
@@ -38,6 +46,14 @@
       <package
             uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/event"
             class="hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/external"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage"
             genModel="model/translation.genmodel"/>
    </extension>
 

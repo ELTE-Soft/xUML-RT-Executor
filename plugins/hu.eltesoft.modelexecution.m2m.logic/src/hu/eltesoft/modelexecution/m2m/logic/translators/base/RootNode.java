@@ -15,12 +15,12 @@ import org.eclipse.uml2.uml.NamedElement;
 public class RootNode<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch>
 		extends AbstractNode<Trans, Match> {
 
-	protected RootElementTranslator<UML, Trans, Match> builder;
+	protected RootElementTranslator<UML, Trans, Match> translator;
 
-	public RootNode(RootElementTranslator<UML, Trans, Match> builder,
+	public RootNode(RootElementTranslator<UML, Trans, Match> translator,
 			BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
 		super(Arrays.asList(matcher.getSpecification().getParameters().get(0)
 				.getTypeName()), matcher, transform);
-		this.builder = builder;
+		this.translator = translator;
 	}
 }

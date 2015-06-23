@@ -6,6 +6,7 @@ import org.eclipse.papyrus.uml.alf.Block
 import org.eclipse.papyrus.uml.alf.BlockStatement
 import org.eclipse.papyrus.uml.alf.ExpressionStatement
 import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
+import org.eclipse.papyrus.uml.alf.InvocationExpression
 import org.eclipse.papyrus.uml.alf.NameBinding
 import org.eclipse.papyrus.uml.alf.NameExpression
 import org.eclipse.papyrus.uml.alf.QualifiedName
@@ -13,6 +14,7 @@ import org.eclipse.papyrus.uml.alf.SyntaxElement
 import org.eclipse.papyrus.uml.alf.ThisExpression
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
+import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.Reception
 
 /**
@@ -56,38 +58,39 @@ class ModelReferenceDecorator {
 	/**
 	 * Handle feature invocation on an explicit this expression.
 	 */
-	def dispatch void visit(FeatureInvocationExpression call) {
-		val feature = call.target
+	def dispatch void visit(FeatureInvocationExpression invocation) {
+		val feature = invocation.target
 		visit(feature.expression)
-		val name = toModelName(feature.nameBinding)
-		val referenced = lookupChild(name)
-
-		if (referenced == null) {
-			throw new UnsupportedAlfFeatureException(
-				"Referenced reception " + name +
-					" cannot be found. Only receptions that can be looked up by their name are supported now.");
-		}
-
-		// TODO: support referencing other element types
-		references.putInvokedReception(call, referenced as Reception)
+		connectInvocation(invocation, toModelName(feature.nameBinding))
 	}
 
 	/**
-	 * Handle behavior invocation on an implicit this expression.
+	 * Handle behavior invocation on an implicit this expression or external entity call.
 	 */
-	def dispatch void visit(BehaviorInvocationExpression call) {
-		val name = toModelName(call.target)
-		val referenced = lookupChild(name)
-
-		if (referenced == null) {
-			throw new UnsupportedAlfFeatureException(
-				"Referenced reception " + name +
-					" cannot be found. Only receptions that can be looked up by their name are supported now.");
-		}
-
-		// TODO: support referencing other element types
-		references.putInvokedReception(call, referenced as Reception)
+	def dispatch void visit(BehaviorInvocationExpression invocation) {
+		connectInvocation(invocation, toModelName(invocation.target))
 	}
+
+	def connectInvocation(InvocationExpression invocation, String name) {
+		val element = lookup(name)
+		switch (element) {
+			Reception:
+				references.connect(invocation, element)
+			Operation:
+				references.connect(invocation, element)
+			default:
+				// this branch also handles null references
+				throw new UnsupportedAlfFeatureException(
+					"Invocation target `" + name +
+						"` cannot be found. Only receptions and external entity calls are supported.")
+		}
+	}
+
+	private def String toModelName(NameBinding binding) {
+		binding.name
+	}
+
+	private def String toModelName(QualifiedName qname) '''«FOR binding : qname.nameBinding SEPARATOR '::'»«binding.name»«ENDFOR»'''
 
 	def dispatch void visit(ThisExpression expr) {
 		currentContext = context;
@@ -97,7 +100,7 @@ class ModelReferenceDecorator {
 		for (binding : expr.name.nameBinding) {
 
 			// TODO: this lookup mechanism is likely to be incorrect
-			currentContext = lookupChild(binding.name)
+			currentContext = lookup(binding.name)
 		}
 	}
 
@@ -105,14 +108,43 @@ class ModelReferenceDecorator {
 		throw new UnsupportedAlfFeatureException(other.toString);
 	}
 
-	private def String toModelName(NameBinding binding) {
-		binding.name
+	private def EObject lookup(String name) {
+		if (isExternalCall(name)) {
+			return lookupExternalCall(name);
+		}
+		return lookupInContext(currentContext, name);
 	}
 
-	private def String toModelName(QualifiedName qname) '''«FOR binding : qname.nameBinding SEPARATOR '::'»«binding.name»«ENDFOR»'''
+	private def isExternalCall(CharSequence name) {
+		val identifierPattern = "[\\p{L}_$][\\p{L}\\p{N}_$]*";
+		return name.toString.matches(identifierPattern + "::" + identifierPattern);
+	}
 
-	private def EObject lookupChild(CharSequence name) {
-		for (child : currentContext.eContents) {
+	private def EObject lookupExternalCall(String name) {
+		val parts = name.split("::")
+
+		if (null == model) {
+			return null
+		}
+		val entity = lookupInContext(model, parts.get(0))
+
+		if (null == entity) {
+			return null
+		}
+		val operation = lookupInContext(entity, parts.get(1))
+		return operation
+	}
+
+	private def EObject getModel() {
+		var parent = currentContext;
+		while (null != parent.eContainer) {
+			parent = parent.eContainer
+		}
+		return parent
+	}
+
+	private def EObject lookupInContext(EObject providedContext, String name) {
+		for (child : providedContext.eContents) {
 			if (child instanceof NamedElement && (child as NamedElement).name.equals(name)) {
 				return child
 			}

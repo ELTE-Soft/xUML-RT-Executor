@@ -26,7 +26,12 @@ public enum TerminationResult {
 	 * The runtime used a trace file that was not consistent with the executed
 	 * model.
 	 */
-	INVALID_TRACEFILE(3);
+	INVALID_TRACEFILE(3),
+
+	/**
+	 * An external entity class is not found or its instantiation failed.
+	 */
+	INVALID_EXTERNAL_ENTITY(4);
 
 	private TerminationResult(int errorCode) {
 		this.errorCode = errorCode;

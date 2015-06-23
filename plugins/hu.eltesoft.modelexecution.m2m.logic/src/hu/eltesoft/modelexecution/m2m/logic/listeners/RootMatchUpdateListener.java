@@ -18,17 +18,18 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 	private final RootNameStorage rootNames;
 
 	public RootMatchUpdateListener(
-			RootElementTranslator<UML, ?, Match> builder,
+			RootElementTranslator<UML, ?, Match> translator,
 			ChangeRegistry changes, RootNameStorage rootNames) {
-		super(builder, changes);
+		super(translator, changes);
 		this.rootNames = rootNames;
 	}
 
 	@Override
 	public void notifyAppearance(Match match) {
 		UML root = extractRoot(match);
-		rootNames.saveRootName(root);
-		changes.registerUpdate(root, builder);
+		String rootName = translator.getRootName(root);
+		rootNames.saveRootName(root, rootName);
+		changes.registerUpdate(root, translator);
 	}
 
 	@Override

@@ -3,15 +3,17 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.eltesoft.modelexecution.m2m.metamodel/src-gen"
     modelPluginID="hu.eltesoft.modelexecution.m2m.metamodel" modelName="Translation metamodels"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    bundleManifest="false" complianceLevel="8.0" copyrightFields="false" operationReflection="true"
-    importOrganizing="true">
+    bundleManifest="false" complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>association.ecore</foreignModel>
   <foreignModel>base.ecore</foreignModel>
   <foreignModel>behavior.ecore</foreignModel>
+  <foreignModel>callable.ecore</foreignModel>
   <foreignModel>classdef.ecore</foreignModel>
   <foreignModel>event.ecore</foreignModel>
+  <foreignModel>external.ecore</foreignModel>
   <foreignModel>region.ecore</foreignModel>
   <foreignModel>signal.ecore</foreignModel>
-  <foreignModel>association.ecore</foreignModel>
   <genPackages prefix="Association" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="association.ecore#/">
     <genClasses ecoreClass="association.ecore#//AsAssociation">
@@ -36,6 +38,7 @@
     </genEnums>
     <genDataTypes ecoreDataType="base.ecore#//NamedReference"/>
     <genDataTypes ecoreDataType="base.ecore#//Reference"/>
+    <genClasses ecoreClass="base.ecore#//TranslationObject"/>
     <genClasses image="false" ecoreClass="base.ecore#//ModelRoot"/>
     <genClasses image="false" ecoreClass="base.ecore#//Named">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Named/reference"/>
@@ -48,10 +51,6 @@
     </genClasses>
     <genClasses ecoreClass="base.ecore#//Type">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//Type/baseType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/lowerBound"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/upperBound"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/isOrdered"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Type/isUnique"/>
     </genClasses>
     <genClasses image="false" ecoreClass="base.ecore#//ScalarType"/>
     <genClasses ecoreClass="base.ecore#//PrimitiveType">
@@ -60,6 +59,12 @@
     <genClasses ecoreClass="base.ecore#//ReferencedType"/>
     <genClasses ecoreClass="base.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Parameter/direction"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//Multiplicity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/isOrdered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/isUnique"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Behavior" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
@@ -71,6 +76,12 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/parameters"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/isStatic"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/returnType"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Callable" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="callable.ecore#/">
+    <genClasses ecoreClass="callable.ecore#//CaCallable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute callable.ecore#//CaCallable/receptions"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Classdef" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
@@ -107,6 +118,21 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute event.ecore#//EvSignalEvent/signal"/>
     </genClasses>
   </genPackages>
+  <genPackages prefix="External" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="external.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="external.ecore#//ExEntityType">
+      <genEnumLiterals ecoreEnumLiteral="external.ecore#//ExEntityType/Stateless"/>
+      <genEnumLiterals ecoreEnumLiteral="external.ecore#//ExEntityType/Singleton"/>
+    </genEnums>
+    <genClasses ecoreClass="external.ecore#//ExExternalEntity">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference external.ecore#//ExExternalEntity/operations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExExternalEntity/implementationClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExExternalEntity/type"/>
+    </genClasses>
+    <genClasses ecoreClass="external.ecore#//ExOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExOperation/proxyClass"/>
+    </genClasses>
+  </genPackages>
   <genPackages prefix="Region" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="region.ecore#/">
     <genClasses ecoreClass="region.ecore#//RgRegion">
@@ -134,6 +160,8 @@
     <genClasses ecoreClass="signal.ecore#//SgSignal">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgSignal/attributes"/>
     </genClasses>
-    <genClasses ecoreClass="signal.ecore#//SgAttribute"/>
+    <genClasses ecoreClass="signal.ecore#//SgAttribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgAttribute/type"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -26,7 +26,10 @@ public interface Runtime {
 	 * Runs the model execution started by the execution of the given operation
 	 * in the given class.
 	 */
-	public abstract TerminationResult run(String className, String feedName)
-			throws Exception;
+	TerminationResult run(String className, String feedName) throws Exception;
 
+	/**
+	 * Fetches an external entity instance by its interface class.
+	 */
+	<Impl> Impl getExternalEntity(Class<? super Impl> entityClass);
 }

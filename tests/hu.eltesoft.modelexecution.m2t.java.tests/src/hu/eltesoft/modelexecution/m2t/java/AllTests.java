@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ FeatureReferenceTests.class, StepPartitioningTests.class,
-		TemplateSmokeTests.class })
+@SuiteClasses({ FeatureReferenceTests.class, ExternalEntityTests.class,
+		StepPartitioningTests.class, TemplateSmokeTests.class })
 public class AllTests {
 }
