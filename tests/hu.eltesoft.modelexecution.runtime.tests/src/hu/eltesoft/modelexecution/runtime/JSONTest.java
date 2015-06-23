@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.tests;
+package hu.eltesoft.modelexecution.runtime;
 
 import static org.junit.Assert.*;
 

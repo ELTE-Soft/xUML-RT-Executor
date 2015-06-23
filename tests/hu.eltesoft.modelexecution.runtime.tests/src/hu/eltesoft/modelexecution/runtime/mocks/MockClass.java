@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.tests.mocks;
+package hu.eltesoft.modelexecution.runtime.mocks;
 
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
@@ -47,14 +47,12 @@ public class MockClass extends ClassWithState {
 	}
 
 	public static void emptyFeed() {
+		instance.dispose();
 	}
 
 	public void feedEvent() {
 		runtime.addEventToQueue(this, new DummySignal());
-	}
-
-	@Override
-	public void dispose() {
+		dispose();
 	}
 
 	@Override

@@ -119,7 +119,11 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					}
 				}
 			}
-			controller.stopListening();
+
+			if (controller != null) {
+				controller.stopListening();
+			}
+
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {

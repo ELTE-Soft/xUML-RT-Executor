@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.tests.mocks;
+package hu.eltesoft.modelexecution.runtime.mocks;
 
 import org.json.JSONException;
 import org.json.JSONObject;

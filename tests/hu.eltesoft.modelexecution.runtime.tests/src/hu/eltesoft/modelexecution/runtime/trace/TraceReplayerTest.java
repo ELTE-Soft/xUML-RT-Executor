@@ -1,12 +1,12 @@
-package hu.eltesoft.modelexecution.runtime.tests.trace;
+package hu.eltesoft.modelexecution.runtime.trace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DifferentDummyEvent;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.mocks.DifferentDummyEvent;
+import hu.eltesoft.modelexecution.runtime.mocks.DummySignal;
+import hu.eltesoft.modelexecution.runtime.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceMessageMismatchException;
 import hu.eltesoft.modelexecution.runtime.trace.TraceMessageUnexpectedException;
