@@ -1,12 +1,11 @@
 package hu.eltesoft.modelexecution.runtime.base;
 
 /**
- * A base class for state machines (regions).
+ * Interface for state machines (regions).
  */
-public abstract class StateMachineRegion {
+public interface StateMachineRegion {
 
-	abstract public void step(Message message);
+	void doInitialTransition();
 
-	abstract public void doInitialTransition();
-
+	void step(Message message);
 }

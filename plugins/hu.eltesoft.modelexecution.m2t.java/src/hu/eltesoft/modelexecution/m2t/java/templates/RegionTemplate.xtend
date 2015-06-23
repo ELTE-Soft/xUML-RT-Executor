@@ -71,7 +71,7 @@ class RegionTemplate extends Template {
 	override generate() '''
 		/** Class for state machine region «region.javadoc» */
 		«generatedHeaderForClass(region)»
-		public class «region.identifier» extends «StateMachineRegion.canonicalName» {
+		public class «region.identifier» implements «StateMachineRegion.canonicalName» {
 		
 			private enum State {
 				/** Enum literal for initial state «initState.javadoc» */
