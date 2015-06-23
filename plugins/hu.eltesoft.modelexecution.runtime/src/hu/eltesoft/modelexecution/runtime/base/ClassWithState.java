@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.base;
 
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 
 /**
@@ -7,30 +8,42 @@ import hu.eltesoft.modelexecution.runtime.Runtime;
  */
 public abstract class ClassWithState extends Class {
 
-	private Runtime runtime;
-	private int instanceID;
+	private final Runtime runtime;
+	private final int instanceID;
+	private final StateMachineRegion stateMachine;
 
 	public ClassWithState(Runtime runtime, int instanceID) {
 		super();
 		this.runtime = runtime;
 		this.instanceID = instanceID;
+		stateMachine = createStateMachine();
 	}
 
-	public abstract void init();
-
-	public abstract void receive(Message message);
+	/**
+	 * To be overridden by the generated child classes
+	 */
+	protected abstract StateMachineRegion createStateMachine();
 
 	public Runtime getRuntime() {
 		return runtime;
 	}
-	
-	/**
-	 * Unregisters the instance to allow garbage-collection
-	 */
-	public abstract void dispose();
-	
+
 	public int getInstanceID() {
 		return instanceID;
 	}
 
+	public void init() {
+		stateMachine.doInitialTransition();
+	}
+
+	public void receive(Message message) {
+		stateMachine.step(message);
+	}
+
+	/**
+	 * Unregisters the instance to allow garbage-collection
+	 */
+	public void dispose() {
+		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
+	}
 }

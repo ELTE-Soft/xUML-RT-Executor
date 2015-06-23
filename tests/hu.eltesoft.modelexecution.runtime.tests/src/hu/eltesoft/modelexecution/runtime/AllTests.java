@@ -1,8 +1,8 @@
-package hu.eltesoft.modelexecution.runtime.tests;
+package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistryTests;
-import hu.eltesoft.modelexecution.runtime.tests.trace.TraceReplayerTest;
-import hu.eltesoft.modelexecution.runtime.tests.trace.TraceWriterTest;
+import hu.eltesoft.modelexecution.runtime.trace.TraceReplayerTest;
+import hu.eltesoft.modelexecution.runtime.trace.TraceWriterTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

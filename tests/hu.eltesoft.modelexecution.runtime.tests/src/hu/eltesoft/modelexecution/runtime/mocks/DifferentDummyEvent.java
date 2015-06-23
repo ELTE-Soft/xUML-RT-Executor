@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.tests.mocks;
+package hu.eltesoft.modelexecution.runtime.mocks;
 
 public class DifferentDummyEvent extends DummySignal {
 

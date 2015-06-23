@@ -1,9 +1,8 @@
-package hu.eltesoft.modelexecution.runtime.tests;
+package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.mocks.DummySignal;
+import hu.eltesoft.modelexecution.runtime.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
@@ -19,7 +18,6 @@ public class BaseRuntimeTest {
 
 	@Test
 	public void testRun() throws Exception {
-
 		Logger loggerMock = context.mock(Logger.class);
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);
@@ -45,7 +43,6 @@ public class BaseRuntimeTest {
 
 	@Test
 	public void testRun_eventFeeded() throws Exception {
-
 		Logger loggerMock = context.mock(Logger.class);
 		Tracer tracerMock = context.mock(Tracer.class);
 		TraceReader readerMock = context.mock(TraceReader.class);

@@ -22,10 +22,14 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
@@ -204,10 +208,10 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		// Obtain or create and register interdependencies
 		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
-		hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl theCallablePackage = (hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eINSTANCE);
+		CallablePackageImpl theCallablePackage = (CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) instanceof CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) : CallablePackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
 		EventPackageImpl theEventPackage = (EventPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) instanceof EventPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) : EventPackage.eINSTANCE);
-		hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl theExternalPackage = (hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eINSTANCE);
+		ExternalPackageImpl theExternalPackage = (ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) instanceof ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) : ExternalPackage.eINSTANCE);
 		RegionPackageImpl theRegionPackage = (RegionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) instanceof RegionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) : RegionPackage.eINSTANCE);
 		SignalPackageImpl theSignalPackage = (SignalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) instanceof SignalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) : SignalPackage.eINSTANCE);
 

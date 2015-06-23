@@ -8,10 +8,14 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
@@ -115,10 +119,10 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		AssociationPackageImpl theAssociationPackage = (AssociationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) instanceof AssociationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AssociationPackage.eNS_URI) : AssociationPackage.eINSTANCE);
 		BasePackageImpl theBasePackage = (BasePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) instanceof BasePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) : BasePackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
-		hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl theCallablePackage = (hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage.eINSTANCE);
+		CallablePackageImpl theCallablePackage = (CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) instanceof CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) : CallablePackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
 		EventPackageImpl theEventPackage = (EventPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) instanceof EventPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) : EventPackage.eINSTANCE);
-		hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl theExternalPackage = (hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) instanceof hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eNS_URI) : hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage.eINSTANCE);
+		ExternalPackageImpl theExternalPackage = (ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) instanceof ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) : ExternalPackage.eINSTANCE);
 		SignalPackageImpl theSignalPackage = (SignalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) instanceof SignalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) : SignalPackage.eINSTANCE);
 
 		// Create package meta-data objects
@@ -247,6 +251,15 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getRgState_IsFinal() {
+		return (EAttribute)rgStateEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRgTransition() {
 		return rgTransitionEClass;
 	}
@@ -327,6 +340,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		createEAttribute(rgStateEClass, RG_STATE__ENTRY);
 		createEAttribute(rgStateEClass, RG_STATE__EXIT);
 		createEReference(rgStateEClass, RG_STATE__TRANSITIONS);
+		createEAttribute(rgStateEClass, RG_STATE__IS_FINAL);
 
 		rgTransitionEClass = createEClass(RG_TRANSITION);
 		createEAttribute(rgTransitionEClass, RG_TRANSITION__MESSAGE);
@@ -384,6 +398,7 @@ public class RegionPackageImpl extends EPackageImpl implements RegionPackage {
 		initEAttribute(getRgState_Entry(), theBasePackage.getNamedReference(), "entry", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRgState_Exit(), theBasePackage.getNamedReference(), "exit", null, 0, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRgState_Transitions(), this.getRgTransition(), null, "transitions", null, 0, -1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getRgState_IsFinal(), ecorePackage.getEBoolean(), "isFinal", "false", 1, 1, RgState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(rgTransitionEClass, RgTransition.class, "RgTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRgTransition_Message(), theBasePackage.getNamedReference(), "message", null, 1, 1, RgTransition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

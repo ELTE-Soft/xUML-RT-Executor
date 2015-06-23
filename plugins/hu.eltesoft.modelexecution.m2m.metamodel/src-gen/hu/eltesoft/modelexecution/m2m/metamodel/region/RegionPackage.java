@@ -215,13 +215,22 @@ public interface RegionPackage extends EPackage {
 	int RG_STATE__TRANSITIONS = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Is Final</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RG_STATE__IS_FINAL = BasePackage.NAMED_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Rg State</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 3;
+	int RG_STATE_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Rg State</em>' class.
@@ -414,6 +423,17 @@ public interface RegionPackage extends EPackage {
 	EReference getRgState_Transitions();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsFinal <em>Is Final</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Final</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsFinal()
+	 * @see #getRgState()
+	 * @generated
+	 */
+	EAttribute getRgState_IsFinal();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgTransition <em>Rg Transition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -575,6 +595,14 @@ public interface RegionPackage extends EPackage {
 		 * @generated
 		 */
 		EReference RG_STATE__TRANSITIONS = eINSTANCE.getRgState_Transitions();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Final</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RG_STATE__IS_FINAL = eINSTANCE.getRgState_IsFinal();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgTransitionImpl <em>Rg Transition</em>}' class.

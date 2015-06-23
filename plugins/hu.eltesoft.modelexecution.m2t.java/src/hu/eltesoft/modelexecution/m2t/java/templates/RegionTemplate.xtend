@@ -71,7 +71,7 @@ class RegionTemplate extends Template {
 	override generate() '''
 		/** Class for state machine region «region.javadoc» */
 		«generatedHeaderForClass(region)»
-		public class «region.identifier» extends «StateMachineRegion.canonicalName» {
+		public class «region.identifier» implements «StateMachineRegion.canonicalName» {
 		
 			private enum State {
 				/** Enum literal for initial state «initState.javadoc» */
@@ -121,8 +121,13 @@ class RegionTemplate extends Template {
 				«IF null != firstState.entry»
 					«firstState.entry.identifier».execute(owner);
 				«ENDIF»
-		
+				
 				currentState = State.«firstState.identifier»;
+				«IF firstState.isFinal»
+					
+					// The class cannot get more events
+					owner.dispose();
+				«ENDIF»
 			}
 		
 			@Override
@@ -173,8 +178,13 @@ class RegionTemplate extends Template {
 								«IF null != transition.target.entry»
 									«transition.target.entry.identifier».execute(owner);
 								«ENDIF»
-							
+								
 								currentState = State.«transition.target.identifier»;
+								«IF transition.target.isFinal»
+									
+									// The class cannot get more events
+									owner.dispose();
+								«ENDIF»
 							}
 						«ENDFOR»
 						break;

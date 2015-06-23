@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getEntry <em>Entry</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getExit <em>Exit</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#getTransitions <em>Transitions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgStateImpl#isIsFinal <em>Is Final</em>}</li>
  * </ul>
  * </p>
  *
@@ -108,6 +109,26 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 	 * @ordered
 	 */
 	protected EList<RgTransition> transitions;
+
+	/**
+	 * The default value of the '{@link #isIsFinal() <em>Is Final</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsFinal()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_FINAL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsFinal() <em>Is Final</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsFinal()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isFinal = IS_FINAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -208,6 +229,27 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsFinal() {
+		return isFinal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsFinal(boolean newIsFinal) {
+		boolean oldIsFinal = isFinal;
+		isFinal = newIsFinal;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_STATE__IS_FINAL, oldIsFinal, isFinal));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -219,6 +261,8 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 				return getExit();
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				return getTransitions();
+			case RegionPackage.RG_STATE__IS_FINAL:
+				return isIsFinal();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -245,6 +289,9 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 				getTransitions().clear();
 				getTransitions().addAll((Collection<? extends RgTransition>)newValue);
 				return;
+			case RegionPackage.RG_STATE__IS_FINAL:
+				setIsFinal((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -269,6 +316,9 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				getTransitions().clear();
 				return;
+			case RegionPackage.RG_STATE__IS_FINAL:
+				setIsFinal(IS_FINAL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -289,6 +339,8 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 				return EXIT_EDEFAULT == null ? exit != null : !EXIT_EDEFAULT.equals(exit);
 			case RegionPackage.RG_STATE__TRANSITIONS:
 				return transitions != null && !transitions.isEmpty();
+			case RegionPackage.RG_STATE__IS_FINAL:
+				return isFinal != IS_FINAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -309,6 +361,8 @@ public class RgStateImpl extends TranslationObjectImpl implements RgState {
 		result.append(entry);
 		result.append(", exit: ");
 		result.append(exit);
+		result.append(", isFinal: ");
+		result.append(isFinal);
 		result.append(')');
 		return result.toString();
 	}

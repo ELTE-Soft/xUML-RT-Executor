@@ -47,6 +47,10 @@ public final class InstanceRegistry {
 		instanceRegistry.remove(new InstanceKey(instance));
 	}
 
+	public boolean isEmpty() {
+		return instanceRegistry.isEmpty();
+	}
+
 	/**
 	 * Gets the singleton instance of the registry.
 	 */
@@ -83,5 +87,4 @@ public final class InstanceRegistry {
 		}
 
 	}
-
 }

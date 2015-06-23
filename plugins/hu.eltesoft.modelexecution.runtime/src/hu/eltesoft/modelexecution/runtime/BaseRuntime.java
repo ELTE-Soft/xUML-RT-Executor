@@ -18,8 +18,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Executes the model using logging and tracing. Receives the name of the class
@@ -36,14 +35,14 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
 			+ "Events.Messages";
 
-	private Queue<TargetedMessage> queue = new LinkedList<>();
+	private LinkedBlockingDeque<TargetedMessage> queue = new LinkedBlockingDeque<>();
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
 	private ClassLoader classLoader;
+	private RuntimeController controller;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
-	private boolean terminate = false;
 
 	private final ExternalEntityRegistry externalEntities;
 
@@ -59,8 +58,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	 * responds to messages on all control streams.
 	 */
 	public void addControlStream(InputStream controlStream) {
-		RuntimeController controller = new RuntimeController(controlStream,
-				this);
+		controller = new RuntimeController(controlStream, this);
 		controller.startListening();
 	}
 
@@ -74,14 +72,13 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		} catch (Exception e) {
 			logError("Cannot close the runtime", e);
 		}
-		logInfo("Execution terminating on user request");
 		System.exit(1);
 	}
 
 	@Override
 	public void addEventToQueue(ClassWithState target, Message message) {
 		TargetedMessage targetedEvent = new TargetedMessage(target, message);
-		queue.add(targetedEvent);
+		queue.addLast(targetedEvent);
 		logger.messageQueued(target, message);
 	}
 
@@ -107,17 +104,26 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			logInfo("Preparing system for execution");
 			prepare(className, feedName);
 			logInfo("Starting execution");
-			while (!terminate && (!queue.isEmpty() || traceReader.hasEvent())) {
-				if (!queue.isEmpty()) {
-					TargetedMessage currQueueEvent = queue.peek();
-					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Queue) {
-						queue.poll();
-					}
-					traceWriter.traceEvent(currQueueEvent);
-				} else {
+			while (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
+				// events read from trace will not be written to trace
+				if (queue.isEmpty() && traceReader.hasEvent()) {
 					traceReader.dispatchEvent(logger);
+				} else {
+					// if queue is empty, take blocks
+					TargetedMessage currQueueEvent = queue.take();
+					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
+						// put back the event to the original position
+						queue.addFirst(currQueueEvent);
+					} else {
+						traceWriter.traceEvent(currQueueEvent);
+					}
 				}
 			}
+
+			if (controller != null) {
+				controller.stopListening();
+			}
+
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
@@ -135,7 +141,8 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	/**
-	 * Creates an instance of the selected class and executes it.
+	 * Registers the runtime in the {@link InstanceRegistry}. Creates an
+	 * instance of the selected class and executes it.
 	 */
 	private void prepare(String className, String feedName)
 			throws ClassNotFoundException, NoSuchMethodException,

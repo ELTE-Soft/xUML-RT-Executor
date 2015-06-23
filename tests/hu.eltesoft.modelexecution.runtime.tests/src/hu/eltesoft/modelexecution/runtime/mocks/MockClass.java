@@ -1,9 +1,10 @@
-package hu.eltesoft.modelexecution.runtime.tests.mocks;
+package hu.eltesoft.modelexecution.runtime.mocks;
 
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class MockClass extends ClassWithState {
 
 	private static MockClass instance = null;
-	
+
 	private Runtime runtime;
 
 	public MockClass(Runtime runtime) {
@@ -46,14 +47,17 @@ public class MockClass extends ClassWithState {
 	}
 
 	public static void emptyFeed() {
+		instance.dispose();
 	}
 
 	public void feedEvent() {
 		runtime.addEventToQueue(this, new DummySignal());
+		dispose();
 	}
 
 	@Override
-	public void dispose() {
+	protected StateMachineRegion createStateMachine() {
+		// do not need a state machine since receive and init is overridden
+		return null;
 	}
-
 }

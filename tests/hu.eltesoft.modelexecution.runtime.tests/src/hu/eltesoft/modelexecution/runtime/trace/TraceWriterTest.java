@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.tests.trace;
+package hu.eltesoft.modelexecution.runtime.trace;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import hu.eltesoft.modelexecution.runtime.tests.mocks.DummySignal;
-import hu.eltesoft.modelexecution.runtime.tests.mocks.MockClass;
+import hu.eltesoft.modelexecution.runtime.mocks.DummySignal;
+import hu.eltesoft.modelexecution.runtime.mocks.MockClass;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 

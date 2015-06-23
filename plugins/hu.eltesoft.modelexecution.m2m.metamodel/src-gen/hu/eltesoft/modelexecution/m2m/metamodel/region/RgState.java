@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getEntry <em>Entry</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getExit <em>Exit</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#getTransitions <em>Transitions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsFinal <em>Is Final</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,5 +94,32 @@ public interface RgState extends Named {
 	 * @generated
 	 */
 	EList<RgTransition> getTransitions();
+
+	/**
+	 * Returns the value of the '<em><b>Is Final</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Final</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Final</em>' attribute.
+	 * @see #setIsFinal(boolean)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgState_IsFinal()
+	 * @model default="false" required="true"
+	 * @generated
+	 */
+	boolean isIsFinal();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgState#isIsFinal <em>Is Final</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Final</em>' attribute.
+	 * @see #isIsFinal()
+	 * @generated
+	 */
+	void setIsFinal(boolean value);
 
 } // RgState

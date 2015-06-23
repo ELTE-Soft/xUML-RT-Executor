@@ -24,6 +24,11 @@ pattern State(region : Region, state : State) {
 	State.container(state, region);
 }
 
+pattern FinalState(region : Region, state : State) {
+	find State(region, state);
+	FinalState(state);
+}
+
 pattern Entry(region : Region, state : State, entry : Behavior) {
 	State.container(state, region);
 	State.entry(state, entry);
