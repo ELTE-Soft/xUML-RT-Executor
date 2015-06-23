@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
-import hu.eltesoft.modelexecution.uml.incquery.util.TerminationStateQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.FinalStateQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
@@ -10,27 +10,27 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
 /**
- * Pattern-specific match representation of the hu.eltesoft.modelexecution.uml.incquery.TerminationState pattern,
- * to be used in conjunction with {@link TerminationStateMatcher}.
+ * Pattern-specific match representation of the hu.eltesoft.modelexecution.uml.incquery.FinalState pattern,
+ * to be used in conjunction with {@link FinalStateMatcher}.
  * 
  * <p>Class fields correspond to parameters of the pattern. Fields with value null are considered unassigned.
  * Each instance is a (possibly partial) substitution of pattern parameters,
  * usable to represent a match of the pattern in the result of a query,
  * or to specify the bound (fixed) input parameters when issuing a query.
  * 
- * @see TerminationStateMatcher
- * @see TerminationStateProcessor
+ * @see FinalStateMatcher
+ * @see FinalStateProcessor
  * 
  */
 @SuppressWarnings("all")
-public abstract class TerminationStateMatch extends BasePatternMatch {
+public abstract class FinalStateMatch extends BasePatternMatch {
   private Region fRegion;
   
   private State fState;
   
   private static List<String> parameterNames = makeImmutableList("region", "state");
   
-  private TerminationStateMatch(final Region pRegion, final State pState) {
+  private FinalStateMatch(final Region pRegion, final State pState) {
     this.fRegion = pRegion;
     this.fState = pState;
     
@@ -83,13 +83,13 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
   
   @Override
   public String patternName() {
-    return "hu.eltesoft.modelexecution.uml.incquery.TerminationState";
+    return "hu.eltesoft.modelexecution.uml.incquery.FinalState";
     
   }
   
   @Override
   public List<String> parameterNames() {
-    return TerminationStateMatch.parameterNames;
+    return FinalStateMatch.parameterNames;
     
   }
   
@@ -100,7 +100,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
   }
   
   @Override
-  public TerminationStateMatch toImmutable() {
+  public FinalStateMatch toImmutable() {
     return isMutable() ? newMatch(fRegion, fState) : this;
     
   }
@@ -128,7 +128,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
   public boolean equals(final Object obj) {
     if (this == obj)
     	return true;
-    if (!(obj instanceof TerminationStateMatch)) { // this should be infrequent
+    if (!(obj instanceof FinalStateMatch)) { // this should be infrequent
     	if (obj == null)
     		return false;
     	if (!(obj instanceof IPatternMatch))
@@ -138,7 +138,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
     		return false;
     	return Arrays.deepEquals(toArray(), otherSig.toArray());
     }
-    TerminationStateMatch other = (TerminationStateMatch) obj;
+    FinalStateMatch other = (FinalStateMatch) obj;
     if (fRegion == null) {if (other.fRegion != null) return false;}
     else if (!fRegion.equals(other.fRegion)) return false;
     if (fState == null) {if (other.fState != null) return false;}
@@ -147,9 +147,9 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
   }
   
   @Override
-  public TerminationStateQuerySpecification specification() {
+  public FinalStateQuerySpecification specification() {
     try {
-    	return TerminationStateQuerySpecification.instance();
+    	return FinalStateQuerySpecification.instance();
     } catch (IncQueryException ex) {
      	// This cannot happen, as the match object can only be instantiated if the query specification exists
      	throw new IllegalStateException	(ex);
@@ -164,7 +164,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
    * @return the empty match.
    * 
    */
-  public static TerminationStateMatch newEmptyMatch() {
+  public static FinalStateMatch newEmptyMatch() {
     return new Mutable(null, null);
     
   }
@@ -178,7 +178,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static TerminationStateMatch newMutableMatch(final Region pRegion, final State pState) {
+  public static FinalStateMatch newMutableMatch(final Region pRegion, final State pState) {
     return new Mutable(pRegion, pState);
     
   }
@@ -192,12 +192,12 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
    * @return the (partial) match object.
    * 
    */
-  public static TerminationStateMatch newMatch(final Region pRegion, final State pState) {
+  public static FinalStateMatch newMatch(final Region pRegion, final State pState) {
     return new Immutable(pRegion, pState);
     
   }
   
-  private static final class Mutable extends TerminationStateMatch {
+  private static final class Mutable extends FinalStateMatch {
     Mutable(final Region pRegion, final State pState) {
       super(pRegion, pState);
       
@@ -209,7 +209,7 @@ public abstract class TerminationStateMatch extends BasePatternMatch {
     }
   }
   
-  private static final class Immutable extends TerminationStateMatch {
+  private static final class Immutable extends FinalStateMatch {
     Immutable(final Region pRegion, final State pState) {
       super(pRegion, pState);
       

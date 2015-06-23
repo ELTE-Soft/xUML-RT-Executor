@@ -3,19 +3,19 @@ package hu.eltesoft.modelexecution.uml.incquery;
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.ExitMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.FinalStateMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.InitialsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.RegionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.StateMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.TransitionEffectMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.TransitionMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.ContainerClassOfRegionQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.EntryQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.ExitQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.util.FinalStateQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.InitialsQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.RegionQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.StateQuerySpecification;
-import hu.eltesoft.modelexecution.uml.incquery.util.TerminationStateQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.TransitionEffectQuerySpecification;
 import hu.eltesoft.modelexecution.uml.incquery.util.TransitionQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
@@ -34,7 +34,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>ContainerClassOfRegion</li>
  * <li>Initials</li>
  * <li>State</li>
- * <li>TerminationState</li>
+ * <li>FinalState</li>
  * <li>Entry</li>
  * <li>Exit</li>
  * <li>Transition</li>
@@ -69,7 +69,7 @@ public final class Region extends BaseGeneratedPatternGroup {
     querySpecifications.add(ContainerClassOfRegionQuerySpecification.instance());
     querySpecifications.add(InitialsQuerySpecification.instance());
     querySpecifications.add(StateQuerySpecification.instance());
-    querySpecifications.add(TerminationStateQuerySpecification.instance());
+    querySpecifications.add(FinalStateQuerySpecification.instance());
     querySpecifications.add(EntryQuerySpecification.instance());
     querySpecifications.add(ExitQuerySpecification.instance());
     querySpecifications.add(TransitionQuerySpecification.instance());
@@ -109,12 +109,12 @@ public final class Region extends BaseGeneratedPatternGroup {
     return StateMatcher.on(engine);
   }
   
-  public TerminationStateQuerySpecification getTerminationState() throws IncQueryException {
-    return TerminationStateQuerySpecification.instance();
+  public FinalStateQuerySpecification getFinalState() throws IncQueryException {
+    return FinalStateQuerySpecification.instance();
   }
   
-  public TerminationStateMatcher getTerminationState(final IncQueryEngine engine) throws IncQueryException {
-    return TerminationStateMatcher.on(engine);
+  public FinalStateMatcher getFinalState(final IncQueryEngine engine) throws IncQueryException {
+    return FinalStateMatcher.on(engine);
   }
   
   public EntryQuerySpecification getEntry() throws IncQueryException {

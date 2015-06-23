@@ -11,6 +11,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ExitMatcher
+import hu.eltesoft.modelexecution.uml.incquery.FinalStateMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InitialsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionMatch
 import hu.eltesoft.modelexecution.uml.incquery.RegionMatcher
@@ -22,7 +23,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Region
 import org.eclipse.uml2.uml.State
-import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatcher
 
 class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMatch> {
 
@@ -51,9 +51,9 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 			stateMap.put(state, newState);
 			return newState;
 		]
-		stateNode.on(PACKAGE.rgState_Entry, EntryMatcher.on(engine)) [new NamedReference(entry)]
-		stateNode.on(PACKAGE.rgState_Exit, ExitMatcher.on(engine)) [new NamedReference(exit)]
-		stateNode.on(PACKAGE.rgState_IsTermination, TerminationStateMatcher.on(engine)) [
+		stateNode.on(PACKAGE.rgState_Entry, EntryMatcher.on(engine))[new NamedReference(entry)]
+		stateNode.on(PACKAGE.rgState_Exit, ExitMatcher.on(engine))[new NamedReference(exit)]
+		stateNode.on(PACKAGE.rgState_IsFinal, FinalStateMatcher.on(engine)) [
 			true
 		]
 

@@ -24,7 +24,7 @@ pattern State(region : Region, state : State) {
 	State.container(state, region);
 }
 
-pattern TerminationState(region : Region, state : State) {
+pattern FinalState(region : Region, state : State) {
 	find State(region, state);
 	FinalState(state);
 }

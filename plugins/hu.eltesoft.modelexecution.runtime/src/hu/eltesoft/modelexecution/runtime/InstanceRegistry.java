@@ -17,8 +17,6 @@ public final class InstanceRegistry {
 	// If multiple runtimes are executed simultaneously, the mapping should be
 	// partitioned by Runtime and synchronized.
 	private Map<InstanceKey, ClassWithState> instanceRegistry = new HashMap<>();
-	
-	private BaseRuntime runtime;
 
 	private static final InstanceRegistry INSTANCE = new InstanceRegistry();
 
@@ -47,9 +45,10 @@ public final class InstanceRegistry {
 	 */
 	public void unregisterInstance(ClassWithState instance) {
 		instanceRegistry.remove(new InstanceKey(instance));
-		if (instanceRegistry.isEmpty()) {
-			runtime.terminate();
-		}
+	}
+
+	public boolean isEmpty() {
+		return instanceRegistry.isEmpty();
 	}
 
 	/**
@@ -88,9 +87,4 @@ public final class InstanceRegistry {
 		}
 
 	}
-
-	public void setRuntime(BaseRuntime runtime) {
-		this.runtime = runtime;
-	}
-
 }

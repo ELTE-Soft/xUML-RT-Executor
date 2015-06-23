@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.uml.incquery.util;
 
 import com.google.common.collect.Sets;
-import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatch;
-import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.FinalStateMatch;
+import hu.eltesoft.modelexecution.uml.incquery.FinalStateMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.util.StateQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
@@ -19,32 +19,32 @@ import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.incquery.runtime.matchers.tuple.FlatTuple;
 
 /**
- * A pattern-specific query specification that can instantiate TerminationStateMatcher in a type-safe way.
+ * A pattern-specific query specification that can instantiate FinalStateMatcher in a type-safe way.
  * 
- * @see TerminationStateMatcher
- * @see TerminationStateMatch
+ * @see FinalStateMatcher
+ * @see FinalStateMatch
  * 
  */
 @SuppressWarnings("all")
-public final class TerminationStateQuerySpecification extends BaseGeneratedQuerySpecification<TerminationStateMatcher> {
+public final class FinalStateQuerySpecification extends BaseGeneratedQuerySpecification<FinalStateMatcher> {
   /**
    * @return the singleton instance of the query specification
    * @throws IncQueryException if the pattern definition could not be loaded
    * 
    */
-  public static TerminationStateQuerySpecification instance() throws IncQueryException {
+  public static FinalStateQuerySpecification instance() throws IncQueryException {
     return LazyHolder.INSTANCE;
     
   }
   
   @Override
-  protected TerminationStateMatcher instantiate(final IncQueryEngine engine) throws IncQueryException {
-    return TerminationStateMatcher.on(engine);
+  protected FinalStateMatcher instantiate(final IncQueryEngine engine) throws IncQueryException {
+    return FinalStateMatcher.on(engine);
   }
   
   @Override
   public String getFullyQualifiedName() {
-    return "hu.eltesoft.modelexecution.uml.incquery.TerminationState";
+    return "hu.eltesoft.modelexecution.uml.incquery.FinalState";
     
   }
   
@@ -59,13 +59,13 @@ public final class TerminationStateQuerySpecification extends BaseGeneratedQuery
   }
   
   @Override
-  public TerminationStateMatch newEmptyMatch() {
-    return TerminationStateMatch.newEmptyMatch();
+  public FinalStateMatch newEmptyMatch() {
+    return FinalStateMatch.newEmptyMatch();
   }
   
   @Override
-  public TerminationStateMatch newMatch(final Object... parameters) {
-    return TerminationStateMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1]);
+  public FinalStateMatch newMatch(final Object... parameters) {
+    return FinalStateMatch.newMatch((org.eclipse.uml2.uml.Region) parameters[0], (org.eclipse.uml2.uml.State) parameters[1]);
   }
   
   @Override
@@ -90,10 +90,10 @@ public final class TerminationStateQuerySpecification extends BaseGeneratedQuery
   }
   
   private static class LazyHolder {
-    private final static TerminationStateQuerySpecification INSTANCE = make();
+    private final static FinalStateQuerySpecification INSTANCE = make();
     
-    public static TerminationStateQuerySpecification make() {
-      return new TerminationStateQuerySpecification();					
+    public static FinalStateQuerySpecification make() {
+      return new FinalStateQuerySpecification();					
       
     }
   }

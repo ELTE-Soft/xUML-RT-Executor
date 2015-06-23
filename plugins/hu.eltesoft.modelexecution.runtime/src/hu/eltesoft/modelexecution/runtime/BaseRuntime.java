@@ -40,6 +40,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
 	private ClassLoader classLoader;
+	private RuntimeController controller;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger
 			.getLogger(LOGGER_ID); //$NON-NLS-1$
 
@@ -57,8 +58,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	 * responds to messages on all control streams.
 	 */
 	public void addControlStream(InputStream controlStream) {
-		RuntimeController controller = new RuntimeController(controlStream,
-				this);
+		controller = new RuntimeController(controlStream, this);
 		controller.startListening();
 	}
 
@@ -104,7 +104,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			logInfo("Preparing system for execution");
 			prepare(className, feedName);
 			logInfo("Starting execution");
-			while (true) {
+			while (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
 				// events read from trace will not be written to trace
 				if (queue.isEmpty() && traceReader.hasEvent()) {
 					traceReader.dispatchEvent(logger);
@@ -119,6 +119,9 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					}
 				}
 			}
+			controller.stopListening();
+			logInfo("Execution terminated successfully");
+			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
 			logError(
 					"The trace file is not consistent with the current model.",
@@ -141,7 +144,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			throws ClassNotFoundException, NoSuchMethodException,
 			InstantiationException, IllegalAccessException,
 			InvocationTargetException {
-		InstanceRegistry.getInstanceRegistry().setRuntime(this);
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 		Constructor<?> constructor = classClass.getConstructor(Runtime.class);
 		ClassWithState classInstance = (ClassWithState) constructor

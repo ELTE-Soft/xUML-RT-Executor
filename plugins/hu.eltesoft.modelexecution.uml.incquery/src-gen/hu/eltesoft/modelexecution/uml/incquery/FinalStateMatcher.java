@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.uml.incquery;
 
-import hu.eltesoft.modelexecution.uml.incquery.TerminationStateMatch;
-import hu.eltesoft.modelexecution.uml.incquery.util.TerminationStateQuerySpecification;
+import hu.eltesoft.modelexecution.uml.incquery.FinalStateMatch;
+import hu.eltesoft.modelexecution.uml.incquery.util.FinalStateQuerySpecification;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,36 +19,36 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 
 /**
- * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.TerminationState pattern,
+ * Generated pattern matcher API of the hu.eltesoft.modelexecution.uml.incquery.FinalState pattern,
  * providing pattern-specific query methods.
  * 
  * <p>Use the pattern matcher on a given model via {@link #on(IncQueryEngine)},
  * e.g. in conjunction with {@link IncQueryEngine#on(Notifier)}.
  * 
- * <p>Matches of the pattern will be represented as {@link TerminationStateMatch}.
+ * <p>Matches of the pattern will be represented as {@link FinalStateMatch}.
  * 
  * <p>Original source:
  * <code><pre>
- * pattern TerminationState(region : Region, state : State) {
+ * pattern FinalState(region : Region, state : State) {
  * 	find State(region, state);
  * 	FinalState(state);
  * }
  * </pre></code>
  * 
- * @see TerminationStateMatch
- * @see TerminationStateProcessor
- * @see TerminationStateQuerySpecification
+ * @see FinalStateMatch
+ * @see FinalStateProcessor
+ * @see FinalStateQuerySpecification
  * 
  */
 @SuppressWarnings("all")
-public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> {
+public class FinalStateMatcher extends BaseMatcher<FinalStateMatch> {
   /**
    * @return the singleton instance of the query specification of this pattern
    * @throws IncQueryException if the pattern definition could not be loaded
    * 
    */
-  public static IQuerySpecification<TerminationStateMatcher> querySpecification() throws IncQueryException {
-    return TerminationStateQuerySpecification.instance();
+  public static IQuerySpecification<FinalStateMatcher> querySpecification() throws IncQueryException {
+    return FinalStateQuerySpecification.instance();
   }
   
   /**
@@ -59,11 +59,11 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @throws IncQueryException if an error occurs during pattern matcher creation
    * 
    */
-  public static TerminationStateMatcher on(final IncQueryEngine engine) throws IncQueryException {
+  public static FinalStateMatcher on(final IncQueryEngine engine) throws IncQueryException {
     // check if matcher already exists
-    TerminationStateMatcher matcher = engine.getExistingMatcher(querySpecification());
+    FinalStateMatcher matcher = engine.getExistingMatcher(querySpecification());
     if (matcher == null) {
-    	matcher = new TerminationStateMatcher(engine);
+    	matcher = new FinalStateMatcher(engine);
     	// do not have to "put" it into engine.matchers, reportMatcherInitialized() will take care of it
     }
     return matcher;
@@ -73,7 +73,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
   
   private final static int POSITION_STATE = 1;
   
-  private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(TerminationStateMatcher.class);
+  private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(FinalStateMatcher.class);
   
   /**
    * Initializes the pattern matcher over a given EMF model root (recommended: Resource or ResourceSet).
@@ -88,7 +88,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * 
    */
   @Deprecated
-  public TerminationStateMatcher(final Notifier emfRoot) throws IncQueryException {
+  public FinalStateMatcher(final Notifier emfRoot) throws IncQueryException {
     this(IncQueryEngine.on(emfRoot));
   }
   
@@ -102,7 +102,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * 
    */
   @Deprecated
-  public TerminationStateMatcher(final IncQueryEngine engine) throws IncQueryException {
+  public FinalStateMatcher(final IncQueryEngine engine) throws IncQueryException {
     super(engine, querySpecification());
   }
   
@@ -110,10 +110,10 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @return matches represented as a TerminationStateMatch object.
+   * @return matches represented as a FinalStateMatch object.
    * 
    */
-  public Collection<TerminationStateMatch> getAllMatches(final Region pRegion, final State pState) {
+  public Collection<FinalStateMatch> getAllMatches(final Region pRegion, final State pState) {
     return rawGetAllMatches(new Object[]{pRegion, pState});
   }
   
@@ -122,10 +122,10 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pRegion the fixed value of pattern parameter region, or null if not bound.
    * @param pState the fixed value of pattern parameter state, or null if not bound.
-   * @return a match represented as a TerminationStateMatch object, or null if no match is found.
+   * @return a match represented as a FinalStateMatch object, or null if no match is found.
    * 
    */
-  public TerminationStateMatch getOneArbitraryMatch(final Region pRegion, final State pState) {
+  public FinalStateMatch getOneArbitraryMatch(final Region pRegion, final State pState) {
     return rawGetOneArbitraryMatch(new Object[]{pRegion, pState});
   }
   
@@ -159,7 +159,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Region pRegion, final State pState, final IMatchProcessor<? super TerminationStateMatch> processor) {
+  public void forEachMatch(final Region pRegion, final State pState, final IMatchProcessor<? super FinalStateMatch> processor) {
     rawForEachMatch(new Object[]{pRegion, pState}, processor);
   }
   
@@ -172,7 +172,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final IMatchProcessor<? super TerminationStateMatch> processor) {
+  public boolean forOneArbitraryMatch(final Region pRegion, final State pState, final IMatchProcessor<? super FinalStateMatch> processor) {
     return rawForOneArbitraryMatch(new Object[]{pRegion, pState}, processor);
   }
   
@@ -190,7 +190,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * 
    */
   @Deprecated
-  public DeltaMonitor<TerminationStateMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState) {
+  public DeltaMonitor<FinalStateMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final Region pRegion, final State pState) {
     return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pRegion, pState});
   }
   
@@ -203,8 +203,8 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @return the (partial) match object.
    * 
    */
-  public TerminationStateMatch newMatch(final Region pRegion, final State pState) {
-    return TerminationStateMatch.newMatch(pRegion, pState);
+  public FinalStateMatch newMatch(final Region pRegion, final State pState) {
+    return FinalStateMatch.newMatch(pRegion, pState);
     
   }
   
@@ -233,7 +233,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Region> getAllValuesOfregion(final TerminationStateMatch partialMatch) {
+  public Set<Region> getAllValuesOfregion(final FinalStateMatch partialMatch) {
     return rawAccumulateAllValuesOfregion(partialMatch.toArray());
   }
   
@@ -271,7 +271,7 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<State> getAllValuesOfstate(final TerminationStateMatch partialMatch) {
+  public Set<State> getAllValuesOfstate(final FinalStateMatch partialMatch) {
     return rawAccumulateAllValuesOfstate(partialMatch.toArray());
   }
   
@@ -285,9 +285,9 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
   }
   
   @Override
-  protected TerminationStateMatch tupleToMatch(final Tuple t) {
+  protected FinalStateMatch tupleToMatch(final Tuple t) {
     try {
-      return TerminationStateMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE));
+      return FinalStateMatch.newMatch((org.eclipse.uml2.uml.Region) t.get(POSITION_REGION), (org.eclipse.uml2.uml.State) t.get(POSITION_STATE));
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in tuple not properly typed!",e);
       return null;
@@ -296,9 +296,9 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
   }
   
   @Override
-  protected TerminationStateMatch arrayToMatch(final Object[] match) {
+  protected FinalStateMatch arrayToMatch(final Object[] match) {
     try {
-      return TerminationStateMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
+      return FinalStateMatch.newMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;
@@ -307,9 +307,9 @@ public class TerminationStateMatcher extends BaseMatcher<TerminationStateMatch> 
   }
   
   @Override
-  protected TerminationStateMatch arrayToMatchMutable(final Object[] match) {
+  protected FinalStateMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return TerminationStateMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
+      return FinalStateMatch.newMutableMatch((org.eclipse.uml2.uml.Region) match[POSITION_REGION], (org.eclipse.uml2.uml.State) match[POSITION_STATE]);
     } catch(ClassCastException e) {
       LOGGER.error("Element(s) in array not properly typed!",e);
       return null;

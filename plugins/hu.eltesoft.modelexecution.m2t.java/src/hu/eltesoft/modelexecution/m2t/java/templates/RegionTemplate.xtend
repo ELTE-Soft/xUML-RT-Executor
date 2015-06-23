@@ -122,12 +122,12 @@ class RegionTemplate extends Template {
 					«firstState.entry.identifier».execute(owner);
 				«ENDIF»
 				
-				«IF firstState.isTermination»
+				currentState = State.«firstState.identifier»;
+				«IF firstState.isFinal»
+					
 					// The class cannot get more events
 					owner.dispose();
 				«ENDIF»
-		
-				currentState = State.«firstState.identifier»;
 			}
 		
 			@Override
@@ -179,12 +179,12 @@ class RegionTemplate extends Template {
 									«transition.target.entry.identifier».execute(owner);
 								«ENDIF»
 								
-								«IF transition.target.isTermination»
+								currentState = State.«transition.target.identifier»;
+								«IF transition.target.isFinal»
+									
 									// The class cannot get more events
 									owner.dispose();
 								«ENDIF»
-							
-								currentState = State.«transition.target.identifier»;
 							}
 						«ENDFOR»
 						break;
