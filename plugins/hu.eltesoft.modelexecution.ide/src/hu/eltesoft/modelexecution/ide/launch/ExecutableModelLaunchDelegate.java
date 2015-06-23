@@ -20,8 +20,8 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,8 +37,7 @@ import org.eclipse.swt.widgets.Display;
  * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
  * execution engine is selected and the needed resources exist.
  */
-public class ExecutableModelLaunchDelegate implements
-		ILaunchConfigurationDelegate {
+public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 
 	public static final String PROC_ATTR_TO_REFRESH = "hu.eltesoft.modelexecution.processAttributes.toRefresh"; //$NON-NLS-1$
 	private static final String MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR = "class"; //$NON-NLS-1$
@@ -53,84 +52,10 @@ public class ExecutableModelLaunchDelegate implements
 	private boolean isListening;
 
 	@Override
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		listenForLaunchTermination();
-
-		if (!launchPassesChecks(configuration, mode)
-				|| !exitChecker.launchStarting(launch)) {
-			return;
-		}	
-		try {
-			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
-					.addMokaConfigs(configuration);
-			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
-					.addJavaConfigs(configuration);
-			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
-			
-		} catch (TraceFileMissingException e) {
-			Dialogs.openTraceFileMissingErrorDialog();
+	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+		if (!super.preLaunchCheck(configuration, mode, monitor)) {
+			return false;
 		}
-	}
-
-	private void launchProcesses(String mode, ILaunch launch,
-			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
-			ILaunchConfiguration javaConfigs) throws CoreException {
-		javaDelegate.launch(javaConfigs, mode, launch, monitor);
-		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			Display.getDefault()
-					.asyncExec(
-							() -> launchMokaDelegate(mokaConfigs, mode, launch,
-									monitor));
-		}
-		setFoldersToRefresh(launch, javaConfigs);
-	}
-
-	protected void setFoldersToRefresh(ILaunch launch,
-			ILaunchConfiguration javaConfigs) throws CoreException {
-		for (IProcess process : launch.getProcesses()) {
-			IProject project = getProject(javaConfigs);
-			String path = ExecutableModelProperties.getTraceFilesPath(project);
-			process.setAttribute(PROC_ATTR_TO_REFRESH, project.getFullPath()
-					+ ";" + project.findMember(path).getFullPath());
-		}
-	}
-
-	private IProject getProject(ILaunchConfiguration launchConfig)
-			throws CoreException {
-		String projectName = launchConfig.getAttribute(
-				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
-		return (IProject) ResourcesPlugin.getWorkspace().getRoot()
-				.findMember(projectName);
-	}
-
-	private void launchMokaDelegate(ILaunchConfiguration configuration,
-			String mode, ILaunch launch, IProgressMonitor monitor) {
-		try {
-			mokaDelegate.launch(configuration, mode, launch, monitor);
-		} catch (Exception e) {
-			IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * Listens for termination of the runtime and informs the user if it was not
-	 * successful.
-	 */
-	private void listenForLaunchTermination() {
-		if (!isListening) {
-			DebugPlugin.getDefault().getLaunchManager()
-					.addLaunchListener(exitChecker);
-			isListening = true;
-		}
-	}
-
-	/**
-	 * Returns true if the execution can be started, displays errors and returns
-	 * false otherwise.
-	 */
-	protected boolean launchPassesChecks(ILaunchConfiguration configuration,
-			String mode) throws CoreException {
 		if (!mentionedResourcesExist(configuration)) {
 			Dialogs.openMentionedResourceDoesNotExistsDialog();
 			return false;
@@ -242,5 +167,77 @@ public class ExecutableModelLaunchDelegate implements
 		preferenceStore.setValue(
 				MokaConstants.MOKA_DEFAULT_EXECUTION_ENGINE_PREF,
 				selected.getNamespaceIdentifier());
+	}
+
+	@Override
+	public void launch(ILaunchConfiguration configuration, String mode,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		listenForLaunchTermination();
+	
+		if (!exitChecker.launchStarting(launch)) {
+			return;
+		}	
+		try {
+			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
+					.addMokaConfigs(configuration);
+			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
+					.addJavaConfigs(configuration);
+			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
+			
+		} catch (TraceFileMissingException e) {
+			Dialogs.openTraceFileMissingErrorDialog();
+		}
+	}
+
+	private void launchProcesses(String mode, ILaunch launch,
+			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
+			ILaunchConfiguration javaConfigs) throws CoreException {
+		javaDelegate.launch(javaConfigs, mode, launch, monitor);
+		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			Display.getDefault()
+					.asyncExec(
+							() -> launchMokaDelegate(mokaConfigs, mode, launch,
+									monitor));
+		}
+		setFoldersToRefresh(launch, javaConfigs);
+	}
+
+	protected void setFoldersToRefresh(ILaunch launch,
+			ILaunchConfiguration javaConfigs) throws CoreException {
+		for (IProcess process : launch.getProcesses()) {
+			IProject project = getProject(javaConfigs);
+			String path = ExecutableModelProperties.getTraceFilesPath(project);
+			process.setAttribute(PROC_ATTR_TO_REFRESH, project.getFullPath()
+					+ ";" + project.findMember(path).getFullPath());
+		}
+	}
+
+	private IProject getProject(ILaunchConfiguration launchConfig)
+			throws CoreException {
+		String projectName = launchConfig.getAttribute(
+				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
+		return (IProject) ResourcesPlugin.getWorkspace().getRoot()
+				.findMember(projectName);
+	}
+
+	private void launchMokaDelegate(ILaunchConfiguration configuration,
+			String mode, ILaunch launch, IProgressMonitor monitor) {
+		try {
+			mokaDelegate.launch(configuration, mode, launch, monitor);
+		} catch (Exception e) {
+			IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Listens for termination of the runtime and informs the user if it was not
+	 * successful.
+	 */
+	private void listenForLaunchTermination() {
+		if (!isListening) {
+			DebugPlugin.getDefault().getLaunchManager()
+					.addLaunchListener(exitChecker);
+			isListening = true;
+		}
 	}
 }
