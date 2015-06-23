@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="external" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/external"
+    nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.external">
+  <eClassifiers xsi:type="ecore:EClass" name="ExExternalEntity" eSuperTypes="base.ecore#//ModelRoot">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
+        upperBound="-1" eType="#//ExOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="implementationClass" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//ExEntityType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ExEntityType">
+    <eLiterals name="Stateless" literal=""/>
+    <eLiterals name="Singleton" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExOperation" eSuperTypes="base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxyClass" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

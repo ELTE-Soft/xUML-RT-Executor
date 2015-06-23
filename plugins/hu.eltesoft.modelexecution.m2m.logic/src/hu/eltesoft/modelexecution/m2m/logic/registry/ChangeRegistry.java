@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2m.logic.registry;
 import hu.eltesoft.modelexecution.m2m.logic.DeleteSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import org.eclipse.uml2.uml.NamedElement;
  * 
  * Contains {@linkplain TranslationTask}s that encapsulate the changed root
  * elements (UML elements that are translated into separate java files) and the
- * builder that can convert them. Also contains simpler deletion tasks.
+ * translator that can convert them. Also contains simpler deletion tasks.
  */
 public class ChangeRegistry {
 
@@ -33,12 +32,12 @@ public class ChangeRegistry {
 	 * with the same <code>rootName</code>, that entry is overwritten.
 	 */
 	public synchronized <UML extends NamedElement> void registerUpdate(
-			UML source, RootElementTranslator<UML, ?, ?> builder) {
-		if (null == source.eResource()) {
+			UML source, RootElementTranslator<UML, ?, ?> translator) {
+		if (null == source.eResource() || !translator.shouldMap(source)) {
 			return;
 		}
-		String rootName = NamedReference.getIdentifier(source);
-		updateTasks.put(rootName, new TranslationTask<>(source, builder));
+		String rootName = translator.getRootName(source);
+		updateTasks.put(rootName, new TranslationTask<>(source, translator));
 	}
 
 	/**

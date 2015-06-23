@@ -33,13 +33,6 @@ class FeatureReferenceTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
-	def testCompilingNameExpressionStatement() {
-		assertCompilesTo(aClass, "x;",
-			'''x;
-				''')
-	}
-
-	@Test
 	def testCompilingFeatureCallOnExplicitThis() {
 		assertCompilesTo(aClass, "this.x();",
 			'''

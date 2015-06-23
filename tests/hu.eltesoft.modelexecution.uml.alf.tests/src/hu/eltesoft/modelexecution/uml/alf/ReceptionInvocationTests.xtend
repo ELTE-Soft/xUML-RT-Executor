@@ -7,7 +7,7 @@ import org.junit.Test
 
 import static org.junit.Assert.*
 
-class ReceptionReferenceTests extends ModelBasedTestCase {
+class ReceptionInvocationTests extends ModelBasedTestCase {
 
 	static val UML_TEST_MODEL_PATH = "resources/model.uml"
 
@@ -55,5 +55,15 @@ class ReceptionReferenceTests extends ModelBasedTestCase {
 		val result = analyzer.analyze("this.ReceptionB();ReceptionA();", cClass)
 		assertTrue(result.references.mapsReception(aReception))
 		assertTrue(result.references.mapsReception(bReception))
+	}
+
+	def boolean mapsReception(ModelReferences references, Reception reception) {
+		val target = new ReceptionInvocation(reception)
+		for (invocation : references.mapping.values) {
+			if (target.equals(invocation)) {
+				return true
+			}
+		}
+		return false
 	}
 }

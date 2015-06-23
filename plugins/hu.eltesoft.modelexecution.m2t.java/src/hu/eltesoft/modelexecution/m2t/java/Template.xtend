@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.EList
 abstract class Template extends EmfTraceExtensions {
 
 	private val DebugSymbols debugSymbols
-	private val String rootName
 	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 
 	/**
@@ -33,14 +32,9 @@ abstract class Template extends EmfTraceExtensions {
 		return debugSymbols
 	}
 
-	def String getRootName() {
-		return rootName
-	}
-
 	new(Named genModel) {
 		val nameMapping = new NameMapper().mapNames(genModel)
 		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
-		rootName = genModel.identifier
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.HashMap
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.papyrus.uml.alf.InvocationExpression
+import org.eclipse.uml2.uml.NamedElement
+import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.Reception
 
 /**
@@ -14,23 +16,90 @@ import org.eclipse.uml2.uml.Reception
  */
 class ModelReferences {
 
-	val Map<EObject, Reference> mapping = new HashMap()
+	protected val Map<EObject, Invocation> mapping = new HashMap()
 
-	def putInvokedReception(InvocationExpression invocation, Reception reception) {
-		if (null == invocation || null == reception) {
-			return
-		}
-		mapping.put(invocation, new Reference(reception))
+	def dispatch connect(InvocationExpression invocation, Reception reception) {
+		mapping.put(invocation, new ReceptionInvocation(reception))
 	}
 
-	def getInvokedReception(InvocationExpression invocation) {
+	def dispatch connect(InvocationExpression invocation, Operation operation) {
+		mapping.put(invocation, new ExternalEntityInvocation(operation))
+	}
+
+	def resolve(InvocationExpression invocation) {
 		mapping.get(invocation)
 	}
+}
 
-	/**
-	 * This method is mainly for testing purposes, hence its visibility.
-	 */
-	package def mapsReception(Reception reception) {
-		mapping.containsValue(new Reference(reception))
+interface Invocation {
+}
+
+class ReceptionInvocation implements Invocation {
+
+	val Reference reference
+
+	def getReference() {
+		reference
+	}
+
+	new(Reception reception) {
+		reference = new Reference(reception)
+	}
+
+	// mainly used for testing purposes
+	override boolean equals(Object obj) {
+		if (this === obj) {
+			return true
+		}
+		if (obj == null || class != obj.class) {
+			return false
+		}
+		val other = obj as ReceptionInvocation;
+		return reference.equals(other.reference);
+	}
+}
+
+class ExternalEntityInvocation implements Invocation {
+
+	val String entityName
+	val String methodName
+	val String proxyName
+
+	def getEntityName() {
+		entityName
+	}
+
+	def getMethodName() {
+		methodName
+	}
+
+	def getProxyName() {
+		proxyName
+	}
+
+	new(Operation operation) {
+		entityName = (operation.owner as NamedElement).name
+		methodName = operation.name
+
+		if (operation.ownedParameters.empty) {
+			proxyName = null
+		} else {
+
+			// When the external call has a parameter, it must be a reference to a callable class.
+			proxyName = operation.ownedParameters.get(0).type.name
+		}
+	}
+
+	// mainly used for testing purposes
+	override boolean equals(Object obj) {
+		if (this === obj) {
+			return true
+		}
+		if (obj == null || class != obj.class) {
+			return false
+		}
+		val other = obj as ExternalEntityInvocation;
+		return entityName.equals(other.entityName) && methodName.equals(other.methodName) &&
+			((proxyName == null && other.proxyName == null) || proxyName.equals(other.proxyName));
 	}
 }

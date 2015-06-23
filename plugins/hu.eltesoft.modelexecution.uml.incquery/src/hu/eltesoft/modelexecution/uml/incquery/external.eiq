@@ -1,0 +1,25 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+pattern NamedCls(cls : Class, name) {
+	find Cls(cls);
+	Class.name(cls, name);
+}
+
+pattern NamedOperation(cls : Class, operation : Operation, name) {
+	find Operation(cls, operation, _);
+	Operation.name(operation, name);
+}
+
+pattern
+ExternalOperationParameter(cls : Class, operation : Operation, parameter : Parameter, typeName) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+	Type.name(type, typeName);
+}
+
+pattern NamedReception(cls : Class, reception : Reception, name) {
+	find Reception(cls, reception, _);
+	Reception.name(reception, name);
+}

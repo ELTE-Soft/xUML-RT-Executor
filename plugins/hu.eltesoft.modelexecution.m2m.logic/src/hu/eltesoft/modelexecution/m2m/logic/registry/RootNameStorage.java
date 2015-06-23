@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.registry;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -9,11 +7,15 @@ import java.util.function.Consumer;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * Stores identifiers for EObjects. When an EObject destroyed, it gets unlinked
+ * Stores root names for EObjects. When an EObject destroyed, it gets unlinked
  * from the underlying Resource object. As a side effect the object looses its
  * identifier before the notification of removal has been dispatched. This class
- * helps to store the identifier, then use it in the object remove event handler
+ * helps to store the root name, then use it in the object remove event handler
  * code.
+ * 
+ * The root name of an EObject is not necessarily its EObject identifier, but
+ * rather an arbitrary text which is assigned by a translator and could be a
+ * part of a file name on all supported platforms.
  */
 public class RootNameStorage {
 
@@ -29,11 +31,11 @@ public class RootNameStorage {
 	 * destroyed and removed from its resource. When the object is already
 	 * destroyed, the identifier will not be saved.
 	 */
-	public void saveRootName(EObject root) {
-		if (null == root.eResource()) {
+	public void saveRootName(EObject root, String rootName) {
+		if (null == rootName) {
 			return;
 		}
-		instanceToRootName.put(root, NamedReference.getIdentifier(root));
+		instanceToRootName.put(root, rootName);
 	}
 
 	/**

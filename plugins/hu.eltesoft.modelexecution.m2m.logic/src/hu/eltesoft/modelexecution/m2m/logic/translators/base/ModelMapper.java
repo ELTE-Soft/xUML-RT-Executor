@@ -8,6 +8,7 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,21 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 			IncQueryEngine engine) throws IncQueryException;
 
 	/**
+	 * Enables filtering of source models. Override in subclasses to prevent
+	 * building specific instances of the source model.
+	 */
+	// FIXME: it is a temporary solution to filter model elements by their
+	// stereotype applications. Remove this infrastructure when IncQuery support
+	// for stereotypes is available.
+	public boolean shouldMap(UML source) {
+		return true;
+	}
+
+	public String getRootName(UML source) {
+		return NamedReference.getIdentifier(source);
+	}
+
+	/**
 	 * @return a task to remove the registered match update listeners
 	 */
 	public ReversibleTask addListeners(ListenerContext context) {
@@ -55,12 +71,16 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 			ChangeRegistry changes = context.getChanges();
 			RootNameStorage rootNames = context.getRootNames();
 
-			root.matcher.forEachMatch(m -> rootNames.saveRootName(getRoot(m)));
-			listener = new RootMatchUpdateListener<>(root.builder, changes,
+			root.matcher.forEachMatch(m -> {
+				UML root = getRoot(m);
+				String rootName = getRootName(root);
+				rootNames.saveRootName(root, rootName);
+			});
+			listener = new RootMatchUpdateListener<>(root.translator, changes,
 					rootNames);
 			engine.addMatchUpdateListener(root.matcher, listener, false);
-			root.childNodes.forEach(node -> add(node.addListeners(root.builder,
-					context)));
+			root.childNodes.forEach(node -> add(node.addListeners(
+					root.translator, context)));
 		}
 
 		@Override
@@ -87,9 +107,14 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		return meta;
 	}
 
-	protected Collection<Trans> getAllModels() throws GenerationException {
-		List<Trans> models = new ArrayList<>();
-		root.matcher.forEachMatch(m -> models.add(getModel(getRoot(m))));
+	protected Collection<UML> getSourceModels() throws GenerationException {
+		List<UML> models = new ArrayList<>();
+		root.matcher.forEachMatch(m -> {
+			UML source = getRoot(m);
+			if (shouldMap(source)) {
+				models.add(source);
+			}
+		});
 		return models;
 	}
 
