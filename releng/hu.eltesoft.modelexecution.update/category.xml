@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/hu.eltesoft.modelexecution.feature_0.3.0.qualifier.jar" id="hu.eltesoft.modelexecution.feature" version="0.3.0.qualifier">
+   <feature url="features/hu.eltesoft.modelexecution.feature_0.4.0.qualifier.jar" id="hu.eltesoft.modelexecution.feature" version="0.4.0.qualifier">
       <category name="hu.eltesoft.modelexecution.category"/>
    </feature>
    <category-def name="hu.eltesoft.modelexecution.category" label="xUML-RT Tools">
