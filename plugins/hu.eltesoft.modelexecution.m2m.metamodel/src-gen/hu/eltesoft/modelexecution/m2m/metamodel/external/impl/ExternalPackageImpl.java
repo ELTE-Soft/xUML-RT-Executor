@@ -22,10 +22,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType;
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity;
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation;
@@ -132,7 +128,6 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
 		CallablePackageImpl theCallablePackage = (CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) instanceof CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) : CallablePackage.eINSTANCE);
 		ClassdefPackageImpl theClassdefPackage = (ClassdefPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) instanceof ClassdefPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI) : ClassdefPackage.eINSTANCE);
-		EventPackageImpl theEventPackage = (EventPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) instanceof EventPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) : EventPackage.eINSTANCE);
 		RegionPackageImpl theRegionPackage = (RegionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) instanceof RegionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) : RegionPackage.eINSTANCE);
 		SignalPackageImpl theSignalPackage = (SignalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) instanceof SignalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) : SignalPackage.eINSTANCE);
 
@@ -143,7 +138,6 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 		theBehaviorPackage.createPackageContents();
 		theCallablePackage.createPackageContents();
 		theClassdefPackage.createPackageContents();
-		theEventPackage.createPackageContents();
 		theRegionPackage.createPackageContents();
 		theSignalPackage.createPackageContents();
 
@@ -154,7 +148,6 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 		theBehaviorPackage.initializePackageContents();
 		theCallablePackage.initializePackageContents();
 		theClassdefPackage.initializePackageContents();
-		theEventPackage.initializePackageContents();
 		theRegionPackage.initializePackageContents();
 		theSignalPackage.initializePackageContents();
 

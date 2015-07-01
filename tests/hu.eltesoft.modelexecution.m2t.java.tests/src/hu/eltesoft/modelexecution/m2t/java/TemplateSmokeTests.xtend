@@ -2,13 +2,11 @@ package hu.eltesoft.modelexecution.m2t.java
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EventFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate
-import hu.eltesoft.modelexecution.m2t.java.templates.SignalEventTemplate
 import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
@@ -125,17 +123,6 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		secondState.transitions.add(secondTransition)
 
 		val template = new RegionTemplate(region)
-
-		assertProperlyGenerated(template.generate)
-	}
-
-	@Test
-	def testGenerateCodeForSignalEvent() {
-		val factory = EventFactory.eINSTANCE
-		val event = factory.createEvSignalEvent
-		event.reference = makeNewReference("TestEvent")
-		event.signal = makeNewReference("TestSignal")
-		val template = new SignalEventTemplate(event)
 
 		assertProperlyGenerated(template.generate)
 	}

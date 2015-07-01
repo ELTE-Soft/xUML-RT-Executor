@@ -8,10 +8,6 @@ import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
 
 public class DummySignal extends Signal {
 
-	public DummySignal() {
-		super(null);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return (obj != null && obj instanceof DummySignal);

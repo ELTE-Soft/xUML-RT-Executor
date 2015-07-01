@@ -1,9 +1,11 @@
 package hu.eltesoft.modelexecution.runtime;
 
+import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
 import hu.eltesoft.modelexecution.runtime.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.mocks.MockClass;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
@@ -56,11 +58,11 @@ public class BaseRuntimeTest {
 			{
 				allowing(readerMock).hasEvent();
 				will(returnValue(false));
-				DummySignal event = new DummySignal();
+				Event event = new SignalEvent(new DummySignal());
 				oneOf(loggerMock).messageQueued(with(any(MockClass.class)), with(equal(event)));
-				oneOf(readerMock).dispatchEvent(with(any(TargetedMessage.class)), with(same(loggerMock)));
+				oneOf(readerMock).dispatchEvent(with(any(TargetedEvent.class)), with(same(loggerMock)));
 				will(returnValue(EventSource.Queue));
-				oneOf(tracerMock).traceEvent(with(any(TargetedMessage.class)));
+				oneOf(tracerMock).traceEvent(with(any(TargetedEvent.class)));
 				oneOf(tracerMock).close();
 				oneOf(readerMock).close();
 				oneOf(loggerMock).close();

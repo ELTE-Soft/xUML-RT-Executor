@@ -3,13 +3,21 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CallablePackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
@@ -18,19 +26,25 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.event.EventPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.event.impl.EventPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RegionPackageImpl;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -136,7 +150,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		BasePackageImpl theBasePackage = (BasePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) instanceof BasePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI) : BasePackage.eINSTANCE);
 		BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
 		CallablePackageImpl theCallablePackage = (CallablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) instanceof CallablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CallablePackage.eNS_URI) : CallablePackage.eINSTANCE);
-		EventPackageImpl theEventPackage = (EventPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) instanceof EventPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EventPackage.eNS_URI) : EventPackage.eINSTANCE);
 		ExternalPackageImpl theExternalPackage = (ExternalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) instanceof ExternalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ExternalPackage.eNS_URI) : ExternalPackage.eINSTANCE);
 		RegionPackageImpl theRegionPackage = (RegionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) instanceof RegionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RegionPackage.eNS_URI) : RegionPackage.eINSTANCE);
 		SignalPackageImpl theSignalPackage = (SignalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) instanceof SignalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SignalPackage.eNS_URI) : SignalPackage.eINSTANCE);
@@ -147,7 +160,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		theBasePackage.createPackageContents();
 		theBehaviorPackage.createPackageContents();
 		theCallablePackage.createPackageContents();
-		theEventPackage.createPackageContents();
 		theExternalPackage.createPackageContents();
 		theRegionPackage.createPackageContents();
 		theSignalPackage.createPackageContents();
@@ -158,7 +170,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		theBasePackage.initializePackageContents();
 		theBehaviorPackage.initializePackageContents();
 		theCallablePackage.initializePackageContents();
-		theEventPackage.initializePackageContents();
 		theExternalPackage.initializePackageContents();
 		theRegionPackage.initializePackageContents();
 		theSignalPackage.initializePackageContents();

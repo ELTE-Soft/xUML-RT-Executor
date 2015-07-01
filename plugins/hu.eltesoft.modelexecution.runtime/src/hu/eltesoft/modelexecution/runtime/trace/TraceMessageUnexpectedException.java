@@ -4,15 +4,15 @@ public class TraceMessageUnexpectedException extends InvalidTraceException {
 
 	private static final long serialVersionUID = 1L;
 
-	private TargetedMessage unexpectedMessage;
+	private TargetedEvent unexpectedMessage;
 
-	public TraceMessageUnexpectedException(TargetedMessage unexpectedMessage) {
+	public TraceMessageUnexpectedException(TargetedEvent unexpectedMessage) {
 		super("Did not expect any messages, but " + unexpectedMessage
 				+ " was read");
 		this.unexpectedMessage = unexpectedMessage;
 	}
 
-	public TargetedMessage getUnexpectedMessage() {
+	public TargetedEvent getUnexpectedMessage() {
 		return unexpectedMessage;
 	}
 

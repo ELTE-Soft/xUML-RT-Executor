@@ -36,8 +36,8 @@ public abstract class ClassWithState extends Class {
 		stateMachine.doInitialTransition();
 	}
 
-	public void receive(Message message) {
-		stateMachine.step(message);
+	public void receive(Event event) {
+		stateMachine.step(event);
 	}
 
 	/**

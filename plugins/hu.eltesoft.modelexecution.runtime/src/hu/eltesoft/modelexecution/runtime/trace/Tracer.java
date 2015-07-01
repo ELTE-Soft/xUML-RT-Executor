@@ -8,6 +8,6 @@ import java.io.IOException;
  */
 public interface Tracer extends AutoCloseable {
 
-	void traceEvent(TargetedMessage targetedEvent) throws IOException;
+	void traceEvent(TargetedEvent targetedEvent) throws IOException;
 
 }

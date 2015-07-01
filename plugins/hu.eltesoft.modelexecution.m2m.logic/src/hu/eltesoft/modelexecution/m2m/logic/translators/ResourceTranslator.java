@@ -83,7 +83,6 @@ public class ResourceTranslator {
 		translators.add(new ClassTranslator(engine));
 		translators.add(new ExternalEntityTranslator(engine));
 		translators.add(new RegionTranslator(engine));
-		translators.add(new SignalEventTranslator(engine));
 		translators.add(new SignalTranslator(engine));
 	}
 

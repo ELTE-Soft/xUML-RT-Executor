@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.trace.json;
 
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +11,7 @@ import org.json.JSONObject;
  */
 public class JSONDecoder {
 
+	public static final String JSON_CLASS = "class";
 	private ClassLoader classLoader;
 
 	public JSONDecoder(ClassLoader classLoader) {
@@ -35,7 +36,7 @@ public class JSONDecoder {
 	 * know the type of the extracted Java object.
 	 */
 	public Object decodeJSON(JSONObject obj) throws ClassNotFoundException {
-		String encodedClass = obj.getString("class");
+		String encodedClass = obj.getString(JSON_CLASS);
 		Object instance;
 		try {
 			instance = classLoader.loadClass(encodedClass).newInstance();
@@ -51,9 +52,9 @@ public class JSONDecoder {
 		}
 	}
 
-	public TargetedMessage decodeMessage(JSONObject obj)
+	public TargetedEvent decodeTargetedEvent(JSONObject obj)
 			throws ClassNotFoundException, JSONException {
-		return new TargetedMessage(this, obj);
+		return new TargetedEvent(this, obj);
 	}
 
 	public Class<?> decodeClass(String className) throws ClassNotFoundException {

@@ -2,7 +2,7 @@ package hu.eltesoft.modelexecution.runtime.log;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.Event;
 
 /**
  * This logger outputs when state transitions happen.
@@ -43,14 +43,14 @@ public class MinimalLogger implements Logger {
 	}
 
 	@Override
-	public void messageDispatched(ClassWithState target, Message event) {
+	public void messageDispatched(ClassWithState target, Event event) {
 		messageLogger.log(java.util.logging.Level.INFO,
 				"Message {1} was dispatched to {0}", new Object[] { target,
 						event });
 	}
 
 	@Override
-	public void messageQueued(ClassWithState target, Message event) {
+	public void messageQueued(ClassWithState target, Event event) {
 		messageLogger.log(java.util.logging.Level.INFO,
 				"Message {1} is queued for dispatching to {0}", new Object[] {
 						target, event });

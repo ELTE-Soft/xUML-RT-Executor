@@ -27,7 +27,7 @@ public class TraceReplayer implements TraceReader {
 	@Override
 	public void dispatchEvent(Logger logger) {
 		if (hasEvent()) {
-			TargetedMessage readMessage = nextEvent();
+			TargetedEvent readMessage = nextEvent();
 			if (!readMessage.isFromOutside()) {
 				throw new TraceMessageUnexpectedException(readMessage);
 			} else {
@@ -38,9 +38,9 @@ public class TraceReplayer implements TraceReader {
 		}
 	}
 
-	private TargetedMessage nextEvent() {
+	private TargetedEvent nextEvent() {
 		try {
-			return jsonDecoder.decodeMessage(jsonReader.nextJSONObject());
+			return jsonDecoder.decodeTargetedEvent(jsonReader.nextJSONObject());
 		} catch (JSONException e) {
 			throw new InvalidTraceException("Malformed trace", e);
 		} catch (ClassNotFoundException e) {
@@ -56,9 +56,9 @@ public class TraceReplayer implements TraceReader {
 	}
 
 	@Override
-	public EventSource dispatchEvent(TargetedMessage event, Logger logger) {
+	public EventSource dispatchEvent(TargetedEvent event, Logger logger) {
 		if (hasEvent()) {
-			TargetedMessage readMessage = nextEvent();
+			TargetedEvent readMessage = nextEvent();
 			if (readMessage.isFromOutside()) {
 				sendAndLog(logger, readMessage);
 				return EventSource.Trace;
@@ -70,10 +70,10 @@ public class TraceReplayer implements TraceReader {
 		return EventSource.Queue;
 	}
 
-	private void sendAndLog(Logger logger, TargetedMessage tracedEvent) {
+	private void sendAndLog(Logger logger, TargetedEvent tracedEvent) {
 		tracedEvent.send();
 		logger.messageDispatched(tracedEvent.getTarget(),
-				tracedEvent.getMessage());
+				tracedEvent.getEvent());
 	}
 
 	@Override

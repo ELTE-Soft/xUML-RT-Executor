@@ -8,22 +8,22 @@ public class TraceMessageMismatchException extends InvalidTraceException {
 
 	private static final long serialVersionUID = 1L;
 
-	private TargetedMessage expectedMessage;
-	private TargetedMessage actualMessage;
+	private TargetedEvent expectedMessage;
+	private TargetedEvent actualMessage;
 
-	public TraceMessageMismatchException(TargetedMessage expectedMessage,
-			TargetedMessage actualMessage) {
+	public TraceMessageMismatchException(TargetedEvent expectedMessage,
+			TargetedEvent actualMessage) {
 		super("Expected event: " + expectedMessage + ", actual event: "
 				+ actualMessage);
 		this.expectedMessage = expectedMessage;
 		this.actualMessage = actualMessage;
 	}
 
-	public TargetedMessage getExpectedMessage() {
+	public TargetedEvent getExpectedMessage() {
 		return expectedMessage;
 	}
 
-	public TargetedMessage getTracedMessage() {
+	public TargetedEvent getTracedMessage() {
 		return actualMessage;
 	}
 

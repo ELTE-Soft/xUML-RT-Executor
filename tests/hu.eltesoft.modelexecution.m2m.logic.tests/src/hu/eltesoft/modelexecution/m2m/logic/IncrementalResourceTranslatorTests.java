@@ -90,7 +90,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		signal1.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		assertEquals(2, queue.size());
+		assertEquals(1, queue.size());
 
 		SourceCodeChangeListener listener = context
 				.mock(SourceCodeChangeListener.class);

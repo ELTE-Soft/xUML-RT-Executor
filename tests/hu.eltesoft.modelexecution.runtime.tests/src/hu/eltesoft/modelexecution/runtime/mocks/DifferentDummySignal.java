@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.runtime.mocks;
 
-public class DifferentDummyEvent extends DummySignal {
+public class DifferentDummySignal extends DummySignal {
 
-	public DifferentDummyEvent(int code) {
+	public DifferentDummySignal(int code) {
 		this.code = code;
 	}
 
@@ -21,10 +21,10 @@ public class DifferentDummyEvent extends DummySignal {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof DifferentDummyEvent)) {
+		if (!(obj instanceof DifferentDummySignal)) {
 			return false;
 		}
-		DifferentDummyEvent other = (DifferentDummyEvent) obj;
+		DifferentDummySignal other = (DifferentDummySignal) obj;
 		if (code != other.code) {
 			return false;
 		}

@@ -6,7 +6,7 @@ package hu.eltesoft.modelexecution.runtime.trace;
 public class NoTracer implements Tracer {
 
 	@Override
-	public void traceEvent(TargetedMessage targetedEvent) {
+	public void traceEvent(TargetedEvent targetedEvent) {
 		// nothing to do
 	}
 
