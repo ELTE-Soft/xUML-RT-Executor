@@ -39,6 +39,11 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 	public boolean isActive(IJavaProject javaProject) {
 		IProject project = javaProject.getProject();
 		try {
+			if (!project.isOpen()) {
+				// do not build closed projects
+				// the nature getter below will fail in that case anyway
+				return false;
+			}
 			// check whether this project has the xUML-RT nature
 			return null != project.getNature(ExecutableModelNature.NATURE_ID);
 		} catch (CoreException e) {
