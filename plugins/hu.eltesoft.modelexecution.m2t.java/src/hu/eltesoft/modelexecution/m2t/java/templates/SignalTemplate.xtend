@@ -9,6 +9,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import java.util.Objects
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -57,10 +58,34 @@ class SignalTemplate extends Template {
 		
 			@Override
 			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
-				«FOR attribute : signal.attributes SEPARATOR ','»
+				«FOR attribute : signal.attributes»
 					forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), 
 							«javaType(attribute.type)».class, «attribute.identifier»::add);
 				«ENDFOR»
+			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				if (obj == null || !(obj instanceof «signal.identifier»)) {
+					return false;
+				}
+				«IF !signal.attributes.empty»
+					«signal.identifier» other = («signal.identifier») obj;
+				«ENDIF»
+				«FOR attribute : signal.attributes»
+					if (!obj.«attribute.identifier».equals(this.«attribute.identifier»)) {
+						return false;
+					}
+				«ENDFOR»
+				return true;
+			}
+			
+			@Override
+			public int hashCode() {
+				return «Objects.canonicalName».hash(
+				«FOR attribute : signal.attributes SEPARATOR ','»
+						«attribute.identifier»
+				«ENDFOR»);
 			}
 		}
 	'''

@@ -11,6 +11,7 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -147,7 +148,7 @@ class ClassTemplate extends Template {
 					«parameter.identifier»
 				«ENDFOR»
 			);
-			getRuntime().addEventToQueue(this, signal);
+			getRuntime().addEventToQueue(this, new «SignalEvent.canonicalName»(signal));
 		}
 	'''
 

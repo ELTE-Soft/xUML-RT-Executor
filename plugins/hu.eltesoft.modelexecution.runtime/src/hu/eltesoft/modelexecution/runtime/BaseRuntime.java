@@ -119,11 +119,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					}
 				}
 			}
-
-			if (controller != null) {
-				controller.stopListening();
-			}
-
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
@@ -137,6 +132,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		} catch (Exception e) {
 			logError("An internal error happened", e);
 			return TerminationResult.INTERNAL_ERROR;
+		} finally {
+			if (controller != null) {
+				controller.stopListening();
+			}
 		}
 	}
 
