@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.log;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.Event;
 
 /**
  * A logger that does not log. Used to turn off logging support.
@@ -26,11 +26,11 @@ public class NoLogger implements Logger {
 	}
 
 	@Override
-	public void messageQueued(ClassWithState target, Message message) {
+	public void messageQueued(ClassWithState target, Event event) {
 	}
 
 	@Override
-	public void messageDispatched(ClassWithState target, Message event) {
+	public void messageDispatched(ClassWithState target, Event event) {
 	}
 
 }

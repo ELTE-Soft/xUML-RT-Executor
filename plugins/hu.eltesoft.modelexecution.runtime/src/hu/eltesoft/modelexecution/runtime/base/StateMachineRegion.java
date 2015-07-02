@@ -7,5 +7,5 @@ public interface StateMachineRegion {
 
 	void doInitialTransition();
 
-	void step(Message message);
+	void step(Event event);
 }

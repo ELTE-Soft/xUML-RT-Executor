@@ -45,7 +45,7 @@ public class TraceWriter implements Tracer {
 	}
 
 	@Override
-	public synchronized void traceEvent(TargetedMessage event) throws IOException {
+	public synchronized void traceEvent(TargetedEvent event) throws IOException {
 		if (isClosed) {
 			return;
 		}

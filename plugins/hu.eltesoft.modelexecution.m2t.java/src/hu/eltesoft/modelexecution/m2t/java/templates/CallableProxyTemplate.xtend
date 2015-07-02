@@ -29,7 +29,7 @@ class CallableProxyTemplate extends Template {
 		«FOR reception : callable.receptions»
 			
 				public void «reception.originalName»() {
-					instance.«reception.identifier»();
+					instance.«reception.identifier»_external();
 				}
 		«ENDFOR»
 		}

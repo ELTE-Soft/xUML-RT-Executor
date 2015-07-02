@@ -8,7 +8,9 @@ import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Entry
 import hu.eltesoft.modelexecution.m2t.java.StateQualifiers.Exit
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.base.Message
+import hu.eltesoft.modelexecution.runtime.base.Event
+import hu.eltesoft.modelexecution.runtime.base.Signal
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
@@ -131,7 +133,7 @@ class RegionTemplate extends Template {
 			}
 		
 			@Override
-			public void step(«Message.canonicalName» message) {
+			public void step(«Event.canonicalName» message) {
 				step0(message);
 			}
 		
@@ -150,50 +152,53 @@ class RegionTemplate extends Template {
 		«IF partitioning.isLast(i)»
 			@SuppressWarnings("incomplete-switch")
 		«ENDIF»
-		private void step«i»(«Message.canonicalName» message) {
-			switch (currentState) {
-				«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
-					case «state.identifier»:
-						«FOR transition : state.transitions SEPARATOR ' else '»
-							if (message instanceof «transition.message.identifier»)
-							{
-								// State exit
-								owner.getRuntime().logExitState(«traceLiteral(state, Exit)»);
-								«IF null != state.exit»
-									«state.exit.identifier».execute(owner);
-								«ENDIF»
-							
-								// Transition effect
-								owner.getRuntime().logTransition(
-										«transition.event.nameLiteral»,
-										«transition.message.nameLiteral»,
-										«trace(state.nameLiteral, transition.reference)»,
-										«transition.target.nameLiteral»);
-								«IF null != transition.effect»
-									«transition.effect.identifier».execute(owner);
-								«ENDIF»
-							
-								// State entry
-								owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
-								«IF null != transition.target.entry»
-									«transition.target.entry.identifier».execute(owner);
-								«ENDIF»
+		private void step«i»(«Event.canonicalName» event) {
+			if (event instanceof «SignalEvent.canonicalName») {
+				«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();
+				switch (currentState) {
+					«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
+						case «state.identifier»:
+							«FOR transition : state.transitions SEPARATOR ' else '»
+								if (signal instanceof «transition.message.identifier»)
+								{
+									// State exit
+									owner.getRuntime().logExitState(«traceLiteral(state, Exit)»);
+									«IF null != state.exit»
+										«state.exit.identifier».execute(owner);
+									«ENDIF»
 								
-								currentState = State.«transition.target.identifier»;
-								«IF transition.target.isFinal»
+									// Transition effect
+									owner.getRuntime().logTransition(
+											«transition.event.nameLiteral»,
+											«transition.message.nameLiteral»,
+											«trace(state.nameLiteral, transition.reference)»,
+											«transition.target.nameLiteral»);
+									«IF null != transition.effect»
+										«transition.effect.identifier».execute(owner);
+									«ENDIF»
+								
+									// State entry
+									owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
+									«IF null != transition.target.entry»
+										«transition.target.entry.identifier».execute(owner);
+									«ENDIF»
 									
-									// The class cannot get more events
-									owner.dispose();
-								«ENDIF»
-							}
-						«ENDFOR»
-						break;
-				«ENDFOR»
-				«IF !partitioning.isLast(i)»
-					default:
-						step«i + 1»(message);
-						break;
-				«ENDIF»
+									currentState = State.«transition.target.identifier»;
+									«IF transition.target.isFinal»
+										
+										// The class cannot get more events
+										owner.dispose();
+									«ENDIF»
+								}
+							«ENDFOR»
+							break;
+					«ENDFOR»
+					«IF !partitioning.isLast(i)»
+						default:
+							step«i + 1»(message);
+							break;
+					«ENDIF»
+				}
 			}
 		}
 	'''

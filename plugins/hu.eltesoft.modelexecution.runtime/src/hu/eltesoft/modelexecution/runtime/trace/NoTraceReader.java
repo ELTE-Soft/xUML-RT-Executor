@@ -19,9 +19,9 @@ public class NoTraceReader implements TraceReader {
 	}
 
 	@Override
-	public EventSource dispatchEvent(TargetedMessage event, Logger logger) {
+	public EventSource dispatchEvent(TargetedEvent event, Logger logger) {
 		event.send();
-		logger.messageDispatched(event.getTarget(), event.getMessage());
+		logger.messageDispatched(event.getTarget(), event.getEvent());
 		return EventSource.Queue;
 	}
 

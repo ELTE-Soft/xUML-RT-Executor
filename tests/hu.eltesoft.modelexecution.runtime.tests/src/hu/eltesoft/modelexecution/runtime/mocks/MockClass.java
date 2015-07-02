@@ -3,7 +3,8 @@ package hu.eltesoft.modelexecution.runtime.mocks;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
 
 import java.util.LinkedList;
@@ -26,18 +27,18 @@ public class MockClass extends ClassWithState {
 		return instance;
 	}
 
-	List<Message> receivedEvents = new LinkedList<>();
+	List<Event> receivedEvents = new LinkedList<>();
 
 	@Override
 	public void init() {
 	}
 
 	@Override
-	public void receive(Message message) {
-		receivedEvents.add(message);
+	public void receive(Event event) {
+		receivedEvents.add(event);
 	}
 
-	public List<Message> getReceivedEvents() {
+	public List<Event> getReceivedEvents() {
 		return receivedEvents;
 	}
 
@@ -51,7 +52,7 @@ public class MockClass extends ClassWithState {
 	}
 
 	public void feedEvent() {
-		runtime.addEventToQueue(this, new DummySignal());
+		runtime.addEventToQueue(this, new SignalEvent(new DummySignal()));
 		dispose();
 	}
 

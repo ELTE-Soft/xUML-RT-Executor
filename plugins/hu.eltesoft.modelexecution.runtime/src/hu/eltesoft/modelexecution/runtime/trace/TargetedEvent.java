@@ -2,7 +2,7 @@ package hu.eltesoft.modelexecution.runtime.trace;
 
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
 import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
 
@@ -16,31 +16,31 @@ import org.json.JSONObject;
  * stored indirectly, because it has to be serialized, deserialized and still
  * point to the same object.
  */
-public class TargetedMessage implements JSONSerializable {
+public class TargetedEvent implements JSONSerializable {
 
 	private static final String JSON_KEY_FROM_OUTSIDE = "fromOutside";
-	private static final String JSON_KEY_MESSAGE = "message";
+	private static final String JSON_KEY_EVENT = "message";
 	private static final String JSON_KEY_TARGET_CLASS = "targetClass";
 	private static final String JSON_INSTANCE_ID = "instanceID";
 
-	private Message message;
+	private Event event;
 	private boolean fromOutside = false;
 	private ClassWithState target;
 
-	public TargetedMessage(JSONDecoder reader, JSONObject obj)
+	public TargetedEvent(JSONDecoder reader, JSONObject obj)
 			throws ClassNotFoundException, JSONException {
 		jsonDecode(reader, obj);
 	}
 
-	public TargetedMessage(ClassWithState target, Message message) {
+	public TargetedEvent(ClassWithState target, Event event) {
 		super();
 		this.target = target;
-		this.message = message;
+		this.event = event;
 	}
 
-	public static TargetedMessage createOutsideEvent(ClassWithState target,
-			Message message) {
-		TargetedMessage ret = new TargetedMessage(target, message);
+	public static TargetedEvent createOutsideEvent(ClassWithState target,
+			Event event) {
+		TargetedEvent ret = new TargetedEvent(target, event);
 		ret.fromOutside = true;
 		return ret;
 	}
@@ -50,7 +50,7 @@ public class TargetedMessage implements JSONSerializable {
 	 * cannot be accessed.
 	 */
 	public void send() {
-		target.receive(message);
+		target.receive(event);
 	}
 
 	/**
@@ -62,27 +62,27 @@ public class TargetedMessage implements JSONSerializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof TargetedMessage)) {
+		if (obj == null || !(obj instanceof TargetedEvent)) {
 			return false;
 		}
-		TargetedMessage oth = (TargetedMessage) obj;
+		TargetedEvent oth = (TargetedEvent) obj;
 		return target == oth.target // must be the same object
-				&& message.equals(oth.message);
+				&& event.equals(oth.event);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(target, message, fromOutside);
+		return Objects.hash(target, event, fromOutside);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + " target: " + target + ", event: "
-				+ message.toString();
+				+ event.toString();
 	}
 
-	public Message getMessage() {
-		return message;
+	public Event getEvent() {
+		return event;
 	}
 
 	public ClassWithState getTarget() {
@@ -94,7 +94,7 @@ public class TargetedMessage implements JSONSerializable {
 		return new JSONObject()
 				.put(JSON_KEY_TARGET_CLASS, target.getClass().getCanonicalName())
 				.put(JSON_INSTANCE_ID, target.getInstanceID())
-				.put(JSON_KEY_MESSAGE, message.jsonEncode())
+				.put(JSON_KEY_EVENT, event.jsonEncode())
 				.put(JSON_KEY_FROM_OUTSIDE, fromOutside);
 	}
 
@@ -104,7 +104,7 @@ public class TargetedMessage implements JSONSerializable {
 		Class<?> targetClass = (Class<?>) decoder.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
 		int instanceID = obj.getInt(JSON_INSTANCE_ID);
 		target = InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);
-		message = (Message) decoder.decodeJSON(obj.get(JSON_KEY_MESSAGE));
+		event = (Event) decoder.decodeJSON(obj.get(JSON_KEY_EVENT));
 		fromOutside = obj.getBoolean(JSON_KEY_FROM_OUTSIDE);
 	}
 

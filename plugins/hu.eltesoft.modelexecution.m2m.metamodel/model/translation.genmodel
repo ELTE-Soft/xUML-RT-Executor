@@ -111,13 +111,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClReceptionParameter/type"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="Event" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
-      disposableProviderFactory="true" ecorePackage="event.ecore#/">
-    <genClasses ecoreClass="event.ecore#//EvEvent"/>
-    <genClasses ecoreClass="event.ecore#//EvSignalEvent">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute event.ecore#//EvSignalEvent/signal"/>
-    </genClasses>
-  </genPackages>
   <genPackages prefix="External" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
       disposableProviderFactory="true" ecorePackage="external.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="external.ecore#//ExEntityType">

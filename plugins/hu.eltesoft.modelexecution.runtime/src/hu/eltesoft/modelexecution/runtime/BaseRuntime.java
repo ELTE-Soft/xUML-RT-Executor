@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.Message;
+import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityException;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistry;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
@@ -9,7 +9,7 @@ import hu.eltesoft.modelexecution.runtime.log.NoLogger;
 import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
 import hu.eltesoft.modelexecution.runtime.trace.NoTraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
@@ -35,7 +35,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public static final String MESSAGES_LOGGER_ID = LOGGER_ID
 			+ "Events.Messages";
 
-	private LinkedBlockingDeque<TargetedMessage> queue = new LinkedBlockingDeque<>();
+	private LinkedBlockingDeque<TargetedEvent> queue = new LinkedBlockingDeque<>();
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
@@ -67,7 +67,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	 */
 	public void terminate() {
 		try {
-			// explicitely call close
+			// explicitly call close
 			close();
 		} catch (Exception e) {
 			logError("Cannot close the runtime", e);
@@ -76,10 +76,18 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	@Override
-	public void addEventToQueue(ClassWithState target, Message message) {
-		TargetedMessage targetedEvent = new TargetedMessage(target, message);
+	public void addEventToQueue(ClassWithState target, Event event) {
+		TargetedEvent targetedEvent = new TargetedEvent(target, event);
 		queue.addLast(targetedEvent);
-		logger.messageQueued(target, message);
+		logger.messageQueued(target, event);
+	}
+
+	@Override
+	public void addExternalEventToQueue(ClassWithState target, Event event) {
+		TargetedEvent targetedEvent = TargetedEvent.createOutsideEvent(target,
+				event);
+		queue.addLast(targetedEvent);
+		logger.messageQueued(target, event);
 	}
 
 	public void setTraceWriter(Tracer traceWriter) {
@@ -110,7 +118,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					traceReader.dispatchEvent(logger);
 				} else {
 					// if queue is empty, take blocks
-					TargetedMessage currQueueEvent = queue.take();
+					TargetedEvent currQueueEvent = queue.take();
 					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
 						// put back the event to the original position
 						queue.addFirst(currQueueEvent);
@@ -119,11 +127,6 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 					}
 				}
 			}
-
-			if (controller != null) {
-				controller.stopListening();
-			}
-
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
 		} catch (InvalidTraceException e) {
@@ -137,6 +140,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		} catch (Exception e) {
 			logError("An internal error happened", e);
 			return TerminationResult.INTERNAL_ERROR;
+		} finally {
+			if (controller != null) {
+				controller.stopListening();
+			}
 		}
 	}
 

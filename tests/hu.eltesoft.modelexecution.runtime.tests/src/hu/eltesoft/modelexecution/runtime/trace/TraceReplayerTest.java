@@ -3,16 +3,13 @@ package hu.eltesoft.modelexecution.runtime.trace;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.mocks.DifferentDummyEvent;
+import hu.eltesoft.modelexecution.runtime.mocks.DifferentDummySignal;
 import hu.eltesoft.modelexecution.runtime.mocks.DummySignal;
 import hu.eltesoft.modelexecution.runtime.mocks.MockClass;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedMessage;
-import hu.eltesoft.modelexecution.runtime.trace.TraceMessageMismatchException;
-import hu.eltesoft.modelexecution.runtime.trace.TraceMessageUnexpectedException;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
-import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
-import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
 
 import java.nio.file.FileSystem;
 
@@ -41,8 +38,8 @@ public class TraceReplayerTest {
 	public void testHasEvent_WithMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		createEvents(fileSystem, traceFileName, new TargetedMessage(
-				new MockClass(null), new DummySignal()));
+		createEvents(fileSystem, traceFileName, new TargetedEvent(
+				new MockClass(null), new SignalEvent(new DummySignal())));
 		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader());
 		assertTrue(sut.hasEvent());
@@ -65,8 +62,8 @@ public class TraceReplayerTest {
 	public void testDispatchEvent_WithInternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		createEvents(fileSystem, traceFileName, new TargetedMessage(
-				new MockClass(null), new DummySignal()));
+		createEvents(fileSystem, traceFileName, new TargetedEvent(
+				new MockClass(null), new SignalEvent(new DummySignal())));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader())) {
@@ -80,15 +77,15 @@ public class TraceReplayerTest {
 		String traceFileName = "trace";
 		Logger logger = context.mock(Logger.class);
 		MockClass target = new MockClass(null);
-		DummySignal message = new DummySignal();
+		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName,
-				TargetedMessage.createOutsideEvent(target, message));
+				TargetedEvent.createOutsideEvent(target, event));
 		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(logger).messageDispatched(target, message);
+				oneOf(logger).messageDispatched(target, event);
 			}
 		});
 		sut.dispatchEvent(logger);
@@ -102,19 +99,19 @@ public class TraceReplayerTest {
 		String traceFileName = "trace";
 		Logger logger = context.mock(Logger.class);
 		MockClass target = new MockClass(null);
-		DummySignal message = new DummySignal();
+		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName);
 		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(logger).messageDispatched(target, message);
+				oneOf(logger).messageDispatched(target, event);
 			}
 		});
 
 		assertEquals(EventSource.Queue,
-				sut.dispatchEvent(new TargetedMessage(target, message), logger));
+				sut.dispatchEvent(new TargetedEvent(target, event), logger));
 		sut.close();
 	}
 
@@ -125,20 +122,20 @@ public class TraceReplayerTest {
 		String traceFileName = "trace";
 		Logger logger = context.mock(Logger.class);
 		MockClass target = new MockClass(null);
-		DummySignal message = new DummySignal();
-		createEvents(fileSystem, traceFileName, new TargetedMessage(target,
-				message));
+		Event event = new SignalEvent(new DummySignal());
+		createEvents(fileSystem, traceFileName,
+				new TargetedEvent(target, event));
 		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(logger).messageDispatched(target, message);
+				oneOf(logger).messageDispatched(target, event);
 			}
 		});
 
 		assertEquals(EventSource.Queue,
-				sut.dispatchEvent(new TargetedMessage(target, message), logger));
+				sut.dispatchEvent(new TargetedEvent(target, event), logger));
 		sut.close();
 	}
 
@@ -149,21 +146,21 @@ public class TraceReplayerTest {
 		String traceFileName = "trace";
 		Logger logger = context.mock(Logger.class);
 		MockClass target = new MockClass(null);
-		DummySignal message = new DummySignal();
-		createEvents(fileSystem, traceFileName, new TargetedMessage(target,
-				message));
+		Event event = new SignalEvent(new DummySignal());
+		createEvents(fileSystem, traceFileName,
+				new TargetedEvent(target, event));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader())) {
 
 			context.checking(new Expectations() {
 				{
-					oneOf(logger).messageDispatched(target, message);
+					oneOf(logger).messageDispatched(target, event);
 				}
 			});
 
-			DifferentDummyEvent message2 = new DifferentDummyEvent(1);
-			sut.dispatchEvent(new TargetedMessage(target, message2), logger);
+			Event event2 = new SignalEvent(new DifferentDummySignal(1));
+			sut.dispatchEvent(new TargetedEvent(target, event2), logger);
 		}
 	}
 
@@ -174,28 +171,28 @@ public class TraceReplayerTest {
 		String traceFileName = "trace";
 		Logger logger = context.mock(Logger.class);
 		MockClass target = new MockClass(null);
-		DummySignal message = new DummySignal();
+		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName,
-				TargetedMessage.createOutsideEvent(target, message));
+				TargetedEvent.createOutsideEvent(target, event));
 		TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem,
 				getClass().getClassLoader());
 
 		context.checking(new Expectations() {
 			{
-				oneOf(logger).messageDispatched(target, message);
+				oneOf(logger).messageDispatched(target, event);
 			}
 		});
 
-		DifferentDummyEvent message2 = new DifferentDummyEvent(1);
-		assertEquals(EventSource.Trace, sut.dispatchEvent(new TargetedMessage(
-				target, message2), logger));
+		Event event2 = new SignalEvent(new DifferentDummySignal(1));
+		assertEquals(EventSource.Trace,
+				sut.dispatchEvent(new TargetedEvent(target, event2), logger));
 		sut.close();
 	}
 
 	private void createEvents(FileSystem fileSystem, String filePath,
-			TargetedMessage... messages) throws Exception {
+			TargetedEvent... messages) throws Exception {
 		TraceWriter sut = TraceWriter.forSpecifiedFile(filePath, fileSystem);
-		for (TargetedMessage message : messages) {
+		for (TargetedEvent message : messages) {
 			sut.traceEvent(message);
 		}
 		sut.close();
