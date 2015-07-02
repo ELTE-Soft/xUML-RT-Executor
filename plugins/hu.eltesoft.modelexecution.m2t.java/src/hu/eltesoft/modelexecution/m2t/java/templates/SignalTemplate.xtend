@@ -69,10 +69,8 @@ class SignalTemplate extends Template {
 				if (obj == null || !(obj instanceof «signal.identifier»)) {
 					return false;
 				}
-				«IF !signal.attributes.empty»
-					«signal.identifier» other = («signal.identifier») obj;
-				«ENDIF»
-				«FOR attribute : signal.attributes»
+				«FOR attribute : signal.attributes
+					BEFORE '''«signal.identifier» other = («signal.identifier») obj;'''»
 					if (!obj.«attribute.identifier».equals(this.«attribute.identifier»)) {
 						return false;
 					}
