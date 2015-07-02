@@ -17,10 +17,16 @@ public interface Runtime {
 			String target);
 
 	/**
-	 * Adds an event to the event queue. The order in which evest are dispached
-	 * is not specified.
+	 * Adds an internal event to the event queue. The order in which events are
+	 * dispatched is not specified.
 	 */
 	void addEventToQueue(ClassWithState target, Event event);
+
+	/**
+	 * Adds an external event to the event queue. The order in which events are
+	 * dispatched is not specified.
+	 */
+	void addExternalEventToQueue(ClassWithState target, Event event);
 
 	/**
 	 * Runs the model execution started by the execution of the given operation

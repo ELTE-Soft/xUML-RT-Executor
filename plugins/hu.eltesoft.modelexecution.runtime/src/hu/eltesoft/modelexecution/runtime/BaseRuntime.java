@@ -67,7 +67,7 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	 */
 	public void terminate() {
 		try {
-			// explicitely call close
+			// explicitly call close
 			close();
 		} catch (Exception e) {
 			logError("Cannot close the runtime", e);
@@ -78,6 +78,14 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	@Override
 	public void addEventToQueue(ClassWithState target, Event event) {
 		TargetedEvent targetedEvent = new TargetedEvent(target, event);
+		queue.addLast(targetedEvent);
+		logger.messageQueued(target, event);
+	}
+
+	@Override
+	public void addExternalEventToQueue(ClassWithState target, Event event) {
+		TargetedEvent targetedEvent = TargetedEvent.createOutsideEvent(target,
+				event);
 		queue.addLast(targetedEvent);
 		logger.messageQueued(target, event);
 	}

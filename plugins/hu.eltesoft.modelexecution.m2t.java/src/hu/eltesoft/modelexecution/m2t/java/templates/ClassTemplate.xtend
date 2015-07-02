@@ -63,7 +63,9 @@ class ClassTemplate extends Template {
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
-				«generateReception(reception)»
+				«generateReception(reception, false)»
+				
+				«generateReception(reception, true)»
 			«ENDFOR»
 		}
 	'''
@@ -134,11 +136,11 @@ class ClassTemplate extends Template {
 		}
 	'''
 
-	def generateReception(ClReception reception) '''
+	def generateReception(ClReception reception, boolean isExternal) '''
 		/** Method for reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
-		public void «reception.identifier»(
+		public void «reception.identifier»«IF isExternal»_external«ENDIF»(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»
 			«ENDFOR»
@@ -148,7 +150,7 @@ class ClassTemplate extends Template {
 					«parameter.identifier»
 				«ENDFOR»
 			);
-			getRuntime().addEventToQueue(this, new «SignalEvent.canonicalName»(signal));
+			getRuntime().add«IF isExternal»External«ENDIF»EventToQueue(this, new «SignalEvent.canonicalName»(signal));
 		}
 	'''
 
