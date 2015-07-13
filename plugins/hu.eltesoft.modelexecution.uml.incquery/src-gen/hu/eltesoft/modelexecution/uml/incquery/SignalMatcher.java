@@ -28,6 +28,8 @@ import org.eclipse.uml2.uml.Signal;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- signal.eiq ---------------------------------------------------------------
+ * 
  * pattern Signal(signal : Signal) {
  * 	Signal(signal);
  * }

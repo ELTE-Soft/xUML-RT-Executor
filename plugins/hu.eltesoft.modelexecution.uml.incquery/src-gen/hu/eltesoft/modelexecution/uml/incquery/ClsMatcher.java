@@ -27,6 +27,8 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- classdef.eiq -------------------------------------------------------------
+ * 
  * pattern Cls(cls : Class) {
  * 	Class(cls);
  * 	neg find IsBehavior(cls);

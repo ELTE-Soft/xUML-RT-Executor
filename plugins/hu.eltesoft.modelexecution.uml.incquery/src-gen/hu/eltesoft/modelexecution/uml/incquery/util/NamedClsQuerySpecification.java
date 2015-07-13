@@ -81,9 +81,9 @@ public final class NamedClsQuerySpecification extends BaseGeneratedQuerySpecific
         new ExportedParameter(body, var_name, "name")
       ));
       
-      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       
       new PositivePatternCall(body, new FlatTuple(var_cls), ClsQuerySpecification.instance());
+      new TypeUnary(body, var_cls, getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class"), "http://www.eclipse.org/uml2/5.0.0/UML/Class");
       new TypeBinary(body, CONTEXT, var_cls, var_name, getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name"), "http://www.eclipse.org/uml2/5.0.0/UML/NamedElement.name");
       bodies.add(body);
     }

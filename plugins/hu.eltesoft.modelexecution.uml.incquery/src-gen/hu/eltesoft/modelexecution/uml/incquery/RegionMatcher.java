@@ -28,6 +28,8 @@ import org.eclipse.uml2.uml.Region;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- region.eiq ---------------------------------------------------------------
+ * 
  * pattern Region(region : Region) {
  * 	Region(region);
  * }

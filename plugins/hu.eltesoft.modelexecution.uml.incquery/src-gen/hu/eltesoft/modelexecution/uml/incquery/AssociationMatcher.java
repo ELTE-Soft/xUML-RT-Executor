@@ -28,6 +28,12 @@ import org.eclipse.uml2.uml.Association;
  * 
  * <p>Original source:
  * <code><pre>
+ * // TODO: this file should be splitted up according to the sections below
+ * // they are inlined only to avoid the following IncQuery maven builder bug:
+ * // https://bugs.eclipse.org/bugs/show_bug.cgi?id=464120
+ * 
+ * // -- association.eiq ----------------------------------------------------------
+ * 
  * pattern Association(association : Association) {
  * 	Association(association);
  * }

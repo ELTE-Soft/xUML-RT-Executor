@@ -28,6 +28,8 @@ import org.eclipse.uml2.uml.SignalEvent;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- event.eiq ----------------------------------------------------------------
+ * 
  * pattern Event(event : SignalEvent) {
  * 	SignalEvent(event); // TODO support different events in the future 
  * }

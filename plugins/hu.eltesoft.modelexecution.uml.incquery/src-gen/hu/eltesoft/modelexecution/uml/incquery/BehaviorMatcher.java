@@ -28,6 +28,8 @@ import org.eclipse.uml2.uml.Behavior;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- behavior.eiq -------------------------------------------------------------
+ * 
  * pattern Behavior(behavior : Behavior) {
  * 	OpaqueBehavior(behavior);
  * }

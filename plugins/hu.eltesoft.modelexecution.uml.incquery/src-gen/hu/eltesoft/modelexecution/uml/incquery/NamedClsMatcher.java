@@ -27,6 +27,8 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  * 
  * <p>Original source:
  * <code><pre>
+ * // -- external.eiq -------------------------------------------------------------
+ * 
  * pattern NamedCls(cls : Class, name) {
  * 	find Cls(cls);
  * 	Class.name(cls, name);
