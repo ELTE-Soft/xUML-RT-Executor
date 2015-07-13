@@ -1,0 +1,422 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+// TODO: this file should be splitted up according to the sections below
+// they are inlined only to avoid the following IncQuery maven builder bug:
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=464120
+
+// -- association.eiq ----------------------------------------------------------
+
+pattern Association(association : Association) {
+	Association(association);
+}
+
+pattern AssociationEnd(association : Association, end : Property) {
+	find Association(association);
+	find Cls(cls);
+	Association.ownedEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern
+AssociationEndType(association : Association, end : Property, cls : Class) {
+	find AssociationEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
+	Association.ownedEnd(association, end);
+	Association.ownedEnd(association, otherEnd);
+	end != otherEnd;
+}
+
+// -- behavior.eiq -------------------------------------------------------------
+
+pattern Behavior(behavior : Behavior) {
+	OpaqueBehavior(behavior);
+}
+
+pattern
+ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
+// operation
+	Operation.method(operation, behavior);
+
+	Class.ownedOperation(containerClass, operation);
+} or {
+// entry
+	State.entry(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClass);
+
+} or {
+// exit
+	State.exit(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClass);
+
+} or {
+// effect
+	Transition.effect(transition, behavior);
+	Transition.container(transition, region);
+
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
+}
+
+pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
+	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+	find BehaviorParameter(behavior, parameter, _);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern StaticBehavior(behavior : Behavior, isStatic) {
+	Behavior.specification(behavior, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
+	OpaqueBehavior.body(behavior, alfCode);
+	OpaqueBehavior.language(behavior, langName);
+	find ContainerClassOfBehavior(behavior, containerClass);
+	check(Utils.toLowerCase(langName).equals("alf"));
+}
+
+private pattern
+ContainerClassOfVertex(vertex : Vertex, containerClass : Class) {
+	State.container(vertex, region);
+
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
+}
+
+// -- classdef.eiq -------------------------------------------------------------
+
+pattern Cls(cls : Class) {
+	Class(cls);
+	neg find IsBehavior(cls);
+	neg find IsStereotype(cls);
+}
+
+private pattern IsBehavior(behavior : Behavior) {
+	Behavior(behavior);
+}
+
+private pattern IsStereotype(stereotype : Stereotype) {
+	Stereotype(stereotype);
+}
+
+// state machine
+pattern RegionOfClass(cls : Class, region : Region) {
+	Class.ownedBehavior(cls, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+// attributes
+pattern Attribute(cls : Class, attribute : Property, isStatic) {
+	find Cls(cls);
+	Class.ownedAttribute(cls, attribute);
+	Property.isStatic(attribute, isStatic);
+}
+
+pattern
+AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
+	find Attribute(cls, attribute, _);
+	Property.type(attribute, type);
+	Property.isOrdered(attribute, ordered);
+	Property.isUnique(attribute, unique);
+}
+
+pattern
+AttributeLowerBound(cls : Class, attribute : Property, type, lowerBound : ValueSpecification) {
+	find AttributeType(cls, attribute, type, _, _);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern
+AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueSpecification) {
+	find AttributeType(cls, attribute, type, _, _);
+	Property.upperValue(attribute, upperBound);
+}
+
+// operations
+pattern Operation(cls : Class, operation : Operation, isStatic) {
+	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern
+OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern
+OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type, ordered, unique) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+private pattern
+OperationReturn(cls : Class, operation : Operation, parameter : Parameter) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+}
+
+pattern
+OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
+	find OperationReturn(cls, operation, parameter);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+OperationReturnLowerBound(cls : Class, operation : Operation, type, lowerBound : ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound : ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern Method(cls : Class, operation : Operation, method : Behavior) {
+	Class.ownedOperation(cls, operation);
+	Operation.method(operation, method);
+}
+
+// receptions
+pattern Reception(cls : Class, reception : Reception, signal : Signal) {
+	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+}
+
+pattern
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
+	find Reception(cls, reception, _);
+	Reception.ownedParameter(reception, parameter);
+	Parameter.direction(parameter, direction);
+	direction == ParameterDirectionKind::in;
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+// class associations
+pattern ClassAssociation(cls : Class, end : Property) {
+	find AssociationEndType(_, end, cls);
+}
+
+pattern
+ClassAssociationType(cls : Class, end : Property, type : Association, ordered, unique) {
+	find AssociationEndType(type, end, cls);
+	Property.isOrdered(end, ordered);
+	Property.isUnique(end, unique);
+}
+
+pattern
+ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound : ValueSpecification) {
+	find ClassAssociationType(cls, end, type, _, _);
+	find AssociationOtherEnd(end, otherEnd);
+	Property.lowerValue(otherEnd, lowerBound);
+}
+
+pattern
+ClassAssociationUpperBound(cls : Class, end : Property, type : Association, upperBound : ValueSpecification) {
+	find ClassAssociationType(cls, end, type, _, _);
+	find AssociationOtherEnd(end, otherEnd);
+	Property.upperValue(otherEnd, upperBound);
+}
+
+// -- event.eiq ----------------------------------------------------------------
+
+pattern Event(event : SignalEvent) {
+	SignalEvent(event); // TODO support different events in the future 
+}
+
+pattern SignalEvent(event : SignalEvent, signal : Signal) {
+	SignalEvent.signal(event, signal);
+}
+
+// -- external.eiq -------------------------------------------------------------
+
+pattern NamedCls(cls : Class, name) {
+	find Cls(cls);
+	Class.name(cls, name);
+}
+
+pattern NamedOperation(cls : Class, operation : Operation, name) {
+	find Operation(cls, operation, _);
+	Operation.name(operation, name);
+}
+
+pattern
+ExternalOperationParameter(cls : Class, operation : Operation, parameter : Parameter, typeName) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+	Type.name(type, typeName);
+}
+
+pattern NamedReception(cls : Class, reception : Reception, name) {
+	find Reception(cls, reception, _);
+	Reception.name(reception, name);
+}
+
+// -- region.eiq ---------------------------------------------------------------
+
+pattern Region(region : Region) {
+	Region(region);
+}
+
+pattern ContainerClassOfRegion(region : Region, containerClass : Class) {
+	Class.ownedBehavior(containerClass, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+pattern
+Initials(region : Region, initPseudostate : Pseudostate, initTransition : Transition, firstState : State) {
+	Pseudostate.container(initPseudostate, region);
+	Pseudostate.kind(initPseudostate, ::initial);
+
+	Transition.source(initTransition, initPseudostate);
+	Transition.target(initTransition, firstState);
+}
+
+pattern State(region : Region, state : State) {
+	State.container(state, region);
+}
+
+pattern FinalState(region : Region, state : State) {
+	find State(region, state);
+	FinalState(state);
+}
+
+pattern Entry(region : Region, state : State, entry : Behavior) {
+	State.container(state, region);
+	State.entry(state, entry);
+}
+
+pattern Exit(region : Region, state : State, exit : Behavior) {
+	State.container(state, region);
+	State.exit(state, exit);
+}
+
+pattern
+Transition(region : Region, source : State, transition : Transition, event : Event, signal : Signal, target : State) {
+	find TransitionBase(region, source, transition, event, target);
+	SignalEvent.signal(event, signal);
+}
+
+private pattern
+TransitionBase(region : Region, source : State, transition : Transition, event : Event, target : State) {
+	Transition.container(transition, region);
+	Transition.source(transition, source);
+	Transition.target(transition, target);
+	Transition.trigger(transition, trigger);
+	Trigger.event(trigger, event);
+}
+
+pattern
+TransitionEffect(region : Region, state : State, transition : Transition, effect : Behavior) {
+	Transition.source(transition, state);
+	Transition.container(transition, region);
+	Transition.effect(transition, effect);
+}
+
+// -- signal.eiq ---------------------------------------------------------------
+
+pattern Signal(signal : Signal) {
+	Signal(signal);
+}
+
+pattern SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
+	find Signal(signal);
+	Signal.ownedAttribute(signal, attribute);
+	Property.type(attribute, type);
+	Property.isOrdered(attribute, ordered);
+	Property.isUnique(attribute, unique);
+}
+
+pattern SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound : ValueSpecification) {
+	find SignalAttribute(signal, attribute, _, _, _);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
+	find SignalAttribute(signal, attribute, _, _, _);
+	Property.upperValue(attribute, upperBound);
+}
+
