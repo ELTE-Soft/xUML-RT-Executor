@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage
-import hu.eltesoft.modelexecution.m2t.java.templates.ExternalEntityTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.ExternalEntityTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.EntityType
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.ExternalOperationParameterMatcher
@@ -16,8 +16,6 @@ import hu.eltesoft.modelexecution.uml.incquery.NamedOperationMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-
-import static hu.eltesoft.modelexecution.profile.xumlrt.EntityType.*
 
 class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEntity, NamedClsMatch> {
 
@@ -55,7 +53,7 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 	}
 
 	override createTemplate(ExExternalEntity externalEntity) {
-		new ExternalEntityTemplate(externalEntity)
+		new ExternalEntityTemplateSmap(externalEntity)
 	}
 
 	override shouldMap(Class cls) {

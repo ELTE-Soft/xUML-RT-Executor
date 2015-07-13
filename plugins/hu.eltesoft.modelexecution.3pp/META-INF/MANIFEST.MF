@@ -3,20 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.3pp;singleton:=true
 Bundle-Version: 0.4.0.qualifier
-Export-Package: org.eclipse.papyrus.alf.libraries,
- org.eclipse.papyrus.alf.libraries.helper,
- org.eclipse.papyrus.uml.alf,
- org.eclipse.papyrus.uml.alf.formatting,
- org.eclipse.papyrus.uml.alf.generator,
- org.eclipse.papyrus.uml.alf.impl,
- org.eclipse.papyrus.uml.alf.parser.antlr,
- org.eclipse.papyrus.uml.alf.parser.antlr.internal,
- org.eclipse.papyrus.uml.alf.scoping,
- org.eclipse.papyrus.uml.alf.serializer,
- org.eclipse.papyrus.uml.alf.services,
- org.eclipse.papyrus.uml.alf.util,
- org.eclipse.papyrus.uml.alf.validation,
- org.json,
+Export-Package: org.json,
  org.json.zip
 Import-Package: org.eclipse.xtext.xbase.lib
 Require-Bundle: org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,

@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.smap.SmapStratum;
 
 /**
@@ -21,7 +21,7 @@ public class SourceMappedText implements CharSequence {
 	private final List<LineMapping> mapping;
 	private final CharSequence text;
 
-	private Smap cachedSmap;
+	private SmapStratum cachedSmap;
 
 	SourceMappedText(String stratumName, List<LineMapping> mapping,
 			CharSequence text) {
@@ -47,32 +47,29 @@ public class SourceMappedText implements CharSequence {
 	 * reference after the first invocation. Lazy creation of the stratum is
 	 * beneficial as it will never happen for nested template invocations.
 	 */
-	public Smap getSmap() {
+	public SmapStratum getSmap() {
 		if (null == cachedSmap) {
 			cachedSmap = createSmap();
 		}
 		return cachedSmap;
 	}
 
-	private Smap createSmap() {
-		SmapStratum stratum = new SmapStratum(stratumName);
-		addLinesToSmap(stratum);
-		stratum.optimizeLineSection();
-		Smap smap = new Smap();
-		smap.addStratum(stratum);
+	private SmapStratum createSmap() {
+		SmapStratum smap = new SmapStratum(stratumName);
+		addLinesToSmap(smap);
+		smap.optimizeLineSection();
 		return smap;
 	}
 
-	private void addLinesToSmap(SmapStratum stratum) {
+	private void addLinesToSmap(SmapStratum smap) {
 		for (LineMapping m : mapping) {
 			Location l = m.getInputLocation();
 			int inputLineCount = l.getEndLine() - l.getStartLine() + 1;
 			String filePath = l.getFilePath();
 			if (filePath != null && !filePath.equals("")) {
-				URI uri = URI.createURI(filePath);
-				String fileName = uri.lastSegment();
-				stratum.addFile(fileName, filePath);
-				stratum.addLineData(l.getStartLine(), fileName, inputLineCount,
+				String fileName = Paths.get(filePath).getFileName().toString();
+				smap.addFile(fileName, filePath);
+				smap.addLineData(l.getStartLine(), fileName, inputLineCount,
 						m.getOutputStartLine(), m.getOutputLineIncrement());
 			}
 		}

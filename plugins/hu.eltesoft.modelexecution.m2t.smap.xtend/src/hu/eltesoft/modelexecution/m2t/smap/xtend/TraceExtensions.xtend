@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend
 
+import org.eclipse.xtend.lib.annotations.Data
+
 /**
  * Represents a location in a source file.
  * The file path is always a relative path,

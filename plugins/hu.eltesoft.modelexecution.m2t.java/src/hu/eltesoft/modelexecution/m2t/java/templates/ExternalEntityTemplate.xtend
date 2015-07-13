@@ -9,7 +9,6 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntity
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityType
 
-import static hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType.*
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 
 @SourceMappedTemplate(stratumName=XUML_RT)

@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage
-import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplateSmap
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeUpperBoundMatcher
@@ -50,7 +50,7 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 	}
 
 	override createTemplate(SgSignal signal) {
-		return new SignalTemplate(signal)
+		return new SignalTemplateSmap(signal)
 	}
 
 }

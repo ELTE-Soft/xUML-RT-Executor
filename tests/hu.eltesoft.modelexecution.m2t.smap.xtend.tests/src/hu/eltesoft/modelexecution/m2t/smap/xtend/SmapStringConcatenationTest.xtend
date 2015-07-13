@@ -19,17 +19,13 @@ class SmapStringConcatenationTest {
 
 		assertStringEquals(
 			'''
-				SMAP
-				test.java
-				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				17,2:4
-				*E
-			''', smText.smap.toString("test.java"))
+			''', smText.smap)
 	}
 
 	private def createBuilderFromDataWithLocation() {
@@ -54,17 +50,13 @@ class SmapStringConcatenationTest {
 
 		assertStringEquals(
 			'''
-				SMAP
-				test.java
-				sm
 				*S sm
 				*F
 				+ 0 test.sm
 				test.sm
 				*L
 				17,2:7
-				*E
-			''', smText.smap.toString("test.java"))
+			''', smText.smap)
 	}
 
 	def createBuilderFromNestedTemplate() {

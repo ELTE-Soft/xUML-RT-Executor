@@ -50,7 +50,7 @@ class SmapStringConcatenation extends StringConcatenation {
      * location to the current output line, and appends the text
      * represented by the given data.
      */
-	def dispatch append(DataWithLocation<?> dataWithLocation, String indentation) {
+	def dispatch void append(DataWithLocation<?> dataWithLocation, String indentation) {
 
 		// assume that parameters are substituted to continuous line ranges in the template
 		val outputLineIncrement = 1
@@ -64,7 +64,7 @@ class SmapStringConcatenation extends StringConcatenation {
      * templates will also result in a SourceMappedText instance.
      * Requires dynamic dispatch in some cases, see append for objects.
      */
-	def dispatch append(SourceMappedText sourceMappedText, String indentation) {
+	def dispatch void append(SourceMappedText sourceMappedText, String indentation) {
 		sourceMappedText.mapping.forEach [ m |
 			mapping.add(new LineMapping(m.inputLocation, lineNumber + m.outputStartLine - 1, m.outputLineIncrement))
 		]

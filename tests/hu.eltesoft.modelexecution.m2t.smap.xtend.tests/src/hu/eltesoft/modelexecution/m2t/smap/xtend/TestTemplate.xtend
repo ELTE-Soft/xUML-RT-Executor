@@ -30,10 +30,7 @@ class TestTemplate {
 		«ENDFOR»
 	'''
 
-	def dispatch renderItem(Integer item) {
-		val next = item + 1
-		'''Integer: «trace(location1, next)»'''
-	}
+	def dispatch renderItem(Integer item) '''Integer: «trace(location1, item)»'''
 
 	def dispatch renderItem(String item) '''String: «trace(location2, item)»'''
 

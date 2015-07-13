@@ -1,5 +1,14 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
+import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.emf.EMFScope;
+import org.eclipse.incquery.runtime.exception.IncQueryException;
+
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
@@ -8,14 +17,6 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 /**
  * This translator converts model resources into a set of translational models
@@ -59,10 +60,9 @@ public class ResourceTranslator {
 
 		try {
 			if (incremental) {
-				engine = AdvancedIncQueryEngine.from(IncQueryEngine
-						.on(resource));
+				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(new EMFScope(resource)));
 			} else {
-				engine = AdvancedIncQueryEngine.createUnmanagedEngine(resource);
+				engine = AdvancedIncQueryEngine.createUnmanagedEngine(new EMFScope(resource));
 			}
 
 			setupTranslators();
@@ -88,8 +88,7 @@ public class ResourceTranslator {
 
 	private void attachListeners() {
 		CompositeReversibleTask task = new CompositeReversibleTask();
-		ListenerContext context = new ListenerContext(engine, changes,
-				rootNames);
+		ListenerContext context = new ListenerContext(engine, changes, rootNames);
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
 			task.add(translator.addListeners(context));
 		}
@@ -115,8 +114,7 @@ public class ResourceTranslator {
 
 	private void checkDisposed() {
 		if (disposed) {
-			throw new IllegalStateException(
-					"Cannot use Translator after dispose."); //$NON-NLS-1$
+			throw new IllegalStateException("Cannot use Translator after dispose."); //$NON-NLS-1$
 		}
 	}
 
@@ -145,8 +143,7 @@ public class ResourceTranslator {
 		return updateTasks;
 	}
 
-	private void performBatchTranslation(List<SourceCodeTask> updateTasks,
-			RootElementTranslator<?, ?, ?> translator) {
+	private void performBatchTranslation(List<SourceCodeTask> updateTasks, RootElementTranslator<?, ?, ?> translator) {
 		translator.getAllTemplates().forEach((rootName, template) -> {
 			updateTasks.add(new UpdateSourceCodeTask(rootName, template));
 		});

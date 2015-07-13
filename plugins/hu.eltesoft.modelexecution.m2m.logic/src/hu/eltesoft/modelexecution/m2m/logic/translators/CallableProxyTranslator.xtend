@@ -5,7 +5,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.callable.CaCallable
 import hu.eltesoft.modelexecution.m2m.metamodel.callable.CallableFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage
-import hu.eltesoft.modelexecution.m2t.java.templates.CallableProxyTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.CallableProxyTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatcher
@@ -36,7 +36,7 @@ class CallableProxyTranslator extends RootElementTranslator<Class, CaCallable, N
 	}
 
 	override createTemplate(CaCallable cls) {
-		new CallableProxyTemplate(cls)
+		new CallableProxyTemplateSmap(cls)
 	}
 
 	override shouldMap(Class cls) {
