@@ -45,7 +45,6 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 			checkGenDirIsSrcDir();
 			getGenSrcFileManager().addOrUpdate(fileName,
 					output.getText().toString());
-			@SuppressWarnings("restriction")
 			String smap = output.getSmap().toString();
 			if (smap != null) {
 				getDebugInfoFileManager().addOrUpdateFile(
