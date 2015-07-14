@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
-import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
@@ -85,7 +85,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 
 		// operation parameters
-		val parameterNode = operationNode.onEObject(PACKAGE.clOperation_Parameters, OperationParameterMatcher.on(engine)) [
+		val parameterNode = operationNode.onEObject(PACKAGE.clOperation_Parameters,
+			OperationParameterMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createParameter
 			elem.reference = new NamedReference(parameter)
 			elem.direction = direction.convert
@@ -147,7 +148,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			upperBound.toInt
 		]
 
-		//  receptions
+		// receptions
 		val receptionNode = rootNode.onEObject(PACKAGE.clClass_Receptions, ReceptionMatcher.on(engine)) [
 			val elem = FACTORY.createClReception
 			elem.reference = new NamedReference(reception)
@@ -174,7 +175,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override createTemplate(ClClass cls) {
-		new ClassTemplate(cls)
+		new ClassTemplateSmap(cls)
 	}
 
 	override shouldMap(Class cls) {

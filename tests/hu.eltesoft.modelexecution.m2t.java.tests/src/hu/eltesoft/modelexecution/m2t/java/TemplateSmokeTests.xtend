@@ -4,10 +4,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalFactory
-import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate
-import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplate
-import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate
-import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
+import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
+import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplateSmap
+import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplateSmap
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase
@@ -45,7 +45,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		behavior.reference = makeNewReference("TestBehavior")
 		behavior.alfResult = new AlfAnalyzer().analyze("this.x();", aClass)
 		behavior.containerClass = makeNewReference("TestClass")
-		val template = new BehaviorTemplate(behavior)
+		val template = new BehaviorTemplateSmap(behavior)
 
 		assertProperlyGenerated(template.generate)
 	}
@@ -54,7 +54,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 	def testGenerateCodeForClassWithoutStateMachine() {
 		val ^class = ClassdefFactory.eINSTANCE.createClClass
 		^class.reference = makeNewReference("TestClass")
-		val template = new ClassTemplate(^class)
+		val template = new ClassTemplateSmap(^class)
 
 		assertProperlyGenerated(template.generate)
 	}
@@ -76,7 +76,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		reception.signal = makeNewReference("TestSignal")
 		^class.receptions.add(reception)
 
-		val template = new ClassTemplate(^class)
+		val template = new ClassTemplateSmap(^class)
 
 		assertProperlyGenerated(template.generate)
 	}
@@ -122,7 +122,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		secondTransition.event = makeNewReference("ToFirstSignalEvent")
 		secondState.transitions.add(secondTransition)
 
-		val template = new RegionTemplate(region)
+		val template = new RegionTemplateSmap(region)
 
 		assertProperlyGenerated(template.generate)
 	}
@@ -131,7 +131,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 	def testGenerateCodeForSignal() {
 		val signal = SignalFactory.eINSTANCE.createSgSignal
 		signal.reference = makeNewReference("TestSignal")
-		val template = new SignalTemplate(signal)
+		val template = new SignalTemplateSmap(signal)
 
 		assertProperlyGenerated(template.generate)
 	}

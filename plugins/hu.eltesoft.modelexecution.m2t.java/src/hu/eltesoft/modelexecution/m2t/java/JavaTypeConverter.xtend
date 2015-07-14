@@ -10,7 +10,6 @@ import java.math.BigInteger
 import java.util.ArrayList
 import java.util.HashSet
 
-import static hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes.*
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
 
 /** This class converts translational-model-level types to Java types. */

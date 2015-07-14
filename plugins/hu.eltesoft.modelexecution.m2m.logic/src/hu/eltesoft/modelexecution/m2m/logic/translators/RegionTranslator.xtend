@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgRegion
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgState
-import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplateSmap
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfRegionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.EntryMatcher
@@ -85,6 +85,6 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 	}
 
 	override createTemplate(RgRegion region) {
-		return new RegionTemplate(region)
+		return new RegionTemplateSmap(region)
 	}
 }

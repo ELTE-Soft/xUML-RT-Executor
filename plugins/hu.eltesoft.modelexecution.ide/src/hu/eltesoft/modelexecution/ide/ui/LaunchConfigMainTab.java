@@ -1,13 +1,5 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,6 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -48,6 +41,14 @@ import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
 
 /**
  * Allows the user to configure the model that is loaded, the main class and the
@@ -416,7 +417,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 	private void initMatchers() {
 		try {
-			IncQueryEngine engine = IncQueryEngine.on(resource);
+			IncQueryEngine engine = IncQueryEngine.on(new EMFScope(resource));
 			classMatcher = ClsMatcher.on(engine);
 			methodMatcher = MethodMatcher.on(engine);
 		} catch (IncQueryException e) {

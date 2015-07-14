@@ -7,7 +7,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
 import hu.eltesoft.modelexecution.m2t.java.Template
-import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplate
+import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
 import hu.eltesoft.modelexecution.uml.alf.UnsupportedAlfFeatureException
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher
@@ -65,14 +65,16 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			upperBound.toInt
 		]
 
-		val returnNode = rootNode.onEObject(PACKAGE.bhBehavior_ReturnType, BehaviorReturnTypeMatcher.on(engine))[
+		val returnNode = rootNode.onEObject(PACKAGE.bhBehavior_ReturnType, BehaviorReturnTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
 			elem.isOrdered = ordered
 			elem.isUnique = unique
 			return elem
 		]
-		returnNode.on(BASE_PACKAGE.multiplicity_LowerBound, BehaviorReturnLowerBoundMatcher.on(engine)
+		returnNode.on(
+			BASE_PACKAGE.multiplicity_LowerBound,
+			BehaviorReturnLowerBoundMatcher.on(engine)
 		) [
 			lowerBound.toInt
 		]
@@ -96,6 +98,6 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 	}
 
 	override Template createTemplate(BhBehavior behavior) {
-		return new BehaviorTemplate(behavior)
+		return new BehaviorTemplateSmap(behavior)
 	}
 }

@@ -17,7 +17,7 @@ import com.sun.jdi.VirtualMachine;
 public class ProcessDecorator implements IProcess, IProcessWithVM {
 
 	protected IProcess process;
-	
+
 	public ProcessDecorator(IProcess process) {
 		this.process = process;
 	}
@@ -34,9 +34,9 @@ public class ProcessDecorator implements IProcess, IProcessWithVM {
 	public IProcess getDecoratedProcess() {
 		return process;
 	}
-	
+
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		return process.getAdapter(adapter);
 	}
 
