@@ -35,8 +35,16 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		root = buildMapper(engine);
 	}
 
-	protected abstract RootNode<UML, Trans, Match> buildMapper(
-			IncQueryEngine engine) throws IncQueryException;
+	protected abstract RootNode<UML, Trans, Match> createMapper(IncQueryEngine engine);
+	protected abstract void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine);
+	
+	
+	protected RootNode<UML, Trans, Match> buildMapper(
+			IncQueryEngine engine) throws IncQueryException {
+		RootNode<UML, Trans, Match> mapper = createMapper(engine);
+		initMapper(mapper, engine);
+		return mapper;
+	}
 
 	/**
 	 * Enables filtering of source models. Override in subclasses to prevent

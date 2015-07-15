@@ -16,6 +16,7 @@ import hu.eltesoft.modelexecution.uml.incquery.NamedOperationMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEntity, NamedClsMatch> {
 
@@ -26,7 +27,7 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 		super(engine);
 	}
 
-	override buildMapper(IncQueryEngine engine) throws IncQueryException {
+	override protected createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(NamedClsMatcher.on(engine)) [
 			val root = FACTORY.createExExternalEntity
 			root.reference = new NamedReference(cls)
@@ -34,6 +35,10 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 			root.type = Stereotypes.externalEntityTypeOf(cls).convert
 			return root
 		]
+		return rootNode
+	}
+
+	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		val operationNode = rootNode.onEObject(PACKAGE.exExternalEntity_Operations, NamedOperationMatcher.on(engine)) [
 			val elem = FACTORY.createExOperation
 			elem.reference = new NamedReference(operation)
@@ -42,7 +47,6 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 		operationNode.on(PACKAGE.exOperation_ProxyClass, ExternalOperationParameterMatcher.on(engine)) [
 			typeName
 		]
-		return rootNode
 	}
 
 	def convert(EntityType type) {

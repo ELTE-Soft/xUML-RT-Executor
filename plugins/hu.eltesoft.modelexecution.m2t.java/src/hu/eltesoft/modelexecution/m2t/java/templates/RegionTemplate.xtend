@@ -70,19 +70,27 @@ class RegionTemplate extends Template {
 		partitioning = new StepPartitioning(numberOfStates)
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		/** Class for state machine region «region.javadoc» */
 		«generatedHeaderForClass(region)»
 		public class «region.identifier» implements «StateMachineRegion.canonicalName» {
-		
+			
+			public «region.identifier»(«region.containerClass.identifier» owner) {
+				this.owner = owner;
+			}
+			«content»
+		}
+	'''
+
+	override generateContent() '''
 			private enum State {
-				/** Enum literal for initial state «initState.javadoc» */
-				«initState.identifier»(«initState.nameLiteral»),
-				«FOR state : region.states SEPARATOR ','»
-					/** Enum literal for state «state.javadoc» */
-					«state.identifier»(«state.nameLiteral»)
-				«ENDFOR»
-				;
+			/** Enum literal for initial state «initState.javadoc» */
+			«initState.identifier»(«initState.nameLiteral»),
+			«FOR state : region.states SEPARATOR ','»
+				/** Enum literal for state «state.javadoc» */
+				«state.identifier»(«state.nameLiteral»)
+			«ENDFOR»
+			;
 		
 				private final String name;
 		
@@ -98,10 +106,6 @@ class RegionTemplate extends Template {
 		
 			private «region.containerClass.identifier» owner;
 			private State currentState = State.«initState.identifier»;
-		
-			public «region.identifier»(«region.containerClass.identifier» owner) {
-				this.owner = owner;
-			}
 		
 			@Override
 			public void doInitialTransition() {
@@ -144,8 +148,7 @@ class RegionTemplate extends Template {
 			@Override
 			public String toString() {
 				return «region.nameLiteral» + " { currentState = " + currentState + " }";
-			}
-		}
+			}	
 	'''
 
 	def makeStep(int i) '''

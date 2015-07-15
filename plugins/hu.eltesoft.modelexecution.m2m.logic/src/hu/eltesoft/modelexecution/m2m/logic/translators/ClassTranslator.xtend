@@ -35,6 +35,7 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
@@ -45,13 +46,16 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		super(engine);
 	}
 
-	override buildMapper(IncQueryEngine engine) throws IncQueryException {
+	override protected createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(ClsMatcher.on(engine)) [
 			val root = FACTORY.createClClass
 			root.setReference(new NamedReference(cls));
 			return root;
 		]
+		return rootNode
+	}
 
+	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
 
@@ -170,8 +174,6 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		receptionParameter.on(BASE_PACKAGE.multiplicity_UpperBound, ReceptionParameterUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-
-		return rootNode;
 	}
 
 	override createTemplate(ClClass cls) {

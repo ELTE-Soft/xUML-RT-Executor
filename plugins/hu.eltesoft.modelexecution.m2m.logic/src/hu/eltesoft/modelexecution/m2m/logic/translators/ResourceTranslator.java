@@ -78,6 +78,7 @@ public class ResourceTranslator {
 	private void setupTranslators() throws IncQueryException {
 		translators = new LinkedList<>();
 		translators.add(new AssociationTranslator(engine));
+		translators.add(new AssociationClassTranslator(engine));
 		translators.add(new BehaviorTranslator(engine));
 		translators.add(new CallableProxyTranslator(engine));
 		translators.add(new ClassTranslator(engine));

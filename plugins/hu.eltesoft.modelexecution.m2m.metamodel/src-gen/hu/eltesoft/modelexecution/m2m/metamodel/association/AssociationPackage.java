@@ -149,6 +149,97 @@ public interface AssociationPackage extends EPackage {
 	 */
 	int AS_ASSOCIATION_END_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl <em>As Association Class</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl#getAsAssociationClass()
+	 * @generated
+	 */
+	int AS_ASSOCIATION_CLASS = 2;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__REFERENCE = AS_ASSOCIATION__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Ends</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__ENDS = AS_ASSOCIATION__ENDS;
+
+	/**
+	 * The feature id for the '<em><b>Region</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__REGION = AS_ASSOCIATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Operations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__OPERATIONS = AS_ASSOCIATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__RECEPTIONS = AS_ASSOCIATION_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__ATTRIBUTES = AS_ASSOCIATION_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Associations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__ASSOCIATIONS = AS_ASSOCIATION_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>As Association Class</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of operations of the '<em>As Association Class</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS_OPERATION_COUNT = AS_ASSOCIATION_OPERATION_COUNT + 0;
+
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociation <em>As Association</em>}'.
@@ -191,6 +282,16 @@ public interface AssociationPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getAsAssociationEnd_Type();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationClass <em>As Association Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>As Association Class</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationClass
+	 * @generated
+	 */
+	EClass getAsAssociationClass();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -250,6 +351,16 @@ public interface AssociationPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AS_ASSOCIATION_END__TYPE = eINSTANCE.getAsAssociationEnd_Type();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl <em>As Association Class</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl#getAsAssociationClass()
+		 * @generated
+		 */
+		EClass AS_ASSOCIATION_CLASS = eINSTANCE.getAsAssociationClass();
 
 	}
 

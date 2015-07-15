@@ -13,6 +13,7 @@ import hu.eltesoft.modelexecution.uml.incquery.NamedReceptionMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class CallableProxyTranslator extends RootElementTranslator<Class, CaCallable, NamedClsMatch> {
 
@@ -23,16 +24,19 @@ class CallableProxyTranslator extends RootElementTranslator<Class, CaCallable, N
 		super(engine);
 	}
 
-	override buildMapper(IncQueryEngine engine) throws IncQueryException {
+	override createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(NamedClsMatcher.on(engine)) [
 			val root = FACTORY.createCaCallable
 			root.reference = new NamedReference(cls)
 			return root
 		]
+		return rootNode
+	}
+
+	override initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		rootNode.on(PACKAGE.caCallable_Receptions, NamedReceptionMatcher.on(engine)) [
 			new NamedReference(reception)
 		]
-		return rootNode
 	}
 
 	override createTemplate(CaCallable cls) {

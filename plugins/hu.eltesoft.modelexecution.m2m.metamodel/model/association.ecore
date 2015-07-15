@@ -9,4 +9,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="AsAssociationEnd" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//ReferencedType"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AsAssociationClass" eSuperTypes="#//AsAssociation classdef.ecore#//ClClass"/>
 </ecore:EPackage>

@@ -29,6 +29,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	protected static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
 	protected static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
 	protected TypeConverter typeTranslator = new TypeConverter();
+	private BaseMatcher<Match> matcher;
 
 	public RootElementTranslator(IncQueryEngine engine)
 			throws IncQueryException {
@@ -54,11 +55,19 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	protected RootNode<UML, Trans, Match> fromRoot(BaseMatcher<Match> matcher,
 			Function<Match, Trans> transform) {
+		this.matcher = matcher;
 		if (matcher.getSpecification().getParameters().size() == 0) {
 			throw new RuntimeException(
 					"Cannot create a root node from a matcher without parameters.");
 		}
 		return new RootNode<UML, Trans, Match>(this, matcher, transform);
+	}
+	
+	
+	public boolean canHandle(UML root) {
+		Match filterMatch = matcher.newEmptyMatch();
+		filterMatch.set(0, root);
+		return matcher.hasMatch(filterMatch);
 	}
 
 	// delegates for conversions by subtranslators

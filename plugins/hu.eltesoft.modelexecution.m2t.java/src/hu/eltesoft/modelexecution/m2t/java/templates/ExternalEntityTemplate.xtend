@@ -21,17 +21,21 @@ class ExternalEntityTemplate extends Template {
 		this.entity = entity
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		«generatedHeaderForClass(entity)»
 		@«ExternalEntity.canonicalName»(
 			implementationClass = «entity.implementationClass.literal»,
 			type = «ExternalEntityType.canonicalName».«entity.type.convert»)
 		public interface «entity.originalName» {
+			«content»
+		}
+	'''
+	
+	override generateContent() '''
 		«FOR operation : entity.operations»
 			
-				public void «operation.originalName»(«operation.parameter»);
+			public void «operation.originalName»(«operation.parameter»);
 		«ENDFOR»
-		}
 	'''
 
 	def convert(ExEntityType type) {

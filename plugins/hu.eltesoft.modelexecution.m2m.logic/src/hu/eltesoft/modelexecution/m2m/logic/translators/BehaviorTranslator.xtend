@@ -25,6 +25,7 @@ import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Behavior
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, BehaviorMatch> {
 
@@ -35,14 +36,17 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		super(engine);
 	}
 
-	override buildMapper(IncQueryEngine engine) {
+	override createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(BehaviorMatcher.on(engine)) [
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
 			root.alfResult = new AlfAnalyzer().analyze("{}")
 			return root;
 		]
+		return rootNode;
+	}
 
+	override initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		rootNode.on(PACKAGE.bhBehavior_IsStatic, StaticBehaviorMatcher.on(engine))[isStatic]
 
 		val parameterNode = rootNode.onEObject(PACKAGE.bhBehavior_Parameters, BehaviorParameterMatcher.on(engine)) [
@@ -93,8 +97,6 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
 			new NamedReference(containerClass)
 		]
-
-		return rootNode
 	}
 
 	override Template createTemplate(BhBehavior behavior) {

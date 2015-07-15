@@ -2,19 +2,31 @@ package hu.eltesoft.modelexecution.uml.incquery
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
+/* Type information from some parameter is missing on purpose. 
+ * Otherwise IncQuery will not report matches that refer to elements of a resource 
+ * that is not loaded into IncQuery.
+ */
+
 // TODO: this file should be splitted up according to the sections below
 // they are inlined only to avoid the following IncQuery maven builder bug:
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=464120
 
 // -- association.eiq ----------------------------------------------------------
-
 pattern Association(association : Association) {
+	find AssocOrAssocClass(association);
+	neg find AssociationClass(association);
+}
+
+private pattern AssocOrAssocClass(association : Association) {
 	Association(association);
 }
 
+pattern AssociationClass(assocClass : AssociationClass) {
+	AssociationClass(assocClass);
+}
+
 pattern AssociationEnd(association : Association, end : Property) {
-	find Association(association);
-	find Cls(cls);
+	find ClassOrAssocClass(cls);
 	Association.ownedEnd(association, end);
 	Property.type(end, cls);
 }
@@ -32,7 +44,6 @@ pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
 }
 
 // -- behavior.eiq -------------------------------------------------------------
-
 pattern Behavior(behavior : Behavior) {
 	OpaqueBehavior(behavior);
 }
@@ -63,7 +74,8 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 	find ContainerClassOfRegion(region, containerClass); // from region.eiq
 }
 
-pattern BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
+pattern
+BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, direction);
 	direction != ParameterDirectionKind::^return;
@@ -130,8 +142,12 @@ ContainerClassOfVertex(vertex : Vertex, containerClass : Class) {
 }
 
 // -- classdef.eiq -------------------------------------------------------------
-
 pattern Cls(cls : Class) {
+	find ClassOrAssocClass(cls);
+	neg find AssociationClass(cls);
+}
+
+private pattern ClassOrAssocClass(cls : Class) {
 	Class(cls);
 	neg find IsBehavior(cls);
 	neg find IsStereotype(cls);
@@ -153,7 +169,6 @@ pattern RegionOfClass(cls : Class, region : Region) {
 
 // attributes
 pattern Attribute(cls : Class, attribute : Property, isStatic) {
-	find Cls(cls);
 	Class.ownedAttribute(cls, attribute);
 	Property.isStatic(attribute, isStatic);
 }
@@ -302,7 +317,6 @@ ClassAssociationUpperBound(cls : Class, end : Property, type : Association, uppe
 }
 
 // -- event.eiq ----------------------------------------------------------------
-
 pattern Event(event : SignalEvent) {
 	SignalEvent(event); // TODO support different events in the future 
 }
@@ -312,7 +326,6 @@ pattern SignalEvent(event : SignalEvent, signal : Signal) {
 }
 
 // -- external.eiq -------------------------------------------------------------
-
 pattern NamedCls(cls : Class, name) {
 	find Cls(cls);
 	Class.name(cls, name);
@@ -336,7 +349,6 @@ pattern NamedReception(cls : Class, reception : Reception, name) {
 }
 
 // -- region.eiq ---------------------------------------------------------------
-
 pattern Region(region : Region) {
 	Region(region);
 }
@@ -397,12 +409,12 @@ TransitionEffect(region : Region, state : State, transition : Transition, effect
 }
 
 // -- signal.eiq ---------------------------------------------------------------
-
 pattern Signal(signal : Signal) {
 	Signal(signal);
 }
 
-pattern SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
+pattern
+SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
 	find Signal(signal);
 	Signal.ownedAttribute(signal, attribute);
 	Property.type(attribute, type);
@@ -410,12 +422,14 @@ pattern SignalAttribute(signal : Signal, attribute : Property, type, ordered, un
 	Property.isUnique(attribute, unique);
 }
 
-pattern SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound : ValueSpecification) {
+pattern
+SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound : ValueSpecification) {
 	find SignalAttribute(signal, attribute, _, _, _);
 	Property.lowerValue(attribute, lowerBound);
 }
 
-pattern SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
+pattern
+SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
 	find SignalAttribute(signal, attribute, _, _, _);
 	Property.upperValue(attribute, upperBound);
 }

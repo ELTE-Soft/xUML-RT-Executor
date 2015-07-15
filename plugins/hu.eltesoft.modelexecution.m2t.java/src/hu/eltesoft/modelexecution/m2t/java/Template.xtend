@@ -18,6 +18,8 @@ import org.eclipse.emf.common.util.EList
  * references. Inherited classes must be annotated with
  * {@link hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
  * SourceMappedTemplate}.
+ * Translation meta-model objects
+ * should be passed as constructor parameters to a template.
  */
 abstract class Template extends EmfTraceExtensions {
 
@@ -38,10 +40,23 @@ abstract class Template extends EmfTraceExtensions {
 	}
 
 	/**
-	 * Implement code generation logic here. Translation meta-model objects
-	 * should be passed as constructor parameters to a template.
+	 * Code generate for a root element.
 	 */
-	def CharSequence generate();
+	def CharSequence generate() {
+		wrapContent(generateContent);
+	}
+
+	/**
+	 * Wraps the generated content into a java class, possibly adding class elements 
+	 * that cannot be composed, like constructors.
+	 */
+	def CharSequence wrapContent(CharSequence contents)
+
+	/**
+	 * Implement code generation for features here. The generated content should 
+	 * be ready to be composed with contents from other root elements.
+	 */
+	def CharSequence generateContent()
 
 	/**
 	 * This definition should be ignored, as it is only here to suppress Xtend
@@ -134,15 +149,15 @@ abstract class Template extends EmfTraceExtensions {
 	 * Creates a Java string literal from the given text safely.
 	 */
 	def literal(String text) '''"«escape(text)»"'''
-	
+
 	def javaType(Type type) {
 		typeConverter.javaType(type)
 	}
-	
+
 	def javaType(ScalarType type) {
 		typeConverter.javaType(type)
 	}
-	
+
 	def javaType(ScalarType type, Multiplicity mult) {
 		typeConverter.javaType(type, mult)
 	}

@@ -29,37 +29,52 @@ class ClassTemplate extends Template {
 		this.hasStateMachine = classDefinition.region != null
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		«IF hasStateMachine»
-			«generateClassWithState()»
+			«generateClassWithState(content)»
 		«ELSE»
-			«generateClassWithoutState()»
+			«generateClassWithoutState(content)»
 		«ENDIF»
 	'''
 
 	/**
 	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
 	 */
-	def generateClassWithState() '''
+	def generateClassWithState(CharSequence content) '''
 		/** Class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
 		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
-		
-			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
-		
+			
 			/** Constructor for UML class «classDefinition.javadoc» */
 			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
 				super(runtime, instanceCount.getAndIncrement());
 				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
 			}
+			«content»
+		}
+	'''
+
+	/**
+	 * Generates a class that does not have a state machine.
+	 */
+	def generateClassWithoutState(CharSequence content) '''
+		/** Data class for UML class «classDefinition.javadoc» */
+		«generatedHeaderForClass(classDefinition)»
+		public class «classDefinition.identifier» extends «Class.canonicalName» {
+			«content»
+		}
 		
+	'''
+
+	override generateContent() '''
+		«IF hasStateMachine»
+			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
+
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
 				return new «classDefinition.region.identifier»(this);
 			}
-		
-			«generateStructuralClassBody()»
-		
+			
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
@@ -67,20 +82,10 @@ class ClassTemplate extends Template {
 				
 				«generateReception(reception, true)»
 			«ENDFOR»
-		}
-	'''
-
-	/**
-	 * Generates a class that does not have a state machine.
-	 */
-	def generateClassWithoutState() '''
-		/** Data class for UML class «classDefinition.javadoc» */
-		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier» extends «Class.canonicalName» {
+			
+		«ENDIF»
 		
-			«generateStructuralClassBody()»
-		}
-		
+		«generateStructuralClassBody()»	
 	'''
 
 	def generateStructuralClassBody() '''
@@ -103,7 +108,9 @@ class ClassTemplate extends Template {
 		«ENDFOR»
 	'''
 
-	def generateAttribute(ClAttribute attribute) '''
+	def generateAttribute(
+		ClAttribute attribute
+	) '''
 		/** Attribute for UML attribute «attribute.javadoc» */
 		«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
 	'''

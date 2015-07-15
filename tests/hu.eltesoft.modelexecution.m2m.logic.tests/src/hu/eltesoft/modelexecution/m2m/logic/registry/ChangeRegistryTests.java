@@ -77,8 +77,7 @@ public class ChangeRegistryTests extends ModelBasedTestCase {
 		assertTrue(tasks.get(0) instanceof DeleteSourceCodeTask);
 	}
 
-	private final class FakeClassTranslator extends
-			RootElementTranslator<Class, ClClass, ClsMatch> {
+	private final class FakeClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		private FakeClassTranslator() throws IncQueryException {
 			super(null);
@@ -90,9 +89,12 @@ public class ChangeRegistryTests extends ModelBasedTestCase {
 		}
 
 		@Override
-		protected RootNode<Class, ClClass, ClsMatch> buildMapper(
-				IncQueryEngine engine) throws IncQueryException {
+		protected RootNode<Class, ClClass, ClsMatch> createMapper(IncQueryEngine engine) {
 			return null;
+		}
+
+		@Override
+		protected void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		}
 
 		@Override

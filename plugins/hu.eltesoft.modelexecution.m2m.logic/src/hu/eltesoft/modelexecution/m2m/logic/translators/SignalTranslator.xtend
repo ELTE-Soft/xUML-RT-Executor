@@ -15,6 +15,7 @@ import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Signal
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMatch> {
 
@@ -25,12 +26,16 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 		super(engine)
 	}
 
-	override protected buildMapper(IncQueryEngine engine) throws IncQueryException {
+	override protected createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(SignalMatcher.on(engine)) [
 			val root = FACTORY.createSgSignal
 			root.reference = new NamedReference(signal)
 			return root
 		]
+		return rootNode
+	}
+
+	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		val attributeNode = rootNode.onEObject(PACKAGE.sgSignal_Attributes, SignalAttributeMatcher.on(engine)) [
 			val elem = FACTORY.createSgAttribute
 			elem.reference = new NamedReference(attribute)
@@ -45,8 +50,6 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 		attributeNode.on(BASE_PACKAGE.multiplicity_UpperBound, SignalAttributeUpperBoundMatcher.on(engine)) [
 			upperBound.toInt
 		]
-
-		return rootNode
 	}
 
 	override createTemplate(SgSignal signal) {
