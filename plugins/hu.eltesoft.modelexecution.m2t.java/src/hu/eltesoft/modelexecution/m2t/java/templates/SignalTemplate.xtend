@@ -71,7 +71,7 @@ class SignalTemplate extends Template {
 				}
 				«FOR attribute : signal.attributes
 					BEFORE '''«signal.identifier» other = («signal.identifier») obj;'''»
-					if (!obj.«attribute.identifier».equals(this.«attribute.identifier»)) {
+					if (!other.«attribute.identifier».equals(this.«attribute.identifier»)) {
 						return false;
 					}
 				«ENDFOR»
