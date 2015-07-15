@@ -31,8 +31,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	protected TypeConverter typeTranslator = new TypeConverter();
 	private BaseMatcher<Match> matcher;
 
-	public RootElementTranslator(IncQueryEngine engine)
-			throws IncQueryException {
+	public RootElementTranslator(IncQueryEngine engine) throws IncQueryException {
 		super(engine);
 	}
 
@@ -53,21 +52,28 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 		return createTemplate(model);
 	}
 
-	protected RootNode<UML, Trans, Match> fromRoot(BaseMatcher<Match> matcher,
-			Function<Match, Trans> transform) {
+	protected RootNode<UML, Trans, Match> fromRoot(BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
 		this.matcher = matcher;
 		if (matcher.getSpecification().getParameters().size() == 0) {
-			throw new RuntimeException(
-					"Cannot create a root node from a matcher without parameters.");
+			throw new RuntimeException("Cannot create a root node from a matcher without parameters.");
 		}
 		return new RootNode<UML, Trans, Match>(this, matcher, transform);
 	}
-	
-	
+
+	/**
+	 * Checks if the translator can handle a subpattern match update if the root
+	 * object is the one given in the parameter. It returns true, when the given
+	 * parameter is an instance of the type parameter {@link UML}.
+	 */
 	public boolean canHandle(UML root) {
-		Match filterMatch = matcher.newEmptyMatch();
-		filterMatch.set(0, root);
-		return matcher.hasMatch(filterMatch);
+		String rootTypeName = matcher.getSpecification().getParameters().get(0).getTypeName();
+		Class<?> rootType;
+		try {
+			rootType = getClass().getClassLoader().loadClass(rootTypeName);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("While checking if the translator can handle a subpattern match", e);
+		}
+		return rootType.isInstance(root);
 	}
 
 	// delegates for conversions by subtranslators
