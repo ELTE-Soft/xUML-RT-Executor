@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getLowerBound <em>Lower Bound</em>}</li>
@@ -33,7 +34,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

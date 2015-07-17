@@ -78,16 +78,32 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClClassAdapter();
 			}
 			@Override
+			public Adapter caseClClassSpec(ClClassSpec object) {
+				return createClClassSpecAdapter();
+			}
+			@Override
 			public Adapter caseClOperation(ClOperation object) {
 				return createClOperationAdapter();
+			}
+			@Override
+			public Adapter caseClOperationSpec(ClOperationSpec object) {
+				return createClOperationSpecAdapter();
 			}
 			@Override
 			public Adapter caseClReception(ClReception object) {
 				return createClReceptionAdapter();
 			}
 			@Override
+			public Adapter caseClReceptionSpec(ClReceptionSpec object) {
+				return createClReceptionSpecAdapter();
+			}
+			@Override
 			public Adapter caseClAttribute(ClAttribute object) {
 				return createClAttributeAdapter();
+			}
+			@Override
+			public Adapter caseClAttributeSpec(ClAttributeSpec object) {
+				return createClAttributeSpecAdapter();
 			}
 			@Override
 			public Adapter caseClAssociation(ClAssociation object) {
@@ -152,6 +168,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec
+	 * @generated
+	 */
+	public Adapter createClClassSpecAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -162,6 +192,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClOperationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec <em>Cl Operation Spec</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
+	 * @generated
+	 */
+	public Adapter createClOperationSpecAdapter() {
 		return null;
 	}
 
@@ -180,6 +224,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec <em>Cl Reception Spec</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
+	 * @generated
+	 */
+	public Adapter createClReceptionSpecAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute <em>Cl Attribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -190,6 +248,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClAttributeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec <em>Cl Attribute Spec</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
+	 * @generated
+	 */
+	public Adapter createClAttributeSpecAdapter() {
 		return null;
 	}
 

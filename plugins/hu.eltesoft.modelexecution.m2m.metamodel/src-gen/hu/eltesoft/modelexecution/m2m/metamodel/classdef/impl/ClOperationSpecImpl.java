@@ -2,38 +2,44 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Association</b></em>'.
+ * An implementation of the model object '<em><b>Cl Operation Spec</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getReturnType <em>Return Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClAssociationImpl extends TranslationObjectImpl implements ClAssociation {
+public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOperationSpec {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -55,21 +61,31 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
 	 */
-	protected Type type;
+	protected Type returnType;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> parameters;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClAssociationImpl() {
+	protected ClOperationSpecImpl() {
 		super();
 	}
 
@@ -80,7 +96,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_ASSOCIATION;
+		return ClassdefPackage.Literals.CL_OPERATION_SPEC;
 	}
 
 	/**
@@ -101,7 +117,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION_SPEC__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -109,16 +125,16 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject)type;
-			type = (Type)eResolveProxy(oldType);
-			if (type != oldType) {
+	public Type getReturnType() {
+		if (returnType != null && returnType.eIsProxy()) {
+			InternalEObject oldReturnType = (InternalEObject)returnType;
+			returnType = (Type)eResolveProxy(oldReturnType);
+			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE, oldReturnType, returnType));
 			}
 		}
-		return type;
+		return returnType;
 	}
 
 	/**
@@ -126,8 +142,8 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetType() {
-		return type;
+	public Type basicGetReturnType() {
+		return returnType;
 	}
 
 	/**
@@ -135,11 +151,23 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Type newType) {
-		Type oldType = type;
-		type = newType;
+	public void setReturnType(Type newReturnType) {
+		Type oldReturnType = returnType;
+		returnType = newReturnType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE, oldReturnType, returnType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Parameter> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectResolvingEList<Parameter>(Parameter.class, this, ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS);
+		}
+		return parameters;
 	}
 
 	/**
@@ -150,11 +178,13 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
 				return getReference();
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				if (resolve) return getType();
-				return basicGetType();
+			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
+				if (resolve) return getReturnType();
+				return basicGetReturnType();
+			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
+				return getParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,14 +194,19 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
 				setReference((NamedReference)newValue);
 				return;
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				setType((Type)newValue);
+			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
+				setReturnType((Type)newValue);
+				return;
+			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -185,11 +220,14 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				setType((Type)null);
+			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
+				setReturnType((Type)null);
+				return;
+			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
+				getParameters().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -203,44 +241,14 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
-				return type != null;
+			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
+				return returnType != null;
+			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Typed.class) {
-			switch (derivedFeatureID) {
-				case ClassdefPackage.CL_ASSOCIATION__TYPE: return BasePackage.TYPED__TYPE;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Typed.class) {
-			switch (baseFeatureID) {
-				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ASSOCIATION__TYPE;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -259,4 +267,4 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 		return result.toString();
 	}
 
-} //ClAssociationImpl
+} //ClOperationSpecImpl

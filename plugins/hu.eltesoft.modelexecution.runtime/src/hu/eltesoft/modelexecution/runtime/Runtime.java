@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 
 /**
  * The class responsible for running the modeled system, and an access point for
@@ -20,13 +20,13 @@ public interface Runtime {
 	 * Adds an internal event to the event queue. The order in which events are
 	 * dispatched is not specified.
 	 */
-	void addEventToQueue(ClassWithState target, Event event);
+	void addEventToQueue(StatefulClass target, Event event);
 
 	/**
 	 * Adds an external event to the event queue. The order in which events are
 	 * dispatched is not specified.
 	 */
-	void addExternalEventToQueue(ClassWithState target, Event event);
+	void addExternalEventToQueue(StatefulClass target, Event event);
 
 	/**
 	 * Runs the model execution started by the execution of the given operation

@@ -41,12 +41,14 @@ class ClassTemplate extends Template {
 	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
 	 */
 	def generateClassWithState(CharSequence content) '''
-		/** Class for UML class «classDefinition.javadoc» */
+		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
+		public class «classDefinition.identifier»_impl 
+			extends «ClassWithState.canonicalName» 
+			implements «classDefinition.identifier» {
 			
 			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
+			public «classDefinition.identifier»_impl(«Runtime.canonicalName» runtime) {
 				super(runtime, instanceCount.getAndIncrement());
 				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
 			}
@@ -60,10 +62,11 @@ class ClassTemplate extends Template {
 	def generateClassWithoutState(CharSequence content) '''
 		/** Data class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier» extends «Class.canonicalName» {
+		public class «classDefinition.identifier»_impl 
+			extends «Class.canonicalName» 
+			implements «classDefinition.identifier» {
 			«content»
 		}
-		
 	'''
 
 	override generateContent() '''
@@ -112,7 +115,17 @@ class ClassTemplate extends Template {
 		ClAttribute attribute
 	) '''
 		/** Attribute for UML attribute «attribute.javadoc» */
-		«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		
+		@Override
+		public «javaType(attribute.type)» get_«attribute.identifier»() {
+			return «attribute.identifier»;
+		}
+		
+		@Override
+		public void set_«attribute.identifier»(«javaType(attribute.type)» newVal) {
+			«attribute.identifier» = newVal;
+		}
 	'''
 
 	def generateAssociation(ClAssociation association) '''
@@ -125,6 +138,7 @@ class ClassTemplate extends Template {
 		/** Method for operation «operation.javadoc» 
 		 «javadocParams(operation.parameters)»
 		 */
+		«IF !operation.isStatic»@Override«ENDIF»
 		public «IF operation.isStatic»static«ENDIF»
 			«IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
 				«FOR parameter : operation.parameters SEPARATOR ','»
@@ -147,6 +161,7 @@ class ClassTemplate extends Template {
 		/** Method for reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
+		@Override
 		public void «reception.identifier»«IF isExternal»_external«ENDIF»(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»

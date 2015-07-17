@@ -9,7 +9,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,19 +21,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Association</b></em>'.
+ * An implementation of the model object '<em><b>Cl Attribute Spec</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClAssociationImpl extends TranslationObjectImpl implements ClAssociation {
+public class ClAttributeSpecImpl extends TranslationObjectImpl implements ClAttributeSpec {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -69,7 +69,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClAssociationImpl() {
+	protected ClAttributeSpecImpl() {
 		super();
 	}
 
@@ -80,7 +80,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_ASSOCIATION;
+		return ClassdefPackage.Literals.CL_ATTRIBUTE_SPEC;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE_SPEC__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 			type = (Type)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -139,7 +139,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE, oldType, type));
 	}
 
 	/**
@@ -150,9 +150,9 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__REFERENCE:
 				return getReference();
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
 		}
@@ -167,10 +167,10 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__REFERENCE:
 				setReference((NamedReference)newValue);
 				return;
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
 				setType((Type)newValue);
 				return;
 		}
@@ -185,10 +185,10 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
 				setType((Type)null);
 				return;
 		}
@@ -203,9 +203,9 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ASSOCIATION__REFERENCE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_ASSOCIATION__TYPE:
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
 				return type != null;
 		}
 		return super.eIsSet(featureID);
@@ -220,7 +220,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Typed.class) {
 			switch (derivedFeatureID) {
-				case ClassdefPackage.CL_ASSOCIATION__TYPE: return BasePackage.TYPED__TYPE;
+				case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE: return BasePackage.TYPED__TYPE;
 				default: return -1;
 			}
 		}
@@ -236,7 +236,7 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Typed.class) {
 			switch (baseFeatureID) {
-				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ASSOCIATION__TYPE;
+				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE;
 				default: return -1;
 			}
 		}
@@ -259,4 +259,4 @@ public class ClAssociationImpl extends TranslationObjectImpl implements ClAssoci
 		return result.toString();
 	}
 
-} //ClAssociationImpl
+} //ClAttributeSpecImpl

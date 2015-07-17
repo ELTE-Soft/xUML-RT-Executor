@@ -2,9 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Cl Attribute</b></em>'.
@@ -12,16 +9,16 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute#isIsStatic <em>Is Static</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClAttribute()
  * @model
  * @generated
  */
-public interface ClAttribute extends Named, Typed {
+public interface ClAttribute extends ClAttributeSpec {
 	/**
 	 * Returns the value of the '<em><b>Is Static</b></em>' attribute.
 	 * <!-- begin-user-doc -->

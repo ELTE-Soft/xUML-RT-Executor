@@ -1,12 +1,13 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
-import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
+import hu.eltesoft.modelexecution.m2t.java.templates.ClassSpecTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
@@ -16,9 +17,8 @@ import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
-import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
-import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatch
+import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterMatcher
@@ -35,9 +35,9 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
-class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
+// FIXME: define these subtransformers only once
+class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, ClassOrAssocClassMatch> {
 
 	static val ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
 	static val ClassdefPackage PACKAGE = ClassdefPackage.eINSTANCE;
@@ -47,8 +47,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override protected createMapper(IncQueryEngine engine) {
-		val rootNode = fromRoot(ClsMatcher.on(engine)) [
-			val root = FACTORY.createClClass
+		val rootNode = fromRoot(ClassOrAssocClassMatcher.on(engine)) [
+			val root = FACTORY.createClClassSpec
 			root.setReference(new NamedReference(cls));
 			return root;
 		]
@@ -56,11 +56,10 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
-		// state machine
-		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
+		rootNode.on(PACKAGE.clClassSpec_HasStateMachine, RegionOfClassMatcher.on(engine))[true]
 
 		// attributes
-		val attributeNode = rootNode.onEObject(PACKAGE.clClass_Attributes, AttributeMatcher.on(engine)) [
+		val attributeNode = rootNode.onEObject(PACKAGE.clClassSpec_Attributes, AttributeMatcher.on(engine)) [
 			val elem = FACTORY.createClAttribute
 			elem.reference = new NamedReference(attribute)
 			elem.isStatic = isStatic
@@ -81,10 +80,9 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 
 		// operations
-		val operationNode = rootNode.onEObject(PACKAGE.clClass_Operations, OperationMatcher.on(engine)) [
-			val elem = FACTORY.createClOperation
+		val operationNode = rootNode.onEObject(PACKAGE.clClassSpec_Operations, OperationMatcher.on(engine)) [
+			val elem = FACTORY.createClOperationSpec
 			elem.reference = new NamedReference(operation)
-			elem.isStatic = isStatic
 			return elem
 		]
 
@@ -127,13 +125,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			upperBound.toInt
 		]
 
-		// operation method
-		operationNode.on(PACKAGE.clOperation_Method, MethodMatcher.on(engine)) [
-			new NamedReference(method)
-		]
-
 		// associations
-		val assocNode = rootNode.onEObject(PACKAGE.clClass_Associations, ClassAssociationMatcher.on(engine)) [
+		val assocNode = rootNode.onEObject(PACKAGE.clClassSpec_Associations, ClassAssociationMatcher.on(engine)) [
 			val elem = FACTORY.createClAssociation
 			elem.reference = new NamedReference(end)
 			return elem
@@ -153,7 +146,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 
 		// receptions
-		val receptionNode = rootNode.onEObject(PACKAGE.clClass_Receptions, ReceptionMatcher.on(engine)) [
+		val receptionNode = rootNode.onEObject(PACKAGE.clClassSpec_Receptions, ReceptionMatcher.on(engine)) [
 			val elem = FACTORY.createClReception
 			elem.reference = new NamedReference(reception)
 			elem.signal = new NamedReference(signal)
@@ -176,12 +169,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 	}
 
-	override createTemplate(ClClass cls) {
-		new ClassTemplateSmap(cls)
-	}
-	
-	override getRootName(Class source) {
-		super.getRootName(source) + "_impl"
+	override createTemplate(ClClassSpec cls) {
+		new ClassSpecTemplateSmap(cls)
 	}
 
 	override shouldMap(Class cls) {

@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}</li>
@@ -21,7 +22,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations <em>Associations</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass()
  * @model

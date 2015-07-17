@@ -147,7 +147,7 @@ pattern Cls(cls : Class) {
 	neg find AssociationClass(cls);
 }
 
-private pattern ClassOrAssocClass(cls : Class) {
+pattern ClassOrAssocClass(cls : Class) {
 	Class(cls);
 	neg find IsBehavior(cls);
 	neg find IsStereotype(cls);
@@ -159,6 +159,20 @@ private pattern IsBehavior(behavior : Behavior) {
 
 private pattern IsStereotype(stereotype : Stereotype) {
 	Stereotype(stereotype);
+}
+
+pattern Generalize(child : Class, parent : Class) {
+	Generalization.general(gen, parent);
+	Generalization.specific(gen, child);
+}
+
+pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
+	find IsAncestor(descendant, ancestor);
+	countAncestors == count find IsAncestor(descendant, _);
+}
+
+private pattern IsAncestor(descendant : Class, ancestor : Class) {
+	find Generalize+(descendant, ancestor);
 }
 
 // state machine

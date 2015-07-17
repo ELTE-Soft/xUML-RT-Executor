@@ -31,6 +31,15 @@ public interface ClassdefFactory extends EFactory {
 	ClClass createClClass();
 
 	/**
+	 * Returns a new object of class '<em>Cl Class Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Class Spec</em>'.
+	 * @generated
+	 */
+	ClClassSpec createClClassSpec();
+
+	/**
 	 * Returns a new object of class '<em>Cl Operation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -38,6 +47,15 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClOperation createClOperation();
+
+	/**
+	 * Returns a new object of class '<em>Cl Operation Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Operation Spec</em>'.
+	 * @generated
+	 */
+	ClOperationSpec createClOperationSpec();
 
 	/**
 	 * Returns a new object of class '<em>Cl Reception</em>'.
@@ -49,6 +67,15 @@ public interface ClassdefFactory extends EFactory {
 	ClReception createClReception();
 
 	/**
+	 * Returns a new object of class '<em>Cl Reception Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Reception Spec</em>'.
+	 * @generated
+	 */
+	ClReceptionSpec createClReceptionSpec();
+
+	/**
 	 * Returns a new object of class '<em>Cl Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -56,6 +83,15 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClAttribute createClAttribute();
+
+	/**
+	 * Returns a new object of class '<em>Cl Attribute Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Attribute Spec</em>'.
+	 * @generated
+	 */
+	ClAttributeSpec createClAttributeSpec();
 
 	/**
 	 * Returns a new object of class '<em>Cl Association</em>'.

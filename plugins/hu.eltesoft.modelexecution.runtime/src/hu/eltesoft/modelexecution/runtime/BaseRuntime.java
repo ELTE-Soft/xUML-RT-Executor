@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityException;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistry;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
@@ -76,14 +77,14 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	@Override
-	public void addEventToQueue(ClassWithState target, Event event) {
+	public void addEventToQueue(StatefulClass target, Event event) {
 		TargetedEvent targetedEvent = new TargetedEvent(target, event);
 		queue.addLast(targetedEvent);
 		logger.messageQueued(target, event);
 	}
 
 	@Override
-	public void addExternalEventToQueue(ClassWithState target, Event event) {
+	public void addExternalEventToQueue(StatefulClass target, Event event) {
 		TargetedEvent targetedEvent = TargetedEvent.createOutsideEvent(target,
 				event);
 		queue.addLast(targetedEvent);

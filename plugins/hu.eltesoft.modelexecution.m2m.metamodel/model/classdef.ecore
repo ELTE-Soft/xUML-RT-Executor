@@ -13,24 +13,41 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="associations" ordered="false"
         upperBound="-1" eType="#//ClAssociation"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="base.ecore#//Named">
+  <eClassifiers xsi:type="ecore:EClass" name="ClClassSpec" eSuperTypes="base.ecore#//ModelRoot">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
+        upperBound="-1" eType="#//ClOperationSpec"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="receptions" ordered="false"
+        upperBound="-1" eType="#//ClReceptionSpec"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
+        upperBound="-1" eType="#//ClAttributeSpec"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="associations" ordered="false"
+        upperBound="-1" eType="#//ClAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasStateMachine" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="#//ClOperationSpec">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType base.ecore#//NamedReference"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClOperationSpec" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="ecore:EClass base.ecore#//Parameter"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClReception" eSuperTypes="base.ecore#//Named">
+  <eClassifiers xsi:type="ecore:EClass" name="ClReception" eSuperTypes="#//ClReceptionSpec">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signal" lowerBound="1"
         eType="ecore:EDataType base.ecore#//NamedReference"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClReceptionSpec" eSuperTypes="base.ecore#//Named">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//ClReceptionParameter"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClAttribute" eSuperTypes="base.ecore#//Named base.ecore#//Typed">
+  <eClassifiers xsi:type="ecore:EClass" name="ClAttribute" eSuperTypes="#//ClAttributeSpec">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClAttributeSpec" eSuperTypes="base.ecore#//Named base.ecore#//Typed"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClAssociation" eSuperTypes="base.ecore#//Named base.ecore#//Typed"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClReceptionParameter" eSuperTypes="base.ecore#//Named base.ecore#//Multiplicity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//PrimitiveType"/>
