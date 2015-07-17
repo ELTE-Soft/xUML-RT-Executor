@@ -10,6 +10,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -39,7 +41,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAssociations <em>Associations</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getParents <em>Parents</em>}</li>
  * </ul>
  *
  * @generated
@@ -116,6 +120,16 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	protected EList<ClAttribute> attributes;
 
 	/**
+	 * The cached value of the '{@link #getInheritedAttributes() <em>Inherited Attributes</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInheritedAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClInheritedAttribute> inheritedAttributes;
+
+	/**
 	 * The cached value of the '{@link #getAssociations() <em>Associations</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -124,6 +138,16 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected EList<ClAssociation> associations;
+
+	/**
+	 * The cached value of the '{@link #getParents() <em>Parents</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParents()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<NamedReference> parents;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -227,11 +251,35 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClInheritedAttribute> getInheritedAttributes() {
+		if (inheritedAttributes == null) {
+			inheritedAttributes = new EObjectResolvingEList<ClInheritedAttribute>(ClInheritedAttribute.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES);
+		}
+		return inheritedAttributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<ClAssociation> getAssociations() {
 		if (associations == null) {
 			associations = new EObjectResolvingEList<ClAssociation>(ClAssociation.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS);
 		}
 		return associations;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<NamedReference> getParents() {
+		if (parents == null) {
+			parents = new EDataTypeUniqueEList<NamedReference>(NamedReference.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS);
+		}
+		return parents;
 	}
 
 	/**
@@ -252,8 +300,12 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return getReceptions();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES:
 				return getAttributes();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES:
+				return getInheritedAttributes();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS:
 				return getAssociations();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
+				return getParents();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -285,9 +337,17 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				getAttributes().clear();
 				getAttributes().addAll((Collection<? extends ClAttribute>)newValue);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES:
+				getInheritedAttributes().clear();
+				getInheritedAttributes().addAll((Collection<? extends ClInheritedAttribute>)newValue);
+				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS:
 				getAssociations().clear();
 				getAssociations().addAll((Collection<? extends ClAssociation>)newValue);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
+				getParents().clear();
+				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -316,8 +376,14 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES:
 				getAttributes().clear();
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES:
+				getInheritedAttributes().clear();
+				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS:
 				getAssociations().clear();
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
+				getParents().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -341,8 +407,12 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return receptions != null && !receptions.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES:
 				return attributes != null && !attributes.isEmpty();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES:
+				return inheritedAttributes != null && !inheritedAttributes.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS:
 				return associations != null && !associations.isEmpty();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
+				return parents != null && !parents.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -361,7 +431,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS: return ClassdefPackage.CL_CLASS__OPERATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS: return ClassdefPackage.CL_CLASS__RECEPTIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES: return ClassdefPackage.CL_CLASS__ATTRIBUTES;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES: return ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS: return ClassdefPackage.CL_CLASS__ASSOCIATIONS;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS: return ClassdefPackage.CL_CLASS__PARENTS;
 				default: return -1;
 			}
 		}
@@ -382,7 +454,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case ClassdefPackage.CL_CLASS__OPERATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS;
 				case ClassdefPackage.CL_CLASS__RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS;
 				case ClassdefPackage.CL_CLASS__ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES;
+				case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES;
 				case ClassdefPackage.CL_CLASS__ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS;
+				case ClassdefPackage.CL_CLASS__PARENTS: return AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS;
 				default: return -1;
 			}
 		}
@@ -403,6 +477,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		result.append(region);
 		result.append(", inheritedRegion: ");
 		result.append(inheritedRegion);
+		result.append(", parents: ");
+		result.append(parents);
 		result.append(')');
 		return result.toString();
 	}

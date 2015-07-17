@@ -60,10 +60,8 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_CLASS_SPEC: return createClClassSpec();
 			case ClassdefPackage.CL_OPERATION: return createClOperation();
 			case ClassdefPackage.CL_OPERATION_SPEC: return createClOperationSpec();
-			case ClassdefPackage.CL_INHERITED_OPERATION: return createClInheritedOperation();
 			case ClassdefPackage.CL_RECEPTION: return createClReception();
 			case ClassdefPackage.CL_RECEPTION_SPEC: return createClReceptionSpec();
-			case ClassdefPackage.CL_INHERITED_RECEPTION: return createClInheritedReception();
 			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
 			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
 			case ClassdefPackage.CL_ATTRIBUTE_SPEC: return createClAttributeSpec();
@@ -119,16 +117,6 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClInheritedOperation createClInheritedOperation() {
-		ClInheritedOperationImpl clInheritedOperation = new ClInheritedOperationImpl();
-		return clInheritedOperation;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ClReception createClReception() {
 		ClReceptionImpl clReception = new ClReceptionImpl();
 		return clReception;
@@ -149,9 +137,9 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClInheritedReception createClInheritedReception() {
-		ClInheritedReceptionImpl clInheritedReception = new ClInheritedReceptionImpl();
-		return clInheritedReception;
+	public ClReceptionParameter createClReceptionParameter() {
+		ClReceptionParameterImpl clReceptionParameter = new ClReceptionParameterImpl();
+		return clReceptionParameter;
 	}
 
 	/**
@@ -192,16 +180,6 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClAssociation createClAssociation() {
 		ClAssociationImpl clAssociation = new ClAssociationImpl();
 		return clAssociation;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ClReceptionParameter createClReceptionParameter() {
-		ClReceptionParameterImpl clReceptionParameter = new ClReceptionParameterImpl();
-		return clReceptionParameter;
 	}
 
 	/**

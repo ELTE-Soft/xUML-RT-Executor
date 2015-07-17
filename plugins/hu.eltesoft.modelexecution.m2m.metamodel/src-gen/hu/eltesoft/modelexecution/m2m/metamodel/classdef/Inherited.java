@@ -4,23 +4,25 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Cl Inherited Operation</b></em>'.
+ * A representation of the model object '<em><b>Inherited</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation#getParent <em>Parent</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited#getParent <em>Parent</em>}</li>
  * </ul>
  *
- * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClInheritedOperation()
- * @model
+ * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getInherited()
+ * @model abstract="true"
  * @generated
  */
-public interface ClInheritedOperation extends ClOperationSpec {
+public interface Inherited extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Parent</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -31,14 +33,14 @@ public interface ClInheritedOperation extends ClOperationSpec {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent</em>' attribute.
 	 * @see #setParent(NamedReference)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClInheritedOperation_Parent()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getInherited_Parent()
 	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" required="true"
 	 * @generated
 	 */
 	NamedReference getParent();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation#getParent <em>Parent</em>}' attribute.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited#getParent <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Parent</em>' attribute.
@@ -47,4 +49,4 @@ public interface ClInheritedOperation extends ClOperationSpec {
 	 */
 	void setParent(NamedReference value);
 
-} // ClInheritedOperation
+} // Inherited

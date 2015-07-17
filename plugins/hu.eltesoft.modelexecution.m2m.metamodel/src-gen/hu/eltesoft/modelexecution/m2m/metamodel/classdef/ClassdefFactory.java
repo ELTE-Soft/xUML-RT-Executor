@@ -58,15 +58,6 @@ public interface ClassdefFactory extends EFactory {
 	ClOperationSpec createClOperationSpec();
 
 	/**
-	 * Returns a new object of class '<em>Cl Inherited Operation</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Inherited Operation</em>'.
-	 * @generated
-	 */
-	ClInheritedOperation createClInheritedOperation();
-
-	/**
 	 * Returns a new object of class '<em>Cl Reception</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,13 +76,13 @@ public interface ClassdefFactory extends EFactory {
 	ClReceptionSpec createClReceptionSpec();
 
 	/**
-	 * Returns a new object of class '<em>Cl Inherited Reception</em>'.
+	 * Returns a new object of class '<em>Cl Reception Parameter</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Inherited Reception</em>'.
+	 * @return a new object of class '<em>Cl Reception Parameter</em>'.
 	 * @generated
 	 */
-	ClInheritedReception createClInheritedReception();
+	ClReceptionParameter createClReceptionParameter();
 
 	/**
 	 * Returns a new object of class '<em>Cl Attribute</em>'.
@@ -128,15 +119,6 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClAssociation createClAssociation();
-
-	/**
-	 * Returns a new object of class '<em>Cl Reception Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Reception Parameter</em>'.
-	 * @generated
-	 */
-	ClReceptionParameter createClReceptionParameter();
 
 	/**
 	 * Returns the package supported by this factory.

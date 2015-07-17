@@ -196,9 +196,30 @@ pattern Attribute(cls : Class, attribute : Property, isStatic) {
 	Property.isStatic(attribute, isStatic);
 }
 
+pattern InheritedAttribute(cls : Class, attribute : Property) {
+	find IsAncestor(cls, ancestor);
+	Class.ownedAttribute(ancestor, attribute);
+	Property.isStatic(attribute, false);
+}
+
+pattern
+InheritedAttributeParent(cls : Class, attribute : Property, parent : Class) {
+	find InheritedAttribute(cls, attribute);
+	find ParentAncestor(cls, parent, ancestor);
+	Class.ownedAttribute(ancestor, attribute);
+}
+
 pattern
 AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
 	find Attribute(cls, attribute, _);
+	find AttributeTypeImpl(attribute, type, ordered, unique);
+} or {
+	find InheritedAttribute(cls, attribute);
+	find AttributeTypeImpl(attribute, type, ordered, unique);
+}
+
+private pattern
+AttributeTypeImpl(attribute : Property, type, ordered, unique) {
 	Property.type(attribute, type);
 	Property.isOrdered(attribute, ordered);
 	Property.isUnique(attribute, unique);
@@ -220,19 +241,15 @@ AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueS
 pattern Operation(cls : Class, operation : Operation, isStatic) {
 	Class.ownedOperation(cls, operation);
 	Operation.isStatic(operation, isStatic);
+} or {
+	find IsAncestor(cls, ancestor);
+	Class.ownedOperation(ancestor, operation);
+	Operation.isStatic(operation, isStatic);
 }
 
 pattern
 OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
 	find Operation(cls, operation, _);
-	find OpParameter(operation, parameter, direction);
-} or {
-	find InheritedOperation(cls, operation);
-	find OpParameter(operation, parameter, direction);
-}
-
-private pattern
-OpParameter(operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
 	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, direction);
 	direction != ParameterDirectionKind::^return;
@@ -287,20 +304,18 @@ OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound :
 	Parameter.upperValue(parameter, upperBound);
 }
 
-pattern InheritedOperation(cls : Class, operation : Operation) {
-	find IsAncestor(cls, ancestor);
-	Class.ownedOperation(ancestor, operation);
-	Operation.isStatic(operation, false);
-}
-
 pattern Method(cls : Class, operation : Operation, method : Behavior) {
 	Class.ownedOperation(cls, operation);
 	Operation.method(operation, method);
 }
 
-// receptions
+// receptions (defined and inherited)
 pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+} or {
+	find IsAncestor(cls, ancestor);
+	Class.ownedReception(ancestor, reception);
 	Reception.signal(reception, signal);
 }
 

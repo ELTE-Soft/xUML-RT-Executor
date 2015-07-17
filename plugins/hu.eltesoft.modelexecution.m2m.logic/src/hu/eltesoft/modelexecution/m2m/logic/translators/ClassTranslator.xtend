@@ -14,11 +14,14 @@ import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeParentMatcher
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
@@ -39,6 +42,10 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+
+		// parent classes
+		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
 
@@ -49,8 +56,21 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			elem.isStatic = isStatic
 			return elem;
 		]
-		
+
 		ClassConvertHelper.fillAttribute(attributeNode, engine)
+
+		val inheritedAttributes = rootNode.onEObject(PACKAGE.clClass_InheritedAttributes,
+			InheritedAttributeMatcher.on(engine)) [
+			val elem = FACTORY.createClInheritedAttribute
+			elem.reference = new NamedReference(attribute)
+			return elem;
+		]
+		
+		inheritedAttributes.on(PACKAGE.inherited_Parent, InheritedAttributeParentMatcher.on(engine)) [
+			new NamedReference(parent)
+		]
+
+		ClassConvertHelper.fillAttribute(inheritedAttributes, engine)
 
 		// operations
 		val operationNode = rootNode.onEObject(PACKAGE.clClass_Operations, OperationMatcher.on(engine)) [
@@ -73,7 +93,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			elem.reference = new NamedReference(end)
 			return elem
 		]
-		
+
 		ClassConvertHelper.fillAssociation(assocNode, engine)
 
 		// receptions
@@ -83,7 +103,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			elem.signal = new NamedReference(signal)
 			return elem
 		]
-		
+
 		ClassConvertHelper.fillReception(receptionNode, engine)
 
 	}
@@ -91,7 +111,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	override createTemplate(ClClass cls) {
 		new ClassTemplateSmap(cls)
 	}
-	
+
 	override getRootName(Class source) {
 		super.getRootName(source) + "_impl"
 	}

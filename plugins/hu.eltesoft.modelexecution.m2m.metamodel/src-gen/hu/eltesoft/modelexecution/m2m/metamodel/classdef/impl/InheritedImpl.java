@@ -4,29 +4,30 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Inherited Reception</b></em>'.
+ * An implementation of the model object '<em><b>Inherited</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl#getParent <em>Parent</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl#getParent <em>Parent</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClInheritedReception {
+public abstract class InheritedImpl extends MinimalEObjectImpl.Container implements Inherited {
 	/**
 	 * The default value of the '{@link #getParent() <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -52,7 +53,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClInheritedReceptionImpl() {
+	protected InheritedImpl() {
 		super();
 	}
 
@@ -63,7 +64,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_INHERITED_RECEPTION;
+		return ClassdefPackage.Literals.INHERITED;
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 		NamedReference oldParent = parent;
 		parent = newParent;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_INHERITED_RECEPTION__PARENT, oldParent, parent));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.INHERITED__PARENT, oldParent, parent));
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+			case ClassdefPackage.INHERITED__PARENT:
 				return getParent();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -109,7 +110,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+			case ClassdefPackage.INHERITED__PARENT:
 				setParent((NamedReference)newValue);
 				return;
 		}
@@ -124,7 +125,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+			case ClassdefPackage.INHERITED__PARENT:
 				setParent(PARENT_EDEFAULT);
 				return;
 		}
@@ -139,7 +140,7 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+			case ClassdefPackage.INHERITED__PARENT:
 				return PARENT_EDEFAULT == null ? parent != null : !PARENT_EDEFAULT.equals(parent);
 		}
 		return super.eIsSet(featureID);
@@ -161,4 +162,4 @@ public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClI
 		return result.toString();
 	}
 
-} //ClInheritedReceptionImpl
+} //InheritedImpl

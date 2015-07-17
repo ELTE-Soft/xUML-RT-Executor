@@ -12,14 +12,12 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.AttributeMatch
 import hu.eltesoft.modelexecution.uml.incquery.AttributeTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.OperationMatch
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterTypeMatcher
@@ -52,7 +50,7 @@ class ClassConvertHelper {
 
 	def static toInt(ValueSpecification spec) { typeConverter.toInt(spec) }
 
-	def static fillAttribute(AbstractFeatureNode<? extends ClAttributeSpec, AttributeMatch> node, IncQueryEngine engine) {
+	def static fillAttribute(AbstractFeatureNode<? extends ClAttributeSpec, ?> node, IncQueryEngine engine) {
 		val attributeType = node.onEObject(BASE_PACKAGE.typed_Type, AttributeTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert
@@ -68,7 +66,7 @@ class ClassConvertHelper {
 		]
 	}
 	
-	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, OperationMatch> operationNode,
+	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode,
 		IncQueryEngine engine) {
 		// operation parameters
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperationSpec_Parameters,

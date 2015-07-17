@@ -9,6 +9,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -23,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -39,7 +41,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAssociations <em>Associations</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getParents <em>Parents</em>}</li>
  * </ul>
  *
  * @generated
@@ -136,6 +140,16 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	protected EList<ClAttribute> attributes;
 
 	/**
+	 * The cached value of the '{@link #getInheritedAttributes() <em>Inherited Attributes</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInheritedAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClInheritedAttribute> inheritedAttributes;
+
+	/**
 	 * The cached value of the '{@link #getAssociations() <em>Associations</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -144,6 +158,16 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * @ordered
 	 */
 	protected EList<ClAssociation> associations;
+
+	/**
+	 * The cached value of the '{@link #getParents() <em>Parents</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParents()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<NamedReference> parents;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -268,11 +292,35 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClInheritedAttribute> getInheritedAttributes() {
+		if (inheritedAttributes == null) {
+			inheritedAttributes = new EObjectResolvingEList<ClInheritedAttribute>(ClInheritedAttribute.class, this, ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES);
+		}
+		return inheritedAttributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<ClAssociation> getAssociations() {
 		if (associations == null) {
 			associations = new EObjectResolvingEList<ClAssociation>(ClAssociation.class, this, ClassdefPackage.CL_CLASS__ASSOCIATIONS);
 		}
 		return associations;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<NamedReference> getParents() {
+		if (parents == null) {
+			parents = new EDataTypeUniqueEList<NamedReference>(NamedReference.class, this, ClassdefPackage.CL_CLASS__PARENTS);
+		}
+		return parents;
 	}
 
 	/**
@@ -295,8 +343,12 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return getReceptions();
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				return getAttributes();
+			case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES:
+				return getInheritedAttributes();
 			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
 				return getAssociations();
+			case ClassdefPackage.CL_CLASS__PARENTS:
+				return getParents();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -331,9 +383,17 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				getAttributes().clear();
 				getAttributes().addAll((Collection<? extends ClAttribute>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES:
+				getInheritedAttributes().clear();
+				getInheritedAttributes().addAll((Collection<? extends ClInheritedAttribute>)newValue);
+				return;
 			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
 				getAssociations().clear();
 				getAssociations().addAll((Collection<? extends ClAssociation>)newValue);
+				return;
+			case ClassdefPackage.CL_CLASS__PARENTS:
+				getParents().clear();
+				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -365,8 +425,14 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				getAttributes().clear();
 				return;
+			case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES:
+				getInheritedAttributes().clear();
+				return;
 			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
 				getAssociations().clear();
+				return;
+			case ClassdefPackage.CL_CLASS__PARENTS:
+				getParents().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -392,8 +458,12 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return receptions != null && !receptions.isEmpty();
 			case ClassdefPackage.CL_CLASS__ATTRIBUTES:
 				return attributes != null && !attributes.isEmpty();
+			case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES:
+				return inheritedAttributes != null && !inheritedAttributes.isEmpty();
 			case ClassdefPackage.CL_CLASS__ASSOCIATIONS:
 				return associations != null && !associations.isEmpty();
+			case ClassdefPackage.CL_CLASS__PARENTS:
+				return parents != null && !parents.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -414,6 +484,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 		result.append(region);
 		result.append(", inheritedRegion: ");
 		result.append(inheritedRegion);
+		result.append(", parents: ");
+		result.append(parents);
 		result.append(')');
 		return result.toString();
 	}

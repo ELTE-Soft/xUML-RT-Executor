@@ -90,20 +90,12 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClOperationSpecAdapter();
 			}
 			@Override
-			public Adapter caseClInheritedOperation(ClInheritedOperation object) {
-				return createClInheritedOperationAdapter();
-			}
-			@Override
 			public Adapter caseClReception(ClReception object) {
 				return createClReceptionAdapter();
 			}
 			@Override
 			public Adapter caseClReceptionSpec(ClReceptionSpec object) {
 				return createClReceptionSpecAdapter();
-			}
-			@Override
-			public Adapter caseClInheritedReception(ClInheritedReception object) {
-				return createClInheritedReceptionAdapter();
 			}
 			@Override
 			public Adapter caseClReceptionParameter(ClReceptionParameter object) {
@@ -124,6 +116,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseClAssociation(ClAssociation object) {
 				return createClAssociationAdapter();
+			}
+			@Override
+			public Adapter caseInherited(Inherited object) {
+				return createInheritedAdapter();
 			}
 			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
@@ -222,20 +218,6 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation <em>Cl Inherited Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation
-	 * @generated
-	 */
-	public Adapter createClInheritedOperationAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception <em>Cl Reception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -264,16 +246,16 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception <em>Cl Inherited Reception</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter <em>Cl Reception Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter
 	 * @generated
 	 */
-	public Adapter createClInheritedReceptionAdapter() {
+	public Adapter createClReceptionParameterAdapter() {
 		return null;
 	}
 
@@ -334,16 +316,16 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter <em>Cl Reception Parameter</em>}'.
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited <em>Inherited</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited
 	 * @generated
 	 */
-	public Adapter createClReceptionParameterAdapter() {
+	public Adapter createInheritedAdapter() {
 		return null;
 	}
 
@@ -390,20 +372,6 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Typed <em>Typed</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Typed
-	 * @generated
-	 */
-	public Adapter createTypedAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity <em>Multiplicity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -414,6 +382,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMultiplicityAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Typed <em>Typed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Typed
+	 * @generated
+	 */
+	public Adapter createTypedAdapter() {
 		return null;
 	}
 

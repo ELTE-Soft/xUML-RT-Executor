@@ -223,13 +223,31 @@ public interface AssociationPackage extends EPackage {
 	int AS_ASSOCIATION_CLASS__ATTRIBUTES = AS_ASSOCIATION_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Inherited Attributes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES = AS_ASSOCIATION_FEATURE_COUNT + 5;
+
+	/**
 	 * The feature id for the '<em><b>Associations</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AS_ASSOCIATION_CLASS__ASSOCIATIONS = AS_ASSOCIATION_FEATURE_COUNT + 5;
+	int AS_ASSOCIATION_CLASS__ASSOCIATIONS = AS_ASSOCIATION_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Parents</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__PARENTS = AS_ASSOCIATION_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>As Association Class</em>' class.
@@ -238,7 +256,7 @@ public interface AssociationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 6;
+	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>As Association Class</em>' class.

@@ -1,9 +1,13 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
@@ -43,12 +47,12 @@ class ClassTemplate extends Template {
 	def generateClassWithState(CharSequence content) '''
 		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier»_impl 
+		public class «classDefinition.implementation» 
 			extends «ClassWithState.canonicalName» 
 			implements «classDefinition.identifier» {
 			
 			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.identifier»_impl(«Runtime.canonicalName» runtime) {
+			public «classDefinition.implementation»(«Runtime.canonicalName» runtime) {
 				super(runtime, instanceCount.getAndIncrement());
 				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
 			}
@@ -62,7 +66,7 @@ class ClassTemplate extends Template {
 	def generateClassWithoutState(CharSequence content) '''
 		/** Data class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier»_impl 
+		public class «classDefinition.implementation» 
 			extends «Class.canonicalName» 
 			implements «classDefinition.identifier» {
 			«content»
@@ -92,23 +96,36 @@ class ClassTemplate extends Template {
 	'''
 
 	def generateStructuralClassBody() '''
-		// attributes
-		«FOR attribute : classDefinition.attributes»
-			
-				«generateAttribute(attribute)»
-		«ENDFOR»
+	// references to parent objects
+	«FOR parent : classDefinition.parents»
 		
-		// associations
-		«FOR association : classDefinition.associations»
-			
-				«generateAssociation(association)»
-		«ENDFOR»
+		«parent.implementation» «parent.inherited»;
+	«ENDFOR»
+
+
+	// attributes
+	«FOR attribute : classDefinition.attributes»
 		
-		// operations
-		«FOR operation : classDefinition.operations»
-			
-				«generateOperation(operation)»
-		«ENDFOR»
+		«generateAttribute(attribute)»
+	«ENDFOR»
+	
+	// inherited attributes
+	«FOR attribute : classDefinition.inheritedAttributes»
+		
+		«generateInheritedAttribute(attribute)»
+	«ENDFOR»
+	
+	// associations
+	«FOR association : classDefinition.associations»
+		
+			«generateAssociation(association)»
+	«ENDFOR»
+	
+	// operations
+	«FOR operation : classDefinition.operations»
+		
+			«generateOperation(operation)»
+	«ENDFOR»
 	'''
 
 	def generateAttribute(
@@ -118,13 +135,27 @@ class ClassTemplate extends Template {
 		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
 		
 		@Override
-		public «javaType(attribute.type)» get_«attribute.identifier»() {
+		public «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.getter»() {
 			return «attribute.identifier»;
 		}
 		
 		@Override
-		public void set_«attribute.identifier»(«javaType(attribute.type)» newVal) {
+		public «IF attribute.isStatic»static«ENDIF» void «attribute.setter»(«javaType(attribute.type)» newVal) {
 			«attribute.identifier» = newVal;
+		}
+	'''
+	
+	def generateInheritedAttribute(
+		ClInheritedAttribute attribute
+	) '''
+		//@Override
+		public «javaType(attribute.type)» «attribute.getter»() {
+			return «attribute.parent.inherited».«attribute.getter»();
+		}
+		
+		//@Override
+		public void «attribute.setter»(«javaType(attribute.type)» newVal) {
+			«attribute.parent.inherited».«attribute.setter»(newVal);
 		}
 	'''
 
@@ -156,7 +187,7 @@ class ClassTemplate extends Template {
 		«ENDIF»
 		}
 	'''
-
+	
 	def generateReception(ClReception reception, boolean isExternal) '''
 		/** Method for reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
@@ -176,15 +207,21 @@ class ClassTemplate extends Template {
 		}
 	'''
 
-	def returns(ClOperation op) {
-		op.returnType != null
-	}
+	def returns(ClOperationSpec op) { op.returnType != null }
 
-	def hasBody(ClOperation op) {
-		op.method != null
-	}
+	def hasBody(ClOperation op) { op.method != null }
 
-	def hasParameters(ClOperation op) {
-		!op.parameters.empty
-	}
+	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
+	
+	def getter(Named ref) { "get_" + ref.identifier }
+	
+	def setter(Named ref) { "set_" + ref.identifier }
+	
+	def inherited(Named ref) { ref.identifier + "_inherited" }
+	
+	def inherited(NamedReference ref) { ref.identifier + "_inherited" }
+	
+	def implementation(Named ref) { ref.identifier + "_impl" }
+	
+	def implementation(NamedReference ref) { ref.identifier + "_impl" }
 }
