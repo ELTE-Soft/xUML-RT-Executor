@@ -60,12 +60,15 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_CLASS_SPEC: return createClClassSpec();
 			case ClassdefPackage.CL_OPERATION: return createClOperation();
 			case ClassdefPackage.CL_OPERATION_SPEC: return createClOperationSpec();
+			case ClassdefPackage.CL_INHERITED_OPERATION: return createClInheritedOperation();
 			case ClassdefPackage.CL_RECEPTION: return createClReception();
 			case ClassdefPackage.CL_RECEPTION_SPEC: return createClReceptionSpec();
+			case ClassdefPackage.CL_INHERITED_RECEPTION: return createClInheritedReception();
+			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
 			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
 			case ClassdefPackage.CL_ATTRIBUTE_SPEC: return createClAttributeSpec();
+			case ClassdefPackage.CL_INHERITED_ATTRIBUTE: return createClInheritedAttribute();
 			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
-			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -116,6 +119,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ClInheritedOperation createClInheritedOperation() {
+		ClInheritedOperationImpl clInheritedOperation = new ClInheritedOperationImpl();
+		return clInheritedOperation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ClReception createClReception() {
 		ClReceptionImpl clReception = new ClReceptionImpl();
 		return clReception;
@@ -136,6 +149,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ClInheritedReception createClInheritedReception() {
+		ClInheritedReceptionImpl clInheritedReception = new ClInheritedReceptionImpl();
+		return clInheritedReception;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ClAttribute createClAttribute() {
 		ClAttributeImpl clAttribute = new ClAttributeImpl();
 		return clAttribute;
@@ -149,6 +172,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClAttributeSpec createClAttributeSpec() {
 		ClAttributeSpecImpl clAttributeSpec = new ClAttributeSpecImpl();
 		return clAttributeSpec;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClInheritedAttribute createClInheritedAttribute() {
+		ClInheritedAttributeImpl clInheritedAttribute = new ClInheritedAttributeImpl();
+		return clInheritedAttribute;
 	}
 
 	/**

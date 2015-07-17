@@ -10,10 +10,10 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter#getDirection <em>Direction</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getParameter()
  * @model

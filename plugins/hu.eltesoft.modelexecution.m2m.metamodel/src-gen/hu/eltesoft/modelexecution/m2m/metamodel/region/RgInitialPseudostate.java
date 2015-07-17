@@ -11,10 +11,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate#getInitialTransition <em>Initial Transition</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage#getRgInitialPseudostate()
  * @model

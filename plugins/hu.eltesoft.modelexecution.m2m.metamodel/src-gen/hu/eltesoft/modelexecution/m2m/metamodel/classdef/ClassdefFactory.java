@@ -58,6 +58,15 @@ public interface ClassdefFactory extends EFactory {
 	ClOperationSpec createClOperationSpec();
 
 	/**
+	 * Returns a new object of class '<em>Cl Inherited Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Inherited Operation</em>'.
+	 * @generated
+	 */
+	ClInheritedOperation createClInheritedOperation();
+
+	/**
 	 * Returns a new object of class '<em>Cl Reception</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,6 +85,15 @@ public interface ClassdefFactory extends EFactory {
 	ClReceptionSpec createClReceptionSpec();
 
 	/**
+	 * Returns a new object of class '<em>Cl Inherited Reception</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Inherited Reception</em>'.
+	 * @generated
+	 */
+	ClInheritedReception createClInheritedReception();
+
+	/**
 	 * Returns a new object of class '<em>Cl Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,6 +110,15 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClAttributeSpec createClAttributeSpec();
+
+	/**
+	 * Returns a new object of class '<em>Cl Inherited Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Inherited Attribute</em>'.
+	 * @generated
+	 */
+	ClInheritedAttribute createClInheritedAttribute();
 
 	/**
 	 * Returns a new object of class '<em>Cl Association</em>'.

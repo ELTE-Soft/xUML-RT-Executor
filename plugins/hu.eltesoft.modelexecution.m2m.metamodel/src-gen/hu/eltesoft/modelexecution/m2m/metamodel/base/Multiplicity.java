@@ -11,13 +11,13 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsOrdered <em>Is Ordered</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity#isIsUnique <em>Is Unique</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getMultiplicity()
  * @model

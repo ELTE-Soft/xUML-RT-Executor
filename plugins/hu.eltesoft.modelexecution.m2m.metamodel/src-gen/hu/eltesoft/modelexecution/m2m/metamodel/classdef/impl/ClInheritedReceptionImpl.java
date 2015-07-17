@@ -1,10 +1,11 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -14,44 +15,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Primitive Type</b></em>'.
+ * An implementation of the model object '<em><b>Cl Inherited Reception</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.PrimitiveTypeImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl#getParent <em>Parent</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
+public class ClInheritedReceptionImpl extends ClReceptionSpecImpl implements ClInheritedReception {
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * The default value of the '{@link #getParent() <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getParent()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final PrimitiveTypes TYPE_EDEFAULT = PrimitiveTypes.INTEGER;
+	protected static final NamedReference PARENT_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * The cached value of the '{@link #getParent() <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getParent()
 	 * @generated
 	 * @ordered
 	 */
-	protected PrimitiveTypes type = TYPE_EDEFAULT;
+	protected NamedReference parent = PARENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PrimitiveTypeImpl() {
+	protected ClInheritedReceptionImpl() {
 		super();
 	}
 
@@ -62,7 +63,7 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return BasePackage.Literals.PRIMITIVE_TYPE;
+		return ClassdefPackage.Literals.CL_INHERITED_RECEPTION;
 	}
 
 	/**
@@ -70,8 +71,8 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PrimitiveTypes getType() {
-		return type;
+	public NamedReference getParent() {
+		return parent;
 	}
 
 	/**
@@ -79,11 +80,11 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(PrimitiveTypes newType) {
-		PrimitiveTypes oldType = type;
-		type = newType == null ? TYPE_EDEFAULT : newType;
+	public void setParent(NamedReference newParent) {
+		NamedReference oldParent = parent;
+		parent = newParent;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.PRIMITIVE_TYPE__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_INHERITED_RECEPTION__PARENT, oldParent, parent));
 	}
 
 	/**
@@ -94,8 +95,8 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BasePackage.PRIMITIVE_TYPE__TYPE:
-				return getType();
+			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+				return getParent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -108,8 +109,8 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BasePackage.PRIMITIVE_TYPE__TYPE:
-				setType((PrimitiveTypes)newValue);
+			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+				setParent((NamedReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,8 +124,8 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BasePackage.PRIMITIVE_TYPE__TYPE:
-				setType(TYPE_EDEFAULT);
+			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+				setParent(PARENT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -138,8 +139,8 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BasePackage.PRIMITIVE_TYPE__TYPE:
-				return type != TYPE_EDEFAULT;
+			case ClassdefPackage.CL_INHERITED_RECEPTION__PARENT:
+				return PARENT_EDEFAULT == null ? parent != null : !PARENT_EDEFAULT.equals(parent);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -154,10 +155,10 @@ public class PrimitiveTypeImpl extends ScalarTypeImpl implements PrimitiveType {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (type: ");
-		result.append(type);
+		result.append(" (parent: ");
+		result.append(parent);
 		result.append(')');
 		return result.toString();
 	}
 
-} //PrimitiveTypeImpl
+} //ClInheritedReceptionImpl

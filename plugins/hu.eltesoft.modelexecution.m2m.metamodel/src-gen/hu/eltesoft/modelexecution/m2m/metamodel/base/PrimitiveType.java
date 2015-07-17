@@ -10,10 +10,10 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getPrimitiveType()
  * @model

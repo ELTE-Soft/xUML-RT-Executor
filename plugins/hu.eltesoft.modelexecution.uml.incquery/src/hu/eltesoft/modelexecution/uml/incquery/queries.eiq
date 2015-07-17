@@ -161,7 +161,7 @@ private pattern IsStereotype(stereotype : Stereotype) {
 	Stereotype(stereotype);
 }
 
-pattern Generalize(child : Class, parent : Class) {
+pattern Parent(child : Class, parent : Class) {
 	Generalization.general(gen, parent);
 	Generalization.specific(gen, child);
 }
@@ -171,8 +171,17 @@ pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
 	countAncestors == count find IsAncestor(descendant, _);
 }
 
+private pattern
+ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
+	find Parent(descendant, parent);
+	parent == ancestor;
+} or {
+	find Parent(descendant, parent);
+	find IsAncestor(parent, ancestor);
+}
+
 private pattern IsAncestor(descendant : Class, ancestor : Class) {
-	find Generalize+(descendant, ancestor);
+	find Parent +(descendant, ancestor);
 }
 
 // state machine
@@ -216,6 +225,14 @@ pattern Operation(cls : Class, operation : Operation, isStatic) {
 pattern
 OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
 	find Operation(cls, operation, _);
+	find OpParameter(operation, parameter, direction);
+} or {
+	find InheritedOperation(cls, operation);
+	find OpParameter(operation, parameter, direction);
+}
+
+private pattern
+OpParameter(operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
 	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, direction);
 	direction != ParameterDirectionKind::^return;
@@ -268,6 +285,12 @@ OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound :
 	find OperationReturn(cls, operation, parameter);
 	find OperationReturnType(cls, operation, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern InheritedOperation(cls : Class, operation : Operation) {
+	find IsAncestor(cls, ancestor);
+	Class.ownedOperation(ancestor, operation);
+	Operation.isStatic(operation, false);
 }
 
 pattern Method(cls : Class, operation : Operation, method : Behavior) {

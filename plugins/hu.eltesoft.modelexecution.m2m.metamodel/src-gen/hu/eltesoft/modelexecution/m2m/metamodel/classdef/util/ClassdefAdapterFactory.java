@@ -90,12 +90,24 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClOperationSpecAdapter();
 			}
 			@Override
+			public Adapter caseClInheritedOperation(ClInheritedOperation object) {
+				return createClInheritedOperationAdapter();
+			}
+			@Override
 			public Adapter caseClReception(ClReception object) {
 				return createClReceptionAdapter();
 			}
 			@Override
 			public Adapter caseClReceptionSpec(ClReceptionSpec object) {
 				return createClReceptionSpecAdapter();
+			}
+			@Override
+			public Adapter caseClInheritedReception(ClInheritedReception object) {
+				return createClInheritedReceptionAdapter();
+			}
+			@Override
+			public Adapter caseClReceptionParameter(ClReceptionParameter object) {
+				return createClReceptionParameterAdapter();
 			}
 			@Override
 			public Adapter caseClAttribute(ClAttribute object) {
@@ -106,12 +118,12 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClAttributeSpecAdapter();
 			}
 			@Override
-			public Adapter caseClAssociation(ClAssociation object) {
-				return createClAssociationAdapter();
+			public Adapter caseClInheritedAttribute(ClInheritedAttribute object) {
+				return createClInheritedAttributeAdapter();
 			}
 			@Override
-			public Adapter caseClReceptionParameter(ClReceptionParameter object) {
-				return createClReceptionParameterAdapter();
+			public Adapter caseClAssociation(ClAssociation object) {
+				return createClAssociationAdapter();
 			}
 			@Override
 			public Adapter caseTranslationObject(TranslationObject object) {
@@ -126,12 +138,12 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createModelRootAdapter();
 			}
 			@Override
-			public Adapter caseTyped(Typed object) {
-				return createTypedAdapter();
-			}
-			@Override
 			public Adapter caseMultiplicity(Multiplicity object) {
 				return createMultiplicityAdapter();
+			}
+			@Override
+			public Adapter caseTyped(Typed object) {
+				return createTypedAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -210,6 +222,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation <em>Cl Inherited Operation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation
+	 * @generated
+	 */
+	public Adapter createClInheritedOperationAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception <em>Cl Reception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -238,6 +264,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception <em>Cl Inherited Reception</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception
+	 * @generated
+	 */
+	public Adapter createClInheritedReceptionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute <em>Cl Attribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -262,6 +302,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClAttributeSpecAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute <em>Cl Inherited Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
+	 * @generated
+	 */
+	public Adapter createClInheritedAttributeAdapter() {
 		return null;
 	}
 

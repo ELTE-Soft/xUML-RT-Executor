@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CaCallableImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.callable.impl.CaCallableImpl#getReceptions <em>Receptions</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

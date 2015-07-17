@@ -87,13 +87,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Inherited Region</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__INHERITED_REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Operations</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
@@ -102,7 +111,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
@@ -111,7 +120,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Associations</b></em>' reference list.
@@ -120,7 +129,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
@@ -129,7 +138,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -351,6 +360,70 @@ public interface ClassdefPackage extends EPackage {
 	int CL_OPERATION_OPERATION_COUNT = CL_OPERATION_SPEC_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedOperationImpl <em>Cl Inherited Operation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedOperationImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedOperation()
+	 * @generated
+	 */
+	int CL_INHERITED_OPERATION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION__REFERENCE = CL_OPERATION_SPEC__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Return Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION__RETURN_TYPE = CL_OPERATION_SPEC__RETURN_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION__PARAMETERS = CL_OPERATION_SPEC__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION__PARENT = CL_OPERATION_SPEC_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Inherited Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION_FEATURE_COUNT = CL_OPERATION_SPEC_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Inherited Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_OPERATION_OPERATION_COUNT = CL_OPERATION_SPEC_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionSpecImpl <em>Cl Reception Spec</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -358,7 +431,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionSpec()
 	 * @generated
 	 */
-	int CL_RECEPTION_SPEC = 5;
+	int CL_RECEPTION_SPEC = 6;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -404,7 +477,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReception()
 	 * @generated
 	 */
-	int CL_RECEPTION = 4;
+	int CL_RECEPTION = 5;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -452,14 +525,14 @@ public interface ClassdefPackage extends EPackage {
 	int CL_RECEPTION_OPERATION_COUNT = CL_RECEPTION_SPEC_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl <em>Cl Attribute Spec</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl <em>Cl Inherited Reception</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttributeSpec()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedReception()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE_SPEC = 7;
+	int CL_INHERITED_RECEPTION = 7;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -468,34 +541,53 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ATTRIBUTE_SPEC__REFERENCE = BasePackage.NAMED__REFERENCE;
+	int CL_INHERITED_RECEPTION__REFERENCE = CL_RECEPTION_SPEC__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ATTRIBUTE_SPEC__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int CL_INHERITED_RECEPTION__PARAMETERS = CL_RECEPTION_SPEC__PARAMETERS;
 
 	/**
-	 * The number of structural features of the '<em>Cl Attribute Spec</em>' class.
+	 * The feature id for the '<em><b>Parent</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ATTRIBUTE_SPEC_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int CL_INHERITED_RECEPTION__PARENT = CL_RECEPTION_SPEC_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Cl Attribute Spec</em>' class.
+	 * The number of structural features of the '<em>Cl Inherited Reception</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ATTRIBUTE_SPEC_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int CL_INHERITED_RECEPTION_FEATURE_COUNT = CL_RECEPTION_SPEC_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Inherited Reception</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_RECEPTION_OPERATION_COUNT = CL_RECEPTION_SPEC_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl <em>Cl Attribute Spec</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttributeSpec()
+	 * @generated
+	 */
+	int CL_ATTRIBUTE_SPEC = 10;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl <em>Cl Attribute</em>}' class.
@@ -505,52 +597,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttribute()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE = 6;
+	int CL_ATTRIBUTE = 9;
 
 	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAttributeImpl <em>Cl Inherited Attribute</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAttributeImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAttribute()
 	 * @generated
-	 * @ordered
 	 */
-	int CL_ATTRIBUTE__REFERENCE = CL_ATTRIBUTE_SPEC__REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ATTRIBUTE__TYPE = CL_ATTRIBUTE_SPEC__TYPE;
-
-	/**
-	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ATTRIBUTE__IS_STATIC = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Cl Attribute</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ATTRIBUTE_FEATURE_COUNT = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Cl Attribute</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ATTRIBUTE_OPERATION_COUNT = CL_ATTRIBUTE_SPEC_OPERATION_COUNT + 0;
+	int CL_INHERITED_ATTRIBUTE = 11;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
@@ -560,43 +617,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
 	 * @generated
 	 */
-	int CL_ASSOCIATION = 8;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ASSOCIATION__REFERENCE = BasePackage.NAMED__REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ASSOCIATION__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Cl Association</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ASSOCIATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Cl Association</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int CL_ASSOCIATION = 12;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl <em>Cl Reception Parameter</em>}' class.
@@ -606,7 +627,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
 	 * @generated
 	 */
-	int CL_RECEPTION_PARAMETER = 9;
+	int CL_RECEPTION_PARAMETER = 8;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -680,6 +701,168 @@ public interface ClassdefPackage extends EPackage {
 	 */
 	int CL_RECEPTION_PARAMETER_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_SPEC__REFERENCE = BasePackage.NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_SPEC__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Attribute Spec</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_SPEC_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Attribute Spec</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_SPEC_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE__REFERENCE = CL_ATTRIBUTE_SPEC__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE__TYPE = CL_ATTRIBUTE_SPEC__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE__IS_STATIC = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Attribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_FEATURE_COUNT = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Attribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ATTRIBUTE_OPERATION_COUNT = CL_ATTRIBUTE_SPEC_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ATTRIBUTE__REFERENCE = CL_ATTRIBUTE_SPEC__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ATTRIBUTE__TYPE = CL_ATTRIBUTE_SPEC__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ATTRIBUTE__PARENT = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Inherited Attribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ATTRIBUTE_FEATURE_COUNT = CL_ATTRIBUTE_SPEC_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Inherited Attribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ATTRIBUTE_OPERATION_COUNT = CL_ATTRIBUTE_SPEC_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__REFERENCE = BasePackage.NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
@@ -701,6 +884,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClass_Region();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedRegion <em>Inherited Region</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Inherited Region</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedRegion()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_InheritedRegion();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}'.
@@ -876,6 +1070,27 @@ public interface ClassdefPackage extends EPackage {
 	EReference getClOperationSpec_Parameters();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation <em>Cl Inherited Operation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Inherited Operation</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation
+	 * @generated
+	 */
+	EClass getClInheritedOperation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedOperation#getParent()
+	 * @see #getClInheritedOperation()
+	 * @generated
+	 */
+	EAttribute getClInheritedOperation_Parent();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception <em>Cl Reception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -918,6 +1133,27 @@ public interface ClassdefPackage extends EPackage {
 	EReference getClReceptionSpec_Parameters();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception <em>Cl Inherited Reception</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Inherited Reception</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception
+	 * @generated
+	 */
+	EClass getClInheritedReception();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedReception#getParent()
+	 * @see #getClInheritedReception()
+	 * @generated
+	 */
+	EAttribute getClInheritedReception_Parent();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute <em>Cl Attribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -947,6 +1183,27 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getClAttributeSpec();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute <em>Cl Inherited Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Inherited Attribute</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
+	 * @generated
+	 */
+	EClass getClInheritedAttribute();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute#getParent()
+	 * @see #getClInheritedAttribute()
+	 * @generated
+	 */
+	EAttribute getClInheritedAttribute_Parent();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation <em>Cl Association</em>}'.
@@ -1019,6 +1276,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS__REGION = eINSTANCE.getClClass_Region();
+
+		/**
+		 * The meta object literal for the '<em><b>Inherited Region</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__INHERITED_REGION = eINSTANCE.getClClass_InheritedRegion();
 
 		/**
 		 * The meta object literal for the '<em><b>Operations</b></em>' reference list feature.
@@ -1155,6 +1420,24 @@ public interface ClassdefPackage extends EPackage {
 		EReference CL_OPERATION_SPEC__PARAMETERS = eINSTANCE.getClOperationSpec_Parameters();
 
 		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedOperationImpl <em>Cl Inherited Operation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedOperationImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedOperation()
+		 * @generated
+		 */
+		EClass CL_INHERITED_OPERATION = eINSTANCE.getClInheritedOperation();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_INHERITED_OPERATION__PARENT = eINSTANCE.getClInheritedOperation_Parent();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionImpl <em>Cl Reception</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1191,6 +1474,24 @@ public interface ClassdefPackage extends EPackage {
 		EReference CL_RECEPTION_SPEC__PARAMETERS = eINSTANCE.getClReceptionSpec_Parameters();
 
 		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl <em>Cl Inherited Reception</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedReceptionImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedReception()
+		 * @generated
+		 */
+		EClass CL_INHERITED_RECEPTION = eINSTANCE.getClInheritedReception();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_INHERITED_RECEPTION__PARENT = eINSTANCE.getClInheritedReception_Parent();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeImpl <em>Cl Attribute</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1217,6 +1518,24 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CL_ATTRIBUTE_SPEC = eINSTANCE.getClAttributeSpec();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAttributeImpl <em>Cl Inherited Attribute</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAttributeImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAttribute()
+		 * @generated
+		 */
+		EClass CL_INHERITED_ATTRIBUTE = eINSTANCE.getClInheritedAttribute();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_INHERITED_ATTRIBUTE__PARENT = eINSTANCE.getClInheritedAttribute_Parent();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.

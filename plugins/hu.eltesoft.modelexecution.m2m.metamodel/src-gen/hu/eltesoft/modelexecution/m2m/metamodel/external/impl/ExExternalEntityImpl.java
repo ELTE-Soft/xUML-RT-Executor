@@ -29,13 +29,13 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getImplementationClass <em>Implementation Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
