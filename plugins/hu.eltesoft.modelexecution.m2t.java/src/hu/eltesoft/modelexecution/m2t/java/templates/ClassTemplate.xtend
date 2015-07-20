@@ -175,6 +175,28 @@ class ClassTemplate extends Template {
 				);
 		«ENDIF»
 		}
+		
+		«IF !operation.isStatic»
+			/** Statically dispatched access to operation «operation.javadoc» 
+			 «javadocParams(operation.parameters)»
+			 */
+			public static «IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+					«classDefinition.implementation» thisRef
+					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
+						«javaType(parameter.type)» «parameter.identifier»
+					«ENDFOR»
+				) {
+					«IF operation.hasBody»
+						«IF operation.returnType != null»return«ENDIF»
+							«operation.method.identifier».execute(
+					«IF !operation.isStatic»thisRef«ENDIF»
+					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+					);
+			«ENDIF»
+			}
+		«ENDIF»
 	'''
 	
 	def generateReception(ClReception reception, boolean isExternal) '''
