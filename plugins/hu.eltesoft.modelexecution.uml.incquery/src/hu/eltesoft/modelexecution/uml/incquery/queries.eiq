@@ -190,6 +190,12 @@ pattern RegionOfClass(cls : Class, region : Region) {
 	StateMachine.region(stateMachine, region);
 }
 
+pattern InheritedRegion(cls : Class, region : Region) {
+	find Ancestor(cls, ancestor, _);
+	Class.ownedBehavior(ancestor, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
 // attributes
 pattern Attribute(cls : Class, attribute : Property, isStatic) {
 	Class.ownedAttribute(cls, attribute);

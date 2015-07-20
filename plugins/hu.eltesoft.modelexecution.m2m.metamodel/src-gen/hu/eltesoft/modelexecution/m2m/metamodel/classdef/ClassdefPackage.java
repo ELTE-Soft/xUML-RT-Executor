@@ -232,13 +232,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC__HAS_STATE_MACHINE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Parents</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Cl Class Spec</em>' class.
@@ -250,6 +259,43 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl <em>Cl Class Common</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClClassCommon()
+	 * @generated
+	 */
+	int CL_CLASS_COMMON = 2;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_COMMON__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
+
+	/**
+	 * The number of structural features of the '<em>Cl Class Common</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_COMMON_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Cl Class Common</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_COMMON_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl <em>Cl Operation Spec</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -257,7 +303,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClOperationSpec()
 	 * @generated
 	 */
-	int CL_OPERATION_SPEC = 3;
+	int CL_OPERATION_SPEC = 4;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -312,7 +358,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClOperation()
 	 * @generated
 	 */
-	int CL_OPERATION = 2;
+	int CL_OPERATION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -385,7 +431,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionSpec()
 	 * @generated
 	 */
-	int CL_RECEPTION_SPEC = 5;
+	int CL_RECEPTION_SPEC = 6;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -431,7 +477,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReception()
 	 * @generated
 	 */
-	int CL_RECEPTION = 4;
+	int CL_RECEPTION = 5;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -486,7 +532,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
 	 * @generated
 	 */
-	int CL_RECEPTION_PARAMETER = 6;
+	int CL_RECEPTION_PARAMETER = 7;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -568,7 +614,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttributeSpec()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE_SPEC = 8;
+	int CL_ATTRIBUTE_SPEC = 9;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -614,7 +660,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttribute()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE = 7;
+	int CL_ATTRIBUTE = 8;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -669,7 +715,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAttribute()
 	 * @generated
 	 */
-	int CL_INHERITED_ATTRIBUTE = 9;
+	int CL_INHERITED_ATTRIBUTE = 10;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -724,7 +770,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
 	 * @generated
 	 */
-	int CL_ASSOCIATION = 10;
+	int CL_ASSOCIATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -770,7 +816,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getInherited()
 	 * @generated
 	 */
-	int INHERITED = 11;
+	int INHERITED = 12;
 
 	/**
 	 * The feature id for the '<em><b>Parent</b></em>' attribute.
@@ -798,7 +844,6 @@ public interface ClassdefPackage extends EPackage {
 	 * @ordered
 	 */
 	int INHERITED_OPERATION_COUNT = 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
@@ -962,6 +1007,27 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClassSpec_HasStateMachine();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getParents <em>Parents</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Parents</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getParents()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_Parents();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon <em>Cl Class Common</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Class Common</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon
+	 * @generated
+	 */
+	EClass getClClassCommon();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -1308,6 +1374,24 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS_SPEC__HAS_STATE_MACHINE = eINSTANCE.getClClassSpec_HasStateMachine();
+
+		/**
+		 * The meta object literal for the '<em><b>Parents</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__PARENTS = eINSTANCE.getClClassSpec_Parents();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl <em>Cl Class Common</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClClassCommon()
+		 * @generated
+		 */
+		EClass CL_CLASS_COMMON = eINSTANCE.getClClassCommon();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.

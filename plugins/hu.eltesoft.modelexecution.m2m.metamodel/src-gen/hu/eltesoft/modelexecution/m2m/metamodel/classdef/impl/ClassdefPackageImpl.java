@@ -22,6 +22,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
@@ -32,7 +33,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExternalPackageImpl;
@@ -73,6 +73,13 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	private EClass clClassSpecEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass clClassCommonEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -371,6 +378,24 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getClClassSpec_Parents() {
+		return (EAttribute)clClassSpecEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getClClassCommon() {
+		return clClassCommonEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClOperation() {
 		return clOperationEClass;
 	}
@@ -581,6 +606,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__ATTRIBUTES);
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__ASSOCIATIONS);
 		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__HAS_STATE_MACHINE);
+		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__PARENTS);
+
+		clClassCommonEClass = createEClass(CL_CLASS_COMMON);
 
 		clOperationEClass = createEClass(CL_OPERATION);
 		createEAttribute(clOperationEClass, CL_OPERATION__METHOD);
@@ -645,6 +673,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		// Add supertypes to classes
 		clClassEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		clClassSpecEClass.getESuperTypes().add(theBasePackage.getModelRoot());
+		clClassCommonEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		clOperationEClass.getESuperTypes().add(this.getClOperationSpec());
 		clOperationSpecEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clReceptionEClass.getESuperTypes().add(this.getClReceptionSpec());
@@ -676,6 +705,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClassSpec_Attributes(), this.getClAttributeSpec(), null, "attributes", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getClClassSpec_Associations(), this.getClAssociation(), null, "associations", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getClClassSpec_HasStateMachine(), ecorePackage.getEBoolean(), "hasStateMachine", null, 1, 1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClClassSpec_Parents(), theBasePackage.getNamedReference(), "parents", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(clClassCommonEClass, ClClassCommon.class, "ClClassCommon", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(clOperationEClass, ClOperation.class, "ClOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClOperation_Method(), theBasePackage.getNamedReference(), "method", null, 0, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

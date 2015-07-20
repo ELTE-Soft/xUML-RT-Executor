@@ -4,6 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -20,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasStateMachine <em>Has State Machine</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getParents <em>Parents</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClassSpec()
@@ -116,5 +118,21 @@ public interface ClClassSpec extends ModelRoot {
 	 * @generated
 	 */
 	void setHasStateMachine(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Parents</b></em>' attribute list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parents</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parents</em>' attribute list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClassSpec_Parents()
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference" ordered="false"
+	 * @generated
+	 */
+	EList<NamedReference> getParents();
 
 } // ClClassSpec

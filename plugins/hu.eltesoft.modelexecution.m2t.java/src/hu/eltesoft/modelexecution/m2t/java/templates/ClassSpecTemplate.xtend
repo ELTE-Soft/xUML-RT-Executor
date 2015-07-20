@@ -7,25 +7,30 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass
+import java.util.LinkedList
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassSpecTemplate extends Template {
 
 	val ClClassSpec classSpec
+	val extendings = new LinkedList<String>();
 
 	new(ClClassSpec classSpec) {
 		super(classSpec)
 		this.classSpec = classSpec
+		if (classSpec.hasStateMachine) { extendings.add(StatefulClass.canonicalName) }
+		classSpec.parents.forEach[ extendings.add(identifier) ]
 	}
 
 	override wrapContent(
 		CharSequence content
 	) '''
 		/** Interface for specification of UML class «classSpec.javadoc» */
-		public interface «classSpec.identifier» «IF classSpec.hasStateMachine»extends «StatefulClass.canonicalName»«ENDIF» {
+		public interface «classSpec.identifier» 
+			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 			«content»
 		}
 	'''

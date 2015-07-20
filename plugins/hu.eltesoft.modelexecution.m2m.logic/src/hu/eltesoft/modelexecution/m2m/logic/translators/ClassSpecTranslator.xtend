@@ -18,6 +18,7 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 
 // FIXME: define these subtransformers only once
 class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, ClassOrAssocClassMatch> {
@@ -39,6 +40,11 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 	}
 
 	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+
+		// parent classes
+		rootNode.on(PACKAGE.clClassSpec_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// state machine
 		rootNode.on(PACKAGE.clClassSpec_HasStateMachine, RegionOfClassMatcher.on(engine))[true]
 
 		// attributes
@@ -47,7 +53,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 			elem.reference = new NamedReference(attribute)
 			return elem;
 		]
-		
+
 		ClassConvertHelper.fillAttribute(attributeNode, engine)
 
 		// operations

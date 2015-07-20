@@ -90,6 +90,15 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ClassdefPackage.CL_CLASS_COMMON: {
+				ClClassCommon clClassCommon = (ClClassCommon)theEObject;
+				T result = caseClClassCommon(clClassCommon);
+				if (result == null) result = caseModelRoot(clClassCommon);
+				if (result == null) result = caseNamed(clClassCommon);
+				if (result == null) result = caseTranslationObject(clClassCommon);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ClassdefPackage.CL_OPERATION: {
 				ClOperation clOperation = (ClOperation)theEObject;
 				T result = caseClOperation(clOperation);
@@ -209,6 +218,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClClassSpec(ClClassSpec object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Class Common</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Class Common</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClClassCommon(ClClassCommon object) {
 		return null;
 	}
 

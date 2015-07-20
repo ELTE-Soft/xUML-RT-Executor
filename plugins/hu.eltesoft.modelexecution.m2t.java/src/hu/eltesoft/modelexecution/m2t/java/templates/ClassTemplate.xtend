@@ -26,11 +26,13 @@ class ClassTemplate extends Template {
 
 	val ClClass classDefinition
 	val boolean hasStateMachine
+	val NamedReference region
 
 	new(ClClass classDefinition) {
 		super(classDefinition)
 		this.classDefinition = classDefinition
-		this.hasStateMachine = classDefinition.region != null
+		this.hasStateMachine = classDefinition.region != null || classDefinition.inheritedRegion != null
+		region = if (classDefinition.region != null) classDefinition.region else classDefinition.inheritedRegion
 	}
 
 	override wrapContent(CharSequence content) '''
@@ -79,7 +81,7 @@ class ClassTemplate extends Template {
 
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
-				return new «classDefinition.region.identifier»(this);
+				return new «region.identifier»(this);
 			}
 			
 			// receptions

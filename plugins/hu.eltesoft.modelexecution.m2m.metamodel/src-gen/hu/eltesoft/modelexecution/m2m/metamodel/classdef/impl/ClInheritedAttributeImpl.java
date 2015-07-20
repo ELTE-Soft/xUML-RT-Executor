@@ -3,15 +3,11 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -37,7 +33,6 @@ public class ClInheritedAttributeImpl extends ClAttributeSpecImpl implements ClI
 	 * @ordered
 	 */
 	protected static final NamedReference PARENT_EDEFAULT = null;
-
 	/**
 	 * The cached value of the '{@link #getParent() <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->

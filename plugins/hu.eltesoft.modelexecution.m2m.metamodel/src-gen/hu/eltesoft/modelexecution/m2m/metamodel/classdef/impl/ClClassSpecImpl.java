@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -39,6 +40,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isHasStateMachine <em>Has State Machine</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getParents <em>Parents</em>}</li>
  * </ul>
  *
  * @generated
@@ -123,6 +125,16 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	 * @ordered
 	 */
 	protected boolean hasStateMachine = HAS_STATE_MACHINE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParents() <em>Parents</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParents()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<NamedReference> parents;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -238,6 +250,18 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<NamedReference> getParents() {
+		if (parents == null) {
+			parents = new EDataTypeUniqueEList<NamedReference>(NamedReference.class, this, ClassdefPackage.CL_CLASS_SPEC__PARENTS);
+		}
+		return parents;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -253,6 +277,8 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 				return getAssociations();
 			case ClassdefPackage.CL_CLASS_SPEC__HAS_STATE_MACHINE:
 				return isHasStateMachine();
+			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
+				return getParents();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -288,6 +314,10 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 			case ClassdefPackage.CL_CLASS_SPEC__HAS_STATE_MACHINE:
 				setHasStateMachine((Boolean)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
+				getParents().clear();
+				getParents().addAll((Collection<? extends NamedReference>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -318,6 +348,9 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 			case ClassdefPackage.CL_CLASS_SPEC__HAS_STATE_MACHINE:
 				setHasStateMachine(HAS_STATE_MACHINE_EDEFAULT);
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
+				getParents().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -342,6 +375,8 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 				return associations != null && !associations.isEmpty();
 			case ClassdefPackage.CL_CLASS_SPEC__HAS_STATE_MACHINE:
 				return hasStateMachine != HAS_STATE_MACHINE_EDEFAULT;
+			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
+				return parents != null && !parents.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -360,6 +395,8 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 		result.append(reference);
 		result.append(", hasStateMachine: ");
 		result.append(hasStateMachine);
+		result.append(", parents: ");
+		result.append(parents);
 		result.append(')');
 		return result.toString();
 	}

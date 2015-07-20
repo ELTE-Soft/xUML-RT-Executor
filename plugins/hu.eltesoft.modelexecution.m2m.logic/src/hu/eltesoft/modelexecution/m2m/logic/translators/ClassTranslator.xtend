@@ -22,6 +22,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeParentMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InheritedRegionMatcher
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
@@ -48,6 +49,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
+		rootNode.on(PACKAGE.clClass_InheritedRegion, InheritedRegionMatcher.on(engine))[new NamedReference(region)]
 
 		// attributes
 		val attributeNode = rootNode.onEObject(PACKAGE.clClass_Attributes, AttributeMatcher.on(engine)) [

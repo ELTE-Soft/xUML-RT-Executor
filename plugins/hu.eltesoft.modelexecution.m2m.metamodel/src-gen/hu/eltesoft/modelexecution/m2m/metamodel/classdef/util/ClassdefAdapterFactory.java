@@ -82,6 +82,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClClassSpecAdapter();
 			}
 			@Override
+			public Adapter caseClClassCommon(ClClassCommon object) {
+				return createClClassCommonAdapter();
+			}
+			@Override
 			public Adapter caseClOperation(ClOperation object) {
 				return createClOperationAdapter();
 			}
@@ -186,6 +190,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClClassSpecAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon <em>Cl Class Common</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon
+	 * @generated
+	 */
+	public Adapter createClClassCommonAdapter() {
 		return null;
 	}
 
