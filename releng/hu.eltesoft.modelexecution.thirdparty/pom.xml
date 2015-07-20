@@ -33,7 +33,7 @@
 									<id>com.google.jimfs:jimfs:1.0</id>
 								</artifact>
 								<artifact>
-									<id>org.jmock:jmock:2.8.0</id>
+									<id>org.jmock:jmock-junit4:2.8.1</id>
 								</artifact>
 							</artifacts>
 						</configuration>
