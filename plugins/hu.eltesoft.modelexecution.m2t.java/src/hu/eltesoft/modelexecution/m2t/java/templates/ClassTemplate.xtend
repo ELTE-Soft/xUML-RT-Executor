@@ -11,7 +11,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
@@ -54,9 +53,12 @@ class ClassTemplate extends Template {
 			implements «classDefinition.identifier» {
 			
 			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.implementation»(«Runtime.canonicalName» runtime) {
+			public «classDefinition.implementation»(«Runtime.canonicalName» runtime
+					«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
 				super(runtime, instanceCount.getAndIncrement());
-				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
+				«FOR parent : classDefinition.parents»
+					this.«parent.inherited» = «parent.inherited»;
+				«ENDFOR»
 			}
 			«content»
 		}
@@ -71,6 +73,15 @@ class ClassTemplate extends Template {
 		public class «classDefinition.implementation» 
 			extends «Class.canonicalName» 
 			implements «classDefinition.identifier» {
+				
+			/** Constructor for UML class «classDefinition.javadoc» */
+			public «classDefinition.implementation»(
+				«FOR parent : classDefinition.parents SEPARATOR ','»«parent.implementation» «parent.inherited»«ENDFOR») {
+				«FOR parent : classDefinition.parents»
+					this.«parent.inherited» = «parent.inherited»;
+				«ENDFOR»
+			}
+				
 			«content»
 		}
 	'''
@@ -150,12 +161,12 @@ class ClassTemplate extends Template {
 	def generateInheritedAttribute(
 		ClInheritedAttribute attribute
 	) '''
-		//@Override
+		@Override
 		public «javaType(attribute.type)» «attribute.getter»() {
 			return «attribute.parent.inherited».«attribute.getter»();
 		}
 		
-		//@Override
+		@Override
 		public void «attribute.setter»(«javaType(attribute.type)» newVal) {
 			«attribute.parent.inherited».«attribute.setter»(newVal);
 		}

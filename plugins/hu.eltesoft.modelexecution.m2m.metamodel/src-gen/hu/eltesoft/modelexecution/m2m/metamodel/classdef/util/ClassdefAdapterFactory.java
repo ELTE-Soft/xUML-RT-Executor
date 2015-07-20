@@ -122,6 +122,10 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 				return createClAssociationAdapter();
 			}
 			@Override
+			public Adapter caseClCtorRecord(ClCtorRecord object) {
+				return createClCtorRecordAdapter();
+			}
+			@Override
 			public Adapter caseInherited(Inherited object) {
 				return createInheritedAdapter();
 			}
@@ -330,6 +334,20 @@ public class ClassdefAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createClAssociationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord <em>Cl Ctor Record</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord
+	 * @generated
+	 */
+	public Adapter createClCtorRecordAdapter() {
 		return null;
 	}
 

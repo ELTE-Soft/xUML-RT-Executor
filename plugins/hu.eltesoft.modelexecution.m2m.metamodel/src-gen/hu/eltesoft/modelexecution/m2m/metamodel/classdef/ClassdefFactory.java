@@ -121,6 +121,15 @@ public interface ClassdefFactory extends EFactory {
 	ClAssociation createClAssociation();
 
 	/**
+	 * Returns a new object of class '<em>Cl Ctor Record</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Ctor Record</em>'.
+	 * @generated
+	 */
+	ClCtorRecord createClCtorRecord();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

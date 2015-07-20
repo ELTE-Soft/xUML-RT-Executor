@@ -24,6 +24,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec;
@@ -143,6 +144,13 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	private EClass clAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass clCtorRecordEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -317,6 +325,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 */
 	public EAttribute getClClass_Parents() {
 		return (EAttribute)clClassEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getClClass_CtorRecords() {
+		return (EReference)clClassEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -549,6 +566,24 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getClCtorRecord() {
+		return clCtorRecordEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getClCtorRecord_UsedObjs() {
+		return (EAttribute)clCtorRecordEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInherited() {
 		return inheritedEClass;
 	}
@@ -599,6 +634,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassEClass, CL_CLASS__INHERITED_ATTRIBUTES);
 		createEReference(clClassEClass, CL_CLASS__ASSOCIATIONS);
 		createEAttribute(clClassEClass, CL_CLASS__PARENTS);
+		createEReference(clClassEClass, CL_CLASS__CTOR_RECORDS);
 
 		clClassSpecEClass = createEClass(CL_CLASS_SPEC);
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__OPERATIONS);
@@ -635,6 +671,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		clInheritedAttributeEClass = createEClass(CL_INHERITED_ATTRIBUTE);
 
 		clAssociationEClass = createEClass(CL_ASSOCIATION);
+
+		clCtorRecordEClass = createEClass(CL_CTOR_RECORD);
+		createEAttribute(clCtorRecordEClass, CL_CTOR_RECORD__USED_OBJS);
 
 		inheritedEClass = createEClass(INHERITED);
 		createEAttribute(inheritedEClass, INHERITED__PARENT);
@@ -687,6 +726,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		clInheritedAttributeEClass.getESuperTypes().add(this.getInherited());
 		clAssociationEClass.getESuperTypes().add(theBasePackage.getNamed());
 		clAssociationEClass.getESuperTypes().add(theBasePackage.getTyped());
+		clCtorRecordEClass.getESuperTypes().add(theBasePackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(clClassEClass, ClClass.class, "ClClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -698,6 +738,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClass_InheritedAttributes(), this.getClInheritedAttribute(), null, "inheritedAttributes", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getClClass_Associations(), this.getClAssociation(), null, "associations", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getClClass_Parents(), theBasePackage.getNamedReference(), "parents", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getClClass_CtorRecords(), this.getClCtorRecord(), null, "ctorRecords", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clClassSpecEClass, ClClassSpec.class, "ClClassSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClClassSpec_Operations(), this.getClOperationSpec(), null, "operations", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -734,6 +775,9 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEClass(clInheritedAttributeEClass, ClInheritedAttribute.class, "ClInheritedAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(clAssociationEClass, ClAssociation.class, "ClAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(clCtorRecordEClass, ClCtorRecord.class, "ClCtorRecord", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getClCtorRecord_UsedObjs(), theBasePackage.getNamedReference(), "usedObjs", null, 0, -1, ClCtorRecord.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(inheritedEClass, Inherited.class, "Inherited", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getInherited_Parent(), theBasePackage.getNamedReference(), "parent", null, 1, 1, Inherited.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

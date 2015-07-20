@@ -181,6 +181,14 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ClassdefPackage.CL_CTOR_RECORD: {
+				ClCtorRecord clCtorRecord = (ClCtorRecord)theEObject;
+				T result = caseClCtorRecord(clCtorRecord);
+				if (result == null) result = caseNamed(clCtorRecord);
+				if (result == null) result = caseTranslationObject(clCtorRecord);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ClassdefPackage.INHERITED: {
 				Inherited inherited = (Inherited)theEObject;
 				T result = caseInherited(inherited);
@@ -368,6 +376,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClAssociation(ClAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Ctor Record</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Ctor Record</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClCtorRecord(ClCtorRecord object) {
 		return null;
 	}
 

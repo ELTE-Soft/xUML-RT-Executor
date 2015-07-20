@@ -10,6 +10,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -44,6 +45,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getParents <em>Parents</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getCtorRecords <em>Ctor Records</em>}</li>
  * </ul>
  *
  * @generated
@@ -148,6 +150,16 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected EList<NamedReference> parents;
+
+	/**
+	 * The cached value of the '{@link #getCtorRecords() <em>Ctor Records</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCtorRecords()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClCtorRecord> ctorRecords;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -287,6 +299,18 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClCtorRecord> getCtorRecords() {
+		if (ctorRecords == null) {
+			ctorRecords = new EObjectResolvingEList<ClCtorRecord>(ClCtorRecord.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS);
+		}
+		return ctorRecords;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -306,6 +330,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return getAssociations();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				return getParents();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS:
+				return getCtorRecords();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -349,6 +375,10 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				getParents().clear();
 				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS:
+				getCtorRecords().clear();
+				getCtorRecords().addAll((Collection<? extends ClCtorRecord>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -385,6 +415,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				getParents().clear();
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS:
+				getCtorRecords().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -413,6 +446,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return associations != null && !associations.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				return parents != null && !parents.isEmpty();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS:
+				return ctorRecords != null && !ctorRecords.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -434,6 +469,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES: return ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS: return ClassdefPackage.CL_CLASS__ASSOCIATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS: return ClassdefPackage.CL_CLASS__PARENTS;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS: return ClassdefPackage.CL_CLASS__CTOR_RECORDS;
 				default: return -1;
 			}
 		}
@@ -457,6 +493,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES;
 				case ClassdefPackage.CL_CLASS__ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS;
 				case ClassdefPackage.CL_CLASS__PARENTS: return AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS;
+				case ClassdefPackage.CL_CLASS__CTOR_RECORDS: return AssociationPackage.AS_ASSOCIATION_CLASS__CTOR_RECORDS;
 				default: return -1;
 			}
 		}

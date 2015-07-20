@@ -150,13 +150,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Ctor Records</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__CTOR_RECORDS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -809,6 +818,52 @@ public interface ClassdefPackage extends EPackage {
 	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl <em>Cl Ctor Record</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClCtorRecord()
+	 * @generated
+	 */
+	int CL_CTOR_RECORD = 12;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CTOR_RECORD__REFERENCE = BasePackage.NAMED__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Used Objs</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CTOR_RECORD__USED_OBJS = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Ctor Record</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CTOR_RECORD_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Ctor Record</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CTOR_RECORD_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl <em>Inherited</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -816,7 +871,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getInherited()
 	 * @generated
 	 */
-	int INHERITED = 12;
+	int INHERITED = 13;
 
 	/**
 	 * The feature id for the '<em><b>Parent</b></em>' attribute.
@@ -942,6 +997,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClass_Parents();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getCtorRecords <em>Ctor Records</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Ctor Records</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getCtorRecords()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EReference getClClass_CtorRecords();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
@@ -1208,6 +1274,27 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClAssociation();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord <em>Cl Ctor Record</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Ctor Record</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord
+	 * @generated
+	 */
+	EClass getClCtorRecord();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedObjs <em>Used Objs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Used Objs</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedObjs()
+	 * @see #getClCtorRecord()
+	 * @generated
+	 */
+	EAttribute getClCtorRecord_UsedObjs();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited <em>Inherited</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1324,6 +1411,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS__PARENTS = eINSTANCE.getClClass_Parents();
+
+		/**
+		 * The meta object literal for the '<em><b>Ctor Records</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_CLASS__CTOR_RECORDS = eINSTANCE.getClClass_CtorRecords();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
@@ -1546,6 +1641,24 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CL_ASSOCIATION = eINSTANCE.getClAssociation();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl <em>Cl Ctor Record</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClCtorRecord()
+		 * @generated
+		 */
+		EClass CL_CTOR_RECORD = eINSTANCE.getClCtorRecord();
+
+		/**
+		 * The meta object literal for the '<em><b>Used Objs</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CTOR_RECORD__USED_OBJS = eINSTANCE.getClCtorRecord_UsedObjs();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl <em>Inherited</em>}' class.
