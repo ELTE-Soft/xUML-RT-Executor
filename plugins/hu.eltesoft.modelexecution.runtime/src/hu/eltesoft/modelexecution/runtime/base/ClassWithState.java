@@ -25,17 +25,11 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	 */
 	protected abstract StateMachineRegion createStateMachine();
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.base.StatefulClass#getRuntime()
-	 */
 	@Override
 	public Runtime getRuntime() {
 		return runtime;
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.base.StatefulClass#getInstanceID()
-	 */
 	@Override
 	public int getInstanceID() {
 		return instanceID;
@@ -45,17 +39,11 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		stateMachine.doInitialTransition();
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.base.StatefulClass#receive(hu.eltesoft.modelexecution.runtime.base.Event)
-	 */
 	@Override
 	public void receive(Event event) {
 		stateMachine.step(event);
 	}
 
-	/* (non-Javadoc)
-	 * @see hu.eltesoft.modelexecution.runtime.base.StatefulClass#dispose()
-	 */
 	@Override
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
