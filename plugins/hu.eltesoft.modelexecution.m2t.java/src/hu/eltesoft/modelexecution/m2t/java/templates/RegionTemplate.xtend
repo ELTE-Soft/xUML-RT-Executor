@@ -47,6 +47,7 @@ class StepPartitioning {
 	def isLast(int partitionIndex) {
 		afterLastState(partitionIndex) >= numberOfStates
 	}
+	
 }
 
 @SourceMappedTemplate(stratumName=XUML_RT)
@@ -58,6 +59,7 @@ class RegionTemplate extends Template {
 	val RgState firstState
 
 	val StepPartitioning partitioning
+	var hasAnySignalChecks = false
 
 	new(RgRegion region) {
 		super(region)
@@ -65,6 +67,7 @@ class RegionTemplate extends Template {
 		initState = region.initialPseudostate
 		initTransition = initState.initialTransition
 		firstState = initTransition.target
+		region.states.forEach[ transitions.forEach[ hasAnySignalChecks = true ] ]
 
 		val numberOfStates = region.states.length
 		partitioning = new StepPartitioning(numberOfStates)
@@ -157,7 +160,7 @@ class RegionTemplate extends Template {
 		«ENDIF»
 		private void step«i»(«Event.canonicalName» event) {
 			if (event instanceof «SignalEvent.canonicalName») {
-				«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();
+				«IF hasAnySignalChecks»«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
 				switch (currentState) {
 					«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
 						case «state.identifier»:
