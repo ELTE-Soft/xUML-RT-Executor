@@ -35,27 +35,16 @@ class ClassTemplate extends Template {
 	}
 
 	override wrapContent(CharSequence content) '''
-		«IF hasStateMachine»
-			«generateClassWithState(content)»
-		«ELSE»
-			«generateClassWithoutState(content)»
-		«ENDIF»
-	'''
-
-	/**
-	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
-	 */
-	def generateClassWithState(CharSequence content) '''
 		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
 		public class «classDefinition.implementation» 
-			extends «ClassWithState.canonicalName» 
+			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
 			
 			/** Constructor for UML class «classDefinition.javadoc» */
 			public «classDefinition.implementation»(«Runtime.canonicalName» runtime
 					«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
-				super(runtime, instanceCount.getAndIncrement());
+				«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
 				«FOR parent : classDefinition.parents»
 					this.«parent.inherited» = «parent.inherited»;
 				«ENDFOR»
@@ -72,37 +61,7 @@ class ClassTemplate extends Template {
 			«content»
 		}
 	'''
-
-	/**
-	 * Generates a class that does not have a state machine.
-	 */
-	def generateClassWithoutState(CharSequence content) '''
-		/** Data class for UML class «classDefinition.javadoc» */
-		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.implementation» 
-			extends «Class.canonicalName» 
-			implements «classDefinition.identifier» {
-				
-			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.implementation»(«Runtime.canonicalName» runtime
-					«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
-				«FOR parent : classDefinition.parents»
-					this.«parent.inherited» = «parent.inherited»;
-				«ENDFOR»
-			}
-				
-			/** Creator for UML class «classDefinition.javadoc» */
-			public static «classDefinition.identifier» create(«Runtime.canonicalName» runtime) {
-				«FOR rec : classDefinition.ctorRecords»
-					«rec.implementation» «rec.inherited» 
-						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
-				«ENDFOR»
-				return new «classDefinition.implementation»(runtime«FOR parent : classDefinition.parents», «parent.inherited»«ENDFOR»);
-			}
-			«content»
-		}
-	'''
-
+	
 	override generateContent() '''
 		«IF hasStateMachine»
 			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
