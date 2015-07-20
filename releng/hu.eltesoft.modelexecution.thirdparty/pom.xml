@@ -20,9 +20,20 @@
 								<!-- specify your dependencies here -->
 								<!-- groupId:artifactId:version -->
 
+								<!-- plug-in dependencies -->
+								<artifact>
+									<id>com.google.guava:guava:18.0</id>
+								</artifact>
+								<artifact>
+									<id>org.json:json:20141113</id>
+								</artifact>
+
 								<!-- test dependencies -->
 								<artifact>
 									<id>com.google.jimfs:jimfs:1.0</id>
+								</artifact>
+								<artifact>
+									<id>org.jmock:jmock:2.8.0</id>
 								</artifact>
 							</artifacts>
 						</configuration>
