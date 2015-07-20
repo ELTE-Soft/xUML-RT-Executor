@@ -11,6 +11,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
@@ -142,6 +143,13 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * @generated
 	 */
 	private EClass multiplicityEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass nameWrapperEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -452,6 +460,15 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getNameWrapper() {
+		return nameWrapperEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getDirection() {
 		return directionEEnum;
 	}
@@ -543,6 +560,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		createEAttribute(multiplicityEClass, MULTIPLICITY__IS_ORDERED);
 		createEAttribute(multiplicityEClass, MULTIPLICITY__IS_UNIQUE);
 
+		nameWrapperEClass = createEClass(NAME_WRAPPER);
+
 		// Create enums
 		directionEEnum = createEEnum(DIRECTION);
 		primitiveTypesEEnum = createEEnum(PRIMITIVE_TYPES);
@@ -591,6 +610,7 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		referencedTypeEClass.getESuperTypes().add(this.getNamed());
 		parameterEClass.getESuperTypes().add(this.getNamed());
 		parameterEClass.getESuperTypes().add(this.getTyped());
+		nameWrapperEClass.getESuperTypes().add(this.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(translationObjectEClass, TranslationObject.class, "TranslationObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -624,6 +644,8 @@ public class BasePackageImpl extends EPackageImpl implements BasePackage {
 		initEAttribute(getMultiplicity_UpperBound(), ecorePackage.getEInt(), "upperBound", "1", 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMultiplicity_IsOrdered(), ecorePackage.getEBoolean(), "isOrdered", null, 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMultiplicity_IsUnique(), ecorePackage.getEBoolean(), "isUnique", null, 1, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(nameWrapperEClass, NameWrapper.class, "NameWrapper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(directionEEnum, Direction.class, "Direction");

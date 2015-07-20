@@ -1,41 +1,31 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Ctor Record</b></em>'.
+ * An implementation of the model object '<em><b>Name Wrapper</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl#getUsedArgs <em>Used Args</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl#getReference <em>Reference</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRecord {
+public class NameWrapperImpl extends TranslationObjectImpl implements NameWrapper {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,21 +47,11 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	protected NamedReference reference = REFERENCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getUsedArgs() <em>Used Args</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getUsedArgs()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<NameWrapper> usedArgs;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClCtorRecordImpl() {
+	protected NameWrapperImpl() {
 		super();
 	}
 
@@ -82,7 +62,7 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_CTOR_RECORD;
+		return BasePackage.Literals.NAME_WRAPPER;
 	}
 
 	/**
@@ -103,19 +83,7 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CTOR_RECORD__REFERENCE, oldReference, reference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<NameWrapper> getUsedArgs() {
-		if (usedArgs == null) {
-			usedArgs = new EObjectResolvingEList<NameWrapper>(NameWrapper.class, this, ClassdefPackage.CL_CTOR_RECORD__USED_ARGS);
-		}
-		return usedArgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.NAME_WRAPPER__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -126,10 +94,8 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
+			case BasePackage.NAME_WRAPPER__REFERENCE:
 				return getReference();
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				return getUsedArgs();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -139,16 +105,11 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
+			case BasePackage.NAME_WRAPPER__REFERENCE:
 				setReference((NamedReference)newValue);
-				return;
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				getUsedArgs().clear();
-				getUsedArgs().addAll((Collection<? extends NameWrapper>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -162,11 +123,8 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
+			case BasePackage.NAME_WRAPPER__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
-				return;
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				getUsedArgs().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -180,10 +138,8 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
+			case BasePackage.NAME_WRAPPER__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				return usedArgs != null && !usedArgs.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -204,4 +160,4 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 		return result.toString();
 	}
 
-} //ClCtorRecordImpl
+} //NameWrapperImpl

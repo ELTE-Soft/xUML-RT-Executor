@@ -168,7 +168,7 @@ pattern Parent(child : Class, parent : Class) {
 
 pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
 	find IsAncestor(descendant, ancestor);
-	countAncestors == count find IsAncestor(descendant, _);
+	countAncestors == count find IsAncestor(ancestor, _);
 }
 
 private pattern
@@ -182,6 +182,16 @@ ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
 
 private pattern IsAncestor(descendant : Class, ancestor : Class) {
 	find Parent +(descendant, ancestor);
+}
+
+// construction
+pattern ClassCtorRecord(cls : Class, ancestor : Class, order) {
+	find Ancestor(cls, ancestor, order);
+}
+
+pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
+	find ClassCtorRecord(cls, ancestor, _);
+	find Parent(ancestor, parent);
 }
 
 // state machine

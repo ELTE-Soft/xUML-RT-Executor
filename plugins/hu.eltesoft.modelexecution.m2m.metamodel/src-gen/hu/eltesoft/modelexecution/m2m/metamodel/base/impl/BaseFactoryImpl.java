@@ -66,6 +66,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 			case BasePackage.REFERENCED_TYPE: return createReferencedType();
 			case BasePackage.PARAMETER: return createParameter();
 			case BasePackage.MULTIPLICITY: return createMultiplicity();
+			case BasePackage.NAME_WRAPPER: return createNameWrapper();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -181,6 +182,16 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	public Multiplicity createMultiplicity() {
 		MultiplicityImpl multiplicity = new MultiplicityImpl();
 		return multiplicity;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NameWrapper createNameWrapper() {
+		NameWrapperImpl nameWrapper = new NameWrapperImpl();
+		return nameWrapper;
 	}
 
 	/**

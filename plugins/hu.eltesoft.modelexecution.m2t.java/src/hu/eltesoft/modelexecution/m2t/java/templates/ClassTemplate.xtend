@@ -60,6 +60,15 @@ class ClassTemplate extends Template {
 					this.«parent.inherited» = «parent.inherited»;
 				«ENDFOR»
 			}
+			
+			/** Creator for UML class «classDefinition.javadoc» */
+			public static «classDefinition.identifier» create(«Runtime.canonicalName» runtime) {
+				«FOR rec : classDefinition.ctorRecords»
+					«rec.implementation» «rec.inherited» 
+						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
+				«ENDFOR»
+				return new «classDefinition.implementation»(runtime«FOR parent : classDefinition.parents», «parent.inherited»«ENDFOR»);
+			}
 			«content»
 		}
 	'''
@@ -75,13 +84,21 @@ class ClassTemplate extends Template {
 			implements «classDefinition.identifier» {
 				
 			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.implementation»(
-				«FOR parent : classDefinition.parents SEPARATOR ','»«parent.implementation» «parent.inherited»«ENDFOR») {
+			public «classDefinition.implementation»(«Runtime.canonicalName» runtime
+					«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
 				«FOR parent : classDefinition.parents»
 					this.«parent.inherited» = «parent.inherited»;
 				«ENDFOR»
 			}
 				
+			/** Creator for UML class «classDefinition.javadoc» */
+			public static «classDefinition.identifier» create(«Runtime.canonicalName» runtime) {
+				«FOR rec : classDefinition.ctorRecords»
+					«rec.implementation» «rec.inherited» 
+						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
+				«ENDFOR»
+				return new «classDefinition.implementation»(runtime«FOR parent : classDefinition.parents», «parent.inherited»«ENDFOR»);
+			}
 			«content»
 		}
 	'''

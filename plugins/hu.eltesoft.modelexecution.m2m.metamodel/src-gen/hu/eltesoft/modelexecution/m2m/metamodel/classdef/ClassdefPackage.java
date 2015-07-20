@@ -837,13 +837,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CTOR_RECORD__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Used Objs</b></em>' attribute list.
+	 * The feature id for the '<em><b>Used Args</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CTOR_RECORD__USED_OBJS = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int CL_CTOR_RECORD__USED_ARGS = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Cl Ctor Record</em>' class.
@@ -1284,15 +1284,15 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClCtorRecord();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedObjs <em>Used Objs</em>}'.
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedArgs <em>Used Args</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Used Objs</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedObjs()
+	 * @return the meta object for the reference list '<em>Used Args</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedArgs()
 	 * @see #getClCtorRecord()
 	 * @generated
 	 */
-	EAttribute getClCtorRecord_UsedObjs();
+	EReference getClCtorRecord_UsedArgs();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited <em>Inherited</em>}'.
@@ -1653,12 +1653,12 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_CTOR_RECORD = eINSTANCE.getClCtorRecord();
 
 		/**
-		 * The meta object literal for the '<em><b>Used Objs</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Used Args</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CL_CTOR_RECORD__USED_OBJS = eINSTANCE.getClCtorRecord_UsedObjs();
+		EReference CL_CTOR_RECORD__USED_ARGS = eINSTANCE.getClCtorRecord_UsedArgs();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl <em>Inherited</em>}' class.

@@ -529,6 +529,43 @@ public interface BasePackage extends EPackage {
 	int MULTIPLICITY_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl <em>Name Wrapper</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNameWrapper()
+	 * @generated
+	 */
+	int NAME_WRAPPER = 11;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAME_WRAPPER__REFERENCE = NAMED__REFERENCE;
+
+	/**
+	 * The number of structural features of the '<em>Name Wrapper</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAME_WRAPPER_FEATURE_COUNT = NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Name Wrapper</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAME_WRAPPER_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -536,7 +573,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 11;
+	int DIRECTION = 12;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
@@ -546,7 +583,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
 	 * @generated
 	 */
-	int PRIMITIVE_TYPES = 12;
+	int PRIMITIVE_TYPES = 13;
 
 	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
@@ -556,7 +593,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int NAMED_REFERENCE = 13;
+	int NAMED_REFERENCE = 14;
 
 	/**
 	 * The meta object id for the '<em>Reference</em>' data type.
@@ -566,7 +603,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
 	 * @generated
 	 */
-	int REFERENCE = 14;
+	int REFERENCE = 15;
 
 
 	/**
@@ -788,6 +825,16 @@ public interface BasePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getMultiplicity_IsUnique();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper <em>Name Wrapper</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Name Wrapper</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper
+	 * @generated
+	 */
+	EClass getNameWrapper();
 
 	/**
 	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}'.
@@ -1043,6 +1090,16 @@ public interface BasePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MULTIPLICITY__IS_UNIQUE = eINSTANCE.getMultiplicity_IsUnique();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl <em>Name Wrapper</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNameWrapper()
+		 * @generated
+		 */
+		EClass NAME_WRAPPER = eINSTANCE.getNameWrapper();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.

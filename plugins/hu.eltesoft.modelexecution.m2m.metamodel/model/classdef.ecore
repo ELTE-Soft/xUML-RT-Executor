@@ -64,8 +64,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ClInheritedAttribute" eSuperTypes="#//ClAttributeSpec #//Inherited"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClAssociation" eSuperTypes="base.ecore#//Named base.ecore#//Typed"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClCtorRecord" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="usedObjs" upperBound="-1"
-        eType="ecore:EDataType base.ecore#//NamedReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="usedArgs" upperBound="-1"
+        eType="ecore:EClass base.ecore#//NameWrapper"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Inherited" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parent" lowerBound="1"

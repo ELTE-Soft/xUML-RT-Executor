@@ -575,8 +575,8 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getClCtorRecord_UsedObjs() {
-		return (EAttribute)clCtorRecordEClass.getEStructuralFeatures().get(0);
+	public EReference getClCtorRecord_UsedArgs() {
+		return (EReference)clCtorRecordEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -673,7 +673,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		clAssociationEClass = createEClass(CL_ASSOCIATION);
 
 		clCtorRecordEClass = createEClass(CL_CTOR_RECORD);
-		createEAttribute(clCtorRecordEClass, CL_CTOR_RECORD__USED_OBJS);
+		createEReference(clCtorRecordEClass, CL_CTOR_RECORD__USED_ARGS);
 
 		inheritedEClass = createEClass(INHERITED);
 		createEAttribute(inheritedEClass, INHERITED__PARENT);
@@ -777,7 +777,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEClass(clAssociationEClass, ClAssociation.class, "ClAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(clCtorRecordEClass, ClCtorRecord.class, "ClCtorRecord", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getClCtorRecord_UsedObjs(), theBasePackage.getNamedReference(), "usedObjs", null, 0, -1, ClCtorRecord.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getClCtorRecord_UsedArgs(), theBasePackage.getNameWrapper(), null, "usedArgs", null, 0, -1, ClCtorRecord.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(inheritedEClass, Inherited.class, "Inherited", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getInherited_Parent(), theBasePackage.getNamedReference(), "parent", null, 1, 1, Inherited.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

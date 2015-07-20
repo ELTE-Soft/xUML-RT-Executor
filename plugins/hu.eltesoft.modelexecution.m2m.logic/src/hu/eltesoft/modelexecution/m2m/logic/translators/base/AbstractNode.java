@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -33,6 +34,17 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		LinkedList<String> extendedTypes = extendParamList(matcher);
 		AbstractFeatureNode<SubMeta, SubMatch> newNode = new EObjectFeatureNode<SubMeta, SubMatch>(extendedTypes,
 				feature, matcher, transform);
+		childNodes.add(newNode);
+		return newNode;
+	}
+
+	public <SubMeta extends EObject, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> onSorted(
+			EStructuralFeature feature, BaseMatcher<SubMatch> matcher, Comparator<SubMatch> comparator,
+			Function<SubMatch, SubMeta> transform) {
+		checkMatcherParams(matcher);
+		LinkedList<String> extendedTypes = extendParamList(matcher);
+		AbstractFeatureNode<SubMeta, SubMatch> newNode = new CustomSortedFeatureNode<SubMeta, SubMatch>(extendedTypes,
+				feature, matcher, transform, comparator);
 		childNodes.add(newNode);
 		return newNode;
 	}

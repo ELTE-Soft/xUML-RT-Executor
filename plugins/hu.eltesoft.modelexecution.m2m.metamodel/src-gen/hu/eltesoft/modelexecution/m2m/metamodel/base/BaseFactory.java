@@ -85,6 +85,15 @@ public interface BaseFactory extends EFactory {
 	Multiplicity createMultiplicity();
 
 	/**
+	 * Returns a new object of class '<em>Name Wrapper</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Name Wrapper</em>'.
+	 * @generated
+	 */
+	NameWrapper createNameWrapper();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
