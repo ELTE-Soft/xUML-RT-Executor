@@ -27,9 +27,14 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>default.target</file>
+									<file>release.target</file>
 									<type>target</type>
-									<classifier>default</classifier>
+									<classifier>release</classifier>
+								</artifact>
+								<artifact>
+									<file>mirrors.target</file>
+									<type>target</type>
+									<classifier>mirrors</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>

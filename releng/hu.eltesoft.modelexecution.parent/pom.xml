@@ -99,7 +99,7 @@
 							<groupId>hu.eltesoft.modelexecution</groupId>
 							<artifactId>hu.eltesoft.modelexecution.target</artifactId>
 							<version>0.4.0-SNAPSHOT</version>
-							<classifier>default</classifier>
+							<classifier>mirrors</classifier>
 						</artifact>
 					</target>
 					<environments>
@@ -201,4 +201,37 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<!-- use the default target with external update sites for release -->
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>release</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho.version}</version>
+						<configuration>
+							<target>
+								<artifact>
+									<groupId>hu.eltesoft.modelexecution</groupId>
+									<artifactId>hu.eltesoft.modelexecution.target</artifactId>
+									<version>0.4.0-SNAPSHOT</version>
+									<classifier>release</classifier>
+								</artifact>
+							</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
