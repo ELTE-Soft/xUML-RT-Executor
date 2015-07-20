@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>hu.eltesoft.modelexecution.thirdparty</groupId>
+	<artifactId>hu.eltesoft.modelexecution.thirdparty</artifactId>
+	<version>0.4.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.reficio</groupId>
+				<artifactId>p2-maven-plugin</artifactId>
+				<version>1.2.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<configuration>
+							<artifacts>
+								<!-- specify your dependencies here -->
+								<!-- groupId:artifactId:version -->
+
+								<!-- plug-in dependencies -->
+								<artifact>
+									<id>com.google.guava:guava:18.0</id>
+								</artifact>
+								<artifact>
+									<id>org.json:json:20141113</id>
+								</artifact>
+
+								<!-- test dependencies -->
+								<artifact>
+									<id>com.google.jimfs:jimfs:1.0</id>
+								</artifact>
+								<artifact>
+									<id>org.jmock:jmock:2.8.0</id>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>reficio</id>
+			<url>http://repo.reficio.org/maven/</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
