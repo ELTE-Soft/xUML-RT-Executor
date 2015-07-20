@@ -110,7 +110,7 @@ class ClassTemplate extends Template {
 			«generateAssociation(association)»
 	«ENDFOR»
 	
-	// operations
+	// operations (both defined and inherited)
 	«FOR operation : classDefinition.operations»
 		
 			«generateOperation(operation)»

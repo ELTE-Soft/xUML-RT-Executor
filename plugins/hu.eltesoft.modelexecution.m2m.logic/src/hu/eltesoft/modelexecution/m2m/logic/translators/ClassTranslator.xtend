@@ -10,6 +10,8 @@ import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordArgMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
@@ -25,8 +27,6 @@ import java.util.Comparator
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatch
-import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordArgMatcher
 
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 

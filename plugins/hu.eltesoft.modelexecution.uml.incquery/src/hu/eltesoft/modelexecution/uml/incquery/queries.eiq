@@ -171,6 +171,13 @@ pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
 	countAncestors == count find IsAncestor(ancestor, _);
 }
 
+pattern AncestorOrSelf(descendant : Class, ancestor : Class, countAncestors) {
+	find Ancestor(descendant, ancestor, countAncestors);
+} or {
+	descendant == ancestor;
+	countAncestors == count find IsAncestor(ancestor, _);
+}
+
 private pattern
 ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
 	find Parent(descendant, parent);
@@ -255,9 +262,11 @@ AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueS
 
 // operations
 pattern Operation(cls : Class, operation : Operation, isStatic) {
+	// operation defined in the actual class
 	Class.ownedOperation(cls, operation);
 	Operation.isStatic(operation, isStatic);
 } or {
+	// inherited operation
 	find IsAncestor(cls, ancestor);
 	Class.ownedOperation(ancestor, operation);
 	Operation.isStatic(operation, isStatic);
@@ -321,8 +330,32 @@ OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound :
 }
 
 pattern Method(cls : Class, operation : Operation, method : Behavior) {
-	Class.ownedOperation(cls, operation);
+	find Operation(cls, operation, _);
 	Operation.method(operation, method);
+	neg find OperationOverride(cls, operation, _);
+} or {
+	// operation overridden
+	find Operation(cls, operation, _);
+	find OperationOverride(cls, operation, overrider);
+	Operation.method(overrider, method);
+}
+
+// no self-overrides
+pattern OperationOverride(cls : Class, overridden : Operation, overrider : Operation) {
+	find Redefinition +(overridden, overrider);
+	find AncestorOrSelf(cls, clsOverrider, _);
+	Class.ownedOperation(clsOverrider, overrider);
+	neg find RedefinitionIn(cls, overrider, _);
+}
+
+private pattern RedefinitionIn(cls : Class, overridden : Operation, overrider : Operation) {
+	find AncestorOrSelf(cls, clsOverrider, _);
+	Class.ownedOperation(clsOverrider, overrider);
+	Operation.redefinedOperation(overrider, overridden);
+}
+
+private pattern Redefinition(overridden : Operation, overrider : Operation) {
+	Operation.redefinedOperation(overrider, overridden);
 }
 
 // receptions (defined and inherited)
