@@ -34,7 +34,7 @@ public class ClasspathRuntimeLibrary extends ClasspathContainerInitializer {
 
 	public static final String CONTAINER_ID = "hu.eltesoft.modelexecution.ide.runtimeClasspathInitializer"; //$NON-NLS-1$
 
-	private static final String PLUGIN_3PP_ID = "hu.eltesoft.modelexecution.3pp"; //$NON-NLS-1$
+	private static final String[] THIRDPARTY_PLUGIN_IDS = { "com.google.guava", "org.json" }; //$NON-NLS-1$
 
 	@Override
 	public void initialize(IPath containerPath, IJavaProject project)
@@ -49,7 +49,9 @@ public class ClasspathRuntimeLibrary extends ClasspathContainerInitializer {
 	private Map<Bundle, IPath> bundlesAndPathes() {
 		Map<Bundle, IPath> ret = new HashMap<Bundle, IPath>();
 		ret.put(Platform.getBundle(RuntimePlugin.PLUGIN_ID), new Path("bin")); //$NON-NLS-1$
-		ret.put(Platform.getBundle(PLUGIN_3PP_ID), new Path("")); //$NON-NLS-1$
+		for (String pluginId : THIRDPARTY_PLUGIN_IDS) {
+			ret.put(Platform.getBundle(pluginId), new Path("")); //$NON-NLS-1$
+		}
 		return ret;
 	}
 

@@ -6,6 +6,9 @@ Bundle-Version: 0.4.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: hu.eltesoft.modelexecution.runtime;bundle-version="0.3.0"
-Require-Bundle: org.junit,
- hu.eltesoft.modelexecution.3pp;bundle-version="0.3.0",
- hu.eltesoft.modelexecution.3pp.tests;bundle-version="0.3.0"
+Require-Bundle: com.google.jimfs;bundle-version="1.0.0",
+ org.junit,
+ org.jmock;bundle-version="2.8.0",
+ org.json;bundle-version="20141113.0.0",
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.4.0",
+ com.google.guava;bundle-version="16.0.1"
