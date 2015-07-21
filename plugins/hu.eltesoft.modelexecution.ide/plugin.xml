@@ -130,9 +130,17 @@
    <extension
          point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
-            class="hu.eltesoft.modelexecution.ide.launch.ClasspathRuntimeLibrary"
+            class="hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerInitializer"
             id="hu.eltesoft.modelexecution.ide.runtimeClasspathInitializer">
       </classpathContainerInitializer>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            class="hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerWizardPage"
+            id="hu.eltesoft.modelexecution.ide.runtimeClasspathInitializer"
+            name="%runtime.library.name">
+      </classpathContainerPage>
    </extension>
    <extension
          point="org.eclipse.jdt.launching.classpathProviders">
@@ -151,10 +159,12 @@
       <persistent
             value="true">
       </persistent>
-   </extension>   <extension
+   </extension>
+   <extension
          point="org.eclipse.jdt.core.compilationParticipant">
       <compilationParticipant
             class="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant"
             id="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant">
       </compilationParticipant>
-   </extension></plugin>
+   </extension>
+</plugin>
