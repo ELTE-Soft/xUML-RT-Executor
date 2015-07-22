@@ -30,7 +30,7 @@
 									<id>com.google.jimfs:jimfs:1.0</id>
 								</artifact>
 								<artifact>
-									<id>org.jmock:jmock:2.8.0</id>
+									<id>org.mockito:mockito-all:1.10.19</id>
 								</artifact>
 							</artifacts>
 						</configuration>
