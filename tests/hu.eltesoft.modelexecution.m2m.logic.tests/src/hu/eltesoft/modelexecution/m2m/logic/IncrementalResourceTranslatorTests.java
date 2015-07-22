@@ -2,26 +2,24 @@ package hu.eltesoft.modelexecution.m2m.logic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Signal;
-import org.eclipse.uml2.uml.SignalEvent;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.junit.Test;
 
-public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests {
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
-	private final Mockery context = new Mockery();
+public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests {
 
 	@Override
 	protected ResourceTranslator createTranslator() {
@@ -37,25 +35,23 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 	@Test
 	public void testIncrementalBuildAfterClassAdded() {
 		Class newClass = model.createOwnedClass("TestClass", false);
+		String classRootName = NamedReference.getIdentifier(newClass);
+
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 		assertEquals(1, queue.size());
 
-		SourceCodeChangeListener listener = context
-				.mock(SourceCodeChangeListener.class);
-		context.checking(new Expectations() {
-			{
-				oneOf(listener).sourceCodeChanged(
-						with(equal(NamedReference.getIdentifier(newClass))),
-						with(any(SourceMappedText.class)),
-						with(any(DebugSymbols.class)));
-			}
-		});
+		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
+
 		queue.forEach(t -> t.perform(listener));
+
+		verify(listener).sourceCodeChanged(eq(classRootName), any(SourceMappedText.class), any(DebugSymbols.class));
 	}
 
 	@Test
 	public void testIncrementalBuildAfterMethodRemoved() {
 		Class class1 = namedChild(model, Class.class, "Class1");
+		String classRootName = NamedReference.getIdentifier(class1);
+
 		Behavior method1 = namedChild(class1, Behavior.class, "Method1");
 		String behaviorRootName = NamedReference.getIdentifier(method1);
 		method1.destroy();
@@ -63,28 +59,16 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 		assertEquals(2, queue.size());
 
-		SourceCodeChangeListener listener = context
-				.mock(SourceCodeChangeListener.class);
-		context.checking(new Expectations() {
-			{
-				oneOf(listener)
-						.sourceCodeDeleted(with(equal(behaviorRootName)));
+		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 
-				oneOf(listener).sourceCodeChanged(
-						with(equal(NamedReference.getIdentifier(class1))),
-						with(any(SourceMappedText.class)),
-						with(any(DebugSymbols.class)));
-			}
-		});
 		queue.forEach(t -> t.perform(listener));
+
+		verify(listener).sourceCodeDeleted(eq(behaviorRootName));
+		verify(listener).sourceCodeChanged(eq(classRootName), any(SourceMappedText.class), any(DebugSymbols.class));
 	}
 
 	@Test
 	public void testIncrementalBuildAfterSignalRemoved() {
-		SignalEvent event1 = namedChild(model, SignalEvent.class,
-				"SignalEvent1");
-		String eventRootName = NamedReference.getIdentifier(event1);
-
 		Signal signal1 = namedChild(model, Signal.class, "Signal1");
 		String signalRootName = NamedReference.getIdentifier(signal1);
 		signal1.destroy();
@@ -92,16 +76,10 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 		assertEquals(1, queue.size());
 
-		SourceCodeChangeListener listener = context
-				.mock(SourceCodeChangeListener.class);
-		context.checking(new Expectations() {
-			{
-				// we expect two delete operations as the result set of the
-				// corresponding query will be empty
-				oneOf(listener).sourceCodeDeleted(with(equal(eventRootName)));
-				oneOf(listener).sourceCodeDeleted(with(equal(signalRootName)));
-			}
-		});
+		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
+
 		queue.forEach(t -> t.perform(listener));
+
+		verify(listener).sourceCodeDeleted(eq(signalRootName));
 	}
 }
