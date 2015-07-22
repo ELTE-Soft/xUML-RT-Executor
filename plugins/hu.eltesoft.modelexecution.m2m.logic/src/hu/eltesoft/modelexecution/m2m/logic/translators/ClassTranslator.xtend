@@ -118,7 +118,11 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override getRootName(Class source) {
-		super.getRootName(source) + "_impl"
+		val superName = super.getRootName(source)
+		if (superName != null) {
+			superName + "_impl"
+		} else
+			null
 	}
 
 	override shouldMap(Class cls) {

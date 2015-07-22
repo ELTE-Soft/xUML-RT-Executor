@@ -38,7 +38,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 	public void testIncrementalBuildAfterClassAdded() {
 		Class newClass = model.createOwnedClass("TestClass", false);
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		assertEquals(1, queue.size());
+		assertEquals(2, queue.size()); // 2 = class specification + class implementation
 
 		SourceCodeChangeListener listener = context
 				.mock(SourceCodeChangeListener.class);
@@ -46,6 +46,11 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 			{
 				oneOf(listener).sourceCodeChanged(
 						with(equal(NamedReference.getIdentifier(newClass))),
+						with(any(SourceMappedText.class)),
+						with(any(DebugSymbols.class)));
+				
+				oneOf(listener).sourceCodeChanged(
+						with(equal(NamedReference.getIdentifier(newClass) + "_impl")),
 						with(any(SourceMappedText.class)),
 						with(any(DebugSymbols.class)));
 			}
@@ -58,9 +63,12 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		Class class1 = namedChild(model, Class.class, "Class1");
 		Behavior method1 = namedChild(class1, Behavior.class, "Method1");
 		String behaviorRootName = NamedReference.getIdentifier(method1);
+		String classId = NamedReference.getIdentifier(class1);
 		method1.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
+		
+		// 2 = delete method, changed class implementation
 		assertEquals(2, queue.size());
 
 		SourceCodeChangeListener listener = context
@@ -70,8 +78,9 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 				oneOf(listener)
 						.sourceCodeDeleted(with(equal(behaviorRootName)));
 
+				// change of class implementation
 				oneOf(listener).sourceCodeChanged(
-						with(equal(NamedReference.getIdentifier(class1))),
+						with(equal(classId + "_impl")),
 						with(any(SourceMappedText.class)),
 						with(any(DebugSymbols.class)));
 			}

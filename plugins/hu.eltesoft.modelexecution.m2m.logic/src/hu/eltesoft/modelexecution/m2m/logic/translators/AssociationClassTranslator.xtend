@@ -14,7 +14,7 @@ import org.eclipse.uml2.uml.AssociationClass
 
 class AssociationClassTranslator extends RootElementTranslator<AssociationClass, AsAssociationClass, AssociationClassMatch> {
 
-	static val AssociationFactory FACTORY = AssociationFactory.eINSTANCE; 
+	static val AssociationFactory FACTORY = AssociationFactory.eINSTANCE;
 
 	new(IncQueryEngine engine) throws IncQueryException {
 		super(engine)
@@ -39,9 +39,13 @@ class AssociationClassTranslator extends RootElementTranslator<AssociationClass,
 	override createTemplate(AsAssociationClass association) {
 		return new AssociationClassTemplateSmap(association)
 	}
-	
+
 	override getRootName(AssociationClass source) {
-		super.getRootName(source) + "_impl"
+		val superName = super.getRootName(source)
+		if (superName != null) {
+			superName + "_impl"
+		} else
+			null
 	}
 
 }

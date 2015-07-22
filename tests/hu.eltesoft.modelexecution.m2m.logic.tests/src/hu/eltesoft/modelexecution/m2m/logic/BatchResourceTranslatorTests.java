@@ -18,7 +18,7 @@ public class BatchResourceTranslatorTests extends ResourceTranslatorTests {
 	@Test
 	public void testIncrementalBuildWithoutChanges() {
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		// 8 = 5 behaviors, a class, a region, and a signal
-		assertEquals(8, queue.size());
+		// 9 = 5 behaviors, a class specification, a class implementation, a region, and a signal
+		assertEquals(9, queue.size());
 	}
 }
