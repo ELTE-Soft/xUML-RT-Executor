@@ -165,5 +165,17 @@ abstract class Template extends EmfTraceExtensions {
 	def createEmpty(Multiplicity type) {
 		typeConverter.createEmpty(type)
 	}
+	
+	def getter(Named ref) { "get_" + ref.identifier }
+	
+	def setter(Named ref) { "set_" + ref.identifier }
+	
+	def inherited(Named ref) { ref.identifier + "_inherited" }
+	
+	def inherited(NamedReference ref) { ref.identifier + "_inherited" }
+	
+	def implementation(Named ref) { ref.identifier + "_impl" }
+	
+	def implementation(NamedReference ref) { ref.identifier + "_impl" }
 
 }

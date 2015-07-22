@@ -8,17 +8,21 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassSpecTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
-import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordArgMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatch
+import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatcher
-import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InstanceAttributeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InstanceOperationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
+import java.util.Comparator
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 
 // FIXME: define these subtransformers only once
 class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, ClassOrAssocClassMatch> {
@@ -44,11 +48,27 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 		// parent classes
 		rootNode.on(PACKAGE.clClassSpec_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
 
+		// construction
+		val ctorRecordNode = rootNode.onSorted(
+			PACKAGE.clClassSpec_CtorRecords,
+			ClassCtorRecordMatcher.on(engine),
+			Comparator.comparingInt([ClassCtorRecordMatch m|m.order])
+		) [
+			val elem = FACTORY.createClCtorRecord
+			elem.reference = new NamedReference(ancestor)
+			return elem
+		]
+		ctorRecordNode.onEObject(PACKAGE.clCtorRecord_UsedArgs, ClassCtorRecordArgMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createNameWrapper
+			elem.reference = new NamedReference(parent)
+			return elem
+		]
+
 		// state machine
 		rootNode.on(PACKAGE.clClassSpec_HasStateMachine, RegionOfClassMatcher.on(engine))[true]
 
 		// attributes
-		val attributeNode = rootNode.onEObject(PACKAGE.clClassSpec_Attributes, AttributeMatcher.on(engine)) [
+		val attributeNode = rootNode.onEObject(PACKAGE.clClassSpec_Attributes, InstanceAttributeMatcher.on(engine)) [
 			val elem = FACTORY.createClAttributeSpec
 			elem.reference = new NamedReference(attribute)
 			return elem;
@@ -57,7 +77,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 		ClassConvertHelper.fillAttribute(attributeNode, engine)
 
 		// operations
-		val operationNode = rootNode.onEObject(PACKAGE.clClassSpec_Operations, OperationMatcher.on(engine)) [
+		val operationNode = rootNode.onEObject(PACKAGE.clClassSpec_Operations, InstanceOperationMatcher.on(engine)) [
 			val elem = FACTORY.createClOperationSpec
 			elem.reference = new NamedReference(operation)
 			return elem

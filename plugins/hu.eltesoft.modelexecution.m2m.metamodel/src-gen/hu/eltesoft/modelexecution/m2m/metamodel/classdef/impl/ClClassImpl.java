@@ -9,7 +9,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -45,7 +44,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getParents <em>Parents</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getCtorRecords <em>Ctor Records</em>}</li>
  * </ul>
  *
  * @generated
@@ -170,16 +168,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * @ordered
 	 */
 	protected EList<NamedReference> parents;
-
-	/**
-	 * The cached value of the '{@link #getCtorRecords() <em>Ctor Records</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCtorRecords()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ClCtorRecord> ctorRecords;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -340,18 +328,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ClCtorRecord> getCtorRecords() {
-		if (ctorRecords == null) {
-			ctorRecords = new EObjectResolvingEList<ClCtorRecord>(ClCtorRecord.class, this, ClassdefPackage.CL_CLASS__CTOR_RECORDS);
-		}
-		return ctorRecords;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -373,8 +349,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return getAssociations();
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				return getParents();
-			case ClassdefPackage.CL_CLASS__CTOR_RECORDS:
-				return getCtorRecords();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -421,10 +395,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				getParents().clear();
 				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
-			case ClassdefPackage.CL_CLASS__CTOR_RECORDS:
-				getCtorRecords().clear();
-				getCtorRecords().addAll((Collection<? extends ClCtorRecord>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -464,9 +434,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				getParents().clear();
 				return;
-			case ClassdefPackage.CL_CLASS__CTOR_RECORDS:
-				getCtorRecords().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -497,8 +464,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return associations != null && !associations.isEmpty();
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				return parents != null && !parents.isEmpty();
-			case ClassdefPackage.CL_CLASS__CTOR_RECORDS:
-				return ctorRecords != null && !ctorRecords.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

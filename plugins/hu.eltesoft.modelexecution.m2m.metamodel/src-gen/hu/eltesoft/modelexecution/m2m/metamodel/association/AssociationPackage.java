@@ -250,22 +250,13 @@ public interface AssociationPackage extends EPackage {
 	int AS_ASSOCIATION_CLASS__PARENTS = AS_ASSOCIATION_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Ctor Records</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AS_ASSOCIATION_CLASS__CTOR_RECORDS = AS_ASSOCIATION_FEATURE_COUNT + 8;
-
-	/**
 	 * The number of structural features of the '<em>As Association Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 9;
+	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>As Association Class</em>' class.

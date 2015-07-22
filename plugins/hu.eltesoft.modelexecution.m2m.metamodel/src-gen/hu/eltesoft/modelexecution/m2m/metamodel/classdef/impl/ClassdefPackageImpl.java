@@ -332,15 +332,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_CtorRecords() {
-		return (EReference)clClassEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getClClassSpec() {
 		return clClassSpecEClass;
 	}
@@ -397,6 +388,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 */
 	public EAttribute getClClassSpec_Parents() {
 		return (EAttribute)clClassSpecEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getClClassSpec_CtorRecords() {
+		return (EReference)clClassSpecEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -634,7 +634,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassEClass, CL_CLASS__INHERITED_ATTRIBUTES);
 		createEReference(clClassEClass, CL_CLASS__ASSOCIATIONS);
 		createEAttribute(clClassEClass, CL_CLASS__PARENTS);
-		createEReference(clClassEClass, CL_CLASS__CTOR_RECORDS);
 
 		clClassSpecEClass = createEClass(CL_CLASS_SPEC);
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__OPERATIONS);
@@ -643,6 +642,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__ASSOCIATIONS);
 		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__HAS_STATE_MACHINE);
 		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__PARENTS);
+		createEReference(clClassSpecEClass, CL_CLASS_SPEC__CTOR_RECORDS);
 
 		clClassCommonEClass = createEClass(CL_CLASS_COMMON);
 
@@ -738,7 +738,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClass_InheritedAttributes(), this.getClInheritedAttribute(), null, "inheritedAttributes", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getClClass_Associations(), this.getClAssociation(), null, "associations", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getClClass_Parents(), theBasePackage.getNamedReference(), "parents", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getClClass_CtorRecords(), this.getClCtorRecord(), null, "ctorRecords", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clClassSpecEClass, ClClassSpec.class, "ClClassSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClClassSpec_Operations(), this.getClOperationSpec(), null, "operations", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -747,6 +746,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClassSpec_Associations(), this.getClAssociation(), null, "associations", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getClClassSpec_HasStateMachine(), ecorePackage.getEBoolean(), "hasStateMachine", null, 1, 1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getClClassSpec_Parents(), theBasePackage.getNamedReference(), "parents", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getClClassSpec_CtorRecords(), this.getClCtorRecord(), null, "ctorRecords", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clClassCommonEClass, ClClassCommon.class, "ClClassCommon", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

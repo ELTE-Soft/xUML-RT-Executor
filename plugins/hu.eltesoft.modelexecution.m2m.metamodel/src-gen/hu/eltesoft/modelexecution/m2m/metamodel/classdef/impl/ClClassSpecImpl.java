@@ -9,6 +9,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -41,6 +42,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isHasStateMachine <em>Has State Machine</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getParents <em>Parents</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getCtorRecords <em>Ctor Records</em>}</li>
  * </ul>
  *
  * @generated
@@ -135,6 +137,16 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	 * @ordered
 	 */
 	protected EList<NamedReference> parents;
+
+	/**
+	 * The cached value of the '{@link #getCtorRecords() <em>Ctor Records</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCtorRecords()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClCtorRecord> ctorRecords;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -262,6 +274,18 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClCtorRecord> getCtorRecords() {
+		if (ctorRecords == null) {
+			ctorRecords = new EObjectResolvingEList<ClCtorRecord>(ClCtorRecord.class, this, ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS);
+		}
+		return ctorRecords;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -279,6 +303,8 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 				return isHasStateMachine();
 			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
 				return getParents();
+			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
+				return getCtorRecords();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -318,6 +344,10 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 				getParents().clear();
 				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
+				getCtorRecords().clear();
+				getCtorRecords().addAll((Collection<? extends ClCtorRecord>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -351,6 +381,9 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
 				getParents().clear();
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
+				getCtorRecords().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -377,6 +410,8 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 				return hasStateMachine != HAS_STATE_MACHINE_EDEFAULT;
 			case ClassdefPackage.CL_CLASS_SPEC__PARENTS:
 				return parents != null && !parents.isEmpty();
+			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
+				return ctorRecords != null && !ctorRecords.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -219,6 +219,10 @@ pattern Attribute(cls : Class, attribute : Property, isStatic) {
 	Property.isStatic(attribute, isStatic);
 }
 
+pattern InstanceAttribute(cls : Class, attribute : Property) {
+	find Attribute(cls, attribute, false);
+}
+
 pattern InheritedAttribute(cls : Class, attribute : Property) {
 	find IsAncestor(cls, ancestor);
 	Class.ownedAttribute(ancestor, attribute);
@@ -262,13 +266,20 @@ AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueS
 
 // operations
 pattern Operation(cls : Class, operation : Operation, isStatic) {
-	// operation defined in the actual class
-	Class.ownedOperation(cls, operation);
-	Operation.isStatic(operation, isStatic);
+	find OwnedOperation(cls, operation, isStatic);
 } or {
 	// inherited operation
 	find IsAncestor(cls, ancestor);
 	Class.ownedOperation(ancestor, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern InstanceOperation(cls : Class, operation : Operation) {
+	find OwnedOperation(cls, operation, false);
+}
+
+private pattern OwnedOperation(cls : Class, operation : Operation, isStatic) {
+	Class.ownedOperation(cls, operation);
 	Operation.isStatic(operation, isStatic);
 }
 

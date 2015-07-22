@@ -8,6 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.StatefulClass
+import hu.eltesoft.modelexecution.runtime.Runtime
 import java.util.LinkedList
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
@@ -31,6 +32,16 @@ class ClassSpecTemplate extends Template {
 		/** Interface for specification of UML class «classSpec.javadoc» */
 		public interface «classSpec.identifier» 
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
+		
+						
+			/** Creator for UML class «classSpec.javadoc» */
+			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime) {
+				«FOR rec : classSpec.ctorRecords»
+					«rec.implementation» «rec.inherited» 
+						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
+				«ENDFOR»
+				return new «classSpec.implementation»(runtime«FOR parent : classSpec.parents», «parent.inherited»«ENDFOR»);
+			}
 			«content»
 		}
 	'''
@@ -67,9 +78,7 @@ class ClassSpecTemplate extends Template {
 		
 	'''
 
-	def generateAttribute(
-		ClAttributeSpec attribute
-	) '''
+	def generateAttribute(ClAttributeSpec attribute) '''
 		«javaType(attribute.type)» get_«attribute.identifier»();
 		void set_«attribute.identifier»(«javaType(attribute.type)» newVal);
 	'''

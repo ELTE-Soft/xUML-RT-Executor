@@ -39,5 +39,9 @@ class AssociationClassTranslator extends RootElementTranslator<AssociationClass,
 	override createTemplate(AsAssociationClass association) {
 		return new AssociationClassTemplateSmap(association)
 	}
+	
+	override getRootName(AssociationClass source) {
+		super.getRootName(source) + "_impl"
+	}
 
 }

@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
@@ -40,29 +39,20 @@ class ClassTemplate extends Template {
 		public class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
-			
-			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.implementation»(«Runtime.canonicalName» runtime
-					«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
-				«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
-				«FOR parent : classDefinition.parents»
-					this.«parent.inherited» = «parent.inherited»;
-				«ENDFOR»
-			}
-			
-			/** Creator for UML class «classDefinition.javadoc» */
-			public static «classDefinition.identifier» create(«Runtime.canonicalName» runtime) {
-				«FOR rec : classDefinition.ctorRecords»
-					«rec.implementation» «rec.inherited» 
-						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
-				«ENDFOR»
-				return new «classDefinition.implementation»(runtime«FOR parent : classDefinition.parents», «parent.inherited»«ENDFOR»);
-			}
 			«content»
 		}
 	'''
 	
 	override generateContent() '''
+		/** Constructor for UML class «classDefinition.javadoc» */
+		public «classDefinition.implementation»(«Runtime.canonicalName» runtime
+				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
+			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
+			«FOR parent : classDefinition.parents»
+				this.«parent.inherited» = «parent.inherited»;
+			«ENDFOR»
+		}
+
 		«IF hasStateMachine»
 			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
 
@@ -123,12 +113,12 @@ class ClassTemplate extends Template {
 		/** Attribute for UML attribute «attribute.javadoc» */
 		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
 		
-		@Override
+		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.getter»() {
 			return «attribute.identifier»;
 		}
 		
-		@Override
+		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» void «attribute.setter»(«javaType(attribute.type)» newVal) {
 			«attribute.identifier» = newVal;
 		}
@@ -224,15 +214,4 @@ class ClassTemplate extends Template {
 
 	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
 	
-	def getter(Named ref) { "get_" + ref.identifier }
-	
-	def setter(Named ref) { "set_" + ref.identifier }
-	
-	def inherited(Named ref) { ref.identifier + "_inherited" }
-	
-	def inherited(NamedReference ref) { ref.identifier + "_inherited" }
-	
-	def implementation(Named ref) { ref.identifier + "_impl" }
-	
-	def implementation(NamedReference ref) { ref.identifier + "_impl" }
 }

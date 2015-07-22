@@ -150,22 +150,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Ctor Records</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS__CTOR_RECORDS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
-
-	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -250,13 +241,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Ctor Records</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__CTOR_RECORDS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
+	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Cl Class Spec</em>' class.
@@ -999,17 +999,6 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClClass_Parents();
 
 	/**
-	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getCtorRecords <em>Ctor Records</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Ctor Records</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getCtorRecords()
-	 * @see #getClClass()
-	 * @generated
-	 */
-	EReference getClClass_CtorRecords();
-
-	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1084,6 +1073,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClassSpec_Parents();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getCtorRecords <em>Ctor Records</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Ctor Records</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getCtorRecords()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EReference getClClassSpec_CtorRecords();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon <em>Cl Class Common</em>}'.
@@ -1413,14 +1413,6 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_CLASS__PARENTS = eINSTANCE.getClClass_Parents();
 
 		/**
-		 * The meta object literal for the '<em><b>Ctor Records</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CL_CLASS__CTOR_RECORDS = eINSTANCE.getClClass_CtorRecords();
-
-		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1477,6 +1469,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS_SPEC__PARENTS = eINSTANCE.getClClassSpec_Parents();
+
+		/**
+		 * The meta object literal for the '<em><b>Ctor Records</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_CLASS_SPEC__CTOR_RECORDS = eINSTANCE.getClClassSpec_CtorRecords();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl <em>Cl Class Common</em>}' class.

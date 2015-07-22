@@ -24,7 +24,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getParents <em>Parents</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getCtorRecords <em>Ctor Records</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass()
@@ -179,21 +178,5 @@ public interface ClClass extends ModelRoot {
 	 * @generated
 	 */
 	EList<NamedReference> getParents();
-
-	/**
-	 * Returns the value of the '<em><b>Ctor Records</b></em>' reference list.
-	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Ctor Records</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Ctor Records</em>' reference list.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_CtorRecords()
-	 * @model
-	 * @generated
-	 */
-	EList<ClCtorRecord> getCtorRecords();
 
 } // ClClass
