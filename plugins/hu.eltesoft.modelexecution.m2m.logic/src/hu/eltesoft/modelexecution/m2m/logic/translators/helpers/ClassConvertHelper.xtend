@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic.translators
+package hu.eltesoft.modelexecution.m2m.logic.translators.helpers
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.AbstractFeatureNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory
@@ -34,6 +34,10 @@ import org.eclipse.uml2.uml.ParameterDirectionKind
 import org.eclipse.uml2.uml.Type
 import org.eclipse.uml2.uml.ValueSpecification
 
+/**
+ * A helper class for translating UML classes. From UML classes both implementation classes and interfaces 
+ * are generated and this helper class collects common features that should not be duplicated.
+ */
 class ClassConvertHelper {
 
 	static final ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
@@ -65,9 +69,8 @@ class ClassConvertHelper {
 			upperBound.toInt
 		]
 	}
-	
-	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode,
-		IncQueryEngine engine) {
+
+	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode, IncQueryEngine engine) {
 		// operation parameters
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperationSpec_Parameters,
 			OperationParameterMatcher.on(engine)) [

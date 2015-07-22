@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic.translators;
+package hu.eltesoft.modelexecution.m2m.logic.translators.helpers;
 
 import hu.eltesoft.modelexecution.m2m.logic.UnsupportedUMLFeatureException;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;

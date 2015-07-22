@@ -13,7 +13,7 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.matchers.psystem.queries.PParameter;
 
 /**
-
+ * Any node of the translation tree.
  */
 public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 
@@ -28,6 +28,25 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		this.types = types;
 	}
 
+	/**
+	 * Creates a sub-node that can translate any model element.
+	 * @see FeatureNode
+	 */
+	public <SubMeta, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> on(
+			EStructuralFeature feature, BaseMatcher<SubMatch> matcher, Function<SubMatch, SubMeta> transform) {
+		checkMatcherParams(matcher);
+		LinkedList<String> extendedTypes = extendParamList(matcher);
+		AbstractFeatureNode<SubMeta, SubMatch> newNode = new FeatureNode<SubMeta, SubMatch>(extendedTypes, feature,
+				matcher, transform);
+		childNodes.add(newNode);
+		return newNode;
+	}
+
+	/**
+	 * Creates a sub-node that can translate model elements that are {@link EObject EObjects}.
+	 * Supports automatic sorting.
+	 * @see EObjectFeatureNode
+	 */
 	public <SubMeta extends EObject, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> onEObject(
 			EStructuralFeature feature, BaseMatcher<SubMatch> matcher, Function<SubMatch, SubMeta> transform) {
 		checkMatcherParams(matcher);
@@ -38,6 +57,11 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		return newNode;
 	}
 
+	/**
+	 * Creates a sub-node that supports sorting by a {@linkplain Comparator}
+	 * defined on the processed matches.
+	 * @see CustomSortedFeatureNode
+	 */
 	public <SubMeta extends EObject, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> onSorted(
 			EStructuralFeature feature, BaseMatcher<SubMatch> matcher, Comparator<SubMatch> comparator,
 			Function<SubMatch, SubMeta> transform) {
@@ -45,16 +69,6 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 		LinkedList<String> extendedTypes = extendParamList(matcher);
 		AbstractFeatureNode<SubMeta, SubMatch> newNode = new CustomSortedFeatureNode<SubMeta, SubMatch>(extendedTypes,
 				feature, matcher, transform, comparator);
-		childNodes.add(newNode);
-		return newNode;
-	}
-
-	public <SubMeta, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> on(
-			EStructuralFeature feature, BaseMatcher<SubMatch> matcher, Function<SubMatch, SubMeta> transform) {
-		checkMatcherParams(matcher);
-		LinkedList<String> extendedTypes = extendParamList(matcher);
-		AbstractFeatureNode<SubMeta, SubMatch> newNode = new FeatureNode<SubMeta, SubMatch>(extendedTypes, feature,
-				matcher, transform);
 		childNodes.add(newNode);
 		return newNode;
 	}

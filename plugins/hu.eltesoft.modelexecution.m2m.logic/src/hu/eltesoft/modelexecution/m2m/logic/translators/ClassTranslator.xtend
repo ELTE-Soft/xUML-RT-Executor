@@ -23,7 +23,11 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
 
+/**
+ * Creates the metamodel for implementation classes of UML classes.
+ */
 class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 	static val ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;

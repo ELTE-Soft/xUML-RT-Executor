@@ -12,6 +12,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 
+/**
+ * A node of the translation tree that should be sorted on an ordering on the
+ * matches. The transformed elements can be data types or primitive data.
+ */
 public class CustomSortedFeatureNode<Trans, Match extends IPatternMatch> extends AbstractFeatureNode<Trans, Match> {
 
 	private Comparator<Match> comparator;

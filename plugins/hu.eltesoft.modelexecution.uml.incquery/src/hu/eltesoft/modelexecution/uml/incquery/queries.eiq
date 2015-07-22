@@ -166,11 +166,13 @@ pattern Parent(child : Class, parent : Class) {
 	Generalization.specific(gen, child);
 }
 
+// Ancestors of a class with the number of ancestors of the ancestor to provide ordering of matches.
 pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
 	find IsAncestor(descendant, ancestor);
 	countAncestors == count find IsAncestor(ancestor, _);
 }
 
+// Inclusive transitive closure
 pattern AncestorOrSelf(descendant : Class, ancestor : Class, countAncestors) {
 	find Ancestor(descendant, ancestor, countAncestors);
 } or {
@@ -178,6 +180,7 @@ pattern AncestorOrSelf(descendant : Class, ancestor : Class, countAncestors) {
 	countAncestors == count find IsAncestor(ancestor, _);
 }
 
+// The ancestor and the immediate parent (they can be the same)
 private pattern
 ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
 	find Parent(descendant, parent);
@@ -214,6 +217,9 @@ pattern InheritedRegion(cls : Class, region : Region) {
 }
 
 // attributes
+
+// The defined and inherited attributes must be treated separately.
+
 pattern Attribute(cls : Class, attribute : Property, isStatic) {
 	Class.ownedAttribute(cls, attribute);
 	Property.isStatic(attribute, isStatic);
@@ -236,6 +242,8 @@ InheritedAttributeParent(cls : Class, attribute : Property, parent : Class) {
 	Class.ownedAttribute(ancestor, attribute);
 }
 
+// Both the defined and inherited attributes have types.
+// This prevents duplication of all attribute subpatterns.
 pattern
 AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
 	find Attribute(cls, attribute, _);
@@ -265,6 +273,9 @@ AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueS
 }
 
 // operations
+
+// Operations defined in the class and inherited from an ancestor are not separated in the metamodel. 
+// Both will just call the associated behavior.
 pattern Operation(cls : Class, operation : Operation, isStatic) {
 	find OwnedOperation(cls, operation, isStatic);
 } or {
@@ -345,13 +356,15 @@ pattern Method(cls : Class, operation : Operation, method : Behavior) {
 	Operation.method(operation, method);
 	neg find OperationOverride(cls, operation, _);
 } or {
-	// operation overridden
+	// if the operation is overridden, its method is of the overrider 
 	find Operation(cls, operation, _);
 	find OperationOverride(cls, operation, overrider);
 	Operation.method(overrider, method);
 }
 
-// no self-overrides
+// This will only select consecutive overrides defined in different classes connected by generalization.
+// Each operation may be overridden at most once (but the overrider can also be overridden).
+// Only yields overridings that affect the class given, and only gives the last (effective) one.
 pattern OperationOverride(cls : Class, overridden : Operation, overrider : Operation) {
 	find Redefinition +(overridden, overrider);
 	find AncestorOrSelf(cls, clsOverrider, _);

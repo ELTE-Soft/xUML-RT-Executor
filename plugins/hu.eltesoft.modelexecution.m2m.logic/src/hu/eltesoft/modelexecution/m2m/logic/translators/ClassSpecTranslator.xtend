@@ -23,8 +23,11 @@ import java.util.Comparator
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
 
-// FIXME: define these subtransformers only once
+/**
+ * Creates the metamodel for specification interfaces of UML classes.
+ */
 class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, ClassOrAssocClassMatch> {
 
 	static val ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;

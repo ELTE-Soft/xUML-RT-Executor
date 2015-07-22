@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.logic.translators.TypeConverter;
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
@@ -37,6 +37,11 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	protected abstract Template createTemplate(Trans trans);
 
+	/**
+	 * @return All templates to generate code for model elements that can be
+	 *         feed into this translator. The call of this method implies batch
+	 *         translation rather than incremental.
+	 */
 	public Map<String, Template> getAllTemplates() {
 		Map<String, Template> templates = new HashMap<>();
 		getSourceModels().forEach(source -> {
@@ -47,11 +52,19 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 		return templates;
 	}
 
+	/**
+	 * @param source
+	 *            The model element that should be translated.
+	 * @return The template to generate code for the given model element.
+	 */
 	public Template getTemplate(UML source) {
 		Trans model = getModel(source);
 		return createTemplate(model);
 	}
 
+	/**
+	 * @return The root of a new translation tree.
+	 */
 	protected RootNode<UML, Trans, Match> fromRoot(BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
 		this.matcher = matcher;
 		if (matcher.getSpecification().getParameters().size() == 0) {
@@ -76,7 +89,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 		return rootType.isInstance(root);
 	}
 
-	// delegates for conversions by subtranslators
+	// delegates for methods of converters (sub-translators)
 
 	public ScalarType convert(org.eclipse.uml2.uml.Type type) {
 		return typeTranslator.convert(type);
