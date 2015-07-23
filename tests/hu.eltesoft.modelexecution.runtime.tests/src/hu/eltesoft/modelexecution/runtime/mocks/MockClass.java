@@ -7,9 +7,6 @@ import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class MockClass extends ClassWithState {
 
 	private static MockClass instance = null;
@@ -27,11 +24,15 @@ public class MockClass extends ClassWithState {
 		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 	}
 
-	public static MockClass getInstance() {
-		return instance;
+	public static void emptyFeed() {
+		instance.dispose();
 	}
 
-	List<Event> receivedEvents = new LinkedList<>();
+	public void feedEvent() {
+		runtime.addEventToQueue(this, new SignalEvent(new DummySignal()));
+		// do not dispose the instance here as it will be
+		// unregistered before entering the event loop
+	}
 
 	@Override
 	public void init() {
@@ -39,25 +40,14 @@ public class MockClass extends ClassWithState {
 
 	@Override
 	public void receive(Event event) {
-		receivedEvents.add(event);
-	}
-
-	public List<Event> getReceivedEvents() {
-		return receivedEvents;
+		// dispose the instance after the event is delivered
+		// to let the dispatch loop terminate
+		dispose();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return (obj != null && obj instanceof MockClass);
-	}
-
-	public static void emptyFeed() {
-		instance.dispose();
-	}
-
-	public void feedEvent() {
-		runtime.addEventToQueue(this, new SignalEvent(new DummySignal()));
-		dispose();
 	}
 
 	@Override

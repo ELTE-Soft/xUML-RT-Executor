@@ -72,6 +72,9 @@ public class Messages extends NLS {
 	public static String LaunchConfigurationTracingLoggingTab_tracing_config_data_error_description;
 	public static String LaunchConfigurationTracingLoggingTab_tracing_config_data_error_title;
 	public static String LaunchConfigurationTracingLoggingTab_tracing_group_caption;
+	public static String RuntimeLibraryContainerWizardPage_AboutContainer;
+	public static String RuntimeLibraryContainerWizardPage_Description;
+	public static String RuntimeLibraryContainerWizardPage_Title;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
