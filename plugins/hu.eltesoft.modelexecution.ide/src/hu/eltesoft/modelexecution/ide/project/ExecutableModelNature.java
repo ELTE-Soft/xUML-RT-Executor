@@ -1,9 +1,5 @@
 package hu.eltesoft.modelexecution.ide.project;
 
-import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
-import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
-import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -14,6 +10,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
+
+import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
+import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
+import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
 
 /**
  * A project nature for executable model projects. Installs a builder on
@@ -61,8 +61,7 @@ public class ExecutableModelNature implements IProjectNature {
 			commands.add(stratumBuildCommand);
 		}
 
-		description
-				.setBuildSpec(commands.toArray(new ICommand[commands.size()]));
+		description.setBuildSpec(commands.toArray(new ICommand[commands.size()]));
 		project.setDescription(description, null);
 	}
 
@@ -74,16 +73,6 @@ public class ExecutableModelNature implements IProjectNature {
 		return false;
 	}
 
-	private void removeBuilders() throws CoreException {
-		LinkedList<ICommand> newBuildSpec = new LinkedList<>();
-		for (ICommand builder : project.getDescription().getBuildSpec()) {
-			if (!ModelBuilder.BUILDER_ID.equals(builder.getBuilderName()))
-				newBuildSpec.add(builder);
-		}
-		project.getDescription().setBuildSpec(
-				newBuildSpec.toArray(new ICommand[newBuildSpec.size()]));
-	}
-
 	private boolean hasStratumBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
 			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
@@ -92,4 +81,14 @@ public class ExecutableModelNature implements IProjectNature {
 		return false;
 	}
 
+	private void removeBuilders() throws CoreException {
+		LinkedList<ICommand> newBuildSpec = new LinkedList<>();
+		for (ICommand builder : project.getDescription().getBuildSpec()) {
+			if (!ModelBuilder.BUILDER_ID.equals(builder.getBuilderName())
+					&& !StratumBuilder.BUILDER_ID.equals(builder.getBuilderName())) {
+				newBuildSpec.add(builder);
+			}
+		}
+		project.getDescription().setBuildSpec(newBuildSpec.toArray(new ICommand[newBuildSpec.size()]));
+	}
 }

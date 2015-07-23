@@ -10,3 +10,4 @@ Require-Bundle: org.junit,
  org.eclipse.xtext.smap,
  org.eclipse.uml2.uml;bundle-version="5.0.2",
  hu.eltesoft.modelexecution.test.utils;bundle-version="0.3.0"
+Import-Package: hu.eltesoft.modelexecution.test.utils

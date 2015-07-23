@@ -11,4 +11,5 @@ Export-Package: hu.eltesoft.modelexecution.runtime,
  hu.eltesoft.modelexecution.runtime.trace,
  hu.eltesoft.modelexecution.runtime.trace.json
 Bundle-Vendor: %Bundle-Vendor
-Require-Bundle: hu.eltesoft.modelexecution.3pp;bundle-version="0.3.0"
+Require-Bundle: org.json;bundle-version="20141113.0.0",
+ com.google.guava;bundle-version="16.0.1"
