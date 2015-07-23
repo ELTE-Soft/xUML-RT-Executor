@@ -26,31 +26,35 @@ class BehaviorTemplate extends Template {
 		compiledAlfCode = generator.generate(behavior.alfResult)
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		/** Class for implementing behavior «behavior.javadoc» 
 		 */
 		«generatedHeaderForClass(behavior)»
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
-				
-			/** Static method implementing behavior «behavior.javadoc» 
-			 «IF returns»* @param «CONTEXT_NAME» Behavior parameter for passing context«ENDIF»
-			 «javadocParams(behavior.parameters)»
-			 */
-			public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
-				«IF !behavior.isStatic»«behavior.containerClass.identifier» 
-					«CONTEXT_NAME»
-					«IF !behavior.parameters.empty»,«ENDIF»
-				«ENDIF»
-				«FOR param : behavior.parameters SEPARATOR ','»
-					«javaType(param.type)» «param.identifier»
-				«ENDFOR»
-			) {
-				«compiledAlfCode»
-				«IF behavior.returnType != null»
-					// walkaround while we are not generating actual action code
-					return null;
-				«ENDIF»
-			}
+			«content»
 		}
 	'''
+
+	override generateContent() '''
+		/** Static method implementing behavior «behavior.javadoc» 
+		 «IF returns»* @param «CONTEXT_NAME» Behavior parameter for passing context«ENDIF»
+		 «javadocParams(behavior.parameters)»
+		 */
+		public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
+			«IF !behavior.isStatic»«behavior.containerClass.identifier» 
+					«CONTEXT_NAME»
+					«IF !behavior.parameters.empty»,«ENDIF»
+			«ENDIF»
+			«FOR param : behavior.parameters SEPARATOR ','»
+				«javaType(param.type)» «param.identifier»
+			«ENDFOR»
+		) {
+			«compiledAlfCode»
+			«IF behavior.returnType != null»
+				// walkaround while we are not generating actual action code
+				return null;
+			«ENDIF»
+		}
+	'''
+
 }

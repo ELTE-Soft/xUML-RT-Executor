@@ -2,9 +2,6 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Cl Association</b></em>'.
@@ -15,5 +12,5 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
  * @model
  * @generated
  */
-public interface ClAssociation extends Named, Typed {
+public interface ClAssociation extends ClAssociationSpec {
 } // ClAssociation

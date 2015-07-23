@@ -22,8 +22,7 @@ public class SDEInstaller {
 
 	int sdeIndex;
 
-	public static void install(File inClassFile, File attrFile,
-			File outClassFile) throws IOException {
+	public static void install(File inClassFile, File attrFile, File outClassFile) throws IOException {
 		new SDEInstaller(inClassFile, attrFile, outClassFile);
 	}
 
@@ -49,8 +48,7 @@ public class SDEInstaller {
 		}
 	}
 
-	SDEInstaller(File inClassFile, byte[] sdeAttr, File outClassFile)
-			throws IOException {
+	SDEInstaller(File inClassFile, byte[] sdeAttr, File outClassFile) throws IOException {
 		if (!inClassFile.exists()) {
 			return;
 			// throw new FileNotFoundException("no such file: " + inClassFile);
@@ -70,8 +68,7 @@ public class SDEInstaller {
 		outStream.close();
 	}
 
-	SDEInstaller(File inClassFile, File attrFile, File outClassFile)
-			throws IOException {
+	SDEInstaller(File inClassFile, File attrFile, File outClassFile) throws IOException {
 		this(inClassFile, SDEInstaller.readWhole(attrFile), outClassFile);
 	}
 
@@ -216,8 +213,7 @@ public class SDEInstaller {
 		}
 	}
 
-	int copyConstantPool(int constantPoolCount)
-			throws UnsupportedEncodingException, IOException {
+	int copyConstantPool(int constantPoolCount) throws UnsupportedEncodingException, IOException {
 		int newSdeIndex = -1;
 		// copy const pool index zero not in class file
 		for (int i = 1; i < constantPoolCount; ++i) {
@@ -227,6 +223,12 @@ public class SDEInstaller {
 			case 7: // Class
 			case 8: // String
 				copy(2);
+				break;
+			case 16: // MethodType
+				copy(2);
+				break;
+			case 15: // MethodHandle
+				copy(3);
 				break;
 			case 9: // Field
 			case 10: // Method
@@ -250,6 +252,9 @@ public class SDEInstaller {
 					newSdeIndex = i;
 				}
 				writeBytes(utf8);
+				break;
+			case 18: // InvokeDynamic
+				copy(4);
 				break;
 			default:
 				throw new IOException("unexpected tag: " + tag); //$NON-NLS-1$

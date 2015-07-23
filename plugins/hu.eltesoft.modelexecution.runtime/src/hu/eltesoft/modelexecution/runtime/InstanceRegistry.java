@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ public final class InstanceRegistry {
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public ClassWithState getInstance(Class<?> targetClass, int instanceID) {
+	public StatefulClass getInstance(Class<?> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
@@ -43,7 +44,7 @@ public final class InstanceRegistry {
 	 * unregistered if it is sure that they will not be a target of an external
 	 * message.
 	 */
-	public void unregisterInstance(ClassWithState instance) {
+	public void unregisterInstance(StatefulClass instance) {
 		instanceRegistry.remove(new InstanceKey(instance));
 	}
 
@@ -59,7 +60,7 @@ public final class InstanceRegistry {
 	}
 
 	private static final class InstanceKey {
-		public InstanceKey(ClassWithState instance) {
+		public InstanceKey(StatefulClass instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
 		}

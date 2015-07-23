@@ -11,10 +11,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getProxyClass <em>Proxy Class</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage#getExOperation()
  * @model

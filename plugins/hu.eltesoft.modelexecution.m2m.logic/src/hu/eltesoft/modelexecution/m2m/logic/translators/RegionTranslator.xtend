@@ -23,6 +23,7 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Region
 import org.eclipse.uml2.uml.State
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMatch> {
 
@@ -33,12 +34,16 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 		super(engine)
 	}
 
-	override buildMapper(IncQueryEngine engine) {
+	override protected createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(RegionMatcher.on(engine)) [
 			val root = FACTORY.createRgRegion
 			root.reference = new NamedReference(region)
 			return root
 		]
+		return rootNode
+	}
+
+	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		rootNode.on(PACKAGE.rgRegion_ContainerClass, ContainerClassOfRegionMatcher.on(engine)) [
 			new NamedReference(containerClass)
 		]
@@ -80,8 +85,6 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 			rgInitialPseudostate.initialTransition = rgTransition
 			return rgInitialPseudostate
 		]
-
-		return rootNode
 	}
 
 	override createTemplate(RgRegion region) {

@@ -12,10 +12,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationEnd#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage#getAsAssociationEnd()
  * @model

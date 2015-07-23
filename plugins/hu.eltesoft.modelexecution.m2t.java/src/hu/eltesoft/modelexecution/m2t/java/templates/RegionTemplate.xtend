@@ -47,6 +47,7 @@ class StepPartitioning {
 	def isLast(int partitionIndex) {
 		afterLastState(partitionIndex) >= numberOfStates
 	}
+	
 }
 
 @SourceMappedTemplate(stratumName=XUML_RT)
@@ -58,6 +59,7 @@ class RegionTemplate extends Template {
 	val RgState firstState
 
 	val StepPartitioning partitioning
+	var hasAnySignalChecks = false
 
 	new(RgRegion region) {
 		super(region)
@@ -65,24 +67,33 @@ class RegionTemplate extends Template {
 		initState = region.initialPseudostate
 		initTransition = initState.initialTransition
 		firstState = initTransition.target
+		region.states.forEach[ transitions.forEach[ hasAnySignalChecks = true ] ]
 
 		val numberOfStates = region.states.length
 		partitioning = new StepPartitioning(numberOfStates)
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		/** Class for state machine region «region.javadoc» */
 		«generatedHeaderForClass(region)»
 		public class «region.identifier» implements «StateMachineRegion.canonicalName» {
-		
+			
+			public «region.identifier»(«region.containerClass.identifier» owner) {
+				this.owner = owner;
+			}
+			«content»
+		}
+	'''
+
+	override generateContent() '''
 			private enum State {
-				/** Enum literal for initial state «initState.javadoc» */
-				«initState.identifier»(«initState.nameLiteral»),
-				«FOR state : region.states SEPARATOR ','»
-					/** Enum literal for state «state.javadoc» */
-					«state.identifier»(«state.nameLiteral»)
-				«ENDFOR»
-				;
+			/** Enum literal for initial state «initState.javadoc» */
+			«initState.identifier»(«initState.nameLiteral»),
+			«FOR state : region.states SEPARATOR ','»
+				/** Enum literal for state «state.javadoc» */
+				«state.identifier»(«state.nameLiteral»)
+			«ENDFOR»
+			;
 		
 				private final String name;
 		
@@ -98,10 +109,6 @@ class RegionTemplate extends Template {
 		
 			private «region.containerClass.identifier» owner;
 			private State currentState = State.«initState.identifier»;
-		
-			public «region.identifier»(«region.containerClass.identifier» owner) {
-				this.owner = owner;
-			}
 		
 			@Override
 			public void doInitialTransition() {
@@ -144,8 +151,7 @@ class RegionTemplate extends Template {
 			@Override
 			public String toString() {
 				return «region.nameLiteral» + " { currentState = " + currentState + " }";
-			}
-		}
+			}	
 	'''
 
 	def makeStep(int i) '''
@@ -154,7 +160,7 @@ class RegionTemplate extends Template {
 		«ENDIF»
 		private void step«i»(«Event.canonicalName» event) {
 			if (event instanceof «SignalEvent.canonicalName») {
-				«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();
+				«IF hasAnySignalChecks»«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
 				switch (currentState) {
 					«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
 						case «state.identifier»:

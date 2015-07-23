@@ -112,6 +112,10 @@ public class BaseAdapterFactory extends AdapterFactoryImpl {
 				return createMultiplicityAdapter();
 			}
 			@Override
+			public Adapter caseInherited(Inherited object) {
+				return createInheritedAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -282,6 +286,20 @@ public class BaseAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMultiplicityAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited <em>Inherited</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited
+	 * @generated
+	 */
+	public Adapter createInheritedAdapter() {
 		return null;
 	}
 

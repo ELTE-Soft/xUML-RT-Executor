@@ -87,10 +87,10 @@ public interface BasePackage extends EPackage {
 	int TRANSLATION_OBJECT_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl <em>Named</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Named
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamed()
 	 * @generated
 	 */
@@ -529,6 +529,43 @@ public interface BasePackage extends EPackage {
 	int MULTIPLICITY_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.InheritedImpl <em>Inherited</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.InheritedImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getInherited()
+	 * @generated
+	 */
+	int INHERITED = 11;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INHERITED__PARENT = 0;
+
+	/**
+	 * The number of structural features of the '<em>Inherited</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INHERITED_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Inherited</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INHERITED_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -536,7 +573,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 11;
+	int DIRECTION = 12;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes <em>Primitive Types</em>}' enum.
@@ -546,7 +583,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getPrimitiveTypes()
 	 * @generated
 	 */
-	int PRIMITIVE_TYPES = 12;
+	int PRIMITIVE_TYPES = 13;
 
 	/**
 	 * The meta object id for the '<em>Named Reference</em>' data type.
@@ -556,7 +593,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamedReference()
 	 * @generated
 	 */
-	int NAMED_REFERENCE = 13;
+	int NAMED_REFERENCE = 14;
 
 	/**
 	 * The meta object id for the '<em>Reference</em>' data type.
@@ -566,7 +603,7 @@ public interface BasePackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getReference()
 	 * @generated
 	 */
-	int REFERENCE = 14;
+	int REFERENCE = 15;
 
 
 	/**
@@ -790,6 +827,27 @@ public interface BasePackage extends EPackage {
 	EAttribute getMultiplicity_IsUnique();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited <em>Inherited</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Inherited</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited
+	 * @generated
+	 */
+	EClass getInherited();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited#getParent()
+	 * @see #getInherited()
+	 * @generated
+	 */
+	EAttribute getInherited_Parent();
+
+	/**
 	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -875,10 +933,10 @@ public interface BasePackage extends EPackage {
 		EClass MODEL_ROOT = eINSTANCE.getModelRoot();
 
 		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named <em>Named</em>}' class.
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl <em>Named</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.Named
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl
 		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getNamed()
 		 * @generated
 		 */
@@ -1043,6 +1101,24 @@ public interface BasePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MULTIPLICITY__IS_UNIQUE = eINSTANCE.getMultiplicity_IsUnique();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.InheritedImpl <em>Inherited</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.InheritedImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.base.impl.BasePackageImpl#getInherited()
+		 * @generated
+		 */
+		EClass INHERITED = eINSTANCE.getInherited();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute INHERITED__PARENT = eINSTANCE.getInherited_Parent();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Direction <em>Direction</em>}' enum.

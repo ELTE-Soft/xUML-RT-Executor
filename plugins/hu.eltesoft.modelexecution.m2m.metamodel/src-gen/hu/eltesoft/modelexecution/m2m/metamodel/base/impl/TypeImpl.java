@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl#getUpperBound <em>Upper Bound</em>}</li>
@@ -27,7 +28,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TypeImpl#getBaseType <em>Base Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

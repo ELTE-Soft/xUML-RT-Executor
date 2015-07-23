@@ -13,10 +13,10 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage#getSgAttribute()
  * @model

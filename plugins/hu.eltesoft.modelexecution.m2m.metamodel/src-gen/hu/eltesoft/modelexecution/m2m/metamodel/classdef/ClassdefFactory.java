@@ -31,6 +31,15 @@ public interface ClassdefFactory extends EFactory {
 	ClClass createClClass();
 
 	/**
+	 * Returns a new object of class '<em>Cl Class Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Class Spec</em>'.
+	 * @generated
+	 */
+	ClClassSpec createClClassSpec();
+
+	/**
 	 * Returns a new object of class '<em>Cl Operation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -38,6 +47,15 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClOperation createClOperation();
+
+	/**
+	 * Returns a new object of class '<em>Cl Operation Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Operation Spec</em>'.
+	 * @generated
+	 */
+	ClOperationSpec createClOperationSpec();
 
 	/**
 	 * Returns a new object of class '<em>Cl Reception</em>'.
@@ -49,6 +67,24 @@ public interface ClassdefFactory extends EFactory {
 	ClReception createClReception();
 
 	/**
+	 * Returns a new object of class '<em>Cl Reception Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Reception Spec</em>'.
+	 * @generated
+	 */
+	ClReceptionSpec createClReceptionSpec();
+
+	/**
+	 * Returns a new object of class '<em>Cl Reception Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Reception Parameter</em>'.
+	 * @generated
+	 */
+	ClReceptionParameter createClReceptionParameter();
+
+	/**
 	 * Returns a new object of class '<em>Cl Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -56,6 +92,24 @@ public interface ClassdefFactory extends EFactory {
 	 * @generated
 	 */
 	ClAttribute createClAttribute();
+
+	/**
+	 * Returns a new object of class '<em>Cl Attribute Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Attribute Spec</em>'.
+	 * @generated
+	 */
+	ClAttributeSpec createClAttributeSpec();
+
+	/**
+	 * Returns a new object of class '<em>Cl Inherited Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Inherited Attribute</em>'.
+	 * @generated
+	 */
+	ClInheritedAttribute createClInheritedAttribute();
 
 	/**
 	 * Returns a new object of class '<em>Cl Association</em>'.
@@ -67,13 +121,22 @@ public interface ClassdefFactory extends EFactory {
 	ClAssociation createClAssociation();
 
 	/**
-	 * Returns a new object of class '<em>Cl Reception Parameter</em>'.
+	 * Returns a new object of class '<em>Cl Inherited Association</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cl Reception Parameter</em>'.
+	 * @return a new object of class '<em>Cl Inherited Association</em>'.
 	 * @generated
 	 */
-	ClReceptionParameter createClReceptionParameter();
+	ClInheritedAssociation createClInheritedAssociation();
+
+	/**
+	 * Returns a new object of class '<em>Cl Ctor Record</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cl Ctor Record</em>'.
+	 * @generated
+	 */
+	ClCtorRecord createClCtorRecord();
 
 	/**
 	 * Returns the package supported by this factory.

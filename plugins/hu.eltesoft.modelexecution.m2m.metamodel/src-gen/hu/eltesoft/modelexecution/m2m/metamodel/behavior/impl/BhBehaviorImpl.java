@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
@@ -32,39 +32,18 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfResult <em>Alf Result</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#isIsStatic <em>Is Static</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReturnType <em>Return Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	/**
 	 * The default value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -162,27 +141,6 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 	@Override
 	protected EClass eStaticClass() {
 		return BehaviorPackage.Literals.BH_BEHAVIOR;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -306,8 +264,6 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
-				return getReference();
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				return getContainerClass();
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
@@ -332,9 +288,6 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass((NamedReference)newValue);
 				return;
@@ -363,9 +316,6 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass(CONTAINER_CLASS_EDEFAULT);
 				return;
@@ -393,8 +343,6 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BehaviorPackage.BH_BEHAVIOR__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
 			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
@@ -419,9 +367,7 @@ public class BhBehaviorImpl extends TranslationObjectImpl implements BhBehavior 
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", containerClass: ");
+		result.append(" (containerClass: ");
 		result.append(containerClass);
 		result.append(", alfResult: ");
 		result.append(alfResult);

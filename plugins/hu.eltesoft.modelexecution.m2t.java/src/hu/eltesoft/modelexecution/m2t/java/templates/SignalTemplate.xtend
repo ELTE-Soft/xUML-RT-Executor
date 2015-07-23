@@ -21,17 +21,10 @@ class SignalTemplate extends Template {
 		this.signal = signal
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		/** Class for signal «signal.javadoc» */
 		«generatedHeaderForClass(signal)»
 		public class «signal.identifier» extends «Signal.canonicalName» {
-		
-			«FOR attribute : signal.attributes»
-				/** Attribute for signal attribute «attribute.javadoc» */
-				«javaType(attribute.type, attribute)» «attribute.identifier»
-					= «createEmpty(attribute)»;
-			«ENDFOR»
-		
 			/** Constructs a signal
 			 «javadocParams(signal.attributes)»
 			 */
@@ -45,46 +38,55 @@ class SignalTemplate extends Template {
 					this.«attribute.identifier» = «attribute.identifier»;
 				«ENDFOR»
 			}
-		
-			@Override
-			public «JSONObject.canonicalName» jsonEncode() {
-				«JSONObject.canonicalName» json = new «JSONObject.canonicalName»();
-				json.put("«JSONDecoder.JSON_CLASS»", getClass().getCanonicalName());
-				«FOR attribute : signal.attributes SEPARATOR ','»
-					json.put("«attribute.identifier»", «attribute.identifier»);
-				«ENDFOR»
-				return json;
-			}
-		
-			@Override
-			public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
-				«FOR attribute : signal.attributes»
-					forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), 
-							«javaType(attribute.type)».class, «attribute.identifier»::add);
-				«ENDFOR»
-			}
-			
-			@Override
-			public boolean equals(Object obj) {
-				if (obj == null || !(obj instanceof «signal.identifier»)) {
-					return false;
-				}
-				«FOR attribute : signal.attributes
-					BEFORE '''«signal.identifier» other = («signal.identifier») obj;'''»
-					if (!other.«attribute.identifier».equals(this.«attribute.identifier»)) {
-						return false;
-					}
-				«ENDFOR»
-				return true;
-			}
-			
-			@Override
-			public int hashCode() {
-				return «Objects.canonicalName».hash(
-				«FOR attribute : signal.attributes SEPARATOR ','»
-						«attribute.identifier»
-				«ENDFOR»);
-			}
+			«content»
 		}
 	'''
+
+	override generateContent() '''
+		«FOR attribute : signal.attributes»
+			/** Attribute for signal attribute «attribute.javadoc» */
+			«javaType(attribute.type, attribute)» «attribute.identifier»
+				= «createEmpty(attribute)»;
+		«ENDFOR»
+
+		@Override
+		public «JSONObject.canonicalName» jsonEncode() {
+			«JSONObject.canonicalName» json = new «JSONObject.canonicalName»();
+			json.put("«JSONDecoder.JSON_CLASS»", getClass().getCanonicalName());
+			«FOR attribute : signal.attributes SEPARATOR ','»
+				json.put("«attribute.identifier»", «attribute.identifier»);
+			«ENDFOR»
+			return json;
+		}
+
+		@Override
+		public void jsonDecode(«JSONDecoder.canonicalName» reader, «JSONObject.canonicalName» obj) {
+			«FOR attribute : signal.attributes»
+				forEach((«JSONArray.canonicalName») obj.get("«attribute.identifier»"), 
+						«javaType(attribute.type)».class, «attribute.identifier»::add);
+			«ENDFOR»
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof «signal.identifier»)) {
+				return false;
+			}
+			«FOR attribute : signal.attributes BEFORE '''«signal.identifier» other = («signal.identifier») obj;'''»
+				if (!other.«attribute.identifier».equals(this.«attribute.identifier»)) {
+					return false;
+				}
+			«ENDFOR»
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			return «Objects.canonicalName».hash(
+			«FOR attribute : signal.attributes SEPARATOR ','»
+				«attribute.identifier»
+			«ENDFOR»);
+		}
+	'''
+
 }

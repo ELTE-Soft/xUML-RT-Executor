@@ -11,10 +11,10 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.Referenced#getReference <em>Reference</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getReferenced()
  * @model abstract="true"
