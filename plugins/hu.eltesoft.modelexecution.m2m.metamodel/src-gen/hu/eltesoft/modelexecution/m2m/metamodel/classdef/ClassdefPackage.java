@@ -87,22 +87,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Inherited Region</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS__INHERITED_REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Operations</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
@@ -111,7 +102,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
@@ -120,7 +111,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Inherited Attributes</b></em>' reference list.
@@ -129,7 +120,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__INHERITED_ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int CL_CLASS__INHERITED_ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Associations</b></em>' reference list.
@@ -138,7 +129,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
+	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Parents</b></em>' attribute list.
@@ -147,7 +138,16 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Inherited Associations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__INHERITED_ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
@@ -268,43 +268,6 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl <em>Cl Class Common</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClClassCommon()
-	 * @generated
-	 */
-	int CL_CLASS_COMMON = 2;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS_COMMON__REFERENCE = BasePackage.MODEL_ROOT__REFERENCE;
-
-	/**
-	 * The number of structural features of the '<em>Cl Class Common</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS_COMMON_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Cl Class Common</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_CLASS_COMMON_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl <em>Cl Operation Spec</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -312,7 +275,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClOperationSpec()
 	 * @generated
 	 */
-	int CL_OPERATION_SPEC = 4;
+	int CL_OPERATION_SPEC = 3;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -367,7 +330,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClOperation()
 	 * @generated
 	 */
-	int CL_OPERATION = 3;
+	int CL_OPERATION = 2;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -440,7 +403,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionSpec()
 	 * @generated
 	 */
-	int CL_RECEPTION_SPEC = 6;
+	int CL_RECEPTION_SPEC = 5;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -486,7 +449,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReception()
 	 * @generated
 	 */
-	int CL_RECEPTION = 5;
+	int CL_RECEPTION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -541,7 +504,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClReceptionParameter()
 	 * @generated
 	 */
-	int CL_RECEPTION_PARAMETER = 7;
+	int CL_RECEPTION_PARAMETER = 6;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -623,7 +586,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttributeSpec()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE_SPEC = 9;
+	int CL_ATTRIBUTE_SPEC = 8;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -669,7 +632,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAttribute()
 	 * @generated
 	 */
-	int CL_ATTRIBUTE = 8;
+	int CL_ATTRIBUTE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -724,7 +687,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAttribute()
 	 * @generated
 	 */
-	int CL_INHERITED_ATTRIBUTE = 10;
+	int CL_INHERITED_ATTRIBUTE = 9;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -772,14 +735,14 @@ public interface ClassdefPackage extends EPackage {
 	int CL_INHERITED_ATTRIBUTE_OPERATION_COUNT = CL_ATTRIBUTE_SPEC_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationSpecImpl <em>Cl Association Spec</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationSpecImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociationSpec()
 	 * @generated
 	 */
-	int CL_ASSOCIATION = 11;
+	int CL_ASSOCIATION_SPEC = 11;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -788,7 +751,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ASSOCIATION__REFERENCE = BasePackage.NAMED__REFERENCE;
+	int CL_ASSOCIATION_SPEC__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -797,7 +760,53 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ASSOCIATION__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int CL_ASSOCIATION_SPEC__TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cl Association Spec</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_SPEC_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Cl Association Spec</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION_SPEC_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl <em>Cl Association</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociation()
+	 * @generated
+	 */
+	int CL_ASSOCIATION = 10;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__REFERENCE = CL_ASSOCIATION_SPEC__REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_ASSOCIATION__TYPE = CL_ASSOCIATION_SPEC__TYPE;
 
 	/**
 	 * The number of structural features of the '<em>Cl Association</em>' class.
@@ -806,7 +815,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ASSOCIATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int CL_ASSOCIATION_FEATURE_COUNT = CL_ASSOCIATION_SPEC_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Cl Association</em>' class.
@@ -815,7 +824,62 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_ASSOCIATION_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
+	int CL_ASSOCIATION_OPERATION_COUNT = CL_ASSOCIATION_SPEC_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAssociationImpl <em>Cl Inherited Association</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAssociationImpl
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAssociation()
+	 * @generated
+	 */
+	int CL_INHERITED_ASSOCIATION = 12;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ASSOCIATION__PARENT = BasePackage.INHERITED__PARENT;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ASSOCIATION__REFERENCE = BasePackage.INHERITED_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ASSOCIATION__TYPE = BasePackage.INHERITED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Cl Inherited Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ASSOCIATION_FEATURE_COUNT = BasePackage.INHERITED_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Cl Inherited Association</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_INHERITED_ASSOCIATION_OPERATION_COUNT = BasePackage.INHERITED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl <em>Cl Ctor Record</em>}' class.
@@ -825,7 +889,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClCtorRecord()
 	 * @generated
 	 */
-	int CL_CTOR_RECORD = 12;
+	int CL_CTOR_RECORD = 13;
 
 	/**
 	 * The feature id for the '<em><b>Reference</b></em>' attribute.
@@ -837,13 +901,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CTOR_RECORD__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Used Args</b></em>' reference list.
+	 * The feature id for the '<em><b>Direct Parents</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CTOR_RECORD__USED_ARGS = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int CL_CTOR_RECORD__DIRECT_PARENTS = BasePackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Cl Ctor Record</em>' class.
@@ -863,42 +927,6 @@ public interface ClassdefPackage extends EPackage {
 	 */
 	int CL_CTOR_RECORD_OPERATION_COUNT = BasePackage.NAMED_OPERATION_COUNT + 0;
 
-	/**
-	 * The meta object id for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl <em>Inherited</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getInherited()
-	 * @generated
-	 */
-	int INHERITED = 13;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INHERITED__PARENT = 0;
-
-	/**
-	 * The number of structural features of the '<em>Inherited</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INHERITED_FEATURE_COUNT = 1;
-
-	/**
-	 * The number of operations of the '<em>Inherited</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INHERITED_OPERATION_COUNT = 0;
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass <em>Cl Class</em>}'.
@@ -920,17 +948,6 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClass_Region();
-
-	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedRegion <em>Inherited Region</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Inherited Region</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedRegion()
-	 * @see #getClClass()
-	 * @generated
-	 */
-	EAttribute getClClass_InheritedRegion();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}'.
@@ -997,6 +1014,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClass_Parents();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedAssociations <em>Inherited Associations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Inherited Associations</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedAssociations()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EReference getClClass_InheritedAssociations();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
@@ -1084,16 +1112,6 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClassSpec_CtorRecords();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon <em>Cl Class Common</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Cl Class Common</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassCommon
-	 * @generated
-	 */
-	EClass getClClassCommon();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -1274,6 +1292,26 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClAssociation();
 
 	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociationSpec <em>Cl Association Spec</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Association Spec</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociationSpec
+	 * @generated
+	 */
+	EClass getClAssociationSpec();
+
+	/**
+	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation <em>Cl Inherited Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cl Inherited Association</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
+	 * @generated
+	 */
+	EClass getClInheritedAssociation();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord <em>Cl Ctor Record</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1284,36 +1322,15 @@ public interface ClassdefPackage extends EPackage {
 	EClass getClCtorRecord();
 
 	/**
-	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedArgs <em>Used Args</em>}'.
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getDirectParents <em>Direct Parents</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Used Args</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedArgs()
+	 * @return the meta object for the reference list '<em>Direct Parents</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getDirectParents()
 	 * @see #getClCtorRecord()
 	 * @generated
 	 */
-	EReference getClCtorRecord_UsedArgs();
-
-	/**
-	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited <em>Inherited</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Inherited</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited
-	 * @generated
-	 */
-	EClass getInherited();
-
-	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited#getParent <em>Parent</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Parent</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited#getParent()
-	 * @see #getInherited()
-	 * @generated
-	 */
-	EAttribute getInherited_Parent();
+	EReference getClCtorRecord_DirectParents();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1355,14 +1372,6 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS__REGION = eINSTANCE.getClClass_Region();
-
-		/**
-		 * The meta object literal for the '<em><b>Inherited Region</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CL_CLASS__INHERITED_REGION = eINSTANCE.getClClass_InheritedRegion();
 
 		/**
 		 * The meta object literal for the '<em><b>Operations</b></em>' reference list feature.
@@ -1411,6 +1420,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS__PARENTS = eINSTANCE.getClClass_Parents();
+
+		/**
+		 * The meta object literal for the '<em><b>Inherited Associations</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CL_CLASS__INHERITED_ASSOCIATIONS = eINSTANCE.getClClass_InheritedAssociations();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
@@ -1477,16 +1494,6 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS_SPEC__CTOR_RECORDS = eINSTANCE.getClClassSpec_CtorRecords();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl <em>Cl Class Common</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassCommonImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClClassCommon()
-		 * @generated
-		 */
-		EClass CL_CLASS_COMMON = eINSTANCE.getClClassCommon();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.
@@ -1643,6 +1650,26 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_ASSOCIATION = eINSTANCE.getClAssociation();
 
 		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationSpecImpl <em>Cl Association Spec</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationSpecImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClAssociationSpec()
+		 * @generated
+		 */
+		EClass CL_ASSOCIATION_SPEC = eINSTANCE.getClAssociationSpec();
+
+		/**
+		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAssociationImpl <em>Cl Inherited Association</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClInheritedAssociationImpl
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getClInheritedAssociation()
+		 * @generated
+		 */
+		EClass CL_INHERITED_ASSOCIATION = eINSTANCE.getClInheritedAssociation();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl <em>Cl Ctor Record</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1653,30 +1680,12 @@ public interface ClassdefPackage extends EPackage {
 		EClass CL_CTOR_RECORD = eINSTANCE.getClCtorRecord();
 
 		/**
-		 * The meta object literal for the '<em><b>Used Args</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Direct Parents</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CL_CTOR_RECORD__USED_ARGS = eINSTANCE.getClCtorRecord_UsedArgs();
-
-		/**
-		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl <em>Inherited</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClassdefPackageImpl#getInherited()
-		 * @generated
-		 */
-		EClass INHERITED = eINSTANCE.getInherited();
-
-		/**
-		 * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute INHERITED__PARENT = eINSTANCE.getInherited_Parent();
+		EReference CL_CTOR_RECORD__DIRECT_PARENTS = eINSTANCE.getClCtorRecord_DirectParents();
 
 	}
 

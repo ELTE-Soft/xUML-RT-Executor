@@ -4,7 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getAttributes <em>Attributes</em>}</li>
@@ -47,27 +46,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpec {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
 	 * <!-- begin-user-doc -->
@@ -172,27 +151,6 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS_SPEC__REFERENCE, oldReference, reference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<ClOperationSpec> getOperations() {
 		if (operations == null) {
 			operations = new EObjectResolvingEList<ClOperationSpec>(ClOperationSpec.class, this, ClassdefPackage.CL_CLASS_SPEC__OPERATIONS);
@@ -289,8 +247,6 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS_SPEC__REFERENCE:
-				return getReference();
 			case ClassdefPackage.CL_CLASS_SPEC__OPERATIONS:
 				return getOperations();
 			case ClassdefPackage.CL_CLASS_SPEC__RECEPTIONS:
@@ -318,9 +274,6 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS_SPEC__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case ClassdefPackage.CL_CLASS_SPEC__OPERATIONS:
 				getOperations().clear();
 				getOperations().addAll((Collection<? extends ClOperationSpec>)newValue);
@@ -360,9 +313,6 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS_SPEC__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case ClassdefPackage.CL_CLASS_SPEC__OPERATIONS:
 				getOperations().clear();
 				return;
@@ -396,8 +346,6 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS_SPEC__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_CLASS_SPEC__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS_SPEC__RECEPTIONS:
@@ -426,9 +374,7 @@ public class ClClassSpecImpl extends TranslationObjectImpl implements ClClassSpe
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", hasStateMachine: ");
+		result.append(" (hasStateMachine: ");
 		result.append(hasStateMachine);
 		result.append(", parents: ");
 		result.append(parents);

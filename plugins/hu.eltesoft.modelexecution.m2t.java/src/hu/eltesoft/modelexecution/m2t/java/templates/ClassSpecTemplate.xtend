@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.runtime.Runtime
 import java.util.LinkedList
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassSpecTemplate extends Template {
@@ -33,14 +34,15 @@ class ClassSpecTemplate extends Template {
 		public interface «classSpec.identifier» 
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 		
-						
 			/** Creator for UML class «classSpec.javadoc» */
 			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime) {
 				«FOR rec : classSpec.ctorRecords»
 					«rec.implementation» «rec.inherited» 
-						= new «rec.implementation»(runtime«FOR par : rec.usedArgs», «par.inherited»«ENDFOR»);
+						= new «rec.implementation»(runtime«FOR par : rec.directParents», «par.inherited»«ENDFOR»);
 				«ENDFOR»
-				return new «classSpec.implementation»(runtime«FOR parent : classSpec.parents», «parent.inherited»«ENDFOR»);
+				«classSpec.implementation» created = new «classSpec.implementation»(runtime«FOR parent : classSpec.parents», «parent.inherited»«ENDFOR»);
+				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
+				return created;
 			}
 			«content»
 		}
@@ -50,22 +52,22 @@ class ClassSpecTemplate extends Template {
 		// attributes
 		«FOR attribute : classSpec.attributes»
 			
-				«generateAttribute(attribute)»
+			«generateAttribute(attribute)»
 		«ENDFOR»
 		
 		// associations
 		«FOR association : classSpec.associations»
 
-				/// TODO: generate interface for association
+			«generateAssociation(association)»
 		«ENDFOR»
 		
 		// operations
 		«FOR operation : classSpec.operations»
 			
-				«generateOperation(operation)»
+			«generateOperation(operation)»
 		«ENDFOR»
 		
-			// receptions
+		// receptions
 		«FOR reception : classSpec.receptions»
 			
 			«generateReception(reception, false)»
@@ -74,18 +76,20 @@ class ClassSpecTemplate extends Template {
 		«ENDFOR»
 	'''
 
-	def generateStructuralClassBody() '''
-		
-	'''
-
 	def generateAttribute(ClAttributeSpec attribute) '''
+		/** Gets the value(s) of the attribute «attribute.javadoc» */
 		«javaType(attribute.type)» get_«attribute.identifier»();
+		
+		/** Sets the value(s) of the attribute «attribute.javadoc» */
 		void set_«attribute.identifier»(«javaType(attribute.type)» newVal);
 	'''
 
 	def generateAssociation(ClAssociation association) '''
-		/** Attribute for association «association.javadoc» */
-		«javaType(association.type)» «association.identifier» = «createEmpty(association.type)»;
+		/** Gets the value(s) of the association «association.javadoc» */
+		«javaType(association.type)» get_«association.identifier»();
+		
+		/** Sets the value(s) of the association «association.javadoc» */
+		void set_«association.identifier»(«javaType(association.type)» newVal);
 		
 	'''
 

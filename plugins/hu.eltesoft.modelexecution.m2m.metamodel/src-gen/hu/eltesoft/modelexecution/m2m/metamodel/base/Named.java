@@ -16,7 +16,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.base;
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage#getNamed()
- * @model interface="true" abstract="true"
+ * @model
  * @generated
  */
 public interface Named extends TranslationObject {

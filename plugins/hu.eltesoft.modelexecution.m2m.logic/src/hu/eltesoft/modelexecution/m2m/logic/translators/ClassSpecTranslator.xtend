@@ -61,8 +61,8 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 			elem.reference = new NamedReference(ancestor)
 			return elem
 		]
-		ctorRecordNode.onEObject(PACKAGE.clCtorRecord_UsedArgs, ClassCtorRecordArgMatcher.on(engine)) [
-			val elem = BASE_FACTORY.createNameWrapper
+		ctorRecordNode.onEObject(PACKAGE.clCtorRecord_DirectParents, ClassCtorRecordArgMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createNamed
 			elem.reference = new NamedReference(parent)
 			return elem
 		]

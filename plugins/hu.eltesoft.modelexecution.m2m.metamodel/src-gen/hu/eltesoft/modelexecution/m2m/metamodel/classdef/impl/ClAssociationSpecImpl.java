@@ -8,7 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.Typed;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociationSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -20,18 +20,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Cl Attribute Spec</b></em>'.
+ * An implementation of the model object '<em><b>Cl Association Spec</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAttributeSpecImpl#getType <em>Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClAssociationSpecImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
+public abstract class ClAssociationSpecImpl extends NamedImpl implements ClAssociationSpec {
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -47,7 +47,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ClAttributeSpecImpl() {
+	protected ClAssociationSpecImpl() {
 		super();
 	}
 
@@ -58,7 +58,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.CL_ATTRIBUTE_SPEC;
+		return ClassdefPackage.Literals.CL_ASSOCIATION_SPEC;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 			type = (Type)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -96,7 +96,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE, oldType, type));
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
+			case ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
 		}
@@ -122,7 +122,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
+			case ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE:
 				setType((Type)newValue);
 				return;
 		}
@@ -137,7 +137,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
+			case ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE:
 				setType((Type)null);
 				return;
 		}
@@ -152,7 +152,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE:
+			case ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE:
 				return type != null;
 		}
 		return super.eIsSet(featureID);
@@ -167,7 +167,7 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Typed.class) {
 			switch (derivedFeatureID) {
-				case ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE: return BasePackage.TYPED__TYPE;
+				case ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE: return BasePackage.TYPED__TYPE;
 				default: return -1;
 			}
 		}
@@ -183,11 +183,11 @@ public class ClAttributeSpecImpl extends NamedImpl implements ClAttributeSpec {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Typed.class) {
 			switch (baseFeatureID) {
-				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ATTRIBUTE_SPEC__TYPE;
+				case BasePackage.TYPED__TYPE: return ClassdefPackage.CL_ASSOCIATION_SPEC__TYPE;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} //ClAttributeSpecImpl
+} //ClAssociationSpecImpl

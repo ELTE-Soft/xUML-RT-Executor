@@ -16,7 +16,6 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		super();
 		this.runtime = runtime;
 		this.instanceID = instanceID;
-		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 		stateMachine = createStateMachine();
 	}
 

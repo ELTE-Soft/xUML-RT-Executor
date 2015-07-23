@@ -206,20 +206,26 @@ pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
 
 // state machine
 pattern RegionOfClass(cls : Class, region : Region) {
-	Class.ownedBehavior(cls, stateMachine);
-	StateMachine.region(stateMachine, region);
+	find AncestorOrSelf(cls, regionOwner, _);
+	find OwnedRegion(regionOwner, region);
+	// there is no additional redefiner between the actual class and the owner
+	neg find OwnedRegionBetween(cls, regionOwner);
 }
 
-pattern InheritedRegion(cls : Class, region : Region) {
-	find Ancestor(cls, ancestor, _);
-	Class.ownedBehavior(ancestor, stateMachine);
+private pattern OwnedRegionBetween(cls : Class, ancestor : Class) {
+	find AncestorOrSelf(cls, between, _);
+	find Ancestor(between, ancestor, _);
+	find OwnedRegion(between, _);
+}
+
+private pattern OwnedRegion(cls : Class, region : Region) {
+	Class.ownedBehavior(cls, stateMachine);
 	StateMachine.region(stateMachine, region);
 }
 
 // attributes
 
 // The defined and inherited attributes must be treated separately.
-
 pattern Attribute(cls : Class, attribute : Property, isStatic) {
 	Class.ownedAttribute(cls, attribute);
 	Property.isStatic(attribute, isStatic);
@@ -279,10 +285,9 @@ AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueS
 pattern Operation(cls : Class, operation : Operation, isStatic) {
 	find OwnedOperation(cls, operation, isStatic);
 } or {
-	// inherited operation
+// inherited operation
 	find IsAncestor(cls, ancestor);
-	Class.ownedOperation(ancestor, operation);
-	Operation.isStatic(operation, isStatic);
+	find OwnedOperation(ancestor, operation, isStatic);
 }
 
 pattern InstanceOperation(cls : Class, operation : Operation) {
@@ -356,23 +361,24 @@ pattern Method(cls : Class, operation : Operation, method : Behavior) {
 	Operation.method(operation, method);
 	neg find OperationOverride(cls, operation, _);
 } or {
-	// if the operation is overridden, its method is of the overrider 
+// if the operation is overridden, its method is of the overrider 
 	find Operation(cls, operation, _);
 	find OperationOverride(cls, operation, overrider);
 	Operation.method(overrider, method);
 }
 
 // This will only select consecutive overrides defined in different classes connected by generalization.
-// Each operation may be overridden at most once (but the overrider can also be overridden).
 // Only yields overridings that affect the class given, and only gives the last (effective) one.
-pattern OperationOverride(cls : Class, overridden : Operation, overrider : Operation) {
+pattern
+OperationOverride(cls : Class, overridden : Operation, overrider : Operation) {
 	find Redefinition +(overridden, overrider);
 	find AncestorOrSelf(cls, clsOverrider, _);
 	Class.ownedOperation(clsOverrider, overrider);
 	neg find RedefinitionIn(cls, overrider, _);
 }
 
-private pattern RedefinitionIn(cls : Class, overridden : Operation, overrider : Operation) {
+private pattern
+RedefinitionIn(cls : Class, overridden : Operation, overrider : Operation) {
 	find AncestorOrSelf(cls, clsOverrider, _);
 	Class.ownedOperation(clsOverrider, overrider);
 	Operation.redefinedOperation(overrider, overridden);
@@ -420,9 +426,26 @@ pattern ClassAssociation(cls : Class, end : Property) {
 	find AssociationEndType(_, end, cls);
 }
 
+pattern InheritedAssociation(cls : Class, end : Property) {
+	find InheritedAssociationImpl(cls, _, end);
+}
+
+pattern
+InheritedAssociationParent(cls : Class, end : Property, parent : Class) {
+	find InheritedAssociationImpl(cls, ancestor, end);
+	find ParentAncestor(cls, parent, ancestor);
+}
+
+private pattern
+InheritedAssociationImpl(cls : Class, owner : Class, end : Property) {
+	find IsAncestor(cls, owner);
+	find AssociationEndType(_, end, owner);
+}
+
 pattern
 ClassAssociationType(cls : Class, end : Property, type : Association, ordered, unique) {
-	find AssociationEndType(type, end, cls);
+	find AncestorOrSelf(cls, assocEnd, _);
+	find AssociationEndType(type, end, assocEnd);
 	Property.isOrdered(end, ordered);
 	Property.isUnique(end, unique);
 }

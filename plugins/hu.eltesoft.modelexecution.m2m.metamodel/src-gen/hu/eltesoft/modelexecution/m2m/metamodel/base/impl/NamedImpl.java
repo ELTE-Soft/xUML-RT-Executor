@@ -3,7 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -14,18 +14,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Name Wrapper</b></em>'.
+ * An implementation of the model object '<em><b>Named</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NameWrapperImpl#getReference <em>Reference</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl#getReference <em>Reference</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class NameWrapperImpl extends TranslationObjectImpl implements NameWrapper {
+public class NamedImpl extends TranslationObjectImpl implements Named {
 	/**
 	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,7 +51,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected NameWrapperImpl() {
+	protected NamedImpl() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return BasePackage.Literals.NAME_WRAPPER;
+		return BasePackage.Literals.NAMED;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 		NamedReference oldReference = reference;
 		reference = newReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.NAME_WRAPPER__REFERENCE, oldReference, reference));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.NAMED__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BasePackage.NAME_WRAPPER__REFERENCE:
+			case BasePackage.NAMED__REFERENCE:
 				return getReference();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -108,7 +108,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BasePackage.NAME_WRAPPER__REFERENCE:
+			case BasePackage.NAMED__REFERENCE:
 				setReference((NamedReference)newValue);
 				return;
 		}
@@ -123,7 +123,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BasePackage.NAME_WRAPPER__REFERENCE:
+			case BasePackage.NAMED__REFERENCE:
 				setReference(REFERENCE_EDEFAULT);
 				return;
 		}
@@ -138,7 +138,7 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BasePackage.NAME_WRAPPER__REFERENCE:
+			case BasePackage.NAMED__REFERENCE:
 				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 		}
 		return super.eIsSet(featureID);
@@ -160,4 +160,4 @@ public class NameWrapperImpl extends TranslationObjectImpl implements NameWrappe
 		return result.toString();
 	}
 
-} //NameWrapperImpl
+} //NamedImpl

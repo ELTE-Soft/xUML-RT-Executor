@@ -2,8 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -15,7 +15,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getUsedArgs <em>Used Args</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord#getDirectParents <em>Direct Parents</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClCtorRecord()
@@ -24,19 +24,19 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ClCtorRecord extends Named {
 	/**
-	 * Returns the value of the '<em><b>Used Args</b></em>' reference list.
-	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper}.
+	 * Returns the value of the '<em><b>Direct Parents</b></em>' reference list.
+	 * The list contents are of type {@link hu.eltesoft.modelexecution.m2m.metamodel.base.Named}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Used Args</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Direct Parents</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Used Args</em>' reference list.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClCtorRecord_UsedArgs()
+	 * @return the value of the '<em>Direct Parents</em>' reference list.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClCtorRecord_DirectParents()
 	 * @model
 	 * @generated
 	 */
-	EList<NameWrapper> getUsedArgs();
+	EList<Named> getDirectParents();
 
 } // ClCtorRecord

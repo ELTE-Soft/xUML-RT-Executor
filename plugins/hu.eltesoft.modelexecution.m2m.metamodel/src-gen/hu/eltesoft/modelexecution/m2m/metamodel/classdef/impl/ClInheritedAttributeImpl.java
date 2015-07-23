@@ -2,12 +2,17 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -33,6 +38,7 @@ public class ClInheritedAttributeImpl extends ClAttributeSpecImpl implements ClI
 	 * @ordered
 	 */
 	protected static final NamedReference PARENT_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getParent() <em>Parent</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -150,7 +156,7 @@ public class ClInheritedAttributeImpl extends ClAttributeSpecImpl implements ClI
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Inherited.class) {
 			switch (derivedFeatureID) {
-				case ClassdefPackage.CL_INHERITED_ATTRIBUTE__PARENT: return ClassdefPackage.INHERITED__PARENT;
+				case ClassdefPackage.CL_INHERITED_ATTRIBUTE__PARENT: return BasePackage.INHERITED__PARENT;
 				default: return -1;
 			}
 		}
@@ -166,7 +172,7 @@ public class ClInheritedAttributeImpl extends ClAttributeSpecImpl implements ClI
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Inherited.class) {
 			switch (baseFeatureID) {
-				case ClassdefPackage.INHERITED__PARENT: return ClassdefPackage.CL_INHERITED_ATTRIBUTE__PARENT;
+				case BasePackage.INHERITED__PARENT: return ClassdefPackage.CL_INHERITED_ATTRIBUTE__PARENT;
 				default: return -1;
 			}
 		}

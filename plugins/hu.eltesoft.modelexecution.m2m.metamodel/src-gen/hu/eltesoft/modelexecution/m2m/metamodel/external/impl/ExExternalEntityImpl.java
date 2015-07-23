@@ -2,9 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.external.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType;
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity;
@@ -31,7 +29,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getImplementationClass <em>Implementation Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.impl.ExExternalEntityImpl#getType <em>Type</em>}</li>
@@ -39,27 +36,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExternalEntity {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class ExExternalEntityImpl extends NamedImpl implements ExExternalEntity {
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
 	 * <!-- begin-user-doc -->
@@ -134,27 +111,6 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ExternalPackage.EX_EXTERNAL_ENTITY__REFERENCE, oldReference, reference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<ExOperation> getOperations() {
 		if (operations == null) {
 			operations = new EObjectResolvingEList<ExOperation>(ExOperation.class, this, ExternalPackage.EX_EXTERNAL_ENTITY__OPERATIONS);
@@ -212,8 +168,6 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ExternalPackage.EX_EXTERNAL_ENTITY__REFERENCE:
-				return getReference();
 			case ExternalPackage.EX_EXTERNAL_ENTITY__OPERATIONS:
 				return getOperations();
 			case ExternalPackage.EX_EXTERNAL_ENTITY__IMPLEMENTATION_CLASS:
@@ -233,9 +187,6 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ExternalPackage.EX_EXTERNAL_ENTITY__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case ExternalPackage.EX_EXTERNAL_ENTITY__OPERATIONS:
 				getOperations().clear();
 				getOperations().addAll((Collection<? extends ExOperation>)newValue);
@@ -258,9 +209,6 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ExternalPackage.EX_EXTERNAL_ENTITY__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case ExternalPackage.EX_EXTERNAL_ENTITY__OPERATIONS:
 				getOperations().clear();
 				return;
@@ -282,8 +230,6 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ExternalPackage.EX_EXTERNAL_ENTITY__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ExternalPackage.EX_EXTERNAL_ENTITY__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ExternalPackage.EX_EXTERNAL_ENTITY__IMPLEMENTATION_CLASS:
@@ -304,9 +250,7 @@ public class ExExternalEntityImpl extends TranslationObjectImpl implements ExExt
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", implementationClass: ");
+		result.append(" (implementationClass: ");
 		result.append(implementationClass);
 		result.append(", type: ");
 		result.append(type);

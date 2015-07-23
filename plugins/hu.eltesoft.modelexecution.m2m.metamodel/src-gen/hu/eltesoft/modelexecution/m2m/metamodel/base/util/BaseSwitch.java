@@ -146,11 +146,9 @@ public class BaseSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case BasePackage.NAME_WRAPPER: {
-				NameWrapper nameWrapper = (NameWrapper)theEObject;
-				T result = caseNameWrapper(nameWrapper);
-				if (result == null) result = caseNamed(nameWrapper);
-				if (result == null) result = caseTranslationObject(nameWrapper);
+			case BasePackage.INHERITED: {
+				Inherited inherited = (Inherited)theEObject;
+				T result = caseInherited(inherited);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -324,17 +322,17 @@ public class BaseSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Name Wrapper</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Inherited</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Name Wrapper</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Inherited</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNameWrapper(NameWrapper object) {
+	public T caseInherited(Inherited object) {
 		return null;
 	}
 

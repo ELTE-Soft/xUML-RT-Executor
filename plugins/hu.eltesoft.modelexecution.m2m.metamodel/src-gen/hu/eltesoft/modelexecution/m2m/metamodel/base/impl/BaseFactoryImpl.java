@@ -60,13 +60,13 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case BasePackage.TRANSLATION_OBJECT: return createTranslationObject();
+			case BasePackage.NAMED: return createNamed();
 			case BasePackage.TYPED: return createTyped();
 			case BasePackage.TYPE: return createType();
 			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
 			case BasePackage.REFERENCED_TYPE: return createReferencedType();
 			case BasePackage.PARAMETER: return createParameter();
 			case BasePackage.MULTIPLICITY: return createMultiplicity();
-			case BasePackage.NAME_WRAPPER: return createNameWrapper();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -129,6 +129,16 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Named createNamed() {
+		NamedImpl named = new NamedImpl();
+		return named;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Typed createTyped() {
 		TypedImpl typed = new TypedImpl();
 		return typed;
@@ -182,16 +192,6 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	public Multiplicity createMultiplicity() {
 		MultiplicityImpl multiplicity = new MultiplicityImpl();
 		return multiplicity;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NameWrapper createNameWrapper() {
-		NameWrapperImpl nameWrapper = new NameWrapperImpl();
-		return nameWrapper;
 	}
 
 	/**

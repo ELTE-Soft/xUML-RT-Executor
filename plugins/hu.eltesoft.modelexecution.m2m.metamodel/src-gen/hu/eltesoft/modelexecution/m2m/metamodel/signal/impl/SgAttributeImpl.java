@@ -4,10 +4,9 @@ package hu.eltesoft.modelexecution.m2m.metamodel.signal.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
@@ -27,7 +26,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SgAttributeImpl#isIsOrdered <em>Is Ordered</em>}</li>
@@ -37,27 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribute {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class SgAttributeImpl extends NamedImpl implements SgAttribute {
 	/**
 	 * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -165,27 +143,6 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 	@Override
 	protected EClass eStaticClass() {
 		return SignalPackage.Literals.SG_ATTRIBUTE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SignalPackage.SG_ATTRIBUTE__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -318,8 +275,6 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case SignalPackage.SG_ATTRIBUTE__REFERENCE:
-				return getReference();
 			case SignalPackage.SG_ATTRIBUTE__LOWER_BOUND:
 				return getLowerBound();
 			case SignalPackage.SG_ATTRIBUTE__UPPER_BOUND:
@@ -343,9 +298,6 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case SignalPackage.SG_ATTRIBUTE__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case SignalPackage.SG_ATTRIBUTE__LOWER_BOUND:
 				setLowerBound((Integer)newValue);
 				return;
@@ -373,9 +325,6 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case SignalPackage.SG_ATTRIBUTE__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case SignalPackage.SG_ATTRIBUTE__LOWER_BOUND:
 				setLowerBound(LOWER_BOUND_EDEFAULT);
 				return;
@@ -403,8 +352,6 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case SignalPackage.SG_ATTRIBUTE__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case SignalPackage.SG_ATTRIBUTE__LOWER_BOUND:
 				return lowerBound != LOWER_BOUND_EDEFAULT;
 			case SignalPackage.SG_ATTRIBUTE__UPPER_BOUND:
@@ -467,9 +414,7 @@ public class SgAttributeImpl extends TranslationObjectImpl implements SgAttribut
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", lowerBound: ");
+		result.append(" (lowerBound: ");
 		result.append(lowerBound);
 		result.append(", upperBound: ");
 		result.append(upperBound);

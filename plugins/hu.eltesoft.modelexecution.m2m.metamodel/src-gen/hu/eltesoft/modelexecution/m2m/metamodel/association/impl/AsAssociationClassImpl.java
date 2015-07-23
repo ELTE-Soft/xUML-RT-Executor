@@ -10,6 +10,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -37,13 +38,13 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getRegion <em>Region</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedRegion <em>Inherited Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getParents <em>Parents</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAssociations <em>Inherited Associations</em>}</li>
  * </ul>
  *
  * @generated
@@ -68,26 +69,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected NamedReference region = REGION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getInheritedRegion() <em>Inherited Region</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInheritedRegion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference INHERITED_REGION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getInheritedRegion() <em>Inherited Region</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInheritedRegion()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference inheritedRegion = INHERITED_REGION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -150,6 +131,16 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	protected EList<NamedReference> parents;
 
 	/**
+	 * The cached value of the '{@link #getInheritedAssociations() <em>Inherited Associations</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInheritedAssociations()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClInheritedAssociation> inheritedAssociations;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -187,27 +178,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		region = newRegion;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__REGION, oldRegion, region));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getInheritedRegion() {
-		return inheritedRegion;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setInheritedRegion(NamedReference newInheritedRegion) {
-		NamedReference oldInheritedRegion = inheritedRegion;
-		inheritedRegion = newInheritedRegion;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION, oldInheritedRegion, inheritedRegion));
 	}
 
 	/**
@@ -287,13 +257,23 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClInheritedAssociation> getInheritedAssociations() {
+		if (inheritedAssociations == null) {
+			inheritedAssociations = new EObjectResolvingEList<ClInheritedAssociation>(ClInheritedAssociation.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS);
+		}
+		return inheritedAssociations;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return getRegion();
-			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION:
-				return getInheritedRegion();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return getOperations();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -306,6 +286,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return getAssociations();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				return getParents();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
+				return getInheritedAssociations();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -321,9 +303,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion((NamedReference)newValue);
-				return;
-			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION:
-				setInheritedRegion((NamedReference)newValue);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -349,6 +328,10 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				getParents().clear();
 				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
+				getInheritedAssociations().clear();
+				getInheritedAssociations().addAll((Collection<? extends ClInheritedAssociation>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -363,9 +346,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion(REGION_EDEFAULT);
-				return;
-			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION:
-				setInheritedRegion(INHERITED_REGION_EDEFAULT);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -385,6 +365,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				getParents().clear();
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
+				getInheritedAssociations().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -399,8 +382,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
-			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION:
-				return INHERITED_REGION_EDEFAULT == null ? inheritedRegion != null : !INHERITED_REGION_EDEFAULT.equals(inheritedRegion);
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -413,6 +394,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return associations != null && !associations.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS:
 				return parents != null && !parents.isEmpty();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
+				return inheritedAssociations != null && !inheritedAssociations.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -427,13 +410,13 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (derivedFeatureID) {
 				case AssociationPackage.AS_ASSOCIATION_CLASS__REGION: return ClassdefPackage.CL_CLASS__REGION;
-				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION: return ClassdefPackage.CL_CLASS__INHERITED_REGION;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS: return ClassdefPackage.CL_CLASS__OPERATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS: return ClassdefPackage.CL_CLASS__RECEPTIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES: return ClassdefPackage.CL_CLASS__ATTRIBUTES;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES: return ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS: return ClassdefPackage.CL_CLASS__ASSOCIATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS: return ClassdefPackage.CL_CLASS__PARENTS;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS: return ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS;
 				default: return -1;
 			}
 		}
@@ -450,13 +433,13 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (baseFeatureID) {
 				case ClassdefPackage.CL_CLASS__REGION: return AssociationPackage.AS_ASSOCIATION_CLASS__REGION;
-				case ClassdefPackage.CL_CLASS__INHERITED_REGION: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_REGION;
 				case ClassdefPackage.CL_CLASS__OPERATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS;
 				case ClassdefPackage.CL_CLASS__RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS;
 				case ClassdefPackage.CL_CLASS__ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES;
 				case ClassdefPackage.CL_CLASS__INHERITED_ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ATTRIBUTES;
 				case ClassdefPackage.CL_CLASS__ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS;
 				case ClassdefPackage.CL_CLASS__PARENTS: return AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS;
+				case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS;
 				default: return -1;
 			}
 		}
@@ -475,8 +458,6 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (region: ");
 		result.append(region);
-		result.append(", inheritedRegion: ");
-		result.append(inheritedRegion);
 		result.append(", parents: ");
 		result.append(parents);
 		result.append(')');

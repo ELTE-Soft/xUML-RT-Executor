@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
@@ -12,9 +13,9 @@ import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeParentMatcher
-import hu.eltesoft.modelexecution.uml.incquery.InheritedRegionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
@@ -23,7 +24,7 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
+import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationParentMatcher
 
 /**
  * Creates the metamodel for implementation classes of UML classes.
@@ -53,7 +54,6 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]
-		rootNode.on(PACKAGE.clClass_InheritedRegion, InheritedRegionMatcher.on(engine))[new NamedReference(region)]
 
 		// attributes
 		val attributeNode = rootNode.onEObject(PACKAGE.clClass_Attributes, AttributeMatcher.on(engine)) [
@@ -72,7 +72,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 			return elem;
 		]
 
-		inheritedAttributes.on(PACKAGE.inherited_Parent, InheritedAttributeParentMatcher.on(engine)) [
+		inheritedAttributes.on(BASE_PACKAGE.inherited_Parent, InheritedAttributeParentMatcher.on(engine)) [
 			new NamedReference(parent)
 		]
 
@@ -101,6 +101,19 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 
 		ClassConvertHelper.fillAssociation(assocNode, engine)
+		
+		// inherited associations
+		val inheritedAssoc = rootNode.onEObject(PACKAGE.clClass_InheritedAssociations, InheritedAssociationMatcher.on(engine)) [
+			val elem = FACTORY.createClInheritedAssociation
+			elem.reference = new NamedReference(end)
+			return elem
+		]
+		
+		inheritedAssoc.on(BASE_PACKAGE.inherited_Parent, InheritedAssociationParentMatcher.on(engine)) [
+			new NamedReference(parent)
+		]
+		
+		ClassConvertHelper.fillAssociation(inheritedAssoc, engine)
 
 		// receptions
 		val receptionNode = rootNode.onEObject(PACKAGE.clClass_Receptions, ReceptionMatcher.on(engine)) [

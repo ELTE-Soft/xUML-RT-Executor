@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited;
 
 /**
  * <!-- begin-user-doc -->

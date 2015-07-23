@@ -2,23 +2,19 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NameWrapper;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -29,42 +25,21 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl#getReference <em>Reference</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl#getUsedArgs <em>Used Args</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClCtorRecordImpl#getDirectParents <em>Direct Parents</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRecord {
+public class ClCtorRecordImpl extends NamedImpl implements ClCtorRecord {
 	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
+	 * The cached value of the '{@link #getDirectParents() <em>Direct Parents</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getReference()
+	 * @see #getDirectParents()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getUsedArgs() <em>Used Args</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getUsedArgs()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<NameWrapper> usedArgs;
+	protected EList<Named> directParents;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -90,32 +65,11 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CTOR_RECORD__REFERENCE, oldReference, reference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<NameWrapper> getUsedArgs() {
-		if (usedArgs == null) {
-			usedArgs = new EObjectResolvingEList<NameWrapper>(NameWrapper.class, this, ClassdefPackage.CL_CTOR_RECORD__USED_ARGS);
+	public EList<Named> getDirectParents() {
+		if (directParents == null) {
+			directParents = new EObjectResolvingEList<Named>(Named.class, this, ClassdefPackage.CL_CTOR_RECORD__DIRECT_PARENTS);
 		}
-		return usedArgs;
+		return directParents;
 	}
 
 	/**
@@ -126,10 +80,8 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
-				return getReference();
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				return getUsedArgs();
+			case ClassdefPackage.CL_CTOR_RECORD__DIRECT_PARENTS:
+				return getDirectParents();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -143,12 +95,9 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				getUsedArgs().clear();
-				getUsedArgs().addAll((Collection<? extends NameWrapper>)newValue);
+			case ClassdefPackage.CL_CTOR_RECORD__DIRECT_PARENTS:
+				getDirectParents().clear();
+				getDirectParents().addAll((Collection<? extends Named>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -162,11 +111,8 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				getUsedArgs().clear();
+			case ClassdefPackage.CL_CTOR_RECORD__DIRECT_PARENTS:
+				getDirectParents().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -180,28 +126,10 @@ public class ClCtorRecordImpl extends TranslationObjectImpl implements ClCtorRec
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CTOR_RECORD__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
-			case ClassdefPackage.CL_CTOR_RECORD__USED_ARGS:
-				return usedArgs != null && !usedArgs.isEmpty();
+			case ClassdefPackage.CL_CTOR_RECORD__DIRECT_PARENTS:
+				return directParents != null && !directParents.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(')');
-		return result.toString();
 	}
 
 } //ClCtorRecordImpl

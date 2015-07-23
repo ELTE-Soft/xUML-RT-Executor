@@ -3,8 +3,8 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

@@ -2,11 +2,10 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -32,34 +31,13 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getReturnType <em>Return Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOperationSpec {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 	/**
 	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -97,27 +75,6 @@ public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOper
 	@Override
 	protected EClass eStaticClass() {
 		return ClassdefPackage.Literals.CL_OPERATION_SPEC;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION_SPEC__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -178,8 +135,6 @@ public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOper
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
-				return getReference();
 			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
 				if (resolve) return getReturnType();
 				return basicGetReturnType();
@@ -198,9 +153,6 @@ public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOper
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
 				setReturnType((Type)newValue);
 				return;
@@ -220,9 +172,6 @@ public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOper
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
 				setReturnType((Type)null);
 				return;
@@ -241,30 +190,12 @@ public class ClOperationSpecImpl extends TranslationObjectImpl implements ClOper
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_OPERATION_SPEC__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_OPERATION_SPEC__RETURN_TYPE:
 				return returnType != null;
 			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(')');
-		return result.toString();
 	}
 
 } //ClOperationSpecImpl

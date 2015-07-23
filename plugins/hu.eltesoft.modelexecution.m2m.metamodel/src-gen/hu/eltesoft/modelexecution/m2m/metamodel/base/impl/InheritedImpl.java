@@ -1,11 +1,10 @@
 /**
  */
-package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
+package hu.eltesoft.modelexecution.m2m.metamodel.base.impl;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.Inherited;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -22,7 +21,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.InheritedImpl#getParent <em>Parent</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.InheritedImpl#getParent <em>Parent</em>}</li>
  * </ul>
  *
  * @generated
@@ -64,7 +63,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ClassdefPackage.Literals.INHERITED;
+		return BasePackage.Literals.INHERITED;
 	}
 
 	/**
@@ -85,7 +84,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 		NamedReference oldParent = parent;
 		parent = newParent;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.INHERITED__PARENT, oldParent, parent));
+			eNotify(new ENotificationImpl(this, Notification.SET, BasePackage.INHERITED__PARENT, oldParent, parent));
 	}
 
 	/**
@@ -96,7 +95,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.INHERITED__PARENT:
+			case BasePackage.INHERITED__PARENT:
 				return getParent();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -110,7 +109,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.INHERITED__PARENT:
+			case BasePackage.INHERITED__PARENT:
 				setParent((NamedReference)newValue);
 				return;
 		}
@@ -125,7 +124,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.INHERITED__PARENT:
+			case BasePackage.INHERITED__PARENT:
 				setParent(PARENT_EDEFAULT);
 				return;
 		}
@@ -140,7 +139,7 @@ public abstract class InheritedImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.INHERITED__PARENT:
+			case BasePackage.INHERITED__PARENT:
 				return PARENT_EDEFAULT == null ? parent != null : !PARENT_EDEFAULT.equals(parent);
 		}
 		return super.eIsSet(featureID);

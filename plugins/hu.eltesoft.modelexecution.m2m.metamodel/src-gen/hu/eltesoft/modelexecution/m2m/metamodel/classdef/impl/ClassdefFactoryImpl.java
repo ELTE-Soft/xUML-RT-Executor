@@ -67,6 +67,7 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 			case ClassdefPackage.CL_ATTRIBUTE_SPEC: return createClAttributeSpec();
 			case ClassdefPackage.CL_INHERITED_ATTRIBUTE: return createClInheritedAttribute();
 			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
+			case ClassdefPackage.CL_INHERITED_ASSOCIATION: return createClInheritedAssociation();
 			case ClassdefPackage.CL_CTOR_RECORD: return createClCtorRecord();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -181,6 +182,16 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public ClAssociation createClAssociation() {
 		ClAssociationImpl clAssociation = new ClAssociationImpl();
 		return clAssociation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClInheritedAssociation createClInheritedAssociation() {
+		ClInheritedAssociationImpl clInheritedAssociation = new ClInheritedAssociationImpl();
+		return clInheritedAssociation;
 	}
 
 	/**

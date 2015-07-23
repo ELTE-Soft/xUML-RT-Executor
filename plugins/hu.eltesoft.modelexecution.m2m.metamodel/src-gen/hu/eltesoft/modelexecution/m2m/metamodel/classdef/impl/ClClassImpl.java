@@ -4,11 +4,12 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception;
@@ -35,40 +36,19 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getInheritedRegion <em>Inherited Region</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getInheritedAttributes <em>Inherited Attributes</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getParents <em>Parents</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getInheritedAssociations <em>Inherited Associations</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ClClassImpl extends TranslationObjectImpl implements ClClass {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class ClClassImpl extends NamedImpl implements ClClass {
 	/**
 	 * The default value of the '{@link #getRegion() <em>Region</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -88,26 +68,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * @ordered
 	 */
 	protected NamedReference region = REGION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getInheritedRegion() <em>Inherited Region</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInheritedRegion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference INHERITED_REGION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getInheritedRegion() <em>Inherited Region</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInheritedRegion()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference inheritedRegion = INHERITED_REGION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -170,6 +130,16 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	protected EList<NamedReference> parents;
 
 	/**
+	 * The cached value of the '{@link #getInheritedAssociations() <em>Inherited Associations</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInheritedAssociations()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ClInheritedAssociation> inheritedAssociations;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -193,27 +163,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__REFERENCE, oldReference, reference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public NamedReference getRegion() {
 		return region;
 	}
@@ -228,27 +177,6 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 		region = newRegion;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__REGION, oldRegion, region));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getInheritedRegion() {
-		return inheritedRegion;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setInheritedRegion(NamedReference newInheritedRegion) {
-		NamedReference oldInheritedRegion = inheritedRegion;
-		inheritedRegion = newInheritedRegion;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__INHERITED_REGION, oldInheritedRegion, inheritedRegion));
 	}
 
 	/**
@@ -328,15 +256,23 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ClInheritedAssociation> getInheritedAssociations() {
+		if (inheritedAssociations == null) {
+			inheritedAssociations = new EObjectResolvingEList<ClInheritedAssociation>(ClInheritedAssociation.class, this, ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS);
+		}
+		return inheritedAssociations;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__REFERENCE:
-				return getReference();
 			case ClassdefPackage.CL_CLASS__REGION:
 				return getRegion();
-			case ClassdefPackage.CL_CLASS__INHERITED_REGION:
-				return getInheritedRegion();
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return getOperations();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -349,6 +285,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return getAssociations();
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				return getParents();
+			case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS:
+				return getInheritedAssociations();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -362,14 +300,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion((NamedReference)newValue);
-				return;
-			case ClassdefPackage.CL_CLASS__INHERITED_REGION:
-				setInheritedRegion((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -395,6 +327,10 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				getParents().clear();
 				getParents().addAll((Collection<? extends NamedReference>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS:
+				getInheritedAssociations().clear();
+				getInheritedAssociations().addAll((Collection<? extends ClInheritedAssociation>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -407,14 +343,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion(REGION_EDEFAULT);
-				return;
-			case ClassdefPackage.CL_CLASS__INHERITED_REGION:
-				setInheritedRegion(INHERITED_REGION_EDEFAULT);
 				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -434,6 +364,9 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				getParents().clear();
 				return;
+			case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS:
+				getInheritedAssociations().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -446,12 +379,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_CLASS__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_CLASS__REGION:
 				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
-			case ClassdefPackage.CL_CLASS__INHERITED_REGION:
-				return INHERITED_REGION_EDEFAULT == null ? inheritedRegion != null : !INHERITED_REGION_EDEFAULT.equals(inheritedRegion);
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -464,6 +393,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 				return associations != null && !associations.isEmpty();
 			case ClassdefPackage.CL_CLASS__PARENTS:
 				return parents != null && !parents.isEmpty();
+			case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS:
+				return inheritedAssociations != null && !inheritedAssociations.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -478,12 +409,8 @@ public class ClClassImpl extends TranslationObjectImpl implements ClClass {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", region: ");
+		result.append(" (region: ");
 		result.append(region);
-		result.append(", inheritedRegion: ");
-		result.append(inheritedRegion);
 		result.append(", parents: ");
 		result.append(parents);
 		result.append(')');

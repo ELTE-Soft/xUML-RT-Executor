@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
@@ -18,19 +17,18 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
 
 	val ClClass classDefinition
 	val boolean hasStateMachine
-	val NamedReference region
 
 	new(ClClass classDefinition) {
 		super(classDefinition)
 		this.classDefinition = classDefinition
-		this.hasStateMachine = classDefinition.region != null || classDefinition.inheritedRegion != null
-		region = if (classDefinition.region != null) classDefinition.region else classDefinition.inheritedRegion
+		this.hasStateMachine = classDefinition.region != null
 	}
 
 	override wrapContent(CharSequence content) '''
@@ -58,7 +56,7 @@ class ClassTemplate extends Template {
 
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
-				return new «region.identifier»(this);
+				return new «classDefinition.region.identifier»(this);
 			}
 			
 			// receptions
@@ -71,7 +69,7 @@ class ClassTemplate extends Template {
 			
 		«ENDIF»
 		
-		«generateStructuralClassBody()»	
+		«generateStructuralClassBody()»
 	'''
 
 	def generateStructuralClassBody() '''
@@ -97,13 +95,19 @@ class ClassTemplate extends Template {
 	// associations
 	«FOR association : classDefinition.associations»
 		
-			«generateAssociation(association)»
+		«generateAssociation(association)»
+	«ENDFOR»
+	
+	// inherited associations
+	«FOR association : classDefinition.inheritedAssociations»
+		
+		«generateInheritedAssociation(association)»
 	«ENDFOR»
 	
 	// operations (both defined and inherited)
 	«FOR operation : classDefinition.operations»
 		
-			«generateOperation(operation)»
+		«generateOperation(operation)»
 	«ENDFOR»
 	'''
 
@@ -139,9 +143,32 @@ class ClassTemplate extends Template {
 	'''
 
 	def generateAssociation(ClAssociation association) '''
-		/** Attribute for association «association.javadoc» */
+		/** Attribute for association labeled with «association.javadoc» */
 		«javaType(association.type)» «association.identifier» = «createEmpty(association.type)»;
 		
+		@Override
+		public «javaType(association.type)» «association.getter»() {
+			return «association.identifier»;
+		}
+		
+		@Override
+		public void «association.setter»(«javaType(association.type)» newVal) {
+			«association.identifier» = newVal;
+		}
+	'''
+	
+	def generateInheritedAssociation(
+		ClInheritedAssociation association
+	) '''
+		@Override
+		public «javaType(association.type)» «association.getter»() {
+			return «association.parent.inherited».«association.getter»();
+		}
+		
+		@Override
+		public void «association.setter»(«javaType(association.type)» newVal) {
+			«association.parent.inherited».«association.setter»(newVal);
+		}
 	'''
 
 	def generateOperation(ClOperation operation) '''

@@ -5,7 +5,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
@@ -15,7 +15,6 @@ import hu.eltesoft.modelexecution.uml.incquery.AttributeLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationLowerBoundMatcher
-import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.OperationParameterLowerBoundMatcher
@@ -111,7 +110,7 @@ class ClassConvertHelper {
 		]
 	}
 
-	def static fillAssociation(AbstractFeatureNode<ClAssociation, ClassAssociationMatch> node, IncQueryEngine engine) {
+	def static fillAssociation(AbstractFeatureNode<? extends ClAssociationSpec, ?> node, IncQueryEngine engine) {
 		val assocType = node.onEObject(BASE_PACKAGE.typed_Type, ClassAssociationTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createType
 			elem.baseType = type.convert

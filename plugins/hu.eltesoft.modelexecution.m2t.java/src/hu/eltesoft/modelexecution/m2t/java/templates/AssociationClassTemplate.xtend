@@ -34,8 +34,7 @@ class AssociationClassTemplate extends Template {
 		class «assocClass.implementation» 
 			extends «IF stateful»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF» 
 			implements «Association.canonicalName», «assocClass.identifier» {
-				
-				
+		
 			/** Association constructor for UML class «assocClass.javadoc» */
 			public «assocClass.implementation»(«Runtime.canonicalName» runtime
 					«FOR parent : assocClass.parents», «parent.implementation» «parent.inherited»«ENDFOR»,
@@ -50,8 +49,6 @@ class AssociationClassTemplate extends Template {
 			}
 			«content»
 		}
-			
-		
 	'''
 
 	override generateContent() '''

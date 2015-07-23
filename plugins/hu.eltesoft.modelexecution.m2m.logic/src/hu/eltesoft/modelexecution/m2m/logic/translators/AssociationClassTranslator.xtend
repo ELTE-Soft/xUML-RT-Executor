@@ -44,8 +44,9 @@ class AssociationClassTranslator extends RootElementTranslator<AssociationClass,
 		val superName = super.getRootName(source)
 		if (superName != null) {
 			superName + "_impl"
-		} else
+		} else {
 			null
+		}
 	}
 
 }
