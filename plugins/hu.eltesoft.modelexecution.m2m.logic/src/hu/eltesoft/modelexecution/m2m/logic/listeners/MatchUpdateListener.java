@@ -19,20 +19,30 @@ public class MatchUpdateListener<UML extends NamedElement, Match extends IPatter
 	protected final RootElementTranslator<UML, ?, ?> translator;
 	protected final ChangeRegistry changes;
 
-	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> translator,
-			ChangeRegistry changes) {
+	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> translator, ChangeRegistry changes) {
 		this.translator = translator;
 		this.changes = changes;
 	}
 
 	@Override
 	public void notifyAppearance(Match match) {
-		changes.registerUpdate(extractRoot(match), translator);
+		registerChangeIfAppliable(match);
 	}
 
 	@Override
 	public void notifyDisappearance(Match match) {
-		changes.registerUpdate(extractRoot(match), translator);
+		registerChangeIfAppliable(match);
+	}
+
+	private void registerChangeIfAppliable(Match match) {
+		UML root = extractRoot(match);
+		// To generalize patterns, we allow subpattern updates to appear for
+		// multiple translators. For example when an attribute is created for an
+		// AssociationClass, both the Class and AssociationClass translators
+		// register it, but only the later can handle the change.
+		if (translator.canHandle(root)) {
+			changes.registerUpdate(extractRoot(match), translator);
+		}
 	}
 
 	@SuppressWarnings("unchecked")

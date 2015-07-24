@@ -26,20 +26,23 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
  * A node of the translator tree that corresponds to a feature of the
  * translational model.
  */
-public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
-		extends AbstractNode<Trans, Match> {
+public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> extends AbstractNode<Trans, Match> {
 
 	private final EStructuralFeature feature;
 
 	private final List<Consumer<AbstractFeatureNode<?, ?>>> childInvocations = new ArrayList<>();
 
-	public AbstractFeatureNode(List<String> typeNames,
-			EStructuralFeature feature, BaseMatcher<Match> matcher,
+	public AbstractFeatureNode(List<String> typeNames, EStructuralFeature feature, BaseMatcher<Match> matcher,
 			Function<Match, Trans> transform) {
 		super(typeNames, matcher, transform);
 		this.feature = feature;
 	}
 
+	/**
+	 * Collects and translates input model elements, and puts the results into
+	 * the parent object given by a parameter. Filters the input according to
+	 * the stack of model elements.
+	 */
 	@SuppressWarnings("unchecked")
 	public void integrate(EObject parentObject, List<EObject> stack) {
 		Match filterMatch = matcher.newEmptyMatch();
@@ -60,8 +63,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 
 			hasNoValue = list.isEmpty();
 		} else {
-			matcher.forOneArbitraryMatch(filterMatch,
-					m -> parentObject.eSet(feature, transform(m, stack)));
+			matcher.forOneArbitraryMatch(filterMatch, m -> parentObject.eSet(feature, transform(m, stack)));
 
 			hasNoValue = null == parentObject.eGet(feature);
 		}
@@ -69,8 +71,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		// If the metamodel feature had a default value, it had been set when
 		// the parent object was created.
 		if (feature.isRequired() && hasNoValue) {
-			throw new GenerationException("Required feature not found: "
-					+ feature.getName() + " in "
+			throw new GenerationException("Required feature not found: " + feature.getName() + " in "
 					+ feature.getEContainingClass().getName());
 		}
 
@@ -86,19 +87,15 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 	// with a template parameter.
 	private void checkCorrectFeatureIsSet(EObject parentObject) {
 		if (!feature.getEContainingClass().isInstance(parentObject)) {
-			throw new RuntimeException("Feature '" + feature.getName()
-					+ "' has the container class of '"
-					+ feature.getEContainingClass().getName()
-					+ "' but received a '" + parentObject.eClass().getName()
+			throw new RuntimeException("Feature '" + feature.getName() + "' has the container class of '"
+					+ feature.getEContainingClass().getName() + "' but received a '" + parentObject.eClass().getName()
 					+ "' to integrate into.");
 		}
 	}
 
-	protected abstract void processOrderedMultiFeature(Match filterMatch,
-			List<EObject> stack, Collection<Trans> list);
+	protected abstract void processOrderedMultiFeature(Match filterMatch, List<EObject> stack, Collection<Trans> list);
 
-	protected void processUnorderedMultiFeature(Match filterMatch,
-			List<EObject> stack, Collection<Trans> list) {
+	protected void processUnorderedMultiFeature(Match filterMatch, List<EObject> stack, Collection<Trans> list) {
 		matcher.forEachMatch(filterMatch, m -> list.add(transform(m, stack)));
 	}
 
@@ -112,8 +109,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		return meta;
 	}
 
-	public ReversibleTask addListeners(
-			RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
+	public ReversibleTask addListeners(RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
 		return new AddListenerTask(translator, context);
 	}
 
@@ -122,16 +118,14 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch>
 		private final ListenerContext context;
 		private final IMatchUpdateListener<Match> listener;
 
-		public AddListenerTask(RootElementTranslator<?, ?, ?> translator,
-				ListenerContext context) {
+		public AddListenerTask(RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
 			this.context = context;
 			AdvancedIncQueryEngine engine = context.getEngine();
 			ChangeRegistry changes = context.getChanges();
 
 			listener = new MatchUpdateListener<>(translator, changes);
 			engine.addMatchUpdateListener(matcher, listener, false);
-			childNodes.forEach(node -> add(node.addListeners(translator,
-					context)));
+			childNodes.forEach(node -> add(node.addListeners(translator, context)));
 		}
 
 		@Override

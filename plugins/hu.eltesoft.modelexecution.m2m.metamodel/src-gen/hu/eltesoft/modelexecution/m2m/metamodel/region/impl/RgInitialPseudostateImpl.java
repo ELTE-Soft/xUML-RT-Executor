@@ -2,9 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
@@ -23,35 +21,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgInitialPseudostateImpl#getInitialTransition <em>Initial Transition</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class RgInitialPseudostateImpl extends TranslationObjectImpl implements RgInitialPseudostate {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class RgInitialPseudostateImpl extends NamedImpl implements RgInitialPseudostate {
 	/**
 	 * The cached value of the '{@link #getInitialTransition() <em>Initial Transition</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -79,27 +56,6 @@ public class RgInitialPseudostateImpl extends TranslationObjectImpl implements R
 	@Override
 	protected EClass eStaticClass() {
 		return RegionPackage.Literals.RG_INITIAL_PSEUDOSTATE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_INITIAL_PSEUDOSTATE__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -148,8 +104,6 @@ public class RgInitialPseudostateImpl extends TranslationObjectImpl implements R
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_INITIAL_PSEUDOSTATE__REFERENCE:
-				return getReference();
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION:
 				if (resolve) return getInitialTransition();
 				return basicGetInitialTransition();
@@ -165,9 +119,6 @@ public class RgInitialPseudostateImpl extends TranslationObjectImpl implements R
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_INITIAL_PSEUDOSTATE__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION:
 				setInitialTransition((RgTransition)newValue);
 				return;
@@ -183,9 +134,6 @@ public class RgInitialPseudostateImpl extends TranslationObjectImpl implements R
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_INITIAL_PSEUDOSTATE__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION:
 				setInitialTransition((RgTransition)null);
 				return;
@@ -201,28 +149,10 @@ public class RgInitialPseudostateImpl extends TranslationObjectImpl implements R
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_INITIAL_PSEUDOSTATE__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_INITIAL_PSEUDOSTATE__INITIAL_TRANSITION:
 				return initialTransition != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(')');
-		return result.toString();
 	}
 
 } //RgInitialPseudostateImpl

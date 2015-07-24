@@ -13,12 +13,12 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity#getImplementationClass <em>Implementation Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage#getExExternalEntity()
  * @model

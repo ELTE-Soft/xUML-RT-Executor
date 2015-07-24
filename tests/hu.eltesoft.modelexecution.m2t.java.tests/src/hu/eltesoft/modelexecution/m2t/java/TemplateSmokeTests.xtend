@@ -47,7 +47,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		behavior.containerClass = makeNewReference("TestClass")
 		val template = new BehaviorTemplateSmap(behavior)
 
-		assertProperlyGenerated(template.generate)
+		assertProperlyGenerated(template.generate as SourceMappedText)
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		^class.reference = makeNewReference("TestClass")
 		val template = new ClassTemplateSmap(^class)
 
-		assertProperlyGenerated(template.generate)
+		assertProperlyGenerated(template.generate as SourceMappedText)
 	}
 
 	@Test
@@ -78,7 +78,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 
 		val template = new ClassTemplateSmap(^class)
 
-		assertProperlyGenerated(template.generate)
+		assertProperlyGenerated(template.generate as SourceMappedText)
 	}
 
 	@Test
@@ -124,7 +124,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 
 		val template = new RegionTemplateSmap(region)
 
-		assertProperlyGenerated(template.generate)
+		assertProperlyGenerated(template.generate as SourceMappedText)
 	}
 
 	@Test
@@ -133,7 +133,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		signal.reference = makeNewReference("TestSignal")
 		val template = new SignalTemplateSmap(signal)
 
-		assertProperlyGenerated(template.generate)
+		assertProperlyGenerated(template.generate as SourceMappedText)
 	}
 
 	private def assertProperlyGenerated(SourceMappedText result) {

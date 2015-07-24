@@ -57,11 +57,18 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case ClassdefPackage.CL_CLASS: return createClClass();
+			case ClassdefPackage.CL_CLASS_SPEC: return createClClassSpec();
 			case ClassdefPackage.CL_OPERATION: return createClOperation();
+			case ClassdefPackage.CL_OPERATION_SPEC: return createClOperationSpec();
 			case ClassdefPackage.CL_RECEPTION: return createClReception();
-			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
-			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
+			case ClassdefPackage.CL_RECEPTION_SPEC: return createClReceptionSpec();
 			case ClassdefPackage.CL_RECEPTION_PARAMETER: return createClReceptionParameter();
+			case ClassdefPackage.CL_ATTRIBUTE: return createClAttribute();
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC: return createClAttributeSpec();
+			case ClassdefPackage.CL_INHERITED_ATTRIBUTE: return createClInheritedAttribute();
+			case ClassdefPackage.CL_ASSOCIATION: return createClAssociation();
+			case ClassdefPackage.CL_INHERITED_ASSOCIATION: return createClInheritedAssociation();
+			case ClassdefPackage.CL_CTOR_RECORD: return createClCtorRecord();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -82,9 +89,29 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ClClassSpec createClClassSpec() {
+		ClClassSpecImpl clClassSpec = new ClClassSpecImpl();
+		return clClassSpec;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ClOperation createClOperation() {
 		ClOperationImpl clOperation = new ClOperationImpl();
 		return clOperation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClOperationSpec createClOperationSpec() {
+		ClOperationSpecImpl clOperationSpec = new ClOperationSpecImpl();
+		return clOperationSpec;
 	}
 
 	/**
@@ -102,9 +129,49 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ClReceptionSpec createClReceptionSpec() {
+		ClReceptionSpecImpl clReceptionSpec = new ClReceptionSpecImpl();
+		return clReceptionSpec;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClReceptionParameter createClReceptionParameter() {
+		ClReceptionParameterImpl clReceptionParameter = new ClReceptionParameterImpl();
+		return clReceptionParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ClAttribute createClAttribute() {
 		ClAttributeImpl clAttribute = new ClAttributeImpl();
 		return clAttribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClAttributeSpec createClAttributeSpec() {
+		ClAttributeSpecImpl clAttributeSpec = new ClAttributeSpecImpl();
+		return clAttributeSpec;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClInheritedAttribute createClInheritedAttribute() {
+		ClInheritedAttributeImpl clInheritedAttribute = new ClInheritedAttributeImpl();
+		return clInheritedAttribute;
 	}
 
 	/**
@@ -122,9 +189,19 @@ public class ClassdefFactoryImpl extends EFactoryImpl implements ClassdefFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClReceptionParameter createClReceptionParameter() {
-		ClReceptionParameterImpl clReceptionParameter = new ClReceptionParameterImpl();
-		return clReceptionParameter;
+	public ClInheritedAssociation createClInheritedAssociation() {
+		ClInheritedAssociationImpl clInheritedAssociation = new ClInheritedAssociationImpl();
+		return clInheritedAssociation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClCtorRecord createClCtorRecord() {
+		ClCtorRecordImpl clCtorRecord = new ClCtorRecordImpl();
+		return clCtorRecord;
 	}
 
 	/**

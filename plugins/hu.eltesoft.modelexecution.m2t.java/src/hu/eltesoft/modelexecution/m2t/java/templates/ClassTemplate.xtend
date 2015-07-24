@@ -3,11 +3,12 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
@@ -16,6 +17,7 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -29,37 +31,34 @@ class ClassTemplate extends Template {
 		this.hasStateMachine = classDefinition.region != null
 	}
 
-	override generate() '''
-		«IF hasStateMachine»
-			«generateClassWithState()»
-		«ELSE»
-			«generateClassWithoutState()»
-		«ENDIF»
-	'''
-
-	/**
-	 * Generates a class with a state machine. It will be a descendant of {@linkplain ClassWithState}.
-	 */
-	def generateClassWithState() '''
-		/** Class for UML class «classDefinition.javadoc» */
+	override wrapContent(CharSequence content) '''
+		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier» extends «ClassWithState.canonicalName» {
-		
+		public class «classDefinition.implementation» 
+			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
+			implements «classDefinition.identifier» {
+			«content»
+		}
+	'''
+	
+	override generateContent() '''
+		/** Constructor for UML class «classDefinition.javadoc» */
+		public «classDefinition.implementation»(«Runtime.canonicalName» runtime
+				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
+			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
+			«FOR parent : classDefinition.parents»
+				this.«parent.inherited» = «parent.inherited»;
+			«ENDFOR»
+		}
+
+		«IF hasStateMachine»
 			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
-		
-			/** Constructor for UML class «classDefinition.javadoc» */
-			public «classDefinition.identifier»(«Runtime.canonicalName» runtime) {
-				super(runtime, instanceCount.getAndIncrement());
-				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(this);
-			}
-		
+
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
 				return new «classDefinition.region.identifier»(this);
 			}
-		
-			«generateStructuralClassBody()»
-		
+			
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
@@ -67,57 +66,116 @@ class ClassTemplate extends Template {
 				
 				«generateReception(reception, true)»
 			«ENDFOR»
-		}
-	'''
-
-	/**
-	 * Generates a class that does not have a state machine.
-	 */
-	def generateClassWithoutState() '''
-		/** Data class for UML class «classDefinition.javadoc» */
-		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.identifier» extends «Class.canonicalName» {
+			
+		«ENDIF»
 		
-			«generateStructuralClassBody()»
-		}
-		
+		«generateStructuralClassBody()»
 	'''
 
 	def generateStructuralClassBody() '''
-		// attributes
-		«FOR attribute : classDefinition.attributes»
-			
-				«generateAttribute(attribute)»
-		«ENDFOR»
+	// references to parent objects
+	«FOR parent : classDefinition.parents»
 		
-		// associations
-		«FOR association : classDefinition.associations»
-			
-				«generateAssociation(association)»
-		«ENDFOR»
+		«parent.implementation» «parent.inherited»;
+	«ENDFOR»
+
+
+	// attributes
+	«FOR attribute : classDefinition.attributes»
 		
-		// operations
-		«FOR operation : classDefinition.operations»
-			
-				«generateOperation(operation)»
-		«ENDFOR»
+		«generateAttribute(attribute)»
+	«ENDFOR»
+	
+	// inherited attributes
+	«FOR attribute : classDefinition.inheritedAttributes»
+		
+		«generateInheritedAttribute(attribute)»
+	«ENDFOR»
+	
+	// associations
+	«FOR association : classDefinition.associations»
+		
+		«generateAssociation(association)»
+	«ENDFOR»
+	
+	// inherited associations
+	«FOR association : classDefinition.inheritedAssociations»
+		
+		«generateInheritedAssociation(association)»
+	«ENDFOR»
+	
+	// operations (both defined and inherited)
+	«FOR operation : classDefinition.operations»
+		
+		«generateOperation(operation)»
+	«ENDFOR»
 	'''
 
-	def generateAttribute(ClAttribute attribute) '''
+	def generateAttribute(
+		ClAttribute attribute
+	) '''
 		/** Attribute for UML attribute «attribute.javadoc» */
-		«IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		
+		«IF !attribute.isStatic»@Override«ENDIF»
+		public «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.getter»() {
+			return «attribute.identifier»;
+		}
+		
+		«IF !attribute.isStatic»@Override«ENDIF»
+		public «IF attribute.isStatic»static«ENDIF» void «attribute.setter»(«javaType(attribute.type)» newVal) {
+			«attribute.identifier» = newVal;
+		}
+	'''
+	
+	def generateInheritedAttribute(
+		ClInheritedAttribute attribute
+	) '''
+		@Override
+		public «javaType(attribute.type)» «attribute.getter»() {
+			return «attribute.parent.inherited».«attribute.getter»();
+		}
+		
+		@Override
+		public void «attribute.setter»(«javaType(attribute.type)» newVal) {
+			«attribute.parent.inherited».«attribute.setter»(newVal);
+		}
 	'''
 
 	def generateAssociation(ClAssociation association) '''
-		/** Attribute for association «association.javadoc» */
+		/** Attribute for association labeled with «association.javadoc» */
 		«javaType(association.type)» «association.identifier» = «createEmpty(association.type)»;
 		
+		@Override
+		public «javaType(association.type)» «association.getter»() {
+			return «association.identifier»;
+		}
+		
+		@Override
+		public void «association.setter»(«javaType(association.type)» newVal) {
+			«association.identifier» = newVal;
+		}
+	'''
+	
+	def generateInheritedAssociation(
+		ClInheritedAssociation association
+	) '''
+		@Override
+		public «javaType(association.type)» «association.getter»() {
+			return «association.parent.inherited».«association.getter»();
+		}
+		
+		@Override
+		public void «association.setter»(«javaType(association.type)» newVal) {
+			«association.parent.inherited».«association.setter»(newVal);
+		}
 	'''
 
 	def generateOperation(ClOperation operation) '''
 		/** Method for operation «operation.javadoc» 
 		 «javadocParams(operation.parameters)»
 		 */
+		«IF !operation.isStatic»@Override«ENDIF»
 		public «IF operation.isStatic»static«ENDIF»
 			«IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
 				«FOR parameter : operation.parameters SEPARATOR ','»
@@ -134,12 +192,35 @@ class ClassTemplate extends Template {
 				);
 		«ENDIF»
 		}
+		
+		«IF !operation.isStatic»
+			/** Statically dispatched access to operation «operation.javadoc» 
+			 «javadocParams(operation.parameters)»
+			 */
+			public static «IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+					«classDefinition.implementation» thisRef
+					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
+						«javaType(parameter.type)» «parameter.identifier»
+					«ENDFOR»
+				) {
+					«IF operation.hasBody»
+						«IF operation.returnType != null»return«ENDIF»
+							«operation.method.identifier».execute(
+					«IF !operation.isStatic»thisRef«ENDIF»
+					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+					);
+			«ENDIF»
+			}
+		«ENDIF»
 	'''
-
+	
 	def generateReception(ClReception reception, boolean isExternal) '''
 		/** Method for reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
+		@Override
 		public void «reception.identifier»«IF isExternal»_external«ENDIF»(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»
@@ -154,15 +235,10 @@ class ClassTemplate extends Template {
 		}
 	'''
 
-	def returns(ClOperation op) {
-		op.returnType != null
-	}
+	def returns(ClOperationSpec op) { op.returnType != null }
 
-	def hasBody(ClOperation op) {
-		op.method != null
-	}
+	def hasBody(ClOperation op) { op.method != null }
 
-	def hasParameters(ClOperation op) {
-		!op.parameters.empty
-	}
+	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
+	
 }

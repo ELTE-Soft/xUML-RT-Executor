@@ -18,13 +18,13 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl#isIsOrdered <em>Is Ordered</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.base.impl.MultiplicityImpl#isIsUnique <em>Is Unique</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

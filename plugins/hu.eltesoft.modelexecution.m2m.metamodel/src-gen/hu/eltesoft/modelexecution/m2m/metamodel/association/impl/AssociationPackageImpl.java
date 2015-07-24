@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.association.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociation;
+import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationClass;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationEnd;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
@@ -62,6 +63,13 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 	 * @generated
 	 */
 	private EClass asAssociationEndEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass asAssociationClassEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -191,6 +199,15 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getAsAssociationClass() {
+		return asAssociationClassEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public AssociationFactory getAssociationFactory() {
 		return (AssociationFactory)getEFactoryInstance();
 	}
@@ -219,6 +236,8 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 
 		asAssociationEndEClass = createEClass(AS_ASSOCIATION_END);
 		createEReference(asAssociationEndEClass, AS_ASSOCIATION_END__TYPE);
+
+		asAssociationClassEClass = createEClass(AS_ASSOCIATION_CLASS);
 	}
 
 	/**
@@ -246,6 +265,7 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 
 		// Obtain other dependent packages
 		BasePackage theBasePackage = (BasePackage)EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI);
+		ClassdefPackage theClassdefPackage = (ClassdefPackage)EPackage.Registry.INSTANCE.getEPackage(ClassdefPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -254,6 +274,8 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 		// Add supertypes to classes
 		asAssociationEClass.getESuperTypes().add(theBasePackage.getModelRoot());
 		asAssociationEndEClass.getESuperTypes().add(theBasePackage.getNamed());
+		asAssociationClassEClass.getESuperTypes().add(this.getAsAssociation());
+		asAssociationClassEClass.getESuperTypes().add(theClassdefPackage.getClClass());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(asAssociationEClass, AsAssociation.class, "AsAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -261,6 +283,8 @@ public class AssociationPackageImpl extends EPackageImpl implements AssociationP
 
 		initEClass(asAssociationEndEClass, AsAssociationEnd.class, "AsAssociationEnd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAsAssociationEnd_Type(), theBasePackage.getReferencedType(), null, "type", null, 1, 1, AsAssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(asAssociationClassEClass, AsAssociationClass.class, "AsAssociationClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

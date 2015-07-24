@@ -8,6 +8,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.TranslationObject;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -51,7 +53,7 @@ public class AssociationSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -87,6 +89,17 @@ public class AssociationSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case AssociationPackage.AS_ASSOCIATION_CLASS: {
+				AsAssociationClass asAssociationClass = (AsAssociationClass)theEObject;
+				T result = caseAsAssociationClass(asAssociationClass);
+				if (result == null) result = caseAsAssociation(asAssociationClass);
+				if (result == null) result = caseClClass(asAssociationClass);
+				if (result == null) result = caseModelRoot(asAssociationClass);
+				if (result == null) result = caseNamed(asAssociationClass);
+				if (result == null) result = caseTranslationObject(asAssociationClass);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -118,6 +131,21 @@ public class AssociationSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAsAssociationEnd(AsAssociationEnd object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>As Association Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>As Association Class</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAsAssociationClass(AsAssociationClass object) {
 		return null;
 	}
 
@@ -163,6 +191,21 @@ public class AssociationSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModelRoot(ModelRoot object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Class</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClClass(ClClass object) {
 		return null;
 	}
 

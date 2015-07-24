@@ -60,6 +60,7 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case BasePackage.TRANSLATION_OBJECT: return createTranslationObject();
+			case BasePackage.NAMED: return createNamed();
 			case BasePackage.TYPED: return createTyped();
 			case BasePackage.TYPE: return createType();
 			case BasePackage.PRIMITIVE_TYPE: return createPrimitiveType();
@@ -121,6 +122,16 @@ public class BaseFactoryImpl extends EFactoryImpl implements BaseFactory {
 	public TranslationObject createTranslationObject() {
 		TranslationObjectImpl translationObject = new TranslationObjectImpl();
 		return translationObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Named createNamed() {
+		NamedImpl named = new NamedImpl();
+		return named;
 	}
 
 	/**

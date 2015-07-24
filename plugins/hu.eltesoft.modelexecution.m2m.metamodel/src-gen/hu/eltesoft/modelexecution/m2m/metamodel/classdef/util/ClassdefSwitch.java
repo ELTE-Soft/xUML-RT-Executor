@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef.util;
 
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Inherited;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
@@ -53,7 +54,7 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -81,37 +82,46 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ClassdefPackage.CL_CLASS_SPEC: {
+				ClClassSpec clClassSpec = (ClClassSpec)theEObject;
+				T result = caseClClassSpec(clClassSpec);
+				if (result == null) result = caseModelRoot(clClassSpec);
+				if (result == null) result = caseNamed(clClassSpec);
+				if (result == null) result = caseTranslationObject(clClassSpec);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ClassdefPackage.CL_OPERATION: {
 				ClOperation clOperation = (ClOperation)theEObject;
 				T result = caseClOperation(clOperation);
+				if (result == null) result = caseClOperationSpec(clOperation);
 				if (result == null) result = caseNamed(clOperation);
 				if (result == null) result = caseTranslationObject(clOperation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_OPERATION_SPEC: {
+				ClOperationSpec clOperationSpec = (ClOperationSpec)theEObject;
+				T result = caseClOperationSpec(clOperationSpec);
+				if (result == null) result = caseNamed(clOperationSpec);
+				if (result == null) result = caseTranslationObject(clOperationSpec);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ClassdefPackage.CL_RECEPTION: {
 				ClReception clReception = (ClReception)theEObject;
 				T result = caseClReception(clReception);
+				if (result == null) result = caseClReceptionSpec(clReception);
 				if (result == null) result = caseNamed(clReception);
 				if (result == null) result = caseTranslationObject(clReception);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ClassdefPackage.CL_ATTRIBUTE: {
-				ClAttribute clAttribute = (ClAttribute)theEObject;
-				T result = caseClAttribute(clAttribute);
-				if (result == null) result = caseNamed(clAttribute);
-				if (result == null) result = caseTyped(clAttribute);
-				if (result == null) result = caseTranslationObject(clAttribute);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ClassdefPackage.CL_ASSOCIATION: {
-				ClAssociation clAssociation = (ClAssociation)theEObject;
-				T result = caseClAssociation(clAssociation);
-				if (result == null) result = caseNamed(clAssociation);
-				if (result == null) result = caseTyped(clAssociation);
-				if (result == null) result = caseTranslationObject(clAssociation);
+			case ClassdefPackage.CL_RECEPTION_SPEC: {
+				ClReceptionSpec clReceptionSpec = (ClReceptionSpec)theEObject;
+				T result = caseClReceptionSpec(clReceptionSpec);
+				if (result == null) result = caseNamed(clReceptionSpec);
+				if (result == null) result = caseTranslationObject(clReceptionSpec);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -121,6 +131,74 @@ public class ClassdefSwitch<T> extends Switch<T> {
 				if (result == null) result = caseNamed(clReceptionParameter);
 				if (result == null) result = caseMultiplicity(clReceptionParameter);
 				if (result == null) result = caseTranslationObject(clReceptionParameter);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_ATTRIBUTE: {
+				ClAttribute clAttribute = (ClAttribute)theEObject;
+				T result = caseClAttribute(clAttribute);
+				if (result == null) result = caseClAttributeSpec(clAttribute);
+				if (result == null) result = caseNamed(clAttribute);
+				if (result == null) result = caseTyped(clAttribute);
+				if (result == null) result = caseTranslationObject(clAttribute);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_ATTRIBUTE_SPEC: {
+				ClAttributeSpec clAttributeSpec = (ClAttributeSpec)theEObject;
+				T result = caseClAttributeSpec(clAttributeSpec);
+				if (result == null) result = caseNamed(clAttributeSpec);
+				if (result == null) result = caseTyped(clAttributeSpec);
+				if (result == null) result = caseTranslationObject(clAttributeSpec);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_INHERITED_ATTRIBUTE: {
+				ClInheritedAttribute clInheritedAttribute = (ClInheritedAttribute)theEObject;
+				T result = caseClInheritedAttribute(clInheritedAttribute);
+				if (result == null) result = caseClAttributeSpec(clInheritedAttribute);
+				if (result == null) result = caseInherited(clInheritedAttribute);
+				if (result == null) result = caseNamed(clInheritedAttribute);
+				if (result == null) result = caseTyped(clInheritedAttribute);
+				if (result == null) result = caseTranslationObject(clInheritedAttribute);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_ASSOCIATION: {
+				ClAssociation clAssociation = (ClAssociation)theEObject;
+				T result = caseClAssociation(clAssociation);
+				if (result == null) result = caseClAssociationSpec(clAssociation);
+				if (result == null) result = caseNamed(clAssociation);
+				if (result == null) result = caseTyped(clAssociation);
+				if (result == null) result = caseTranslationObject(clAssociation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_ASSOCIATION_SPEC: {
+				ClAssociationSpec clAssociationSpec = (ClAssociationSpec)theEObject;
+				T result = caseClAssociationSpec(clAssociationSpec);
+				if (result == null) result = caseNamed(clAssociationSpec);
+				if (result == null) result = caseTyped(clAssociationSpec);
+				if (result == null) result = caseTranslationObject(clAssociationSpec);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_INHERITED_ASSOCIATION: {
+				ClInheritedAssociation clInheritedAssociation = (ClInheritedAssociation)theEObject;
+				T result = caseClInheritedAssociation(clInheritedAssociation);
+				if (result == null) result = caseInherited(clInheritedAssociation);
+				if (result == null) result = caseClAssociationSpec(clInheritedAssociation);
+				if (result == null) result = caseNamed(clInheritedAssociation);
+				if (result == null) result = caseTyped(clInheritedAssociation);
+				if (result == null) result = caseTranslationObject(clInheritedAssociation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ClassdefPackage.CL_CTOR_RECORD: {
+				ClCtorRecord clCtorRecord = (ClCtorRecord)theEObject;
+				T result = caseClCtorRecord(clCtorRecord);
+				if (result == null) result = caseNamed(clCtorRecord);
+				if (result == null) result = caseTranslationObject(clCtorRecord);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -144,6 +222,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Class Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Class Spec</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClClassSpec(ClClassSpec object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Cl Operation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -155,6 +248,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClOperation(ClOperation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Operation Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Operation Spec</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClOperationSpec(ClOperationSpec object) {
 		return null;
 	}
 
@@ -174,6 +282,36 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Reception Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Reception Spec</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClReceptionSpec(ClReceptionSpec object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClReceptionParameter(ClReceptionParameter object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Cl Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -185,6 +323,36 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseClAttribute(ClAttribute object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Attribute Spec</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Attribute Spec</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClAttributeSpec(ClAttributeSpec object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Inherited Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Inherited Attribute</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClInheritedAttribute(ClInheritedAttribute object) {
 		return null;
 	}
 
@@ -204,17 +372,47 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Association Spec</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Cl Reception Parameter</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Association Spec</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseClReceptionParameter(ClReceptionParameter object) {
+	public T caseClAssociationSpec(ClAssociationSpec object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Inherited Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Inherited Association</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClInheritedAssociation(ClInheritedAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cl Ctor Record</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cl Ctor Record</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClCtorRecord(ClCtorRecord object) {
 		return null;
 	}
 
@@ -264,6 +462,21 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiplicity(Multiplicity object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Typed</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -279,17 +492,17 @@ public class ClassdefSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Inherited</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Inherited</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMultiplicity(Multiplicity object) {
+	public T caseInherited(Inherited object) {
 		return null;
 	}
 

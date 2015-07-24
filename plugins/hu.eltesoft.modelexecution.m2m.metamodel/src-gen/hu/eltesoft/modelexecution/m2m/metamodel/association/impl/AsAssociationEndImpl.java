@@ -5,10 +5,9 @@ package hu.eltesoft.modelexecution.m2m.metamodel.association.impl;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationEnd;
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -23,35 +22,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationEndImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationEndImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAssociationEnd {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class AsAssociationEndImpl extends NamedImpl implements AsAssociationEnd {
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -79,27 +57,6 @@ public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAss
 	@Override
 	protected EClass eStaticClass() {
 		return AssociationPackage.Literals.AS_ASSOCIATION_END;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_END__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -148,8 +105,6 @@ public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAss
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AssociationPackage.AS_ASSOCIATION_END__REFERENCE:
-				return getReference();
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
@@ -165,9 +120,6 @@ public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAss
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AssociationPackage.AS_ASSOCIATION_END__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
 				setType((ReferencedType)newValue);
 				return;
@@ -183,9 +135,6 @@ public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAss
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AssociationPackage.AS_ASSOCIATION_END__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
 				setType((ReferencedType)null);
 				return;
@@ -201,28 +150,10 @@ public class AsAssociationEndImpl extends TranslationObjectImpl implements AsAss
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AssociationPackage.AS_ASSOCIATION_END__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case AssociationPackage.AS_ASSOCIATION_END__TYPE:
 				return type != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(')');
-		return result.toString();
 	}
 
 } //AsAssociationEndImpl

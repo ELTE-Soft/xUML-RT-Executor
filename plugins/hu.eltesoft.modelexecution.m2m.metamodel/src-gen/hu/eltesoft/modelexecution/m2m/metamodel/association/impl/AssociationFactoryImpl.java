@@ -58,6 +58,7 @@ public class AssociationFactoryImpl extends EFactoryImpl implements AssociationF
 		switch (eClass.getClassifierID()) {
 			case AssociationPackage.AS_ASSOCIATION: return createAsAssociation();
 			case AssociationPackage.AS_ASSOCIATION_END: return createAsAssociationEnd();
+			case AssociationPackage.AS_ASSOCIATION_CLASS: return createAsAssociationClass();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -81,6 +82,16 @@ public class AssociationFactoryImpl extends EFactoryImpl implements AssociationF
 	public AsAssociationEnd createAsAssociationEnd() {
 		AsAssociationEndImpl asAssociationEnd = new AsAssociationEndImpl();
 		return asAssociationEnd;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AsAssociationClass createAsAssociationClass() {
+		AsAssociationClassImpl asAssociationClass = new AsAssociationClassImpl();
+		return asAssociationClass;
 	}
 
 	/**

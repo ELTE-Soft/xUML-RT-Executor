@@ -14,6 +14,7 @@ import hu.eltesoft.modelexecution.uml.incquery.AssociationMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Association
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class AssociationTranslator extends RootElementTranslator<Association, AsAssociation, AssociationMatch> {
 
@@ -24,12 +25,16 @@ class AssociationTranslator extends RootElementTranslator<Association, AsAssocia
 		super(engine)
 	}
 
-	override protected buildMapper(IncQueryEngine engine) throws IncQueryException {
+	override createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(AssociationMatcher.on(engine)) [
 			val root = FACTORY.createAsAssociation
 			root.reference = new NamedReference(association)
 			return root
 		]
+		return rootNode;
+	}
+
+	override initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
 		val endNode = rootNode.onEObject(PACKAGE.asAssociation_Ends, AssociationEndMatcher.on(engine)) [
 			val elem = FACTORY.createAsAssociationEnd
 			elem.reference = new NamedReference(end)
@@ -38,8 +43,6 @@ class AssociationTranslator extends RootElementTranslator<Association, AsAssocia
 		endNode.on(PACKAGE.asAssociationEnd_Type, AssociationEndTypeMatcher.on(engine)) [
 			cls.convert as ReferencedType
 		]
-
-		return rootNode
 	}
 
 	override createTemplate(AsAssociation association) {

@@ -4,10 +4,9 @@ package hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionParameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage;
@@ -25,39 +24,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#isIsOrdered <em>Is Ordered</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionParameterImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class ClReceptionParameterImpl extends TranslationObjectImpl implements ClReceptionParameter {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class ClReceptionParameterImpl extends NamedImpl implements ClReceptionParameter {
 	/**
 	 * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -165,27 +143,6 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 	@Override
 	protected EClass eStaticClass() {
 		return ClassdefPackage.Literals.CL_RECEPTION_PARAMETER;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_RECEPTION_PARAMETER__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -318,8 +275,6 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION_PARAMETER__REFERENCE:
-				return getReference();
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__LOWER_BOUND:
 				return getLowerBound();
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__UPPER_BOUND:
@@ -343,9 +298,6 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION_PARAMETER__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__LOWER_BOUND:
 				setLowerBound((Integer)newValue);
 				return;
@@ -373,9 +325,6 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION_PARAMETER__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__LOWER_BOUND:
 				setLowerBound(LOWER_BOUND_EDEFAULT);
 				return;
@@ -403,8 +352,6 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ClassdefPackage.CL_RECEPTION_PARAMETER__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__LOWER_BOUND:
 				return lowerBound != LOWER_BOUND_EDEFAULT;
 			case ClassdefPackage.CL_RECEPTION_PARAMETER__UPPER_BOUND:
@@ -467,9 +414,7 @@ public class ClReceptionParameterImpl extends TranslationObjectImpl implements C
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", lowerBound: ");
+		result.append(" (lowerBound: ");
 		result.append(lowerBound);
 		result.append(", upperBound: ");
 		result.append(upperBound);

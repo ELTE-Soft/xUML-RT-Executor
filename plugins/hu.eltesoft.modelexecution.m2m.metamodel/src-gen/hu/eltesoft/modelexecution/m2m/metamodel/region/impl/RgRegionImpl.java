@@ -4,7 +4,7 @@ package hu.eltesoft.modelexecution.m2m.metamodel.region.impl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.TranslationObjectImpl;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RgInitialPseudostate;
@@ -30,37 +30,16 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getContainerClass <em>Container Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getInitialPseudostate <em>Initial Pseudostate</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.region.impl.RgRegionImpl#getStates <em>States</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
-	/**
-	 * The default value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final NamedReference REFERENCE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReference() <em>Reference</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReference()
-	 * @generated
-	 * @ordered
-	 */
-	protected NamedReference reference = REFERENCE_EDEFAULT;
-
+public class RgRegionImpl extends NamedImpl implements RgRegion {
 	/**
 	 * The default value of the '{@link #getContainerClass() <em>Container Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -118,27 +97,6 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	@Override
 	protected EClass eStaticClass() {
 		return RegionPackage.Literals.RG_REGION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NamedReference getReference() {
-		return reference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReference(NamedReference newReference) {
-		NamedReference oldReference = reference;
-		reference = newReference;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RegionPackage.RG_REGION__REFERENCE, oldReference, reference));
 	}
 
 	/**
@@ -220,8 +178,6 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__REFERENCE:
-				return getReference();
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
 				return getContainerClass();
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
@@ -242,9 +198,6 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__REFERENCE:
-				setReference((NamedReference)newValue);
-				return;
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
 				setContainerClass((NamedReference)newValue);
 				return;
@@ -267,9 +220,6 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__REFERENCE:
-				setReference(REFERENCE_EDEFAULT);
-				return;
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
 				setContainerClass(CONTAINER_CLASS_EDEFAULT);
 				return;
@@ -291,8 +241,6 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case RegionPackage.RG_REGION__REFERENCE:
-				return REFERENCE_EDEFAULT == null ? reference != null : !REFERENCE_EDEFAULT.equals(reference);
 			case RegionPackage.RG_REGION__CONTAINER_CLASS:
 				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
 			case RegionPackage.RG_REGION__INITIAL_PSEUDOSTATE:
@@ -313,9 +261,7 @@ public class RgRegionImpl extends TranslationObjectImpl implements RgRegion {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (reference: ");
-		result.append(reference);
-		result.append(", containerClass: ");
+		result.append(" (containerClass: ");
 		result.append(containerClass);
 		result.append(')');
 		return result.toString();

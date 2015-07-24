@@ -31,6 +31,15 @@ public interface BaseFactory extends EFactory {
 	TranslationObject createTranslationObject();
 
 	/**
+	 * Returns a new object of class '<em>Named</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Named</em>'.
+	 * @generated
+	 */
+	Named createNamed();
+
+	/**
 	 * Returns a new object of class '<em>Typed</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

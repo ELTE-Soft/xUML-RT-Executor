@@ -6,7 +6,7 @@ import hu.eltesoft.modelexecution.runtime.Runtime;
 /**
  * The base class of generated code from UML classes.
  */
-public abstract class ClassWithState extends Class {
+public abstract class ClassWithState extends Class implements StatefulClass {
 
 	private final Runtime runtime;
 	private final int instanceID;
@@ -24,10 +24,12 @@ public abstract class ClassWithState extends Class {
 	 */
 	protected abstract StateMachineRegion createStateMachine();
 
+	@Override
 	public Runtime getRuntime() {
 		return runtime;
 	}
 
+	@Override
 	public int getInstanceID() {
 		return instanceID;
 	}
@@ -36,13 +38,12 @@ public abstract class ClassWithState extends Class {
 		stateMachine.doInitialTransition();
 	}
 
+	@Override
 	public void receive(Event event) {
 		stateMachine.step(event);
 	}
 
-	/**
-	 * Unregisters the instance to allow garbage-collection
-	 */
+	@Override
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
 	}

@@ -40,6 +40,15 @@ public interface AssociationFactory extends EFactory {
 	AsAssociationEnd createAsAssociationEnd();
 
 	/**
+	 * Returns a new object of class '<em>As Association Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>As Association Class</em>'.
+	 * @generated
+	 */
+	AsAssociationClass createAsAssociationClass();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

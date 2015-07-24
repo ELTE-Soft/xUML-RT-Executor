@@ -13,6 +13,10 @@ public class MockClass extends ClassWithState {
 
 	private Runtime runtime;
 
+	public static MockClass create(Runtime runtime) {
+		return new MockClass(runtime);
+	}
+	
 	public MockClass(Runtime runtime) {
 		super(runtime, 0);
 		this.runtime = runtime;

@@ -17,22 +17,25 @@ class CallableProxyTemplate extends Template {
 		this.callable = callable
 	}
 
-	override generate() '''
+	override wrapContent(CharSequence content) '''
 		«generatedHeaderForClass(callable)»
 		public class «callable.originalName» {
-		
-			private final «callable.identifier» instance;
-		
 			public «callable.originalName»(«callable.identifier» instance) {
 				this.instance = instance;
 			}
+			«content»
+		}
+	'''
+
+	override generateContent() '''		
+		private final «callable.identifier» instance;
+		
 		«FOR reception : callable.receptions»
 			
 				public void «reception.originalName»() {
 					instance.«reception.identifier»_external();
 				}
 		«ENDFOR»
-		}
 	'''
 
 	def originalName(Named named) {
