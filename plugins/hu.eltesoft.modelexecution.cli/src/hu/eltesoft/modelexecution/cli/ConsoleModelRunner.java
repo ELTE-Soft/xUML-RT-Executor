@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.tools.DiagnosticCollector;
@@ -67,125 +67,138 @@ public class ConsoleModelRunner {
 
 	private static final int ERROR_EXIT_CODE = 1;
 
-	private static final Map<String, Function<String, Logger>> LOGGERMAKER_BY_NAME = mkLoggerMaker();
+	private static final Map<String, Supplier<Logger>> LOGGER_FACTORY = new HashMap<>();
 
-	/** For displaying the time if {@link Opt.VERBOSE} is set. */
-	private static Date startTime = new Date();
+	static {
+		LOGGER_FACTORY.put(LoggerType.LOGGER_NONE.name, () -> new NoLogger());
+		LOGGER_FACTORY.put(LoggerType.LOGGER_MINIMAL.name, () -> new MinimalLogger());
+	}
 
 	/**
-	 * The main actions that the program can do. At least one of them must be
+	 * The main actions that the program can do. At least one of these must be
 	 * present.
 	 */
 	public static final List<String> ACTION_OPTS = Utils.list(Opt.SETUP.longName, Opt.EXECUTE.longName);
 
-	public static void main(String[] args) {
-		Options parserOpts = mkParserOpts();
+	/** For displaying the time if {@link Opt.VERBOSE} is set. */
+	private final Date startTime = new Date();
 
+	private final Options options = createParserOptions();
+
+	private CommandLine cmd;
+
+	public static void main(String[] args) {
+		ConsoleModelRunner runner = new ConsoleModelRunner();
 		try {
-			doCli(args, parserOpts);
+			runner.run(args);
 		} catch (IllegalArgumentException | ParseException e) {
-			exitWithErrorMsg(parserOpts, e.getLocalizedMessage());
+			runner.exitWithErrorMsg(e.getLocalizedMessage());
 		}
 	}
 
-	public static void doCli(String[] args, Options parserOpts) throws ParseException {
-		CommandLineParser parser = new PosixParser();
-		CommandLine cmd = parser.parse(parserOpts, args);
-		processCmdLine(cmd, parserOpts);
-	}
-
-	private static void exitWithErrorMsg(Options parserOpts, String errMsg) {
-		System.err.println(errMsg);
-		printHelp(parserOpts);
+	private void exitWithErrorMsg(String errorMessage) {
+		System.err.println(errorMessage);
+		printHelp();
 		System.exit(ERROR_EXIT_CODE);
 	}
 
-	private static Map<String, Function<String, Logger>> mkLoggerMaker() {
-		Map<String, Function<String, Logger>> loggerByName = new HashMap<>();
-		loggerByName.put(LoggerType.LOGGER_NONE.name, args -> new NoLogger());
-		loggerByName.put(LoggerType.LOGGER_MINIMAL.name, args -> new MinimalLogger());
-		return loggerByName;
+	public void run(String[] args) throws ParseException {
+		CommandLineParser parser = new PosixParser();
+		cmd = parser.parse(options, args);
+		processCommands();
 	}
 
-	private static void processCmdLine(CommandLine cmd, Options parserOpts) {
+	public Options createParserOptions() {
+		Options options = new Options();
+		Arrays.stream(Opt.values()).map(opt -> opt.createOption()).forEach(options::addOption);
+		return options;
+	}
+
+	private void processCommands() {
 		if (cmd.hasOption(Opt.HELP.shortName)) {
-			showOptionsAndExit(parserOpts);
+			showOptionsAndExit();
 		}
-
-		checkOptsValidity(cmd, parserOpts);
-
-		processValidCmdLine(parserOpts, cmd);
+		checkOptionsValidity();
+		processValidCommands();
 	}
 
-	private static void checkOptsValidity(CommandLine cmd, Options parserOpts) {
-		checkMissingRequiredOpts(cmd, parserOpts);
+	private void showOptionsAndExit() {
+		printHelp();
+		System.exit(0);
+	}
 
-		checkUnknownLoggerType(cmd, parserOpts);
+	private void printHelp() {
+		HelpFormatter formatter = new HelpFormatter();
+		String headline = String.format("java %s%n\t\t [%s]...", ConsoleModelRunner.class.getCanonicalName(),
+				Messages.OPTION.getMsg());
+		formatter.printHelp(headline, options);
+	}
 
-		checkNothingToDo(cmd, parserOpts);
+	private void checkOptionsValidity() {
+		checkMissingRequiredOptions();
+
+		checkUnknownLoggerType();
+
+		checkNothingToDo();
 
 		boolean rootDirIsNeeded = Opt.EXECUTE.isPresent(cmd);
 		boolean rootDirIsAutocreated = Opt.SETUP.isPresent(cmd);
 		if (rootDirIsNeeded && !rootDirIsAutocreated) {
-			checkIsParameterDir(cmd, parserOpts, Opt.ROOT, 0);
+			checkIsParameterDir(Opt.ROOT, 0);
 		}
 
-		checkIsParameterDir(cmd, parserOpts, Opt.WRITE_TRACE, 0);
-		checkIsParameterDir(cmd, parserOpts, Opt.READ_TRACE, 0);
+		checkIsParameterDir(Opt.WRITE_TRACE, 0);
+		checkIsParameterDir(Opt.READ_TRACE, 0);
 
-		checkIsParameterFile(cmd, parserOpts, Opt.SETUP, 0);
+		checkIsParameterFile(Opt.SETUP, 0);
 
-		checkArgCount(cmd, parserOpts, Opt.EXECUTE, 2);
+		checkArgCount(Opt.EXECUTE, 2);
 
-		checkNoDanglingArg(cmd, parserOpts);
+		checkNoDanglingArg();
 	}
 
-	private static void checkNoDanglingArg(CommandLine cmd, Options parserOpts) {
+	private void checkNoDanglingArg() {
 		String[] danglingArgs = cmd.getArgs();
 		if (danglingArgs.length > 0) {
-			throw new DanglingArgumentsException(danglingArgs, parserOpts);
+			throw new DanglingArgumentsException(danglingArgs, options);
 		}
-
 	}
 
-	private static void checkArgCount(CommandLine cmd, Options parserOpts, Opt opt, int expectedArgCount) {
+	private void checkArgCount(Opt opt, int expectedArgCount) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
 
 		int foundArgCount = opt.getOptions(cmd).get().length;
 		if (foundArgCount != expectedArgCount) {
-			throw new BadArgCountException(opt.getPresentName(cmd).get(), foundArgCount, expectedArgCount, parserOpts);
+			throw new BadArgCountException(opt.getPresentName(cmd).get(), foundArgCount, expectedArgCount, options);
 		}
-
 	}
 
-	private static void checkIsParameterFile(CommandLine cmd, Options parserOpts, Opt opt, int idx) {
+	private void checkIsParameterFile(Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
 
 		String model = opt.getOption(cmd, idx).get();
-
 		if (!new File(model).canRead()) {
-			throw new BadFileException(opt.getPresentName(cmd).get(), model, parserOpts);
+			throw new BadFileException(opt.getPresentName(cmd).get(), model, options);
 		}
 	}
 
-	private static void checkIsParameterDir(CommandLine cmd, Options parserOpts, Opt opt, int idx) {
+	private void checkIsParameterDir(Opt opt, int idx) {
 		if (!opt.isPresent(cmd)) {
 			return;
 		}
 
 		String root = opt.getOption(cmd, idx).get();
-
 		if (!new File(root).isDirectory()) {
-			throw new BadDirectoryException(opt.getPresentName(cmd).get(), root, parserOpts);
+			throw new BadDirectoryException(opt.getPresentName(cmd).get(), root, options);
 		}
 	}
 
-	private static void checkMissingRequiredOpts(CommandLine cmd, Options parserOpts) {
-		Set<Opt> presentOpts = getPresentOpts(cmd);
+	private void checkMissingRequiredOptions() {
+		Set<Opt> presentOpts = getPresentOpts();
 		for (Opt opt : presentOpts) {
 			if (opt.requiredOpts.isEmpty()) {
 				continue;
@@ -193,16 +206,16 @@ public class ConsoleModelRunner {
 
 			boolean hasRequiredOpt = opt.requiredOpts.stream().anyMatch(opt2 -> opt2.isPresent(cmd));
 			if (!hasRequiredOpt) {
-				throw new IncompatibleOptsException(opt, parserOpts);
+				throw new IncompatibleOptsException(opt, options);
 			}
 		}
 	}
 
-	private static Set<Opt> getPresentOpts(CommandLine cmd) {
+	private Set<Opt> getPresentOpts() {
 		return Arrays.stream(Opt.values()).filter(opt -> opt.isPresent(cmd)).collect(Collectors.toSet());
 	}
 
-	private static void checkNothingToDo(CommandLine cmd, Options parserOpts) {
+	private void checkNothingToDo() {
 		boolean isAtLeastOneOptPresent = ACTION_OPTS.stream().anyMatch(opt -> cmd.hasOption(opt));
 		if (!isAtLeastOneOptPresent) {
 			throw new NothingToDoException();
@@ -213,43 +226,101 @@ public class ConsoleModelRunner {
 	 * This check is only activated when the user enters a logger type. Checks
 	 * if the entered logger type is unknown.
 	 */
-	private static void checkUnknownLoggerType(CommandLine cmd, Options parserOpts) {
-		if (!Opt.LOGGER.isPresent(cmd))
+	private void checkUnknownLoggerType() {
+		if (!Opt.LOGGER.isPresent(cmd)) {
 			return;
+		}
 
 		String userLoggerType = Opt.LOGGER.getOption(cmd, 0).get();
-		if (LOGGERMAKER_BY_NAME.containsKey(userLoggerType))
+		if (LOGGER_FACTORY.containsKey(userLoggerType)) {
 			return;
+		}
 
-		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, parserOpts);
+		throw new UnknownArgForOptException(userLoggerType, Opt.LOGGER, options);
 	}
 
-	private static void processValidCmdLine(Options parserOpts, CommandLine cmd) {
+	private void processValidCommands() {
 		String rootDir = getRootDir(cmd);
 
 		if (Opt.SETUP.isPresent(cmd)) {
 			String modelPath = Opt.SETUP.getOption(cmd, 0).get();
-
-			runCompilationStep(modelPath, rootDir, cmd);
+			compileModel(modelPath, rootDir);
 		}
 
 		if (Opt.EXECUTE.isPresent(cmd)) {
 			String className = Opt.EXECUTE.getOption(cmd, 0).get();
 			String feedName = Opt.EXECUTE.getOption(cmd, 1).get();
-
-			runExecutionStep(className, feedName, cmd, rootDir);
+			executeModel(className, feedName, cmd, rootDir);
 		}
 
-		verboseTimeMsg(cmd, Messages.FINISHED_RUNNING);
+		verboseTimeMsg(Messages.FINISHED_RUNNING);
 	}
 
-	private static void runCompilationStep(String modelPath, String rootDir, CommandLine cmd) {
-		List<String> generatedJavaFiles = runJavaGenerationStep(modelPath, rootDir, cmd);
-		runJavaCompilationStep(rootDir, cmd, generatedJavaFiles);
+	private void compileModel(String modelPath, String rootDir) {
+		List<String> generatedJavaFiles = generateSources(modelPath, rootDir);
+		compileSources(rootDir, generatedJavaFiles);
 	}
 
-	private static void runJavaCompilationStep(String rootDir, CommandLine cmd, List<String> generatedJavaFiles) {
-		verboseTimeMsg(cmd, Messages.COMPILING_JAVA_TO_CLASS);
+	private List<String> generateSources(String modelPath, String rootDir) {
+		List<String> generatedFiles = new ArrayList<>();
+
+		try {
+			verboseTimeMsg(Messages.COMPILING_MODEL_TO_JAVA);
+			registerUmlResourceType();
+
+			verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
+			Resource resource = loadModel(modelPath);
+
+			if (resource == null) {
+				throw new ModelLoadFailedException(modelPath);
+			}
+
+			createRootDirIfNeeded(rootDir);
+
+			FileManager fileMan = new FileManager(rootDir);
+
+			boolean[] anyErrorsDuringGeneration = { false };
+
+			SourceCodeChangeListener listener = new SourceCodeChangeListener() {
+				@Override
+				public void sourceCodeChanged(String qualifiedName, SourceMappedText smTxt, DebugSymbols symbols) {
+					String fileText = smTxt.getText().toString();
+					try {
+						verboseTimeMsg(Messages.GENERATING_CLASS, qualifiedName);
+						String path = fileMan.addOrUpdate(qualifiedName, fileText);
+						generatedFiles.add(path);
+					} catch (IOException e) {
+						verboseTimeMsg(Messages.JAVA_FILE_SAVE_FAILED, qualifiedName);
+						anyErrorsDuringGeneration[0] = true;
+					}
+				};
+
+				@Override
+				public void sourceCodeDeleted(String qualifiedName) {
+					fileMan.remove(qualifiedName);
+				}
+			};
+			ResourceTranslator translator = ResourceTranslator.create(resource);
+			List<SourceCodeTask> taskQueue = translator.fullTranslation();
+
+			verboseTimeMsg(Messages.ANALYSING_MODEL);
+			taskQueue.forEach(t -> t.perform(listener));
+
+			if (anyErrorsDuringGeneration[0]) {
+				throw new JavaFileGenerationError();
+			}
+
+			return generatedFiles;
+		} catch (RuntimeException e) {
+			if (e.getCause() instanceof IncQueryException) {
+				throw new CliIncQueryException((IncQueryException) e.getCause());
+			}
+			throw e;
+		}
+	}
+
+	private void compileSources(String rootDir, List<String> generatedJavaFiles) {
+		verboseTimeMsg(Messages.COMPILING_JAVA_TO_CLASS);
 
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
@@ -273,74 +344,16 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	private static List<String> runJavaGenerationStep(String modelPath, String rootDir, CommandLine cmd) {
-		List<String> generatedFiles = new ArrayList<>();
-
-		try {
-			verboseTimeMsg(cmd, Messages.COMPILING_MODEL_TO_JAVA);
-
-			registerUmlResourceType();
-
-			verboseTimeMsg(cmd, Messages.LOADING_MODEL, modelPath);
-			Resource resource = loadModel(modelPath);
-
-			if (resource == null) {
-				throw new ModelLoadFailedException(modelPath);
-			}
-
-			createRootDirIfNeeded(rootDir, cmd);
-
-			FileManager fileMan = new FileManager(rootDir);
-
-			boolean[] anyErrorsDuringGeneration = { false };
-
-			SourceCodeChangeListener listener = new SourceCodeChangeListener() {
-				@Override
-				public void sourceCodeChanged(String qualifiedName, SourceMappedText smTxt, DebugSymbols symbols) {
-					String fileText = smTxt.getText().toString();
-					try {
-						verboseTimeMsg(cmd, Messages.GENERATING_CLASS, qualifiedName);
-						String path = fileMan.addOrUpdate(qualifiedName, fileText);
-						generatedFiles.add(path);
-					} catch (IOException e) {
-						verboseTimeMsg(cmd, Messages.JAVA_FILE_SAVE_FAILED, qualifiedName);
-						anyErrorsDuringGeneration[0] = true;
-					}
-				};
-
-				@Override
-				public void sourceCodeDeleted(String qualifiedName) {
-					fileMan.remove(qualifiedName);
-				}
-			};
-			ResourceTranslator translator = ResourceTranslator.create(resource);
-			List<SourceCodeTask> taskQueue = translator.fullTranslation();
-
-			verboseTimeMsg(cmd, Messages.ANALYSING_MODEL);
-			taskQueue.forEach(t -> t.perform(listener));
-
-			if (anyErrorsDuringGeneration[0]) {
-				throw new JavaFileGenerationError();
-			}
-
-			return generatedFiles;
-		} catch (RuntimeException e) {
-			if (e.getCause() instanceof IncQueryException) {
-				throw new CliIncQueryException((IncQueryException) e.getCause());
-			}
-			throw e;
-		}
-	}
-
-	private static void createRootDirIfNeeded(String rootDirName, CommandLine cmd) {
-		if (rootDirName == null)
+	private void createRootDirIfNeeded(String rootDirName) {
+		if (rootDirName == null) {
 			return;
+		}
 
 		File rootDir = new File(rootDirName);
 		if (rootDir.exists()) {
-			verboseTimeMsg(cmd, Messages.USING_EXISTING_ROOT_DIR, rootDirName);
+			verboseTimeMsg(Messages.USING_EXISTING_ROOT_DIR, rootDirName);
 		} else {
-			verboseTimeMsg(cmd, Messages.CREATING_ROOT_DIR, rootDirName);
+			verboseTimeMsg(Messages.CREATING_ROOT_DIR, rootDirName);
 			boolean success = rootDir.mkdir();
 			if (!success) {
 				throw new RootDirCreationFailed(rootDirName);
@@ -348,62 +361,47 @@ public class ConsoleModelRunner {
 		}
 	}
 
-	private static void verboseTimeMsg(CommandLine cmd, Messages msg, String... params) {
-		if (!Opt.VERBOSE.isPresent(cmd))
-			return;
-
-		Object[] objParams = (Object[]) params;
-
-		Date currentTime = new Date();
-		long msecDiff = currentTime.getTime() - startTime.getTime();
-		long msecPart = msecDiff % 1000;
-		long secPart = msecDiff / 1000;
-		System.out.printf("[%d.%03ds] %s%n", secPart, msecPart, msg.getMsg(objParams));
-	}
-
 	/**
 	 * @return Gets the absolute path of the {@link Opt.ROOT} option, except
 	 *         when it is not present; then it is null, as {@link FileManager}
 	 *         expects it so.
 	 */
-	private static String getRootDir(CommandLine cmd) {
+	private String getRootDir(CommandLine cmd) {
 		if (!Opt.ROOT.isPresent(cmd))
 			return null;
 		return Paths.get(Opt.ROOT.getOption(cmd, 0).get()).toAbsolutePath().toString();
 	}
 
-	private static Resource loadModel(String modelPath) {
+	private Resource loadModel(String modelPath) {
 		URI fileURI = URI.createFileURI(modelPath);
 		return loadModel(fileURI);
 	}
 
-	private static Resource loadModel(URI fileURI) {
+	private Resource loadModel(URI fileURI) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		return resourceSet.getResource(fileURI, true);
 	}
 
-	private static void registerUmlResourceType() {
+	private void registerUmlResourceType() {
 		new ResourceSetImpl().getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 	}
 
-	private static void runExecutionStep(String className, String feedName, CommandLine cmd, String rootDir) {
+	private void executeModel(String className, String feedName, CommandLine cmd, String rootDir) {
 		try {
-			verboseTimeMsg(cmd, Messages.EXECUTING_COMPILED_JAVA);
+			verboseTimeMsg(Messages.EXECUTING_COMPILED_JAVA);
 
 			String javaHome = System.getProperty("java.home");
 			String javaBin = Paths.get(javaHome, "bin", "java").toString();
 			String runtimeJar = getRuntimeJarPath();
 			String classpath = String.join(java.io.File.pathSeparatorChar + "", runtimeJar, rootDir);
-
 			String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
 			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, className, feedName);
-
-			addReadTraceArg(cmdLineArgs, cmd);
-			addWriteTraceArg(cmdLineArgs, cmd);
-			addLogArg(cmdLineArgs, cmd);
+			addReadTraceArg(cmdLineArgs);
+			addWriteTraceArg(cmdLineArgs);
+			addLogArg(cmdLineArgs);
 
 			ProcessBuilder builder = new ProcessBuilder(cmdLineArgs);
 			builder.redirectInput(Redirect.INHERIT);
@@ -412,13 +410,13 @@ public class ConsoleModelRunner {
 			Process javaProcess = builder.start();
 
 			int exitCode = javaProcess.waitFor();
-			verboseTimeMsg(cmd, Messages.FINISHED_WITH_CODE, "" + exitCode);
+			verboseTimeMsg(Messages.FINISHED_WITH_CODE, "" + exitCode);
 		} catch (Exception e) {
 			throw new CliRuntimeException(e);
 		}
 	}
 
-	private static void addLogArg(List<String> cmdLineArgs, CommandLine cmd) {
+	private void addLogArg(List<String> cmdLineArgs) {
 		if (!Opt.READ_TRACE.isPresent(cmd))
 			return;
 
@@ -428,7 +426,7 @@ public class ConsoleModelRunner {
 		cmdLineArgs.add(readTraceFolder);
 	}
 
-	private static void addWriteTraceArg(List<String> cmdLineArgs, CommandLine cmd) {
+	private void addWriteTraceArg(List<String> cmdLineArgs) {
 		if (!Opt.WRITE_TRACE.isPresent(cmd))
 			return;
 
@@ -438,39 +436,36 @@ public class ConsoleModelRunner {
 		cmdLineArgs.add(writeTraceFolder);
 	}
 
-	private static void addReadTraceArg(List<String> cmdLineArgs, CommandLine cmd) {
-		if (!Opt.LOGGER.isPresent(cmd))
+	private void addReadTraceArg(List<String> cmdLineArgs) {
+		if (!Opt.LOGGER.isPresent(cmd)) {
 			return;
+		}
 
 		String loggerArg = Opt.LOGGER.getOption(cmd, 0).get();
-
-		if (loggerArg.equals("none"))
+		if (loggerArg.equals("none")) {
 			return;
+		}
+
 		if (loggerArg.equals("minimal")) {
 			cmdLineArgs.add(XUMLRTRuntime.OPTION_LOG);
 		}
 	}
 
 	/** The jar file of {@link XUMLRTRuntime} will be on our path. */
-	private static String getRuntimeJarPath() {
+	private String getRuntimeJarPath() {
 		return System.getProperty("java.class.path");
 	}
 
-	public static Options mkParserOpts() {
-		Options parserOpts = new Options();
-		Arrays.stream(Opt.values()).map(opt -> opt.createOption()).forEach(parserOpts::addOption);
-		return parserOpts;
-	}
+	private void verboseTimeMsg(Messages msg, String... params) {
+		if (!Opt.VERBOSE.isPresent(cmd)) {
+			return;
+		}
 
-	private static void showOptionsAndExit(Options parserOpts) {
-		printHelp(parserOpts);
-		System.exit(0);
-	}
-
-	private static void printHelp(Options parserOpts) {
-		HelpFormatter formatter = new HelpFormatter();
-		String headline = String.format("java %s%n\t\t [%s]...", ConsoleModelRunner.class.getCanonicalName(),
-				Messages.OPTION.getMsg());
-		formatter.printHelp(headline, parserOpts);
+		Object[] objParams = (Object[]) params;
+		Date currentTime = new Date();
+		long msecDiff = currentTime.getTime() - startTime.getTime();
+		long msecPart = msecDiff % 1000;
+		long secPart = msecDiff / 1000;
+		System.out.printf("[%d.%03ds] %s%n", secPart, msecPart, msg.getMsg(objParams));
 	}
 }

@@ -49,10 +49,7 @@ public enum Opt {
 		OptionBuilder.withLongOpt(longName);
 		OptionBuilder.hasArgs(argNames.size());
 		OptionBuilder.withArgName(String.join(",", argNames));
-
-		String description = getDescription();
-		OptionBuilder.withDescription(description);
-
+		OptionBuilder.withDescription(getDescription());
 		return OptionBuilder.create(shortName);
 	}
 
@@ -72,11 +69,11 @@ public enum Opt {
 
 	private String getDescriptionWithArgValues(String descr) {
 		String possibleValuesMsg = Messages.POSSIBLE_VALUES.getMsg();
-		List<String> possibleValues = getPossibleLoggerValues();
+		List<String> possibleValues = getPossibleValues();
 		return String.format("%s%n%s: %s", descr, possibleValuesMsg, Utils.join(possibleValues, ", "));
 	}
 
-	private List<String> getPossibleLoggerValues() {
+	private List<String> getPossibleValues() {
 		List<String> argValuesText = new ArrayList<>();
 		LoggerType defaultValue = argValueNames.get(0);
 		for (LoggerType argValueName : new TreeSet<>(argValueNames)) {

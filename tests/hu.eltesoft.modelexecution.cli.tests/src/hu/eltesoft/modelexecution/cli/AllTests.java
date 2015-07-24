@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ConsoleModelRunnerTests.class, ResourceBundleTests.class })
+@SuiteClasses({ ArgumentsTests.class, ResourceBundleTests.class })
 public class AllTests {
 }

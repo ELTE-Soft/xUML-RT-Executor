@@ -1,8 +1,6 @@
 package hu.eltesoft.modelexecution.cli;
 
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.junit.Before;
 import org.junit.Test;
 
 import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
@@ -13,18 +11,12 @@ import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
 
-public class ConsoleModelRunnerTests {
-
-	Options parserOpts;
-
-	@Before
-	public void before() {
-		parserOpts = ConsoleModelRunner.mkParserOpts();
-	}
+public class ArgumentsTests {
 
 	private void runCli(String argsTxt) throws ParseException {
 		String[] args = argsTxt.split(" ");
-		ConsoleModelRunner.doCli(args, parserOpts);
+		ConsoleModelRunner runner = new ConsoleModelRunner();
+		runner.run(args);
 	}
 
 	@Test(expected = NothingToDoException.class)
