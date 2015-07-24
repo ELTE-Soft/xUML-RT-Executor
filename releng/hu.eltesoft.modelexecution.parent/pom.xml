@@ -14,6 +14,7 @@
 
 	<!-- the modules that shall be built together in one reactor -->
 	<modules>
+		<module>../../plugins/hu.eltesoft.modelexecution.cli/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.ide/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.m2m.logic/pom.xml</module>
@@ -27,6 +28,7 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
 
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.cli.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>

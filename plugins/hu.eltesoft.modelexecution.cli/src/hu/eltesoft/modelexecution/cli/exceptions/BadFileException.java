@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-
 import org.apache.commons.cli.Options;
+
+import hu.eltesoft.modelexecution.cli.Messages;
 
 public class BadFileException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
@@ -20,12 +20,11 @@ public class BadFileException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Message.BAD_FILE.getMsg(presentOptName, model);
+		return Messages.BAD_FILE.getMsg(presentOptName, model);
 	}
 	
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
-
 }

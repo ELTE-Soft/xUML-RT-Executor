@@ -1,8 +1,7 @@
 package hu.eltesoft.modelexecution.cli;
 
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
+
 import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadDirectoryException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadFileException;
@@ -23,20 +22,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ConsoleModelRunnerTests {
-
-	List<String> messageNamesInBundle = Arrays.stream(Message.values())
-			.map(Message::getDescriptionBundleName)
+/*
+	List<String> messageNamesInBundle = Arrays.stream(Messages.values())
+			.map(Messages::getDescriptionBundleName)
 			.collect(Collectors.toList());
 	List<String> optNamesInBundle = Arrays.stream(Opt.values())
 			.map(Opt::getDescriptionBundleName).collect(Collectors.toList());
-
+*/
 	Options parserOpts;
 
 	@Before
 	public void before() {
 		parserOpts = ConsoleModelRunner.mkParserOpts();
 	}
-
+/*
 	@Test
 	public void allUsedMsgsAreInBundle() {
 		ResourceBundle msgs = ConsoleModelRunner.getMsgs();
@@ -60,7 +59,7 @@ public class ConsoleModelRunnerTests {
 							|| optNamesInBundle.contains(msgName));
 		}
 	}
-
+*/
 	private void runCli(String argsTxt) throws ParseException {
 		String[] args = argsTxt.split(" ");
 		ConsoleModelRunner.doCli(args, parserOpts);

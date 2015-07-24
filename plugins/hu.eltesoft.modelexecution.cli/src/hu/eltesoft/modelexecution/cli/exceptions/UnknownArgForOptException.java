@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
+import hu.eltesoft.modelexecution.cli.Messages;
+import hu.eltesoft.modelexecution.cli.Opt;
 
 import org.apache.commons.cli.Options;
 
@@ -19,11 +19,10 @@ public class UnknownArgForOptException extends IllegalArgumentException {
 	}
 
 	public String toString() {
-		return Message.UNKNOWN_OPT_PAR.getMsg(arg, opt.name());
+		return Messages.UNKNOWN_OPT_PAR.getMsg(arg, opt.name());
 	}
-	
+
 	public String getLocalizedMessage() {
 		return toString();
 	}
-	
 }

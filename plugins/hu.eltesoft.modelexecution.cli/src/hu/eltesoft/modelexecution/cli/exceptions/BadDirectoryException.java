@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-
 import org.apache.commons.cli.Options;
+
+import hu.eltesoft.modelexecution.cli.Messages;
 
 public class BadDirectoryException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
@@ -20,13 +20,11 @@ public class BadDirectoryException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Message.BAD_DIRECTORY.getMsg(presentOptName, root);
+		return Messages.BAD_DIRECTORY.getMsg(presentOptName, root);
 	}
-	
+
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
-	
-	
 }

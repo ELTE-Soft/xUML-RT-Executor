@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
+import hu.eltesoft.modelexecution.cli.Messages;
 
 public class RootDirCreationFailed extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
@@ -13,12 +13,11 @@ public class RootDirCreationFailed extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Message.ROOT_DIR_CREATION_FAILED.getMsg(rootDirName);
+		return Messages.ROOT_DIR_CREATION_FAILED.getMsg(rootDirName);
 	}
-	
+
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
-
 }
