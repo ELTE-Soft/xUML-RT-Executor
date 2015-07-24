@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class ConsoleModelRunner {
 	 * The main actions that the program can do. At least one of them must be
 	 * present.
 	 */
-	public static final List<String> ACTION_OPTS = Util.list(Opt.SETUP.longName, Opt.EXECUTE.longName);
+	public static final List<String> ACTION_OPTS = Utils.list(Opt.SETUP.longName, Opt.EXECUTE.longName);
 
 	public static void main(String[] args) {
 		Options parserOpts = mkParserOpts();
@@ -400,7 +399,7 @@ public class ConsoleModelRunner {
 
 			String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
-			List<String> cmdLineArgs = Util.list(javaBin, "-cp", classpath, runtimeClassName, className, feedName);
+			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, className, feedName);
 
 			addReadTraceArg(cmdLineArgs, cmd);
 			addWriteTraceArg(cmdLineArgs, cmd);
@@ -457,14 +456,9 @@ public class ConsoleModelRunner {
 		return System.getProperty("java.class.path");
 	}
 
-	public static ResourceBundle getDefaultBundle() {
-		String bundleId = ConsoleModelRunner.class.getSimpleName();
-		return ResourceBundle.getBundle(bundleId);
-	}
-
 	public static Options mkParserOpts() {
 		Options parserOpts = new Options();
-		Arrays.stream(Opt.values()).map(opt -> opt.mkOpt()).forEach(parserOpts::addOption);
+		Arrays.stream(Opt.values()).map(opt -> opt.createOption()).forEach(parserOpts::addOption);
 		return parserOpts;
 	}
 

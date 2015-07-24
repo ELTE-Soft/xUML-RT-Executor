@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /** Utility functions. */
-public class Util {
+public class Utils {
+
 	public static String join(List<String> strings, String separator) {
 		return strings.stream().collect(Collectors.joining(separator));
 	}
@@ -20,15 +21,16 @@ public class Util {
 	}
 
 	public static String stackTraceToString(Exception e) {
-		try (
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-	    ) {
+		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
 			e.printStackTrace(pw);
 			return sw.toString();
 		} catch (IOException e1) {
-			// Note: this should never happen.
+			// this should never happen
 			return null;
 		}
+	}
+
+	public static String toResourceKey(Enum<?> value) {
+		return value.name().toLowerCase();
 	}
 }

@@ -10,18 +10,18 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 
-/** Describes the syntax of the options that come from the command line. */
+/**
+ * Describes the syntax of the command line options.
+ */
 public enum Opt {
-	HELP("help", "h", Util.list(), Util.list()), VERBOSE("verbose", "v", Util.list(), Util.list()),
-
-	SETUP("setup", "s", Util.list(), Util.list(), "model"),
-
-	EXECUTE("execute", "e", Util.list(), Util.list(), "class", "feed"), WRITE_TRACE("write-trace", "wtr",
-			Util.list(EXECUTE), Util.list(),
-			"dir"), READ_TRACE("read-trace", "rtr", Util.list(EXECUTE), Util.list(), "dir"), LOGGER("logger", "l",
-					Util.list(EXECUTE), Util.list(LoggerType.LOGGER_NONE, LoggerType.LOGGER_MINIMAL), "logger"),
-
-	ROOT("root", "r", Util.list(EXECUTE, SETUP), Util.list(), "dir");
+	HELP("help", "h", Utils.list(), Utils.list()),
+	VERBOSE("verbose", "v", Utils.list(), Utils.list()),
+	SETUP("setup", "s", Utils.list(), Utils.list(), "model"),
+	EXECUTE("execute", "e", Utils.list(), Utils.list(), "class", "feed"),
+	WRITE_TRACE("write-trace", "wtr", Utils.list(EXECUTE), Utils.list(), "dir"),
+	READ_TRACE("read-trace", "rtr", Utils.list(EXECUTE), Utils.list(), "dir"),
+	LOGGER("logger", "l", Utils.list(EXECUTE), Utils.list(LoggerType.LOGGER_NONE, LoggerType.LOGGER_MINIMAL), "logger"),
+	ROOT("root", "r", Utils.list(EXECUTE, SETUP), Utils.list(), "dir");
 
 	String longName;
 	String shortName;
@@ -41,28 +41,28 @@ public enum Opt {
 		this.longName = longName;
 		this.shortName = shortName;
 		this.requiredOpts = requiredOpts;
-		this.argNames = Util.list(argNames);
+		this.argNames = Utils.list(argNames);
 		this.argValueNames = argValueNames;
 	}
 
-	Option mkOpt() {
+	Option createOption() {
 		OptionBuilder.withLongOpt(longName);
 		OptionBuilder.hasArgs(argNames.size());
 		OptionBuilder.withArgName(String.join(",", argNames));
 
-		String key = name().toLowerCase();
-		String description = getDescription(key);
+		String description = getDescription();
 		OptionBuilder.withDescription(description);
 
 		return OptionBuilder.create(shortName);
 	}
 
-	private static final String BUNDLE_NAME = "opt";
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+	private static final String BUNDLE_NAME = Opt.class.getSimpleName().toLowerCase();
+	public static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private String getDescription(String key) {
+	private String getDescription() {
+		String key = Utils.toResourceKey(this);
 		String description = BUNDLE.getString(key);
-		return hasArgValues() ? description : mkDescriptionWithArgValues(description);
+		return hasArgValues() ? description : getDescriptionWithArgValues(description);
 	}
 
 	/** Returns whether the option has (named) values for its argument. */
@@ -70,49 +70,52 @@ public enum Opt {
 		return argValueNames.size() == 0;
 	}
 
-	private String mkDescriptionWithArgValues(String descr) {
+	private String getDescriptionWithArgValues(String descr) {
 		String possibleValuesMsg = Messages.POSSIBLE_VALUES.getMsg();
 		List<String> possibleValues = getPossibleLoggerValues();
-		return String.format("%s%n%s: %s", descr, possibleValuesMsg, Util.join(possibleValues, ", "));
+		return String.format("%s%n%s: %s", descr, possibleValuesMsg, Utils.join(possibleValues, ", "));
 	}
 
 	private List<String> getPossibleLoggerValues() {
-		List<String> argValuesTxt = new ArrayList<>();
+		List<String> argValuesText = new ArrayList<>();
 		LoggerType defaultValue = argValueNames.get(0);
 		for (LoggerType argValueName : new TreeSet<>(argValueNames)) {
-			boolean isDefault = argValueName == defaultValue;
-			String defaultTxt = " (" + Messages.DEFAULT_VALUE.getMsg() + ")";
-			String appendWhenDefault = isDefault ? defaultTxt : "";
-			String loggerOpt = argValueName.name + appendWhenDefault;
-
-			argValuesTxt.add(loggerOpt);
+			String optText = argValueName.name;
+			if (argValueName == defaultValue) {
+				optText += " (" + Messages.DEFAULT_VALUE.getMsg() + ")";
+			}
+			argValuesText.add(optText);
 		}
-		return argValuesTxt;
+		return argValuesText;
 	}
 
 	boolean isPresent(CommandLine cmd) {
 		return cmd.hasOption(shortName) || cmd.hasOption(longName);
 	}
 
-	Optional<String> getOption(CommandLine cmd, int idx) {
+	Optional<String> getOption(CommandLine cmd, int index) {
 		Optional<String[]> options = getOptions(cmd);
-		if (!options.isPresent())
+		if (!options.isPresent()) {
 			return Optional.empty();
-		return Optional.of(options.get()[idx]);
+		}
+		return Optional.of(options.get()[index]);
 	}
 
 	Optional<String[]> getOptions(CommandLine cmd) {
 		Optional<String> presentName = getPresentName(cmd);
-		if (!presentName.isPresent())
+		if (!presentName.isPresent()) {
 			return Optional.empty();
+		}
 		return Optional.of(cmd.getOptionValues(presentName.get()));
 	}
 
 	Optional<String> getPresentName(CommandLine cmd) {
-		if (cmd.hasOption(longName))
+		if (cmd.hasOption(longName)) {
 			return Optional.of(longName);
-		if (cmd.hasOption(shortName))
+		}
+		if (cmd.hasOption(shortName)) {
 			return Optional.of(shortName);
+		}
 		return Optional.empty();
 	}
 }

@@ -4,8 +4,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * Messages that are printed at some point. The names in the resource bundle
- * must be the lower case equivalents of the enum labels.
+ * Provides localized text for errors and other messages.
  */
 public enum Messages {
 	POSSIBLE_VALUES,
@@ -40,11 +39,11 @@ public enum Messages {
 	ANALYSING_MODEL,
 	COMPILING_JAVA_TO_CLASS;
 
-	private static final String BUNDLE_NAME = "messages";
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+	private static final String BUNDLE_NAME = Messages.class.getSimpleName().toLowerCase();
+	public static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	public String getMsg(Object... args) {
-		String key = name().toLowerCase();
+		String key = Utils.toResourceKey(this);
 		String format = BUNDLE.getString(key);
 		return MessageFormat.format(format, args);
 	}

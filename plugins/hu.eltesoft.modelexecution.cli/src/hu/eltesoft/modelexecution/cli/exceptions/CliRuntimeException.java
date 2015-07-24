@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
 import hu.eltesoft.modelexecution.cli.Messages;
-import hu.eltesoft.modelexecution.cli.Util;
+import hu.eltesoft.modelexecution.cli.Utils;
 
 public class CliRuntimeException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class CliRuntimeException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Messages.RUNTIME_EXCEPTION.getMsg(Util.stackTraceToString(e));
+		return Messages.RUNTIME_EXCEPTION.getMsg(Utils.stackTraceToString(e));
 	}
 
 	@Override
