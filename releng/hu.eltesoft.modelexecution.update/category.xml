@@ -3,9 +3,9 @@
    <feature url="features/hu.eltesoft.modelexecution.feature_0.4.0.qualifier.jar" id="hu.eltesoft.modelexecution.feature" version="0.4.0.qualifier">
       <category name="hu.eltesoft.modelexecution.category"/>
    </feature>
-   <category-def name="hu.eltesoft.modelexecution.category" label="xUML-RT Tools">
+   <category-def name="hu.eltesoft.modelexecution.category" label="xUML-RT Executor">
       <description>
-         Developer tools for the xUML-RT modeling language.
+         Model level executor for the xUML-RT modeling language.
       </description>
    </category-def>
 </site>
