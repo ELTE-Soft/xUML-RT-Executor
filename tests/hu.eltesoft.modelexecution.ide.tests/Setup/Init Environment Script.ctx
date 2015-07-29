@@ -1,0 +1,21 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Init Environment Script
+Element-Type: context
+Element-Version: 2.0
+Id: _9rvOoB2EEeWfUbA_Erpteg
+Runtime-Version: 2.0.0.201506120617
+Save-Time: 6/29/15 2:54 AM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+
+// This script runs at the start of each test case.
+// It sets up the environment.
+
+mx-close-outline-view
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

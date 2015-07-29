@@ -1,0 +1,197 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _QhEgcB2GEeWfUbA_Erpteg
+Element-Name: Execution
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _t24QgB4NEeWDyJhARpwrcA
+Runtime-Version: 2.0.0.201506120617
+Save-Time: 7/29/15 5:09 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+
+mx-new-xuml-project "TestProject"
+mx-copy-helloworld-to-test
+
+
+
+// -------------------------------------------------
+// Make sure there is no previous debug configuration present
+
+get-menu "Run/Debug Configurations..." | click
+
+// Having a fixed name makes it easier to use the configuration in the tester.
+// Our debug configuration will be named "xUMLTestRunConfig".
+// If we have a previous configuration, delete it.
+try {
+	with [get-window "Debug Configurations"] {
+	    get-tree | select "xUML-RT Executor/xUMLTestRunConfig" | get-menu Delete | click
+	    get-window "Confirm Launch Configuration Deletion" | get-button Yes | click
+	}
+} -catch {
+	// there was no previous xUMLTestRunConfig, we proceed
+}
+
+// -------------------------------------------------
+// Make new xUML project
+
+with [get-window "Debug Configurations"] {
+    get-tree | select "xUML-RT Executor" | double-click
+    with [get-editbox -after [get-label "Name:"]] {
+        set-text "xUMLTestRunConfig"
+    }
+    get-button Apply | click
+}
+
+
+
+// Check that the Debug button is disabled
+get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
+
+
+// -------------------------------------------------
+// Make new xUML project: select model
+
+with [get-window "Debug Configurations"] {
+    get-group "Select model" | get-button Browse | click
+    with [get-window "Select model"] {
+        get-tree | select "TestProject/HelloWorld_altered.uml"
+        get-button OK | click
+    }
+}
+
+// Check that the Debug button is disabled
+get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
+
+
+// -------------------------------------------------
+// Make new xUML project: select class
+
+with [get-window "Debug Configurations"] {
+    get-group "Select class" | get-button Browse | click
+    with [get-window "Select class"] {
+        get-table | select "<Class> HelloWorld"
+        get-button OK | click
+    }
+}
+
+// Check that the Debug button is disabled
+get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
+
+
+// -------------------------------------------------
+// Make new xUML project: select feed function
+
+with [get-window "Debug Configurations"] {
+    get-group "Select feed function" | get-button Browse | click
+    with [get-window "Select feed function"] {
+        get-table | select "<Operation> run \\(\\)"
+        get-button OK | click
+    }
+}
+
+// Check that the Debug button is disabled
+get-window "Debug Configurations" | get-button Debug | get-property enablement | equals true | verify-true
+
+
+// -------------------------------------------------
+// Make new xUML project: save the configuration
+
+with [get-window "Debug Configurations"] {
+    get-button Apply | click
+    get-button Close | click
+}
+
+
+
+// -------------------------------------------------
+// Execute run configuration
+
+get-menu "Run/Run Configurations..." | click
+with [get-window "Run Configurations"] {
+    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
+    get-button Run | click
+}
+
+
+// -------------------------------------------------
+// Execute debug configuration
+
+get-menu "Run/Debug Configurations..." | click
+with [get-window "Debug Configurations"] {
+    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
+    get-button Debug | click
+}
+
+
+// -------------------------------------------------
+// Set a breakpoint and execute debug configuration
+
+// Set the breakpoint
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1/Hello" | click
+    select "model/HelloWorld/HelloWorldBehavior/Region1/Hello" | get-menu "Moka/Debug/Toggle breakpoint" | click
+}
+
+// Check if it appears in the Breakpoints view
+get-view Breakpoints | get-tree | get-item "model::HelloWorld::HelloWorldBehavior::Region1::Hello" 
+    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello" | verify-true
+
+// Start debugging
+get-menu "Run/Debug Configurations..." | click
+with [get-window "Debug Configurations"] {
+    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
+    get-button Debug | click
+}
+
+// Check for pause on breakpoint
+get-view Debug | get-tree 
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/xUML-Rt Model/Default component/model::HelloWorld::HelloWorldBehavior::Region1::Hello \\[State\\]" 
+    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
+
+// Check for breakpoint highlighting
+with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
+    | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
+    | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
+    get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
+    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-true
+}
+
+
+get-button "Resume (F8)" | click
+
+// Check for pause on breakpoint
+get-view Debug | get-tree 
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/xUML-Rt Model/Default component/model::HelloWorld::HelloWorldBehavior::Region1::Hello \\[State\\]" 
+    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
+
+// Check for breakpoint highlighting
+with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
+    | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
+    | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
+    get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
+    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-true
+}
+
+
+get-button "Resume (F8)" | click
+
+// Check for termination
+get-view Debug | get-tree | get-item "<terminated>xUMLTestRunConfig \\[xUML-RT Executor\\]" | get-property caption 
+    | equals "<terminated>xUMLTestRunConfig [xUML-RT Executor]" | verify-true
+
+// Highlighting should be turned off on breakpoint as execution is terminated
+with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
+    | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
+    | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
+    get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
+    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-false
+}
+
+    
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

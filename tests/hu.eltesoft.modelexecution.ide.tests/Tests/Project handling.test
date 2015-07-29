@@ -1,0 +1,87 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _QhEgcB2GEeWfUbA_Erpteg
+Element-Name: Project handling
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _5BgxYAqPEeWkm7lMnbRSaQ
+Runtime-Version: 2.0.0.201506120617
+Save-Time: 7/29/15 3:42 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+
+global [val "mx-logging-properties-expected-text" "% logging is done both to file and console: \n"
+    + "handlers=java.util.logging.FileHandler,hu.eltesoft.modelexecution.runtime.log.StandardOutHandler\n\n"
+    + "% location of the log file: \n"
+    + "java.util.logging.FileHandler.pattern=%h/run%u.log\n\n"
+    + "% \"/\" the local pathname separator \n"
+    + "% \"%t\" the system temporary directory \n"
+    + "% \"%h\" the value of the \"user.home\" system property \n"
+    + "% \"%g\" the generation number to distinguish rotated logs \n"
+    + "% \"%u\" a unique number to resolve conflicts \n"
+    + "% \"%%\" translates to a single percent sign \"%\" \n"
+    + "% If no \"%g\" field has been specified and the file count is greater than one, then the generation number will be added to the end of the generated filename, after a dot. \n"
+    + "% Thus for example a pattern of \"%t/java%g.log\" with a count of 2 would typically cause log files to be written on Solaris to /var/tmp/java0.log and /var/tmp/java1.log whereas on Windows 95 they would be typically written to C:TEMPjava0.log and C:TEMPjava1.log \n"
+    + "% Generation numbers follow the sequence 0, 1, 2, etc. \n"
+    + "% Normally the \"%u\" unique field is set to 0. However, if the FileHandler tries to open the filename and finds the file is currently in use by another process it will increment the unique number field and try again. This will be repeated until FileHandler finds a file name that is not currently in use. If there is a conflict and no \"%u\" field has been specified, it will be added at the end of the filename after a dot. (This will be after any automatically added generation number.)  \n\n"
+    + "% The content of the log file is in XML format \n"
+    + "java.util.logging.FileHandler.formatter=java.util.logging.XMLFormatter\n\n"
+    + "% The maximum size of the log file is 50KB \n"
+    + "java.util.logging.FileHandler.limit=50000\n\n"
+    + "% Only one log file is created \n"
+    + "java.util.logging.FileHandler.count=1\n\n"
+    + "% Set to true if the new log entries should be appended to the old ones. \n"
+    + "java.util.logging.FileHandler.append=false\n\n"
+    + "% On the console, the log messages are shown as simple messages: \n"
+    + "hu.eltesoft.modelexecution.runtime.log.StandardOutHandler.formatter=java.util.logging.SimpleFormatter\n\n"
+    + "% set to ALL to enable logging of States\n"
+    + "hu.eltesoft.modelexecution.runtime.baseRuntime.StateMachine.States.level=SEVERE\n\n"
+    + "% set to OFF to disable logging of Transitions\n"
+    + "hu.eltesoft.modelexecution.runtime.baseRuntime.StateMachine.Transitions.level=ALL\n\n"
+    + "% set to ALL to enable logging of Messages\n"
+    + "hu.eltesoft.modelexecution.runtime.baseRuntime.Events.Messages.level=SEVERE" ]
+
+
+// -------------------------------------------------
+// Create new project
+
+
+mx-new-xuml-project "TestProject"
+
+get-view "Project Explorer" | get-tree | select "TestProject/logging.properties" | double-click
+
+get-editor "logging.properties" | get-text-viewer | get-property text | equals $mx-logging-properties-expected-text | verify-true
+get-editor "logging.properties" | close
+
+
+// -------------------------------------------------
+// Add model to project
+
+mx-copy-helloworld-to-test
+
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/bin" | get-property "getItems().length" | equals 8 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+
+// -------------------------------------------------
+// Delete project
+
+
+get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld_altered" | key-type Del
+get-window "Delete Resources" | get-button OK | click
+
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+with [get-view Navigator | get-tree] {
+    get-item "TestProject/bin" | get-property childCount | equals 0 | verify-true
+    get-item "TestProject/model-gen-src" | get-property childCount | equals 0 | verify-true
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
