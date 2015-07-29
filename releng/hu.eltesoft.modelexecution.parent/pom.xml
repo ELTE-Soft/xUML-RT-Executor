@@ -223,9 +223,9 @@
 										<artifactId>
 											rcptt-maven-plugin
 										</artifactId>
-										<version>
+										<versionRange>
 											${rcptt.version}
-										</version>
+										</versionRange>
 										<goals>
 											<goal>resources</goal>
 											<goal>execute</goal>
