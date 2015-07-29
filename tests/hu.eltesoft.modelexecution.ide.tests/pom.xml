@@ -23,7 +23,18 @@
 					<runner>
 						<version>${rcptt.version}</version>
 					</runner>
-					<!-- The main configuration section goes here -->
+					<aut>
+						<explicit>http://mextest.inf.elte.hu/aut/2015H2-[platform].zip</explicit>
+						<injections>
+							<injection>
+								<site>jar:file:/${project.basedir}/../../releng/hu.eltesoft.modelexecution.update/target/hu.eltesoft.modelexecution.repository-${project.version}.zip!/</site>
+							</injection>
+						</injections>
+						<vmArgs>
+							<vmArg>-Dosgi.requiredJavaVersion=1.8</vmArg>
+							<vmArg>-Xmx1536m</vmArg>
+						</vmArgs>
+					</aut>
 				</configuration>
 			</plugin>
 		</plugins>

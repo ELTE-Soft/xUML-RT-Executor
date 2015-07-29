@@ -30,6 +30,7 @@
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.cli.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.ide.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
@@ -203,6 +204,40 @@
 							</configuration>
 						</execution>
 					</executions>
+				</plugin>
+
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.eclipse.rcptt
+										</groupId>
+										<artifactId>
+											rcptt-maven-plugin
+										</artifactId>
+										<version>
+											${rcptt.version}
+										</version>
+										<goals>
+											<goal>resources</goal>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
