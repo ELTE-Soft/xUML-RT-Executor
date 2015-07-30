@@ -12,6 +12,13 @@
 		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
 	</parent>
 
+	<repositories>
+		<repository>
+			<id>aut</id>
+			<url>http://mextest.inf.elte.hu/aut/</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -24,7 +31,9 @@
 						<version>${rcptt.version}</version>
 					</runner>
 					<aut>
-						<explicit>http://mextest.inf.elte.hu/aut/2015H2-[platform].zip</explicit>
+						<groupId>hu.eltesoft.modelexecution</groupId>
+						<artifactId>hu.eltesoft.modelexecution.aut</artifactId>
+						<version>0.1.0</version>
 						<injections>
 							<injection>
 								<site>jar:file:/${project.basedir}/../../releng/hu.eltesoft.modelexecution.update/target/hu.eltesoft.modelexecution.repository-${project.version}.zip!/</site>
