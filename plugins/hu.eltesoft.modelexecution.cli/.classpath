@@ -22,5 +22,6 @@
 	<classpathentry kind="src" path="/hu.eltesoft.modelexecution.m2t.smap.xtend"/>
 	<classpathentry kind="src" path="/hu.eltesoft.modelexecution.m2t.java"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/hu.eltesoft.modelexecution.m2t.smap.emf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

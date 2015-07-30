@@ -1,9 +1,15 @@
 package hu.eltesoft.modelexecution.cli;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,25 +32,40 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
 import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadDirectoryException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadFileException;
+import hu.eltesoft.modelexecution.cli.exceptions.CannotLoadNameMappingException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliIncQueryException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliJavaCompilerException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliRuntimeException;
 import hu.eltesoft.modelexecution.cli.exceptions.DanglingArgumentsException;
+import hu.eltesoft.modelexecution.cli.exceptions.FileWriteException;
 import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.JavaFileGenerationError;
+import hu.eltesoft.modelexecution.cli.exceptions.MissingFileException;
 import hu.eltesoft.modelexecution.cli.exceptions.MissingJavaCompilerException;
 import hu.eltesoft.modelexecution.cli.exceptions.ModelLoadFailedException;
+import hu.eltesoft.modelexecution.cli.exceptions.NoClassAndFeedException;
+import hu.eltesoft.modelexecution.cli.exceptions.NoMappedNameFoundException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.RootDirCreationFailed;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
@@ -52,6 +73,7 @@ import hu.eltesoft.modelexecution.filemanager.FileManager;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
@@ -64,6 +86,7 @@ import hu.eltesoft.modelexecution.runtime.log.NoLogger;
  * command line arguments.
  */
 public class ConsoleModelRunner {
+	static String MAPPING_FILE_NAME = "symbols.data";
 
 	private static final int ERROR_EXIT_CODE = 1;
 
@@ -280,13 +303,24 @@ public class ConsoleModelRunner {
 			FileManager fileMan = new FileManager(rootDir);
 
 			boolean[] anyErrorsDuringGeneration = { false };
+			Map<String, String> nameMapping = new HashMap<>();
 
 			SourceCodeChangeListener listener = new SourceCodeChangeListener() {
 				@Override
 				public void sourceCodeChanged(String qualifiedName, SourceMappedText smTxt, DebugSymbols symbols) {
 					String fileText = smTxt.getText().toString();
 					try {
-						verboseTimeMsg(Messages.GENERATING_CLASS, qualifiedName);
+						Map<String, String> localNameMapping = symbols.getNameMapping();
+						nameMapping.putAll(localNameMapping);
+
+						String javaFileName = qualifiedName + ".java";
+						String objName = localNameMapping.get(qualifiedName);
+						if (objName != null) {
+							verboseTimeMsg(Messages.GENERATING_CLASS_NAMED, objName, javaFileName);
+						} else {
+							verboseTimeMsg(Messages.GENERATING_CLASS, javaFileName);
+						}
+
 						String path = fileMan.addOrUpdate(qualifiedName, fileText);
 						generatedFiles.add(path);
 					} catch (IOException e) {
@@ -306,6 +340,8 @@ public class ConsoleModelRunner {
 			verboseTimeMsg(Messages.ANALYSING_MODEL);
 			taskQueue.forEach(t -> t.perform(listener));
 
+			saveNameMapping(rootDir, resource);
+
 			if (anyErrorsDuringGeneration[0]) {
 				throw new JavaFileGenerationError();
 			}
@@ -316,6 +352,46 @@ public class ConsoleModelRunner {
 				throw new CliIncQueryException((IncQueryException) e.getCause());
 			}
 			throw e;
+		}
+	}
+
+	/*
+	 * @return EClass-EOperation name pairs in the model are mapped onto their internal representations.
+	 */
+	@SuppressWarnings("restriction")
+	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMapping(String rootDir, Resource resource) {
+		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> classAndOpMapping = new HashMap<>();
+
+		TreeIterator<EObject> eObjIt = resource.getAllContents();
+		
+		while (eObjIt.hasNext()) {
+			EObject eObj = eObjIt.next();
+			if (!(eObj instanceof ClassImpl))   continue;
+
+			ClassImpl eClass = (ClassImpl)eObj;
+			String eClassId = new NamedReference(eClass, eClass.getName()).getIdentifier();
+			
+			for (Operation eOperation : eClass.getAllOperations()) {
+				String eOperationId = new NamedReference(eOperation, eOperation.getName()).getIdentifier();
+
+				classAndOpMapping.put(new AbstractMap.SimpleImmutableEntry<>(eClass.getName(), eOperation.getName()),
+						new AbstractMap.SimpleImmutableEntry<>(eClassId, eOperationId));
+			}
+		}
+
+		return classAndOpMapping;
+	}
+
+	private void saveNameMapping(String rootDir, Resource resource) {
+		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMapping(rootDir, resource);
+		File mappingFile = new File(rootDir, MAPPING_FILE_NAME);
+		try (
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(mappingFile));
+		) {
+			oos.writeObject(nameMapping);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new FileWriteException(mappingFile.getAbsolutePath());
 		}
 	}
 
@@ -337,7 +413,7 @@ public class ConsoleModelRunner {
 					null, compilationUnits);
 			boolean success = task.call();
 			if (!success) {
-				throw new CliJavaCompilerException();
+				throw new CliJavaCompilerException(diagnostics.getDiagnostics());
 			}
 		} catch (IOException e) {
 			throw new CliJavaCompilerException();
@@ -398,7 +474,11 @@ public class ConsoleModelRunner {
 			String classpath = String.join(java.io.File.pathSeparatorChar + "", runtimeJar, rootDir);
 			String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
-			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, className, feedName);
+			AbstractMap.SimpleImmutableEntry<String, String> mappedNamePair = getClassFeedMappedName(rootDir, className, feedName);
+			String mappedClassName = mappedNamePair.getKey();
+			String mappedFeedName = mappedNamePair.getValue();
+
+			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, mappedClassName, mappedFeedName);
 			addReadTraceArg(cmdLineArgs);
 			addWriteTraceArg(cmdLineArgs);
 			addLogArg(cmdLineArgs);
@@ -413,6 +493,33 @@ public class ConsoleModelRunner {
 			verboseTimeMsg(Messages.FINISHED_WITH_CODE, "" + exitCode);
 		} catch (Exception e) {
 			throw new CliRuntimeException(e);
+		}
+	}
+
+
+	private AbstractMap.SimpleImmutableEntry<String, String> getClassFeedMappedName(String rootDir, String className, String feedName) {
+		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMap(rootDir);
+		SimpleImmutableEntry<String, String> classAndFeed = new AbstractMap.SimpleImmutableEntry<>(className, feedName);
+		
+		if (!nameMapping.containsKey(classAndFeed)) {
+			throw new NoClassAndFeedException(nameMapping);
+		}
+		
+		return nameMapping.get(classAndFeed);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMap(String rootDir) {
+		File mappingFile = new File(rootDir, MAPPING_FILE_NAME);
+		String mappingFileName = mappingFile.toString();
+		try (
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(mappingFile));
+		) {
+			return (Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>>)ois.readObject();
+		} catch (IOException e) {
+			throw new MissingFileException(mappingFileName);
+		} catch (Exception e) {
+			throw new CannotLoadNameMappingException(mappingFileName);
 		}
 	}
 
