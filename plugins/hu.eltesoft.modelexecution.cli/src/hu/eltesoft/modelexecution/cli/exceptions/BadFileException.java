@@ -22,7 +22,7 @@ public class BadFileException extends IllegalArgumentException {
 	public String toString() {
 		return Messages.BAD_FILE.getMsg(presentOptName, model);
 	}
-	
+
 	@Override
 	public String getLocalizedMessage() {
 		return toString();

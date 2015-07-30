@@ -32,18 +32,12 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -65,7 +59,6 @@ import hu.eltesoft.modelexecution.cli.exceptions.MissingFileException;
 import hu.eltesoft.modelexecution.cli.exceptions.MissingJavaCompilerException;
 import hu.eltesoft.modelexecution.cli.exceptions.ModelLoadFailedException;
 import hu.eltesoft.modelexecution.cli.exceptions.NoClassAndFeedException;
-import hu.eltesoft.modelexecution.cli.exceptions.NoMappedNameFoundException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.RootDirCreationFailed;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
@@ -85,6 +78,8 @@ import hu.eltesoft.modelexecution.runtime.log.NoLogger;
  * Console application that compiles and/or executes the model based on the
  * command line arguments.
  */
+/* Needed by the import of EMF UML2 ClassImpl */
+@SuppressWarnings("restriction")
 public class ConsoleModelRunner {
 	static String MAPPING_FILE_NAME = "symbols.data";
 
@@ -356,23 +351,25 @@ public class ConsoleModelRunner {
 	}
 
 	/*
-	 * @return EClass-EOperation name pairs in the model are mapped onto their internal representations.
+	 * @return EClass-EOperation name pairs in the model are mapped onto their
+	 * internal representations.
 	 */
-	@SuppressWarnings("restriction")
-	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMapping(String rootDir, Resource resource) {
+	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMapping(
+			String rootDir, Resource resource) {
 		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> classAndOpMapping = new HashMap<>();
 
 		TreeIterator<EObject> eObjIt = resource.getAllContents();
-		
 		while (eObjIt.hasNext()) {
 			EObject eObj = eObjIt.next();
-			if (!(eObj instanceof ClassImpl))   continue;
+			if (!(eObj instanceof ClassImpl)) {
+				continue;
+			}
 
-			ClassImpl eClass = (ClassImpl)eObj;
-			String eClassId = new NamedReference(eClass, eClass.getName()).getIdentifier();
-			
+			ClassImpl eClass = (ClassImpl) eObj;
+			String eClassId = NamedReference.getIdentifier(eClass);
+
 			for (Operation eOperation : eClass.getAllOperations()) {
-				String eOperationId = new NamedReference(eOperation, eOperation.getName()).getIdentifier();
+				String eOperationId = NamedReference.getIdentifier(eOperation);
 
 				classAndOpMapping.put(new AbstractMap.SimpleImmutableEntry<>(eClass.getName(), eOperation.getName()),
 						new AbstractMap.SimpleImmutableEntry<>(eClassId, eOperationId));
@@ -383,11 +380,10 @@ public class ConsoleModelRunner {
 	}
 
 	private void saveNameMapping(String rootDir, Resource resource) {
-		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMapping(rootDir, resource);
+		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMapping(
+				rootDir, resource);
 		File mappingFile = new File(rootDir, MAPPING_FILE_NAME);
-		try (
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(mappingFile));
-		) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(mappingFile));) {
 			oos.writeObject(nameMapping);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -474,11 +470,13 @@ public class ConsoleModelRunner {
 			String classpath = String.join(java.io.File.pathSeparatorChar + "", runtimeJar, rootDir);
 			String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
-			AbstractMap.SimpleImmutableEntry<String, String> mappedNamePair = getClassFeedMappedName(rootDir, className, feedName);
+			AbstractMap.SimpleImmutableEntry<String, String> mappedNamePair = getClassFeedMappedName(rootDir, className,
+					feedName);
 			String mappedClassName = mappedNamePair.getKey();
 			String mappedFeedName = mappedNamePair.getValue();
 
-			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, mappedClassName, mappedFeedName);
+			List<String> cmdLineArgs = Utils.list(javaBin, "-cp", classpath, runtimeClassName, mappedClassName,
+					mappedFeedName);
 			addReadTraceArg(cmdLineArgs);
 			addWriteTraceArg(cmdLineArgs);
 			addLogArg(cmdLineArgs);
@@ -496,26 +494,27 @@ public class ConsoleModelRunner {
 		}
 	}
 
-
-	private AbstractMap.SimpleImmutableEntry<String, String> getClassFeedMappedName(String rootDir, String className, String feedName) {
-		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMap(rootDir);
+	private AbstractMap.SimpleImmutableEntry<String, String> getClassFeedMappedName(String rootDir, String className,
+			String feedName) {
+		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMap(
+				rootDir);
 		SimpleImmutableEntry<String, String> classAndFeed = new AbstractMap.SimpleImmutableEntry<>(className, feedName);
-		
+
 		if (!nameMapping.containsKey(classAndFeed)) {
 			throw new NoClassAndFeedException(nameMapping);
 		}
-		
+
 		return nameMapping.get(classAndFeed);
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMap(String rootDir) {
+	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMap(
+			String rootDir) {
 		File mappingFile = new File(rootDir, MAPPING_FILE_NAME);
 		String mappingFileName = mappingFile.toString();
-		try (
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(mappingFile));
-		) {
-			return (Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>>)ois.readObject();
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(mappingFile));) {
+			return (Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>>) ois
+					.readObject();
 		} catch (IOException e) {
 			throw new MissingFileException(mappingFileName);
 		} catch (Exception e) {

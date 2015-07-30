@@ -14,7 +14,7 @@ public class CliJavaCompilerException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
 
 	List<Diagnostic<? extends JavaFileObject>> diagnostics;
-	
+
 	public CliJavaCompilerException() {
 		this(new ArrayList<>());
 	}
