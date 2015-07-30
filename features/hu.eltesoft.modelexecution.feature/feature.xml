@@ -2,7 +2,7 @@
 <feature
       id="hu.eltesoft.modelexecution.feature"
       label="xUML-RT Executor"
-      version="0.4.0.qualifier"
+      version="0.5.0.qualifier"
       provider-name="ELTE-Soft Kft">
 
    <description>

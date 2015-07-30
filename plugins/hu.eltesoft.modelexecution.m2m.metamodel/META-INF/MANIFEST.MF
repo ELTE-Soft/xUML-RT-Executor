@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.metamodel;singleton:=true
-Bundle-Version: 0.4.0.qualifier
+Bundle-Version: 0.5.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.3.0",
- hu.eltesoft.modelexecution.uml.alf;bundle-version="0.3.0"
+ hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.5.0",
+ hu.eltesoft.modelexecution.uml.alf;bundle-version="0.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: hu.eltesoft.modelexecution.m2m.metamodel.association,
  hu.eltesoft.modelexecution.m2m.metamodel.association.util,

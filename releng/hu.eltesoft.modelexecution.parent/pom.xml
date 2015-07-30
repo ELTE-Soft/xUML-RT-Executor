@@ -4,7 +4,7 @@
 
 	<groupId>hu.eltesoft.modelexecution</groupId>
 	<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
-	<version>0.4.0-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!-- Tycho requires Maven 3 -->
@@ -107,7 +107,7 @@
 						<artifact>
 							<groupId>hu.eltesoft.modelexecution</groupId>
 							<artifactId>hu.eltesoft.modelexecution.target</artifactId>
-							<version>0.4.0-SNAPSHOT</version>
+							<version>0.5.0-SNAPSHOT</version>
 							<classifier>mirrors</classifier>
 						</artifact>
 					</target>
@@ -267,7 +267,7 @@
 								<artifact>
 									<groupId>hu.eltesoft.modelexecution</groupId>
 									<artifactId>hu.eltesoft.modelexecution.target</artifactId>
-									<version>0.4.0-SNAPSHOT</version>
+									<version>0.5.0-SNAPSHOT</version>
 									<classifier>release</classifier>
 								</artifact>
 							</target>
