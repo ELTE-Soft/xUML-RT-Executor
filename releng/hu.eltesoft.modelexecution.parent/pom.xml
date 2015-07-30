@@ -26,7 +26,7 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.alf/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
 		
-		<module>../../features/hu.eltesoft.modelexecution.example/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.examples/pom.xml</module>
 
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
@@ -38,7 +38,7 @@
 		<module>../../tests/hu.eltesoft.modelexecution.uml.alf.tests/pom.xml</module>
 
 		<module>../../features/hu.eltesoft.modelexecution.feature/pom.xml</module>
-		<module>../../features/hu.eltesoft.modelexecution.example.feature/pom.xml</module>
+		<module>../../features/hu.eltesoft.modelexecution.examples.feature/pom.xml</module>
 
 		<module>../../releng/hu.eltesoft.modelexecution.update/pom.xml</module>
 		<module>../../releng/hu.eltesoft.modelexecution.target/pom.xml</module>
