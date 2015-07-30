@@ -31,5 +31,6 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.3.0"
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: hu.eltesoft.modelexecution.ide.IdePlugin
-Export-Package: hu.eltesoft.modelexecution.ide.project
+Export-Package: hu.eltesoft.modelexecution.ide,
+ hu.eltesoft.modelexecution.ide.project
 Import-Package: hu.eltesoft.modelexecution.m2t.smap.emf
