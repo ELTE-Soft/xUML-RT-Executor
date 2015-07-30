@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="hu.eltesoft.modelexecution.ide.launchConfigs.executableModel">
+<stringAttribute key="FRAGMENT_ATTRIBUTE" value="_wgep0K3cEeSTKss-fgtTSw"/>
+<stringAttribute key="URI_ATTRIBUTE" value="platform:/resource/xUmlRtStateMachineExamples/Phone.uml"/>
+<intAttribute key="hu.eltesoft.modelexecution.attr.control_port" value="52342"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.exec_class_name" value="_wgep0K3cEeSTKss$fgtTSw"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.executed_class_uri" value="_wgep0K3cEeSTKss-fgtTSw"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.executed_feed_uri" value="_lgjd8K3vEeS9yN-by9sk6Q"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.feed_fun_name" value="_lgjd8K3vEeS9yN$by9sk6Q"/>
+<booleanAttribute key="hu.eltesoft.modelexecution.attr.logging" value="true"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.project_name" value="xUmlRtStateMachineExamples"/>
+<booleanAttribute key="hu.eltesoft.modelexecution.attr.replay_trace" value="false"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.replay_trace_folder" value="/"/>
+<booleanAttribute key="hu.eltesoft.modelexecution.attr.tracing" value="false"/>
+<stringAttribute key="hu.eltesoft.modelexecution.attr.uml_resource" value="/xUmlRtStateMachineExamples/Phone.uml"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/xUmlRtStateMachineExamples/Phone.uml"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="hu.eltesoft.modelexecution.runtime.XUMLRTRuntime"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=" _wgep0K3cEeSTKss$fgtTSw _lgjd8K3vEeS9yN$by9sk6Q -log -control-sock 52342"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="xUmlRtStateMachineExamples"/>
+<booleanAttribute key="org.eclipse.jdt.launching.STOP_IN_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.util.logging.config.file=logging.properties"/>
+</launchConfiguration>

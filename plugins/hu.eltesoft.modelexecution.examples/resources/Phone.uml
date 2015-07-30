@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Zrmj0K3cEeSTKss-fgtTSw" name="model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_wgep0K3cEeSTKss-fgtTSw" name="Phone">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_IAILIK3dEeSfGL0Ju9NCPQ" name="PhoneBehavior">
+      <region xmi:type="uml:Region" xmi:id="_UMVpUK3dEeSfGL0Ju9NCPQ" name="Region1">
+        <transition xmi:type="uml:Transition" xmi:id="_UciEoK3hEeSfGL0Ju9NCPQ" name="TInitial" source="_U5axwK3dEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_A1Y9kK3vEeS9yN-by9sk6Q" name="InitialEffect">
+            <language>Alf</language>
+            <body>this.StartCallReception();</body>
+          </effect>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_dgYqwK3hEeSfGL0Ju9NCPQ" name="TIncomingCall" source="_m3PpQK3dEeSfGL0Ju9NCPQ" target="_tNZysK3gEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_A52OgK3pEeSfGL0Ju9NCPQ" name="IncomingCallTrigger" event="_85ebQK3mEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_gq_lkK3hEeSfGL0Ju9NCPQ" name="TAccept" source="_tNZysK3gEeSfGL0Ju9NCPQ" target="_1qhwAK3gEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_UWZt0K3pEeSfGL0Ju9NCPQ" name="AcceptTrigger" event="_uTWC4K3nEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_kKADEK3hEeSfGL0Ju9NCPQ" name="TRefuse" source="_tNZysK3gEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_J45NIK3pEeSfGL0Ju9NCPQ" name="RefuseTrigger" event="_NBuRMK3nEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_wNWgMK3hEeSfGL0Ju9NCPQ" name="TFinish" source="_1qhwAK3gEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_f5evcK3pEeSfGL0Ju9NCPQ" name="FinishTrigger" event="_9hdy4K3nEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_2uG3cK3hEeSfGL0Ju9NCPQ" name="TStartCall" source="_m3PpQK3dEeSfGL0Ju9NCPQ" target="_P20dwK3hEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_m_Hf8K3qEeSfGL0Ju9NCPQ" name="StartCallTrigger" event="_H2yn8K3oEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_7MfHQK3hEeSfGL0Ju9NCPQ" name="TAccepted" source="_P20dwK3hEeSfGL0Ju9NCPQ" target="_1qhwAK3gEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_qsDrwK3qEeSfGL0Ju9NCPQ" name="AcceptedTrigger" event="_WcZmcK3oEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_-raFMK3hEeSfGL0Ju9NCPQ" name="TRefused" source="_P20dwK3hEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_t-NZAK3qEeSfGL0Ju9NCPQ" name="RefusedTrigger" event="_ZaOpgK3oEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_XOBbMK3pEeSfGL0Ju9NCPQ" name="TFinished" source="_1qhwAK3gEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
+          <trigger xmi:type="uml:Trigger" xmi:id="_bOvCIK3qEeSfGL0Ju9NCPQ" name="FinishedTrigger" event="_q9RNAK3pEeSfGL0Ju9NCPQ"/>
+        </transition>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="_U5axwK3dEeSfGL0Ju9NCPQ" name="TInitial"/>
+        <subvertex xmi:type="uml:State" xmi:id="_m3PpQK3dEeSfGL0Ju9NCPQ" name="Idle"/>
+        <subvertex xmi:type="uml:State" xmi:id="_tNZysK3gEeSfGL0Ju9NCPQ" name="Called">
+          <entry xmi:type="uml:OpaqueBehavior" xmi:id="_GQ6qwK3yEeS9yN-by9sk6Q" name="CalledEntry">
+            <language>Alf</language>
+            <body>this.AcceptReception();</body>
+          </entry>
+        </subvertex>
+        <subvertex xmi:type="uml:State" xmi:id="_1qhwAK3gEeSfGL0Ju9NCPQ" name="InCall">
+          <entry xmi:type="uml:OpaqueBehavior" xmi:id="_U0wPAK3vEeS9yN-by9sk6Q" name="InCallEntry">
+            <language>Alf</language>
+            <body>this.FinishReception();</body>
+          </entry>
+        </subvertex>
+        <subvertex xmi:type="uml:State" xmi:id="_P20dwK3hEeSfGL0Ju9NCPQ" name="Calling"/>
+      </region>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_SqmZsK3xEeS9yN-by9sk6Q" name="FeedBehavior" specification="_lgjd8K3vEeS9yN-by9sk6Q">
+      <language>Alf</language>
+      <body>// The initial transition's effect sends a StartCall signal.&#xD;
+// It triggers the transition from Idle to Calling.&#xD;
+// The first message sent from 'feed' refuses this call, making the phone going to Idle.&#xD;
+// The second instruction in 'feed' sends an IncomingCall signal.&#xD;
+// The entry of the Called state accepts this call.&#xD;
+// The entry of InCall finishes this call, that results in returning to Idle again.&#xD;
+this.RefusedReception();&#xD;
+this.IncomingCallReception();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_lgjd8K3vEeS9yN-by9sk6Q" name="feed" method="_SqmZsK3xEeS9yN-by9sk6Q"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_6KOp8K3qEeSfGL0Ju9NCPQ" name="IncomingCall"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_D_ISgK3rEeSfGL0Ju9NCPQ" name="Refuse"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_GeLH0K3rEeSfGL0Ju9NCPQ" name="Accept"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_Jx7XkK3rEeSfGL0Ju9NCPQ" name="Finish"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_NmrbkK3rEeSfGL0Ju9NCPQ" name="Finished"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_RLDhQK3rEeSfGL0Ju9NCPQ" name="StartCall"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_WJfKIK3rEeSfGL0Ju9NCPQ" name="Refused"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_ajyLMK3rEeSfGL0Ju9NCPQ" name="Accepted"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_s3ycIK3tEeS9yN-by9sk6Q" name="IncomingCallReception" signal="_6KOp8K3qEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_xYmU4K3tEeS9yN-by9sk6Q" name="RefuseReception" signal="_D_ISgK3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_yPgHsK3tEeS9yN-by9sk6Q" name="AcceptReception" signal="_GeLH0K3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_zRo6IK3tEeS9yN-by9sk6Q" name="FinishReception" signal="_Jx7XkK3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_0gX-IK3tEeS9yN-by9sk6Q" name="FinishedReception" signal="_NmrbkK3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_2OUGoK3tEeS9yN-by9sk6Q" name="StartCallReception" signal="_RLDhQK3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_3HJzIK3tEeS9yN-by9sk6Q" name="AcceptedReception" signal="_ajyLMK3rEeSfGL0Ju9NCPQ"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_34LAYK3tEeS9yN-by9sk6Q" name="RefusedReception" signal="_WJfKIK3rEeSfGL0Ju9NCPQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_85ebQK3mEeSfGL0Ju9NCPQ" name="IncomingCallEvent" signal="_6KOp8K3qEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_NBuRMK3nEeSfGL0Ju9NCPQ" name="RefuseEvent" signal="_D_ISgK3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_uTWC4K3nEeSfGL0Ju9NCPQ" name="AcceptEvent" signal="_GeLH0K3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_9hdy4K3nEeSfGL0Ju9NCPQ" name="FinishEvent" signal="_Jx7XkK3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_H2yn8K3oEeSfGL0Ju9NCPQ" name="StartCallEvent" signal="_RLDhQK3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_WcZmcK3oEeSfGL0Ju9NCPQ" name="AcceptedEvent" signal="_ajyLMK3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_ZaOpgK3oEeSfGL0Ju9NCPQ" name="RefusedEvent" signal="_WJfKIK3rEeSfGL0Ju9NCPQ"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_q9RNAK3pEeSfGL0Ju9NCPQ" name="FinishedEvent" signal="_NmrbkK3rEeSfGL0Ju9NCPQ"/>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_bEhsUK3hEeSfGL0Ju9NCPQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bFvNQK3hEeSfGL0Ju9NCPQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_sYse0YZLEeKyw49uR6nx3g"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>
