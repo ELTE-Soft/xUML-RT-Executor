@@ -14,6 +14,8 @@
 
 	<!-- the modules that shall be built together in one reactor -->
 	<modules>
+		<module>../../plugins/hu.eltesoft.modelexecution.cli/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.examples/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.ide/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.m2m.logic/pom.xml</module>
@@ -25,11 +27,11 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.runtime/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.alf/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
-		
-		<module>../../plugins/hu.eltesoft.modelexecution.examples/pom.xml</module>
 
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.cli.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
+		<!-- <module>../../tests/hu.eltesoft.modelexecution.ide.tests/pom.xml</module> -->
 		<module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
@@ -52,6 +54,7 @@
 		<build-helper.version>1.7</build-helper.version>
 		<xtend.version>2.8.3</xtend.version>
 		<incquery.version>1.0.0</incquery.version>
+		<rcptt.version>2.0.0</rcptt.version>
 	</properties>
 
 	<pluginRepositories>
@@ -59,6 +62,11 @@
 		<pluginRepository>
 			<id>MavenCentral</id>
 			<url>http://central.maven.org/maven2/</url>
+		</pluginRepository>
+		<!-- needed by rcptt ui tests -->
+		<pluginRepository>
+			<id>RCPTT</id>
+			<url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -198,6 +206,40 @@
 							</configuration>
 						</execution>
 					</executions>
+				</plugin>
+
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.eclipse.rcptt
+										</groupId>
+										<artifactId>
+											rcptt-maven-plugin
+										</artifactId>
+										<versionRange>
+											${rcptt.version}
+										</versionRange>
+										<goals>
+											<goal>resources</goal>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

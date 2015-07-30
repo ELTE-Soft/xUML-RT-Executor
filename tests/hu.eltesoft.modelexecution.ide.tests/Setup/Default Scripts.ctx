@@ -1,0 +1,101 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Default Scripts
+Element-Type: context
+Element-Version: 2.0
+Id: _sXg1IB2BEeWfUbA_Erpteg
+Runtime-Version: 2.0.0.201506120617
+Save-Time: 6/29/15 4:36 AM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+
+// This file contains scripts used in Model Execution testing.
+// The names of utility procedures begin with "mx-" for Model eXecution.
+
+
+// Closes the Outline view that is unnecessary for most tests.
+// Since we can only add views to contexts, closing them has to be done manually.
+proc "mx-close-outline-view" {
+	get-view Outline | close
+}
+
+
+// Creates an xUML project with the given name in the Workspace.
+proc "mx-new-xuml-project" [val name] {
+	wait-until-eclipse-is-ready
+
+	get-view "Project Explorer" | get-tree | key-type "M1+n"
+	with [get-window New] {
+	    get-tree | select "Papyrus/xUML-RT Project"
+	}
+
+	// The "Next" button must be enabled by now.
+	get-window New | get-button "Next >" | get-property enablement | equals true | verify-true
+
+	get-window New | get-button "Next >" | click
+
+// TODO remove
+// TODO at this point, when the command line tool is run
+// TODO the wizard chooser says, "the selected wizard could not be started"
+//	wait 20000
+
+	get-window -class WizardDialog | get-editbox -after [get-label "Project name:"] | set-text $name
+
+	// The "Finish" button must be enabled by now.
+	get-window -class WizardDialog | get-button Finish | get-property enablement | equals true | verify-true
+
+	get-window -class WizardDialog | get-button Finish | click
+}
+
+
+// Copies the model HelloWorld_altered that is included in the default workbench to TestProject.
+proc "mx-copy-helloworld-to-test" {
+	with [get-view "Project Explorer" | get-tree] {
+	    select "TestModels/HelloWorld_altered" | key-type "M1+c"
+	    select TestProject | key-type "M1+v"
+	}
+}
+
+
+// Opens the default package in TestProject by double clicking on it.
+// It MUST be open if its sub-items are to be inspected.
+proc "mx-open-default-package" {
+    get-view "Project Explorer" | get-tree | select "TestProject/model-gen-src/\\(default package\\)" | double-click
+}
+
+
+// Gets the textual contents of a generated Java source file.
+// The file is the idx'eth file in the default package in the Project Explorer.
+proc "mx-get-gen-src-item" [val idx] {
+	get-view "Project Explorer" | get-tree | get-item "TestProject/model-gen-src/\\(default package\\)"  | get-property [concat "getItems().TreeItem[" $idx "].getData().getSource()"] -raw
+}
+
+
+// Opens the model with the model name. It will be displayed in the Model Explorer.
+proc "mx-open-model" [val model_name] {
+	get-view "Project Explorer" | get-tree | select [concat "TestProject/" $model_name] | double-click
+}
+
+
+// Refreshes the project with the given name.
+proc "mx-refresh-project" [val project_name] {
+	get-view "Project Explorer" | get-tree | select $project_name | key-type F5
+}
+
+
+// TODO isn't working properly
+// Checks whether the expected number of files were generated.
+// It is assumed that upon call, the model-gen-src folder is open in Project Explorer.
+proc "mx-check-generated-file-count" [val expected] {
+	get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+	let [val actual [get-view Navigator | get-tree | get-item "TestProject/model-gen-src"]] {
+		$actual | get-property "getItems().length" -raw | equals $expected | assert-true [concat "Expected " $expected " files, got " [$actual | get-property "getItems().length" -raw]]
+	}
+
+}
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

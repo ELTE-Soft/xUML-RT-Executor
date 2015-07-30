@@ -1,0 +1,300 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _QhEgcB2GEeWfUbA_Erpteg
+Element-Name: Model element handling
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _sAFiQB3yEeWDyJhARpwrcA
+Runtime-Version: 2.0.0.201506120617
+Save-Time: 7/29/15 3:50 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+
+proc "replace-old-contents" {
+	global [val "old_contents0" $new_contents0] -override
+	global [val "old_contents1" $new_contents1] -override
+	global [val "old_contents2" $new_contents2] -override
+	global [val "old_contents3" $new_contents3] -override
+	global [val "old_contents4" $new_contents4] -override
+	global [val "old_contents5" $new_contents5] -override
+	global [val "old_contents6" $new_contents6] -override
+}
+
+proc "check-files-have-changed" [val message] {
+	or
+		[not-eq $old_contents0 $new_contents0]
+		[not-eq $old_contents1 $new_contents1]
+		[not-eq $old_contents2 $new_contents2]
+		[not-eq $old_contents3 $new_contents3]
+		[not-eq $old_contents4 $new_contents4]
+		[not-eq $old_contents5 $new_contents5]
+		[not-eq $old_contents6 $new_contents6]
+	| assert-true $message
+}
+
+// Working with 7 files, we check whether they have changed.
+// If they haven't, the test fails with an error message.
+// If they have, we remember the contents and carry on.
+proc "check-and-replace-old-contents" [val message] {
+	// Store new contents of the generated Java files.
+	repeat [val index] -times 7 -command {
+		global [val [concat "new_contents" $index] [mx-get-gen-src-item $index]] -override
+	}
+
+	check-files-have-changed $message
+	replace-old-contents
+}
+
+
+// Working with 7 files, we check whether they have changed.
+// If they have, the test fails with an error message.
+proc "check-files-didnt-change" [val message] {
+	or
+		[eq $old_contents0 $new_contents0]
+		[eq $old_contents1 $new_contents1]
+		[eq $old_contents2 $new_contents2]
+		[eq $old_contents3 $new_contents3]
+		[eq $old_contents4 $new_contents4]
+		[eq $old_contents5 $new_contents5]
+		[eq $old_contents6 $new_contents6]
+	| assert-true $message
+}
+
+
+// -----------------------------------------------
+// -----------------------------------------------
+
+
+mx-new-xuml-project "TestProject"
+mx-copy-helloworld-to-test
+
+mx-open-default-package
+// TODO remove
+// get-view "Project Explorer" | get-tree | select "TestProject/model-gen-src/\\(default package\\)" | double-click
+
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+
+// Store the initial contents of the generated Java files.
+repeat [val index] -times 7 -command {
+	global [val [concat "old_contents" $index] [mx-get-gen-src-item $index]]
+}
+
+mx-open-model "HelloWorld_altered"
+
+
+// -------------------------------------------------
+// Create new state
+
+
+with [get-view "Model Explorer" | get-tree] {
+    select "model/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/State" | click
+    key-type "M1+s"
+}
+
+// Check: we still have exactly 7 Java files
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+
+check-and-replace-old-contents "Files remain the same after a new state was inserted"
+
+
+// -------------------------------------------------
+// Add transition
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1" | click
+    select "model/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/Transition" | click
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1/<Transition>" | click
+}
+get-tab-folder -index 4 | get-tab-item Properties | click
+with [get-view Properties] {
+    get-property-tab Advanced | click
+    with [get-tree] {
+        select "UML/Source" | activate-cell-edit -column 1
+        get-button "..." | click
+    }
+}
+with [get-window "Element Selection"] {
+    get-table | select "<State> World"
+    get-button OK | click
+}
+with [get-view Properties | get-tree] {
+    apply-cell-edit -deactivate
+    select "UML/Target" | activate-cell-edit -column 1
+    get-button "..." | click
+}
+with [get-window "Element Selection"] {
+    get-table | select "<State> State1"
+    get-button OK | click
+}
+with [get-view Properties | get-tree] {
+    select "UML/Name" | activate-cell-edit -column 1
+    with [get-editbox] {
+        set-text transition1
+        key-type Enter
+    }
+    apply-cell-edit -deactivate
+    key-type "M1+s"
+}
+
+check-files-didnt-change "Files have changed after a new transition was inserted"
+
+
+// -------------------------------------------------
+// Add signal event and trigger
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item model | click
+    select model | get-menu "New Child/SignalEvent" | click
+    key-type "M1+s"
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | click
+    select "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | get-menu "New Child/Trigger" | click
+}
+with [get-view Properties | get-tree] {
+    select "UML/Event" | activate-cell-edit -column 1
+    get-button "..." | click
+}
+
+with [get-window "Element Selection"] {
+    get-table | select "<Signal Event> SignalEvent1"
+    get-button OK | click
+}
+get-eclipse-window | key-type "M1+s"
+
+
+check-files-didnt-change "Files have changed after a new signal event and trigger were inserted"
+
+
+// -------------------------------------------------
+// Add signal
+
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior" | click
+    select "model/HelloWorld/HelloWorldBehavior" | get-menu "New Child/Signal" | click
+    key-type "M1+s"
+    get-item "model/SignalEvent1" | click
+}
+with [get-view Properties | get-tree] {
+    select "UML/Signal" | activate-cell-edit -column 1
+    get-button "..." | click
+}
+with [get-window "Element Selection"] {
+    get-table | select "<Signal> Signal1"
+    get-button OK | click
+}
+get-view Properties | get-tree | apply-cell-edit -deactivate
+
+
+check-files-didnt-change "Files have changed after a new signal event and trigger were inserted"
+
+
+// -------------------------------------------------
+// Rename signal
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Signal1" | click
+    key-type F2
+}
+with [get-window "Rename..."] {
+    with [get-editbox -after [get-label "New name:"]] {
+        set-text Signal0
+    }
+    get-button OK | click
+}
+get-view "Model Explorer" | get-tree | key-type "M1+s"
+
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 8 | verify-true
+
+
+
+// -------------------------------------------------
+// Close and reopen model
+
+get-editor "HelloWorld_altered.di" | close
+get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld_altered" | double-click
+
+get-view "Model Explorer" | get-tree | get-item "model/SignalEvent1" | get-property caption | equals SignalEvent1 
+    | verify-true
+
+
+
+// -------------------------------------------------
+// Delete signal
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Signal0" | click
+    key-type Del
+    key-type "M1+s"
+}
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+
+// -------------------------------------------------
+// Delete signal event
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/SignalEvent1" | click
+    key-type Del
+    key-type "M1+s"
+}
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+// -------------------------------------------------
+// Delete trigger
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1/transition1/Trigger1" | click
+    key-type Del
+    key-type "M1+s"
+}
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+// -------------------------------------------------
+// Delete transition
+
+with [get-view "Model Explorer" | get-tree] {
+    select "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | key-type Del
+    key-type "M1+s"
+}
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+// -------------------------------------------------
+// Delete state
+
+with [get-view "Model Explorer" | get-tree] {
+    get-item "model/HelloWorld/HelloWorldBehavior/Region1/State1" | click
+    key-type Del
+    key-type "M1+s"
+}
+
+// Check expected file counts
+get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

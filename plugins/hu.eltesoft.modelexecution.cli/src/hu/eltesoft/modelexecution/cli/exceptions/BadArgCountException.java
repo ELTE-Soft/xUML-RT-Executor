@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-
 import org.apache.commons.cli.Options;
+
+import hu.eltesoft.modelexecution.cli.Messages;
 
 public class BadArgCountException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
@@ -12,8 +12,7 @@ public class BadArgCountException extends IllegalArgumentException {
 	int expectedArgCount;
 	Options parserOpts;
 
-	public BadArgCountException(String presentOptName, int foundArgCount,
-			int expectedArgCount, Options parserOpts) {
+	public BadArgCountException(String presentOptName, int foundArgCount, int expectedArgCount, Options parserOpts) {
 		super();
 		this.presentOptName = presentOptName;
 		this.foundArgCount = foundArgCount;
@@ -23,14 +22,11 @@ public class BadArgCountException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Message.BAD_ARG_COUNT.getMsg(presentOptName, expectedArgCount, foundArgCount);
+		return Messages.BAD_ARG_COUNT.getMsg(presentOptName, expectedArgCount, foundArgCount);
 	}
-	
+
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}
-	
-	
-
 }

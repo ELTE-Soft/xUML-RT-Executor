@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>hu.eltesoft.modelexecution.ide.tests</artifactId>
+	<packaging>rcpttTest</packaging>
+
+	<parent>
+		<groupId>hu.eltesoft.modelexecution</groupId>
+		<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
+		<version>0.4.0-SNAPSHOT</version>
+		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
+	</parent>
+
+	<!-- depend on the generated update site -->
+	<dependencies>
+		<dependency>
+			<groupId>hu.eltesoft.modelexecution</groupId>
+			<artifactId>hu.eltesoft.modelexecution.update</artifactId>
+			<version>0.4.0-SNAPSHOT</version>
+			<type>zip</type>
+		</dependency>
+	</dependencies>
+
+	<!-- repository for application under test (aut) -->
+	<repositories>
+		<repository>
+			<id>aut</id>
+			<url>http://mextest.inf.elte.hu/aut/</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.rcptt</groupId>
+				<artifactId>rcptt-maven-plugin</artifactId>
+				<version>${rcptt.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<runner>
+						<version>${rcptt.version}</version>
+					</runner>
+					<aut>
+						<groupId>hu.eltesoft.modelexecution</groupId>
+						<artifactId>hu.eltesoft.modelexecution.aut</artifactId>
+						<version>0.1.0</version>
+						<injections>
+							<injection>
+								<site>jar:file:/${project.basedir}/../../releng/hu.eltesoft.modelexecution.update/target/hu.eltesoft.modelexecution.update-${project.version}.zip!/</site>
+							</injection>
+						</injections>
+						<vmArgs>
+							<vmArg>-Dosgi.requiredJavaVersion=1.8</vmArg>
+							<vmArg>-Xmx1536m</vmArg>
+						</vmArgs>
+					</aut>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

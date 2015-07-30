@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.cli;
 
-import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Message;
-import hu.eltesoft.modelexecution.cli.ConsoleModelRunner.Opt;
+import org.apache.commons.cli.ParseException;
+import org.junit.Test;
+
 import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadDirectoryException;
 import hu.eltesoft.modelexecution.cli.exceptions.BadFileException;
@@ -11,59 +11,12 @@ import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.junit.Before;
-import org.junit.Test;
-
-public class ConsoleModelRunnerTests {
-
-	List<String> messageNamesInBundle = Arrays.stream(Message.values())
-			.map(Message::getDescriptionBundleName)
-			.collect(Collectors.toList());
-	List<String> optNamesInBundle = Arrays.stream(Opt.values())
-			.map(Opt::getDescriptionBundleName).collect(Collectors.toList());
-
-	Options parserOpts;
-
-	@Before
-	public void before() {
-		parserOpts = ConsoleModelRunner.mkParserOpts();
-	}
-
-	@Test
-	public void allUsedMsgsAreInBundle() {
-		ResourceBundle msgs = ConsoleModelRunner.getMsgs();
-		for (String msgName : messageNamesInBundle) {
-			assertTrue("message " + msgName + " is present",
-					msgs.containsKey(msgName));
-		}
-		for (String msgName : optNamesInBundle) {
-			assertTrue("opt " + msgName + " is present",
-					msgs.containsKey(msgName));
-		}
-	}
-
-	@Test
-	public void allMsgsInBundleAreInUse() {
-		ResourceBundle msgs = ConsoleModelRunner.getDefaultBundle();
-		for (String msgName : Collections.list(msgs.getKeys())) {
-			assertTrue(
-					msgName + " is used",
-					messageNamesInBundle.contains(msgName)
-							|| optNamesInBundle.contains(msgName));
-		}
-	}
+public class ArgumentsTests {
 
 	private void runCli(String argsTxt) throws ParseException {
 		String[] args = argsTxt.split(" ");
-		ConsoleModelRunner.doCli(args, parserOpts);
+		ConsoleModelRunner runner = new ConsoleModelRunner();
+		runner.run(args);
 	}
 
 	@Test(expected = NothingToDoException.class)
