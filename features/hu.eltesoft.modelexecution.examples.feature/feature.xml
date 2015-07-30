@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="hu.eltesoft.modelexecution.examples.feature"
-      label="xUML-RT Model Executor"
+      label="xUML-RT Example Models"
       version="0.5.0.qualifier"
       provider-name="ELTE-Soft Kft">
 
