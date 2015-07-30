@@ -12,14 +12,17 @@
 		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
 	</parent>
 
+	<!-- depend on the generated update site -->
 	<dependencies>
 		<dependency>
 			<groupId>hu.eltesoft.modelexecution</groupId>
 			<artifactId>hu.eltesoft.modelexecution.update</artifactId>
 			<version>0.4.0-SNAPSHOT</version>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 
+	<!-- repository for  -->
 	<repositories>
 		<repository>
 			<id>aut</id>
@@ -44,7 +47,7 @@
 						<version>0.1.0</version>
 						<injections>
 							<injection>
-								<site>"jar:file:/${project.basedir}/../../releng/hu.eltesoft.modelexecution.update/target/hu.eltesoft.modelexecution.repository-${project.version}.zip!/"</site>
+								<site>"jar:file:/${project.basedir}/../../releng/hu.eltesoft.modelexecution.update/target/hu.eltesoft.modelexecution.update-${project.version}.zip!/"</site>
 							</injection>
 						</injections>
 						<vmArgs>
