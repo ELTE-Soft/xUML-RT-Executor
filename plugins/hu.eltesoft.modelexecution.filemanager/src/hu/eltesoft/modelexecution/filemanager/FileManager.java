@@ -44,8 +44,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public String addOrUpdate(String qualifiedName, String content)
-			throws IOException {
+	public String addOrUpdate(String qualifiedName, String content) throws IOException {
 		if (null == qualifiedName) {
 			return null;
 		}
@@ -57,8 +56,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public void addOrUpdateFile(String fileName, Serializable content)
-			throws IOException {
+	public void addOrUpdateFile(String fileName, Serializable content) throws IOException {
 		if (null == fileName) {
 			return;
 		}
@@ -69,8 +67,7 @@ public class FileManager implements IFileManager {
 
 	}
 
-	private void writeContentToFile(Serializable content, File outFile)
-			throws IOException {
+	private void writeContentToFile(Serializable content, File outFile) throws IOException {
 		FileOutputStream fileStream = new FileOutputStream(outFile);
 		ObjectOutputStream os = new ObjectOutputStream(fileStream);
 		os.writeObject(content);
@@ -78,8 +75,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public void addOrUpdateFile(String fileName, String content)
-			throws IOException {
+	public void addOrUpdateFile(String fileName, String content) throws IOException {
 		if (null == fileName) {
 			return;
 		}
@@ -144,8 +140,7 @@ public class FileManager implements IFileManager {
 		}
 	}
 
-	private static void writeContentToFile(String content, File outFile)
-			throws IOException {
+	private static void writeContentToFile(String content, File outFile) throws IOException {
 		try (FileWriter writer = new FileWriter(outFile)) {
 			writer.write(content);
 		}

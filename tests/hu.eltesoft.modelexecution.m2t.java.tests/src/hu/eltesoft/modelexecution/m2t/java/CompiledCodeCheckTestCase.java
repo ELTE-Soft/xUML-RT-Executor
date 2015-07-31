@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java;
 
+import org.eclipse.uml2.uml.Class;
+import org.junit.Assert;
+
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer;
 import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
-
-import org.eclipse.uml2.uml.Class;
-import org.junit.Assert;
 
 public class CompiledCodeCheckTestCase extends ModelBasedTestCase {
 
@@ -16,8 +16,7 @@ public class CompiledCodeCheckTestCase extends ModelBasedTestCase {
 	private final AlfAnalyzer analyzer = new AlfAnalyzer();
 	private final BehaviorBodyGenerator generator = new BehaviorBodyGenerator();
 
-	protected void assertCompilesTo(Class context, String alfCode,
-			String javaCode) {
+	protected void assertCompilesTo(Class context, String alfCode, String javaCode) {
 		AlfAnalyzerResult result = analyzer.analyze(alfCode, context);
 		Assert.assertEquals(javaCode, generator.generate(result).toString());
 	}

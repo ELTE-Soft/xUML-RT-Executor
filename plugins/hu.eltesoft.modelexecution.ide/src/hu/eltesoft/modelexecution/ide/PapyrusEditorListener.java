@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.DomainRegistry;
-
 import org.eclipse.emf.transaction.ResourceSetListenerImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+
+import hu.eltesoft.modelexecution.ide.builder.DomainRegistry;
 
 /**
  * Monitors active EMF editors to register their domain into a registry. The

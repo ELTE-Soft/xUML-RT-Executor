@@ -5,11 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
-import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
-import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
-import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +17,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Class;
 import org.junit.Before;
 import org.junit.Test;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier.None;
+import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
+import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
+import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 public class LocationRegistryTests extends ModelBasedTestCase {
 
@@ -88,8 +89,7 @@ public class LocationRegistryTests extends ModelBasedTestCase {
 		Reference reference = registry.resolve(location);
 		ResourceSet resourceSet = aClass.eResource().getResourceSet();
 
-		assertSame(aClassRef.resolve(resourceSet),
-				reference.resolve(resourceSet));
+		assertSame(aClassRef.resolve(resourceSet), reference.resolve(resourceSet));
 	}
 
 	@Test
@@ -98,8 +98,7 @@ public class LocationRegistryTests extends ModelBasedTestCase {
 		QualifiedReference reference = registry.resolveQualified(location);
 		ResourceSet resourceSet = aClass.eResource().getResourceSet();
 
-		assertSame(aClassRef.resolve(resourceSet),
-				reference.resolve(resourceSet));
+		assertSame(aClassRef.resolve(resourceSet), reference.resolve(resourceSet));
 		assertTrue(reference.isQualifiedAs(First.class));
 	}
 
@@ -141,8 +140,7 @@ public class LocationRegistryTests extends ModelBasedTestCase {
 	}
 
 	@Test
-	public void testSerializationWorks() throws IOException,
-			ClassNotFoundException {
+	public void testSerializationWorks() throws IOException, ClassNotFoundException {
 		Location location = registry.assign(aClassRef);
 
 		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -38,7 +38,8 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		String classRootName = NamedReference.getIdentifier(newClass);
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		assertEquals(2, queue.size()); // 2 = class specification + class implementation
+		assertEquals(2, queue.size()); // 2 = class specification + class
+										// implementation
 
 		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 
@@ -57,7 +58,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		method1.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		
+
 		// 2 = delete method, changed class implementation
 		assertEquals(2, queue.size());
 
@@ -66,7 +67,8 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		queue.forEach(t -> t.perform(listener));
 
 		verify(listener).sourceCodeDeleted(eq(behaviorRootName));
-		verify(listener).sourceCodeChanged(eq(classRootName + "_impl"), any(SourceMappedText.class), any(DebugSymbols.class));
+		verify(listener).sourceCodeChanged(eq(classRootName + "_impl"), any(SourceMappedText.class),
+				any(DebugSymbols.class));
 	}
 
 	@Test

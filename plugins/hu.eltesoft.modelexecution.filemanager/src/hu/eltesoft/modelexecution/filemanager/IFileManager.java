@@ -24,12 +24,10 @@ public interface IFileManager {
 	 *            A fully qualified class name like a.b.cc.Ddd or Aaa
 	 * @param content
 	 *            The content to be written in the file.
-	 * @return
-	 *            The full path to the generated file or {@code null}
-	 *            if no path is available. 
+	 * @return The full path to the generated file or {@code null} if no path is
+	 *         available.
 	 */
-	public abstract String addOrUpdate(String qualifiedName, String content)
-			throws IOException;
+	public abstract String addOrUpdate(String qualifiedName, String content) throws IOException;
 
 	/**
 	 * Removes a Java file if possible.
@@ -53,10 +51,8 @@ public interface IFileManager {
 	 * @param content
 	 *            The content to be written in the file.
 	 */
-	public abstract void addOrUpdateFile(String fileName, String content)
-			throws IOException;
+	public abstract void addOrUpdateFile(String fileName, String content) throws IOException;
 
-	public abstract void addOrUpdateFile(String fileName, Serializable content)
-			throws IOException;
+	public abstract void addOrUpdateFile(String fileName, Serializable content) throws IOException;
 
 }

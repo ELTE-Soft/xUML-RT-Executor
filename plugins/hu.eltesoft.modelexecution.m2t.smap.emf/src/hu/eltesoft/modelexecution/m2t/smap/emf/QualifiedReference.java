@@ -16,8 +16,7 @@ public class QualifiedReference extends Reference {
 		this(referencedElement, LocationQualifier.None.class);
 	}
 
-	public QualifiedReference(EObject referencedElement,
-			Class<? extends LocationQualifier> qualifier) {
+	public QualifiedReference(EObject referencedElement, Class<? extends LocationQualifier> qualifier) {
 		super(referencedElement);
 		this.qualifier = qualifier;
 	}
@@ -26,8 +25,7 @@ public class QualifiedReference extends Reference {
 		this(reference, LocationQualifier.None.class);
 	}
 
-	public QualifiedReference(Reference reference,
-			Class<? extends LocationQualifier> qualifier) {
+	public QualifiedReference(Reference reference, Class<? extends LocationQualifier> qualifier) {
 		super(reference);
 		this.qualifier = qualifier;
 	}
@@ -69,10 +67,9 @@ public class QualifiedReference extends Reference {
 			return false;
 		}
 		QualifiedReference other = (QualifiedReference) obj;
-		return qualifier.getCanonicalName().equals(
-				other.qualifier.getCanonicalName());
+		return qualifier.getCanonicalName().equals(other.qualifier.getCanonicalName());
 	}
-	
+
 	@Override
 	public String toString() {
 		return qualifier.toString() + "::" + super.toString();

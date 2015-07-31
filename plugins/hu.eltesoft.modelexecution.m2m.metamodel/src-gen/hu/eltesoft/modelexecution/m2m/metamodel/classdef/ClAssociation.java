@@ -2,6 +2,7 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.classdef;
 
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Cl Association</b></em>'.

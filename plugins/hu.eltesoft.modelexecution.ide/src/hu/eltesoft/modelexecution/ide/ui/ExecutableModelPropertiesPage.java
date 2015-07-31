@@ -1,10 +1,5 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
@@ -28,6 +23,11 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.osgi.service.prefs.BackingStoreException;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
+import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
+
 /**
  * The appearance of the property page where properties of an executable model
  * project can be configured.
@@ -35,11 +35,9 @@ import org.osgi.service.prefs.BackingStoreException;
  * Property pages are validated by {@linkplain #updateApplyButton()} that calls
  * {@linkplain #isValid()}.
  */
-public class ExecutableModelPropertiesPage extends PropertyPage implements
-		IWorkbenchPropertyPage {
+public class ExecutableModelPropertiesPage extends PropertyPage implements IWorkbenchPropertyPage {
 
-	private static final GridData gridDataFillBoth = new GridData(SWT.FILL,
-			SWT.FILL, true, false);
+	private static final GridData gridDataFillBoth = new GridData(SWT.FILL, SWT.FILL, true, false);
 
 	private ResourceSelector generatedFilesFolderSelector;
 	private ResourceSelector instrumentedClassFilesFolderSelector;
@@ -57,8 +55,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		generatedSourceFolderControl(preferences, properties);
 
 		Label binLibTxt = new Label(properties, SWT.NONE);
-		binLibTxt
-				.setText(Messages.ExecutableModelPropertiesPage_java_class_files_label);
+		binLibTxt.setText(Messages.ExecutableModelPropertiesPage_java_class_files_label);
 
 		debugFilesFolderControl(preferences, properties);
 		instrumentedClassFilesFolderControl(preferences, properties);
@@ -67,95 +64,71 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		return properties;
 	}
 
-	private void generatedSourceFolderControl(IEclipsePreferences preferences,
-			Composite properties) {
+	private void generatedSourceFolderControl(IEclipsePreferences preferences, Composite properties) {
 		Group generatedSourcesFolderGroup = new Group(properties, SWT.NONE);
 		generatedSourcesFolderGroup
 				.setText(Messages.ExecutableModelPropertiesPage_project_properties_folder_for_generated_sources_label);
 		generatedSourcesFolderGroup.setLayoutData(gridDataFillBoth);
 		generatedSourcesFolderGroup.setLayout(new GridLayout(1, false));
 
-		generatedFilesFolderSelector = new ResourceSelector(
-				generatedSourcesFolderGroup,
-				ResourceSelector.ConfigBase.PROJECT_BASED,
-				Messages.ExecutableModelPropertiesPage_gen_sources_label,
+		generatedFilesFolderSelector = new ResourceSelector(generatedSourcesFolderGroup,
+				ResourceSelector.ConfigBase.PROJECT_BASED, Messages.ExecutableModelPropertiesPage_gen_sources_label,
 				Messages.ExecutableModelPropertiesPage_gen_sources_button,
 				Messages.ExecutableModelPropertiesPage_gen_sources_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties
-				.getSourceGenPath(getProject());
-		generatedFilesFolderSelector.setSelectedResource(getProject()
-				.findMember(sourceGenPath));
-		generatedFilesFolderSelector
-				.addUpdateListener(sel -> updateApplyButton());
+		String sourceGenPath = ExecutableModelProperties.getSourceGenPath(getProject());
+		generatedFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
+		generatedFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
 		generatedSourcesFolderGroup.pack();
 	}
 
-	private void generatedTracesFolderControl(IEclipsePreferences preferences,
-			Composite properties) {
+	private void generatedTracesFolderControl(IEclipsePreferences preferences, Composite properties) {
 		Group generatedTracesFolderGroup = new Group(properties, SWT.NONE);
 		generatedTracesFolderGroup.setText("Folder for generated trace files");
 		generatedTracesFolderGroup.setLayoutData(gridDataFillBoth);
 		generatedTracesFolderGroup.setLayout(new GridLayout(1, false));
 
-		generatedTracesFolderSelector = new ResourceSelector(
-				generatedTracesFolderGroup,
-				ResourceSelector.ConfigBase.PROJECT_BASED,
-				"Folder for generated trace files", "Select",
+		generatedTracesFolderSelector = new ResourceSelector(generatedTracesFolderGroup,
+				ResourceSelector.ConfigBase.PROJECT_BASED, "Folder for generated trace files", "Select",
 				"Select folder for generated trace files");
-		String tracesPath = ExecutableModelProperties
-				.getTraceFilesPath(getProject());
-		generatedTracesFolderSelector.setSelectedResource(getProject()
-				.findMember(tracesPath));
-		generatedTracesFolderSelector
-				.addUpdateListener(sel -> updateApplyButton());
+		String tracesPath = ExecutableModelProperties.getTraceFilesPath(getProject());
+		generatedTracesFolderSelector.setSelectedResource(getProject().findMember(tracesPath));
+		generatedTracesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
 		generatedTracesFolderGroup.pack();
 	}
 
-	private void debugFilesFolderControl(IEclipsePreferences preferences,
-			Composite properties) {
+	private void debugFilesFolderControl(IEclipsePreferences preferences, Composite properties) {
 		Group debugFilesFolderGroup = new Group(properties, SWT.NONE);
-		debugFilesFolderGroup
-				.setText(Messages.ExecutableModelPropertiesPage_debug_folder_group_caption);
+		debugFilesFolderGroup.setText(Messages.ExecutableModelPropertiesPage_debug_folder_group_caption);
 		debugFilesFolderGroup.setLayoutData(gridDataFillBoth);
 		debugFilesFolderGroup.setLayout(new GridLayout(1, false));
 
-		debugFilesFolderSelector = new ResourceSelector(
-				debugFilesFolderGroup,
-				ResourceSelector.ConfigBase.PROJECT_BASED,
-				Messages.ExecutableModelPropertiesPage_debug_files_label,
+		debugFilesFolderSelector = new ResourceSelector(debugFilesFolderGroup,
+				ResourceSelector.ConfigBase.PROJECT_BASED, Messages.ExecutableModelPropertiesPage_debug_files_label,
 				Messages.ExecutableModelPropertiesPage_debug_files_button,
 				Messages.ExecutableModelPropertiesPage_debug_files_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties
-				.getDebugFilesPath(getProject());
-		debugFilesFolderSelector.setSelectedResource(getProject().findMember(
-				sourceGenPath));
+		String sourceGenPath = ExecutableModelProperties.getDebugFilesPath(getProject());
+		debugFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
 		debugFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
 		debugFilesFolderGroup.pack();
 	}
 
-	private void instrumentedClassFilesFolderControl(
-			IEclipsePreferences preferences, Composite properties) {
+	private void instrumentedClassFilesFolderControl(IEclipsePreferences preferences, Composite properties) {
 		Group instrumentedClassFolderGroup = new Group(properties, SWT.NONE);
-		instrumentedClassFolderGroup
-				.setText(Messages.ExecutableModelPropertiesPage_instrumented_group_label);
+		instrumentedClassFolderGroup.setText(Messages.ExecutableModelPropertiesPage_instrumented_group_label);
 		instrumentedClassFolderGroup.setLayoutData(gridDataFillBoth);
 		instrumentedClassFolderGroup.setLayout(new GridLayout(1, false));
 
-		instrumentedClassFilesFolderSelector = new ResourceSelector(
-				instrumentedClassFolderGroup,
+		instrumentedClassFilesFolderSelector = new ResourceSelector(instrumentedClassFolderGroup,
 				ResourceSelector.ConfigBase.PROJECT_BASED,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_label,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_button,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties
-				.getInstrumentedClassFilesPath(getProject());
-		instrumentedClassFilesFolderSelector.setSelectedResource(getProject()
-				.findMember(sourceGenPath));
-		instrumentedClassFilesFolderSelector
-				.addUpdateListener(sel -> updateApplyButton());
+		String sourceGenPath = ExecutableModelProperties.getInstrumentedClassFilesPath(getProject());
+		instrumentedClassFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
+		instrumentedClassFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
 		instrumentedClassFolderGroup.pack();
 	}
@@ -172,49 +145,38 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 		} else if (owner instanceof IProject) {
 			return (IProject) owner;
 		} else {
-			IdePlugin
-					.logError("ExecutableModelPropertiesPage owner is not a project"); //$NON-NLS-1$
+			IdePlugin.logError("ExecutableModelPropertiesPage owner is not a project"); //$NON-NLS-1$
 			return null;
 		}
 	}
 
 	@Override
 	public boolean isValid() {
-		return generatedFilesFolderSelector.selectionValid()
-				&& debugFilesFolderSelector.selectionValid()
+		return generatedFilesFolderSelector.selectionValid() && debugFilesFolderSelector.selectionValid()
 				&& instrumentedClassFilesFolderSelector.selectionValid()
-				&& generatedTracesFolderSelector.selectionValid()
-				&& super.isValid();
+				&& generatedTracesFolderSelector.selectionValid() && super.isValid();
 	}
 
 	@Override
 	public boolean performOk() {
-		String oldSrcGenPath = ExecutableModelProperties
-				.getSourceGenPath(getProject());
-		String newSrcGenPath = generatedFilesFolderSelector
-				.getSelectedResourcePath().toString();
+		String oldSrcGenPath = ExecutableModelProperties.getSourceGenPath(getProject());
+		String newSrcGenPath = generatedFilesFolderSelector.getSelectedResourcePath().toString();
 		ExecutableModelProperties.setSourceGenPath(getProject(), newSrcGenPath);
 		ExecutableModelProperties.setDebugFilesPath(getProject(),
 				debugFilesFolderSelector.getSelectedResourcePath().toString());
 		ExecutableModelProperties.setInstrumentedClassFilesPath(getProject(),
-				instrumentedClassFilesFolderSelector.getSelectedResourcePath()
-						.toString());
+				instrumentedClassFilesFolderSelector.getSelectedResourcePath().toString());
 		ExecutableModelProperties.setTraceFilesPath(getProject(),
-				generatedTracesFolderSelector.getSelectedResourcePath()
-						.toString());
+				generatedTracesFolderSelector.getSelectedResourcePath().toString());
 
 		if (!newSrcGenPath.equals(oldSrcGenPath)) {
 			try {
-				ClasspathUtils.removeClasspathEntry(
-						JavaCore.create(getProject()),
+				ClasspathUtils.removeClasspathEntry(JavaCore.create(getProject()),
 						getProject().findMember(oldSrcGenPath).getFullPath());
-				ClasspathUtils.addClasspathEntry(
-						JavaCore.create(getProject()),
-						JavaCore.newSourceEntry(getProject().findMember(
-								newSrcGenPath).getFullPath()));
+				ClasspathUtils.addClasspathEntry(JavaCore.create(getProject()),
+						JavaCore.newSourceEntry(getProject().findMember(newSrcGenPath).getFullPath()));
 			} catch (JavaModelException e) {
-				IdePlugin.logError(
-						"Error while removing old source dir classpath entry.", //$NON-NLS-1$
+				IdePlugin.logError("Error while removing old source dir classpath entry.", //$NON-NLS-1$
 						e);
 			}
 		}
@@ -223,13 +185,10 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					getProject().build(IncrementalProjectBuilder.FULL_BUILD,
-							monitor);
+					getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 				} catch (CoreException e) {
-					IdePlugin
-							.logError(
-									"Error while building project after a directory had been changed.", //$NON-NLS-1$
-									e);
+					IdePlugin.logError("Error while building project after a directory had been changed.", //$NON-NLS-1$
+							e);
 					return Status.CANCEL_STATUS;
 				}
 				return Status.OK_STATUS;

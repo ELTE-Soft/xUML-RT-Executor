@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.registry;
 
+import org.eclipse.uml2.uml.NamedElement;
+
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 import hu.eltesoft.modelexecution.m2t.java.Template;
-
-import org.eclipse.uml2.uml.NamedElement;
 
 /**
  * A task to generate a translation model.
@@ -15,8 +15,7 @@ class TranslationTask<UML extends NamedElement> {
 	private final UML source;
 	private final RootElementTranslator<UML, ?, ?> translator;
 
-	public TranslationTask(UML source,
-			RootElementTranslator<UML, ?, ?> translator) {
+	public TranslationTask(UML source, RootElementTranslator<UML, ?, ?> translator) {
 		this.source = source;
 		this.translator = translator;
 	}

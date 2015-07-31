@@ -1,15 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +12,16 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
+
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
 /**
  * A class for mapping UML elements into the translational model. These are
@@ -36,11 +36,10 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	}
 
 	protected abstract RootNode<UML, Trans, Match> createMapper(IncQueryEngine engine);
+
 	protected abstract void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine);
-	
-	
-	protected RootNode<UML, Trans, Match> buildMapper(
-			IncQueryEngine engine) throws IncQueryException {
+
+	protected RootNode<UML, Trans, Match> buildMapper(IncQueryEngine engine) throws IncQueryException {
 		RootNode<UML, Trans, Match> mapper = createMapper(engine);
 		initMapper(mapper, engine);
 		return mapper;
@@ -87,11 +86,9 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 				String rootName = getRootName(root);
 				rootNames.saveRootName(root, rootName);
 			});
-			listener = new RootMatchUpdateListener<>(root.translator, changes,
-					rootNames);
+			listener = new RootMatchUpdateListener<>(root.translator, changes, rootNames);
 			engine.addMatchUpdateListener(root.matcher, listener, false);
-			root.childNodes.forEach(node -> add(node.addListeners(
-					root.translator, context)));
+			root.childNodes.forEach(node -> add(node.addListeners(root.translator, context)));
 		}
 
 		@Override
@@ -103,7 +100,8 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	}
 
 	/**
-	 * @param source The model element that will be transformed.
+	 * @param source
+	 *            The model element that will be transformed.
 	 * @return The result of transforming the given model element.
 	 */
 	protected Trans getModel(UML source) throws GenerationException {
@@ -111,14 +109,12 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		filterMatch.set(0, source);
 		Match match = root.matcher.getOneArbitraryMatch(filterMatch);
 		if (match == null) {
-			throw new GenerationException("Required match not found for: "
-					+ source.eClass().getName());
+			throw new GenerationException("Required match not found for: " + source.eClass().getName());
 		}
 
 		Trans meta = root.transform.apply(match);
 
-		root.childNodes.forEach(node -> node.integrate((EObject) meta,
-				Arrays.asList(source)));
+		root.childNodes.forEach(node -> node.integrate((EObject) meta, Arrays.asList(source)));
 		return meta;
 	}
 

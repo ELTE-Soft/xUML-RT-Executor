@@ -32,8 +32,7 @@ public final class ExternalEntityRegistry {
 		try {
 			return (Impl) provider.get();
 		} catch (ClassCastException e) {
-			throw new ExternalEntityException(
-					"Unable to cast external entity class: " + entityName);
+			throw new ExternalEntityException("Unable to cast external entity class: " + entityName);
 		}
 	}
 
@@ -41,8 +40,7 @@ public final class ExternalEntityRegistry {
 		String entityName = entityClass.getCanonicalName();
 		ExternalEntity info = entityClass.getAnnotation(ExternalEntity.class);
 		if (null == info) {
-			throw new ExternalEntityException(
-					"Unannotated external entity class: " + entityName);
+			throw new ExternalEntityException("Unannotated external entity class: " + entityName);
 		}
 
 		ExternalEntityProvider provider = createProvider(info);
@@ -57,9 +55,7 @@ public final class ExternalEntityRegistry {
 		try {
 			implementationClass = classLoader.loadClass(implementationName);
 		} catch (ClassNotFoundException e) {
-			throw new ExternalEntityException(
-					"Missing external entity implementation: "
-							+ implementationName);
+			throw new ExternalEntityException("Missing external entity implementation: " + implementationName);
 		}
 
 		switch (info.type()) {

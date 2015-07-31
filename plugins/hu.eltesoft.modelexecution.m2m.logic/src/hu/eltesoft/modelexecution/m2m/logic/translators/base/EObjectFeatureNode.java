@@ -18,14 +18,13 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 public class EObjectFeatureNode<Trans extends EObject, Match extends IPatternMatch>
 		extends AbstractFeatureNode<Trans, Match> {
 
-	public EObjectFeatureNode(List<String> types, EStructuralFeature feature,
-			BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
+	public EObjectFeatureNode(List<String> types, EStructuralFeature feature, BaseMatcher<Match> matcher,
+			Function<Match, Trans> transform) {
 		super(types, feature, matcher, transform);
 	}
 
 	@Override
-	protected void processOrderedMultiFeature(Match filterMatch,
-			List<EObject> stack, Collection<Trans> list) {
+	protected void processOrderedMultiFeature(Match filterMatch, List<EObject> stack, Collection<Trans> list) {
 		TreeMap<Integer, Trans> ordered = new TreeMap<>();
 
 		matcher.forEachMatch(filterMatch, m -> {

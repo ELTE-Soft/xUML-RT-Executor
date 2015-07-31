@@ -1,13 +1,13 @@
 package hu.eltesoft.modelexecution.runtime.trace;
 
-import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONObjectReader;
-
 import java.io.IOException;
 import java.nio.file.FileSystem;
 
 import org.json.JSONException;
+
+import hu.eltesoft.modelexecution.runtime.log.Logger;
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONObjectReader;
 
 /**
  * This tracer replays the incoming events previously recorded in a JSON file.
@@ -17,9 +17,8 @@ public class TraceReplayer implements TraceReader {
 	private JSONDecoder jsonDecoder;
 	private JSONObjectReader jsonReader;
 
-	public TraceReplayer(String fileName, FileSystem fileSystem,
-			ClassLoader classLoader) throws IOException,
-			ClassNotFoundException, JSONException {
+	public TraceReplayer(String fileName, FileSystem fileSystem, ClassLoader classLoader)
+			throws IOException, ClassNotFoundException, JSONException {
 		jsonReader = new JSONObjectReader(fileName, fileSystem);
 		jsonDecoder = new JSONDecoder(classLoader);
 	}
@@ -44,9 +43,7 @@ public class TraceReplayer implements TraceReader {
 		} catch (JSONException e) {
 			throw new InvalidTraceException("Malformed trace", e);
 		} catch (ClassNotFoundException e) {
-			throw new InvalidTraceException(
-					"Classes in trace are not compatible with classes used by the runtime",
-					e);
+			throw new InvalidTraceException("Classes in trace are not compatible with classes used by the runtime", e);
 		}
 	}
 
@@ -72,8 +69,7 @@ public class TraceReplayer implements TraceReader {
 
 	private void sendAndLog(Logger logger, TargetedEvent tracedEvent) {
 		tracedEvent.send();
-		logger.messageDispatched(tracedEvent.getTarget(),
-				tracedEvent.getEvent());
+		logger.messageDispatched(tracedEvent.getTarget(), tracedEvent.getEvent());
 	}
 
 	@Override

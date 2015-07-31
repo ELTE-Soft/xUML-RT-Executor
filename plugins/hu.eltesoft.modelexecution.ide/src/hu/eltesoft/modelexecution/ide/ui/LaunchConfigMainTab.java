@@ -54,8 +54,7 @@ import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
  * Allows the user to configure the model that is loaded, the main class and the
  * feed function that starts the execution.
  */
-public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
-		implements ILaunchConfigurationTab {
+public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implements ILaunchConfigurationTab {
 
 	public static final String TAB_ID = "hu.eltesoft.modelexecution.ide.tabs.executableModel.mainTab"; //$NON-NLS-1$
 	private static final String EMPTY_STR = ""; //$NON-NLS-1$
@@ -104,18 +103,15 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		group.setToolTipText(Messages.LaunchConfigurationMainTab_select_model_tooltip);
 		selectedModelField = new Text(group, SWT.BORDER);
 		selectedModelField.setEditable(false);
-		selectedModelField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-				true, false));
+		selectedModelField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		selectedModelField.pack();
 
 		Button browseButton = new Button(group, SWT.NONE);
 		browseButton.setFont(group.getFont());
-		browseButton
-				.setText(Messages.LaunchConfigurationMainTab_select_model_button_text);
+		browseButton.setText(Messages.LaunchConfigurationMainTab_select_model_button_text);
 		browseButton.addSelectionListener(new ModelSelector());
-		browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false));
+		browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
 		browseButton.pack();
 
@@ -133,14 +129,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			dialog.setTitle(Messages.LaunchConfigurationMainTab_select_model_dialog_title);
 			WorkspaceContentProvider content = new WorkspaceContentProvider();
 			HashMap<String, String> extensions = new HashMap<String, String>();
-			extensions.put(
-					".uml", Messages.LaunchConfigMainTab_uml_extension_filter); //$NON-NLS-1$
-			extensions.put(
-					"*", Messages.LaunchConfigMainTab_all_extensions_filter); //$NON-NLS-1$
+			extensions.put(".uml", Messages.LaunchConfigMainTab_uml_extension_filter); //$NON-NLS-1$
+			extensions.put("*", Messages.LaunchConfigMainTab_all_extensions_filter); //$NON-NLS-1$
 			content.setExtensionFilters(extensions);
 			dialog.setContentProvider(content);
-			dialog.setLabelProvider(WorkbenchLabelProvider
-					.getDecoratingWorkbenchLabelProvider());
+			dialog.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
 			if (selectedModelResource != null && selectedModelResource.exists()) {
 				dialog.setInitialSelections(new IFile[] { selectedModelResource });
 			}
@@ -150,14 +143,11 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 			if (selectionIsOk(dialog, selection)) {
 				IFile selectedResource = (IFile) selection[0];
 				try {
-					if (selectedResource.getProject().hasNature(
-							ExecutableModelNature.NATURE_ID)) {
+					if (selectedResource.getProject().hasNature(ExecutableModelNature.NATURE_ID)) {
 						updateDialog();
-						selectedModelField.setText(selectedResource
-								.getFullPath().toString());
+						selectedModelField.setText(selectedResource.getFullPath().toString());
 						registerUMLPackageAndExtension();
-						URI uri = URI.createFileURI(selectedResource
-								.getLocation().toString());
+						URI uri = URI.createFileURI(selectedResource.getLocation().toString());
 						resource = resourceSet.getResource(uri, true);
 
 						initMatchers();
@@ -168,41 +158,31 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 						selectedModelResource = selectedResource;
 						updateDialog();
 					} else {
-						MessageDialog
-								.openError(
-										getShell(),
-										Messages.LaunchConfigMainTab_model_not_in_execution_project_caption,
-										Messages.LaunchConfigMainTab_model_not_in_execution_project_text);
+						MessageDialog.openError(getShell(),
+								Messages.LaunchConfigMainTab_model_not_in_execution_project_caption,
+								Messages.LaunchConfigMainTab_model_not_in_execution_project_text);
 					}
 				} catch (CoreException e) {
-					IdePlugin.logError(
-							"Error while checking model for execution", e); //$NON-NLS-1$
+					IdePlugin.logError("Error while checking model for execution", e); //$NON-NLS-1$
 				}
 			}
 		}
 
-		private boolean selectionIsOk(TreeSelectorDialog dialog,
-				Object[] selection) {
-			return selection != null
-					&& dialog.getReturnCode() == TreeSelectorDialog.OK
-					&& selection.length > 0 && (selection[0] instanceof IFile);
+		private boolean selectionIsOk(TreeSelectorDialog dialog, Object[] selection) {
+			return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+					&& (selection[0] instanceof IFile);
 		}
 
 		private void registerUMLPackageAndExtension() {
-			resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
-					UMLPackage.eINSTANCE);
-			resourceSet
-					.getResourceFactoryRegistry()
-					.getExtensionToFactoryMap()
-					.put(UMLResource.FILE_EXTENSION,
-							UMLResource.Factory.INSTANCE);
+			resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+					UMLResource.Factory.INSTANCE);
 		}
 	}
 
 	private void updateDialog() {
 		browseClass.setEnabled(selectedModelResource != null);
-		browseEObjectButton.setEnabled(selectedModelResource != null
-				&& selectedClass != null);
+		browseEObjectButton.setEnabled(selectedModelResource != null && selectedClass != null);
 		setDirty(true);
 		updateLaunchConfigurationDialog();
 	}
@@ -216,21 +196,17 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		group.setToolTipText(Messages.LaunchConfigurationMainTab_select_class_tooltip);
 		selectedClassField = new Text(group, SWT.BORDER);
 		selectedClassField.setEditable(false);
-		selectedClassField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-				true, false));
+		selectedClassField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		browseClass = new Button(group, SWT.NONE);
-		browseClass
-				.setText(Messages.LaunchConfigurationMainTab_select_class_button_text);
+		browseClass.setText(Messages.LaunchConfigurationMainTab_select_class_button_text);
 
-		browseClass.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false));
+		browseClass.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
 		browseClass.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				if (selectedClassField == null
-						|| selectedClassField.isDisposed()) {
+				if (selectedClassField == null || selectedClassField.isDisposed()) {
 					return;
 				}
 
@@ -242,9 +218,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null
-						&& dialog.getReturnCode() == TreeSelectorDialog.OK
-						&& selection.length > 0
+				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
 						&& (selection[0] instanceof Class)) {
 					selectedClass = (Class) selection[0];
 					selectedClassField.setText(selectedClass.getName());
@@ -274,21 +248,17 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		group.setToolTipText(Messages.LaunchConfigurationMainTab_select_feed_tooltip);
 		selectedFeedFunctionField = new Text(group, SWT.BORDER);
 		selectedFeedFunctionField.setEditable(false);
-		selectedFeedFunctionField.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false));
+		selectedFeedFunctionField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		browseEObjectButton = new Button(group, SWT.NONE);
-		browseEObjectButton
-				.setText(Messages.LaunchConfigurationMainTab_select_feed_button_text);
+		browseEObjectButton.setText(Messages.LaunchConfigurationMainTab_select_feed_button_text);
 
-		browseEObjectButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-				false, false));
+		browseEObjectButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
 		browseEObjectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				if (selectedFeedFunctionField == null
-						|| selectedFeedFunctionField.isDisposed()) {
+				if (selectedFeedFunctionField == null || selectedFeedFunctionField.isDisposed()) {
 					return;
 				}
 
@@ -301,13 +271,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null
-						&& dialog.getReturnCode() == TreeSelectorDialog.OK
-						&& selection.length > 0
+				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
 						&& (selection[0] instanceof Operation)) {
 					selectedFeedFunction = (Operation) selection[0];
-					selectedFeedFunctionField.setText(selectedFeedFunction
-							.getName());
+					selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 					updateDialog();
 				}
 			}
@@ -324,12 +291,10 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		String uri;
 		try {
-			uri = configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
+			uri = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
 			if (!uri.equals(EMPTY_STR)) {
 				try {
-					resource = resourceSet
-							.getResource(URI.createURI(uri), true);
+					resource = resourceSet.getResource(URI.createURI(uri), true);
 				} catch (Exception e) {
 					// the resource does not exist
 					return;
@@ -341,21 +306,14 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 					selectedModelField.setText(member.getFullPath().toString());
 				}
 				initMatchers();
-				selectedClass = (Class) resource
-						.getEObject(configuration
-								.getAttribute(
-										ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
-										EMPTY_STR));
+				selectedClass = (Class) resource.getEObject(
+						configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
 				if (selectedClass != null) {
 					selectedClassField.setText(selectedClass.getName());
 				}
-				selectedFeedFunction = (Operation) resource
-						.getEObject(configuration
-								.getAttribute(
-										ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
-										EMPTY_STR));
-				selectedFeedFunctionField.setText(selectedFeedFunction
-						.getName());
+				selectedFeedFunction = (Operation) resource.getEObject(
+						configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
+				selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 			}
 		} catch (Exception e) {
 			IdePlugin.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
@@ -370,44 +328,29 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 	// project that owns the configuration.
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		if (selectedModelResource == null || selectedClass == null
-				|| selectedFeedFunction == null) {
+		if (selectedModelResource == null || selectedClass == null || selectedFeedFunction == null) {
 			return;
 		}
 		String projectName = selectedModelResource.getProject().getName();
 
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, projectName);
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_EXEC_CLASS_NAME,
-				new NamedReference(selectedClass, selectedClass.getName())
-						.getIdentifier());
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_FEED_FUN_NAME,
-				new NamedReference(selectedFeedFunction, selectedFeedFunction
-						.getName()).getIdentifier());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, projectName);
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXEC_CLASS_NAME,
+				new NamedReference(selectedClass, selectedClass.getName()).getIdentifier());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_FEED_FUN_NAME,
+				new NamedReference(selectedFeedFunction, selectedFeedFunction.getName()).getIdentifier());
 
-		String modelResourcePath = selectedModelResource.getFullPath()
-				.toString();
-		configuration
-				.setAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE,
-						modelResourcePath);
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
+		String modelResourcePath = selectedModelResource.getFullPath().toString();
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, modelResourcePath);
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
 				resource.getURIFragment(selectedClass));
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
 				resource.getURIFragment(selectedFeedFunction));
 
 		// adds the model resource as a mapped resource path
-		configuration
-				.setAttribute(
-						org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
-						Arrays.asList(modelResourcePath));
-		configuration
-				.setAttribute(
-						org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES,
-						Arrays.asList(Integer.toString(IResource.FILE)));
+		configuration.setAttribute(org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+				Arrays.asList(modelResourcePath));
+		configuration.setAttribute(org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES,
+				Arrays.asList(Integer.toString(IResource.FILE)));
 	}
 
 	@Override
@@ -431,14 +374,13 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab
 		methodMatcher.getAllMatches(selectedClass, null, null).forEach(m -> {
 			functions.add(m.getOperation());
 		});
-		Object[] functionArray = functions
-				.toArray(new Object[functions.size()]);
+		Object[] functionArray = functions.toArray(new Object[functions.size()]);
 		return functionArray;
 	}
 
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
-		return super.isValid(launchConfig) && selectedModelResource != null
-				&& selectedClass != null && selectedFeedFunction != null;
+		return super.isValid(launchConfig) && selectedModelResource != null && selectedClass != null
+				&& selectedFeedFunction != null;
 	}
 }

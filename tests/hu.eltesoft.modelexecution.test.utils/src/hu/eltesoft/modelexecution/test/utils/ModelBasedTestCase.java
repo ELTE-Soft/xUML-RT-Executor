@@ -32,10 +32,9 @@ public abstract class ModelBasedTestCase {
 
 	public Resource loadResource(String path) {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
-				UMLPackage.eINSTANCE);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+				UMLResource.Factory.INSTANCE);
 		URI uri = URI.createFileURI(path);
 		return resourceSet.getResource(uri, true);
 	}
@@ -51,11 +50,9 @@ public abstract class ModelBasedTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends NamedElement> T namedChild(EObject parent,
-			java.lang.Class<T> type, String name) {
+	public <T extends NamedElement> T namedChild(EObject parent, java.lang.Class<T> type, String name) {
 		for (EObject child : parent.eContents()) {
-			if (type.isInstance(child)
-					&& ((NamedElement) child).getName().equals(name)) {
+			if (type.isInstance(child) && ((NamedElement) child).getName().equals(name)) {
 				return (T) child;
 			}
 		}

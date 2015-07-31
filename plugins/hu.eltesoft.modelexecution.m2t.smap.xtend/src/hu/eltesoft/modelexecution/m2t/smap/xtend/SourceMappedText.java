@@ -23,8 +23,7 @@ public class SourceMappedText implements CharSequence {
 
 	private Smap cachedSmap;
 
-	SourceMappedText(String stratumName, List<LineMapping> mapping,
-			CharSequence text) {
+	SourceMappedText(String stratumName, List<LineMapping> mapping, CharSequence text) {
 		this.stratumName = stratumName;
 		this.mapping = mapping;
 		this.text = text;
@@ -72,8 +71,8 @@ public class SourceMappedText implements CharSequence {
 				URI uri = URI.createURI(filePath);
 				String fileName = uri.lastSegment();
 				stratum.addFile(fileName, filePath);
-				stratum.addLineData(l.getStartLine(), fileName, inputLineCount,
-						m.getOutputStartLine(), m.getOutputLineIncrement());
+				stratum.addLineData(l.getStartLine(), fileName, inputLineCount, m.getOutputStartLine(),
+						m.getOutputLineIncrement());
 			}
 		}
 	}

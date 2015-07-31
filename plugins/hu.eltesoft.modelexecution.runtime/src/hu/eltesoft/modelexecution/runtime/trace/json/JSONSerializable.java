@@ -11,7 +11,6 @@ public interface JSONSerializable {
 
 	JSONObject jsonEncode();
 
-	void jsonDecode(JSONDecoder reader, JSONObject obj)
-			throws ClassNotFoundException, JSONException;
+	void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException;
 
 }

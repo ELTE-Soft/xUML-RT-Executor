@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.m2t.smap.emf;
 
-import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import hu.eltesoft.modelexecution.m2t.smap.xtend.Location;
 
 /**
  * Assigns virtual locations to EMF object references. These locations can be
@@ -33,8 +33,7 @@ public class LocationRegistry implements Serializable {
 		return assignQualified(new QualifiedReference(reference));
 	}
 
-	public Location assignQualified(Reference reference,
-			Class<? extends LocationQualifier> qualifier) {
+	public Location assignQualified(Reference reference, Class<? extends LocationQualifier> qualifier) {
 		return assignQualified(new QualifiedReference(reference, qualifier));
 	}
 
@@ -63,8 +62,7 @@ public class LocationRegistry implements Serializable {
 		return resolveQualified(new QualifiedReference(reference));
 	}
 
-	public Location resolveQualified(Reference reference,
-			Class<? extends LocationQualifier> qualifier) {
+	public Location resolveQualified(Reference reference, Class<? extends LocationQualifier> qualifier) {
 		return resolveQualified(new QualifiedReference(reference, qualifier));
 	}
 
@@ -72,8 +70,7 @@ public class LocationRegistry implements Serializable {
 		String filePath = reference.getFileURI().toString();
 		Integer lineNumber = getMapping(filePath).toLineNumber(reference);
 		if (null == lineNumber) {
-			lineNumber = getMapping(reference.getFileURI().toString())
-					.toLineNumber(reference);
+			lineNumber = getMapping(reference.getFileURI().toString()).toLineNumber(reference);
 		}
 		if (null == lineNumber) {
 			return null;

@@ -27,7 +27,7 @@ public class TraceReplayerTest {
 
 	@Mock
 	private Logger logger;
-	
+
 	@Test
 	public void testHasEvent_WithoutMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();

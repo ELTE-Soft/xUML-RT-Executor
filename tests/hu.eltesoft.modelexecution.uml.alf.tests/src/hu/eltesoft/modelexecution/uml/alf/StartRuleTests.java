@@ -28,8 +28,7 @@ public class StartRuleTests {
 
 	private void assertIsEmptyBlock(IParseResult result) {
 		assertIsBlock(result);
-		assertTrue(((Block) result.getRootASTElement()).getStatement()
-				.isEmpty());
+		assertTrue(((Block) result.getRootASTElement()).getStatement().isEmpty());
 	}
 
 	private void assertIsBlock(IParseResult result) {

@@ -16,9 +16,7 @@ public abstract class ExternalEntityProvider {
 		try {
 			return implementationClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new ExternalEntityException(
-					"Unable to instantiate external entity class "
-							+ implementationClass, e);
+			throw new ExternalEntityException("Unable to instantiate external entity class " + implementationClass, e);
 		}
 	}
 

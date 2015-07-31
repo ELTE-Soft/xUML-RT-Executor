@@ -1,5 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.helpers;
 
+import org.eclipse.uml2.uml.LiteralInteger;
+import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.ValueSpecification;
+
 import hu.eltesoft.modelexecution.m2m.logic.UnsupportedUMLFeatureException;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
@@ -7,12 +13,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
-
-import org.eclipse.uml2.uml.LiteralInteger;
-import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
-import org.eclipse.uml2.uml.ParameterDirectionKind;
-import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.ValueSpecification;
 
 /**
  * Convenient translators for parts of the model concerning types.
@@ -31,8 +31,7 @@ public class TypeConverter {
 	 */
 	public ScalarType convert(org.eclipse.uml2.uml.Type type) {
 		if (type instanceof PrimitiveType) {
-			hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType primType = BASE_FACTORY
-					.createPrimitiveType();
+			hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType primType = BASE_FACTORY.createPrimitiveType();
 			switch (type.getQualifiedName()) {
 			case UML_PRIMITIVE_TYPES_STRING:
 				primType.setType(PrimitiveTypes.STRING);
@@ -47,8 +46,7 @@ public class TypeConverter {
 				primType.setType(PrimitiveTypes.REAL);
 				break;
 			default:
-				throw new UnsupportedUMLFeatureException(
-						"Invalid primitive type: " + type.getQualifiedName());
+				throw new UnsupportedUMLFeatureException("Invalid primitive type: " + type.getQualifiedName());
 			}
 			return primType;
 		} else {
@@ -64,8 +62,7 @@ public class TypeConverter {
 		} else if (value instanceof LiteralUnlimitedNatural) {
 			return value.unlimitedValue();
 		} else {
-			throw new UnsupportedUMLFeatureException(
-					"ValueSpecification with wrong type");
+			throw new UnsupportedUMLFeatureException("ValueSpecification with wrong type");
 		}
 	}
 
@@ -78,8 +75,7 @@ public class TypeConverter {
 		case OUT_LITERAL:
 			return Direction.OUT;
 		default:
-			throw new UnsupportedUMLFeatureException("Unsupported direction: "
-					+ direction);
+			throw new UnsupportedUMLFeatureException("Unsupported direction: " + direction);
 		}
 	}
 

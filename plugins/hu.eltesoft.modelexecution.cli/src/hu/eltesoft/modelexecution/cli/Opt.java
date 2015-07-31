@@ -15,12 +15,19 @@ import org.apache.commons.cli.OptionBuilder;
  */
 public enum Opt {
 	HELP("help", "h", Utils.list(), Utils.list()),
+
 	VERBOSE("verbose", "v", Utils.list(), Utils.list()),
+
 	SETUP("setup", "s", Utils.list(), Utils.list(), "model"),
+
 	EXECUTE("execute", "e", Utils.list(), Utils.list(), "class", "feed"),
+
 	WRITE_TRACE("write-trace", "wtr", Utils.list(EXECUTE), Utils.list(), "dir"),
+
 	READ_TRACE("read-trace", "rtr", Utils.list(EXECUTE), Utils.list(), "dir"),
+
 	LOGGER("logger", "l", Utils.list(EXECUTE), Utils.list(LoggerType.LOGGER_NONE, LoggerType.LOGGER_MINIMAL), "logger"),
+
 	ROOT("root", "r", Utils.list(EXECUTE, SETUP), Utils.list(), "dir");
 
 	String longName;

@@ -1,8 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug.registry;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -10,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 
 public class SymbolsRegistry {
 
@@ -38,8 +38,7 @@ public class SymbolsRegistry {
 			return;
 		}
 
-		try (FileInputStream fis = new FileInputStream(file);
-				ObjectInputStream ois = new ObjectInputStream(fis)) {
+		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			DebugSymbols symbols = (DebugSymbols) ois.readObject();
 			symbolsForClass.put(className, symbols);
 		} catch (Exception e) {

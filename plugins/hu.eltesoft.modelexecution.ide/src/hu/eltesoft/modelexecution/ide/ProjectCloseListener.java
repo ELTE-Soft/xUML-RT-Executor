@@ -1,12 +1,12 @@
 package hu.eltesoft.modelexecution.ide;
 
-import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+
+import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
 
 /**
  * Listens to project close events in the workspace. Removes registered EMF
@@ -20,9 +20,7 @@ public class ProjectCloseListener implements IResourceChangeListener {
 	public static void setUp() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResourceChangeListener listener = new ProjectCloseListener();
-		workspace.addResourceChangeListener(listener,
-				IResourceChangeEvent.PRE_CLOSE
-						| IResourceChangeEvent.PRE_DELETE);
+		workspace.addResourceChangeListener(listener, IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE);
 	}
 
 	protected ProjectCloseListener() {

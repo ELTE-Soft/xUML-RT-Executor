@@ -1,14 +1,14 @@
 package hu.eltesoft.modelexecution.ide.debug.registry;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 
 public class BreakpointRegistry {
 
@@ -41,8 +41,7 @@ public class BreakpointRegistry {
 		try {
 			return breakpoint.isEnabled();
 		} catch (CoreException e) {
-			IdePlugin.logError(
-					"Unable to check whether a breakpoint is enalbed", e);
+			IdePlugin.logError("Unable to check whether a breakpoint is enalbed", e);
 			return false;
 		}
 	}

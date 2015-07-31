@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.ide.launch.process;
 
-import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
-
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -10,6 +8,8 @@ import org.eclipse.swt.widgets.Display;
 
 import com.sun.jdi.VirtualMachine;
 
+import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
+
 /**
  * A process representing the debugging virtual machine running in the
  * background. Not a debug target, but lets others access the virtual machine
@@ -17,8 +17,7 @@ import com.sun.jdi.VirtualMachine;
  */
 @SuppressWarnings("restriction")
 // VirtualMachine is not in API
-public class DebuggingProcessDecorator extends ProcessDecorator implements
-		IProcess, IProcessWithVM {
+public class DebuggingProcessDecorator extends ProcessDecorator implements IProcess, IProcessWithVM {
 
 	private VirtualMachine vm;
 

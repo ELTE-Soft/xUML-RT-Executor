@@ -11,10 +11,8 @@ public class TraceMessageMismatchException extends InvalidTraceException {
 	private TargetedEvent expectedMessage;
 	private TargetedEvent actualMessage;
 
-	public TraceMessageMismatchException(TargetedEvent expectedMessage,
-			TargetedEvent actualMessage) {
-		super("Expected event: " + expectedMessage + ", actual event: "
-				+ actualMessage);
+	public TraceMessageMismatchException(TargetedEvent expectedMessage, TargetedEvent actualMessage) {
+		super("Expected event: " + expectedMessage + ", actual event: " + actualMessage);
 		this.expectedMessage = expectedMessage;
 		this.actualMessage = actualMessage;
 	}

@@ -7,7 +7,7 @@ public class CompilationFailedException extends IllegalArgumentException {
 	public CompilationFailedException(Exception cause) {
 		super(cause);
 	}
-	
+
 	@Override
 	public String getMessage() {
 		return getCause().getMessage();

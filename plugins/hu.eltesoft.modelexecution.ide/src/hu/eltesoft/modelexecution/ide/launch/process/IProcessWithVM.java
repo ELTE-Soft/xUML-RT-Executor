@@ -11,5 +11,5 @@ import com.sun.jdi.VirtualMachine;
 public interface IProcessWithVM extends IProcess {
 
 	VirtualMachine getVM();
-	
+
 }

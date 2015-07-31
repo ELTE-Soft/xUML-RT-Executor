@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import hu.eltesoft.modelexecution.ide.Messages;
-
 import java.text.MessageFormat;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+
+import hu.eltesoft.modelexecution.ide.Messages;
 
 /**
  * A helper class that declares functions that show GUI elements for the user.
@@ -13,19 +13,15 @@ import org.eclipse.swt.widgets.Display;
  */
 public class Dialogs {
 
-	public static final class ShowAnotherLaunchConfirmDialog implements
-			Runnable {
+	public static final class ShowAnotherLaunchConfirmDialog implements Runnable {
 		private boolean result;
 
 		@Override
 		public void run() {
-			result = new MessageDialog(null,
-					Messages.Dialogs_another_debug_launch_caption, null,
-					Messages.Dialogs_another_debug_launch_text,
-					MessageDialog.QUESTION, new String[] {
-							Messages.Dialogs_another_debug_abort_button,
-							Messages.Dialogs_another_debug_force_button }, 0)
-					.open() == 1;
+			result = new MessageDialog(null, Messages.Dialogs_another_debug_launch_caption, null,
+					Messages.Dialogs_another_debug_launch_text, MessageDialog.QUESTION, new String[] {
+							Messages.Dialogs_another_debug_abort_button, Messages.Dialogs_another_debug_force_button },
+					0).open() == 1;
 		}
 
 		public boolean getResult() {
@@ -34,14 +30,12 @@ public class Dialogs {
 
 	}
 
-	private static final class ShowEEPrefChangeConfirmDialog implements
-			Runnable {
+	private static final class ShowEEPrefChangeConfirmDialog implements Runnable {
 		private boolean result;
 
 		@Override
 		public void run() {
-			result = MessageDialog.openConfirm(null,
-					Messages.Dialogs_executionEnginePreferenceChange_caption,
+			result = MessageDialog.openConfirm(null, Messages.Dialogs_executionEnginePreferenceChange_caption,
 					Messages.Dialogs_executionEnginePreferenceChange_text);
 		}
 
@@ -56,35 +50,25 @@ public class Dialogs {
 		return showDialog.getResult();
 	}
 
-	public static void openDiMissingNotificationDialog(String diResource,
-			String umlResource) {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_missing_di_notification_caption,
-						MessageFormat.format(
-								Messages.Dialogs_missing_di_notification_text,
-								diResource, umlResource)));
+	public static void openDiMissingNotificationDialog(String diResource, String umlResource) {
+		Display.getDefault()
+				.syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_missing_di_notification_caption,
+						MessageFormat.format(Messages.Dialogs_missing_di_notification_text, diResource, umlResource)));
 	}
 
 	public static void openTraceFileInvalidErrorDialog() {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_invalid_trace_file_caption,
-						Messages.Dialogs_invalid_trace_file_text));
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_invalid_trace_file_caption,
+				Messages.Dialogs_invalid_trace_file_text));
 	}
 
 	public static void openExternalEntityInvalidErrorDialog() {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_invalid_external_entity_caption,
-						Messages.Dialogs_invalid_external_entity_text));
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null,
+				Messages.Dialogs_invalid_external_entity_caption, Messages.Dialogs_invalid_external_entity_text));
 	}
 
 	public static void openInternalErrorDialog() {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_internal_error_caption,
-						Messages.Dialogs_internal_error_text));
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_internal_error_caption,
+				Messages.Dialogs_internal_error_text));
 	}
 
 	public static boolean openDebugAlreadyRunningWarning() {
@@ -94,17 +78,13 @@ public class Dialogs {
 	}
 
 	public static void openMentionedResourceDoesNotExistsDialog() {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_resources_missing_caption,
-						Messages.Dialogs_resources_missing_text));
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_resources_missing_caption,
+				Messages.Dialogs_resources_missing_text));
 	}
 
 	public static void openTraceFileMissingErrorDialog() {
-		Display.getDefault().syncExec(
-				() -> MessageDialog.openError(null,
-						Messages.Dialogs_trace_file_missing_caption,
-						Messages.Dialogs_trace_file_missing_text));
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_trace_file_missing_caption,
+				Messages.Dialogs_trace_file_missing_text));
 	}
 
 }

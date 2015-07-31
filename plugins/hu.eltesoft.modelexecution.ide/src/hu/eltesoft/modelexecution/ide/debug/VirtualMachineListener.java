@@ -33,8 +33,7 @@ public interface VirtualMachineListener {
 		}
 
 		public ThreadAction merge(ThreadAction other) {
-			return shouldResume() && other.shouldResume() ? ShouldResume
-					: RemainSuspended;
+			return shouldResume() && other.shouldResume() ? ShouldResume : RemainSuspended;
 		}
 	}
 }

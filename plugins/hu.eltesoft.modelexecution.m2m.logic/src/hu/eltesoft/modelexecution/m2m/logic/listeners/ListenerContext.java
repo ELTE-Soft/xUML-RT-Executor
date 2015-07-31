@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.m2m.logic.listeners;
 
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
+
 import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
-
-import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 
 /**
  * Parameter object needed to setup or remove incremental change listeners of a
@@ -27,8 +27,7 @@ public class ListenerContext {
 		return rootNames;
 	}
 
-	public ListenerContext(AdvancedIncQueryEngine engine,
-			ChangeRegistry changes, RootNameStorage rootNames) {
+	public ListenerContext(AdvancedIncQueryEngine engine, ChangeRegistry changes, RootNameStorage rootNames) {
 		this.engine = engine;
 		this.changes = changes;
 		this.rootNames = rootNames;

@@ -1,13 +1,13 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
-import hu.eltesoft.modelexecution.cli.Messages;
-import hu.eltesoft.modelexecution.cli.Opt;
-import hu.eltesoft.modelexecution.cli.Utils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.cli.Options;
+
+import hu.eltesoft.modelexecution.cli.Messages;
+import hu.eltesoft.modelexecution.cli.Opt;
+import hu.eltesoft.modelexecution.cli.Utils;
 
 public class IncompatibleOptsException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;

@@ -44,8 +44,7 @@ public class RuntimeController {
 					baseRuntime.terminate();
 					return;
 				default:
-					BaseRuntime.logError("Illegal command on control stream: "
-							+ controlLine);
+					BaseRuntime.logError("Illegal command on control stream: " + controlLine);
 				}
 			}
 		} catch (SocketException e) {

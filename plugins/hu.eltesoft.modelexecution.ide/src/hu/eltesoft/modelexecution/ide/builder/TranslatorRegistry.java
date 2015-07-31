@@ -1,8 +1,5 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -16,6 +13,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 
 /**
  * Holds translator instances for IResources.
@@ -124,8 +124,7 @@ public class TranslatorRegistry {
 		return translatorFor(uri, ResourceTranslator::create);
 	}
 
-	private ResourceTranslator translatorFor(URI uri,
-			Function<Resource, ResourceTranslator> createTranslator) {
+	private ResourceTranslator translatorFor(URI uri, Function<Resource, ResourceTranslator> createTranslator) {
 		ResourceTranslator translator = translators.get(uri);
 		if (null == translator) {
 			Resource model = loadModelOnDemand(uri);

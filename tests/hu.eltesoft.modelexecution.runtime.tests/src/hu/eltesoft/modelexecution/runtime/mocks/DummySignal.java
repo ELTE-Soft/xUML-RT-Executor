@@ -24,8 +24,7 @@ public class DummySignal extends Signal {
 	}
 
 	@Override
-	public void jsonDecode(JSONDecoder reader, JSONObject obj)
-			throws ClassNotFoundException, JSONException {
+	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		// nothing to do
 	}
 

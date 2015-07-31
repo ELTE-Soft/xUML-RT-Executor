@@ -2,10 +2,10 @@ package hu.eltesoft.modelexecution.runtime.base;
 
 import java.util.Objects;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
 
 /**
  * A base class for events that carry a signal. We do not distinguish between
@@ -20,13 +20,12 @@ public class SignalEvent extends Event {
 	 */
 	private Signal signal;
 
-	
 	/**
 	 * Empty constructor used for deserialization.
 	 */
 	public SignalEvent() {
 	}
-	
+
 	public SignalEvent(Signal signal) {
 		this.signal = signal;
 	}
@@ -44,8 +43,7 @@ public class SignalEvent extends Event {
 	}
 
 	@Override
-	public void jsonDecode(JSONDecoder reader, JSONObject obj)
-			throws ClassNotFoundException, JSONException {
+	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		JSONObject signalJSON = obj.getJSONObject(JSON_SIGNAL_FIELD);
 		signal = (Signal) reader.decodeJSON(signalJSON);
 	}

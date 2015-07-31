@@ -16,18 +16,15 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
  * native java type that is wrapped by an {@linkplain EDataType}. <br/>
  * <b>Important: Ordering is not supported on these features.</b>
  */
-public class FeatureNode<Trans, Match extends IPatternMatch> extends
-		AbstractFeatureNode<Trans, Match> {
+public class FeatureNode<Trans, Match extends IPatternMatch> extends AbstractFeatureNode<Trans, Match> {
 
-	public FeatureNode(List<String> types, EStructuralFeature feature,
-			BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
+	public FeatureNode(List<String> types, EStructuralFeature feature, BaseMatcher<Match> matcher,
+			Function<Match, Trans> transform) {
 		super(types, feature, matcher, transform);
 	}
 
 	@Override
-	protected void processOrderedMultiFeature(Match filterMatch,
-			List<EObject> stack, Collection<Trans> list) {
-		throw new IllegalArgumentException(
-				"Ordering supported only for EObject instances");
+	protected void processOrderedMultiFeature(Match filterMatch, List<EObject> stack, Collection<Trans> list) {
+		throw new IllegalArgumentException("Ordering supported only for EObject instances");
 	}
 }

@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.listeners;
 
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
-
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.uml2.uml.NamedElement;
+
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
 /**
  * Update listener applied by generators to keep the change registry in sync

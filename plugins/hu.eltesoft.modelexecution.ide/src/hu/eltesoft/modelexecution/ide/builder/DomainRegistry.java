@@ -26,8 +26,7 @@ public class DomainRegistry {
 	protected DomainRegistry() {
 	}
 
-	public synchronized void editingDomainLoaded(
-			TransactionalEditingDomain domain) {
+	public synchronized void editingDomainLoaded(TransactionalEditingDomain domain) {
 		ResourceSet resourceSet = domain.getResourceSet();
 		domains.put(resourceSet, domain);
 
@@ -56,16 +55,14 @@ public class DomainRegistry {
 		} while (!success);
 	}
 
-	public synchronized void editingDomainUnloaded(
-			TransactionalEditingDomain domain) {
+	public synchronized void editingDomainUnloaded(TransactionalEditingDomain domain) {
 		DomainResourceListener listener = listeners.get(domain);
 		domain.removeResourceSetListener(listener);
 		ResourceSet resourceSet = domain.getResourceSet();
 		domains.remove(resourceSet);
 	}
 
-	public synchronized TransactionalEditingDomain getDomain(
-			ResourceSet resourceSet) {
+	public synchronized TransactionalEditingDomain getDomain(ResourceSet resourceSet) {
 		return domains.get(resourceSet);
 	}
 

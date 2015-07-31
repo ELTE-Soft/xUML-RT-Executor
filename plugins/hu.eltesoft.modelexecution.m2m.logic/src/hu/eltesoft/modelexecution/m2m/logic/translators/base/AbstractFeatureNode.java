@@ -1,12 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,6 +14,13 @@ import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
+
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 
 /**
  * A node of the translator tree that corresponds to a feature of the

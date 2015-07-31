@@ -1,9 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.registry;
 
-import hu.eltesoft.modelexecution.m2m.logic.DeleteSourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.uml2.uml.NamedElement;
+
+import hu.eltesoft.modelexecution.m2m.logic.DeleteSourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
 /**
  * A change registry to record incremental changes of the model (usually done by
@@ -31,8 +31,8 @@ public class ChangeRegistry {
 	 * Registers an object update request. If another request is already present
 	 * with the same <code>rootName</code>, that entry is overwritten.
 	 */
-	public synchronized <UML extends NamedElement> void registerUpdate(
-			UML source, RootElementTranslator<UML, ?, ?> translator) {
+	public synchronized <UML extends NamedElement> void registerUpdate(UML source,
+			RootElementTranslator<UML, ?, ?> translator) {
 		if (null == source.eResource() || !translator.shouldMap(source)) {
 			return;
 		}
@@ -60,8 +60,7 @@ public class ChangeRegistry {
 		// deletes should be executed after updates, because we did not record
 		// the order they arrived (modified elements can be deleted, but deleted
 		// elements cannot be created again, as the root name is unique)
-		toDelete.forEach(rootName -> tasks.add(new DeleteSourceCodeTask(
-				rootName)));
+		toDelete.forEach(rootName -> tasks.add(new DeleteSourceCodeTask(rootName)));
 		clear();
 		return tasks;
 	}

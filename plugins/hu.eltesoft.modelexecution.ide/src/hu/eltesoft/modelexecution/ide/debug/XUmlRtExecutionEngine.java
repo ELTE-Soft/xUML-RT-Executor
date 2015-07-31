@@ -1,15 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
-import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
-import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
-import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -47,12 +37,21 @@ import com.sun.jdi.event.VMDeathEvent;
 import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
+import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
+
 /**
  * Execution engine for Moka.
  */
 @SuppressWarnings("restriction")
-public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
-		IExecutionEngine, VirtualMachineListener {
+public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IExecutionEngine, VirtualMachineListener {
 
 	private static final String DEBUG_TARGET_NAME = "xUML-Rt Model";
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
@@ -75,11 +74,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	private MokaThread[] threads;
 
 	@Override
-	public void init(EObject eObjectToExecute, String[] args,
-			MokaDebugTarget mokaDebugTarget, int requestPort, int replyPort,
-			int eventPort) throws UnknownHostException, IOException {
-		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort,
-				replyPort, eventPort);
+	public void init(EObject eObjectToExecute, String[] args, MokaDebugTarget mokaDebugTarget, int requestPort,
+			int replyPort, int eventPort) throws UnknownHostException, IOException {
+		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort, replyPort, eventPort);
 
 		debugTarget.setName(DEBUG_TARGET_NAME);
 
@@ -163,8 +160,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	 * @param modelElement
 	 */
 	private void addVMBreakpoint(EObject modelElement) {
-		locationConverter.locationsFor(modelElement).forEach(
-				virtualMachine::addBreakpoint);
+		locationConverter.locationsFor(modelElement).forEach(virtualMachine::addBreakpoint);
 	}
 
 	@Override
@@ -215,8 +211,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	 *            whether there is a user-defined breakpoint on the element
 	 * @return true when the thread has to remain in a suspended state
 	 */
-	private boolean suspendIfWaitingOrHasBreak(EObject modelElement,
-			boolean hasBreak) {
+	private boolean suspendIfWaitingOrHasBreak(EObject modelElement, boolean hasBreak) {
 		synchronized (animation) {
 			if (waitingForSuspend || hasBreak) {
 				markThreadAsSuspended(modelElement);
@@ -241,16 +236,13 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 		MokaThread thread = (MokaThread) getThreads()[0];
 
 		// show the current element as a stack frame
-		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget,
-				(NamedElement) modelElement);
+		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
 		frame.setThread(thread);
 		thread.setStackFrames(new IStackFrame[] { frame });
 
 		// causes debug target to be suspended
-		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST
-				: DebugEvent.BREAKPOINT;
-		sendEvent(new Suspend_Event(thread, eventCode,
-				new MokaThread[] { thread }));
+		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
+		sendEvent(new Suspend_Event(thread, eventCode, new MokaThread[] { thread }));
 
 		// causes thread to be suspended
 		thread.setSuspended(true);
@@ -260,8 +252,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
 			// remove stack frames from all threads before resuming
-			Arrays.stream(threads).forEach(
-					t -> t.setStackFrames(new IStackFrame[0]));
+			Arrays.stream(threads).forEach(t -> t.setStackFrames(new IStackFrame[0]));
 
 			waitingForSuspend = false;
 			virtualMachine.resume();

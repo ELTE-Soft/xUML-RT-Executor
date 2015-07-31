@@ -9,8 +9,7 @@ public class Assert {
 	 * use Unix line terminators, a single line feed ('\n' character).
 	 */
 	public static void assertStringEquals(Object expected, Object actual) {
-		assertEquals(toLfLines(expected.toString()),
-				toLfLines(actual.toString()));
+		assertEquals(toLfLines(expected.toString()), toLfLines(actual.toString()));
 	}
 
 	/**

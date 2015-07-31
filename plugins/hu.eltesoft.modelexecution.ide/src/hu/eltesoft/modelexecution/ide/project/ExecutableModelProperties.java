@@ -17,23 +17,19 @@ public class ExecutableModelProperties {
 
 	private static final String PROPERTY_PREFIX = "hu.eltesoft.modelexecution.attribute."; //$NON-NLS-1$
 
-	public static final String PROP_SOURCE_GEN_PATH = PROPERTY_PREFIX
-			+ "source_gen_path"; //$NON-NLS-1$
+	public static final String PROP_SOURCE_GEN_PATH = PROPERTY_PREFIX + "source_gen_path"; //$NON-NLS-1$
 
 	public static final String DEFAULT_SOURCE_GEN_PATH = "model-gen-src"; //$NON-NLS-1$
 
-	public static final String PROP_DEBUG_RES_PATH = PROPERTY_PREFIX
-			+ "debug_res_path"; //$NON-NLS-1$
+	public static final String PROP_DEBUG_RES_PATH = PROPERTY_PREFIX + "debug_res_path"; //$NON-NLS-1$
 
 	public static final String DEFAULT_DEBUG_RES_PATH = "smap"; //$NON-NLS-1$
 
-	public static final String PROP_INSTRUMENTED_CLASS_FILE_PATH = PROPERTY_PREFIX
-			+ "instrumented_class_file_path"; //$NON-NLS-1$
+	public static final String PROP_INSTRUMENTED_CLASS_FILE_PATH = PROPERTY_PREFIX + "instrumented_class_file_path"; //$NON-NLS-1$
 
 	public static final String DEFAULT_INSTRUMENTED_CLASS_FILE_PATH = "bin-debug"; //$NON-NLS-1$
 
-	public static final String PROP_TRACES_PATH = PROPERTY_PREFIX
-			+ "traces_path";
+	public static final String PROP_TRACES_PATH = PROPERTY_PREFIX + "traces_path";
 
 	public static final String DEFAULT_TRACES_PATH = "traces"; //$NON-NLS-1$
 
@@ -62,8 +58,7 @@ public class ExecutableModelProperties {
 		setSourceGenPath(getProperties(project), path);
 	}
 
-	private static void setSourceGenPath(IEclipsePreferences properties,
-			String path) {
+	private static void setSourceGenPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_SOURCE_GEN_PATH, path);
 	}
 
@@ -89,8 +84,7 @@ public class ExecutableModelProperties {
 		setDebugFilesPath(getProperties(project), path);
 	}
 
-	private static void setDebugFilesPath(IEclipsePreferences properties,
-			String path) {
+	private static void setDebugFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_DEBUG_RES_PATH, path);
 	}
 
@@ -104,23 +98,19 @@ public class ExecutableModelProperties {
 		return getInstrumentedClassFilesPath(getProperties(project));
 	}
 
-	private static String getInstrumentedClassFilesPath(
-			IEclipsePreferences properties) {
-		return properties.get(PROP_INSTRUMENTED_CLASS_FILE_PATH,
-				DEFAULT_INSTRUMENTED_CLASS_FILE_PATH);
+	private static String getInstrumentedClassFilesPath(IEclipsePreferences properties) {
+		return properties.get(PROP_INSTRUMENTED_CLASS_FILE_PATH, DEFAULT_INSTRUMENTED_CLASS_FILE_PATH);
 	}
 
 	/**
 	 * Set project-based path for instrumented class files (.class files with
 	 * debug information)
 	 */
-	public static void setInstrumentedClassFilesPath(IProject project,
-			String path) {
+	public static void setInstrumentedClassFilesPath(IProject project, String path) {
 		setInstrumentedClassFilesPath(getProperties(project), path);
 	}
 
-	private static void setInstrumentedClassFilesPath(
-			IEclipsePreferences properties, String path) {
+	private static void setInstrumentedClassFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_INSTRUMENTED_CLASS_FILE_PATH, path);
 	}
 
@@ -144,8 +134,7 @@ public class ExecutableModelProperties {
 		setTraceFilesPath(getProperties(project), path);
 	}
 
-	private static void setTraceFilesPath(IEclipsePreferences properties,
-			String path) {
+	private static void setTraceFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_TRACES_PATH, path);
 	}
 

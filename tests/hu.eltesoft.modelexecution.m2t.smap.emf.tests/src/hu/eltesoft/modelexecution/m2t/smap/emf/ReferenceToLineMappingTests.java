@@ -4,15 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
-import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
-import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Class;
 import org.junit.Before;
 import org.junit.Test;
+
+import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.First;
+import hu.eltesoft.modelexecution.m2t.smap.emf.TestQualifiers.Second;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
@@ -34,8 +35,7 @@ public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
 	@Test
 	public void testAddLineNumberWithoutQualification() {
-		QualifiedReference qualified = new QualifiedReference(aClass,
-				LocationQualifier.None.class);
+		QualifiedReference qualified = new QualifiedReference(aClass, LocationQualifier.None.class);
 		int firstLineNumber = mapping.addLineNumber(qualified);
 		int secondLineNumber = mapping.addLineNumber(qualified);
 
@@ -54,16 +54,14 @@ public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
 	@Test
 	public void testGettingLineNumberOfMissingObject() {
-		QualifiedReference qualified = new QualifiedReference(aClass,
-				LocationQualifier.None.class);
+		QualifiedReference qualified = new QualifiedReference(aClass, LocationQualifier.None.class);
 
 		assertNull(mapping.toLineNumber(qualified));
 	}
 
 	@Test
 	public void testGettingLineNumberOfValidObject() {
-		QualifiedReference qualified = new QualifiedReference(aClass,
-				LocationQualifier.None.class);
+		QualifiedReference qualified = new QualifiedReference(aClass, LocationQualifier.None.class);
 		int assigned = mapping.addLineNumber(qualified);
 		Integer resolved = mapping.toLineNumber(qualified);
 
@@ -78,8 +76,7 @@ public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 
 	@Test
 	public void testGettingUnqualifiedObjectForValidLine() {
-		QualifiedReference qualified = new QualifiedReference(aClass,
-				LocationQualifier.None.class);
+		QualifiedReference qualified = new QualifiedReference(aClass, LocationQualifier.None.class);
 		int lineNumber = mapping.addLineNumber(qualified);
 
 		qualified = mapping.fromLineNumber(lineNumber);

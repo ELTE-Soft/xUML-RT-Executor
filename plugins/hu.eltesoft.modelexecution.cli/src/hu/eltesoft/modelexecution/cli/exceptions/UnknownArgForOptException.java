@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
+import org.apache.commons.cli.Options;
+
 import hu.eltesoft.modelexecution.cli.Messages;
 import hu.eltesoft.modelexecution.cli.Opt;
-
-import org.apache.commons.cli.Options;
 
 public class UnknownArgForOptException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;

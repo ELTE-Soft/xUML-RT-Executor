@@ -60,7 +60,7 @@ public class BaseRuntimeTest {
 					@Override
 					public EventSource answer(InvocationOnMock invocation) throws Throwable {
 						// simply dispatch the event to the target object
-						TargetedEvent event = (TargetedEvent)invocation.getArguments()[0];
+						TargetedEvent event = (TargetedEvent) invocation.getArguments()[0];
 						event.getTarget().receive(event.getEvent());
 						return EventSource.Queue;
 					}

@@ -19,7 +19,7 @@ public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 
 	private static final String PLUGIN_ID = "hu.eltesoft.modelexecution.examples";
 	private static final String RESOURCE_DIR = "resources";
-	
+
 	private static final String DIAGRAM_EXTENSION = ".di";
 	private static final String NOTATION_EXTENSION = ".notation";
 	private static final String MODEL_EXTENSION = ".uml";
@@ -34,7 +34,7 @@ public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 		copyResourceToProject(project, modelName + NOTATION_EXTENSION);
 		copyResourceToProject(project, modelName + MODEL_EXTENSION);
 	}
-	
+
 	protected void copyLaunchConfig(IProject project, String modelName) {
 		copyResourceToProject(project, modelName + LAUNCH_EXTENSION);
 	}

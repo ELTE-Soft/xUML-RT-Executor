@@ -16,15 +16,15 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 public abstract class WizardOpenAction extends Action {
 
 	/**
-	 * If the wizard is opened successfully, it closes the welcome page if it was open.
+	 * If the wizard is opened successfully, it closes the welcome page if it
+	 * was open.
 	 */
 	protected void openWizard(String wizardName) {
-		IWizardDescriptor descriptor = PlatformUI.getWorkbench().getNewWizardRegistry()
-				.findWizard(wizardName);
+		IWizardDescriptor descriptor = PlatformUI.getWorkbench().getNewWizardRegistry().findWizard(wizardName);
 		try {
 			if (descriptor != null) {
 				IWizard wizard = descriptor.createWizard();
-	
+
 				WizardDialog wd = new WizardDialog(Display.getDefault().getActiveShell(), wizard);
 				wd.setTitle(wizard.getWindowTitle());
 				int success = wd.open();

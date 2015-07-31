@@ -1,14 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
-import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier;
-import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
-import hu.eltesoft.modelexecution.m2t.smap.emf.QualifiedReference;
-import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +10,15 @@ import org.eclipse.emf.ecore.EObject;
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.Location;
 import com.sun.jdi.ReferenceType;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
+import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
+import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier;
+import hu.eltesoft.modelexecution.m2t.smap.emf.LocationRegistry;
+import hu.eltesoft.modelexecution.m2t.smap.emf.QualifiedReference;
+import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 @SuppressWarnings("restriction")
 public class LocationConverter {
@@ -40,22 +40,19 @@ public class LocationConverter {
 		return locationsFor(modelElement, qualifier);
 	}
 
-	public List<Location> locationsFor(EObject modelElement,
-			Class<? extends LocationQualifier> qualifier) {
+	public List<Location> locationsFor(EObject modelElement, Class<? extends LocationQualifier> qualifier) {
 		List<Location> locations = new ArrayList<>();
 
 		String className = ModelUtils.getContainerName(modelElement);
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
-			IdePlugin.logError(String.format(
-					"Unable to load debug symbols for class: %s", className));
+			IdePlugin.logError(String.format("Unable to load debug symbols for class: %s", className));
 			return locations;
 		}
 
 		ReferenceType type = classForName.get(className);
 		if (null == type) {
-			IdePlugin.logError(String.format(
-					"Reference type not found for class: %s", className));
+			IdePlugin.logError(String.format("Reference type not found for class: %s", className));
 			return locations;
 		}
 
@@ -81,8 +78,7 @@ public class LocationConverter {
 		String className = location.declaringType().name();
 		DebugSymbols symbols = symbolsRegistry.getSymbolsFor(className);
 		if (null == symbols) {
-			IdePlugin.logError(String.format(
-					"Unable to load debug symbols for class: %s", className));
+			IdePlugin.logError(String.format("Unable to load debug symbols for class: %s", className));
 		}
 
 		LocationRegistry registry = symbols.getLocationRegistry();
@@ -94,11 +90,10 @@ public class LocationConverter {
 		}
 	}
 
-	private hu.eltesoft.modelexecution.m2t.smap.xtend.Location convert(
-			Location jdiLocation) throws AbsentInformationException {
+	private hu.eltesoft.modelexecution.m2t.smap.xtend.Location convert(Location jdiLocation)
+			throws AbsentInformationException {
 		String path = jdiLocation.sourcePath();
 		int lineNumber = jdiLocation.lineNumber();
-		return new hu.eltesoft.modelexecution.m2t.smap.xtend.Location(path,
-				lineNumber, lineNumber);
+		return new hu.eltesoft.modelexecution.m2t.smap.xtend.Location(path, lineNumber, lineNumber);
 	}
 }

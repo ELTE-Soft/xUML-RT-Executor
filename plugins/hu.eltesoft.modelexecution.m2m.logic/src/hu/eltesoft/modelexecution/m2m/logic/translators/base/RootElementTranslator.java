@@ -1,13 +1,5 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
-import hu.eltesoft.modelexecution.m2t.java.Template;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -19,6 +11,14 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.ValueSpecification;
+
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
+import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 
 /**
  * An abstract base class for translators that map a root element.

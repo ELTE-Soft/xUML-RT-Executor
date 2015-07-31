@@ -32,8 +32,7 @@ class FolderSelector extends SelectionAdapter {
 	/**
 	 * A widget for selecting a folder in the workspace
 	 */
-	public FolderSelector(Composite comp, ConfigBase base, String labelCaption,
-			String buttonText, String dialogTitle) {
+	public FolderSelector(Composite comp, ConfigBase base, String labelCaption, String buttonText, String dialogTitle) {
 		this.parent = comp;
 		this.base = base;
 		this.dialogTitle = dialogTitle;
@@ -44,8 +43,7 @@ class FolderSelector extends SelectionAdapter {
 	 * Defines the base of the folder path.
 	 */
 	public enum ConfigBase {
-		WORKSPACE_BASED(res -> res.getFullPath()), PROJECT_BASED(res -> res
-				.getProjectRelativePath());
+		WORKSPACE_BASED(res -> res.getFullPath()), PROJECT_BASED(res -> res.getProjectRelativePath());
 		private ConfigBase(Function<IResource, IPath> conv) {
 			this.conv = conv;
 		}
@@ -57,8 +55,7 @@ class FolderSelector extends SelectionAdapter {
 		}
 	}
 
-	private void createWidget(Composite comp, String labelCaption,
-			String buttonText) {
+	private void createWidget(Composite comp, String labelCaption, String buttonText) {
 
 		Composite group = new Composite(comp, SWT.NONE);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -66,8 +63,7 @@ class FolderSelector extends SelectionAdapter {
 
 		Label traceFolderLabel = new Label(group, SWT.NONE);
 		traceFolderLabel.setText(labelCaption);
-		traceFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-				false, false));
+		traceFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		traceFolderLabel.pack();
 
 		field = new Text(group, SWT.BORDER);
@@ -88,8 +84,7 @@ class FolderSelector extends SelectionAdapter {
 		TreeSelectorDialog dialog = new TreeSelectorDialog(parent.getShell());
 		dialog.setTitle(dialogTitle);
 		dialog.setContentProvider(new WorkspaceContentProvider());
-		dialog.setLabelProvider(WorkbenchLabelProvider
-				.getDecoratingWorkbenchLabelProvider());
+		dialog.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
 		if (selectedResource != null && selectedResource.exists()) {
 			dialog.setInitialSelections(new IResource[] { selectedResource });
 		}
@@ -118,9 +113,8 @@ class FolderSelector extends SelectionAdapter {
 	}
 
 	private boolean selectionValid(TreeSelectorDialog dialog, Object[] selection) {
-		return selection != null
-				&& dialog.getReturnCode() == TreeSelectorDialog.OK
-				&& selection.length > 0 && (selection[0] instanceof IResource);
+		return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				&& (selection[0] instanceof IResource);
 	}
 
 	public boolean selectionValid() {
@@ -143,7 +137,7 @@ class FolderSelector extends SelectionAdapter {
 			field.setText(base.getPath(selectedResource).toString());
 		}
 	}
-	
+
 	public void setEnabled(boolean enabled) {
 		browseButton.setEnabled(enabled);
 	}

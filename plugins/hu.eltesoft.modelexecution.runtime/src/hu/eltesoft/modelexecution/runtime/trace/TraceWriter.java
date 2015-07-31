@@ -19,8 +19,7 @@ public class TraceWriter implements Tracer {
 
 	protected TraceWriter(Path outputFilePath) throws IOException {
 		if (!Files.exists(outputFilePath)) {
-			if (outputFilePath.getParent() != null
-					&& !Files.exists(outputFilePath.getParent())) {
+			if (outputFilePath.getParent() != null && !Files.exists(outputFilePath.getParent())) {
 				Files.createDirectories(outputFilePath.getParent());
 			}
 			Files.createFile(outputFilePath);
@@ -28,14 +27,11 @@ public class TraceWriter implements Tracer {
 		writer = Files.newBufferedWriter(outputFilePath);
 	}
 
-	public TraceWriter(String folderName, FileSystem fileSystem)
-			throws IOException {
-		this(fileSystem.getPath(folderName).resolve(
-				createTimestampedFileName(fileSystem)));
+	public TraceWriter(String folderName, FileSystem fileSystem) throws IOException {
+		this(fileSystem.getPath(folderName).resolve(createTimestampedFileName(fileSystem)));
 	}
 
-	public static TraceWriter forSpecifiedFile(String fileName,
-			FileSystem fileSystem) throws IOException {
+	public static TraceWriter forSpecifiedFile(String fileName, FileSystem fileSystem) throws IOException {
 		return new TraceWriter(fileSystem.getPath(fileName));
 	}
 

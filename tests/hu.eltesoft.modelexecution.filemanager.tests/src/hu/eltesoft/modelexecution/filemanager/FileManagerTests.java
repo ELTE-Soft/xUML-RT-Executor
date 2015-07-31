@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.filemanager;
 
-import hu.eltesoft.modelexecution.filemanager.FileManager;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +14,7 @@ public class FileManagerTests {
 	private static String root;
 	private static String testPackage = "hu.eltesoft.modelexecution.testfilemanager";
 	private static String testClass = "Test";
-	private static String testQualifiedName = testPackage + "." +  testClass;
+	private static String testQualifiedName = testPackage + "." + testClass;
 	private static String testPath = "hu/eltesoft/modelexecution/testfilemanager";
 	private static String testFile = "Test.java";
 	private static String testContent = "test\ncontent";
@@ -39,20 +37,17 @@ public class FileManagerTests {
 		try {
 			// Create
 			manager.addOrUpdate(testQualifiedName, testContent);
-			File result = new File(root + File.separator + testPath
-					+ File.separator + testFile);
+			File result = new File(root + File.separator + testPath + File.separator + testFile);
 			Assert.assertTrue("Missing file.", result.exists());
 			String read = new String(Files.readAllBytes(result.toPath()));
 			Assert.assertEquals("Wrong contents.", testContent, read);
 
 			// Update
 			manager.addOrUpdate(testQualifiedName, testContent + testContent);
-			result = new File(root + File.separator + testPath + File.separator
-					+ testFile);
+			result = new File(root + File.separator + testPath + File.separator + testFile);
 			Assert.assertTrue("Missing file.", result.exists());
 			read = new String(Files.readAllBytes(result.toPath()));
-			Assert.assertEquals("Wrong contents.", testContent + testContent,
-					read);
+			Assert.assertEquals("Wrong contents.", testContent + testContent, read);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();
@@ -73,15 +68,14 @@ public class FileManagerTests {
 		}
 
 	}
-	
+
 	@Test
 	public void testRemove() {
 		manager.remove(testQualifiedName);
-		File result = new File(root + File.separator + testPath
-				+ File.separator + testFile);
+		File result = new File(root + File.separator + testPath + File.separator + testFile);
 		Assert.assertFalse("Remove failed.", result.exists());
 	}
-	
+
 	@Test
 	public void testCleanup() {
 		manager.cleanup();

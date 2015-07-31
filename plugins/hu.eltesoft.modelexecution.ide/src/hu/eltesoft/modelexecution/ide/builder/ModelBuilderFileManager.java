@@ -1,14 +1,5 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
-import hu.eltesoft.modelexecution.filemanager.IFileManager;
-import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
-import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
-
 import java.io.IOException;
 
 import org.eclipse.core.resources.IFolder;
@@ -19,6 +10,15 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import hu.eltesoft.modelexecution.filemanager.IFileManager;
+import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
+import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
+import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
+import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
+
 /**
  * File operation interface for {@linkplain ModelBuilder}.
  */
@@ -27,8 +27,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	private IProject project;
 	private IFileManagerFactory fileManagerFactory;
 
-	public ModelBuilderFileManager(IProject project,
-			IFileManagerFactory fileManagerFactory) {
+	public ModelBuilderFileManager(IProject project, IFileManagerFactory fileManagerFactory) {
 		this.project = project;
 		this.fileManagerFactory = fileManagerFactory;
 	}
@@ -39,20 +38,16 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	}
 
 	@Override
-	public void sourceCodeChanged(String fileName, SourceMappedText output,
-			DebugSymbols symbols) {
+	public void sourceCodeChanged(String fileName, SourceMappedText output, DebugSymbols symbols) {
 		try {
 			checkGenDirIsSrcDir();
-			getGenSrcFileManager().addOrUpdate(fileName,
-					output.getText().toString());
+			getGenSrcFileManager().addOrUpdate(fileName, output.getText().toString());
 			String smap = output.getSmap().toString();
 			if (smap != null) {
-				getDebugInfoFileManager().addOrUpdateFile(
-						fileName + ".smap", smap); //$NON-NLS-1$
+				getDebugInfoFileManager().addOrUpdateFile(fileName + ".smap", smap); //$NON-NLS-1$
 			}
 			if (symbols != null) {
-				getDebugInfoFileManager().addOrUpdateFile(
-						fileName + ".symbols", //$NON-NLS-1$
+				getDebugInfoFileManager().addOrUpdateFile(fileName + ".symbols", //$NON-NLS-1$
 						symbols);
 			}
 		} catch (IOException e) {
@@ -78,8 +73,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 			outputDir = project.findMember(outputPath);
 		}
 		if (javaProject.findPackageFragmentRoot(outputDir.getFullPath()) == null) {
-			IClasspathEntry newSourceEntry = JavaCore.newSourceEntry(outputDir
-					.getFullPath());
+			IClasspathEntry newSourceEntry = JavaCore.newSourceEntry(outputDir.getFullPath());
 			ClasspathUtils.addClasspathEntry(javaProject, newSourceEntry);
 		}
 	}
@@ -89,9 +83,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	 */
 	public void refreshFolder() {
 		try {
-			IResource genSourceDir = project
-					.findMember(ExecutableModelProperties
-							.getSourceGenPath(project));
+			IResource genSourceDir = project.findMember(ExecutableModelProperties.getSourceGenPath(project));
 			if (genSourceDir != null && genSourceDir.exists()) {
 				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
@@ -109,15 +101,13 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	}
 
 	private IFileManager getGenSrcFileManager() {
-		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProperties.getSourceGenPath(project))
-				.toString());
+		return fileManagerFactory.createFileManager(
+				project.getLocation().append(ExecutableModelProperties.getSourceGenPath(project)).toString());
 	}
 
 	private IFileManager getDebugInfoFileManager() {
-		return fileManagerFactory.createFileManager(project.getLocation()
-				.append(ExecutableModelProperties.getDebugFilesPath(project))
-				.toString());
+		return fileManagerFactory.createFileManager(
+				project.getLocation().append(ExecutableModelProperties.getDebugFilesPath(project)).toString());
 	}
 
 }

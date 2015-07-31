@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.runtime.trace.json;
 
-import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.FileSystem;
@@ -10,6 +8,8 @@ import java.nio.file.Files;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
 
 /**
  * A class for reading JSON objects from a given trace file.
@@ -20,8 +20,7 @@ public class JSONObjectReader implements AutoCloseable {
 	private JSONObject nextMessage;
 	private Reader reader;
 
-	public JSONObjectReader(String fileName, FileSystem fileSystem)
-			throws IOException {
+	public JSONObjectReader(String fileName, FileSystem fileSystem) throws IOException {
 		reader = Files.newBufferedReader(fileSystem.getPath(fileName));
 		tokener = new JSONTokener(reader);
 		readNextObject();

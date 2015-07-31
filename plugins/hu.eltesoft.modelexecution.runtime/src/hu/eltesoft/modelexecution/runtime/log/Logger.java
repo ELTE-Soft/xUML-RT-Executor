@@ -18,7 +18,6 @@ public interface Logger extends AutoCloseable {
 
 	void exitState(String state);
 
-	void transition(String eventName, String messageName, String source,
-			String target);
+	void transition(String eventName, String messageName, String source, String target);
 
 }

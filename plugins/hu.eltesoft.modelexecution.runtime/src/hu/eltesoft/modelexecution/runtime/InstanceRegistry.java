@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 
 /**
  * Stores references for objects that can receive events. These events can come

@@ -1,13 +1,13 @@
 package hu.eltesoft.modelexecution.ide.util;
 
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
-
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
 
 import com.sun.jdi.VirtualMachine;
+
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
 /**
  * An Eclipse process that acts as a proxy to the other process received as a

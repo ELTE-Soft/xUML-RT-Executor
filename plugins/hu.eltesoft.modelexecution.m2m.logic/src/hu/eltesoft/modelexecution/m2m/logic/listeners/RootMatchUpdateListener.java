@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.m2m.logic.listeners;
 
+import org.eclipse.incquery.runtime.api.IPatternMatch;
+import org.eclipse.uml2.uml.NamedElement;
+
 import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
-
-import org.eclipse.incquery.runtime.api.IPatternMatch;
-import org.eclipse.uml2.uml.NamedElement;
 
 /**
  * A match update listener which is intended to be used with root m2m model
@@ -17,9 +17,8 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 
 	private final RootNameStorage rootNames;
 
-	public RootMatchUpdateListener(
-			RootElementTranslator<UML, ?, Match> translator,
-			ChangeRegistry changes, RootNameStorage rootNames) {
+	public RootMatchUpdateListener(RootElementTranslator<UML, ?, Match> translator, ChangeRegistry changes,
+			RootNameStorage rootNames) {
 		super(translator, changes);
 		this.rootNames = rootNames;
 	}

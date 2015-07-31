@@ -22,8 +22,7 @@ public interface SourceCodeChangeListener {
 	 * @param symbols
 	 *            debug symbols
 	 */
-	void sourceCodeChanged(String rootName, SourceMappedText output,
-			DebugSymbols symbols);
+	void sourceCodeChanged(String rootName, SourceMappedText output, DebugSymbols symbols);
 
 	/**
 	 * Called when the content of a file has been deleted from the model so the

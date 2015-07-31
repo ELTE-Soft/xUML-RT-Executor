@@ -8,11 +8,11 @@ public class CmArgBuilder {
 	protected void appendObject(Object obj) {
 		sb.append(SPACE + obj);
 	}
-	
+
 	public void append(String arg) {
 		appendObject(arg);
 	}
-	
+
 	public void append(int arg) {
 		appendObject(arg);
 	}

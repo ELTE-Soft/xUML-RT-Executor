@@ -1,10 +1,5 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
-import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
-import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
-import hu.eltesoft.modelexecution.runtime.trace.Tracer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
@@ -13,6 +8,11 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
 import org.json.JSONException;
+
+import hu.eltesoft.modelexecution.runtime.log.MinimalLogger;
+import hu.eltesoft.modelexecution.runtime.trace.TraceReplayer;
+import hu.eltesoft.modelexecution.runtime.trace.TraceWriter;
+import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 /**
  * Entry point of the model execution. Parses command line arguments.
@@ -26,16 +26,13 @@ public class XUMLRTRuntime extends BaseRuntime {
 	public static final String OPTION_CONTROL_SOCK = "-control-sock";
 	public static final String OPTION_READ_TRACE = "-read-trace";
 	public static final String OPTION_WRITE_TRACE = "-write-trace";
-	private static final String USAGE = "java " + XUMLRTRuntime.class.getName()
-			+ " class-name feed-function-name " + "[" + OPTION_WRITE_TRACE
-			+ " output-folder] [" + OPTION_READ_TRACE + "input-folder] ["
-			+ OPTION_LOG + "]";
+	private static final String USAGE = "java " + XUMLRTRuntime.class.getName() + " class-name feed-function-name "
+			+ "[" + OPTION_WRITE_TRACE + " output-folder] [" + OPTION_READ_TRACE + "input-folder] [" + OPTION_LOG + "]";
 	private static Socket socket;
 
 	public static void main(String[] args) {
 		TerminationResult result = null;
-		try (XUMLRTRuntime runtime = new XUMLRTRuntime(
-				XUMLRTRuntime.class.getClassLoader())) {
+		try (XUMLRTRuntime runtime = new XUMLRTRuntime(XUMLRTRuntime.class.getClassLoader())) {
 			if (args.length < 2) {
 				System.err.println("Not enough parameters. Usage: \n" + USAGE);
 			}
@@ -75,19 +72,16 @@ public class XUMLRTRuntime extends BaseRuntime {
 				addControlStream(createControlStream(args[++i]));
 				break;
 			default:
-				System.err.println("Could not parse argument " + args[i]
-						+ ". Usage: \n" + USAGE);
+				System.err.println("Could not parse argument " + args[i] + ". Usage: \n" + USAGE);
 				break;
 			}
 		}
 	}
 
-	private static InputStream createControlStream(String port)
-			throws NumberFormatException, IOException {
+	private static InputStream createControlStream(String port) throws NumberFormatException, IOException {
 		logInfo("Creating control stream: " + port);
 		if (socket != null) {
-			throw new RuntimeException(
-					"Cannot connect to multiple control streams.");
+			throw new RuntimeException("Cannot connect to multiple control streams.");
 		}
 		while (socket == null) {
 			try {
@@ -106,8 +100,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 	/**
 	 * Constructs a tracer that actually creates trace files.
 	 */
-	public static Tracer getDefaultTraceWriter(String traceParameter)
-			throws IOException {
+	public static Tracer getDefaultTraceWriter(String traceParameter) throws IOException {
 		return new TraceWriter(traceParameter, defaultFileSystem());
 	}
 
@@ -116,8 +109,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 	 */
 	public static TraceReplayer getDefaultTraceReplayer(String inputFolder)
 			throws ClassNotFoundException, JSONException, IOException {
-		return new TraceReplayer(inputFolder, defaultFileSystem(),
-				XUMLRTRuntime.class.getClassLoader());
+		return new TraceReplayer(inputFolder, defaultFileSystem(), XUMLRTRuntime.class.getClassLoader());
 	}
 
 	private static FileSystem defaultFileSystem() {

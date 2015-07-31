@@ -1,9 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +21,10 @@ import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.EventRequestManager;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
+
 @SuppressWarnings("restriction")
 public class VirtualMachineManager implements ITerminate {
 
@@ -40,8 +40,7 @@ public class VirtualMachineManager implements ITerminate {
 		javaProcess = getJavaProcess(launch);
 		virtualMachine = javaProcess.getVM();
 		if (virtualMachine == null) {
-			IdePlugin
-					.logError("Cannot extract virtual machine from java process");
+			IdePlugin.logError("Cannot extract virtual machine from java process");
 		}
 
 		eventHandlerThread = createEventHandlerThread();
@@ -124,9 +123,7 @@ public class VirtualMachineManager implements ITerminate {
 					// stop on vm disconnect
 					stop();
 				} catch (Exception e) {
-					IdePlugin.logError(
-							"Exception while processing VirtualMachine events",
-							e);
+					IdePlugin.logError("Exception while processing VirtualMachine events", e);
 				}
 			}
 

@@ -1,10 +1,5 @@
 package hu.eltesoft.modelexecution.ide.launch.process;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
-import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
-import hu.eltesoft.modelexecution.runtime.RuntimeController;
-
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -15,6 +10,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
+import hu.eltesoft.modelexecution.runtime.RuntimeController;
 
 /**
  * This decorator changes the process to try to terminate in a gentle way.
@@ -36,8 +36,7 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 				writer.append(RuntimeController.COMMAND_TERMINATE + "\n");
 				writer.flush();
 			} catch (IOException e) {
-				IdePlugin.logError(
-						"Error while trying to send terminate request", e);
+				IdePlugin.logError("Error while trying to send terminate request", e);
 				// if there is a problem with sending the terminate message on
 				// the control thread, it should be terminated directly
 				process.terminate();
@@ -49,13 +48,11 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 		}
 	}
 
-	public GracefulTerminationProcessDecorator(IProcess process,
-			ILaunchConfiguration launchConfig) {
+	public GracefulTerminationProcessDecorator(IProcess process, ILaunchConfiguration launchConfig) {
 		super(process);
 		int controlPort;
 		try {
-			controlPort = launchConfig.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_CONTROL_PORT, -1);
+			controlPort = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_CONTROL_PORT, -1);
 			server = new ServerSocket(controlPort);
 
 			if (controlPort != -1) {
@@ -63,19 +60,15 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 				new Thread(() -> {
 					try {
 						socket = server.accept();
-						writer = new OutputStreamWriter(
-								socket.getOutputStream());
+						writer = new OutputStreamWriter(socket.getOutputStream());
 					} catch (Exception e) {
-						IdePlugin.logError(
-								"Error while trying to set up control stream",
-								e);
+						IdePlugin.logError("Error while trying to set up control stream", e);
 						// nothing to do, termination will be forced
 					}
 				}).start();
 			}
 		} catch (CoreException | IOException e) {
-			IdePlugin
-					.logError("Error while trying to set up control stream", e);
+			IdePlugin.logError("Error while trying to set up control stream", e);
 		}
 	}
 }

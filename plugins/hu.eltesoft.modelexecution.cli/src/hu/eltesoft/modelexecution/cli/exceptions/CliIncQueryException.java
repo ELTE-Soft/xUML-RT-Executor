@@ -1,9 +1,9 @@
 package hu.eltesoft.modelexecution.cli.exceptions;
 
+import org.eclipse.incquery.runtime.exception.IncQueryException;
+
 import hu.eltesoft.modelexecution.cli.Messages;
 import hu.eltesoft.modelexecution.cli.Utils;
-
-import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 public class CliIncQueryException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;

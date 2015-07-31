@@ -10,17 +10,16 @@ import org.eclipse.jdt.core.JavaModelException;
 
 public class ClasspathUtils {
 
-	public static void addClasspathEntry(IJavaProject javaProject,
-			IClasspathEntry newSourceEntry) throws JavaModelException {
+	public static void addClasspathEntry(IJavaProject javaProject, IClasspathEntry newSourceEntry)
+			throws JavaModelException {
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
-		IClasspathEntry[] newCp = Arrays
-				.copyOf(classpath, classpath.length + 1);
+		IClasspathEntry[] newCp = Arrays.copyOf(classpath, classpath.length + 1);
 		newCp[newCp.length - 1] = newSourceEntry;
 		javaProject.setRawClasspath(newCp, null);
 	}
 
-	public static void removeClasspathEntry(IJavaProject javaProject,
-			IPath removedSourcePath) throws JavaModelException {
+	public static void removeClasspathEntry(IJavaProject javaProject, IPath removedSourcePath)
+			throws JavaModelException {
 		LinkedList<IClasspathEntry> remainingCp = new LinkedList<>();
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
 		for (IClasspathEntry cpEntry : classpath) {
@@ -28,9 +27,7 @@ public class ClasspathUtils {
 				remainingCp.add(cpEntry);
 			}
 		}
-		javaProject.setRawClasspath(
-				remainingCp.toArray(new IClasspathEntry[remainingCp.size()]),
-				null);
+		javaProject.setRawClasspath(remainingCp.toArray(new IClasspathEntry[remainingCp.size()]), null);
 	}
 
 }

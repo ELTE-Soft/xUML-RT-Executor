@@ -30,6 +30,7 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 
 	/**
 	 * Creates a sub-node that can translate any model element.
+	 * 
 	 * @see FeatureNode
 	 */
 	public <SubMeta, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> on(
@@ -43,8 +44,9 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 	}
 
 	/**
-	 * Creates a sub-node that can translate model elements that are {@link EObject EObjects}.
-	 * Supports automatic sorting.
+	 * Creates a sub-node that can translate model elements that are
+	 * {@link EObject EObjects}. Supports automatic sorting.
+	 * 
 	 * @see EObjectFeatureNode
 	 */
 	public <SubMeta extends EObject, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> onEObject(
@@ -60,6 +62,7 @@ public abstract class AbstractNode<Trans, Match extends IPatternMatch> {
 	/**
 	 * Creates a sub-node that supports sorting by a {@linkplain Comparator}
 	 * defined on the processed matches.
+	 * 
 	 * @see CustomSortedFeatureNode
 	 */
 	public <SubMeta extends EObject, SubMatch extends IPatternMatch> AbstractFeatureNode<SubMeta, SubMatch> onSorted(

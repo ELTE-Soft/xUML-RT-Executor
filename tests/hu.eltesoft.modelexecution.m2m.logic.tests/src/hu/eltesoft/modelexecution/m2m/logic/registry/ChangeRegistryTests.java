@@ -2,6 +2,14 @@ package hu.eltesoft.modelexecution.m2m.logic.registry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Class;
+import org.junit.Test;
+
 import hu.eltesoft.modelexecution.m2m.logic.DeleteSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
@@ -13,13 +21,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch;
-
-import java.util.List;
-
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.eclipse.uml2.uml.Class;
-import org.junit.Test;
 
 public class ChangeRegistryTests extends ModelBasedTestCase {
 

@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,7 +46,7 @@ public class JSONTest {
 		}
 		assertEquals(original, actual);
 	}
-	
+
 	@Test
 	public void testMultiset() throws Exception {
 		JSONObject obj = new JSONObject();
@@ -69,5 +69,5 @@ public class JSONTest {
 		JSONObject deserialized = new JSONObject(tokener);
 		return deserialized;
 	}
-	
+
 }

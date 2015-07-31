@@ -1,13 +1,13 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
-
 import java.util.Arrays;
 import java.util.function.Function;
 
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.uml2.uml.NamedElement;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 
 /**
  * The root element of the translation tree.
@@ -17,10 +17,9 @@ public class RootNode<UML extends NamedElement, Trans extends Named, Match exten
 
 	protected RootElementTranslator<UML, Trans, Match> translator;
 
-	public RootNode(RootElementTranslator<UML, Trans, Match> translator,
-			BaseMatcher<Match> matcher, Function<Match, Trans> transform) {
-		super(Arrays.asList(matcher.getSpecification().getParameters().get(0)
-				.getTypeName()), matcher, transform);
+	public RootNode(RootElementTranslator<UML, Trans, Match> translator, BaseMatcher<Match> matcher,
+			Function<Match, Trans> transform) {
+		super(Arrays.asList(matcher.getSpecification().getParameters().get(0).getTypeName()), matcher, transform);
 		this.translator = translator;
 	}
 }

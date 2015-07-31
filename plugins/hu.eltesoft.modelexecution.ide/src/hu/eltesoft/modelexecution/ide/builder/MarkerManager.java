@@ -1,11 +1,11 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+
+import hu.eltesoft.modelexecution.ide.IdePlugin;
 
 /**
  * A class for handling UML-related markers.
@@ -26,8 +26,7 @@ public class MarkerManager {
 				IMarker marker = resource.createMarker(UML_MARKER_ID);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 				marker.setAttribute(IMarker.MESSAGE, message);
-				marker.setAttribute(IMarker.LOCATION, resource.getLocation()
-						.toString());
+				marker.setAttribute(IMarker.LOCATION, resource.getLocation().toString());
 			}
 		} catch (CoreException ce) {
 			IdePlugin.logError("Cannot set up error markers", ce);
@@ -42,8 +41,7 @@ public class MarkerManager {
 			return;
 		}
 		try {
-			IMarker[] markers = resource.findMarkers(UML_MARKER_ID, true,
-					IResource.DEPTH_ZERO);
+			IMarker[] markers = resource.findMarkers(UML_MARKER_ID, true, IResource.DEPTH_ZERO);
 			for (IMarker marker : markers) {
 				marker.delete();
 			}
@@ -62,5 +60,5 @@ public class MarkerManager {
 			IdePlugin.logError("Cannot remove markers from project", e);
 		}
 	}
-	
+
 }

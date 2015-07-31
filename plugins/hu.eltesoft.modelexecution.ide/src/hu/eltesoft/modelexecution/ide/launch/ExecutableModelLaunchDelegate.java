@@ -1,12 +1,5 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
-import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
-import hu.eltesoft.modelexecution.ide.launch.process.GracefulTerminationProcessDecorator;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.ide.ui.Dialogs;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -33,6 +26,13 @@ import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 import org.eclipse.swt.widgets.Display;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
+import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
+import hu.eltesoft.modelexecution.ide.launch.process.GracefulTerminationProcessDecorator;
+import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
+import hu.eltesoft.modelexecution.ide.ui.Dialogs;
+
 /**
  * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
  * execution engine is selected and the needed resources exist.
@@ -45,14 +45,14 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	private static final String DIAGRAM_FILE_EXTENSION = "di";
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
-	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher(
-			GracefulTerminationProcessDecorator::new,
+	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher(GracefulTerminationProcessDecorator::new,
 			DebuggingProcessDecorator::new, () -> null);
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;
 
 	@Override
-	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)
+			throws CoreException {
 		if (!super.preLaunchCheck(configuration, mode, monitor)) {
 			return false;
 		}
@@ -60,51 +60,40 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 			Dialogs.openMentionedResourceDoesNotExistsDialog();
 			return false;
 		}
-		if (mode.equals(ILaunchManager.DEBUG_MODE)
-				&& !executionEngineIsXUMLRT()) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && !executionEngineIsXUMLRT()) {
 			if (!askUserToSetExecutionEngine()) {
 				return false;
 			}
 		}
-		String umlResource = configuration.getAttribute(
-				ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
-		String diResource = umlResource
-				.replaceAll(
-						"\\." + MODEL_FILE_EXTENSION + "$", "." + DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		if (mode.equals(ILaunchManager.DEBUG_MODE)
-				&& !diResourceIsPresent(configuration, diResource, umlResource)) {
+		String umlResource = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
+		String diResource = umlResource.replaceAll("\\." + MODEL_FILE_EXTENSION + "$", "." + DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && !diResourceIsPresent(configuration, diResource, umlResource)) {
 			notifyUserThatDiIsMissing(diResource, umlResource);
 			return false;
 		}
 		return true;
 	}
 
-	private boolean mentionedResourcesExist(ILaunchConfiguration configuration)
-			throws CoreException {
+	private boolean mentionedResourcesExist(ILaunchConfiguration configuration) throws CoreException {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		try {
-			String umlResourceURI = configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
-			String classURIFragment = configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, "");
-			String functionURIFragment = configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, "");
+			String umlResourceURI = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
+			String classURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
+					"");
+			String functionURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
+					"");
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot workspaceRoot = workspace.getRoot();
-			URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI)
-					.getLocationURI().toString());
-			EObject executedClass = resourceSet.getEObject(
-					umlURI.appendFragment(classURIFragment), true);
-			EObject executedFunction = resourceSet.getEObject(
-					umlURI.appendFragment(functionURIFragment), true);
+			URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI).getLocationURI().toString());
+			EObject executedClass = resourceSet.getEObject(umlURI.appendFragment(classURIFragment), true);
+			EObject executedFunction = resourceSet.getEObject(umlURI.appendFragment(functionURIFragment), true);
 			return executedClass != null && executedFunction != null;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 
-	private boolean diResourceIsPresent(ILaunchConfiguration configuration,
-			String diResource, String umlResource) {
+	private boolean diResourceIsPresent(ILaunchConfiguration configuration, String diResource, String umlResource) {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot workspaceRoot = workspace.getRoot();
 		IFile modelElementIFile = (IFile) workspaceRoot.findMember(diResource);
@@ -125,19 +114,18 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 
 	private boolean executionEngineIsXUMLRT() {
 		IConfigurationElement selectedExecutionEngine = getSelectedExecutionEngine();
-		return (selectedExecutionEngine != null && selectedExecutionEngine
-				.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR).equals(
-						XUmlRtExecutionEngine.class.getCanonicalName()));
+		return (selectedExecutionEngine != null
+				&& selectedExecutionEngine.getAttribute(MOKA_EXECUTION_ENGINE_CLASS_NAME_ATTR)
+						.equals(XUmlRtExecutionEngine.class.getCanonicalName()));
 	}
 
 	private IConfigurationElement[] getPossibleExecutionEngines() {
-		return Platform.getExtensionRegistry().getConfigurationElementsFor(
-				MokaConstants.MOKA_ENGINE_EXTENSION_POINT_ID);
+		return Platform.getExtensionRegistry()
+				.getConfigurationElementsFor(MokaConstants.MOKA_ENGINE_EXTENSION_POINT_ID);
 	}
 
 	private IConfigurationElement getSelectedExecutionEngine() {
-		String selectedEENameSpace = Activator.getDefault()
-				.getPreferenceStore()
+		String selectedEENameSpace = Activator.getDefault().getPreferenceStore()
 				.getString(MokaConstants.MOKA_DEFAULT_EXECUTION_ENGINE_PREF);
 		IConfigurationElement[] possibleEEs = getPossibleExecutionEngines();
 		for (IConfigurationElement possibleEE : possibleEEs) {
@@ -157,71 +145,57 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 				return possibleEE;
 			}
 		}
-		throw new RuntimeException(
-				"xUML-RT Execution Engine is not among possible Execution Engines."); //$NON-NLS-1$
+		throw new RuntimeException("xUML-RT Execution Engine is not among possible Execution Engines."); //$NON-NLS-1$
 	}
 
 	private void setSelectedExecutionEngine(IConfigurationElement selected) {
-		IPreferenceStore preferenceStore = Activator.getDefault()
-				.getPreferenceStore();
-		preferenceStore.setValue(
-				MokaConstants.MOKA_DEFAULT_EXECUTION_ENGINE_PREF,
-				selected.getNamespaceIdentifier());
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		preferenceStore.setValue(MokaConstants.MOKA_DEFAULT_EXECUTION_ENGINE_PREF, selected.getNamespaceIdentifier());
 	}
 
 	@Override
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
+			throws CoreException {
 		listenForLaunchTermination();
-	
+
 		if (!exitChecker.launchStarting(launch)) {
 			return;
-		}	
+		}
 		try {
-			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig
-					.addMokaConfigs(configuration);
-			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig
-					.addJavaConfigs(configuration);
+			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig.addMokaConfigs(configuration);
+			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig.addJavaConfigs(configuration);
 			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
-			
+
 		} catch (TraceFileMissingException e) {
 			Dialogs.openTraceFileMissingErrorDialog();
 		}
 	}
 
-	private void launchProcesses(String mode, ILaunch launch,
-			IProgressMonitor monitor, ILaunchConfiguration mokaConfigs,
-			ILaunchConfiguration javaConfigs) throws CoreException {
+	private void launchProcesses(String mode, ILaunch launch, IProgressMonitor monitor,
+			ILaunchConfiguration mokaConfigs, ILaunchConfiguration javaConfigs) throws CoreException {
 		javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			Display.getDefault()
-					.asyncExec(
-							() -> launchMokaDelegate(mokaConfigs, mode, launch,
-									monitor));
+			Display.getDefault().asyncExec(() -> launchMokaDelegate(mokaConfigs, mode, launch, monitor));
 		}
 		setFoldersToRefresh(launch, javaConfigs);
 	}
 
-	protected void setFoldersToRefresh(ILaunch launch,
-			ILaunchConfiguration javaConfigs) throws CoreException {
+	protected void setFoldersToRefresh(ILaunch launch, ILaunchConfiguration javaConfigs) throws CoreException {
 		for (IProcess process : launch.getProcesses()) {
 			IProject project = getProject(javaConfigs);
 			String path = ExecutableModelProperties.getTraceFilesPath(project);
-			process.setAttribute(PROC_ATTR_TO_REFRESH, project.getFullPath()
-					+ ";" + project.findMember(path).getFullPath());
+			process.setAttribute(PROC_ATTR_TO_REFRESH,
+					project.getFullPath() + ";" + project.findMember(path).getFullPath());
 		}
 	}
 
-	private IProject getProject(ILaunchConfiguration launchConfig)
-			throws CoreException {
-		String projectName = launchConfig.getAttribute(
-				ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
-		return (IProject) ResourcesPlugin.getWorkspace().getRoot()
-				.findMember(projectName);
+	private IProject getProject(ILaunchConfiguration launchConfig) throws CoreException {
+		String projectName = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
+		return (IProject) ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
 	}
 
-	private void launchMokaDelegate(ILaunchConfiguration configuration,
-			String mode, ILaunch launch, IProgressMonitor monitor) {
+	private void launchMokaDelegate(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor monitor) {
 		try {
 			mokaDelegate.launch(configuration, mode, launch, monitor);
 		} catch (Exception e) {
@@ -235,8 +209,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	 */
 	private void listenForLaunchTermination() {
 		if (!isListening) {
-			DebugPlugin.getDefault().getLaunchManager()
-					.addLaunchListener(exitChecker);
+			DebugPlugin.getDefault().getLaunchManager().addLaunchListener(exitChecker);
 			isListening = true;
 		}
 	}

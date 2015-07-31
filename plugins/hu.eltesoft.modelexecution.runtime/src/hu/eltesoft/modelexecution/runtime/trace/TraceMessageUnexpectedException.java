@@ -7,8 +7,7 @@ public class TraceMessageUnexpectedException extends InvalidTraceException {
 	private TargetedEvent unexpectedMessage;
 
 	public TraceMessageUnexpectedException(TargetedEvent unexpectedMessage) {
-		super("Did not expect any messages, but " + unexpectedMessage
-				+ " was read");
+		super("Did not expect any messages, but " + unexpectedMessage + " was read");
 		this.unexpectedMessage = unexpectedMessage;
 	}
 

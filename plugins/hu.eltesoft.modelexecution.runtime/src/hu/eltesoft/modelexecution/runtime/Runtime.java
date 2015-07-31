@@ -13,8 +13,7 @@ public interface Runtime {
 
 	void logExitState(String state);
 
-	void logTransition(String eventName, String messageName, String source,
-			String target);
+	void logTransition(String eventName, String messageName, String source, String target);
 
 	/**
 	 * Adds an internal event to the event queue. The order in which events are

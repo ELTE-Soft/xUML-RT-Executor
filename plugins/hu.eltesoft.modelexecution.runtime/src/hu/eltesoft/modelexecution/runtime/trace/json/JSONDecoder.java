@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.runtime.trace.json;
 
-import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
-import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import hu.eltesoft.modelexecution.runtime.trace.InvalidTraceException;
+import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 
 /**
  * A class for loading Java objects from JSON objects.
@@ -26,8 +26,7 @@ public class JSONDecoder {
 		if (obj instanceof JSONObject) {
 			return decodeJSON((JSONObject) obj);
 		} else {
-			throw new JSONException(
-					"Cannot deserialize object, it is not a json object");
+			throw new JSONException("Cannot deserialize object, it is not a json object");
 		}
 	}
 
@@ -47,13 +46,11 @@ public class JSONDecoder {
 			((JSONSerializable) instance).jsonDecode(this, obj);
 			return instance;
 		} else {
-			throw new InvalidTraceException("Loaded class is not instanceof "
-					+ JSONSerializable.class.getName());
+			throw new InvalidTraceException("Loaded class is not instanceof " + JSONSerializable.class.getName());
 		}
 	}
 
-	public TargetedEvent decodeTargetedEvent(JSONObject obj)
-			throws ClassNotFoundException, JSONException {
+	public TargetedEvent decodeTargetedEvent(JSONObject obj) throws ClassNotFoundException, JSONException {
 		return new TargetedEvent(this, obj);
 	}
 

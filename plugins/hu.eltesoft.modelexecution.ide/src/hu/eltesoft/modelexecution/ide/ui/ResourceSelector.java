@@ -36,8 +36,8 @@ class ResourceSelector extends SelectionAdapter {
 	/**
 	 * A widget for selecting a folder in the workspace
 	 */
-	public ResourceSelector(Composite comp, ConfigBase base, String labelCaption,
-			String buttonText, String dialogTitle) {
+	public ResourceSelector(Composite comp, ConfigBase base, String labelCaption, String buttonText,
+			String dialogTitle) {
 		this.parent = comp;
 		this.base = base;
 		this.dialogTitle = dialogTitle;
@@ -47,13 +47,12 @@ class ResourceSelector extends SelectionAdapter {
 	public void addResourceFilter(String filter, String label) {
 		resourceFilters.put(filter, label);
 	}
-	
+
 	/**
 	 * Defines the base of the folder path.
 	 */
 	public enum ConfigBase {
-		WORKSPACE_BASED(res -> res.getFullPath()), PROJECT_BASED(res -> res
-				.getProjectRelativePath());
+		WORKSPACE_BASED(res -> res.getFullPath()), PROJECT_BASED(res -> res.getProjectRelativePath());
 		private ConfigBase(Function<IResource, IPath> conv) {
 			this.conv = conv;
 		}
@@ -65,8 +64,7 @@ class ResourceSelector extends SelectionAdapter {
 		}
 	}
 
-	protected void createWidget(Composite comp, String labelCaption,
-			String buttonText) {
+	protected void createWidget(Composite comp, String labelCaption, String buttonText) {
 
 		Composite group = new Composite(comp, SWT.NONE);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -74,8 +72,7 @@ class ResourceSelector extends SelectionAdapter {
 
 		Label traceFolderLabel = new Label(group, SWT.NONE);
 		traceFolderLabel.setText(labelCaption);
-		traceFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-				false, false));
+		traceFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		traceFolderLabel.pack();
 
 		field = new Text(group, SWT.BORDER);
@@ -117,8 +114,7 @@ class ResourceSelector extends SelectionAdapter {
 	}
 
 	protected ILabelProvider getLabelProvider() {
-		return WorkbenchLabelProvider
-				.getDecoratingWorkbenchLabelProvider();
+		return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider();
 	}
 
 	public void addUpdateListener(ResourceSelectorUpdateListener listener) {
@@ -136,9 +132,8 @@ class ResourceSelector extends SelectionAdapter {
 	}
 
 	private boolean selectionValid(TreeSelectorDialog dialog, Object[] selection) {
-		return selection != null
-				&& dialog.getReturnCode() == TreeSelectorDialog.OK
-				&& selection.length > 0 && (selection[0] instanceof IResource);
+		return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				&& (selection[0] instanceof IResource);
 	}
 
 	public boolean selectionValid() {
@@ -161,7 +156,7 @@ class ResourceSelector extends SelectionAdapter {
 			field.setText(base.getPath(selectedResource).toString());
 		}
 	}
-	
+
 	public void setEnabled(boolean enabled) {
 		browseButton.setEnabled(enabled);
 	}

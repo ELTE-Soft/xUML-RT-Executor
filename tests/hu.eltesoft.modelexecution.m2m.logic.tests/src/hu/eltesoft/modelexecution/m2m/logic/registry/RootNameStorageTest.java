@@ -2,14 +2,15 @@ package hu.eltesoft.modelexecution.m2m.logic.registry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Class;
 import org.junit.Test;
+
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 public class RootNameStorageTest extends ModelBasedTestCase {
 

@@ -1,11 +1,5 @@
 package hu.eltesoft.modelexecution.ide.builder;
 
-import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
-import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,6 +15,12 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+
+import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
+import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 
 /**
  * The model builder triggers the source code generation from the UML model.
@@ -52,13 +52,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
-		builderFileManager = new ModelBuilderFileManager(getProject(),
-				fileManagerFactory);
+		builderFileManager = new ModelBuilderFileManager(getProject(), fileManagerFactory);
 	}
 
 	@Override
-	public IProject[] build(int kind, Map<String, String> args,
-			IProgressMonitor monitor) throws CoreException {
+	public IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		if (kind == AUTO_BUILD || kind == INCREMENTAL_BUILD) {
 			incrementalBuild();
 		} else if (kind == FULL_BUILD) {
@@ -98,8 +96,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.put(resource, t.fullTranslation()));
 					} catch (GenerationException e) {
-						markerManager.putMarkerOnResource(resource,
-								e.getMessage());
+						markerManager.putMarkerOnResource(resource, e.getMessage());
 					}
 					return true;
 				}
@@ -119,8 +116,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 		try {
 			IResourceDelta delta = getDelta(getProject());
 			final ConcurrentMap<IResource, List<SourceCodeTask>> queue = new ConcurrentHashMap<>();
-			IncrementalBuildResourceDeltaVisitor visitor = new IncrementalBuildResourceDeltaVisitor(
-					queue);
+			IncrementalBuildResourceDeltaVisitor visitor = new IncrementalBuildResourceDeltaVisitor(queue);
 			delta.accept(visitor);
 			if (visitor.cleanAndRebuildNeeded()) {
 				fullBuild();
@@ -136,13 +132,11 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	/**
 	 * Should only be used for one incremental build.
 	 */
-	private final class IncrementalBuildResourceDeltaVisitor implements
-			IResourceDeltaVisitor {
+	private final class IncrementalBuildResourceDeltaVisitor implements IResourceDeltaVisitor {
 		private final ConcurrentMap<IResource, List<SourceCodeTask>> queue;
 		private boolean needsCleanAndRebuild = false;
 
-		private IncrementalBuildResourceDeltaVisitor(
-				ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
+		private IncrementalBuildResourceDeltaVisitor(ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
 			this.queue = queue;
 		}
 
@@ -181,8 +175,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 	 * error marker on the uml resource if it contained elements that are not
 	 * supported.
 	 */
-	private void performAllTasks(
-			final ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
+	private void performAllTasks(final ConcurrentMap<IResource, List<SourceCodeTask>> queue) {
 		for (Entry<IResource, List<SourceCodeTask>> entry : queue.entrySet()) {
 			try {
 				List<SourceCodeTask> task = entry.getValue();

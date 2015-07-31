@@ -2,14 +2,14 @@ package hu.eltesoft.modelexecution.m2m.logic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
-import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
+
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
+import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
 public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
@@ -49,7 +49,8 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
 	private void assertFullBuildQueueSizeIsCorrect() {
 		List<SourceCodeTask> queue = translator.fullTranslation();
-		// 9 = 5 behaviors, a class specification, a class implementation, a region, and a signal
+		// 9 = 5 behaviors, a class specification, a class implementation, a
+		// region, and a signal
 		assertEquals(9, queue.size());
 	}
 

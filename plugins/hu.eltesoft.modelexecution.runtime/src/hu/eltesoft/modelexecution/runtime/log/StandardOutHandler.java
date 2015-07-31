@@ -15,9 +15,9 @@ import java.util.logging.StreamHandler;
  * messages to the standard error stream.
  * </p>
  * 
- * <b>Configuration:</b> By default each <tt>StandardOutHandler</tt> is initialized
- * using the following <tt>LogManager</tt> configuration properties where
- * {@code <handler-name>} refers to the fully-qualified class name of the
+ * <b>Configuration:</b> By default each <tt>StandardOutHandler</tt> is
+ * initialized using the following <tt>LogManager</tt> configuration properties
+ * where {@code <handler-name>} refers to the fully-qualified class name of the
  * handler. If properties are not defined (or have invalid values) then the
  * specified default values are used.
  * <ul>
@@ -31,7 +31,7 @@ import java.util.logging.StreamHandler;
  * use (defaults to the default platform encoding).</li>
  * </ul>
  * 
- * Auto-flushes the output. 
+ * Auto-flushes the output.
  */
 public class StandardOutHandler extends Handler {
 
@@ -78,8 +78,7 @@ public class StandardOutHandler extends Handler {
 		if (formatterName != null) {
 			try {
 				return (Formatter) Class.forName(formatterName).newInstance();
-			} catch (InstantiationException | IllegalAccessException
-					| ClassNotFoundException e) {
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				// fall through
 			}
 		}
@@ -91,8 +90,7 @@ public class StandardOutHandler extends Handler {
 		if (filterName != null) {
 			try {
 				return (Filter) Class.forName(filterName).newInstance();
-			} catch (InstantiationException | IllegalAccessException
-					| ClassNotFoundException e) {
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				// fall through
 			}
 		}

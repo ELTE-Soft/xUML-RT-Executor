@@ -1,13 +1,13 @@
 package hu.eltesoft.modelexecution.ide.debug.ui;
 
-import hu.eltesoft.modelexecution.ide.debug.LaunchConfigReader;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
+
+import hu.eltesoft.modelexecution.ide.debug.LaunchConfigReader;
 
 public class AnimationController {
 

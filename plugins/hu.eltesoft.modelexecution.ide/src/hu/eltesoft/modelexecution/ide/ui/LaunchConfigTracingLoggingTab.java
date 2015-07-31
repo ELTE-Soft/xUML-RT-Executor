@@ -1,9 +1,5 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -20,12 +16,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
  * of the model.
  */
-public class LaunchConfigTracingLoggingTab extends
-		AbstractLaunchConfigurationTab {
+public class LaunchConfigTracingLoggingTab extends AbstractLaunchConfigurationTab {
 
 	public static final String TAB_ID = "hu.eltesoft.modelexecution.ide.tabs.executableModel.tracingLoggingTab"; //$NON-NLS-1$
 
@@ -57,15 +56,12 @@ public class LaunchConfigTracingLoggingTab extends
 
 	private void createLoggingControl(Composite comp) {
 		Group loggingGroup = new Group(comp, SWT.NONE);
-		loggingGroup
-				.setText(Messages.LaunchConfigurationTracingLoggingTab_logging_group_caption);
-		loggingGroup
-				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		loggingGroup.setText(Messages.LaunchConfigurationTracingLoggingTab_logging_group_caption);
+		loggingGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		loggingGroup.setLayout(new RowLayout());
 
 		loggingEnabled = new Button(loggingGroup, SWT.CHECK);
-		loggingEnabled
-				.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_logging_label);
+		loggingEnabled.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_logging_label);
 		loggingEnabled.addSelectionListener(selectionTabUpdater());
 		loggingGroup.pack();
 	}
@@ -79,7 +75,7 @@ public class LaunchConfigTracingLoggingTab extends
 			}
 		};
 	}
-	
+
 	private SelectionListener selectionTabUpdater() {
 		return new SelectionListener() {
 
@@ -98,7 +94,7 @@ public class LaunchConfigTracingLoggingTab extends
 			}
 		};
 	}
-	
+
 	private void refresh() {
 		replayTraceSelector.setEnabled(replayTrace.getSelection());
 	}
@@ -110,10 +106,8 @@ public class LaunchConfigTracingLoggingTab extends
 		group.setLayout(new GridLayout(1, true));
 
 		tracingEnabled = new Button(group, SWT.CHECK);
-		tracingEnabled
-				.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_tracing_label);
-		tracingEnabled.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
-				false));
+		tracingEnabled.setText(Messages.LaunchConfigurationTracingLoggingTab_enable_tracing_label);
+		tracingEnabled.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		tracingEnabled.addSelectionListener(selectionTabUpdater());
 
 		group.pack();
@@ -126,13 +120,10 @@ public class LaunchConfigTracingLoggingTab extends
 		group.setLayout(new GridLayout(1, false));
 
 		replayTrace = new Button(group, SWT.CHECK);
-		replayTrace
-				.setText(Messages.LaunchConfigurationTracingLoggingTab_trace_replay_label);
+		replayTrace.setText(Messages.LaunchConfigurationTracingLoggingTab_trace_replay_label);
 		replayTrace.addSelectionListener(selectionTabUpdater());
 
-		replayTraceSelector = new LaunchConfigResourceSelector(
-				group,
-				ResourceSelector.ConfigBase.WORKSPACE_BASED,
+		replayTraceSelector = new LaunchConfigResourceSelector(group, ResourceSelector.ConfigBase.WORKSPACE_BASED,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_for_tracefiles,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_button_label,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_dialog_title,
@@ -143,51 +134,40 @@ public class LaunchConfigTracingLoggingTab extends
 
 		group.pack();
 	}
-	
+
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
 				ModelExecutionLaunchConfig.ATTR_LOGGING_DEFAULT);
 		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
 				ModelExecutionLaunchConfig.ATTR_TRACING_DEFAULT);
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			loggingEnabled.setSelection(configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_LOGGING,
+			loggingEnabled.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
 					ModelExecutionLaunchConfig.ATTR_LOGGING_DEFAULT));
-			tracingEnabled.setSelection(configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_TRACING,
+			tracingEnabled.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
 					ModelExecutionLaunchConfig.ATTR_TRACING_DEFAULT));
-			replayTrace.setSelection(configuration.getAttribute(
-					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
+			replayTrace.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
 					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT));
 			replayTraceSelector.initializeFrom(configuration);
 			refresh();
 		} catch (CoreException e) {
 			IdePlugin.logError("Exception while initializing dialog", e); //$NON-NLS-1$
-			MessageDialog
-					.openError(
-							null,
-							Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_title,
-							Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_description);
+			MessageDialog.openError(null, Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_title,
+					Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_description);
 		}
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
-				loggingEnabled.getSelection());
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
-				tracingEnabled.getSelection());
-		configuration.setAttribute(
-				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
-				replayTrace.getSelection());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING, loggingEnabled.getSelection());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING, tracingEnabled.getSelection());
+		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, replayTrace.getSelection());
 		replayTraceSelector.apply(configuration);
 	}
 

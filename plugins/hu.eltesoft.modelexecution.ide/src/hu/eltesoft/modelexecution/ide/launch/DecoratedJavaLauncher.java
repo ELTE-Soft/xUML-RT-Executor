@@ -34,16 +34,14 @@ import com.sun.jdi.VirtualMachine;
 @SuppressWarnings("restriction")
 // VirtualMachine and StandardVMDebugger are not in API. StandardVMDebugger is
 // subclassed to create a debugger that is not registered as a debug target.
-public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
-		ILaunchConfigurationDelegate {
+public class DecoratedJavaLauncher extends JavaLaunchDelegate implements ILaunchConfigurationDelegate {
 
 	private BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator;
 	private BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator;
 	private Function<IDebugTarget, IDebugTarget> debugTargetDecorator;
 	private Supplier<IDebugTarget> debugTargetProvider;
 
-	public DecoratedJavaLauncher(
-			BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
+	public DecoratedJavaLauncher(BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
 			BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator,
 			Supplier<IDebugTarget> debugTargetProvider) {
 		this.processDecorator = processDecorator;
@@ -51,8 +49,7 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 		this.debugTargetProvider = debugTargetProvider;
 	}
 
-	public DecoratedJavaLauncher(
-			BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
+	public DecoratedJavaLauncher(BiFunction<IProcess, ILaunchConfiguration, IProcess> processDecorator,
 			BiFunction<IProcess, VirtualMachine, IProcess> debugOnlyProcessDecorator,
 			Function<IDebugTarget, IDebugTarget> debugTargetDecorator) {
 		this.processDecorator = processDecorator;
@@ -70,12 +67,11 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 		}
 
 		@Override
-		protected IProcess newProcess(ILaunch launch, Process p, String label,
-				Map<String, String> attributes) throws CoreException {
+		protected IProcess newProcess(ILaunch launch, Process p, String label, Map<String, String> attributes)
+				throws CoreException {
 			IProcess process = super.newProcess(launch, p, label, attributes);
 			launch.removeProcess(process);
-			IProcess decoratedProcess = processDecorator.apply(process,
-					launch.getLaunchConfiguration());
+			IProcess decoratedProcess = processDecorator.apply(process, launch.getLaunchConfiguration());
 			launch.addProcess(decoratedProcess);
 			return decoratedProcess;
 		}
@@ -91,16 +87,14 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 		}
 
 		@Override
-		protected IDebugTarget createDebugTarget(VMRunnerConfiguration config,
-				ILaunch launch, int port, IProcess process, VirtualMachine vm) {
+		protected IDebugTarget createDebugTarget(VMRunnerConfiguration config, ILaunch launch, int port,
+				IProcess process, VirtualMachine vm) {
 			launch.removeProcess(process);
-			launch.addProcess(debugOnlyProcessDecorator.apply(
-					processDecorator.apply(process,
-							launch.getLaunchConfiguration()), vm));
+			launch.addProcess(debugOnlyProcessDecorator
+					.apply(processDecorator.apply(process, launch.getLaunchConfiguration()), vm));
 			IDebugTarget target = null;
 			if (debugTargetProvider == null) {
-				IDebugTarget debugTarget = super.createDebugTarget(config,
-						launch, port, process, vm);
+				IDebugTarget debugTarget = super.createDebugTarget(config, launch, port, process, vm);
 				launch.removeDebugTarget(debugTarget);
 				target = debugTargetDecorator.apply(debugTarget);
 			} else {
@@ -113,8 +107,7 @@ public class DecoratedJavaLauncher extends JavaLaunchDelegate implements
 
 	// supplies the decorating VM runner
 	@Override
-	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode)
-			throws CoreException {
+	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode) throws CoreException {
 		IVMInstall vmInstall = getVMInstall(configuration);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			return new DecoratingJavaVMDebugger(vmInstall);
