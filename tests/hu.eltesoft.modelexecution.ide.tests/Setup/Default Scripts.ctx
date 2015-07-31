@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _sXg1IB2BEeWfUbA_Erpteg
 Runtime-Version: 2.0.0.201506120617
-Save-Time: 6/29/15 4:36 AM
+Save-Time: 7/31/15 4:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,11 +37,6 @@ proc "mx-new-xuml-project" [val name] {
 	get-window New | get-button "Next >" | get-property enablement | equals true | verify-true
 
 	get-window New | get-button "Next >" | click
-
-// TODO remove
-// TODO at this point, when the command line tool is run
-// TODO the wizard chooser says, "the selected wizard could not be started"
-//	wait 20000
 
 	get-window -class WizardDialog | get-editbox -after [get-label "Project name:"] | set-text $name
 
@@ -87,7 +82,6 @@ proc "mx-refresh-project" [val project_name] {
 }
 
 
-// TODO isn't working properly
 // Checks whether the expected number of files were generated.
 // It is assumed that upon call, the model-gen-src folder is open in Project Explorer.
 proc "mx-check-generated-file-count" [val expected] {
@@ -95,7 +89,18 @@ proc "mx-check-generated-file-count" [val expected] {
 	let [val actual [get-view Navigator | get-tree | get-item "TestProject/model-gen-src"]] {
 		$actual | get-property "getItems().length" -raw | equals $expected | assert-true [concat "Expected " $expected " files, got " [$actual | get-property "getItems().length" -raw]]
 	}
-
 }
+
+// Selects the xUML-RT Execution Engine.
+proc "mx-select-execution-engine" {
+	get-preferences-menu | click
+	with [get-window Preferences] {
+	    get-tree | select "Papyrus/Moka"
+	    get-button "xUML-RT Execution Engine" | click
+	    get-button Apply | click
+	    get-button OK | click
+	}
+}
+
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

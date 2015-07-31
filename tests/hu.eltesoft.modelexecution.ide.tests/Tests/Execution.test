@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _t24QgB4NEeWDyJhARpwrcA
 Runtime-Version: 2.0.0.201506120617
-Save-Time: 7/29/15 5:09 PM
+Save-Time: 7/31/15 3:55 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -155,14 +155,12 @@ get-view Debug | get-tree
     | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
 
 // Check for breakpoint highlighting
-with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
-    | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
-    | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
-    get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
-    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-true
-}
+get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
+    -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart | get-edit-part 
+    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals 5487098 
+    | verify-true
 
-
+// Go around the first time
 get-button "Resume (F8)" | click
 
 // Check for pause on breakpoint
@@ -171,14 +169,12 @@ get-view Debug | get-tree
     | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
 
 // Check for breakpoint highlighting
-with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
-    | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
-    | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
-    get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
-    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-true
-}
+get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
+    -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart | get-edit-part 
+    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals 5487098 
+    | verify-true
 
-
+// Go to exit the second time
 get-button "Resume (F8)" | click
 
 // Check for termination
@@ -193,5 +189,4 @@ with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part 
     get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-false
 }
 
-    
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
