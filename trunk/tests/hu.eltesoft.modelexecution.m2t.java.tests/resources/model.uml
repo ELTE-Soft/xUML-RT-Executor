@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xUMLRT="http://modelexecution.eltesoft.hu/xumlrt/" xsi:schemaLocation="http://modelexecution.eltesoft.hu/xumlrt/ ../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml#_ZXyf0BU-EeWTWPlQOzBNMQ">
+  <uml:Model xmi:id="_ZW7FsMc1EeSnK7LttAdTLw" name="model">
+    <packagedElement xmi:type="uml:Class" xmi:id="_aeMPwMc1EeSnK7LttAdTLw" name="A">
+      <ownedReception xmi:type="uml:Reception" xmi:id="_WJfJQARSEeW7b7s8CAsnqQ" name="x"/>
+      <ownedReception xmi:type="uml:Reception" xmi:id="_gh8K0ARSEeW7b7s8CAsnqQ" name="y"/>
+      <ownedReception xmi:type="uml:Reception" xmi:id="_g54JsARSEeW7b7s8CAsnqQ" name="z"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_XHXCwBWVEeWYQpLaR7ziYA" name="E" isAbstract="true">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_fUZ8sBWVEeWYQpLaR7ziYA" name="Op1"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_gXRH4BWVEeWYQpLaR7ziYA" name="Op2">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_inRboBWVEeWYQpLaR7ziYA" name="proxy" type="_aeMPwMc1EeSnK7LttAdTLw"/>
+      </ownedOperation>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z7Si8BWVEeWYQpLaR7ziYA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkRWVEeWYQpLaR7ziYA" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YpkhWVEeWYQpLaR7ziYA" key="Version" value="0.0.4"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YpkxWVEeWYQpLaR7ziYA" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YplBWVEeWYQpLaR7ziYA" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YplRWVEeWYQpLaR7ziYA" key="Date" value="2015-06-18"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YplhWVEeWYQpLaR7ziYA" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkBWVEeWYQpLaR7ziYA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml#_ZXyf0BU-EeWTWPlQOzBNMQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml#_HaqtUBDoEeWE3_d6VQejPQ"/>
+    </profileApplication>
+  </uml:Model>
+  <xUMLRT:Callable xmi:id="_alQF8BWVEeWYQpLaR7ziYA" base_Class="_aeMPwMc1EeSnK7LttAdTLw"/>
+  <xUMLRT:ExternalEntity xmi:id="_bLltMBWVEeWYQpLaR7ziYA" base_Class="_XHXCwBWVEeWYQpLaR7ziYA" class="E" type="Singleton"/>
+</xmi:XMI>

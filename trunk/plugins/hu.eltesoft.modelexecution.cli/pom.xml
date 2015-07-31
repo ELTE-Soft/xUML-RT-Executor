@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>hu.eltesoft.modelexecution.cli</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<parent>
+		<groupId>hu.eltesoft.modelexecution</groupId>
+		<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
+		<version>0.5.0-SNAPSHOT</version>
+		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
+	</parent>
+
+	<build>
+		<!-- include localization files -->
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<!-- assemble a standalone command line interface in a single jar -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>cli.xml</descriptor>
+					</descriptors>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<mainClass>hu.eltesoft.modelexecution.cli.ConsoleModelRunner</mainClass>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+					<finalName>xumlrt-executor-cli-${project.version}</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

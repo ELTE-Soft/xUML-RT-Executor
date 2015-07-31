@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+  	<extensionContent id="hueltesoftmodelexecutionexamples-introExtension" style="css/sample.css" name="Model Execution Examples" path="samples/@">
+		<group style-id="content-group" id="hueltesoftmodelexecutionexamples-introLink-group">
+       		<link label="xUML-RT Model Executor Project Homepage" url="http://modelexecution.eltesoft.hu/" id="hueltesoftmodelexecution-visitLink" style-id="content-link">        		
+       			<text>If this is the first time you use Model Executor, it would be a good idea to visit our webpage.</text>
+       		</link>
+       		<link label="Hello World Example" url="http://org.eclipse.ui.intro/runAction?pluginId=hu.eltesoft.modelexecution.examples&amp;amp;class=hu.eltesoft.modelexecution.examples.HelloWorldAction" id="hueltesoftmodelexecutionexamples-introLink" style-id="content-link">
+          		<text>An example model that can be used to try Model Executor</text>
+       		</link>
+       	</group>
+  	</extensionContent>
+</introContent>

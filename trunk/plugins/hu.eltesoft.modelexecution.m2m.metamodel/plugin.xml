@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?><!--
+--><plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/association"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/base"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/behavior"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/callable"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.callable.CallablePackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/classdef"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/external"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/region"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.region.RegionPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated translation -->
+      <package
+            uri="http://www.eltesoft.hu/modelexecution/m2m/metamodel/signal"
+            class="hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage"
+            genModel="model/translation.genmodel"/>
+   </extension>
+</plugin>

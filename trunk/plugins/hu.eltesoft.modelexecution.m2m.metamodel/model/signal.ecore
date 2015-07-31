@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="signal" nsURI="http://www.eltesoft.hu/modelexecution/m2m/metamodel/signal"
+    nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.signal">
+  <eClassifiers xsi:type="ecore:EClass" name="SgSignal" eSuperTypes="base.ecore#//ModelRoot base.ecore#//Named">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//SgAttribute"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SgAttribute" eSuperTypes="base.ecore#//Named base.ecore#//Multiplicity">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass base.ecore#//PrimitiveType"/>
+  </eClassifiers>
+</ecore:EPackage>

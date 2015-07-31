@@ -1,0 +1,584 @@
+package hu.eltesoft.modelexecution.uml.incquery
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+/* Type information from some parameter is missing on purpose. 
+ * Otherwise IncQuery will not report matches that refer to elements of a resource 
+ * that is not loaded into IncQuery.
+ */
+
+// TODO: this file should be splitted up according to the sections below
+// they are inlined only to avoid the following IncQuery maven builder bug:
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=464120
+
+// -- association.eiq ----------------------------------------------------------
+pattern Association(association : Association) {
+	find AssocOrAssocClass(association);
+	neg find AssociationClass(association);
+}
+
+private pattern AssocOrAssocClass(association : Association) {
+	Association(association);
+}
+
+pattern AssociationClass(assocClass : AssociationClass) {
+	AssociationClass(assocClass);
+}
+
+pattern AssociationEnd(association : Association, end : Property) {
+	find ClassOrAssocClass(cls);
+	Association.ownedEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern
+AssociationEndType(association : Association, end : Property, cls : Class) {
+	find AssociationEnd(association, end);
+	Property.type(end, cls);
+}
+
+pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
+	Association.ownedEnd(association, end);
+	Association.ownedEnd(association, otherEnd);
+	end != otherEnd;
+}
+
+// -- behavior.eiq -------------------------------------------------------------
+pattern Behavior(behavior : Behavior) {
+	OpaqueBehavior(behavior);
+}
+
+pattern
+ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
+// operation
+	Operation.method(operation, behavior);
+
+	Class.ownedOperation(containerClass, operation);
+} or {
+// entry
+	State.entry(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClass);
+
+} or {
+// exit
+	State.exit(state, behavior);
+
+	find ContainerClassOfVertex(state, containerClass);
+
+} or {
+// effect
+	Transition.effect(transition, behavior);
+	Transition.container(transition, region);
+
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
+}
+
+pattern
+BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
+	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+	find BehaviorParameter(behavior, parameter, _);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find BehaviorParameterType(behavior, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+	Behavior.ownedParameter(behavior, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find BehaviorReturnType(behavior, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern StaticBehavior(behavior : Behavior, isStatic) {
+	Behavior.specification(behavior, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
+	OpaqueBehavior.body(behavior, alfCode);
+	OpaqueBehavior.language(behavior, langName);
+	find ContainerClassOfBehavior(behavior, containerClass);
+	check(Utils.toLowerCase(langName).equals("alf"));
+}
+
+private pattern
+ContainerClassOfVertex(vertex : Vertex, containerClass : Class) {
+	State.container(vertex, region);
+
+	find ContainerClassOfRegion(region, containerClass); // from region.eiq
+}
+
+// -- classdef.eiq -------------------------------------------------------------
+pattern Cls(cls : Class) {
+	find ClassOrAssocClass(cls);
+	neg find AssociationClass(cls);
+}
+
+pattern ClassOrAssocClass(cls : Class) {
+	Class(cls);
+	neg find IsBehavior(cls);
+	neg find IsStereotype(cls);
+}
+
+private pattern IsBehavior(behavior : Behavior) {
+	Behavior(behavior);
+}
+
+private pattern IsStereotype(stereotype : Stereotype) {
+	Stereotype(stereotype);
+}
+
+pattern Parent(child : Class, parent : Class) {
+	Generalization.general(gen, parent);
+	Generalization.specific(gen, child);
+}
+
+// Ancestors of a class with the number of ancestors of the ancestor to provide ordering of matches.
+pattern Ancestor(descendant : Class, ancestor : Class, countAncestors) {
+	find IsAncestor(descendant, ancestor);
+	countAncestors == count find IsAncestor(ancestor, _);
+}
+
+// Inclusive transitive closure
+pattern AncestorOrSelf(descendant : Class, ancestor : Class, countAncestors) {
+	find Ancestor(descendant, ancestor, countAncestors);
+} or {
+	descendant == ancestor;
+	countAncestors == count find IsAncestor(ancestor, _);
+}
+
+// The ancestor and the immediate parent (they can be the same)
+private pattern
+ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
+	find Parent(descendant, parent);
+	parent == ancestor;
+} or {
+	find Parent(descendant, parent);
+	find IsAncestor(parent, ancestor);
+}
+
+private pattern IsAncestor(descendant : Class, ancestor : Class) {
+	find Parent +(descendant, ancestor);
+}
+
+// construction
+pattern ClassCtorRecord(cls : Class, ancestor : Class, order) {
+	find Ancestor(cls, ancestor, order);
+}
+
+pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
+	find ClassCtorRecord(cls, ancestor, _);
+	find Parent(ancestor, parent);
+}
+
+// state machine
+pattern RegionOfClass(cls : Class, region : Region) {
+	find AncestorOrSelf(cls, regionOwner, _);
+	find OwnedRegion(regionOwner, region);
+	// there is no additional redefiner between the actual class and the owner
+	neg find OwnedRegionBetween(cls, regionOwner);
+}
+
+private pattern OwnedRegionBetween(cls : Class, ancestor : Class) {
+	find AncestorOrSelf(cls, between, _);
+	find Ancestor(between, ancestor, _);
+	find OwnedRegion(between, _);
+}
+
+private pattern OwnedRegion(cls : Class, region : Region) {
+	Class.ownedBehavior(cls, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+// attributes
+
+// The defined and inherited attributes must be treated separately.
+pattern Attribute(cls : Class, attribute : Property, isStatic) {
+	Class.ownedAttribute(cls, attribute);
+	Property.isStatic(attribute, isStatic);
+}
+
+pattern InstanceAttribute(cls : Class, attribute : Property) {
+	find Attribute(cls, attribute, false);
+}
+
+pattern InheritedAttribute(cls : Class, attribute : Property) {
+	find IsAncestor(cls, ancestor);
+	Class.ownedAttribute(ancestor, attribute);
+	Property.isStatic(attribute, false);
+}
+
+pattern
+InheritedAttributeParent(cls : Class, attribute : Property, parent : Class) {
+	find InheritedAttribute(cls, attribute);
+	find ParentAncestor(cls, parent, ancestor);
+	Class.ownedAttribute(ancestor, attribute);
+}
+
+// Both the defined and inherited attributes have types.
+// This prevents duplication of all attribute subpatterns.
+pattern
+AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
+	find Attribute(cls, attribute, _);
+	find AttributeTypeImpl(attribute, type, ordered, unique);
+} or {
+	find InheritedAttribute(cls, attribute);
+	find AttributeTypeImpl(attribute, type, ordered, unique);
+}
+
+private pattern
+AttributeTypeImpl(attribute : Property, type, ordered, unique) {
+	Property.type(attribute, type);
+	Property.isOrdered(attribute, ordered);
+	Property.isUnique(attribute, unique);
+}
+
+pattern
+AttributeLowerBound(cls : Class, attribute : Property, type, lowerBound : ValueSpecification) {
+	find AttributeType(cls, attribute, type, _, _);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern
+AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueSpecification) {
+	find AttributeType(cls, attribute, type, _, _);
+	Property.upperValue(attribute, upperBound);
+}
+
+// operations
+
+// Operations defined in the class and inherited from an ancestor are not separated in the metamodel. 
+// Both will just call the associated behavior.
+pattern Operation(cls : Class, operation : Operation, isStatic) {
+	find OwnedOperation(cls, operation, isStatic);
+} or {
+// inherited operation
+	find IsAncestor(cls, ancestor);
+	find OwnedOperation(ancestor, operation, isStatic);
+}
+
+pattern InstanceOperation(cls : Class, operation : Operation) {
+	find OwnedOperation(cls, operation, false);
+}
+
+private pattern OwnedOperation(cls : Class, operation : Operation, isStatic) {
+	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+}
+
+pattern
+OperationParameter(cls : Class, operation : Operation, parameter : Parameter, direction : ParameterDirectionKind) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, direction);
+	direction != ParameterDirectionKind::^return;
+}
+
+pattern
+OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type, ordered, unique) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type, lowerBound : ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type, upperBound : ValueSpecification) {
+	find OperationParameterType(cls, operation, parameter, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+private pattern
+OperationReturn(cls : Class, operation : Operation, parameter : Parameter) {
+	find Operation(cls, operation, _);
+	Operation.ownedParameter(operation, parameter);
+	Parameter.direction(parameter, ParameterDirectionKind::^return);
+}
+
+pattern
+OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
+	find OperationReturn(cls, operation, parameter);
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+OperationReturnLowerBound(cls : Class, operation : Operation, type, lowerBound : ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound : ValueSpecification) {
+	find OperationReturn(cls, operation, parameter);
+	find OperationReturnType(cls, operation, type, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+pattern Method(cls : Class, operation : Operation, method : Behavior) {
+	find Operation(cls, operation, _);
+	Operation.method(operation, method);
+	neg find OperationOverride(cls, operation, _);
+} or {
+// if the operation is overridden, its method is of the overrider 
+	find Operation(cls, operation, _);
+	find OperationOverride(cls, operation, overrider);
+	Operation.method(overrider, method);
+}
+
+// This will only select consecutive overrides defined in different classes connected by generalization.
+// Only yields overridings that affect the class given, and only gives the last (effective) one.
+pattern
+OperationOverride(cls : Class, overridden : Operation, overrider : Operation) {
+	find Redefinition +(overridden, overrider);
+	find AncestorOrSelf(cls, clsOverrider, _);
+	Class.ownedOperation(clsOverrider, overrider);
+	neg find RedefinitionIn(cls, overrider, _);
+}
+
+private pattern
+RedefinitionIn(cls : Class, overridden : Operation, overrider : Operation) {
+	find AncestorOrSelf(cls, clsOverrider, _);
+	Class.ownedOperation(clsOverrider, overrider);
+	Operation.redefinedOperation(overrider, overridden);
+}
+
+private pattern Redefinition(overridden : Operation, overrider : Operation) {
+	Operation.redefinedOperation(overrider, overridden);
+}
+
+// receptions (defined and inherited)
+pattern Reception(cls : Class, reception : Reception, signal : Signal) {
+	Class.ownedReception(cls, reception);
+	Reception.signal(reception, signal);
+} or {
+	find IsAncestor(cls, ancestor);
+	Class.ownedReception(ancestor, reception);
+	Reception.signal(reception, signal);
+}
+
+pattern
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
+	find Reception(cls, reception, _);
+	Reception.ownedParameter(reception, parameter);
+	Parameter.direction(parameter, direction);
+	direction == ParameterDirectionKind::in;
+	Parameter.type(parameter, type);
+	Parameter.isOrdered(parameter, ordered);
+	Parameter.isUnique(parameter, unique);
+}
+
+pattern
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
+	Parameter.lowerValue(parameter, lowerBound);
+}
+
+pattern
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound : ValueSpecification) {
+	find ReceptionParameter(cls, reception, parameter, _, _, _);
+	Parameter.upperValue(parameter, upperBound);
+}
+
+// class associations
+pattern ClassAssociation(cls : Class, end : Property) {
+	find AssociationEndType(_, end, cls);
+}
+
+pattern InheritedAssociation(cls : Class, end : Property) {
+	find InheritedAssociationImpl(cls, _, end);
+}
+
+pattern
+InheritedAssociationParent(cls : Class, end : Property, parent : Class) {
+	find InheritedAssociationImpl(cls, ancestor, end);
+	find ParentAncestor(cls, parent, ancestor);
+}
+
+private pattern
+InheritedAssociationImpl(cls : Class, owner : Class, end : Property) {
+	find IsAncestor(cls, owner);
+	find AssociationEndType(_, end, owner);
+}
+
+pattern
+ClassAssociationType(cls : Class, end : Property, type : Association, ordered, unique) {
+	find AncestorOrSelf(cls, assocEnd, _);
+	find AssociationEndType(type, end, assocEnd);
+	Property.isOrdered(end, ordered);
+	Property.isUnique(end, unique);
+}
+
+pattern
+ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound : ValueSpecification) {
+	find ClassAssociationType(cls, end, type, _, _);
+	find AssociationOtherEnd(end, otherEnd);
+	Property.lowerValue(otherEnd, lowerBound);
+}
+
+pattern
+ClassAssociationUpperBound(cls : Class, end : Property, type : Association, upperBound : ValueSpecification) {
+	find ClassAssociationType(cls, end, type, _, _);
+	find AssociationOtherEnd(end, otherEnd);
+	Property.upperValue(otherEnd, upperBound);
+}
+
+// -- event.eiq ----------------------------------------------------------------
+pattern Event(event : SignalEvent) {
+	SignalEvent(event); // TODO support different events in the future 
+}
+
+pattern SignalEvent(event : SignalEvent, signal : Signal) {
+	SignalEvent.signal(event, signal);
+}
+
+// -- external.eiq -------------------------------------------------------------
+pattern NamedCls(cls : Class, name) {
+	find Cls(cls);
+	Class.name(cls, name);
+}
+
+pattern NamedOperation(cls : Class, operation : Operation, name) {
+	find Operation(cls, operation, _);
+	Operation.name(operation, name);
+}
+
+pattern
+ExternalOperationParameter(cls : Class, operation : Operation, parameter : Parameter, typeName) {
+	find OperationParameter(cls, operation, parameter, _);
+	Parameter.type(parameter, type);
+	Type.name(type, typeName);
+}
+
+pattern NamedReception(cls : Class, reception : Reception, name) {
+	find Reception(cls, reception, _);
+	Reception.name(reception, name);
+}
+
+// -- region.eiq ---------------------------------------------------------------
+pattern Region(region : Region) {
+	Region(region);
+}
+
+pattern ContainerClassOfRegion(region : Region, containerClass : Class) {
+	Class.ownedBehavior(containerClass, stateMachine);
+	StateMachine.region(stateMachine, region);
+}
+
+pattern
+Initials(region : Region, initPseudostate : Pseudostate, initTransition : Transition, firstState : State) {
+	Pseudostate.container(initPseudostate, region);
+	Pseudostate.kind(initPseudostate, ::initial);
+
+	Transition.source(initTransition, initPseudostate);
+	Transition.target(initTransition, firstState);
+}
+
+pattern State(region : Region, state : State) {
+	State.container(state, region);
+}
+
+pattern FinalState(region : Region, state : State) {
+	find State(region, state);
+	FinalState(state);
+}
+
+pattern Entry(region : Region, state : State, entry : Behavior) {
+	State.container(state, region);
+	State.entry(state, entry);
+}
+
+pattern Exit(region : Region, state : State, exit : Behavior) {
+	State.container(state, region);
+	State.exit(state, exit);
+}
+
+pattern
+Transition(region : Region, source : State, transition : Transition, event : Event, signal : Signal, target : State) {
+	find TransitionBase(region, source, transition, event, target);
+	SignalEvent.signal(event, signal);
+}
+
+private pattern
+TransitionBase(region : Region, source : State, transition : Transition, event : Event, target : State) {
+	Transition.container(transition, region);
+	Transition.source(transition, source);
+	Transition.target(transition, target);
+	Transition.trigger(transition, trigger);
+	Trigger.event(trigger, event);
+}
+
+pattern
+TransitionEffect(region : Region, state : State, transition : Transition, effect : Behavior) {
+	Transition.source(transition, state);
+	Transition.container(transition, region);
+	Transition.effect(transition, effect);
+}
+
+// -- signal.eiq ---------------------------------------------------------------
+pattern Signal(signal : Signal) {
+	Signal(signal);
+}
+
+pattern
+SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
+	find Signal(signal);
+	Signal.ownedAttribute(signal, attribute);
+	Property.type(attribute, type);
+	Property.isOrdered(attribute, ordered);
+	Property.isUnique(attribute, unique);
+}
+
+pattern
+SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound : ValueSpecification) {
+	find SignalAttribute(signal, attribute, _, _, _);
+	Property.lowerValue(attribute, lowerBound);
+}
+
+pattern
+SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
+	find SignalAttribute(signal, attribute, _, _, _);
+	Property.upperValue(attribute, upperBound);
+}
+

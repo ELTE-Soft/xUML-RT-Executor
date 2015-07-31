@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.ui.newWizards">
+     <category
+           id="hu.eltesoft.modelexecution.examples.category"
+           name="%examples.category.name"
+           parentCategory="org.eclipse.ui.Examples">
+     </category>
+     <wizard
+           category="org.eclipse.ui.Examples/hu.eltesoft.modelexecution.examples.category"
+           class="hu.eltesoft.modelexecution.examples.StateMachineExampleWizard"
+           hasPages="true"
+           icon="resources/project-icon.gif"
+           id="hu.eltesoft.modelexecution.examples.helloworld"
+           name="%helloworld.wizard.name"
+           project="true">
+     </wizard>
+  </extension>
+  <extension
+        point="org.eclipse.ui.intro.configExtension">
+     <configExtension
+           configId="org.eclipse.ui.intro.universalConfig"
+           content="intro/sample.xml">
+     </configExtension>
+  </extension>
+</plugin>

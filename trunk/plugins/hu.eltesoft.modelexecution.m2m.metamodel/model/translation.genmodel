@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.eltesoft.modelexecution.m2m.metamodel/src-gen"
+    modelPluginID="hu.eltesoft.modelexecution.m2m.metamodel" modelName="Translation metamodels"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>association.ecore</foreignModel>
+  <foreignModel>base.ecore</foreignModel>
+  <foreignModel>behavior.ecore</foreignModel>
+  <foreignModel>callable.ecore</foreignModel>
+  <foreignModel>classdef.ecore</foreignModel>
+  <foreignModel>event.ecore</foreignModel>
+  <foreignModel>external.ecore</foreignModel>
+  <foreignModel>region.ecore</foreignModel>
+  <foreignModel>signal.ecore</foreignModel>
+  <genPackages prefix="Association" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="association.ecore#/">
+    <genClasses ecoreClass="association.ecore#//AsAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference association.ecore#//AsAssociation/ends"/>
+    </genClasses>
+    <genClasses ecoreClass="association.ecore#//AsAssociationEnd">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference association.ecore#//AsAssociationEnd/type"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Base" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="base.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="base.ecore#//Direction">
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//Direction/in"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//Direction/out"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//Direction/inout"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="base.ecore#//PrimitiveTypes">
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Integer"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Boolean"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/String"/>
+      <genEnumLiterals ecoreEnumLiteral="base.ecore#//PrimitiveTypes/Real"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="base.ecore#//NamedReference"/>
+    <genDataTypes ecoreDataType="base.ecore#//Reference"/>
+    <genClasses ecoreClass="base.ecore#//TranslationObject"/>
+    <genClasses image="false" ecoreClass="base.ecore#//ModelRoot"/>
+    <genClasses image="false" ecoreClass="base.ecore#//Named">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Named/reference"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="base.ecore#//Referenced">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Referenced/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//Typed">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//Typed/type"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//Type">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference base.ecore#//Type/baseType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="base.ecore#//ScalarType"/>
+    <genClasses ecoreClass="base.ecore#//PrimitiveType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//PrimitiveType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//ReferencedType"/>
+    <genClasses ecoreClass="base.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Parameter/direction"/>
+    </genClasses>
+    <genClasses ecoreClass="base.ecore#//Multiplicity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/isOrdered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute base.ecore#//Multiplicity/isUnique"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Behavior" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="behavior.ecore#/">
+    <genDataTypes ecoreDataType="behavior.ecore#//AlfAnalyzerResult"/>
+    <genClasses ecoreClass="behavior.ecore#//BhBehavior">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/containerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/alfResult"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute behavior.ecore#//BhBehavior/isStatic"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference behavior.ecore#//BhBehavior/returnType"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Callable" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="callable.ecore#/">
+    <genClasses ecoreClass="callable.ecore#//CaCallable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute callable.ecore#//CaCallable/receptions"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Classdef" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="classdef.ecore#/">
+    <genClasses ecoreClass="classdef.ecore#//ClClass">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute classdef.ecore#//ClClass/region"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/operations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/receptions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/attributes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClClass/associations"/>
+    </genClasses>
+    <genClasses ecoreClass="classdef.ecore#//ClOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClOperation/method"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClOperation/returnType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClOperation/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClOperation/isStatic"/>
+    </genClasses>
+    <genClasses ecoreClass="classdef.ecore#//ClReception">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute classdef.ecore#//ClReception/signal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClReception/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="classdef.ecore#//ClAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute classdef.ecore#//ClAttribute/isStatic"/>
+    </genClasses>
+    <genClasses ecoreClass="classdef.ecore#//ClAssociation"/>
+    <genClasses ecoreClass="classdef.ecore#//ClReceptionParameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference classdef.ecore#//ClReceptionParameter/type"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="External" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="external.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="external.ecore#//ExEntityType">
+      <genEnumLiterals ecoreEnumLiteral="external.ecore#//ExEntityType/Stateless"/>
+      <genEnumLiterals ecoreEnumLiteral="external.ecore#//ExEntityType/Singleton"/>
+    </genEnums>
+    <genClasses ecoreClass="external.ecore#//ExExternalEntity">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference external.ecore#//ExExternalEntity/operations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExExternalEntity/implementationClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExExternalEntity/type"/>
+    </genClasses>
+    <genClasses ecoreClass="external.ecore#//ExOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute external.ecore#//ExOperation/proxyClass"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Region" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="region.ecore#/">
+    <genClasses ecoreClass="region.ecore#//RgRegion">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute region.ecore#//RgRegion/containerClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/initialPseudostate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgRegion/states"/>
+    </genClasses>
+    <genClasses ecoreClass="region.ecore#//RgInitialPseudostate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgInitialPseudostate/initialTransition"/>
+    </genClasses>
+    <genClasses ecoreClass="region.ecore#//RgState">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute region.ecore#//RgState/entry"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute region.ecore#//RgState/exit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgState/transitions"/>
+    </genClasses>
+    <genClasses ecoreClass="region.ecore#//RgTransition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute region.ecore#//RgTransition/message"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute region.ecore#//RgTransition/effect"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference region.ecore#//RgTransition/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute region.ecore#//RgTransition/event"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Signal" basePackage="hu.eltesoft.modelexecution.m2m.metamodel"
+      disposableProviderFactory="true" ecorePackage="signal.ecore#/">
+    <genClasses ecoreClass="signal.ecore#//SgSignal">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgSignal/attributes"/>
+    </genClasses>
+    <genClasses ecoreClass="signal.ecore#//SgAttribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference signal.ecore#//SgAttribute/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

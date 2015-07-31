@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_hpIuMKuDEeSBF899A__G5w" name="model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_HteA8KuEEeSBF899A__G5w" name="Machine">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_bS24wO8HEeSZ_rbimP1D4w" name="hasBeenSwithedOn">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_hzR40O8HEeSZ_rbimP1D4w" name="id">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_AYr74O8IEeSZ_rbimP1D4w" name="name">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_JbtbkO8IEeSZ_rbimP1D4w" name="size">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+    </ownedAttribute>
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_zim0sKuEEeSBF899A__G5w" name="MachineBehavior">
+      <region xmi:type="uml:Region" xmi:id="_8AaugKuEEeSBF899A__G5w" name="Region1">
+        <transition xmi:type="uml:Transition" xmi:id="_Qz9O4KuFEeSBF899A__G5w" name="TInitialize" source="__NmcMKuEEeSBF899A__G5w" target="_CB0QQKuFEeSBF899A__G5w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_vVd2AO8IEeSZ_rbimP1D4w" name="InitBehavior">
+            <language>Alf</language>
+            <body>this.name = &quot;DemoMachine&quot;;&#xD;
+this.id = 42;&#xD;
+this.size = 3.14;&#xD;
+this.hasBeenSwitchedOn = false;&#xD;
+</body>
+          </effect>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_VWLc4KuFEeSBF899A__G5w" name="TSwitchOn" source="_CB0QQKuFEeSBF899A__G5w" target="_DnvsQKuFEeSBF899A__G5w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_95vJAO8OEeSZ_rbimP1D4w" name="SwitchOnBehavior">
+            <language>Alf</language>
+            <body></body>
+          </effect>
+          <trigger xmi:type="uml:Trigger" xmi:id="_sjliMKuGEeSBF899A__G5w" name="TriggerSwitchOn" event="_ms-7MKuGEeSBF899A__G5w"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_rI_B4KuFEeSBF899A__G5w" name="TSwitchOff" source="_DnvsQKuFEeSBF899A__G5w" target="_CB0QQKuFEeSBF899A__G5w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_oD1XQO8PEeSZ_rbimP1D4w" name="SwitchOffBehavior">
+            <language>Alf</language>
+            <body></body>
+          </effect>
+          <trigger xmi:type="uml:Trigger" xmi:id="_Kg8t0KuHEeSBF899A__G5w" name="SwitchOffTrigger" event="_KIgYoKuHEeSBF899A__G5w"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_vpKogKuFEeSBF899A__G5w" name="THammerHit2" source="_DnvsQKuFEeSBF899A__G5w" target="_M8-9UKuFEeSBF899A__G5w">
+          <trigger xmi:type="uml:Trigger" xmi:id="_W_jjkKuHEeSBF899A__G5w" name="HammerHitTrigger2" event="_WL0ZgKuHEeSBF899A__G5w"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_x9whUKuFEeSBF899A__G5w" name="THammerHit1" source="_CB0QQKuFEeSBF899A__G5w" target="_M8-9UKuFEeSBF899A__G5w">
+          <trigger xmi:type="uml:Trigger" xmi:id="_i-R_YKuHEeSBF899A__G5w" name="HammerHitTrigger1" event="_WL0ZgKuHEeSBF899A__G5w"/>
+        </transition>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="__NmcMKuEEeSBF899A__G5w" name="Initial"/>
+        <subvertex xmi:type="uml:State" xmi:id="_CB0QQKuFEeSBF899A__G5w" name="Off"/>
+        <subvertex xmi:type="uml:State" xmi:id="_DnvsQKuFEeSBF899A__G5w" name="On"/>
+        <subvertex xmi:type="uml:FinalState" xmi:id="_M8-9UKuFEeSBF899A__G5w" name="Broken"/>
+      </region>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Lrt_MKuEEeSBF899A__G5w" name="feed" method="_a6k_8KuNEeSBF899A__G5w"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_AHQyoKuGEeSBF899A__G5w" name="SwitchOn"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_SnOt4KuGEeSBF899A__G5w" name="SwitchOff"/>
+    <nestedClassifier xmi:type="uml:Signal" xmi:id="_VvKvMKuGEeSBF899A__G5w" name="HammerHit"/>
+    <nestedClassifier xmi:type="uml:OpaqueBehavior" xmi:id="_a6k_8KuNEeSBF899A__G5w" name="FeedBehavior" specification="_Lrt_MKuEEeSBF899A__G5w">
+      <language>Alf</language>
+      <body>// The second switch on and the second switch off signal are ignored.&#xD;
+this.SwitchOnReception();&#xD;&#xD;
+this.SwitchOnReception();&#xD;&#xD;
+this.SwitchOffReception();&#xD;&#xD;
+this.SwitchOffReception();&#xD;&#xD;
+this.HammerHitReception();</body>
+    </nestedClassifier>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_G8JD8K3wEeS9yN-by9sk6Q" name="SwitchOnReception" signal="_AHQyoKuGEeSBF899A__G5w"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_IUO4QK3wEeS9yN-by9sk6Q" name="SwitchOffReception" signal="_SnOt4KuGEeSBF899A__G5w"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_JMpG8K3wEeS9yN-by9sk6Q" name="HammerHitReception" signal="_VvKvMKuGEeSBF899A__G5w"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_ms-7MKuGEeSBF899A__G5w" name="SwitchOnEvent" signal="_AHQyoKuGEeSBF899A__G5w"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_KIgYoKuHEeSBF899A__G5w" name="SwitchOffEvent" signal="_SnOt4KuGEeSBF899A__G5w"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_WL0ZgKuHEeSBF899A__G5w" name="HammerHitEvent" signal="_VvKvMKuGEeSBF899A__G5w"/>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Es-O8KuFEeSBF899A__G5w">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EtiPoKuFEeSBF899A__G5w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_sYse0YZLEeKyw49uR6nx3g"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>
