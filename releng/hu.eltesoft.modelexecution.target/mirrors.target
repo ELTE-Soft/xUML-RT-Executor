@@ -21,8 +21,6 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.json" version="20141113.0.0"/>
-<unit id="com.google.jimfs" version="1.0.0"/>
-<unit id="com.google.guava" version="16.0.1"/>
 <repository location="http://mextest.inf.elte.hu/updates/thirdparty"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
