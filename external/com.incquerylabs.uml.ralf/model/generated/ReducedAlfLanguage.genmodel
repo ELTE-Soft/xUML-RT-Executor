@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/com.incquerylabs.uml.ralf/src-gen" editDirectory="/com.incquerylabs.uml.ralf.edit/src"
+    editorDirectory="/com.incquerylabs.uml.ralf.editor/src" modelPluginID="com.incquerylabs.uml.ralf"
+    forceOverwrite="true" modelName="ReducedAlfLanguage" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="com.incquerylabs.uml.ralf.edit"
+    editorPluginID="com.incquerylabs.uml.ralf.editor" runtimeVersion="2.11" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.eclipse.uml2.uml/model/UML.genmodel#//uml">
+  <genPackages prefix="ReducedAlfLanguage" basePackage="com.incquerylabs.uml.ralf"
+      disposableProviderFactory="true" fileExtensions="ralf" ecorePackage="ReducedAlfLanguage.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//LinkOperation">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//LinkOperation/link"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//LinkOperation/unlink"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//CollectionType">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//CollectionType/set"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//CollectionType/bag"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//CollectionType/sequence"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//AffixOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AffixOperator/increment"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AffixOperator/decrement"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//NumericUnaryOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//NumericUnaryOperator/plus"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//NumericUnaryOperator/minus"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//ShiftOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//ShiftOperator/right"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//ShiftOperator/left"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//ShiftOperator/triple"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//RelationalOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//RelationalOperator/greaterThan"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//RelationalOperator/lesserThan"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//RelationalOperator/greaterOrEquals"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//RelationalOperator/lesserOrEquals"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//ClassificationOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//ClassificationOperator/instanceof"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//ClassificationOperator/hastype"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//EqualityOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//EqualityOperator/equals"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//EqualityOperator/notEquals"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ReducedAlfLanguage.ecore#//AssignmentOperator">
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/assign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/incrementAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/decrementAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/multiplyAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/divisionAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/moduloAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/andAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/orAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/xorAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/leftShiftAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/rightShiftAssign"/>
+      <genEnumLiterals ecoreEnumLiteral="ReducedAlfLanguage.ecore#//AssignmentOperator/tripleShiftAssign"/>
+    </genEnums>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Statements">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//Statements/statement"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Expression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//LiteralExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//BooleanLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NaturalLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//RealLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//UnboundedLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//StringLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NameExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NameExpression/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//PropertyAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//PropertyAccessExpression/context"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//PropertyAccessExpression/property"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Tuple"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ExpressionList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ExpressionList/expressions"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NamedTuple">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NamedTuple/expressions"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NamedExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//NamedExpression/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NamedExpression/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SuperInvocationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SuperInvocationExpression/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SuperInvocationExpression/tuple"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LinkOperationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LinkOperationExpression/association"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//LinkOperationExpression/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LinkOperationExpression/tuple"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ClassExtentExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassExtentExpression/class"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NullExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//CollectionLiteralExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//TypeDeclaration">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//TypeDeclaration/type"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//BooleanUnaryExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//BooleanUnaryExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//BooleanUnaryExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//BitStringUnaryExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//BitStringUnaryExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//BitStringUnaryExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NumericUnaryExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//NumericUnaryExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NumericUnaryExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//IsolationExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//IsolationExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//IsolationExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//CastExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//CastExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//CastExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//AssignmentExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//AssignmentExpression/leftHandSide"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//AssignmentExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//AssignmentExpression/rightHandSide"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LeftHandSide"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NameLeftHandSide">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NameLeftHandSide/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NameLeftHandSide/index"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//FeatureLeftHandSide">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//FeatureLeftHandSide/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Statement"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SimpleStatement"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Block">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//Block/statement"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//BlockStatement"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//EmptyStatement"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LocalNameDeclarationStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LocalNameDeclarationStatement/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LocalNameDeclarationStatement/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//InstanceCreationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//InstanceCreationExpression/instance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//InstanceCreationExpression/tuple"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ExpressionStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ExpressionStatement/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//IfStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//IfStatement/nonFinalClauses"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//IfStatement/finalClause"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ConcurrentClauses">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConcurrentClauses/clause"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//NonFinalClause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NonFinalClause/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//NonFinalClause/body"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SwitchStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SwitchStatement/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SwitchStatement/nonDefaultClause"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SwitchStatement/defaultClause"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SwitchClause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SwitchClause/case"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SwitchClause/block"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//WhileStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//WhileStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//WhileStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//DoStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//DoStatement/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//DoStatement/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ForStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForStatement/initialization"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForStatement/update"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ForEachStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForEachStatement/variableDefinition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ForEachStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//Variable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//Variable/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//Variable/hasMultiplicity"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//BreakStatement"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ReturnStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ReturnStatement/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ClassifyStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassifyStatement/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassifyStatement/fromList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassifyStatement/toList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ClassifyStatement/isReclassifyAll"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//QualifiedNameList">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//QualifiedNameList/name"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SendSignalStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SendSignalStatement/signal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SendSignalStatement/target"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//FeatureInvocationExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//FeatureInvocationExpression/context"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//FeatureInvocationExpression/isStatic"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//FeatureInvocationExpression/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//FeatureInvocationExpression/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//FeatureInvocationExpression/tuple"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//AssociationAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//AssociationAccessExpression/context"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//AssociationAccessExpression/association"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//SequenceAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SequenceAccessExpression/primary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//SequenceAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ThisExpression"/>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ElementCollectionExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ElementCollectionExpression/collectionType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ElementCollectionExpression/typeDeclaration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ElementCollectionExpression/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//PrefixExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//PrefixExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//PrefixExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//PostfixExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//PostfixExpression/operand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//PostfixExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ArithmeticExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ArithmeticExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ArithmeticExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ArithmeticExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ShiftExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ShiftExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ShiftExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ShiftExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//RelationalExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//RelationalExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//RelationalExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//RelationalExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ClassificationExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassificationExpression/operand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ClassificationExpression/operator"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ClassificationExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//EqualityExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//EqualityExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//EqualityExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//EqualityExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LogicalExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LogicalExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//LogicalExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LogicalExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ConditionalLogicalExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConditionalLogicalExpression/operand1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReducedAlfLanguage.ecore#//ConditionalLogicalExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConditionalLogicalExpression/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//ConditionalTestExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConditionalTestExpression/operand1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConditionalTestExpression/operand2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//ConditionalTestExpression/operand3"/>
+    </genClasses>
+    <genClasses ecoreClass="ReducedAlfLanguage.ecore#//LoopVariable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReducedAlfLanguage.ecore#//LoopVariable/expression"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

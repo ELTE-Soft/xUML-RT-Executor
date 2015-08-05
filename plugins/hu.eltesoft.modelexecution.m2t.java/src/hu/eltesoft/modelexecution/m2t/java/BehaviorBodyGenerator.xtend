@@ -1,24 +1,16 @@
 package hu.eltesoft.modelexecution.m2t.java
 
-import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.SendSignalStatement
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
-import hu.eltesoft.modelexecution.uml.alf.ExternalEntityInvocation
-import hu.eltesoft.modelexecution.uml.alf.ModelReferences
-import hu.eltesoft.modelexecution.uml.alf.ReceptionInvocation
-import org.eclipse.papyrus.uml.alf.BehaviorInvocationExpression
-import org.eclipse.papyrus.uml.alf.Block
-import org.eclipse.papyrus.uml.alf.BlockStatement
-import org.eclipse.papyrus.uml.alf.ExpressionStatement
-import org.eclipse.papyrus.uml.alf.FeatureInvocationExpression
-import org.eclipse.papyrus.uml.alf.InvocationExpression
-import org.eclipse.papyrus.uml.alf.NameBinding
-import org.eclipse.papyrus.uml.alf.QualifiedName
-import org.eclipse.papyrus.uml.alf.ThisExpression
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 
 /**
- * Generates an operation body written in Alf to Java code by implementing an
+ * Generates an operation body written in rAlf to Java code by implementing an
  * AST visitor.
  */
 class BehaviorBodyGenerator {
@@ -26,75 +18,91 @@ class BehaviorBodyGenerator {
 	public static val CONTEXT_NAME = "context"
 
 	var SmapStringConcatenation builder
-	var ModelReferences references
 
 	/**
 	 * Compile the specified operation body code to Java source code. The output
 	 * code will be returned along with its source mapping information.
 	 */
-	def SourceMappedText generate(AlfAnalyzerResult result) {
-		references = result.references
+	def SourceMappedText generate(ParsingResults results) {
 		builder = new SmapStringConcatenation(Languages.ALF)
-		visit(result.astRoot)
+		if (results.validationOK) {
+			visit(results.model)
+		}
 		return builder.toSourceMappedText
 	}
 
-	private def dispatch void visit(Block block) {
-		for (annotated : block.statement) {
-			visit(annotated.statement)
+	private def dispatch void visit(Statements statements) {
+		for (statement : statements.statement) {
+			visit(statement)
 			builder.append("\n")
 		}
 	}
 
-	private def dispatch void visit(BlockStatement blockStmt) {
-		visit(blockStmt.block);
-	}
-
-	private def dispatch void visit(ExpressionStatement stmt) {
-		visit(stmt.expression)
-		builder.append(";")
-	}
-
-	/**
-	 * Handle feature invocation on an explicit this expression.
-	 */
-	private def dispatch void visit(FeatureInvocationExpression invocation) {
-		builder.append(toJavaCode(invocation))
-	}
-
-	/**
-	 * Handle behavior invocation on an implicit this expression.
-	 */
-	private def dispatch void visit(BehaviorInvocationExpression invocation) {
-		builder.append(toJavaCode(invocation))
+	private def dispatch void visit(SendSignalStatement send) {
+		visit(send.target)
+		builder.append(".send(")
+		visit(send.signal)
+		builder.append(");")
 	}
 
 	private def dispatch void visit(ThisExpression expr) {
 		builder.append(CONTEXT_NAME)
 	}
 
-	private def dispatch CharSequence toJavaCode(NameBinding binding) {
-		'''«binding.name»'''
+	private def dispatch void visit(InstanceCreationExpression expr) {
+		builder.append("new")
 	}
 
-	private def dispatch CharSequence toJavaCode(QualifiedName qname) {
-		'''«FOR binding : qname.nameBinding SEPARATOR '.'»«toJavaCode(binding)»«ENDFOR»'''
+	private def dispatch void visit(ExpressionList list) {
+		builder.append("(")
+		val exprs = list.expressions
+		val last = exprs.length - 1
+		for (i : 0 .. last - 1) {
+			visit(exprs.get(i))
+			builder.append(",")
+		}
+		visit(exprs.get(last))
+		builder.append(")")
 	}
 
-	private def dispatch CharSequence toJavaCode(InvocationExpression invocation) {
-		toJavaCode(references.resolve(invocation))
-	}
-
-	private def dispatch CharSequence toJavaCode(ReceptionInvocation invocation) {
-		val namedReference = NamedReference.fromUnnamed(invocation.reference)
-		val methodName = namedReference.identifier
-		'''«CONTEXT_NAME».«methodName»()'''
-	}
-
-	private def dispatch CharSequence toJavaCode(ExternalEntityInvocation invocation) {
-		val proxyName = invocation.proxyName
-		'''
-			«CONTEXT_NAME».getRuntime().getExternalEntity(«invocation.entityName».class)
-				.«invocation.methodName»(«IF null != proxyName»new «proxyName»(«CONTEXT_NAME»)«ENDIF»)'''
-	}
+/* 
+ * 	/**
+ * Handle feature invocation on an explicit this expression.
+ * 
+ * 	private def dispatch void visit(FeatureInvocationExpression invocation) {
+ * 		builder.append(toJavaCode(invocation))
+ * 	}
+ * 
+ * 	/**
+ * Handle behavior invocation on an implicit this expression.
+ * 
+ * 	private def dispatch void visit(BehaviorInvocationExpression invocation) {
+ * 		builder.append(toJavaCode(invocation))
+ * 	}
+ * 
+ * 	private def dispatch CharSequence toJavaCode(NameBinding binding) {
+ * 		'''«binding.name»'''
+ * 	}
+ * 
+ * 	private def dispatch CharSequence toJavaCode(QualifiedName qname) {
+ * 		'''«FOR binding : qname.nameBinding SEPARATOR '.'»«toJavaCode(binding)»«ENDFOR»'''
+ * 	}
+ * 
+ * 	private def dispatch CharSequence toJavaCode(InvocationExpression invocation) {
+ * 		toJavaCode(references.resolve(invocation))
+ * 	}
+ * 
+ * 	private def dispatch CharSequence toJavaCode(ReceptionInvocation invocation) {
+ * 		val namedReference = NamedReference.fromUnnamed(invocation.reference)
+ * 		val methodName = namedReference.identifier
+ * 		'''«CONTEXT_NAME».«methodName»()'''
+ * 	}
+ * 
+ * 	private def dispatch CharSequence toJavaCode(ExternalEntityInvocation invocation) {
+ * 		val proxyName = invocation.proxyName
+ * 		'''
+ * 		«CONTEXT_NAME».getRuntime().getExternalEntity(«invocation.entityName».class)
+ * 			.«invocation.methodName»(«IF null != proxyName»new «proxyName»(«CONTEXT_NAME»)«ENDIF»)'''
+ * 	}
+ */
 }

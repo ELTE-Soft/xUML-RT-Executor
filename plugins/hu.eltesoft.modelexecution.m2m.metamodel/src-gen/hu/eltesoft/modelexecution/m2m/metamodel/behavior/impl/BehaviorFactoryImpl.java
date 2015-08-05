@@ -2,9 +2,9 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
-import hu.eltesoft.modelexecution.m2m.metamodel.behavior.*;
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
 
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
+import hu.eltesoft.modelexecution.m2m.metamodel.behavior.*;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -73,8 +73,8 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case BehaviorPackage.ALF_ANALYZER_RESULT:
-				return createAlfAnalyzerResultFromString(eDataType, initialValue);
+			case BehaviorPackage.PARSING_RESULTS:
+				return createParsingResultsFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -88,8 +88,8 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case BehaviorPackage.ALF_ANALYZER_RESULT:
-				return convertAlfAnalyzerResultToString(eDataType, instanceValue);
+			case BehaviorPackage.PARSING_RESULTS:
+				return convertParsingResultsToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -110,8 +110,8 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AlfAnalyzerResult createAlfAnalyzerResultFromString(EDataType eDataType, String initialValue) {
-		return (AlfAnalyzerResult)super.createFromString(eDataType, initialValue);
+	public ParsingResults createParsingResultsFromString(EDataType eDataType, String initialValue) {
+		return (ParsingResults)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class BehaviorFactoryImpl extends EFactoryImpl implements BehaviorFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertAlfAnalyzerResultToString(EDataType eDataType, Object instanceValue) {
+	public String convertParsingResultsToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

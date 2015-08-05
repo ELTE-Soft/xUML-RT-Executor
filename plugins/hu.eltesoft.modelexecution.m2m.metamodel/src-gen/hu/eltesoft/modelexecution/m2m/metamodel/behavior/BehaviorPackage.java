@@ -88,13 +88,13 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR__CONTAINER_CLASS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Alf Result</b></em>' attribute.
+	 * The feature id for the '<em><b>Parsing Results</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR__ALF_RESULT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int BH_BEHAVIOR__PARSING_RESULTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
@@ -142,14 +142,14 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR_OPERATION_COUNT = BasePackage.MODEL_ROOT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '<em>Alf Analyzer Result</em>' data type.
+	 * The meta object id for the '<em>Parsing Results</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getAlfAnalyzerResult()
+	 * @see com.incquerylabs.uml.ralf.api.impl.ParsingResults
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getParsingResults()
 	 * @generated
 	 */
-	int ALF_ANALYZER_RESULT = 1;
+	int PARSING_RESULTS = 1;
 
 
 	/**
@@ -174,15 +174,15 @@ public interface BehaviorPackage extends EPackage {
 	EAttribute getBhBehavior_ContainerClass();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}'.
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParsingResults <em>Parsing Results</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Alf Result</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult()
+	 * @return the meta object for the attribute '<em>Parsing Results</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParsingResults()
 	 * @see #getBhBehavior()
 	 * @generated
 	 */
-	EAttribute getBhBehavior_AlfResult();
+	EAttribute getBhBehavior_ParsingResults();
 
 	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParameters <em>Parameters</em>}'.
@@ -218,15 +218,15 @@ public interface BehaviorPackage extends EPackage {
 	EReference getBhBehavior_ReturnType();
 
 	/**
-	 * Returns the meta object for data type '{@link hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult <em>Alf Analyzer Result</em>}'.
+	 * Returns the meta object for data type '{@link com.incquerylabs.uml.ralf.api.impl.ParsingResults <em>Parsing Results</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Alf Analyzer Result</em>'.
-	 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
-	 * @model instanceClass="hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult"
+	 * @return the meta object for data type '<em>Parsing Results</em>'.
+	 * @see com.incquerylabs.uml.ralf.api.impl.ParsingResults
+	 * @model instanceClass="com.incquerylabs.uml.ralf.api.impl.ParsingResults"
 	 * @generated
 	 */
-	EDataType getAlfAnalyzerResult();
+	EDataType getParsingResults();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -270,12 +270,12 @@ public interface BehaviorPackage extends EPackage {
 		EAttribute BH_BEHAVIOR__CONTAINER_CLASS = eINSTANCE.getBhBehavior_ContainerClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Alf Result</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Parsing Results</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BH_BEHAVIOR__ALF_RESULT = eINSTANCE.getBhBehavior_AlfResult();
+		EAttribute BH_BEHAVIOR__PARSING_RESULTS = eINSTANCE.getBhBehavior_ParsingResults();
 
 		/**
 		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
@@ -302,14 +302,14 @@ public interface BehaviorPackage extends EPackage {
 		EReference BH_BEHAVIOR__RETURN_TYPE = eINSTANCE.getBhBehavior_ReturnType();
 
 		/**
-		 * The meta object literal for the '<em>Alf Analyzer Result</em>' data type.
+		 * The meta object literal for the '<em>Parsing Results</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult
-		 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getAlfAnalyzerResult()
+		 * @see com.incquerylabs.uml.ralf.api.impl.ParsingResults
+		 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BehaviorPackageImpl#getParsingResults()
 		 * @generated
 		 */
-		EDataType ALF_ANALYZER_RESULT = eINSTANCE.getAlfAnalyzerResult();
+		EDataType PARSING_RESULTS = eINSTANCE.getParsingResults();
 
 	}
 

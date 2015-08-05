@@ -15,7 +15,7 @@ class BehaviorTemplate extends Template {
 	static val CONTEXT_NAME = BehaviorBodyGenerator.CONTEXT_NAME
 
 	val BhBehavior behavior
-	val SourceMappedText compiledAlfCode
+	val SourceMappedText compiledCode
 	val boolean returns
 
 	new(BhBehavior behavior) {
@@ -23,7 +23,7 @@ class BehaviorTemplate extends Template {
 		this.behavior = behavior
 		val generator = new BehaviorBodyGenerator
 		returns = behavior.returnType != null
-		compiledAlfCode = generator.generate(behavior.alfResult)
+		compiledCode = generator.generate(behavior.parsingResults)
 	}
 
 	override wrapContent(CharSequence content) '''
@@ -49,7 +49,7 @@ class BehaviorTemplate extends Template {
 				«javaType(param.type)» «param.identifier»
 			«ENDFOR»
 		) {
-			«compiledAlfCode»
+			«compiledCode»
 			«IF behavior.returnType != null»
 				// walkaround while we are not generating actual action code
 				return null;

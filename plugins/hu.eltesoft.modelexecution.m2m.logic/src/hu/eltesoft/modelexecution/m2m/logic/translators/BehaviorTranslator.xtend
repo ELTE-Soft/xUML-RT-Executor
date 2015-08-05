@@ -1,15 +1,21 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException
+import com.google.inject.Binder
+import com.google.inject.Guice
+import com.google.inject.Module
+import com.incquerylabs.uml.ralf.ReducedAlfLanguageRuntimeModule
+import com.incquerylabs.uml.ralf.api.IReducedAlfParser
+import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser
+import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
+import hu.eltesoft.modelexecution.m2t.java.BehaviorUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
-import hu.eltesoft.modelexecution.uml.alf.UnsupportedAlfFeatureException
 import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher
@@ -25,12 +31,16 @@ import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Behavior
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
+import org.eclipse.uml2.uml.OpaqueBehavior
+
+import static hu.eltesoft.modelexecution.m2m.logic.translators.BehaviorTranslator.*
 
 class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, BehaviorMatch> {
 
 	static val FACTORY = BehaviorFactory.eINSTANCE
 	static val PACKAGE = BehaviorPackage.eINSTANCE
+
+	var OpaqueBehavior currentBehavior
 
 	new(IncQueryEngine engine) throws IncQueryException {
 		super(engine);
@@ -38,9 +48,9 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 
 	override createMapper(IncQueryEngine engine) {
 		val rootNode = fromRoot(BehaviorMatcher.on(engine)) [
+			currentBehavior = behavior as OpaqueBehavior
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
-			root.alfResult = new AlfAnalyzer().analyze("{}")
 			return root;
 		]
 		return rootNode;
@@ -86,12 +96,19 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			upperBound.toInt
 		]
 
-		rootNode.on(PACKAGE.bhBehavior_AlfResult, AlfCodeMatcher.on(engine)) [
-			try {
-				return new AlfAnalyzer().analyze(alfCode, containerClass);
-			} catch (UnsupportedAlfFeatureException e) {
-				throw new GenerationException(e);
+		rootNode.on(PACKAGE.bhBehavior_ParsingResults, AlfCodeMatcher.on(engine)) [
+			val runtimeModule = new ReducedAlfLanguageRuntimeModule()
+			val provider = new BehaviorUMLContextProvider(currentBehavior)
+			val customizations = new Module() {
+
+				override configure(Binder binder) {
+					binder.bind(IUMLContextProvider).toInstance(provider)
+					binder.bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
+				}
 			}
+			val injector = Guice.createInjector(runtimeModule, customizations)
+			val parser = injector.getInstance(IReducedAlfParser)
+			return parser.parse(alfCode, provider)
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [

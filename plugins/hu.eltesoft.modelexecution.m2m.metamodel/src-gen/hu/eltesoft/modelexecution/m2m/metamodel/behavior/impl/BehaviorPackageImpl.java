@@ -2,6 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AssociationPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AssociationPackageImpl;
@@ -34,8 +36,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SignalPackage;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.impl.SignalPackageImpl;
 
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -64,7 +64,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType alfAnalyzerResultEDataType = null;
+	private EDataType parsingResultsEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -176,7 +176,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBhBehavior_AlfResult() {
+	public EAttribute getBhBehavior_ParsingResults() {
 		return (EAttribute)bhBehaviorEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -212,8 +212,8 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getAlfAnalyzerResult() {
-		return alfAnalyzerResultEDataType;
+	public EDataType getParsingResults() {
+		return parsingResultsEDataType;
 	}
 
 	/**
@@ -246,13 +246,13 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 		// Create classes and their features
 		bhBehaviorEClass = createEClass(BH_BEHAVIOR);
 		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__CONTAINER_CLASS);
-		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__ALF_RESULT);
+		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__PARSING_RESULTS);
 		createEReference(bhBehaviorEClass, BH_BEHAVIOR__PARAMETERS);
 		createEAttribute(bhBehaviorEClass, BH_BEHAVIOR__IS_STATIC);
 		createEReference(bhBehaviorEClass, BH_BEHAVIOR__RETURN_TYPE);
 
 		// Create data types
-		alfAnalyzerResultEDataType = createEDataType(ALF_ANALYZER_RESULT);
+		parsingResultsEDataType = createEDataType(PARSING_RESULTS);
 	}
 
 	/**
@@ -291,13 +291,13 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bhBehaviorEClass, BhBehavior.class, "BhBehavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBhBehavior_ContainerClass(), theBasePackage.getNamedReference(), "containerClass", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBhBehavior_AlfResult(), this.getAlfAnalyzerResult(), "alfResult", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBhBehavior_ParsingResults(), this.getParsingResults(), "parsingResults", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBhBehavior_Parameters(), theBasePackage.getParameter(), null, "parameters", null, 0, -1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBhBehavior_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 1, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBhBehavior_ReturnType(), theBasePackage.getType(), null, "returnType", null, 0, 1, BhBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
-		initEDataType(alfAnalyzerResultEDataType, AlfAnalyzerResult.class, "AlfAnalyzerResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(parsingResultsEDataType, ParsingResults.class, "ParsingResults", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

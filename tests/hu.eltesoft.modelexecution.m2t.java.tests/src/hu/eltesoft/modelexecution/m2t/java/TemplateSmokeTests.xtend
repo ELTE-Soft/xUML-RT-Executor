@@ -11,7 +11,6 @@ import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplateSmap
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
 import org.eclipse.uml2.uml.Class
 import org.junit.Before
 import org.junit.Test
@@ -43,7 +42,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
 		behavior.reference = makeNewReference("TestBehavior")
-		behavior.alfResult = new AlfAnalyzer().analyze("this.x();", aClass)
+		behavior.code = "this.x();";
 		behavior.containerClass = makeNewReference("TestClass")
 		val template = new BehaviorTemplateSmap(behavior)
 

@@ -14,8 +14,8 @@ Require-Bundle:
  hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.m2t.java;bundle-version="0.5.0",
- hu.eltesoft.modelexecution.uml.alf;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.5.0",
- hu.eltesoft.modelexecution.profile;bundle-version="0.5.0"
+ hu.eltesoft.modelexecution.profile;bundle-version="0.5.0",
+ com.incquerylabs.uml.ralf;bundle-version="1.0.0"
 Export-Package: hu.eltesoft.modelexecution.m2m.logic,
  hu.eltesoft.modelexecution.m2m.logic.translators
