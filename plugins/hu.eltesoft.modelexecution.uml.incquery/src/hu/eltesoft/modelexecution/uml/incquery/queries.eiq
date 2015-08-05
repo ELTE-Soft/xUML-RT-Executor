@@ -82,7 +82,7 @@ BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : Parame
 }
 
 pattern
-BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	find BehaviorParameter(behavior, parameter, _);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -90,19 +90,19 @@ BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered,
 }
 
 pattern
-BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
 
 pattern
-BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
@@ -111,13 +111,13 @@ BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, un
 }
 
 pattern
-BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
@@ -251,7 +251,7 @@ InheritedAttributeParent(cls : Class, attribute : Property, parent : Class) {
 // Both the defined and inherited attributes have types.
 // This prevents duplication of all attribute subpatterns.
 pattern
-AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
+AttributeType(cls : Class, attribute : Property, type : Type, ordered, unique) {
 	find Attribute(cls, attribute, _);
 	find AttributeTypeImpl(attribute, type, ordered, unique);
 } or {
@@ -260,20 +260,20 @@ AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
 }
 
 private pattern
-AttributeTypeImpl(attribute : Property, type, ordered, unique) {
+AttributeTypeImpl(attribute : Property, type : Type, ordered, unique) {
 	Property.type(attribute, type);
 	Property.isOrdered(attribute, ordered);
 	Property.isUnique(attribute, unique);
 }
 
 pattern
-AttributeLowerBound(cls : Class, attribute : Property, type, lowerBound : ValueSpecification) {
+AttributeLowerBound(cls : Class, attribute : Property, type : Type, lowerBound : ValueSpecification) {
 	find AttributeType(cls, attribute, type, _, _);
 	Property.lowerValue(attribute, lowerBound);
 }
 
 pattern
-AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueSpecification) {
+AttributeUpperBound(cls : Class, attribute : Property, type : Type, upperBound : ValueSpecification) {
 	find AttributeType(cls, attribute, type, _, _);
 	Property.upperValue(attribute, upperBound);
 }
@@ -308,7 +308,7 @@ OperationParameter(cls : Class, operation : Operation, parameter : Parameter, di
 }
 
 pattern
-OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type, ordered, unique) {
+OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type : Type, ordered, unique) {
 	find OperationParameter(cls, operation, parameter, _);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -316,13 +316,13 @@ OperationParameterType(cls : Class, operation : Operation, parameter : Parameter
 }
 
 pattern
-OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type, lowerBound : ValueSpecification) {
+OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type : Type, lowerBound : ValueSpecification) {
 	find OperationParameterType(cls, operation, parameter, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type, upperBound : ValueSpecification) {
+OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type : Type, upperBound : ValueSpecification) {
 	find OperationParameterType(cls, operation, parameter, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
 }
@@ -335,7 +335,7 @@ OperationReturn(cls : Class, operation : Operation, parameter : Parameter) {
 }
 
 pattern
-OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
+OperationReturnType(cls : Class, operation : Operation, type : Type, ordered, unique) {
 	find OperationReturn(cls, operation, parameter);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -343,14 +343,14 @@ OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
 }
 
 pattern
-OperationReturnLowerBound(cls : Class, operation : Operation, type, lowerBound : ValueSpecification) {
+OperationReturnLowerBound(cls : Class, operation : Operation, type : Type, lowerBound : ValueSpecification) {
 	find OperationReturn(cls, operation, parameter);
 	find OperationReturnType(cls, operation, type, _, _);
 	Parameter.lowerValue(parameter, lowerBound);
 }
 
 pattern
-OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound : ValueSpecification) {
+OperationReturnUpperBound(cls : Class, operation : Operation, type : Type, upperBound : ValueSpecification) {
 	find OperationReturn(cls, operation, parameter);
 	find OperationReturnType(cls, operation, type, _, _);
 	Parameter.upperValue(parameter, upperBound);
@@ -399,7 +399,7 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 }
 
 pattern
-ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type : Type, ordered, unique) {
 	find Reception(cls, reception, _);
 	Reception.ownedParameter(reception, parameter);
 	Parameter.direction(parameter, direction);
@@ -562,7 +562,7 @@ pattern Signal(signal : Signal) {
 }
 
 pattern
-SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
+SignalAttribute(signal : Signal, attribute : Property, type : Type, ordered, unique) {
 	find Signal(signal);
 	Signal.ownedAttribute(signal, attribute);
 	Property.type(attribute, type);
