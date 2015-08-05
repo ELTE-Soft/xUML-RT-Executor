@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
@@ -25,7 +26,6 @@ import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Behavior
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, BehaviorMatch> {
 
@@ -63,10 +63,10 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			return elem
 		]
 		parameterType.on(BASE_PACKAGE.multiplicity_LowerBound, BehaviorParameterLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		parameterType.on(BASE_PACKAGE.multiplicity_UpperBound, BehaviorParameterUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 
 		val returnNode = rootNode.onEObject(PACKAGE.bhBehavior_ReturnType, BehaviorReturnTypeMatcher.on(engine)) [
@@ -80,10 +80,10 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			BASE_PACKAGE.multiplicity_LowerBound,
 			BehaviorReturnLowerBoundMatcher.on(engine)
 		) [
-			lowerBound.toInt
+			lowerBound
 		]
 		returnNode.on(BASE_PACKAGE.multiplicity_UpperBound, BehaviorReturnUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_AlfResult, AlfCodeMatcher.on(engine)) [

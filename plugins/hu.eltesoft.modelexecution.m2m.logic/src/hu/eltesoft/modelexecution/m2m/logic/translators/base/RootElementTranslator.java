@@ -10,7 +10,6 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
-import org.eclipse.uml2.uml.ValueSpecification;
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
@@ -97,10 +96,6 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	public Direction convert(ParameterDirectionKind direction) {
 		return typeTranslator.convert(direction);
-	}
-
-	public Integer toInt(ValueSpecification value) {
-		return typeTranslator.toInt(value);
 	}
 
 }
