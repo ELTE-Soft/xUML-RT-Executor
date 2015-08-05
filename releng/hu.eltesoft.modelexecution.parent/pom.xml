@@ -37,7 +37,7 @@
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
-		<!-- <module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module>  -->
+		<module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.uml.alf.tests/pom.xml</module>
 
  
