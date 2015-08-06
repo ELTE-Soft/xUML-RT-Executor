@@ -8,6 +8,10 @@ public interface StatefulClass {
 
 	int getInstanceID();
 
+	void send(Event event);
+
+	void sendExternal(Event event);
+
 	void receive(Event event);
 
 	/**

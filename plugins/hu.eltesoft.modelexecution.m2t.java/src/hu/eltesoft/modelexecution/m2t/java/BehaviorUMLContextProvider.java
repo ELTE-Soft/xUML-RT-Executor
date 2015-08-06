@@ -1,11 +1,15 @@
 package hu.eltesoft.modelexecution.m2t.java;
 
+import java.util.Set;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.OpaqueBehavior;
+import org.eclipse.uml2.uml.Operation;
 
 import com.incquerylabs.uml.ralf.scoping.UMLContextProvider;
 
@@ -15,11 +19,13 @@ public class BehaviorUMLContextProvider extends UMLContextProvider {
 
 	public BehaviorUMLContextProvider(OpaqueBehavior behavior) {
 		this.behavior = behavior;
-	}
-
-	@Override
-	protected EObject getContextObject() {
-		return behavior;
+		Set<Operation> operations = getOperationsOfClass((Class) behavior.getOwner());
+		for (Operation operation : operations) {
+			if (operation.getMethods().contains(behavior)) {
+				setDefinedOperation(operation);
+				return;
+			}
+		}
 	}
 
 	@Override
@@ -30,5 +36,10 @@ public class BehaviorUMLContextProvider extends UMLContextProvider {
 		} catch (IncQueryException e) {
 			throw new CompilationFailedException(e);
 		}
+	}
+
+	@Override
+	protected EObject getContextObject() {
+		return getDefinedOperation();
 	}
 }

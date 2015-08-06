@@ -38,6 +38,14 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		stateMachine.doInitialTransition();
 	}
 
+	public void send(Event event) {
+		getRuntime().addEventToQueue(this, event);
+	}
+
+	public void sendExternal(Event event) {
+		getRuntime().addExternalEventToQueue(this, event);
+	}
+
 	@Override
 	public void receive(Event event) {
 		stateMachine.step(event);

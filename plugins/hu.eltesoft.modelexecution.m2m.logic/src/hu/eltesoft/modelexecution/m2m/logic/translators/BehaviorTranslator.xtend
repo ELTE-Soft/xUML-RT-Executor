@@ -16,7 +16,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
 import hu.eltesoft.modelexecution.m2t.java.BehaviorUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
-import hu.eltesoft.modelexecution.uml.incquery.AlfCodeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ActionCodeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterLowerBoundMatcher
@@ -32,8 +32,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Behavior
 import org.eclipse.uml2.uml.OpaqueBehavior
-
-import static hu.eltesoft.modelexecution.m2m.logic.translators.BehaviorTranslator.*
 
 class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, BehaviorMatch> {
 
@@ -51,6 +49,7 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			currentBehavior = behavior as OpaqueBehavior
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
+			root.parsingResults = parse("", currentBehavior)
 			return root;
 		]
 		return rootNode;
@@ -96,19 +95,8 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 			upperBound.toInt
 		]
 
-		rootNode.on(PACKAGE.bhBehavior_ParsingResults, AlfCodeMatcher.on(engine)) [
-			val runtimeModule = new ReducedAlfLanguageRuntimeModule()
-			val provider = new BehaviorUMLContextProvider(currentBehavior)
-			val customizations = new Module() {
-
-				override configure(Binder binder) {
-					binder.bind(IUMLContextProvider).toInstance(provider)
-					binder.bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
-				}
-			}
-			val injector = Guice.createInjector(runtimeModule, customizations)
-			val parser = injector.getInstance(IReducedAlfParser)
-			return parser.parse(alfCode, provider)
+		rootNode.on(PACKAGE.bhBehavior_ParsingResults, ActionCodeMatcher.on(engine)) [
+			parse(actionCode, currentBehavior)
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
@@ -118,5 +106,28 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 
 	override Template createTemplate(BhBehavior behavior) {
 		return new BehaviorTemplateSmap(behavior)
+	}
+
+	private def parse(String code, OpaqueBehavior behavior) {
+		val provider = getProvider(behavior)
+		val parser = getParser(provider)
+		parser.parse(code, provider)
+	}
+
+	private def getProvider(OpaqueBehavior behavior) {
+		new BehaviorUMLContextProvider(behavior)
+	}
+
+	private def getParser(IUMLContextProvider provider) {
+		val runtimeModule = new ReducedAlfLanguageRuntimeModule()
+		val customizations = new Module() {
+
+			override configure(Binder binder) {
+				binder.bind(IUMLContextProvider).toInstance(provider)
+				binder.bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
+			}
+		}
+		val injector = Guice.createInjector(runtimeModule, customizations)
+		injector.getInstance(IReducedAlfParser)
 	}
 }

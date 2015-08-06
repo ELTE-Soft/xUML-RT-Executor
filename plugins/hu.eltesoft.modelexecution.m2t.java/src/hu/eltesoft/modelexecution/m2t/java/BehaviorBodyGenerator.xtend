@@ -1,13 +1,15 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.SendSignalStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
+import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
-import com.incquerylabs.uml.ralf.api.impl.ParsingResults
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 /**
  * Generates an operation body written in rAlf to Java code by implementing an
@@ -40,9 +42,11 @@ class BehaviorBodyGenerator {
 
 	private def dispatch void visit(SendSignalStatement send) {
 		visit(send.target)
-		builder.append(".send(")
+		builder.append(".send(new ")
+		builder.append(SignalEvent.canonicalName)
+		builder.append("(")
 		visit(send.signal)
-		builder.append(");")
+		builder.append("));")
 	}
 
 	private def dispatch void visit(ThisExpression expr) {
@@ -50,18 +54,14 @@ class BehaviorBodyGenerator {
 	}
 
 	private def dispatch void visit(InstanceCreationExpression expr) {
-		builder.append("new")
+		builder.append("new ")
+		builder.append(NamedReference.getIdentifier(expr.instance))
+		visit(expr.tuple)
 	}
 
 	private def dispatch void visit(ExpressionList list) {
 		builder.append("(")
-		val exprs = list.expressions
-		val last = exprs.length - 1
-		for (i : 0 .. last - 1) {
-			visit(exprs.get(i))
-			builder.append(",")
-		}
-		visit(exprs.get(last))
+		builder.append('''«FOR expr : list.expressions SEPARATOR ','»«visit(expr)»«ENDFOR»''')
 		builder.append(")")
 	}
 

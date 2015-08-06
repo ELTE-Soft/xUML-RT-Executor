@@ -127,11 +127,11 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
-pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
-	OpaqueBehavior.body(behavior, alfCode);
+pattern ActionCode(behavior : Behavior, containerClass : Class, actionCode) {
+	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
 	find ContainerClassOfBehavior(behavior, containerClass);
-	check(Utils.toLowerCase(langName).equals("alf"));
+	check(Utils.toLowerCase(langName).equals("ralf"));
 }
 
 private pattern
