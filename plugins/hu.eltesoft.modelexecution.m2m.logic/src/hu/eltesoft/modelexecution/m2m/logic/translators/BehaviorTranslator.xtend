@@ -1,8 +1,6 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
-import com.google.inject.Binder
 import com.google.inject.Guice
-import com.google.inject.Module
 import com.incquerylabs.uml.ralf.ReducedAlfLanguageRuntimeModule
 import com.incquerylabs.uml.ralf.api.IReducedAlfParser
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser
@@ -119,15 +117,9 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 	}
 
 	private def getParser(IUMLContextProvider provider) {
-		val runtimeModule = new ReducedAlfLanguageRuntimeModule()
-		val customizations = new Module() {
-
-			override configure(Binder binder) {
-				binder.bind(IUMLContextProvider).toInstance(provider)
-				binder.bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
-			}
-		}
-		val injector = Guice.createInjector(runtimeModule, customizations)
-		injector.getInstance(IReducedAlfParser)
+		Guice.createInjector(new ReducedAlfLanguageRuntimeModule()) [
+			bind(IUMLContextProvider).toInstance(provider)
+			bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
+		].getInstance(IReducedAlfParser)
 	}
 }
