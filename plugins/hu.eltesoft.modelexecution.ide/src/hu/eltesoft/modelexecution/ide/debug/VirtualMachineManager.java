@@ -8,7 +8,19 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ITerminate;
 
+import com.sun.jdi.ClassNotLoadedException;
+import com.sun.jdi.Field;
+import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.IntegerValue;
+import com.sun.jdi.InvalidTypeException;
+import com.sun.jdi.InvocationException;
+import com.sun.jdi.Method;
+import com.sun.jdi.ObjectReference;
+import com.sun.jdi.ReferenceType;
+import com.sun.jdi.StackFrame;
+import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VMDisconnectedException;
+import com.sun.jdi.Value;
 import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.ClassPrepareEvent;
@@ -215,5 +227,36 @@ public class VirtualMachineManager implements ITerminate {
 
 	public void disconnect() {
 		virtualMachine.dispose();
+	}
+
+	public String getActualSMInstance() {
+		List<ThreadReference> threads = virtualMachine.allThreads();
+		ThreadReference mainThread = null;
+		for (ThreadReference thread : threads) {
+			if (thread.name().equals("main")) {
+				mainThread = thread;
+			}
+		}
+		try {
+			Field ownerField = mainThread.frames().get(0).thisObject().referenceType().fieldByName("owner");
+			ObjectReference owner = (ObjectReference) mainThread.frames().get(0).thisObject().getValue(ownerField);
+			List<Method> getInstanceID = owner.referenceType().methodsByName("getInstanceID");
+			getInstanceID.removeIf(Method::isAbstract);
+			Value result = owner.invokeMethod(mainThread, getInstanceID.get(0), new LinkedList<Value>(), 0);
+			return owner.referenceType().name() + "#" + ((IntegerValue) result).intValue();
+		} catch (IncompatibleThreadStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotLoadedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

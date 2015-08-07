@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Display;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
-import hu.eltesoft.modelexecution.ide.launch.process.GracefulTerminationProcessDecorator;
+import hu.eltesoft.modelexecution.ide.launch.process.RunProcessDecorator;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 
@@ -45,7 +45,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	private static final String DIAGRAM_FILE_EXTENSION = "di";
 
 	private MokaLaunchDelegate mokaDelegate = new MokaLaunchDelegate();
-	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher(GracefulTerminationProcessDecorator::new,
+	private JavaLaunchDelegate javaDelegate = new DecoratedJavaLauncher(RunProcessDecorator::new,
 			DebuggingProcessDecorator::new, () -> null);
 	private ExitCodeChecker exitChecker = new ExitCodeChecker();
 	private boolean isListening;

@@ -2,7 +2,8 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimerTask;
 
@@ -12,6 +13,7 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
@@ -44,6 +46,7 @@ import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -71,7 +74,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	// access must be synchronized to intrinsic lock of "animation"!
 	private boolean waitingForSuspend = false;
 
-	private MokaThread[] threads;
+	private Map<String, MokaThread> threads = new HashMap<>();
 
 	@Override
 	public void init(EObject eObjectToExecute, String[] args, MokaDebugTarget mokaDebugTarget, int requestPort,
@@ -98,6 +101,37 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addEventListener(this);
+
+		setupControllerListeners(launch);
+	}
+
+	protected void setupControllerListeners(ILaunch launch) {
+		for (IProcess process : launch.getProcesses()) {
+			if (process instanceof IProcessWithController) {
+				RuntimeControllerClient runtimeController = ((IProcessWithController) process).getController();
+				if (runtimeController != null) {
+					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
+						@Override
+						public void instanceCreated(String classId, int id) {
+							XUmlRtThread thread = new XUmlRtThread(debugTarget);
+							String threadName = threadName(classId, id);
+							thread.setName(threadName);
+							threads.put(threadName, thread);
+						}
+
+						@Override
+						public void instanceDestroyed(String classId, int id) {
+							threads.remove(threadName(classId, id));
+						}
+
+						protected String threadName(String classId, int id) {
+							return classId + "#" + id;
+						}
+
+					});
+				}
+			}
+		}
 	}
 
 	@Override
@@ -232,27 +266,27 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		// suspend just the first and only thread for now
-		MokaThread thread = (MokaThread) getThreads()[0];
+		MokaThread actualSMInstance = threads.get(virtualMachine.getActualSMInstance());
 
 		// show the current element as a stack frame
 		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
-		frame.setThread(thread);
-		thread.setStackFrames(new IStackFrame[] { frame });
+		frame.setThread(actualSMInstance);
+		actualSMInstance.setStackFrames(new IStackFrame[] { frame });
 
 		// causes debug target to be suspended
 		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
-		sendEvent(new Suspend_Event(thread, eventCode, new MokaThread[] { thread }));
 
-		// causes thread to be suspended
-		thread.setSuspended(true);
+		for (MokaThread thread : threads.values()) {
+			sendEvent(new Suspend_Event(thread, eventCode, new MokaThread[] { thread }));
+			thread.setSuspended(true);
+		}
 	}
 
 	@Override
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
 			// remove stack frames from all threads before resuming
-			Arrays.stream(threads).forEach(t -> t.setStackFrames(new IStackFrame[0]));
+			threads.values().forEach(t -> t.setStackFrames(new IStackFrame[0]));
 
 			waitingForSuspend = false;
 			virtualMachine.resume();
@@ -301,12 +335,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public MokaThread[] getThreads() {
-		if (null == threads) {
-			XUmlRtThread thread = new XUmlRtThread(debugTarget);
-			thread.setName("Default component");
-			threads = new MokaThread[] { thread };
-		}
-		return threads;
+		return threads.values().toArray(new MokaThread[] {});
 	}
 
 	@Override

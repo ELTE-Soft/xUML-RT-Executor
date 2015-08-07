@@ -7,6 +7,8 @@ import org.eclipse.debug.core.model.IStreamsProxy;
 
 import com.sun.jdi.VirtualMachine;
 
+import hu.eltesoft.modelexecution.ide.debug.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
 /**
@@ -14,7 +16,7 @@ import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
  * constructor argument.
  */
 @SuppressWarnings("restriction")
-public class ProcessDecorator implements IProcess, IProcessWithVM {
+public class ProcessDecorator implements IProcess, IProcessWithVM, IProcessWithController {
 
 	protected IProcess process;
 
@@ -26,6 +28,15 @@ public class ProcessDecorator implements IProcess, IProcessWithVM {
 	public VirtualMachine getVM() {
 		if (process instanceof IProcessWithVM) {
 			return ((IProcessWithVM) process).getVM();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public RuntimeControllerClient getController() {
+		if (process instanceof IProcessWithController) {
+			return ((IProcessWithController) process).getController();
 		} else {
 			return null;
 		}

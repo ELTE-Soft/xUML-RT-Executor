@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,6 +20,8 @@ public final class InstanceRegistry {
 	// If multiple runtimes are executed simultaneously, the mapping should be
 	// partitioned by Runtime and synchronized.
 	private Map<InstanceKey, ClassWithState> instanceRegistry = new HashMap<>();
+	
+	private List<InstanceListener> listeners = new LinkedList<>();
 
 	private static final InstanceRegistry INSTANCE = new InstanceRegistry();
 
@@ -36,7 +40,11 @@ public final class InstanceRegistry {
 	 * instance is registered, it cannot be garbage-collected.
 	 */
 	public void registerInstance(ClassWithState instance) {
-		instanceRegistry.put(new InstanceKey(instance), instance);
+		InstanceKey key = new InstanceKey(instance);
+		instanceRegistry.put(key, instance);
+		for (InstanceListener listener : listeners) {
+			listener.instanceCreated(key);
+		}
 	}
 
 	/**
@@ -45,11 +53,19 @@ public final class InstanceRegistry {
 	 * message.
 	 */
 	public void unregisterInstance(StatefulClass instance) {
-		instanceRegistry.remove(new InstanceKey(instance));
+		InstanceKey key = new InstanceKey(instance);
+		instanceRegistry.remove(key);
+		for (InstanceListener listener : listeners) {
+			listener.instanceDeleted(key);
+		}
 	}
 
 	public boolean isEmpty() {
 		return instanceRegistry.isEmpty();
+	}
+	
+	public void addInstanceListener(InstanceListener listener) {
+		listeners.add(listener);
 	}
 
 	/**
@@ -59,7 +75,7 @@ public final class InstanceRegistry {
 		return INSTANCE;
 	}
 
-	private static final class InstanceKey {
+	public static final class InstanceKey {
 		public InstanceKey(StatefulClass instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
@@ -76,6 +92,14 @@ public final class InstanceRegistry {
 		@Override
 		public int hashCode() {
 			return Objects.hash(klass, instanceID);
+		}
+		
+		public Class<?> getKlass() {
+			return klass;
+		}
+		
+		public int getInstanceID() {
+			return instanceID;
 		}
 
 		@Override

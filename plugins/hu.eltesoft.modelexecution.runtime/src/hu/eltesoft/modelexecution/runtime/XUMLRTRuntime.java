@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.nio.file.FileSystem;
@@ -69,7 +68,8 @@ public class XUMLRTRuntime extends BaseRuntime {
 				setLogger(new MinimalLogger());
 				break;
 			case OPTION_CONTROL_SOCK:
-				addControlStream(createControlStream(args[++i]));
+				Socket sock = createControlSocket(args[++i]);
+				addControlStreams(sock.getInputStream(), sock.getOutputStream());
 				break;
 			default:
 				System.err.println("Could not parse argument " + args[i] + ". Usage: \n" + USAGE);
@@ -78,7 +78,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 		}
 	}
 
-	private static InputStream createControlStream(String port) throws NumberFormatException, IOException {
+	private static Socket createControlSocket(String port) throws NumberFormatException, IOException {
 		logInfo("Creating control stream: " + port);
 		if (socket != null) {
 			throw new RuntimeException("Cannot connect to multiple control streams.");
@@ -94,7 +94,7 @@ public class XUMLRTRuntime extends BaseRuntime {
 				}
 			}
 		}
-		return socket.getInputStream();
+		return socket;
 	}
 
 	/**
