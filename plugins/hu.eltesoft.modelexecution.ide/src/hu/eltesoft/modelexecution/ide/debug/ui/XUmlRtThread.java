@@ -30,7 +30,7 @@ public class XUmlRtThread extends MokaThread implements IPresentation {
 
 	@Override
 	public Image getImage() {
-		EObject component = UMLFactory.eINSTANCE.createComponent();
+		EObject component = UMLFactory.eINSTANCE.createStateMachine();
 		IImage image = ImageQuery.getEObjectImage(component);
 		Device device = Display.getCurrent();
 		return new Image(device, image.getInputStream());

@@ -272,6 +272,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
 			frame.setThread(actualSMInstance);
 			actualSMInstance.setStackFrames(new IStackFrame[] { frame });
+			
+			virtualMachine.loadSMVariables(frame);
 
 			// causes debug target to be suspended
 			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
@@ -341,7 +343,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public IStackFrame[] getStackFrames(IThread thread) {
-		return new XUmlRtStackFrame[0];
+		try {
+			return thread.getStackFrames();
+		} catch (DebugException e) {
+			return new IStackFrame[0];
+		}
 	}
 
 	@Override

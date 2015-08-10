@@ -7,10 +7,16 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ITerminate;
+import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
+import org.eclipse.papyrus.moka.debug.MokaValue;
+import org.eclipse.papyrus.moka.debug.MokaVariable;
 
+import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.IntegerValue;
+import com.sun.jdi.InvalidTypeException;
+import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.StackFrame;
@@ -31,6 +37,7 @@ import com.sun.jdi.request.EventRequestManager;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 
@@ -243,6 +250,55 @@ public class VirtualMachineManager implements ITerminate {
 			}
 		}
 		return null;
+	}
+
+	public void loadSMVariables(XUmlRtStackFrame frame) {
+		List<MokaVariable> ret = new LinkedList<>();
+		ThreadReference mainThread = getMainThread();
+		if (mainThread.isSuspended() && mainThread.isAtBreakpoint()) {
+			try {
+				StackFrame executionPoint = getExecutionPoint();
+				ObjectReference smObj = executionPoint.thisObject();
+				Value eventObj = getExecutionPoint().getArgumentValues().get(0);
+				Value stateObj = smObj.getValue(smObj.referenceType().fieldByName("currentState"));
+				Field ownerField = smObj.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
+				ObjectReference owner = (ObjectReference) smObj.getValue(ownerField);
+				ret.add(createMokaVariable(frame, mainThread, owner, "this"));
+				ret.add(createMokaVariable(frame, mainThread, eventObj, "event"));
+				ret.add(createMokaVariable(frame, mainThread, stateObj, "currentState"));
+			} catch (Exception e) {
+				IdePlugin.logError("Could not ask for SM variables", e);
+			}
+		}
+		frame.setVariables(ret.toArray(new MokaVariable[ret.size()]));
+
+	}
+
+	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, ThreadReference thread, Value value,
+			String varName) throws DebugException {
+		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
+		MokaVariable variable = new MokaVariable(debugTarget);
+		variable.setName(varName);
+		// TODO: variables lazily
+		MokaValue mokaValue = new MokaValue(debugTarget);
+		mokaValue.setReferenceTypeName(value.type().name());
+		String stringRepr = value.toString();
+		if (value instanceof ObjectReference) {
+			ObjectReference objectReference = (ObjectReference) value;
+			try {
+				stringRepr = objectReference.invokeMethod(thread,
+						objectReference.referenceType().methodsByName("toString").get(0), new LinkedList<>(), 0)
+						.toString();
+			} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException e) {
+				IdePlugin.logError("Error while invoking toString to get representation");
+			} catch (InvocationException e) {
+				// Exception while calling toString, fall through
+			}
+
+		}
+		mokaValue.setValueString(stringRepr);
+		variable.setValue(mokaValue);
+		return variable;
 	}
 
 	private StackFrame getExecutionPoint() {
