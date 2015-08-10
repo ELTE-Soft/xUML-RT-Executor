@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -46,6 +47,8 @@ public class RuntimeControllerClient {
 						while ((line = reader.readLine()) != null) {
 							processLine(line);
 						}
+					} catch (SocketException e) {
+						// normal, runtime is terminated
 					} catch (Exception e) {
 						IdePlugin.logError("Error while trying to set up control stream", e);
 					}

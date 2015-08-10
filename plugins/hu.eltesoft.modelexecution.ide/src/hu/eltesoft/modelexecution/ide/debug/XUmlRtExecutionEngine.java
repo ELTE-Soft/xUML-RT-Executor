@@ -223,21 +223,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 					@Override
 					public void run() {
-						if (!suspendIfWaitingOrHasBreak(modelElement, false)) {
-							virtualMachine.resume();
-						}
+						virtualMachine.resume();
 					}
 				});
 			}
 			return ThreadAction.RemainSuspended;
 		}
-
 		return ThreadAction.ShouldResume;
 	}
 
 	/**
 	 * Suspends the current thread if there was a user-defined breakpoint here
 	 * or a previous suspension request was waiting for the next JDI breakpoint.
+	 * Can only be called when the underlying virtual machine is suspended.
 	 *
 	 * @param modelElement
 	 *            the current element under the breakpoint
@@ -257,7 +255,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	}
 
 	/**
-	 * Marks the thread and the debug target as suspended.
+	 * Marks the thread and the debug target as suspended. Can only be called
+	 * when the underlying virtual machine is suspended.
 	 *
 	 * @param modelElement
 	 *            the current element under the breakpoint (currently only a
@@ -268,18 +267,20 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 		MokaThread actualSMInstance = threads.get(virtualMachine.getActualSMInstance());
 
-		// show the current element as a stack frame
-		XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
-		frame.setThread(actualSMInstance);
-		actualSMInstance.setStackFrames(new IStackFrame[] { frame });
+		if (actualSMInstance != null) {
+			// show the current element as a stack frame
+			XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
+			frame.setThread(actualSMInstance);
+			actualSMInstance.setStackFrames(new IStackFrame[] { frame });
 
-		// causes debug target to be suspended
-		int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
-
-		for (MokaThread thread : threads.values()) {
-			sendEvent(new Suspend_Event(thread, eventCode, new MokaThread[] { thread }));
-			thread.setSuspended(true);
+			// causes debug target to be suspended
+			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
+			sendEvent(new Suspend_Event(actualSMInstance, eventCode, new MokaThread[] { actualSMInstance }));
+			actualSMInstance.setSuspended(true);
+		} else {
+			IdePlugin.logError("No thread registered for state machine instance: " + actualSMInstance);
 		}
+
 	}
 
 	@Override

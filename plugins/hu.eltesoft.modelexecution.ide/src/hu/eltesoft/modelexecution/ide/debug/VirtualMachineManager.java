@@ -8,15 +8,11 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ITerminate;
 
-import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.IntegerValue;
-import com.sun.jdi.InvalidTypeException;
-import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
-import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StackFrame;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VMDisconnectedException;
@@ -36,6 +32,7 @@ import com.sun.jdi.request.EventRequestManager;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
+import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 
 @SuppressWarnings("restriction")
 public class VirtualMachineManager implements ITerminate {
@@ -230,6 +227,35 @@ public class VirtualMachineManager implements ITerminate {
 	}
 
 	public String getActualSMInstance() {
+		ThreadReference mainThread = getMainThread();
+		if (mainThread.isSuspended() && mainThread.isAtBreakpoint()) {
+			try {
+				StackFrame executionPoint = getExecutionPoint();
+				Field ownerField = executionPoint.thisObject().referenceType()
+						.fieldByName(RegionTemplate.OWNER_FIELD_NAME);
+				ObjectReference owner = (ObjectReference) executionPoint.thisObject().getValue(ownerField);
+				List<Method> getInstanceID = owner.referenceType().methodsByName("getInstanceID");
+				getInstanceID.removeIf(Method::isAbstract);
+				Value result = owner.invokeMethod(mainThread, getInstanceID.get(0), new LinkedList<Value>(), 0);
+				return owner.referenceType().name() + "#" + ((IntegerValue) result).intValue();
+			} catch (Exception e) {
+				IdePlugin.logError("Could not ask the current SM instance", e);
+			}
+		}
+		return null;
+	}
+
+	private StackFrame getExecutionPoint() {
+		ThreadReference main = getMainThread();
+		try {
+			return main.frames().get(0);
+		} catch (IncompatibleThreadStateException e) {
+			IdePlugin.logError("Could not ask execution point", e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	private ThreadReference getMainThread() {
 		List<ThreadReference> threads = virtualMachine.allThreads();
 		ThreadReference mainThread = null;
 		for (ThreadReference thread : threads) {
@@ -237,26 +263,6 @@ public class VirtualMachineManager implements ITerminate {
 				mainThread = thread;
 			}
 		}
-		try {
-			Field ownerField = mainThread.frames().get(0).thisObject().referenceType().fieldByName("owner");
-			ObjectReference owner = (ObjectReference) mainThread.frames().get(0).thisObject().getValue(ownerField);
-			List<Method> getInstanceID = owner.referenceType().methodsByName("getInstanceID");
-			getInstanceID.removeIf(Method::isAbstract);
-			Value result = owner.invokeMethod(mainThread, getInstanceID.get(0), new LinkedList<Value>(), 0);
-			return owner.referenceType().name() + "#" + ((IntegerValue) result).intValue();
-		} catch (IncompatibleThreadStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotLoadedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return mainThread;
 	}
 }
