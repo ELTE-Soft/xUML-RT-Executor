@@ -31,7 +31,6 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatch
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.uml2.uml.ParameterDirectionKind
 import org.eclipse.uml2.uml.Type
-import org.eclipse.uml2.uml.ValueSpecification
 
 /**
  * A helper class for translating UML classes. From UML classes both implementation classes and interfaces 
@@ -51,8 +50,6 @@ class ClassConvertHelper {
 
 	def static convert(Type typ) { typeConverter.convert(typ) }
 
-	def static toInt(ValueSpecification spec) { typeConverter.toInt(spec) }
-
 	def static fillAttribute(AbstractFeatureNode<? extends ClAttributeSpec, ?> node, IncQueryEngine engine) {
 		val attributeType = node.onEObject(BASE_PACKAGE.typed_Type, AttributeTypeMatcher.on(engine)) [
 			val elem = BASE_FACTORY.createType
@@ -62,10 +59,10 @@ class ClassConvertHelper {
 			return elem
 		]
 		attributeType.on(BASE_PACKAGE.multiplicity_LowerBound, AttributeLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		attributeType.on(BASE_PACKAGE.multiplicity_UpperBound, AttributeUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 	}
 
@@ -87,10 +84,10 @@ class ClassConvertHelper {
 			return elem
 		]
 		parameterTypeNode.on(BASE_PACKAGE.multiplicity_LowerBound, OperationParameterLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		parameterTypeNode.on(BASE_PACKAGE.multiplicity_UpperBound, OperationParameterUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 
 		// operation return type
@@ -103,10 +100,10 @@ class ClassConvertHelper {
 			return elem
 		]
 		operationReturn.on(BASE_PACKAGE.multiplicity_LowerBound, OperationReturnLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		operationReturn.on(BASE_PACKAGE.multiplicity_UpperBound, OperationReturnUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 	}
 
@@ -119,10 +116,10 @@ class ClassConvertHelper {
 			return elem
 		]
 		assocType.on(BASE_PACKAGE.multiplicity_LowerBound, ClassAssociationLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		assocType.on(BASE_PACKAGE.multiplicity_UpperBound, ClassAssociationUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 	}
 
@@ -138,10 +135,10 @@ class ClassConvertHelper {
 			return elem
 		]
 		receptionParameter.on(BASE_PACKAGE.multiplicity_LowerBound, ReceptionParameterLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		receptionParameter.on(BASE_PACKAGE.multiplicity_UpperBound, ReceptionParameterUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 	}
 

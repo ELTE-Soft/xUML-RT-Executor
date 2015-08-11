@@ -1,10 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.helpers;
 
-import org.eclipse.uml2.uml.LiteralInteger;
-import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.ValueSpecification;
 
 import hu.eltesoft.modelexecution.m2m.logic.UnsupportedUMLFeatureException;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
@@ -53,16 +50,6 @@ public class TypeConverter {
 			ReferencedType classType = BASE_FACTORY.createReferencedType();
 			classType.setReference(new NamedReference(type));
 			return classType;
-		}
-	}
-
-	public Integer toInt(ValueSpecification value) {
-		if (value instanceof LiteralInteger) {
-			return value.integerValue();
-		} else if (value instanceof LiteralUnlimitedNatural) {
-			return value.unlimitedValue();
-		} else {
-			throw new UnsupportedUMLFeatureException("ValueSpecification with wrong type");
 		}
 	}
 

@@ -82,7 +82,7 @@ BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : Parame
 }
 
 pattern
-BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+BehaviorParameterType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	find BehaviorParameter(behavior, parameter, _);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -90,19 +90,21 @@ BehaviorParameterType(behavior : Behavior, parameter : Parameter, type, ordered,
 }
 
 pattern
-BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+BehaviorParameterLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
-	Parameter.lowerValue(parameter, lowerBound);
+	Parameter.lowerValue(parameter, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound) {
 	find BehaviorParameterType(behavior, parameter, type, _, _);
-	Parameter.upperValue(parameter, upperBound);
+	Parameter.upperValue(parameter, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 pattern
-BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, unique) {
+BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
 	Behavior.ownedParameter(behavior, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
@@ -111,15 +113,17 @@ BehaviorReturnType(behavior : Behavior, parameter : Parameter, type, ordered, un
 }
 
 pattern
-BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type, lowerBound : ValueSpecification) {
+BehaviorReturnLowerBound(behavior : Behavior, parameter : Parameter, type : Type, lowerBound) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
-	Parameter.lowerValue(parameter, lowerBound);
+	Parameter.lowerValue(parameter, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type, upperBound : ValueSpecification) {
+BehaviorReturnUpperBound(behavior : Behavior, parameter : Parameter, type : Type, upperBound) {
 	find BehaviorReturnType(behavior, parameter, type, _, _);
-	Parameter.upperValue(parameter, upperBound);
+	Parameter.upperValue(parameter, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 pattern StaticBehavior(behavior : Behavior, isStatic) {
@@ -251,7 +255,7 @@ InheritedAttributeParent(cls : Class, attribute : Property, parent : Class) {
 // Both the defined and inherited attributes have types.
 // This prevents duplication of all attribute subpatterns.
 pattern
-AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
+AttributeType(cls : Class, attribute : Property, type : Type, ordered, unique) {
 	find Attribute(cls, attribute, _);
 	find AttributeTypeImpl(attribute, type, ordered, unique);
 } or {
@@ -260,23 +264,25 @@ AttributeType(cls : Class, attribute : Property, type, ordered, unique) {
 }
 
 private pattern
-AttributeTypeImpl(attribute : Property, type, ordered, unique) {
+AttributeTypeImpl(attribute : Property, type : Type, ordered, unique) {
 	Property.type(attribute, type);
 	Property.isOrdered(attribute, ordered);
 	Property.isUnique(attribute, unique);
 }
 
 pattern
-AttributeLowerBound(cls : Class, attribute : Property, type, lowerBound : ValueSpecification) {
+AttributeLowerBound(cls : Class, attribute : Property, type : Type, lowerBound) {
 	find AttributeType(cls, attribute, type, _, _);
-	Property.lowerValue(attribute, lowerBound);
+	Property.lowerValue(attribute, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-AttributeUpperBound(cls : Class, attribute : Property, type, upperBound : ValueSpecification) {
+AttributeUpperBound(cls : Class, attribute : Property, type : Type, upperBound) {
 	find AttributeType(cls, attribute, type, _, _);
-	Property.upperValue(attribute, upperBound);
-}
+	Property.upperValue(attribute, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
+} 
 
 // operations
 
@@ -308,7 +314,7 @@ OperationParameter(cls : Class, operation : Operation, parameter : Parameter, di
 }
 
 pattern
-OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type, ordered, unique) {
+OperationParameterType(cls : Class, operation : Operation, parameter : Parameter, type : Type, ordered, unique) {
 	find OperationParameter(cls, operation, parameter, _);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -316,15 +322,17 @@ OperationParameterType(cls : Class, operation : Operation, parameter : Parameter
 }
 
 pattern
-OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type, lowerBound : ValueSpecification) {
+OperationParameterLowerBound(cls : Class, operation : Operation, parameter : Parameter, type : Type, lowerBound) {
 	find OperationParameterType(cls, operation, parameter, type, _, _);
-	Parameter.lowerValue(parameter, lowerBound);
+	Parameter.lowerValue(parameter, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type, upperBound : ValueSpecification) {
+OperationParameterUpperBound(cls : Class, operation : Operation, parameter : Parameter, type : Type, upperBound) {
 	find OperationParameterType(cls, operation, parameter, type, _, _);
-	Parameter.upperValue(parameter, upperBound);
+	Parameter.upperValue(parameter, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 private pattern
@@ -335,7 +343,7 @@ OperationReturn(cls : Class, operation : Operation, parameter : Parameter) {
 }
 
 pattern
-OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
+OperationReturnType(cls : Class, operation : Operation, type : Type, ordered, unique) {
 	find OperationReturn(cls, operation, parameter);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -343,17 +351,19 @@ OperationReturnType(cls : Class, operation : Operation, type, ordered, unique) {
 }
 
 pattern
-OperationReturnLowerBound(cls : Class, operation : Operation, type, lowerBound : ValueSpecification) {
+OperationReturnLowerBound(cls : Class, operation : Operation, type : Type, lowerBound) {
 	find OperationReturn(cls, operation, parameter);
 	find OperationReturnType(cls, operation, type, _, _);
-	Parameter.lowerValue(parameter, lowerBound);
+	Parameter.lowerValue(parameter, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-OperationReturnUpperBound(cls : Class, operation : Operation, type, upperBound : ValueSpecification) {
+OperationReturnUpperBound(cls : Class, operation : Operation, type : Type, upperBound) {
 	find OperationReturn(cls, operation, parameter);
 	find OperationReturnType(cls, operation, type, _, _);
-	Parameter.upperValue(parameter, upperBound);
+	Parameter.upperValue(parameter, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 pattern Method(cls : Class, operation : Operation, method : Behavior) {
@@ -399,7 +409,7 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 }
 
 pattern
-ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type, ordered, unique) {
+ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type : Type, ordered, unique) {
 	find Reception(cls, reception, _);
 	Reception.ownedParameter(reception, parameter);
 	Parameter.direction(parameter, direction);
@@ -410,15 +420,17 @@ ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, ty
 }
 
 pattern
-ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound : ValueSpecification) {
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.lowerValue(parameter, lowerBound);
+	Parameter.lowerValue(parameter, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound : ValueSpecification) {
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.upperValue(parameter, upperBound);
+	Parameter.upperValue(parameter, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 // class associations
@@ -451,17 +463,19 @@ ClassAssociationType(cls : Class, end : Property, type : Association, ordered, u
 }
 
 pattern
-ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound : ValueSpecification) {
+ClassAssociationLowerBound(cls : Class, end : Property, type : Association, lowerBound) {
 	find ClassAssociationType(cls, end, type, _, _);
 	find AssociationOtherEnd(end, otherEnd);
-	Property.lowerValue(otherEnd, lowerBound);
+	Property.lowerValue(otherEnd, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-ClassAssociationUpperBound(cls : Class, end : Property, type : Association, upperBound : ValueSpecification) {
+ClassAssociationUpperBound(cls : Class, end : Property, type : Association, upperBound) {
 	find ClassAssociationType(cls, end, type, _, _);
 	find AssociationOtherEnd(end, otherEnd);
-	Property.upperValue(otherEnd, upperBound);
+	Property.upperValue(otherEnd, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
 }
 
 // -- event.eiq ----------------------------------------------------------------
@@ -562,7 +576,7 @@ pattern Signal(signal : Signal) {
 }
 
 pattern
-SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
+SignalAttribute(signal : Signal, attribute : Property, type : Type, ordered, unique) {
 	find Signal(signal);
 	Signal.ownedAttribute(signal, attribute);
 	Property.type(attribute, type);
@@ -571,14 +585,24 @@ SignalAttribute(signal : Signal, attribute : Property, type, ordered, unique) {
 }
 
 pattern
-SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound : ValueSpecification) {
+SignalAttributeLowerBound(signal : Signal, attribute : Property, lowerBound) {
 	find SignalAttribute(signal, attribute, _, _, _);
-	Property.lowerValue(attribute, lowerBound);
+	Property.lowerValue(attribute, lowerBoundSpec);
+	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound : ValueSpecification) {
+SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound) {
 	find SignalAttribute(signal, attribute, _, _, _);
-	Property.upperValue(attribute, upperBound);
+	Property.upperValue(attribute, upperBoundSpec);
+	find NumericValue(upperBoundSpec, upperBound);
+}
+
+// -- general patterns ?
+
+private pattern NumericValue(spec : ValueSpecification, value) {
+	LiteralInteger.value(spec, value);
+} or {
+	LiteralUnlimitedNatural.value(spec, value);
 }
 

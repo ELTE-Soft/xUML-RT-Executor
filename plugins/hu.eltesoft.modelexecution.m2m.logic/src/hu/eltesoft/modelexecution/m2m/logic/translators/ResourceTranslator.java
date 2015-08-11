@@ -3,9 +3,12 @@ package hu.eltesoft.modelexecution.m2m.logic.translators;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
+import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
 import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 
@@ -26,6 +29,9 @@ import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslat
  * changes.
  */
 public class ResourceTranslator {
+
+	private static final String PATHMAP_SCHEME = "pathmap";
+	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
 	public static ResourceTranslator createIncremental(Resource resource) {
 		return new ResourceTranslator(resource, true);
@@ -59,10 +65,27 @@ public class ResourceTranslator {
 		rootNames.clear();
 
 		try {
+			// Only allows library resources to be indexed, but not metamodels
+			// or profiles. This is neccessary because indexing metamodels
+			// extremely degrades
+			// performance.
+			BaseIndexOptions options = new BaseIndexOptions()
+					.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
+
+						@Override
+						public boolean isResourceFiltered(Resource resource) {
+							URI uri = resource.getURI();
+							return PATHMAP_SCHEME.equals(uri.scheme())
+									&& !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
+						}
+					});
+
+			EMFScope emfScope = new EMFScope(resource.getResourceSet(), options);
+
 			if (incremental) {
-				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(new EMFScope(resource)));
+				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(emfScope));
 			} else {
-				engine = AdvancedIncQueryEngine.createUnmanagedEngine(new EMFScope(resource));
+				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
 			}
 
 			setupTranslators();

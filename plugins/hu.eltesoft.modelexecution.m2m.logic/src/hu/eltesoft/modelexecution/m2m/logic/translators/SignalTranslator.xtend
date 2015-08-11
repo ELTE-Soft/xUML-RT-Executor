@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
@@ -15,7 +16,6 @@ import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Signal
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMatch> {
 
@@ -45,10 +45,10 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 			return elem
 		]
 		attributeNode.on(BASE_PACKAGE.multiplicity_LowerBound, SignalAttributeLowerBoundMatcher.on(engine)) [
-			lowerBound.toInt
+			lowerBound
 		]
 		attributeNode.on(BASE_PACKAGE.multiplicity_UpperBound, SignalAttributeUpperBoundMatcher.on(engine)) [
-			upperBound.toInt
+			upperBound
 		]
 	}
 
