@@ -33,7 +33,7 @@ class ClassSpecTemplate extends Template {
 		/** Interface for specification of UML class «classSpec.javadoc» */
 		public interface «classSpec.identifier» 
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
-		
+				
 			/** Creator for UML class «classSpec.javadoc» */
 			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime) {
 				«FOR rec : classSpec.ctorRecords»

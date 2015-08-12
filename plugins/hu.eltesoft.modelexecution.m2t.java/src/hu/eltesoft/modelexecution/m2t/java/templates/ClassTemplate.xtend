@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
@@ -14,10 +15,12 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
+import hu.eltesoft.modelexecution.runtime.meta.AttributeM
+import hu.eltesoft.modelexecution.runtime.meta.ClassM
+import hu.eltesoft.modelexecution.runtime.meta.VisibilityM
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -37,6 +40,21 @@ class ClassTemplate extends Template {
 		public class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
+				
+			/** Meta-description of the structure of the class */
+			public static «ClassM.canonicalName» metaRepr = new «ClassM.canonicalName»(
+				new «ClassM.canonicalName»[] { 
+					«FOR parent : classDefinition.parents SEPARATOR ','»
+						«parent.implementation».metaRepr
+					«ENDFOR»
+				},
+				new «AttributeM.canonicalName»[] { 
+					«FOR attr : classDefinition.attributes SEPARATOR ','»
+						new «AttributeM.canonicalName»(«attr.nameLiteral», "«attr.identifier»", «VisibilityM.canonicalName».«VisibilityM.PublicM»)
+					«ENDFOR»
+				}
+			);
+		
 			«content»
 		}
 	'''
@@ -47,7 +65,7 @@ class ClassTemplate extends Template {
 				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
 			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
 			«FOR parent : classDefinition.parents»
-				this.«parent.inherited» = «parent.inherited»;
+				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
 		}
 
