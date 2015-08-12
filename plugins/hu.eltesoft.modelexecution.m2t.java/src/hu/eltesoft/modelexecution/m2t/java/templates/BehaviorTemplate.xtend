@@ -1,8 +1,8 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
-import hu.eltesoft.modelexecution.m2t.java.BehaviorBodyGenerator
 import hu.eltesoft.modelexecution.m2t.java.Template
+import hu.eltesoft.modelexecution.m2t.java.behavior.BehaviorBodyGenerator
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.runtime.base.ActionCode
@@ -42,8 +42,8 @@ class BehaviorTemplate extends Template {
 		 */
 		public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
 			«IF !behavior.isStatic»«behavior.containerClass.identifier» 
-					«CONTEXT_NAME»
-					«IF !behavior.parameters.empty»,«ENDIF»
+						«CONTEXT_NAME»
+						«IF !behavior.parameters.empty»,«ENDIF»
 			«ENDIF»
 			«FOR param : behavior.parameters SEPARATOR ','»
 				«javaType(param.type)» «param.identifier»
@@ -56,5 +56,4 @@ class BehaviorTemplate extends Template {
 			«ENDIF»
 		}
 	'''
-
 }

@@ -11,8 +11,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
-import hu.eltesoft.modelexecution.m2t.java.BehaviorUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.Template
+import hu.eltesoft.modelexecution.m2t.java.behavior.BehaviorUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
 import hu.eltesoft.modelexecution.uml.incquery.ActionCodeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch

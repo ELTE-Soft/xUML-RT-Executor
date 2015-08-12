@@ -12,6 +12,9 @@
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_inRboBWVEeWYQpLaR7ziYA" name="proxy" type="_aeMPwMc1EeSnK7LttAdTLw"/>
       </ownedOperation>
     </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_9SdsIEDoEeWCNoKXHvCpUQ" name="B">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_-1zHIEDoEeWCNoKXHvCpUQ" name="Op"/>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z7Si8BWVEeWYQpLaR7ziYA">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkRWVEeWYQpLaR7ziYA" source="PapyrusVersion">
         <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YpkhWVEeWYQpLaR7ziYA" key="Version" value="0.0.4"/>

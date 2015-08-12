@@ -29,8 +29,6 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatch
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
-import org.eclipse.uml2.uml.ParameterDirectionKind
-import org.eclipse.uml2.uml.Type
 
 /**
  * A helper class for translating UML classes. From UML classes both implementation classes and interfaces 
@@ -44,11 +42,7 @@ class ClassConvertHelper {
 	static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
 	static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
 
-	static val typeConverter = new TypeConverter
-
-	def static convert(ParameterDirectionKind dir) { typeConverter.convert(dir) }
-
-	def static convert(Type typ) { typeConverter.convert(typ) }
+	static extension TypeConverter typeConverter = new TypeConverter
 
 	def static fillAttribute(AbstractFeatureNode<? extends ClAttributeSpec, ?> node, IncQueryEngine engine) {
 		val attributeType = node.onEObject(BASE_PACKAGE.typed_Type, AttributeTypeMatcher.on(engine)) [

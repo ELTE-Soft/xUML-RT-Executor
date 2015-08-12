@@ -16,4 +16,5 @@ Require-Bundle: hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.5.0",
  org.eclipse.uml2.uml;bundle-version="5.1.0",
  org.eclipse.incquery.runtime;bundle-version="1.1.0"
 Export-Package: hu.eltesoft.modelexecution.m2t.java,
+ hu.eltesoft.modelexecution.m2t.java.behavior,
  hu.eltesoft.modelexecution.m2t.java.templates
