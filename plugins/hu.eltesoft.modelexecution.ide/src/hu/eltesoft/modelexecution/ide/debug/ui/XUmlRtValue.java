@@ -13,31 +13,40 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaValue;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
 
+import com.sun.jdi.ArrayReference;
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
+import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
-import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.JDTThread;
 import hu.eltesoft.modelexecution.runtime.meta.AttributeM;
+import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
 
 @SuppressWarnings("restriction")
 public class XUmlRtValue extends MokaValue implements IValue {
 
 	private Value value;
-	private ThreadReference thread;
+	private JDTThread thread;
+	private BoundsM bounds;
 
-	public XUmlRtValue(MokaDebugTarget debugTarget, ThreadReference thread, Value value) {
+	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread mainThread, Value value) {
 		super(debugTarget);
-		this.thread = thread;
+		this.thread = mainThread;
 		this.value = value;
+	}
+
+	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread thread, Value value, BoundsM bounds) {
+		this(debugTarget, thread, value);
+		this.bounds = bounds;
 	}
 
 	@Override
@@ -49,15 +58,17 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			if (metaField != null) {
 				ObjectReference meta = (ObjectReference) type.getValue(metaField);
 				try {
-					StringReference res = (StringReference) meta.invokeMethod(thread,
-							meta.referenceType().methodsByName("serialize").get(0), new LinkedList<>(), 0);
-					ClassM metaInfo = ClassM.deserialize(res.value());
-					Map<AttributeM, Value> attribValues = new HashMap<AttributeM, Value>();
-					for (AttributeM attrib : metaInfo.attributes) {
-						Field field = type.fieldByName(attrib.identifier);
-						attribValues.put(attrib, valueObj.getValue(field));
+					synchronized (thread) {
+						StringReference res = (StringReference) thread.invokeMethod(meta,
+								meta.referenceType().methodsByName("serialize").get(0));
+						ClassM metaInfo = ClassM.deserialize(res.value());
+						Map<AttributeM, Value> attribValues = new HashMap<AttributeM, Value>();
+						for (AttributeM attrib : metaInfo.getAttributes()) {
+							Field field = type.fieldByName(attrib.getIdentifier());
+							attribValues.put(attrib, valueObj.getValue(field));
+						}
+						return presentAttributes(attribValues);
 					}
-					return presentAttributes(attribValues);
 				} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
 						| InvocationException e) {
 					IdePlugin.logError("Error while retrieving meta info");
@@ -70,9 +81,9 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	private IVariable[] presentAttributes(Map<AttributeM, Value> attribValues) throws DebugException {
 		List<IVariable> presentedAttributes = new LinkedList<>();
 		for (Entry<AttributeM, Value> attribValue : attribValues.entrySet()) {
-			MokaVariable attr = new MokaVariable(debugTarget);
-			attr.setName(attribValue.getKey().name);
-			attr.setValue(new XUmlRtValue(debugTarget, thread, attribValue.getValue()));
+			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, attribValue.getValue(),
+					attribValue.getKey().getBounds());
+			MokaVariable attr = new XUmlRtVariable(debugTarget, attribValue.getKey().getName(), varValue);
 			presentedAttributes.add(attr);
 		}
 		return presentedAttributes.toArray(new IVariable[presentedAttributes.size()]);
@@ -80,20 +91,48 @@ public class XUmlRtValue extends MokaValue implements IValue {
 
 	@Override
 	public String getValueString() throws DebugException {
-		String stringRepr = value.toString();
-		if (value instanceof ObjectReference) {
-			ObjectReference objectReference = (ObjectReference) value;
-			try {
-				stringRepr = objectReference.invokeMethod(thread,
-						objectReference.referenceType().methodsByName("toString").get(0), new LinkedList<>(), 0)
-						.toString();
-			} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException e) {
-				IdePlugin.logError("Error while invoking toString to get representation");
-			} catch (InvocationException e) {
-				// Exception while calling toString, fall through
+		synchronized (thread) {
+			// show the object using it's toString method
+			if (value instanceof ObjectReference) {
+				ObjectReference objectReference = (ObjectReference) value;
+				try {
+					if (bounds != null && bounds.isAtMostSingle()) {
+						List<Method> iteratorMethod = objectReference.referenceType().methodsByName("toArray");
+						iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
+						if (iteratorMethod.isEmpty()) {
+							IdePlugin.logError("Attribute value is not iterable");
+						} else {
+							ArrayReference valueArray = (ArrayReference) thread.invokeMethod(objectReference,
+									iteratorMethod.get(0));
+							if (valueArray.length() > 0) {
+								objectReference = (ObjectReference) valueArray.getValue(0);
+							} else {
+								return "null";
+							}
+						}
+					}
+
+					List<Method> toStringMethod = objectReference.referenceType().methodsByName("toString");
+					toStringMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
+					if (toStringMethod.isEmpty()) {
+						IdePlugin.logError("No toString method on value");
+					} else {
+						Value toStringResult = thread.invokeMethod(objectReference, toStringMethod.get(0));
+						if (toStringResult instanceof StringReference) {
+							return ((StringReference) toStringResult).value();
+						} else {
+							IdePlugin.logError("The result of toString is not a String");
+						}
+					}
+				} catch (InvocationException e) {
+					// Exception while calling toString, fall through
+				} catch (Exception e) {
+					IdePlugin.logError("Error while invoking toString to get representation", e);
+				}
 			}
+			// if not available, use the mirror's toString
+			return value.toString();
 		}
-		return stringRepr;
 	}
 
 	@Override

@@ -5,18 +5,26 @@ import org.json.JSONObject;
 
 public class ClassM {
 
-	public AttributeM[] attributes;
-	public ClassM[] parents;
-
-	public ClassM() {
-	}
+	private AttributeM[] attributes;
+	private ClassM[] parents;
 
 	public ClassM(ClassM[] parents, AttributeM[] attributes) {
 		this.attributes = attributes;
 		this.parents = parents;
 	}
 	
+	public AttributeM[] getAttributes() {
+		return attributes;
+	}
+
+	public ClassM[] getParents() {
+		return parents;
+	}
+	
 	// serialization and deserialization
+
+	private ClassM() {
+	}
 	
 	public String serialize() {
 		return serializeToJson().toString();
@@ -38,8 +46,12 @@ public class ClassM {
 	}
 
 	public static ClassM deserialize(String serialized) {
+		return deserialize(new JSONObject(serialized));
+	}
+
+	public static ClassM deserialize(JSONObject classJSON) {
 		ClassM ret = new ClassM();
-		ret.deserializeFromJson(new JSONObject(serialized));
+		ret.deserializeFromJson(classJSON);
 		return ret;
 	}
 	
@@ -47,16 +59,12 @@ public class ClassM {
 		JSONArray attribArray = classJSON.getJSONArray("attributes");
 		this.attributes = new AttributeM[attribArray.length()];
 		for (int i = 0; i < attribArray.length(); ++i) {
-			AttributeM attribute = new AttributeM();
-			attribute.deserializeFromJson(attribArray.getJSONObject(i));
-			attributes[i] = attribute;
+			attributes[i] = AttributeM.deserialize(attribArray.getJSONObject(i));
 		}
 		JSONArray parentArray = classJSON.getJSONArray("parents");
 		this.parents = new ClassM[parentArray.length()];
 		for (int i = 0; i < parentArray.length(); ++i) {
-			ClassM parent = new ClassM();
-			parent.deserializeFromJson(attribArray.getJSONObject(i));
-			parents[i] = parent;
+			parents[i] = deserialize(attribArray.getJSONObject(i));
 		}
 
 	}
