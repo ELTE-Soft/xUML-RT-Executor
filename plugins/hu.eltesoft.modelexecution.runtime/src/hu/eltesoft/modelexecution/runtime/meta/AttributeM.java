@@ -1,28 +1,34 @@
 package hu.eltesoft.modelexecution.runtime.meta;
 
+import org.json.JSONObject;
+
 public class AttributeM {
 
-	private String name;
-	private String identifier;
-	private VisibilityM visibility;
+	public String name;
+	public String identifier;
+	public VisibilityM visibility;
 
+	public AttributeM() {
+	}
+	
 	public AttributeM(String name, String identifier, VisibilityM visibility) {
-		super();
 		this.name = name;
 		this.visibility = visibility;
 		this.identifier = identifier;
 	}
 
-	public String getName() {
-		return name;
+	public JSONObject serializeToJson() {
+		JSONObject obj = new JSONObject();
+		obj.put("name", name);
+		obj.put("identifier", identifier);
+		obj.put("visibility", visibility.toString());
+		return obj;
 	}
 
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public VisibilityM getVisibility() {
-		return visibility;
+	public void deserializeFromJson(JSONObject json) {
+		name = json.getString("name");
+		identifier = json.getString("identifier");
+		visibility = VisibilityM.valueOf(json.getString("visibility"));
 	}
 
 }
