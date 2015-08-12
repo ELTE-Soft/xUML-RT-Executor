@@ -35,8 +35,7 @@ abstract class Template extends EmfTraceExtensions {
 	}
 
 	new(Named genModel) {
-		val nameMapping = new NameMapper().mapNames(genModel)
-		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+		debugSymbols = new DebugSymbols(locationRegistry)
 	}
 
 	/**
