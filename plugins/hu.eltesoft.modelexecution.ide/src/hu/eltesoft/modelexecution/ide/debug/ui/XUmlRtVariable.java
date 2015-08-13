@@ -13,7 +13,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
-import hu.eltesoft.modelexecution.runtime.meta.AttributeM;
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
 import hu.eltesoft.modelexecution.runtime.meta.SignalM;
@@ -59,7 +59,7 @@ public class XUmlRtVariable extends MokaVariable implements IPresentation {
 	public Image getImage() {
 		// TODO: show different icons for public, protected, package, private,
 		// static attributes and local variables
-		if (leftVal instanceof AttributeM) {
+		if (leftVal instanceof PropertyM) {
 			return getIconForType(UMLFactory.eINSTANCE.createProperty());
 		} else if (leftVal instanceof SignalM) {
 			return getIconForType(UMLFactory.eINSTANCE.createSignal());

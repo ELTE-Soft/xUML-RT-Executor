@@ -15,12 +15,12 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
-import hu.eltesoft.modelexecution.runtime.meta.AttributeM
 import hu.eltesoft.modelexecution.runtime.meta.ClassM
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -49,9 +49,9 @@ class ClassTemplate extends Template {
 						«parent.implementation».metaRepr
 					«ENDFOR»
 				},
-				new «AttributeM.canonicalName»[] { 
+				new «PropertyM.canonicalName»[] { 
 					«FOR attr : classDefinition.attributes SEPARATOR ','»
-						new «AttributeM.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
+						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
 							new «BoundsM.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
 					«ENDFOR»
 				}

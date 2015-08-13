@@ -27,7 +27,7 @@ import com.sun.jdi.Value;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.JDTThread;
 import hu.eltesoft.modelexecution.m2t.java.Template;
-import hu.eltesoft.modelexecution.runtime.meta.AttributeM;
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
 
@@ -92,8 +92,8 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			StringReference res = (StringReference) thread.invokeMethod(meta,
 					meta.referenceType().methodsByName(SERIALIZE_METHOD_NAME).get(0));
 			ClassM metaInfo = ClassM.deserialize(res.value());
-			Map<AttributeM, Value> attribValues = new HashMap<AttributeM, Value>();
-			for (AttributeM attrib : metaInfo.getAttributes()) {
+			Map<PropertyM, Value> attribValues = new HashMap<PropertyM, Value>();
+			for (PropertyM attrib : metaInfo.getAttributes()) {
 				Field field = type.fieldByName(attrib.getIdentifier());
 				attribValues.put(attrib, valueObj.getValue(field));
 			}
@@ -105,12 +105,12 @@ public class XUmlRtValue extends MokaValue implements IValue {
 		}
 	}
 
-	private IVariable[] presentAttributes(Map<AttributeM, Value> attribValues) throws DebugException {
+	private IVariable[] presentAttributes(Map<PropertyM, Value> propertyValues) throws DebugException {
 		List<IVariable> shownAttributes = new LinkedList<>();
-		for (Entry<AttributeM, Value> attribValue : attribValues.entrySet()) {
-			AttributeM attribute = attribValue.getKey();
-			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, attribValue.getValue(), attribute.getBounds());
-			shownAttributes.add(new XUmlRtVariable(debugTarget, attribute, varValue));
+		for (Entry<PropertyM, Value> propertyValue : propertyValues.entrySet()) {
+			PropertyM property = propertyValue.getKey();
+			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, propertyValue.getValue(), property.getBounds());
+			shownAttributes.add(new XUmlRtVariable(debugTarget, property, varValue));
 		}
 		return shownAttributes.toArray(new IVariable[shownAttributes.size()]);
 	}

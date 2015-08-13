@@ -2,6 +2,9 @@ package hu.eltesoft.modelexecution.runtime.meta;
 
 import org.json.JSONObject;
 
+/**
+ * Stores the multiplicity of an attribute on the meta-level.
+ */
 public class BoundsM {
 
 	public static BoundsM SINGLE = new BoundsM(1, 1);
@@ -9,7 +12,14 @@ public class BoundsM {
 	public static BoundsM ANY = new BoundsM(0, -1);
 	public static BoundsM MANY = new BoundsM(1, -1);
 	
+	/**
+	 * Upper bound on the multiplicity. -1 means no upper bound.
+	 */
 	private int upper;
+	
+	/**
+	 * Lower bound on the multiplicity
+	 */
 	private int lower;
 
 	public BoundsM(int upper, int lower) {
@@ -52,6 +62,9 @@ public class BoundsM {
 		lower = json.getInt("lower");
 	}
 
+	/**
+	 * @return true, if the multiplicity cannot be greater than 1.
+	 */
 	public boolean isAtMostSingle() {
 		return upper == 0 || upper == 1;
 	}
