@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.5.0",
+ hu.eltesoft.modelexecution.profile;bundle-version="0.5.0",
  hu.eltesoft.modelexecution.runtime;bundle-version="0.5.0",
  com.incquerylabs.uml.ralf;bundle-version="1.0.0",
  org.apache.commons.lang;bundle-version="2.6.0",

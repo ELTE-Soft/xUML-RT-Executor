@@ -19,12 +19,10 @@ import static org.junit.Assert.*
 
 class TemplateSmokeTests extends ModelBasedTestCase {
 
-	static val UML_TEST_MODEL_PATH = "resources/model.uml";
-
 	var Class aClass
 
 	new() {
-		super(UML_TEST_MODEL_PATH)
+		super(ModelProperties.PATH)
 	}
 
 	@Before

@@ -4,14 +4,20 @@ import java.math.BigInteger
 import org.junit.Ignore
 import org.junit.Test
 
-/*
- * Test compilation of literals using a wrapper expression statement (hence the semicolon at the end of every test input).
- * As reduced ALF literals are designed to be the same as Java literals, the compiler outputs the same code as its input was.
- */
-class LiteralCompilerTests extends CompiledCodeCheckTestCase {
+class LiteralTests extends CompiledCodeCheckTestCase {
 
 	new() {
-		compiler = new LiteralCompiler()
+		compiler = new ExpressionCompiler()
+	}
+
+	@Test
+	def testNull() {
+		assertCompilesToSame("null;")
+	}
+
+	@Test
+	def testThis() {
+		assertCompilesTo("this;", '''«Compiler.CONTEXT_NAME»;''')
 	}
 
 	@Test
@@ -26,33 +32,33 @@ class LiteralCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testNaturalZero() {
-		assertCompilesToSame("0;")
+		assertCompilesTo("0;", "java.math.BigInteger.valueOf(0);")
 	}
 
 	@Test
 	def testNaturalDecimalHundred() {
-		assertCompilesToSame("100;")
+		assertCompilesTo("100;", "java.math.BigInteger.valueOf(100);")
 	}
 
 	@Test
 	def testNaturalHexadecimalHundred() {
-		assertCompilesToSame("0x64;")
+		assertCompilesTo("0x64;", "java.math.BigInteger.valueOf(0x64);")
 	}
 
 	@Test
 	def testNaturalOctalHundred() {
-		assertCompilesToSame("0144;")
+		assertCompilesTo("0144;", "java.math.BigInteger.valueOf(0144);")
 	}
 
 	@Test
 	def testNaturalBinaryHundred() {
-		assertCompilesToSame("0b1100100;")
-		assertCompilesToSame("0B1100100;")
+		assertCompilesTo("0b1100100;", "java.math.BigInteger.valueOf(0b1100100);")
+		assertCompilesTo("0B1100100;", "java.math.BigInteger.valueOf(0B1100100);")
 	}
 
 	@Test
 	def testNaturalUnderscoreSeparator() {
-		assertCompilesToSame("1_000_000_000;")
+		assertCompilesTo("1_000_000_000;", "java.math.BigInteger.valueOf(1_000_000_000);")
 	}
 
 	@Test
@@ -70,7 +76,7 @@ class LiteralCompilerTests extends CompiledCodeCheckTestCase {
 		assertCompilesToSame('''"hello\b\t\n\f\r\"'\\world";''')
 	}
 
-	@Ignore("Unlimited naturals are unsupported yet")
+	@Ignore("Unlimited naturals are unsupported (yet?)")
 	@Test
 	def testUnboundedNatural() {
 		assertCompilesTo("*;", '''«BigInteger.canonicalName».MAX_VALUE;''')

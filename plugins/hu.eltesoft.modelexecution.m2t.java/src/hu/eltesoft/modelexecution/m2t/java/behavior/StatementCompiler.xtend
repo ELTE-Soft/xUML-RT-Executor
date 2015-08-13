@@ -6,10 +6,14 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.BreakStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.DoStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.EmptyStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ForStatement
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.IfStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReturnStatement
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.SendSignalStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.WhileStatement
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
-class StatementCompiler extends NameCompiler {
+// TODO: missing statements: SwitchStatement, ForEachStatement ClassifyStatement
+class StatementCompiler extends ExpressionCompiler {
 
 	def dispatch void compile(EmptyStatement statement) {
 		append(";")
@@ -44,15 +48,33 @@ class StatementCompiler extends NameCompiler {
 		append(";")
 	}
 
+	def dispatch void compile(IfStatement statement) {
+		for (i : 0 ..< statement.nonFinalClauses.size) {
+			// simply get the first concurrent clause as they are not really supported
+			val clause = statement.nonFinalClauses.get(i).clause.get(0)
+			if (i > 0) {
+				append("else ")
+			}
+			append("if (")
+			compile(clause.condition)
+			append(") ")
+			compile(clause.body)
+		}
+		if (null != statement.finalClause) {
+			append("else ")
+			compile(statement.finalClause)
+		}
+	}
+
 	def dispatch void compile(WhileStatement loop) {
 		append("while (")
 		compile(loop.condition)
-		append(")\n")
+		append(") ")
 		compile(loop.body)
 	}
 
 	def dispatch void compile(DoStatement loop) {
-		append("do\n")
+		append("do ")
 		compile(loop.body, false)
 		append(" while (")
 		compile(loop.condition)
@@ -67,18 +89,20 @@ class StatementCompiler extends NameCompiler {
 		compile(loop.condition)
 		append("; ")
 		compile(loop.update)
-		append(")\n")
+		append(") ")
 		compile(loop.body)
 	}
 
 	def dispatch void compile(BreakStatement statement) {
 		append("break;")
 	}
-/*
- * IfStatement |
- *     SwitchStatement |
- *     ForEachStatement |
- *     ClassifyStatement |
- *     SendSignalStatement 
- */
+
+	def dispatch void compile(SendSignalStatement send) {
+		compile(send.target)
+		append(".send(new ")
+		append(SignalEvent.canonicalName)
+		append("(")
+		compile(send.signal)
+		append("));")
+	}
 }

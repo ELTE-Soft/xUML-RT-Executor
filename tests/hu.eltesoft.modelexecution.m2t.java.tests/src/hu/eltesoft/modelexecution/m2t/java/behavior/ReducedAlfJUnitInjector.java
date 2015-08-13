@@ -11,7 +11,9 @@ import com.incquerylabs.uml.ralf.ReducedAlfLanguageInjectorProvider;
 import com.incquerylabs.uml.ralf.api.IReducedAlfParser;
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser;
 import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider;
-import com.incquerylabs.uml.ralf.scoping.SimpleUMLContextProvider;
+import com.incquerylabs.uml.ralf.tests.util.TestModelUMLContextProvider;
+
+import hu.eltesoft.modelexecution.m2t.java.ModelProperties;
 
 public class ReducedAlfJUnitInjector extends ReducedAlfLanguageInjectorProvider {
 
@@ -36,7 +38,7 @@ public class ReducedAlfJUnitInjector extends ReducedAlfLanguageInjectorProvider 
 		Module customizations = new Module() {
 			@Override
 			public void configure(Binder binder) {
-				SimpleUMLContextProvider provider = new SimpleUMLContextProvider();
+				IUMLContextProvider provider = new TestModelUMLContextProvider(ModelProperties.PATH);
 				binder.bind(IUMLContextProvider.class).toInstance(provider);
 				binder.bind(IReducedAlfParser.class).to(ReducedAlfParser.class);
 			}
