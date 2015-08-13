@@ -14,7 +14,7 @@ import org.eclipse.debug.core.model.IProcess;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
-import hu.eltesoft.modelexecution.runtime.RuntimeController;
+import hu.eltesoft.modelexecution.runtime.RuntimeControllerServer;
 
 /**
  * This decorator changes the process to try to terminate in a gentle way.
@@ -33,7 +33,7 @@ public class GracefulTerminationProcessDecorator extends ProcessDecorator {
 
 		if (socket != null) {
 			try {
-				writer.append(RuntimeController.COMMAND_TERMINATE + "\n");
+				writer.append(RuntimeControllerServer.COMMAND_TERMINATE + "\n");
 				writer.flush();
 			} catch (IOException e) {
 				IdePlugin.logError("Error while trying to send terminate request", e);
