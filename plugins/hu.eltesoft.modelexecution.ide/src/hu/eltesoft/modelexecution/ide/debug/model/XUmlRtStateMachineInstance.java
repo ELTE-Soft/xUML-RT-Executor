@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.ui;
+package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;

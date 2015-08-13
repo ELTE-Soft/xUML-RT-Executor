@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.ui;
+package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.emf.ecore.EObject;

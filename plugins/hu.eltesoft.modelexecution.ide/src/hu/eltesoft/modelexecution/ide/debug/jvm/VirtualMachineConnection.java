@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.jvm;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +16,9 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtValue;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtVariable;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtValue;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerM;

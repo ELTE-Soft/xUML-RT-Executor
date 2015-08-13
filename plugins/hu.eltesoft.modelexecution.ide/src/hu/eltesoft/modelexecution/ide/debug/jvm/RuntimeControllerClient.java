@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.jvm;
 
 import java.io.BufferedReader;
 import java.io.IOException;

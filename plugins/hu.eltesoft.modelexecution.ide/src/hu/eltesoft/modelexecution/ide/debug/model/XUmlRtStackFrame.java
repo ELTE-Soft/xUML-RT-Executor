@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.ui;
+package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;

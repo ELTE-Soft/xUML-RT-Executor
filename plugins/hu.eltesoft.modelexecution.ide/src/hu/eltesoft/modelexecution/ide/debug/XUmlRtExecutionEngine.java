@@ -40,12 +40,17 @@ import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.jvm.ReactiveClassListener;
+import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
@@ -74,7 +79,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	// access must be synchronized to intrinsic lock of "animation"!
 	private boolean waitingForSuspend = false;
 
-	private Map<String, MokaThread> threads = new HashMap<>();
+	private Map<String, MokaThread> smInstances = new HashMap<>();
 	private VirtualMachineConnection virtualMachineConnection;
 
 	@Override
@@ -118,12 +123,12 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 						public void instanceCreated(String instanceName) {
 							XUmlRtStateMachineInstance thread = new XUmlRtStateMachineInstance(debugTarget);
 							thread.setName(instanceName);
-							threads.put(instanceName, thread);
+							smInstances.put(instanceName, thread);
 						}
 
 						@Override
 						public void instanceDestroyed(String instanceName) {
-							threads.remove(instanceName);
+							smInstances.remove(instanceName);
 						}
 					});
 				}
@@ -262,7 +267,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		MokaThread actualSMInstance = threads.get(virtualMachineConnection.getActualSMInstance());
+		MokaThread actualSMInstance = smInstances.get(virtualMachineConnection.getActualSMInstance());
 
 		if (actualSMInstance != null) {
 			// show the current element as a stack frame
@@ -286,7 +291,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
 			// remove stack frames from all threads before resuming
-			threads.values().forEach(t -> t.setStackFrames(new IStackFrame[0]));
+			smInstances.values().forEach(t -> t.setStackFrames(new IStackFrame[0]));
 
 			waitingForSuspend = false;
 			virtualMachine.resume();
@@ -335,25 +340,24 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public MokaThread[] getThreads() {
-		return threads.values().toArray(new MokaThread[] {});
+		return smInstances.values().toArray(new MokaThread[] {});
 	}
 
 	@Override
 	public IStackFrame[] getStackFrames(IThread thread) {
-		try {
-			return thread.getStackFrames();
-		} catch (DebugException e) {
-			return new IStackFrame[0];
-		}
+		// stack frames are added directly to the state machine instances
+		return new IStackFrame[0];
 	}
 
 	@Override
 	public IVariable[] getVariables(IDebugElement stackFrameOrValue) {
+		// variables are added directly to the stack frames and values
 		return new MokaVariable[0];
 	}
 
 	@Override
 	public IRegisterGroup[] getRegisterGroups(IStackFrame stackFrame) {
+		// register groups are not used
 		return new IRegisterGroup[0];
 	}
 }

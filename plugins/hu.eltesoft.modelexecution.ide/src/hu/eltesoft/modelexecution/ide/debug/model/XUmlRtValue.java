@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.ui;
+package hu.eltesoft.modelexecution.ide.debug.model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM;

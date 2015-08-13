@@ -4,7 +4,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 
-import hu.eltesoft.modelexecution.ide.debug.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.util.ProcessDecorator;
 
 /**

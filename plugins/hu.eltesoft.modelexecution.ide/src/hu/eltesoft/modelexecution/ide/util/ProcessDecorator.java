@@ -7,7 +7,7 @@ import org.eclipse.debug.core.model.IStreamsProxy;
 
 import com.sun.jdi.VirtualMachine;
 
-import hu.eltesoft.modelexecution.ide.debug.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
