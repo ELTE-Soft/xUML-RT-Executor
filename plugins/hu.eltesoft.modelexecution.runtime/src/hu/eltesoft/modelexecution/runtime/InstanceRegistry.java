@@ -31,7 +31,7 @@ public final class InstanceRegistry {
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public StatefulClass getInstance(Class<?> targetClass, int instanceID) {
+	public StatefulClass getInstance(Class<? extends StatefulClass> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
@@ -76,18 +76,18 @@ public final class InstanceRegistry {
 	}
 
 	public static final class InstanceKey {
+		private Class<? extends StatefulClass> klass;
+		private int instanceID;
+		
 		public InstanceKey(StatefulClass instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
 		}
 
-		public InstanceKey(Class<?> klass, int instanceID) {
+		public InstanceKey(Class<? extends StatefulClass> klass, int instanceID) {
 			this.klass = klass;
 			this.instanceID = instanceID;
 		}
-
-		private Class<?> klass;
-		private int instanceID;
 
 		@Override
 		public int hashCode() {

@@ -42,7 +42,7 @@ class ClassTemplate extends Template {
 			implements «classDefinition.identifier» {
 				
 			/** Meta-description of the structure of the class */
-			public static «ClassM.canonicalName» metaRepr = new «ClassM.canonicalName»(
+			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
 				«classDefinition.nameLiteral»,
 				new «ClassM.canonicalName»[] { 
 					«FOR parent : classDefinition.parents SEPARATOR ','»
@@ -58,7 +58,7 @@ class ClassTemplate extends Template {
 			);
 			
 			protected String getOriginalClassName() {
-				return metaRepr.getName();
+				return «META_REPR_NAME».getName();
 			}
 		
 			«content»

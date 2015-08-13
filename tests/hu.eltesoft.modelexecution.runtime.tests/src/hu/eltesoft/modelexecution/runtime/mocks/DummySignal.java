@@ -28,4 +28,9 @@ public class DummySignal extends Signal {
 		// nothing to do
 	}
 
+	@Override
+	protected String getOriginalSignalName() {
+		return "DummySignal";
+	}
+
 }

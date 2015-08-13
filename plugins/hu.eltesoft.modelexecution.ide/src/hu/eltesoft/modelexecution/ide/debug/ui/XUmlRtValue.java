@@ -11,7 +11,6 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaValue;
-import org.eclipse.papyrus.moka.debug.MokaVariable;
 
 import com.sun.jdi.ArrayReference;
 import com.sun.jdi.ClassNotLoadedException;
@@ -27,15 +26,36 @@ import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.JDTThread;
+import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.AttributeM;
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
 
+/**
+ * Presentation of values in the executed model. It appears in the variables
+ * view.
+ */
 @SuppressWarnings("restriction")
 public class XUmlRtValue extends MokaValue implements IValue {
 
+	private static final String TO_ARRAY_METHOD = "toArray";
+	private static final String TO_STRING_METHOD = "toString";
+	private static final String SERIALIZE_METHOD_NAME = "serialize";
+	
+	
+	/**
+	 * The mirror of the value contained in the running virtual machine.
+	 */
 	private Value value;
+	
+	/**
+	 * Main thread for invoking methods in the virtual machine to support presentation.
+	 */
 	private JDTThread thread;
+	
+	/**
+	 * Multiplicity of the attribute that has this value. Used during presentation.
+	 */
 	private BoundsM bounds;
 
 	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread mainThread, Value value) {
@@ -44,6 +64,9 @@ public class XUmlRtValue extends MokaValue implements IValue {
 		this.value = value;
 	}
 
+	/**
+	 * Constructs a value that is the value of an attribute (part of some other objects structure).
+	 */
 	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread thread, Value value, BoundsM bounds) {
 		this(debugTarget, thread, value);
 		this.bounds = bounds;
@@ -54,85 +77,124 @@ public class XUmlRtValue extends MokaValue implements IValue {
 		if (value instanceof ObjectReference) {
 			ObjectReference valueObj = (ObjectReference) value;
 			ReferenceType type = valueObj.referenceType();
-			Field metaField = type.fieldByName("metaRepr");
+			Field metaField = type.fieldByName(Template.META_REPR_NAME);
 			if (metaField != null) {
-				ObjectReference meta = (ObjectReference) type.getValue(metaField);
-				try {
-					synchronized (thread) {
-						StringReference res = (StringReference) thread.invokeMethod(meta,
-								meta.referenceType().methodsByName("serialize").get(0));
-						ClassM metaInfo = ClassM.deserialize(res.value());
-						Map<AttributeM, Value> attribValues = new HashMap<AttributeM, Value>();
-						for (AttributeM attrib : metaInfo.getAttributes()) {
-							Field field = type.fieldByName(attrib.getIdentifier());
-							attribValues.put(attrib, valueObj.getValue(field));
-						}
-						return presentAttributes(attribValues);
-					}
-				} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
-						| InvocationException e) {
-					IdePlugin.logError("Error while retrieving meta info");
-				}
+				return getVariablesUsingMetainfo(valueObj, type, metaField);
 			}
 		}
 		return new IVariable[0];
 	}
 
-	private IVariable[] presentAttributes(Map<AttributeM, Value> attribValues) throws DebugException {
-		List<IVariable> presentedAttributes = new LinkedList<>();
-		for (Entry<AttributeM, Value> attribValue : attribValues.entrySet()) {
-			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, attribValue.getValue(),
-					attribValue.getKey().getBounds());
-			MokaVariable attr = new XUmlRtVariable(debugTarget, attribValue.getKey().getName(), varValue);
-			presentedAttributes.add(attr);
+	public IVariable[] getVariablesUsingMetainfo(ObjectReference valueObj, ReferenceType type, Field metaField)
+			throws DebugException {
+		ObjectReference meta = (ObjectReference) type.getValue(metaField);
+		try {
+			StringReference res = (StringReference) thread.invokeMethod(meta,
+					meta.referenceType().methodsByName(SERIALIZE_METHOD_NAME).get(0));
+			ClassM metaInfo = ClassM.deserialize(res.value());
+			Map<AttributeM, Value> attribValues = new HashMap<AttributeM, Value>();
+			for (AttributeM attrib : metaInfo.getAttributes()) {
+				Field field = type.fieldByName(attrib.getIdentifier());
+				attribValues.put(attrib, valueObj.getValue(field));
+			}
+			return presentAttributes(attribValues);
+		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
+				| InvocationException e) {
+			IdePlugin.logError("Error while retrieving metainfo", e);
+			return new IVariable[0];
 		}
-		return presentedAttributes.toArray(new IVariable[presentedAttributes.size()]);
+	}
+
+	private IVariable[] presentAttributes(Map<AttributeM, Value> attribValues) throws DebugException {
+		List<IVariable> shownAttributes = new LinkedList<>();
+		for (Entry<AttributeM, Value> attribValue : attribValues.entrySet()) {
+			AttributeM attribute = attribValue.getKey();
+			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, attribValue.getValue(), attribute.getBounds());
+			shownAttributes.add(new XUmlRtVariable(debugTarget, attribute, varValue));
+		}
+		return shownAttributes.toArray(new IVariable[shownAttributes.size()]);
 	}
 
 	@Override
 	public String getValueString() throws DebugException {
-		synchronized (thread) {
-			// show the object using it's toString method
-			if (value instanceof ObjectReference) {
-				ObjectReference objectReference = (ObjectReference) value;
-				try {
-					if (bounds != null && bounds.isAtMostSingle()) {
-						List<Method> iteratorMethod = objectReference.referenceType().methodsByName("toArray");
-						iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
-						if (iteratorMethod.isEmpty()) {
-							IdePlugin.logError("Attribute value is not iterable");
-						} else {
-							ArrayReference valueArray = (ArrayReference) thread.invokeMethod(objectReference,
-									iteratorMethod.get(0));
-							if (valueArray.length() > 0) {
-								objectReference = (ObjectReference) valueArray.getValue(0);
-							} else {
-								return "null";
-							}
-						}
-					}
-
-					List<Method> toStringMethod = objectReference.referenceType().methodsByName("toString");
-					toStringMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
-					if (toStringMethod.isEmpty()) {
-						IdePlugin.logError("No toString method on value");
-					} else {
-						Value toStringResult = thread.invokeMethod(objectReference, toStringMethod.get(0));
-						if (toStringResult instanceof StringReference) {
-							return ((StringReference) toStringResult).value();
-						} else {
-							IdePlugin.logError("The result of toString is not a String");
-						}
-					}
-				} catch (InvocationException e) {
-					// Exception while calling toString, fall through
-				} catch (Exception e) {
-					IdePlugin.logError("Error while invoking toString to get representation", e);
-				}
+		// default is to use the mirror's toString
+		String ret = value.toString();
+		// show the object using it's toString method
+		if (value instanceof ObjectReference) {
+			ObjectReference objectReference = (ObjectReference) value;
+			try {
+				ret = resolveSingletonObject(objectReference);
+			} catch (Exception e) {
+				// all exceptions are caught, we want to hide exceptions of UI
+				IdePlugin.logError("Error while invoking toString to get representation", e);
 			}
-			// if not available, use the mirror's toString
-			return value.toString();
 		}
+
+		return ret;
+	}
+
+	/**
+	 * If the given object has singleton multiplicity, than it extracts its
+	 * first element or displays 'null' if there is none.
+	 * 
+	 * @return the textual representation of the value or null, if it couldn't
+	 *         be decided
+	 */
+	private String resolveSingletonObject(ObjectReference objectReference)
+			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
+		if (bounds != null && bounds.isAtMostSingle()) {
+			List<Method> iteratorMethod = objectReference.referenceType().methodsByName(TO_ARRAY_METHOD);
+			iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
+			if (!iteratorMethod.isEmpty()) {
+				ArrayReference valueArray;
+				try {
+					valueArray = (ArrayReference) thread.invokeMethod(objectReference, iteratorMethod.get(0));
+				} catch (InvocationException e) {
+					// error while calling toArray
+					return null;
+				}
+				if (valueArray.length() > 0) {
+					return invokeToString((ObjectReference) valueArray.getValue(0));
+				} else {
+					return "null";
+				}
+			} else {
+				IdePlugin.logError("Attribute value is not collection");
+				return null;
+			}
+		} else {
+			return invokeToString(objectReference);			
+		}
+	}
+
+	/**
+	 * Invokes toString in the virtual machine to get the representation of the
+	 * given object.
+	 * 
+	 * @return the textual representation of the value or null, if it couldn't
+	 *         be decided
+	 */
+	private String invokeToString(ObjectReference objectReference)
+			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
+		List<Method> toStringMethod = objectReference.referenceType().methodsByName(TO_STRING_METHOD);
+		toStringMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
+		if (toStringMethod.isEmpty()) {
+			IdePlugin.logError("No toString method on value");
+		} else {
+			Value toStringResult;
+			try {
+				toStringResult = thread.invokeMethod(objectReference, toStringMethod.get(0));
+			} catch (InvocationException e) {
+				// exception in toString
+				return null;
+			}
+			if (toStringResult instanceof StringReference) {
+				return ((StringReference) toStringResult).value();
+			} else {
+				IdePlugin.logError("The result of toString is not a String");
+			}
+		}
+		return null;
 	}
 
 	@Override

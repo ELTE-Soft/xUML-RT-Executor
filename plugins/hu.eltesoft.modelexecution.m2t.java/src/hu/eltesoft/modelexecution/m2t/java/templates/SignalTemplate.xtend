@@ -43,7 +43,7 @@ class SignalTemplate extends Template {
 			}
 			
 			/** Meta-description of the structure of the class */
-			public static «ClassM.canonicalName» metaRepr = new «ClassM.canonicalName»(
+			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
 				«signal.nameLiteral»,
 				new «ClassM.canonicalName»[0],
 				new «AttributeM.canonicalName»[] { 
@@ -55,7 +55,7 @@ class SignalTemplate extends Template {
 			);
 			
 			protected String getOriginalSignalName() {
-				return metaRepr.getName();
+				return «META_REPR_NAME».getName();
 			}
 			
 			«content»

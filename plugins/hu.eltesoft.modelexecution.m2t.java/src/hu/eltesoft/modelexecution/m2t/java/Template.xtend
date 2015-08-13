@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList
  */
 abstract class Template extends EmfTraceExtensions {
 
+	public static val META_REPR_NAME = "metaRepr"
 	private val DebugSymbols debugSymbols
 	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 

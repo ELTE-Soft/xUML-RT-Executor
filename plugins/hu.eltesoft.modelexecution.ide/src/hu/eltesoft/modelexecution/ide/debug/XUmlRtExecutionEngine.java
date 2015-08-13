@@ -45,7 +45,7 @@ import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtThread;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
@@ -116,7 +116,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
 						@Override
 						public void instanceCreated(String classId, int id) {
-							XUmlRtThread thread = new XUmlRtThread(debugTarget);
+							XUmlRtStateMachineInstance thread = new XUmlRtStateMachineInstance(debugTarget);
 							String threadName = threadName(classId, id);
 							thread.setName(threadName);
 							threads.put(threadName, thread);

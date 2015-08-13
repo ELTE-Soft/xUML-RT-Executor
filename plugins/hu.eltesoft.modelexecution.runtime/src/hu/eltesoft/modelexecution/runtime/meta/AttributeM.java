@@ -2,9 +2,8 @@ package hu.eltesoft.modelexecution.runtime.meta;
 
 import org.json.JSONObject;
 
-public class AttributeM {
+public class AttributeM extends LeftValueM {
 
-	private String name;
 	private String identifier;
 	private BoundsM bounds;
 
@@ -12,10 +11,6 @@ public class AttributeM {
 		this.name = name;
 		this.identifier = identifier;
 		this.bounds = bounds;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getIdentifier() {
@@ -32,8 +27,7 @@ public class AttributeM {
 	}
 	
 	public JSONObject serializeToJson() {
-		JSONObject obj = new JSONObject();
-		obj.put("name", name);
+		JSONObject obj = super.serializeToJson();
 		obj.put("identifier", identifier);
 		obj.put("bounds", bounds.serializeToJson());
 		return obj;
@@ -50,7 +44,7 @@ public class AttributeM {
 	}
 	
 	public void deserializeFromJson(JSONObject json) {
-		name = json.getString("name");
+		super.deserializeFromJson(json);
 		identifier = json.getString("identifier");
 		bounds = BoundsM.deserialize(json.getJSONObject("bounds"));
 	}

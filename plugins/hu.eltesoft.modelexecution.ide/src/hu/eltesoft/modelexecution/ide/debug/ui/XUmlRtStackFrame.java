@@ -26,12 +26,12 @@ public class XUmlRtStackFrame extends MokaStackFrame implements IPresentation {
 
 	@Override
 	public String getDetails() {
-		// currently we provide no details at all
-		return null;
+		return null; // not shown
 	}
 
 	@Override
 	public Image getImage() {
+		// show the icon corresponding to the element on the debugger is stopped
 		IImage image = ImageQuery.getEObjectImage(modelElement);
 		Device device = Display.getCurrent();
 		return new Image(device, image.getInputStream());

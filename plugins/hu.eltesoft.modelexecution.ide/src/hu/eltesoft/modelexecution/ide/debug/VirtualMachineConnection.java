@@ -19,6 +19,10 @@ import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtValue;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtVariable;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
+import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
+import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
+import hu.eltesoft.modelexecution.runtime.meta.SignalM;
+import hu.eltesoft.modelexecution.runtime.meta.StateM;
 
 @SuppressWarnings("restriction")
 public class VirtualMachineConnection {
@@ -54,17 +58,17 @@ public class VirtualMachineConnection {
 		Value stateObj = smObj.getValue(smObj.referenceType().fieldByName("currentState"));
 		Field ownerField = smObj.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 		ObjectReference owner = (ObjectReference) smObj.getValue(ownerField);
-		ret.add(createMokaVariable(frame, mainThread, owner, "this"));
-		ret.add(createMokaVariable(frame, mainThread, eventObj, "event"));
-		ret.add(createMokaVariable(frame, mainThread, stateObj, "currentState"));
+		ret.add(createMokaVariable(frame, mainThread, owner, new OwnerM("this")));
+		ret.add(createMokaVariable(frame, mainThread, eventObj, new SignalM("signal")));
+		ret.add(createMokaVariable(frame, mainThread, stateObj, new StateM("currentState")));
 
 		frame.setVariables(ret.toArray(new MokaVariable[ret.size()]));
 	}
 
 	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, JDTThread mainThread, Value value,
-			String varName) {
+			LeftValueM leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
-		return new XUmlRtVariable(debugTarget, varName, new XUmlRtValue(debugTarget, mainThread, value));
+		return new XUmlRtVariable(debugTarget, leftVal, new XUmlRtValue(debugTarget, mainThread, value));
 	}
 
 	public JDTThread getMainThread() {

@@ -95,7 +95,9 @@ public class TargetedEvent implements JSONSerializable {
 
 	@Override
 	public void jsonDecode(JSONDecoder decoder, JSONObject obj) throws ClassNotFoundException, JSONException {
-		Class<?> targetClass = (Class<?>) decoder.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
+		@SuppressWarnings("unchecked")
+		Class<? extends StatefulClass> targetClass = (Class<? extends StatefulClass>) decoder
+				.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
 		int instanceID = obj.getInt(JSON_INSTANCE_ID);
 		target = InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);
 		event = (Event) decoder.decodeJSON(obj.get(JSON_KEY_EVENT));

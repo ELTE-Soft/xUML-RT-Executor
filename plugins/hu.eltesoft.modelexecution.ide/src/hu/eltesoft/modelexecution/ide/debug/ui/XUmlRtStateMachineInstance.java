@@ -11,9 +11,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
-public class XUmlRtThread extends MokaThread implements IPresentation {
+/**
+ * Thread-like presentation of a state machine instance.
+ */
+public class XUmlRtStateMachineInstance extends MokaThread implements IPresentation {
 
-	public XUmlRtThread(MokaDebugTarget debugTarget) {
+	public XUmlRtStateMachineInstance(MokaDebugTarget debugTarget) {
 		super(debugTarget);
 	}
 
@@ -24,12 +27,13 @@ public class XUmlRtThread extends MokaThread implements IPresentation {
 
 	@Override
 	public String getDetails() {
-		// currently we provide no details at all
+		// not shown
 		return null;
 	}
 
 	@Override
 	public Image getImage() {
+		// show the image corresponding to state machines
 		EObject component = UMLFactory.eINSTANCE.createStateMachine();
 		IImage image = ImageQuery.getEObjectImage(component);
 		Device device = Display.getCurrent();
