@@ -7,9 +7,9 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
 
 import com.sun.jdi.Field;
-import com.sun.jdi.IntegerValue;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
+import com.sun.jdi.StringReference;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 import com.sun.jdi.VirtualMachine;
@@ -24,6 +24,9 @@ import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
 import hu.eltesoft.modelexecution.runtime.meta.SignalM;
 import hu.eltesoft.modelexecution.runtime.meta.StateM;
 
+/**
+ * A class to query the state of the runtime running in the given virtual machine.
+ */
 @SuppressWarnings("restriction")
 public class VirtualMachineConnection {
 
@@ -33,16 +36,19 @@ public class VirtualMachineConnection {
 		this.virtualMachine = virtualMachine;
 	}
 
+	/**
+	 * @return 
+	 */
 	public String getActualSMInstance() {
 		JDTThread mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			List<Method> getInstanceID = owner.referenceType().methodsByName("getInstanceID");
-			getInstanceID.removeIf(Method::isAbstract);
+			List<Method> getInstanceID = owner.referenceType().methodsByName("toString");
+			getInstanceID.removeIf(m -> m.isAbstract() || !m.argumentTypeNames().isEmpty());
 			Value result = mainThread.invokeMethod(owner, getInstanceID.get(0));
-			return owner.referenceType().name() + "#" + ((IntegerValue) result).intValue();
+			return ((StringReference) result).value();
 		} catch (Exception e) {
 			IdePlugin.logError("Could not ask the current SM instance", e);
 			return null;

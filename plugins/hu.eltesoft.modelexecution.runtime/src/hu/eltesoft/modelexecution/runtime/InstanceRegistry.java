@@ -43,7 +43,7 @@ public final class InstanceRegistry {
 		InstanceKey key = new InstanceKey(instance);
 		instanceRegistry.put(key, instance);
 		for (InstanceListener listener : listeners) {
-			listener.instanceCreated(key);
+			listener.instanceCreated(instance);
 		}
 	}
 
@@ -52,11 +52,11 @@ public final class InstanceRegistry {
 	 * unregistered if it is sure that they will not be a target of an external
 	 * message.
 	 */
-	public void unregisterInstance(StatefulClass instance) {
+	public void unregisterInstance(ClassWithState instance) {
 		InstanceKey key = new InstanceKey(instance);
 		instanceRegistry.remove(key);
 		for (InstanceListener listener : listeners) {
-			listener.instanceDeleted(key);
+			listener.instanceDeleted(instance);
 		}
 	}
 

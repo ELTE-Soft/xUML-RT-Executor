@@ -4,7 +4,7 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 
 /**
- * The base class of generated code from UML classes.
+ * The base class of generated code from UML classes that have a state machine.
  */
 public abstract class ClassWithState extends Class implements StatefulClass {
 

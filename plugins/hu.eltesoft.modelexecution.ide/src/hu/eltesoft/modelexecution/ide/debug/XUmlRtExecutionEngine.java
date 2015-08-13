@@ -102,7 +102,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addEventListener(this);
-		
+
 		virtualMachineConnect = virtualMachine.createConnection();
 
 		setupControllerListeners(launch);
@@ -115,22 +115,16 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 				if (runtimeController != null) {
 					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
 						@Override
-						public void instanceCreated(String classId, int id) {
+						public void instanceCreated(String instanceName) {
 							XUmlRtStateMachineInstance thread = new XUmlRtStateMachineInstance(debugTarget);
-							String threadName = threadName(classId, id);
-							thread.setName(threadName);
-							threads.put(threadName, thread);
+							thread.setName(instanceName);
+							threads.put(instanceName, thread);
 						}
 
 						@Override
-						public void instanceDestroyed(String classId, int id) {
-							threads.remove(threadName(classId, id));
+						public void instanceDestroyed(String instanceName) {
+							threads.remove(instanceName);
 						}
-
-						protected String threadName(String classId, int id) {
-							return classId + "#" + id;
-						}
-
 					});
 				}
 			}
@@ -275,7 +269,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
 			frame.setThread(actualSMInstance);
 			actualSMInstance.setStackFrames(new IStackFrame[] { frame });
-			
+
 			virtualMachineConnect.loadSMVariables(frame);
 
 			// causes debug target to be suspended

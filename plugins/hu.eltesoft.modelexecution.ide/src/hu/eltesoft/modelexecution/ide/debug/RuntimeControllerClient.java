@@ -64,12 +64,12 @@ public class RuntimeControllerClient {
 		switch (command[0]) {
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_CREATED:
 			for (ReactiveClassListener listener : reactiveClassListeners) {
-				listener.instanceCreated(command[1], Integer.parseInt(command[2]));
+				listener.instanceCreated(command[1]);
 			}
 			break;
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_TERMINATED:
 			for (ReactiveClassListener listener : reactiveClassListeners) {
-				listener.instanceDestroyed(command[1], Integer.parseInt(command[2]));
+				listener.instanceDestroyed(command[1]);
 			}
 			break;
 		}

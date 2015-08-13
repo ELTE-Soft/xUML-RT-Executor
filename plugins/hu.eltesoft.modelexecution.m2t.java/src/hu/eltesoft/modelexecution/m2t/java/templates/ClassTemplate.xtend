@@ -57,7 +57,7 @@ class ClassTemplate extends Template {
 				}
 			);
 			
-			protected String getOriginalClassName() {
+			public String getOriginalClassName() {
 				return «META_REPR_NAME».getName();
 			}
 		

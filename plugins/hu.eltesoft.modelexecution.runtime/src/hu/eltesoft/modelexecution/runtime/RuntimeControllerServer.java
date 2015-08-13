@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.SocketException;
 
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry.InstanceKey;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 
 /**
  * This class accepts textual control messages through an input stream and
@@ -72,16 +72,14 @@ public class RuntimeControllerServer implements InstanceListener {
 	}
 
 	@Override
-	public void instanceCreated(InstanceKey key) {
-		String eventLine = EVENT_REACTIVE_CLASS_CREATED + " " + key.getKlass().getCanonicalName() + " "
-				+ key.getInstanceID();
+	public void instanceCreated(ClassWithState instance) {
+		String eventLine = EVENT_REACTIVE_CLASS_CREATED + " " + instance;
 		trySendEvent(eventLine);
 	}
 
 	@Override
-	public void instanceDeleted(InstanceKey key) {
-		String eventLine = EVENT_REACTIVE_CLASS_TERMINATED + " " + key.getKlass().getCanonicalName() + " "
-				+ key.getInstanceID();
+	public void instanceDeleted(ClassWithState instance) {
+		String eventLine = EVENT_REACTIVE_CLASS_TERMINATED + " " + instance;
 		trySendEvent(eventLine);
 	}
 	

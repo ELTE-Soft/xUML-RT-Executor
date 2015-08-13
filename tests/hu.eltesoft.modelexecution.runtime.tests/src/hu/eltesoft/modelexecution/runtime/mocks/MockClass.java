@@ -57,7 +57,7 @@ public class MockClass extends ClassWithState {
 	}
 
 	@Override
-	protected String getOriginalClassName() {
+	public String getOriginalClassName() {
 		return "MockClass";
 	}
 }
