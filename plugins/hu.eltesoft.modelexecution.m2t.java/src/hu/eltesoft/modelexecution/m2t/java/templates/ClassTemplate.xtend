@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
@@ -15,12 +16,13 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
+import hu.eltesoft.modelexecution.runtime.meta.BoundsM
 import hu.eltesoft.modelexecution.runtime.meta.ClassM
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM
+import java.util.LinkedList
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.meta.BoundsM
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -44,14 +46,9 @@ class ClassTemplate extends Template {
 			/** Meta-description of the structure of the class */
 			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
 				«classDefinition.nameLiteral»,
-				new «ClassM.canonicalName»[] { 
-					«FOR parent : classDefinition.parents SEPARATOR ','»
-						«parent.implementation».metaRepr
-					«ENDFOR»
-				},
 				new «PropertyM.canonicalName»[] { 
-					«FOR attr : classDefinition.attributes SEPARATOR ','»
-						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
+					«FOR attr : classDefinition.allAttributes SEPARATOR ','»
+						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
 							new «BoundsM.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
 					«ENDFOR»
 				}
@@ -264,5 +261,12 @@ class ClassTemplate extends Template {
 	def hasBody(ClOperation op) { op.method != null }
 
 	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
+	
+	def allAttributes(ClClass cls) { 
+		val list = new LinkedList<ClAttributeSpec>
+		list.addAll(cls.attributes)
+		list.addAll(cls.inheritedAttributes)
+		return list
+	}
 	
 }

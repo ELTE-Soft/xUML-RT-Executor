@@ -12,6 +12,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
+import hu.eltesoft.modelexecution.runtime.meta.IndexM;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
@@ -37,6 +38,15 @@ public class XUmlRtVariable extends MokaVariable implements IPresentation {
 	}
 
 	@Override
+	public String getName() {
+		try {
+			return super.getName();
+		} catch (DebugException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
 	public String getLabel() {
 		return null; // not shown
 	}
@@ -56,6 +66,8 @@ public class XUmlRtVariable extends MokaVariable implements IPresentation {
 			return getIconForType(UMLFactory.eINSTANCE.createClass());
 		} else if (leftVal instanceof StateM) {
 			return getIconForType(UMLFactory.eINSTANCE.createState());
+		} else if (leftVal instanceof IndexM) {
+			return getIconForType(UMLFactory.eINSTANCE.createLiteralInteger());
 		} else {
 			return null;
 		}

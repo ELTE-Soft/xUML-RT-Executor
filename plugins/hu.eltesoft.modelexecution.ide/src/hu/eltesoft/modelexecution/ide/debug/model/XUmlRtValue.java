@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +33,7 @@ import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
+import hu.eltesoft.modelexecution.runtime.meta.IndexM;
 
 /**
  * Presentation of values in the executed model. It appears in the variables
@@ -88,11 +90,13 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			} else if (isCollectionType(type)) {
 				List<IVariable> list = new LinkedList<IVariable>();
 				List<Value> collectionValues = getCollectionValues(valueObj);
-				if ((bounds == null || bounds.isAtMostSingle()) && !collectionValues.isEmpty()) {
-					return new XUmlRtValue(debugTarget, thread, collectionValues.get(0)).getVariables();
+				if (bounds == null || bounds.isAtMostSingle()) {
+					if (!collectionValues.isEmpty()) {
+						return new XUmlRtValue(debugTarget, thread, collectionValues.get(0)).getVariables();
+					}
 				}
 				for (int i = 0; i < collectionValues.size(); i++) {
-					list.add(new XUmlRtVariable(debugTarget, new PropertyM("" + i, "" + i, BoundsM.SINGLE),
+					list.add(new XUmlRtVariable(debugTarget, new IndexM(i),
 							new XUmlRtValue(debugTarget, thread, collectionValues.get(i))));
 				}
 				return list.toArray(new IVariable[list.size()]);
@@ -145,8 +149,8 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			ClassM metaInfo = ClassM.deserialize(res.value());
 			Map<PropertyM, Value> attribValues = new HashMap<PropertyM, Value>();
 			for (PropertyM attrib : metaInfo.getAttributes()) {
-				Field field = type.fieldByName(attrib.getIdentifier());
-				attribValues.put(attrib, valueObj.getValue(field));
+				List<Method> getter = type.methodsByName(attrib.getIdentifier());
+				attribValues.put(attrib, thread.invokeMethod(valueObj, getter.get(0)));
 			}
 			return presentAttributes(attribValues);
 		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
@@ -157,12 +161,13 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	}
 
 	private IVariable[] presentAttributes(Map<PropertyM, Value> propertyValues) throws DebugException {
-		List<IVariable> shownAttributes = new LinkedList<>();
+		List<XUmlRtVariable> shownAttributes = new LinkedList<>();
 		for (Entry<PropertyM, Value> propertyValue : propertyValues.entrySet()) {
 			PropertyM property = propertyValue.getKey();
 			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, propertyValue.getValue(), property.getBounds());
 			shownAttributes.add(new XUmlRtVariable(debugTarget, property, varValue));
 		}
+		shownAttributes.sort(Comparator.comparing(XUmlRtVariable::getName));
 		return shownAttributes.toArray(new IVariable[shownAttributes.size()]);
 	}
 

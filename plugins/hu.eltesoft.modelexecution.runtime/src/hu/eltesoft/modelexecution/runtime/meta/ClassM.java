@@ -14,8 +14,6 @@ import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
  */
 public class ClassM implements JSONSerializable {
 
-	private static final String PARENTS_FIELD = "parents";
-
 	private static final String PROPERTIES_FIELD = "properties";
 
 	private static final String NAME_FIELD = "name";
@@ -30,16 +28,9 @@ public class ClassM implements JSONSerializable {
 	 */
 	private PropertyM[] properties;
 
-	/**
-	 * Classes that are connected to this class through a generalization
-	 * connection.
-	 */
-	private ClassM[] parents;
-
-	public ClassM(String name, ClassM[] parents, PropertyM[] attributes) {
+	public ClassM(String name, PropertyM[] attributes) {
 		this.name = name;
 		this.properties = attributes;
-		this.parents = parents;
 	}
 
 	public String getName() {
@@ -48,10 +39,6 @@ public class ClassM implements JSONSerializable {
 
 	public PropertyM[] getAttributes() {
 		return properties;
-	}
-
-	public ClassM[] getParents() {
-		return parents;
 	}
 
 	// serialization and deserialization
@@ -86,11 +73,6 @@ public class ClassM implements JSONSerializable {
 			propertiesJSON.put(attribute.jsonEncode());
 		}
 		ret.put(PROPERTIES_FIELD, propertiesJSON);
-		JSONArray parentsJSON = new JSONArray();
-		for (ClassM parent : parents) {
-			parentsJSON.put(parent.jsonEncode());
-		}
-		ret.put(PARENTS_FIELD, parentsJSON);
 		return ret;
 	}
 
@@ -101,11 +83,6 @@ public class ClassM implements JSONSerializable {
 		this.properties = new PropertyM[attribArray.length()];
 		for (int i = 0; i < attribArray.length(); ++i) {
 			properties[i] = PropertyM.deserialize(attribArray.getJSONObject(i));
-		}
-		JSONArray parentArray = obj.getJSONArray(PARENTS_FIELD);
-		this.parents = new ClassM[parentArray.length()];
-		for (int i = 0; i < parentArray.length(); ++i) {
-			parents[i] = deserialize(attribArray.getJSONObject(i));
 		}
 	}
 

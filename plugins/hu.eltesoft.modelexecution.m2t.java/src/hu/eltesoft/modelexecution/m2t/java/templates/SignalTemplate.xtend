@@ -45,7 +45,6 @@ class SignalTemplate extends Template {
 			/** Meta-description of the structure of the class */
 			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
 				«signal.nameLiteral»,
-				new «ClassM.canonicalName»[0],
 				new «PropertyM.canonicalName»[] { 
 					«FOR attr : signal.attributes SEPARATOR ','»
 						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
