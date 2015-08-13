@@ -25,7 +25,7 @@ import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.JDTThread;
+import hu.eltesoft.modelexecution.ide.debug.JDTThreadWrapper;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
@@ -33,7 +33,8 @@ import hu.eltesoft.modelexecution.runtime.meta.ClassM;
 
 /**
  * Presentation of values in the executed model. It appears in the variables
- * view.
+ * view. The value can have its inner structure, and in that case it can be
+ * accessed through this class.
  */
 @SuppressWarnings("restriction")
 public class XUmlRtValue extends MokaValue implements IValue {
@@ -41,33 +42,35 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	private static final String TO_ARRAY_METHOD = "toArray";
 	private static final String TO_STRING_METHOD = "toString";
 	private static final String SERIALIZE_METHOD_NAME = "serialize";
-	
-	
+
 	/**
 	 * The mirror of the value contained in the running virtual machine.
 	 */
 	private Value value;
-	
+
 	/**
-	 * Main thread for invoking methods in the virtual machine to support presentation.
+	 * Main thread for invoking methods in the virtual machine to support
+	 * presentation.
 	 */
-	private JDTThread thread;
-	
+	private JDTThreadWrapper thread;
+
 	/**
-	 * Multiplicity of the attribute that has this value. Used during presentation.
+	 * Multiplicity of the attribute that has this value. Used during
+	 * presentation.
 	 */
 	private BoundsM bounds;
 
-	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread mainThread, Value value) {
+	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
 	}
 
 	/**
-	 * Constructs a value that is the value of an attribute (part of some other objects structure).
+	 * Constructs a value that is the value of an attribute (part of some other
+	 * objects structure).
 	 */
-	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThread thread, Value value, BoundsM bounds) {
+	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper thread, Value value, BoundsM bounds) {
 		this(debugTarget, thread, value);
 		this.bounds = bounds;
 	}
@@ -163,7 +166,7 @@ public class XUmlRtValue extends MokaValue implements IValue {
 				return null;
 			}
 		} else {
-			return invokeToString(objectReference);			
+			return invokeToString(objectReference);
 		}
 	}
 

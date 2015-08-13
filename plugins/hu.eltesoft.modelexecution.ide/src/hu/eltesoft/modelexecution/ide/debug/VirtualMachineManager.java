@@ -217,8 +217,12 @@ public class VirtualMachineManager implements ITerminate {
 		virtualMachine.dispose();
 	}
 
+	/**
+	 * @return the connection that allows querying the state of the runtime
+	 *         running in the virtual machine
+	 */
 	public VirtualMachineConnection createConnection() {
 		return new VirtualMachineConnection(virtualMachine);
 	}
-	
+
 }

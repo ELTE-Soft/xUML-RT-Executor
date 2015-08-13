@@ -45,7 +45,7 @@ public class VirtualMachineConnection {
 	 *         currently under execution
 	 */
 	public String getActualSMInstance() {
-		JDTThread mainThread = getMainThread();
+		JDTThreadWrapper mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
@@ -66,7 +66,7 @@ public class VirtualMachineConnection {
 	 */
 	public void loadSMVariables(XUmlRtStackFrame frame) {
 		List<MokaVariable> ret = new LinkedList<>();
-		JDTThread mainThread = getMainThread();
+		JDTThreadWrapper mainThread = getMainThread();
 
 		ObjectReference smObj = mainThread.getActualThis();
 		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
@@ -83,7 +83,7 @@ public class VirtualMachineConnection {
 		frame.setVariables(ret.toArray(new MokaVariable[ret.size()]));
 	}
 
-	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, JDTThread mainThread, Value value,
+	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, JDTThreadWrapper mainThread, Value value,
 			LeftValueM leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
 		return new XUmlRtVariable(debugTarget, leftVal, new XUmlRtValue(debugTarget, mainThread, value));
@@ -92,7 +92,7 @@ public class VirtualMachineConnection {
 	/**
 	 * Gets the thread on which the runtime runs
 	 */
-	public JDTThread getMainThread() {
+	public JDTThreadWrapper getMainThread() {
 		List<ThreadReference> threads = virtualMachine.allThreads();
 		ThreadReference mainThread = null;
 		for (ThreadReference thread : threads) {
@@ -100,7 +100,7 @@ public class VirtualMachineConnection {
 				mainThread = thread;
 			}
 		}
-		return new JDTThread(mainThread);
+		return new JDTThreadWrapper(mainThread);
 	}
 
 }

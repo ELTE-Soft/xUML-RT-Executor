@@ -75,7 +75,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private boolean waitingForSuspend = false;
 
 	private Map<String, MokaThread> threads = new HashMap<>();
-	private VirtualMachineConnection virtualMachineConnect;
+	private VirtualMachineConnection virtualMachineConnection;
 
 	@Override
 	public void init(EObject eObjectToExecute, String[] args, MokaDebugTarget mokaDebugTarget, int requestPort,
@@ -103,7 +103,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
 		virtualMachine.addEventListener(this);
 
-		virtualMachineConnect = virtualMachine.createConnection();
+		virtualMachineConnection = virtualMachine.createConnection();
 
 		setupControllerListeners(launch);
 	}
@@ -262,7 +262,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		MokaThread actualSMInstance = threads.get(virtualMachineConnect.getActualSMInstance());
+		MokaThread actualSMInstance = threads.get(virtualMachineConnection.getActualSMInstance());
 
 		if (actualSMInstance != null) {
 			// show the current element as a stack frame
@@ -270,7 +270,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			frame.setThread(actualSMInstance);
 			actualSMInstance.setStackFrames(new IStackFrame[] { frame });
 
-			virtualMachineConnect.loadSMVariables(frame);
+			virtualMachineConnection.loadSMVariables(frame);
 
 			// causes debug target to be suspended
 			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
