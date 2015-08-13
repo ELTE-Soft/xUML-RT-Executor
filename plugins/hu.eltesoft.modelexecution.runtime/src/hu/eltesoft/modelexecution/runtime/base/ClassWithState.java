@@ -47,4 +47,9 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
 	}
+	
+	@Override
+	public String toString() {
+		return getOriginalClassName() + "#" + getInstanceID();
+	}
 }

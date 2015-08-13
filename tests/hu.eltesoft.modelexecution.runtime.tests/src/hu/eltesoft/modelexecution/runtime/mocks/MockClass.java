@@ -55,4 +55,9 @@ public class MockClass extends ClassWithState {
 		// do not need a state machine since receive and init is overridden
 		return null;
 	}
+
+	@Override
+	protected String getOriginalClassName() {
+		return "MockClass";
+	}
 }

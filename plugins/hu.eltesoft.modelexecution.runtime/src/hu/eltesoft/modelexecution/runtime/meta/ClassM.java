@@ -5,12 +5,18 @@ import org.json.JSONObject;
 
 public class ClassM {
 
+	private String name;
 	private AttributeM[] attributes;
 	private ClassM[] parents;
 
-	public ClassM(ClassM[] parents, AttributeM[] attributes) {
+	public ClassM(String name, ClassM[] parents, AttributeM[] attributes) {
+		this.name = name;
 		this.attributes = attributes;
 		this.parents = parents;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public AttributeM[] getAttributes() {
@@ -32,6 +38,7 @@ public class ClassM {
 
 	public JSONObject serializeToJson() {
 		JSONObject ret = new JSONObject();
+		ret.put("name", name);
 		JSONArray attributesJSON = new JSONArray();
 		for (AttributeM attribute : attributes) {
 			attributesJSON.put(attribute.serializeToJson());
@@ -56,6 +63,7 @@ public class ClassM {
 	}
 	
 	public void deserializeFromJson(JSONObject classJSON) {
+		name = classJSON.getString("name");
 		JSONArray attribArray = classJSON.getJSONArray("attributes");
 		this.attributes = new AttributeM[attribArray.length()];
 		for (int i = 0; i < attribArray.length(); ++i) {
