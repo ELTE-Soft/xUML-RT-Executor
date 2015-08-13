@@ -14,8 +14,10 @@ import org.eclipse.papyrus.moka.debug.MokaValue;
 
 import com.sun.jdi.ArrayReference;
 import com.sun.jdi.ClassNotLoadedException;
+import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.InterfaceType;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
@@ -83,11 +85,57 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			Field metaField = type.fieldByName(Template.META_REPR_NAME);
 			if (metaField != null) {
 				return getVariablesUsingMetainfo(valueObj, type, metaField);
+			} else if (isCollectionType(type)) {
+				List<IVariable> list = new LinkedList<IVariable>();
+				List<Value> collectionValues = getCollectionValues(valueObj);
+				if ((bounds == null || bounds.isAtMostSingle()) && !collectionValues.isEmpty()) {
+					return new XUmlRtValue(debugTarget, thread, collectionValues.get(0)).getVariables();
+				}
+				for (int i = 0; i < collectionValues.size(); i++) {
+					list.add(new XUmlRtVariable(debugTarget, new PropertyM("" + i, "" + i, BoundsM.SINGLE),
+							new XUmlRtValue(debugTarget, thread, collectionValues.get(i))));
+				}
+				return list.toArray(new IVariable[list.size()]);
+
 			}
 		}
 		return new IVariable[0];
 	}
 
+	private boolean isCollectionType(ReferenceType type) {
+		if (type instanceof ClassType) {
+			for (InterfaceType iface : ((ClassType) type).allInterfaces()) {
+				if (iface.name().equals("java.util.Collection")) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private List<Value> getCollectionValues(ObjectReference value) {
+		List<Method> iteratorMethod = value.referenceType().methodsByName(TO_ARRAY_METHOD);
+		iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
+		if (!iteratorMethod.isEmpty()) {
+			try {
+				ArrayReference arrayRef = (ArrayReference) thread.invokeMethod(value, iteratorMethod.get(0));
+				if (arrayRef.length() > 0) {
+					// getValues cannot be used on a reference of an empty array
+					return arrayRef.getValues();
+				}
+			} catch (InvocationException e) {
+				// error while calling toArray, fall through
+			} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException e) {
+				IdePlugin.logError("Error while accessing collection elements", e);
+			}
+		}
+		return new LinkedList<>();
+	}
+
+	/**
+	 * Gets structural information of a class or signal where the metadata is
+	 * present.
+	 */
 	public IVariable[] getVariablesUsingMetainfo(ObjectReference valueObj, ReferenceType type, Field metaField)
 			throws DebugException {
 		ObjectReference meta = (ObjectReference) type.getValue(metaField);
@@ -149,15 +197,9 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			List<Method> iteratorMethod = objectReference.referenceType().methodsByName(TO_ARRAY_METHOD);
 			iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
 			if (!iteratorMethod.isEmpty()) {
-				ArrayReference valueArray;
-				try {
-					valueArray = (ArrayReference) thread.invokeMethod(objectReference, iteratorMethod.get(0));
-				} catch (InvocationException e) {
-					// error while calling toArray
-					return null;
-				}
-				if (valueArray.length() > 0) {
-					return invokeToString((ObjectReference) valueArray.getValue(0));
+				List<Value> collectionValues = getCollectionValues(objectReference);
+				if (collectionValues.size() > 0) {
+					return invokeToString((ObjectReference) collectionValues.get(0));
 				} else {
 					return "null";
 				}
