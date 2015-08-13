@@ -7,6 +7,8 @@ import org.json.JSONObject;
  */
 public class BoundsM {
 
+	private static final String LOWER_FIELD = "lower";
+	private static final String UPPER_FIELD = "upper";
 	public static BoundsM SINGLE = new BoundsM(1, 1);
 	public static BoundsM OPTIONAL = new BoundsM(0, 1);
 	public static BoundsM ANY = new BoundsM(0, -1);
@@ -42,8 +44,8 @@ public class BoundsM {
 	
 	public JSONObject serializeToJson() {
 		JSONObject obj = new JSONObject();
-		obj.put("upper", upper);
-		obj.put("lower", lower);
+		obj.put(UPPER_FIELD, upper);
+		obj.put(LOWER_FIELD, lower);
 		return obj;
 	}
 	
@@ -58,8 +60,8 @@ public class BoundsM {
 	}
 	
 	public void deserializeFromJson(JSONObject json) {
-		upper = json.getInt("upper");
-		lower = json.getInt("lower");
+		upper = json.getInt(UPPER_FIELD);
+		lower = json.getInt(LOWER_FIELD);
 	}
 
 	/**

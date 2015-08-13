@@ -11,6 +11,7 @@ import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
  */
 public abstract class LeftValueM implements JSONSerializable {
 
+	private static final String NAME_FIELD = "name";
 	protected String name;
 
 	public LeftValueM(String name) {
@@ -30,13 +31,13 @@ public abstract class LeftValueM implements JSONSerializable {
 
 	public JSONObject jsonEncode() {
 		JSONObject obj = new JSONObject();
-		obj.put("name", name);
+		obj.put(NAME_FIELD, name);
 		return obj;
 	};
 
 	@Override
 	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
-		name = obj.getString("name");
+		name = obj.getString(NAME_FIELD);
 	}
 
 }

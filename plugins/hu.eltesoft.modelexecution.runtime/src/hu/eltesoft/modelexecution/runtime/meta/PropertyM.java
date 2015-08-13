@@ -11,6 +11,10 @@ import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
  */
 public class PropertyM extends LeftValueM implements JSONSerializable {
 
+	private static final String BOUNDS_FIELD = "bounds";
+
+	private static final String IDENTIFIER_FIELD = "identifier";
+
 	/**
 	 * The actual name of the property, how it is referenced in the generated class file.
 	 */
@@ -57,16 +61,16 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 	@Override
 	public JSONObject jsonEncode() {
 		JSONObject obj = super.jsonEncode();
-		obj.put("identifier", identifier);
-		obj.put("bounds", bounds.serializeToJson());
+		obj.put(IDENTIFIER_FIELD, identifier);
+		obj.put(BOUNDS_FIELD, bounds.serializeToJson());
 		return obj;
 	}
 
 	@Override
 	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		super.jsonDecode(reader, obj);
-		identifier = obj.getString("identifier");
-		bounds = BoundsM.deserialize(obj.getJSONObject("bounds"));
+		identifier = obj.getString(IDENTIFIER_FIELD);
+		bounds = BoundsM.deserialize(obj.getJSONObject(BOUNDS_FIELD));
 	}
 
 }
