@@ -50,7 +50,7 @@ public class VirtualMachineConnection {
 		JDTThread mainThread = getMainThread();
 
 		ObjectReference smObj = mainThread.getActualThis();
-		Value eventObj = mainThread.getActualArguments().get(0);
+		Value eventObj = mainThread.getLocalVariable("signal");
 		Value stateObj = smObj.getValue(smObj.referenceType().fieldByName("currentState"));
 		Field ownerField = smObj.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 		ObjectReference owner = (ObjectReference) smObj.getValue(ownerField);

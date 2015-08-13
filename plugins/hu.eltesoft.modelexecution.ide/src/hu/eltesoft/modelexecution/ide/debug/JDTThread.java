@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
@@ -28,21 +29,30 @@ public class JDTThread {
 		this.thread = thread;
 	}
 
-	public synchronized Value invokeMethod(ObjectReference instance, Method method, Value... args) throws InvocationException,
-			InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
+	public synchronized Value invokeMethod(ObjectReference instance, Method method, Value... args)
+			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
+			IncompatibleThreadStateException {
 		return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
 	}
-	
+
 	public ObjectReference getActualThis() {
 		checkUsable();
 		return getExecutionPoint().thisObject();
 	}
-	
+
 	public List<Value> getActualArguments() {
 		checkUsable();
 		return getExecutionPoint().getArgumentValues();
 	}
-	
+
+	public Value getLocalVariable(String varName) {
+		try {
+			return getExecutionPoint().getValue(getExecutionPoint().visibleVariableByName(varName));
+		} catch (AbsentInformationException e) {
+			return null;
+		}
+	}
+
 	private void checkUsable() {
 		if (!thread.isSuspended() || !thread.isAtBreakpoint()) {
 			throw new IllegalStateException("Thread is not suspended at a breakpoint");
@@ -57,5 +67,5 @@ public class JDTThread {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }
