@@ -54,6 +54,9 @@ class StepPartitioning {
 class RegionTemplate extends Template {
 
 	public static val OWNER_FIELD_NAME = "owner"
+	public static val SIGNAL_VARIABLE = "signal"
+	public static val CURRENT_STATE_ATTRIBUTE = "currentState"
+	
 	val RgRegion region
 	val RgInitialPseudostate initState
 	val RgTransition initTransition
@@ -61,6 +64,8 @@ class RegionTemplate extends Template {
 
 	val StepPartitioning partitioning
 	var hasAnySignalChecks = false
+	
+	
 
 	new(RgRegion region) {
 		super(region)
@@ -109,7 +114,7 @@ class RegionTemplate extends Template {
 			}
 		
 			private «region.containerClass.identifier» «OWNER_FIELD_NAME»;
-			private State currentState = State.«initState.identifier»;
+			private State «CURRENT_STATE_ATTRIBUTE» = State.«initState.identifier»;
 		
 			@Override
 			public void doInitialTransition() {
@@ -132,7 +137,7 @@ class RegionTemplate extends Template {
 					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME»);
 				«ENDIF»
 				
-				currentState = State.«firstState.identifier»;
+				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
 				«IF firstState.isFinal»
 					
 					// The class cannot get more events
@@ -151,7 +156,7 @@ class RegionTemplate extends Template {
 			«ENDFOR»
 			@Override
 			public String toString() {
-				return «region.nameLiteral» + " { currentState = " + currentState + " }";
+				return «region.nameLiteral» + " { currentState = " + «CURRENT_STATE_ATTRIBUTE» + " }";
 			}	
 	'''
 
@@ -161,12 +166,12 @@ class RegionTemplate extends Template {
 		«ENDIF»
 		private void step«i»(«Event.canonicalName» event) {
 			if (event instanceof «SignalEvent.canonicalName») {
-				«IF hasAnySignalChecks»«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
-				switch (currentState) {
+				«IF hasAnySignalChecks»«Signal.canonicalName» «SIGNAL_VARIABLE» = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
+				switch («CURRENT_STATE_ATTRIBUTE») {
 					«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
 						case «state.identifier»:
 							«FOR transition : state.transitions SEPARATOR ' else '»
-								if (signal instanceof «transition.message.identifier»)
+								if («SIGNAL_VARIABLE» instanceof «transition.message.identifier»)
 								{
 									// State exit
 									«OWNER_FIELD_NAME».getRuntime().logExitState(«traceLiteral(state, Exit)»);
@@ -190,7 +195,7 @@ class RegionTemplate extends Template {
 										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
 									
-									currentState = State.«transition.target.identifier»;
+									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
 									«IF transition.target.isFinal»
 										
 										// The class cannot get more events

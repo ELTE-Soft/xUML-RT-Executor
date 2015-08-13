@@ -75,6 +75,9 @@ public class Messages extends NLS {
 	public static String RuntimeLibraryContainerWizardPage_AboutContainer;
 	public static String RuntimeLibraryContainerWizardPage_Description;
 	public static String RuntimeLibraryContainerWizardPage_Title;
+	public static String VirtualMachineConnection_variable_currentState_label;
+	public static String VirtualMachineConnection_variable_signal_label;
+	public static String VirtualMachineConnection_variable_this_label;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
