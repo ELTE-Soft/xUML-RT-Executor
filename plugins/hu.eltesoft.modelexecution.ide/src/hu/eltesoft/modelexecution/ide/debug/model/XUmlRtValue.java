@@ -12,13 +12,12 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaValue;
+import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
+import org.eclipse.swt.graphics.Image;
 
-import com.sun.jdi.ArrayReference;
 import com.sun.jdi.ClassNotLoadedException;
-import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
-import com.sun.jdi.InterfaceType;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
@@ -29,11 +28,10 @@ import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.util.JDTUtils;
 import hu.eltesoft.modelexecution.m2t.java.Template;
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
-import hu.eltesoft.modelexecution.runtime.meta.BoundsM;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
-import hu.eltesoft.modelexecution.runtime.meta.IndexM;
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
 
 /**
  * Presentation of values in the executed model. It appears in the variables
@@ -41,10 +39,8 @@ import hu.eltesoft.modelexecution.runtime.meta.IndexM;
  * accessed through this class.
  */
 @SuppressWarnings("restriction")
-public class XUmlRtValue extends MokaValue implements IValue {
+public abstract class XUmlRtValue extends MokaValue implements IValue, IPresentation {
 
-	private static final String TO_ARRAY_METHOD = "toArray";
-	private static final String TO_STRING_METHOD = "toString";
 	private static final String SERIALIZE_METHOD_NAME = "serialize";
 
 	/**
@@ -56,27 +52,15 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	 * Main thread for invoking methods in the virtual machine to support
 	 * presentation.
 	 */
-	private JDTThreadWrapper thread;
-
-	/**
-	 * Multiplicity of the attribute that has this value. Used during
-	 * presentation.
-	 */
-	private BoundsM bounds;
+	protected JDTThreadWrapper thread;
+	
+	protected JDTUtils jdtUtils;
 
 	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
-	}
-
-	/**
-	 * Constructs a value that is the value of an attribute (part of some other
-	 * objects structure).
-	 */
-	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper thread, Value value, BoundsM bounds) {
-		this(debugTarget, thread, value);
-		this.bounds = bounds;
+		this.jdtUtils = new JDTUtils(mainThread);
 	}
 
 	@Override
@@ -86,55 +70,21 @@ public class XUmlRtValue extends MokaValue implements IValue {
 			ReferenceType type = valueObj.referenceType();
 			Field metaField = type.fieldByName(Template.META_REPR_NAME);
 			if (metaField != null) {
+				// structure
 				return getVariablesUsingMetainfo(valueObj, type, metaField);
-			} else if (isCollectionType(type)) {
+			} else if (jdtUtils.isCollectionType(type)) {
+				// collection
 				List<IVariable> list = new LinkedList<IVariable>();
-				List<Value> collectionValues = getCollectionValues(valueObj);
-				if (bounds == null || bounds.isAtMostSingle()) {
-					if (!collectionValues.isEmpty()) {
-						return new XUmlRtValue(debugTarget, thread, collectionValues.get(0)).getVariables();
-					}
-				}
-				for (int i = 0; i < collectionValues.size(); i++) {
-					list.add(new XUmlRtVariable(debugTarget, new IndexM(i),
-							new XUmlRtValue(debugTarget, thread, collectionValues.get(i))));
-				}
-				return list.toArray(new IVariable[list.size()]);
+				List<Value> collectionValues = jdtUtils.getCollectionValues(valueObj);
+				return handleCollectionValues(list, collectionValues);
 
 			}
 		}
 		return new IVariable[0];
 	}
 
-	private boolean isCollectionType(ReferenceType type) {
-		if (type instanceof ClassType) {
-			for (InterfaceType iface : ((ClassType) type).allInterfaces()) {
-				if (iface.name().equals("java.util.Collection")) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private List<Value> getCollectionValues(ObjectReference value) {
-		List<Method> iteratorMethod = value.referenceType().methodsByName(TO_ARRAY_METHOD);
-		iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
-		if (!iteratorMethod.isEmpty()) {
-			try {
-				ArrayReference arrayRef = (ArrayReference) thread.invokeMethod(value, iteratorMethod.get(0));
-				if (arrayRef.length() > 0) {
-					// getValues cannot be used on a reference of an empty array
-					return arrayRef.getValues();
-				}
-			} catch (InvocationException e) {
-				// error while calling toArray, fall through
-			} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException e) {
-				IdePlugin.logError("Error while accessing collection elements", e);
-			}
-		}
-		return new LinkedList<>();
-	}
+	abstract protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
+			throws DebugException;
 
 	/**
 	 * Gets structural information of a class or signal where the metadata is
@@ -164,9 +114,15 @@ public class XUmlRtValue extends MokaValue implements IValue {
 		List<XUmlRtVariable> shownAttributes = new LinkedList<>();
 		for (Entry<PropertyM, Value> propertyValue : propertyValues.entrySet()) {
 			PropertyM property = propertyValue.getKey();
-			XUmlRtValue varValue = new XUmlRtValue(debugTarget, thread, propertyValue.getValue(), property.getBounds());
+			XUmlRtValue varValue;
+			if (property.getBounds().isAtMostSingle()) {
+				varValue = new SingleValue(debugTarget, thread, propertyValue.getValue());
+			} else {
+				varValue = new MultiValue(debugTarget, thread, propertyValue.getValue());
+			}
 			shownAttributes.add(new XUmlRtVariable(debugTarget, property, varValue));
 		}
+		// sort the attributes alphabetically
 		shownAttributes.sort(Comparator.comparing(XUmlRtVariable::getName));
 		return shownAttributes.toArray(new IVariable[shownAttributes.size()]);
 	}
@@ -196,56 +152,8 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	 * @return the textual representation of the value or null, if it couldn't
 	 *         be decided
 	 */
-	private String resolveSingletonObject(ObjectReference objectReference)
-			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
-		if (bounds != null && bounds.isAtMostSingle()) {
-			List<Method> iteratorMethod = objectReference.referenceType().methodsByName(TO_ARRAY_METHOD);
-			iteratorMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
-			if (!iteratorMethod.isEmpty()) {
-				List<Value> collectionValues = getCollectionValues(objectReference);
-				if (collectionValues.size() > 0) {
-					return invokeToString((ObjectReference) collectionValues.get(0));
-				} else {
-					return "null";
-				}
-			} else {
-				IdePlugin.logError("Attribute value is not collection");
-				return null;
-			}
-		} else {
-			return invokeToString(objectReference);
-		}
-	}
-
-	/**
-	 * Invokes toString in the virtual machine to get the representation of the
-	 * given object.
-	 * 
-	 * @return the textual representation of the value or null, if it couldn't
-	 *         be decided
-	 */
-	private String invokeToString(ObjectReference objectReference)
-			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
-		List<Method> toStringMethod = objectReference.referenceType().methodsByName(TO_STRING_METHOD);
-		toStringMethod.removeIf(m -> !m.argumentTypeNames().isEmpty());
-		if (toStringMethod.isEmpty()) {
-			IdePlugin.logError("No toString method on value");
-		} else {
-			Value toStringResult;
-			try {
-				toStringResult = thread.invokeMethod(objectReference, toStringMethod.get(0));
-			} catch (InvocationException e) {
-				// exception in toString
-				return null;
-			}
-			if (toStringResult instanceof StringReference) {
-				return ((StringReference) toStringResult).value();
-			} else {
-				IdePlugin.logError("The result of toString is not a String");
-			}
-		}
-		return null;
-	}
+	protected abstract String resolveSingletonObject(ObjectReference objectReference)
+			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException; 
 
 	@Override
 	public String getReferenceTypeName() throws DebugException {
@@ -260,6 +168,26 @@ public class XUmlRtValue extends MokaValue implements IValue {
 	@Override
 	public boolean hasVariables() throws DebugException {
 		return getVariables().length > 0;
+	}
+	
+	@Override
+	public String getDetails() {
+		try {
+			return getValueString();
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while filling out details", e);
+			return e.getMessage();
+		}
+	}
+	
+	@Override
+	public String getLabel() {
+		return null; // not displayed
+	}
+	
+	@Override
+	public Image getImage() {
+		return null; // not displayed
 	}
 
 }

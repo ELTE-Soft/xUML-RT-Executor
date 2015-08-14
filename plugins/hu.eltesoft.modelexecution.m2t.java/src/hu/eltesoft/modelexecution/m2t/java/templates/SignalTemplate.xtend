@@ -6,13 +6,13 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Signal
 import hu.eltesoft.modelexecution.runtime.meta.BoundsM
 import hu.eltesoft.modelexecution.runtime.meta.ClassM
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder
+import hu.eltesoft.modelexecution.runtime.meta.PropertyM
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder
 import java.util.Objects
 import org.json.JSONArray
 import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {

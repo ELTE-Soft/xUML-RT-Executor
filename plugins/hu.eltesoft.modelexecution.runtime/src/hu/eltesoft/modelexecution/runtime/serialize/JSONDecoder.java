@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.trace.json;
+package hu.eltesoft.modelexecution.runtime.serialize;
 
 import org.json.JSONException;
 import org.json.JSONObject;

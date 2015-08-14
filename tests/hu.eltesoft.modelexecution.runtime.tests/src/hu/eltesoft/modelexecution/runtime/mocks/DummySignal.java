@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hu.eltesoft.modelexecution.runtime.base.Signal;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
 
 public class DummySignal extends Signal {
 

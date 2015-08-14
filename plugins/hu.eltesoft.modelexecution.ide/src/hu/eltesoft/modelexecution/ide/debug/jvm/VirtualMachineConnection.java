@@ -16,8 +16,8 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtValue;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
@@ -86,7 +86,7 @@ public class VirtualMachineConnection {
 	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, JDTThreadWrapper mainThread, Value value,
 			LeftValueM leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
-		return new XUmlRtVariable(debugTarget, leftVal, new XUmlRtValue(debugTarget, mainThread, value));
+		return new XUmlRtVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
 	}
 
 	/**

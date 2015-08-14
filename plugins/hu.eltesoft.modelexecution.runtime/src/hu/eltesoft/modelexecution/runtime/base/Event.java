@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.base;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
  * A base class for UML events in the system. Events with the same source

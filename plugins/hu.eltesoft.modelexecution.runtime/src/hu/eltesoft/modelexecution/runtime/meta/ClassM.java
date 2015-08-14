@@ -4,13 +4,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
  * The meta-representation of a class. It can be used to store the structure of
  * the model-level object while it has already gone through code generation and
  * represented as a java class.
+ * 
+ * Needs to be serialized because can be
+ * written into class files and transported from the virtual machine running the
+ * runtime to the eclipse host.
  */
 public class ClassM implements JSONSerializable {
 

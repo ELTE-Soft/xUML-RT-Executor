@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.runtime.trace.json;
+package hu.eltesoft.modelexecution.runtime.serialize;
 
 import java.io.IOException;
 import java.io.Reader;

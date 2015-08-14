@@ -3,11 +3,12 @@ package hu.eltesoft.modelexecution.runtime.meta;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
- * Meta-representation of an attribute.
+ * Meta-representation of an attribute. Needs to be serialized because it is a
+ * part of {@linkplain ClassM}
  */
 public class PropertyM extends LeftValueM implements JSONSerializable {
 
@@ -15,11 +16,14 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 
 	private static final String IDENTIFIER_FIELD = "identifier";
 
+	private static final String NAME_FIELD = "name";
+
 	/**
-	 * The actual name of the property, how it is referenced in the generated class file.
+	 * The actual name of the property, how it is referenced in the generated
+	 * class file.
 	 */
 	private String identifier;
-	
+
 	/**
 	 * Multiplicity of the property.
 	 */
@@ -40,10 +44,10 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 	}
 
 	// serialization and deserialization
-	
+
 	private PropertyM() {
 	}
-	
+
 	public static PropertyM deserialize(String serialized) {
 		return deserialize(new JSONObject(serialized));
 	}
@@ -57,10 +61,11 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public JSONObject jsonEncode() {
-		JSONObject obj = super.jsonEncode();
+		JSONObject obj = new JSONObject();
+		obj.put(NAME_FIELD, name);
 		obj.put(IDENTIFIER_FIELD, identifier);
 		obj.put(BOUNDS_FIELD, bounds.serializeToJson());
 		return obj;
@@ -68,7 +73,7 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 
 	@Override
 	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
-		super.jsonDecode(reader, obj);
+		name = obj.getString(NAME_FIELD);
 		identifier = obj.getString(IDENTIFIER_FIELD);
 		bounds = BoundsM.deserialize(obj.getJSONObject(BOUNDS_FIELD));
 	}

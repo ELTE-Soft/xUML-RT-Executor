@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
 
 /**
  * A base class for events that carry a signal. We do not distinguish between
