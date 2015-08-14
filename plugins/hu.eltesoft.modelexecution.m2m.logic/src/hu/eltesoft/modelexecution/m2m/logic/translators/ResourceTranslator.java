@@ -30,7 +30,7 @@ import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslat
  */
 public class ResourceTranslator {
 
-	private static final String PATHMAP_SCHEME = "pathmap";
+	public static final String PATHMAP_SCHEME = "pathmap";
 	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
 	public static ResourceTranslator createIncremental(Resource resource) {
@@ -66,9 +66,8 @@ public class ResourceTranslator {
 
 		try {
 			// Only allows library resources to be indexed, but not metamodels
-			// or profiles. This is neccessary because indexing metamodels
-			// extremely degrades
-			// performance.
+			// or profiles. This is necessary because indexing metamodels
+			// extremely degrades performance.
 			BaseIndexOptions options = new BaseIndexOptions()
 					.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
 
@@ -78,6 +77,7 @@ public class ResourceTranslator {
 							return PATHMAP_SCHEME.equals(uri.scheme())
 									&& !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
 						}
+						
 					});
 
 			EMFScope emfScope = new EMFScope(resource.getResourceSet(), options);

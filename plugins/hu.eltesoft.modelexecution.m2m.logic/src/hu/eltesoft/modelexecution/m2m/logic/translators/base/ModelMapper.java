@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -20,6 +21,7 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
+import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
@@ -53,7 +55,8 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	// stereotype applications. Remove this infrastructure when IncQuery support
 	// for stereotypes is available.
 	public boolean shouldMap(UML source) {
-		return true;
+		URI uri = source.eResource().getURI();
+		return !ResourceTranslator.PATHMAP_SCHEME.equals(uri.scheme());
 	}
 
 	/**

@@ -44,9 +44,8 @@ class CallableProxyTranslator extends RootElementTranslator<Class, CaCallable, N
 	}
 
 	override shouldMap(Class cls) {
-
 		// generate code only for callable classes using this builder
-		Stereotypes.isCallable(cls)
+		super.shouldMap(cls) && Stereotypes.isCallable(cls)
 	}
 
 	override getRootName(Class cls) {

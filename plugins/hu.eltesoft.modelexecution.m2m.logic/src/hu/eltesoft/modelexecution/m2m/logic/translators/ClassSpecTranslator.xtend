@@ -112,8 +112,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 	}
 
 	override shouldMap(Class cls) {
-
 		// do not generate code for external entities using this builder
-		!Stereotypes.isExternalEntity(cls)
+		super.shouldMap(cls) && !Stereotypes.isExternalEntity(cls)
 	}
 }
