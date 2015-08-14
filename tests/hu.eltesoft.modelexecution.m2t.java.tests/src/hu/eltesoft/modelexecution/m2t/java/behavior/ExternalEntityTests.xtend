@@ -16,6 +16,6 @@ class ExternalEntityTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testExternalEntityInvocationProxyParameter() {
 		assertCompilesTo("E::Op2(this);",
-			"context.getRuntime().getExternalEntity(E.class).Op2(new A(context));")
+			"context.getRuntime().getExternalEntity(E.class).Op2(context);")
 	}
 }

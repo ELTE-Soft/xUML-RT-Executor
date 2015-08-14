@@ -197,11 +197,7 @@ class ExpressionCompiler extends Compiler {
 			append("(")
 			if (1 == op.ownedParameters.length) {
 				// proxy parameter
-				append("new ")
-				append(op.ownedParameters.get(0).type.name)
-				append("(")
 				append(CONTEXT_NAME)
-				append(")")
 			}
 			append(")")
 		} else {

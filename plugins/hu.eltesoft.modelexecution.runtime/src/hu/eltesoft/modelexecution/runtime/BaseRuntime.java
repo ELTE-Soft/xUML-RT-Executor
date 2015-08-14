@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.function.Consumer;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
@@ -147,8 +148,8 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 			InstantiationException, IllegalAccessException, InvocationTargetException {
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
 
-		Method creator = classClass.getMethod("create", Runtime.class);
-		ClassWithState classInstance = (ClassWithState) creator.invoke(null, this);
+		Method creator = classClass.getMethod("create", Runtime.class, Consumer.class);
+		ClassWithState classInstance = (ClassWithState) creator.invoke(null, this, null);
 		classInstance.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
