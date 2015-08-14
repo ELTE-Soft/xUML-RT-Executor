@@ -17,6 +17,7 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		this.runtime = runtime;
 		this.instanceID = instanceID;
 		stateMachine = createStateMachine();
+		stateMachine.doInitialTransition();
 	}
 
 	/**
@@ -32,10 +33,6 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	@Override
 	public int getInstanceID() {
 		return instanceID;
-	}
-
-	public void init() {
-		stateMachine.doInitialTransition();
 	}
 
 	public void send(Event event) {

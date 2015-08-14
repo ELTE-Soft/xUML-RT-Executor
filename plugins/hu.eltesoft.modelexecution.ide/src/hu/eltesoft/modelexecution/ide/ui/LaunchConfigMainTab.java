@@ -263,7 +263,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 				}
 
 				ListDialog dialog = new ListDialog(getShell());
-				dialog.setInput(getAllFunctions());
+				dialog.setInput(getStaticOperations());
 				dialog.setLabelProvider(new EMFLabelProvider());
 				dialog.setContentProvider(new ArrayContentProvider());
 
@@ -368,14 +368,15 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 		}
 	}
 
-	private Object[] getAllFunctions() {
-		List<Operation> functions = new LinkedList<>();
+	private Object[] getStaticOperations() {
+		List<Operation> operations = new LinkedList<>();
 
 		methodMatcher.getAllMatches(selectedClass, null, null).forEach(m -> {
-			functions.add(m.getOperation());
+			if (m.getOperation().isStatic()) {
+				operations.add(m.getOperation());
+			}
 		});
-		Object[] functionArray = functions.toArray(new Object[functions.size()]);
-		return functionArray;
+		return operations.toArray(new Object[operations.size()]);
 	}
 
 	@Override

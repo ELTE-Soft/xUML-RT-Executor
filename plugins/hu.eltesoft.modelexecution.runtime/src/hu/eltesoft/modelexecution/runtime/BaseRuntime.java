@@ -4,9 +4,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.function.Consumer;
 
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityException;
@@ -141,18 +139,13 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	/**
-	 * Registers the runtime in the {@link InstanceRegistry}. Creates an
-	 * instance of the selected class and executes it.
+	 * Runs the selected static main method.
 	 */
-	private void prepare(String className, String feedName) throws ClassNotFoundException, NoSuchMethodException,
-			InstantiationException, IllegalAccessException, InvocationTargetException {
-		java.lang.Class<?> classClass = classLoader.loadClass(className);
-
-		Method creator = classClass.getMethod("create", Runtime.class, Consumer.class);
-		ClassWithState classInstance = (ClassWithState) creator.invoke(null, this, null);
-		classInstance.init();
-		Method method = classClass.getMethod(feedName);
-		method.invoke(classInstance);
+	private void prepare(String className, String mainName)
+			throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		java.lang.Class<?> classClass = classLoader.loadClass(className + "_impl");
+		Method main = classClass.getMethod(mainName);
+		main.invoke(null);
 	}
 
 	@Override
