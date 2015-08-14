@@ -20,6 +20,7 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
+import hu.eltesoft.modelexecution.uml.incquery.Queries;
 
 /**
  * This translator converts model resources into a set of translational models
@@ -89,6 +90,7 @@ public class ResourceTranslator {
 			}
 
 			setupTranslators();
+			Queries.instance().prepare(engine);
 
 			if (incremental) {
 				attachListeners();
