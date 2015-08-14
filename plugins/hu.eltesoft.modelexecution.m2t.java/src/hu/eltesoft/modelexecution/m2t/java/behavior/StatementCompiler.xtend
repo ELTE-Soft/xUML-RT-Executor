@@ -55,9 +55,9 @@ class StatementCompiler extends ExpressionCompiler {
 			if (i > 0) {
 				append("else ")
 			}
-			append("if (")
+			append("if (unwrap(")
 			compile(clause.condition)
-			append(") ")
+			append(")) ")
 			compile(clause.body)
 		}
 		if (null != statement.finalClause) {
@@ -67,18 +67,18 @@ class StatementCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch void compile(WhileStatement loop) {
-		append("while (")
+		append("while (unwrap(")
 		compile(loop.condition)
-		append(") ")
+		append(")) ")
 		compile(loop.body)
 	}
 
 	def dispatch void compile(DoStatement loop) {
 		append("do ")
 		compile(loop.body, false)
-		append(" while (")
+		append(" while (unwrap(")
 		compile(loop.condition)
-		append(");")
+		append("));")
 	}
 
 	def dispatch void compile(ForStatement loop) {
@@ -98,11 +98,12 @@ class StatementCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch void compile(SendSignalStatement send) {
+		append("unwrap(")
 		compile(send.target)
-		append(".send(new ")
+		append(").send(new ")
 		append(SignalEvent.canonicalName)
-		append("(")
+		append("(unwrap(")
 		compile(send.signal)
-		append("));")
+		append(")));")
 	}
 }

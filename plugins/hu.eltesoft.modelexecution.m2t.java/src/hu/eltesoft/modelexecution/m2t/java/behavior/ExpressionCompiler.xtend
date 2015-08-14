@@ -1,18 +1,19 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.LiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LocalNameDeclarationStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameLeftHandSide
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NaturalLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NullExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.RealLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StaticFeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StringLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
@@ -20,9 +21,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
-import java.math.BigInteger
-import java.util.Map
-import java.util.WeakHashMap
+import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.uml2.uml.Class
@@ -31,64 +30,59 @@ import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
-import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 
 class ExpressionCompiler extends Compiler {
 
 	extension TypeConverter typeConverter = new TypeConverter
 	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
 
-	int variableCounter = 0;
-	Map<Variable, String> variableNames = new WeakHashMap<Variable, String>()
-
-	def freshLocalName() {
-		val newName = "_local" + variableCounter
-		variableCounter += 1
-		newName
-	}
-
-	def localName(Variable variable) {
-		var name = variableNames.get(variable);
-		if (null == name) {
-			name = freshLocalName
-			variableNames.put(variable, name)
-		}
-		name
-	}
-
 	// this is required to be defined here, as it makes unit testing of this class possible
+	// FIXME: do not define it here, move it to stmt compiler and inherit a class for tests?
 	def dispatch void compile(ExpressionStatement statement) {
 		compile(statement.expression)
 		append(";")
 	}
 
-	def dispatch void compile(LiteralExpression lit) {
-		append(lit.value)
+	def dispatch void compile(BooleanLiteralExpression lit) {
+		append('''booleanLiteral(«lit.value»)''')
 	}
 
 	def dispatch void compile(NaturalLiteralExpression lit) {
-		append(BigInteger.canonicalName)
-		append(".valueOf(")
-		append(lit.value)
-		append(")")
+		var String digits = lit.value.replace("_", "")
+		var int radix = 10
+		if (digits.startsWith("0x")) {
+			digits = digits.substring(2)
+			radix = 16
+		} else if (digits.startsWith("0b") || digits.startsWith("0B")) {
+			digits = digits.substring(2)
+			radix = 2
+		} else if (digits.startsWith("0") && "0" != digits) {
+			digits = digits.substring(1)
+			radix = 8
+		}
+		append('''integerLiteral("«digits»", «radix»)''')
+	}
+
+	def dispatch void compile(RealLiteralExpression lit) {
+		append('''realLiteral(«lit.value»)''')
 	}
 
 	def dispatch void compile(StringLiteralExpression lit) {
-		append('''"«StringEscapeUtils.escapeJava(lit.value)»"''')
+		append('''stringLiteral("«StringEscapeUtils.escapeJava(lit.value)»")''')
 	}
 
 	def dispatch void compile(NullExpression expr) {
-		append("null")
+		append("wrap(null)")
 	}
 
 	def dispatch void compile(ThisExpression expr) {
-		append(Compiler.CONTEXT_NAME)
+		append('''wrap(«Compiler.CONTEXT_NAME»)''')
 	}
 
 	def dispatch void compile(LocalNameDeclarationStatement declaration) {
 		val type = declaration.variable.type.type
 		val localName = declaration.variable.localName
-		append(type.convert.scalarType)
+		append(type.convert.javaType(SINGLE))
 		append(" ")
 		append(localName)
 		if (null != declaration.expression) {
@@ -101,15 +95,17 @@ class ExpressionCompiler extends Compiler {
 	}
 
 	def dispatch typeInitializer(Type type) {
-		"" // only primitive types are needed to be initialized
+		"" // only primitive types are needed to be automatically initialized
+		// TODO: is this true? do we need an empty wrapper for reference types?
+		// depends on the implementation of assignment!
 	}
 
 	def dispatch typeInitializer(PrimitiveType type) {
 		switch type.name {
-			case "Boolean": ''' = false'''
-			case "Integer": ''' = «BigInteger.canonicalName».valueOf(0)'''
-			case "Real": ''' = 0.0'''
-			case "String": ''' = ""'''
+			case "Boolean": ''' = booleanLiteral(false)'''
+			case "Integer": ''' = integerLiteral("0", 10)'''
+			case "Real": ''' = realLiteral(0.0)'''
+			case "String": ''' = stringLiteral("")'''
 		}
 	}
 
@@ -130,21 +126,27 @@ class ExpressionCompiler extends Compiler {
 		switch expr.instance {
 			// TODO: add data types later
 			Signal: {
-				append("new ")
+				append("wrap(new ")
 				append(NamedReference.getIdentifier(expr.instance))
 				append("(")
 				compile(expr.tuple, expr.instance as Signal)
-				append(")")
+				append("))")
 			}
 			Class: {
+				append("wrap(")
 				append(NamedReference.getIdentifier(expr.instance))
-				append(".create(context.getRuntime()")
+				append(".create(context.getRuntime(), ")
 				val constructor = getConstructor(expr.instance as Class)
-				if (null != constructor && !constructor.ownedParameters.empty) {
-					append(", ")
+				if (null == constructor) {
+					append("null")
+				} else {
+					append("i -> i.")
+					append(NamedReference.getIdentifier(constructor))
+					append("(")
 					compile(expr.tuple, constructor)
+					append(")")
 				}
-				append(")")
+				append("))")
 			}
 		}
 	}
@@ -168,13 +170,15 @@ class ExpressionCompiler extends Compiler {
 	}
 
 	def dispatch void compile(InstanceDeletionExpression expr) {
+		append("unwrap(")
 		compile(expr.reference)
-		append(".dispose()")
+		append(").dispose()")
 	}
 
 	def dispatch void compile(FeatureInvocationExpression call) {
+		append("unwrap(")
 		compile(call.context)
-		append(".")
+		append(").")
 		append(NamedReference.getIdentifier(call.operation))
 		append("(")
 		compile(call.parameters, call.operation)

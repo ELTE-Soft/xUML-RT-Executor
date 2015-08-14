@@ -7,12 +7,13 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.Runtime
+import hu.eltesoft.modelexecution.runtime.base.StatefulClass
 import java.util.LinkedList
+import java.util.function.Consumer
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassSpecTemplate extends Template {
@@ -35,13 +36,16 @@ class ClassSpecTemplate extends Template {
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 		
 			/** Creator for UML class «classSpec.javadoc» */
-			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime) {
+			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime, «Consumer.canonicalName»<«classSpec.identifier»> initializer) {
 				«FOR rec : classSpec.ctorRecords»
 					«rec.implementation» «rec.inherited» 
 						= new «rec.implementation»(runtime«FOR par : rec.directParents», «par.inherited»«ENDFOR»);
 				«ENDFOR»
 				«classSpec.implementation» created = new «classSpec.implementation»(runtime«FOR parent : classSpec.parents», «parent.inherited»«ENDFOR»);
 				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
+				if (null != initializer) {
+					initializer.accept(created);
+				}
 				return created;
 			}
 			«content»

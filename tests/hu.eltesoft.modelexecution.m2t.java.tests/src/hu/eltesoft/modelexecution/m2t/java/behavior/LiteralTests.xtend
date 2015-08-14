@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import java.math.BigInteger
-import org.junit.Ignore
 import org.junit.Test
 
 class LiteralTests extends CompiledCodeCheckTestCase {
@@ -12,73 +10,67 @@ class LiteralTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testNull() {
-		assertCompilesToSame("null;")
+		assertCompilesTo("null;", "wrap(null);")
 	}
 
 	@Test
 	def testThis() {
-		assertCompilesTo("this;", '''«Compiler.CONTEXT_NAME»;''')
+		assertCompilesTo("this;", '''wrap(context);''')
 	}
 
 	@Test
 	def testBooleanFalse() {
-		assertCompilesToSame("false;")
+		assertCompilesTo("false;", "booleanLiteral(false);")
 	}
 
 	@Test
 	def testBooleanTrue() {
-		assertCompilesToSame("true;")
-	}
-
-	@Test
-	def testNaturalZero() {
-		assertCompilesTo("0;", "java.math.BigInteger.valueOf(0);")
+		assertCompilesTo("true;", "booleanLiteral(true);")
 	}
 
 	@Test
 	def testNaturalDecimalHundred() {
-		assertCompilesTo("100;", "java.math.BigInteger.valueOf(100);")
+		assertCompilesTo("100;", '''integerLiteral("100", 10);''')
 	}
 
 	@Test
 	def testNaturalHexadecimalHundred() {
-		assertCompilesTo("0x64;", "java.math.BigInteger.valueOf(0x64);")
+		assertCompilesTo("0x64;", '''integerLiteral("64", 16);''')
 	}
 
 	@Test
 	def testNaturalOctalHundred() {
-		assertCompilesTo("0144;", "java.math.BigInteger.valueOf(0144);")
+		assertCompilesTo("0144;", '''integerLiteral("144", 8);''')
 	}
 
 	@Test
 	def testNaturalBinaryHundred() {
-		assertCompilesTo("0b1100100;", "java.math.BigInteger.valueOf(0b1100100);")
-		assertCompilesTo("0B1100100;", "java.math.BigInteger.valueOf(0B1100100);")
+		assertCompilesTo("0b1100100;", '''integerLiteral("1100100", 2);''')
+		assertCompilesTo("0B1100100;", '''integerLiteral("1100100", 2);''')
+	}
+
+	@Test
+	def testNaturalZero() {
+		assertCompilesTo("0;", '''integerLiteral("0", 10);''')
 	}
 
 	@Test
 	def testNaturalUnderscoreSeparator() {
-		assertCompilesTo("1_000_000_000;", "java.math.BigInteger.valueOf(1_000_000_000);")
+		assertCompilesTo("1_000_000_000;", '''integerLiteral("1000000000", 10);''')
 	}
 
 	@Test
 	def testRealZero() {
-		assertCompilesToSame("0.0;")
+		assertCompilesTo("0.0;", "realLiteral(0.0);")
 	}
 
 	@Test
 	def testRealTruncatedPi() {
-		assertCompilesToSame("3.14159265;")
+		assertCompilesTo("3.14159265;", "realLiteral(3.14159265);")
 	}
 
 	@Test
 	def testEscapedString() {
-		assertCompilesToSame('''"hello\b\t\n\f\r\"'\\world";''')
-	}
-
-	@Ignore("Unlimited naturals are unsupported (yet?)")
-	@Test
-	def testUnboundedNatural() {
-		assertCompilesTo("*;", '''«BigInteger.canonicalName».MAX_VALUE;''')
+		assertCompilesTo('''"hello\b\t\n\f\r\"'\\world";''', '''stringLiteral("hello\b\t\n\f\r\"'\\world");''')
 	}
 }

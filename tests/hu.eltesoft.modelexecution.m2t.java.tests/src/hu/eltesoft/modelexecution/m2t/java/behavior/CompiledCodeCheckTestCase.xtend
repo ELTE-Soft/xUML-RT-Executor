@@ -38,8 +38,4 @@ abstract class CompiledCodeCheckTestCase {
 		assertTrue(results.validationOK)
 		assertEquals(expectedJavaCode.toString, compiler.compile(results).toString)
 	}
-
-	protected def assertCompilesToSame(CharSequence actionCode) {
-		assertCompilesTo(actionCode, actionCode)
-	}
 }

@@ -11,7 +11,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testEmptyStatement() {
-		assertCompilesToSame(";")
+		assertCompilesTo(";", ";")
 	}
 
 	@Test
@@ -50,10 +50,10 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def testTwoLocalVarsInDifferentBlocks() {
 		assertCompilesTo("{Real x;}{Integer x = 10;}", '''
 			{
-			java.lang.Double _local0 = 0.0;
+			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
 			}
 			{
-			java.math.BigInteger _local1 = java.math.BigInteger.valueOf(10);
+			java.util.ArrayList<java.math.BigInteger> _local1 = integerLiteral("10", 10);
 			}
 		''');
 	}
@@ -66,7 +66,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 				x;
 			}
 		''', '''
-			java.lang.Double _local0 = 0.0;
+			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
 			{
 			_local0;
 			}
@@ -75,19 +75,19 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testReturnVoid() {
-		assertCompilesToSame("return;");
+		assertCompilesTo("return;", "return;");
 	}
 
 	@Test
 	def testReturnFalse() {
 		operation = ModelProperties.BOOL_OPERATION;
-		assertCompilesToSame("return false;");
+		assertCompilesTo("return false;", "return booleanLiteral(false);");
 	}
 
 	@Test
 	def testIf() {
 		assertCompilesTo("if(false){}", '''
-			if (false) {
+			if (unwrap(booleanLiteral(false))) {
 			}
 		''');
 	}
@@ -95,7 +95,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testIfElse() {
 		assertCompilesTo("if(false){}else{}", '''
-			if (false) {
+			if (unwrap(booleanLiteral(false))) {
 			}
 			else {
 			}
@@ -105,11 +105,11 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testIfElseIfElseIfElse() {
 		assertCompilesTo("if(false){}else if(true){}else if(false){}else{}", '''
-			if (false) {
+			if (unwrap(booleanLiteral(false))) {
 			}
-			else if (true) {
+			else if (unwrap(booleanLiteral(true))) {
 			}
-			else if (false) {
+			else if (unwrap(booleanLiteral(false))) {
 			}
 			else {
 			}
@@ -119,7 +119,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testWhile() {
 		assertCompilesTo("while(false){}", '''
-			while (false) {
+			while (unwrap(booleanLiteral(false))) {
 			}
 		''')
 	}
@@ -128,13 +128,13 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def testDoWhile() {
 		assertCompilesTo("do{}while(false);", '''
 		do {
-		} while (false);''')
+		} while (unwrap(booleanLiteral(false)));''')
 	}
 
 	@Test
 	def testForWithEmptyUpdate() {
 		assertCompilesTo("for(Integer i = 0; false; ){}", '''
-			for (java.math.BigInteger _local0 = java.math.BigInteger.valueOf(0); false; ;) {
+			for (java.util.ArrayList<java.math.BigInteger> _local0 = integerLiteral("0", 10); booleanLiteral(false); ;) {
 			}
 		''')
 	}
@@ -142,7 +142,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testForWithNonEmptyUpdate() {
 		assertCompilesTo("for(Integer i = 0; false; false ){}", '''
-			for (java.math.BigInteger _local0 = java.math.BigInteger.valueOf(0); false; false;) {
+			for (java.util.ArrayList<java.math.BigInteger> _local0 = integerLiteral("0", 10); booleanLiteral(false); booleanLiteral(false);) {
 			}
 		''')
 	}
@@ -150,7 +150,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testBreak() {
 		assertCompilesTo("while(false){break;}", '''
-			while (false) {
+			while (unwrap(booleanLiteral(false))) {
 			break;
 			}
 		''')
@@ -160,8 +160,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def sendNewSignalToNewObject() {
 		assertCompilesTo(
 			"send new S() to new B();",
-			'''
-			_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime()).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(new _47IQsEGyEeWzwYgcaM4qwA()));'''
+			'''unwrap(wrap(_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()))).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(wrap(new _47IQsEGyEeWzwYgcaM4qwA()))));'''
 		)
 	}
 
@@ -172,9 +171,9 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 			B b = new B();
 			send s to b;
 		''', '''
-			_47IQsEGyEeWzwYgcaM4qwA _local0 = new _47IQsEGyEeWzwYgcaM4qwA();
-			_9SdsIEDoEeWCNoKXHvCpUQ _local1 = _9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime());
-			_local1.send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(_local0));
+			java.util.ArrayList<_47IQsEGyEeWzwYgcaM4qwA> _local0 = wrap(new _47IQsEGyEeWzwYgcaM4qwA());
+			java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1 = wrap(_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));
+			unwrap(_local1).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(_local0)));
 		''')
 	}
 }

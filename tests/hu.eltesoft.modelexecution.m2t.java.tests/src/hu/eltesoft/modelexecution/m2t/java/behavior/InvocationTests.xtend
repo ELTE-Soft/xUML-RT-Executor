@@ -10,21 +10,21 @@ class InvocationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testNonStaticSelfCallNoParams() {
-		assertCompilesTo("this.OpVoid();", "context._$1zHIEDoEeWCNoKXHvCpUQ();")
+		assertCompilesTo("this.OpVoid();", "unwrap(wrap(context))._$1zHIEDoEeWCNoKXHvCpUQ();")
 	}
 
 	@Test
 	def testNonStaticLocalCallNoParams() {
 		assertCompilesTo("A a = new A(); a.Op();", '''
-			_aeMPwMc1EeSnK7LttAdTLw _local0 = _aeMPwMc1EeSnK7LttAdTLw.create(context.getRuntime());
-			_local0._oMFm4EG6EeWzwYgcaM4qwA();
+			java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0 = wrap(_aeMPwMc1EeSnK7LttAdTLw.create(context.getRuntime(), null));
+			unwrap(_local0)._oMFm4EG6EeWzwYgcaM4qwA();
 		''');
 	}
 
 	@Test
 	def testNonStaticSelfCallInParams() {
-		assertCompilesTo('''this.OpIn(pInInt => 42, pInBool => true);''', '''context._E59jwEG_EeWzwYgcaM4qwA(true, java.math.BigInteger.valueOf(42));''')
-		assertCompilesTo('''this.OpIn(pInBool => true, pInInt => 42);''', '''context._E59jwEG_EeWzwYgcaM4qwA(true, java.math.BigInteger.valueOf(42));''')
+		assertCompilesTo('''this.OpIn(pInInt => 42, pInBool => true);''', '''unwrap(wrap(context))._E59jwEG_EeWzwYgcaM4qwA(booleanLiteral(true), integerLiteral("42", 10));''')
+		assertCompilesTo('''this.OpIn(pInBool => true, pInInt => 42);''', '''unwrap(wrap(context))._E59jwEG_EeWzwYgcaM4qwA(booleanLiteral(true), integerLiteral("42", 10));''')
 	}
 
 	@Test
@@ -34,7 +34,7 @@ class InvocationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testStaticCallInParams() {
-		assertCompilesTo('''B::OpStaticIn(pInString => "hello", pInReal => 3.1415);''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA("hello", 3.1415);''')
-		assertCompilesTo('''B::OpStaticIn(pInReal => 3.1415, pInString => "hello");''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA("hello", 3.1415);''')
+		assertCompilesTo('''B::OpStaticIn(pInString => "hello", pInReal => 3.1415);''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
+		assertCompilesTo('''B::OpStaticIn(pInReal => 3.1415, pInString => "hello");''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
 	}
 }
