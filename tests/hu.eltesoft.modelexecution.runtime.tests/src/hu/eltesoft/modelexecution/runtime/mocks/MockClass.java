@@ -35,10 +35,6 @@ public class MockClass extends ClassWithState {
 	}
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void receive(Event event) {
 		// dispose the instance after the event is delivered
 		// to let the dispatch loop terminate
