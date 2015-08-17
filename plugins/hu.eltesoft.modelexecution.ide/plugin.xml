@@ -43,6 +43,9 @@
       <requires-nature
             id="org.eclipse.jdt.core.javanature">
       </requires-nature>
+      <requires-nature
+            id="com.incquerylabs.emdw.common.nature">
+      </requires-nature>
       <builder
             id="hu.eltesoft.modelexecution.builders.modelbuilder">
       </builder>
