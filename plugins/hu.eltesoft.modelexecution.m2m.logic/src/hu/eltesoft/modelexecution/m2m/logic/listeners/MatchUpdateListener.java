@@ -4,7 +4,6 @@ import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
 /**
@@ -17,11 +16,9 @@ public class MatchUpdateListener<UML extends NamedElement, Match extends IPatter
 		implements IMatchUpdateListener<Match> {
 
 	protected final RootElementTranslator<UML, ?, ?> translator;
-	protected final ChangeRegistry changes;
 
-	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> translator, ChangeRegistry changes) {
+	public MatchUpdateListener(RootElementTranslator<UML, ?, ?> translator) {
 		this.translator = translator;
-		this.changes = changes;
 	}
 
 	@Override
@@ -41,7 +38,7 @@ public class MatchUpdateListener<UML extends NamedElement, Match extends IPatter
 		// AssociationClass, both the Class and AssociationClass translators
 		// register it, but only the later can handle the change.
 		if (translator.canHandle(root)) {
-			changes.registerUpdate(extractRoot(match), translator);
+			translator.getChangeRegistry().registerUpdate(extractRoot(match), translator);
 		}
 	}
 

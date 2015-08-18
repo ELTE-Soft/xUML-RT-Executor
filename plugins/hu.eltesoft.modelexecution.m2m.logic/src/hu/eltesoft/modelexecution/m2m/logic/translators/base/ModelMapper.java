@@ -18,7 +18,6 @@ import org.eclipse.uml2.uml.NamedElement;
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
@@ -86,7 +85,6 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		public AddListenerTask(ListenerContext context) {
 			this.context = context;
 			AdvancedIncQueryEngine engine = context.getEngine();
-			ChangeRegistry changes = context.getChanges();
 			RootNameStorage rootNames = context.getRootNames();
 
 			root.matcher.forEachMatch(m -> {
@@ -94,7 +92,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 				String rootName = getRootName(root);
 				rootNames.saveRootName(root, rootName);
 			});
-			listener = new RootMatchUpdateListener<>(root.translator, changes, rootNames);
+			listener = new RootMatchUpdateListener<>(root.translator, rootNames);
 			engine.addMatchUpdateListener(root.matcher, listener, false);
 			root.childNodes.forEach(node -> add(node.addListeners(root.translator, context)));
 		}

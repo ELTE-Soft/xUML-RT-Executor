@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,6 +12,8 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 
+import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
@@ -29,6 +32,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	protected static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
 	protected TypeConverter typeTranslator = new TypeConverter();
 	private BaseMatcher<Match> matcher;
+	private final ChangeRegistry changes = new ChangeRegistry();
 
 	public RootElementTranslator(IncQueryEngine engine) throws IncQueryException {
 		super(engine);
@@ -96,6 +100,18 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	public Direction convert(ParameterDirectionKind direction) {
 		return typeTranslator.convert(direction);
+	}
+
+	public void clear() {
+		changes.clear();
+	}
+
+	public List<SourceCodeTask> incrementalTranslation() {
+		return changes.performTranslation();
+	}
+
+	public ChangeRegistry getChangeRegistry() {
+		return changes;
 	}
 
 }

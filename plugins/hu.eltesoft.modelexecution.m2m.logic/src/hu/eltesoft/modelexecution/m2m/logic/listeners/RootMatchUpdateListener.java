@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2m.logic.listeners;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 
@@ -17,9 +16,8 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 
 	private final RootNameStorage rootNames;
 
-	public RootMatchUpdateListener(RootElementTranslator<UML, ?, Match> translator, ChangeRegistry changes,
-			RootNameStorage rootNames) {
-		super(translator, changes);
+	public RootMatchUpdateListener(RootElementTranslator<UML, ?, Match> translator, RootNameStorage rootNames) {
+		super(translator);
 		this.rootNames = rootNames;
 	}
 
@@ -29,7 +27,7 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 		if (translator.canHandle(root) && translator.shouldMap(root)) {
 			String rootName = translator.getRootName(root);
 			rootNames.saveRootName(root, rootName);
-			changes.registerUpdate(root, translator);
+			translator.getChangeRegistry().registerUpdate(root, translator);
 		}
 	}
 
@@ -37,7 +35,7 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 	public void notifyDisappearance(Match match) {
 		UML root = extractRoot(match);
 		if (translator.canHandle(root) && translator.shouldMap(root)) {
-			rootNames.consumeRootName(root, changes::registerDelete);
+			rootNames.consumeRootName(root, translator.getChangeRegistry()::registerDelete);
 		}
 	}
 }
