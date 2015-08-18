@@ -43,7 +43,7 @@ public class ChangeRegistry {
 	/**
 	 * Registers an object removal request. If another request is already
 	 * present with the same <code>rootName</code>, that entry is overwritten.
-	 * It also removes exsiting update entries for the given root name.
+	 * It also removes existing update entries for the given root name.
 	 */
 	public synchronized void registerDelete(String rootName) {
 		updateTasks.remove(rootName);

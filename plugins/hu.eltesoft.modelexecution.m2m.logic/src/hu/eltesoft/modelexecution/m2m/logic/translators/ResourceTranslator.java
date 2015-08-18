@@ -80,8 +80,8 @@ public class ResourceTranslator {
 				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
 			}
 
-			setupTranslators();
 			Queries.instance().prepare(engine);
+			setupTranslators();
 
 			if (incremental) {
 				attachListeners();

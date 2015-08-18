@@ -16,7 +16,6 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 
@@ -116,7 +115,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> ex
 		private final IMatchUpdateListener<Match> listener;
 
 		public AddListenerTask(RootElementTranslator<?, ?, ?> translator) {
-			listener = new MatchUpdateListener<>(translator);
+			listener = translator.getMatchUpdateListener();
 			getEngine().addMatchUpdateListener(matcher, listener, false);
 			childNodes.forEach(node -> add(node.addListeners(translator)));
 		}

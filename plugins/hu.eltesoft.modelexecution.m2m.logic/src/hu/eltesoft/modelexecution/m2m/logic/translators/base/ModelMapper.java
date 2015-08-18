@@ -34,10 +34,19 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		root = buildMapper(engine);
 	}
 
+	/**
+	 * @return the root node of the translation tree
+	 */
 	protected abstract RootNode<UML, Trans, Match> createMapper(IncQueryEngine engine);
 
+	/**
+	 * Builds up the translation tree adding branches to the root node.
+	 */
 	protected abstract void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine);
 
+	/**
+	 * Creates the whole translation tree.
+	 */
 	protected RootNode<UML, Trans, Match> buildMapper(IncQueryEngine engine) throws IncQueryException {
 		RootNode<UML, Trans, Match> mapper = createMapper(engine);
 		initMapper(mapper, engine);
@@ -105,7 +114,11 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		return models;
 	}
 
-	@SuppressWarnings("unchecked") UML getRoot(Match m) {
-		return (UML) m.get(0);
+	/**
+	 * @return the root node from an IncQuery match.
+	 */
+	@SuppressWarnings("unchecked")
+	protected UML getRoot(Match match) {
+		return (UML) match.get(0);
 	}
 }
