@@ -4,14 +4,18 @@
    <extension point="org.eclipse.ui.startup">
      <startup class="hu.eltesoft.modelexecution.ide.IdePlugin"/>
    </extension>
-  <extension point="org.eclipse.emf.transaction.listeners">
-    <listener class="hu.eltesoft.modelexecution.ide.PapyrusEditorListener"/>
-  </extension>
   <extension id="hu.eltesoft.modelexecution.builders.modelbuilder" name="%builder.name" point="org.eclipse.core.resources.builders">
     <builder>
       <run class="hu.eltesoft.modelexecution.ide.builder.ModelBuilder"/>
     </builder>
   </extension>
+  <extension
+         point="org.eclipse.papyrus.infra.core.model">
+      <modelSetSnippet
+            classname="hu.eltesoft.modelexecution.ide.ModelSetListener"
+            description="Papyrus model set listener">
+      </modelSetSnippet>
+   </extension>
   <extension
         id="hu.eltesoft.modelexecution.builders.stratumbuilder"
         name="%stratumbuilder.name"

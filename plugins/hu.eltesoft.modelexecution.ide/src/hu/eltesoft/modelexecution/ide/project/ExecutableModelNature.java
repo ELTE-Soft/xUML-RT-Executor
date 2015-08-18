@@ -32,7 +32,7 @@ public class ExecutableModelNature implements IProjectNature {
 	@Override
 	public void deconfigure() throws CoreException {
 		removeBuilders();
-		TranslatorRegistry.INSTANCE.resourceUnloaded(project);
+		TranslatorRegistry.INSTANCE.resourceRemoved(project);
 	}
 
 	@Override

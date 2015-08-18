@@ -34,6 +34,6 @@ public class ProjectCloseListener implements IResourceChangeListener {
 		}
 
 		IProject project = (IProject) event.getResource();
-		TranslatorRegistry.INSTANCE.resourceUnloaded(project);
+		TranslatorRegistry.INSTANCE.resourceRemoved(project);
 	}
 }

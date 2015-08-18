@@ -11,6 +11,7 @@ import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
 import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
 import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
@@ -34,18 +35,18 @@ public class ResourceTranslator {
 	public static final String PATHMAP_SCHEME = "pathmap";
 	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
-	public static ResourceTranslator createIncremental(Resource resource) {
-		return new ResourceTranslator(resource, true);
+	public static ResourceTranslator createIncremental(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, true);
 	}
 
-	public static ResourceTranslator create(Resource resource) {
-		return new ResourceTranslator(resource, false);
+	public static ResourceTranslator create(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, false);
 	}
 
 	private final ChangeRegistry changes = new ChangeRegistry();
 	private final RootNameStorage rootNames = new RootNameStorage();
 
-	private Resource resource;
+	private ModelSet resource;
 	private boolean incremental;
 	private boolean disposed;
 	private AdvancedIncQueryEngine engine;
@@ -53,8 +54,8 @@ public class ResourceTranslator {
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
 
-	private ResourceTranslator(Resource resource, boolean incremental) {
-		this.resource = resource;
+	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
+		this.resource = modelSet;
 		this.incremental = incremental;
 		setupEngine();
 	}
@@ -81,7 +82,7 @@ public class ResourceTranslator {
 						
 					});
 
-			EMFScope emfScope = new EMFScope(resource.getResourceSet(), options);
+			EMFScope emfScope = new EMFScope(resource, options);
 
 			if (incremental) {
 				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(emfScope));
@@ -122,7 +123,7 @@ public class ResourceTranslator {
 		attachListeners = task;
 	}
 
-	public void toIncremental(Resource resource) {
+	public void toIncremental(ModelSet resource) {
 		checkDisposed();
 
 		if (incremental) {
