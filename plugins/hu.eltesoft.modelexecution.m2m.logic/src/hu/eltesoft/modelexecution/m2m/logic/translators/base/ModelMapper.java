@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
@@ -51,11 +52,15 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	 * Enables filtering of source models. Override in subclasses to prevent
 	 * building specific instances of the source model.
 	 */
-	// FIXME: it is a temporary solution to filter model elements by their
-	// stereotype applications. Remove this infrastructure when IncQuery support
-	// for stereotypes is available.
 	public boolean shouldMap(UML source) {
-		URI uri = source.eResource().getURI();
+		Resource eResource = source.eResource();
+		if (eResource == null) {
+			return true;
+		}
+		URI uri = eResource.getURI();
+		if (uri == null) {
+			return true;
+		}
 		return !ResourceTranslator.PATHMAP_SCHEME.equals(uri.scheme());
 	}
 

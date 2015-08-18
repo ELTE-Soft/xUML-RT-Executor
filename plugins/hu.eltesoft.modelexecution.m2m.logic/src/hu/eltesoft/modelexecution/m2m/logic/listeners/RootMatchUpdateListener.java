@@ -26,14 +26,18 @@ public class RootMatchUpdateListener<UML extends NamedElement, Match extends IPa
 	@Override
 	public void notifyAppearance(Match match) {
 		UML root = extractRoot(match);
-		String rootName = translator.getRootName(root);
-		rootNames.saveRootName(root, rootName);
-		changes.registerUpdate(root, translator);
+		if (translator.canHandle(root) && translator.shouldMap(root)) {
+			String rootName = translator.getRootName(root);
+			rootNames.saveRootName(root, rootName);
+			changes.registerUpdate(root, translator);
+		}
 	}
 
 	@Override
 	public void notifyDisappearance(Match match) {
 		UML root = extractRoot(match);
-		rootNames.consumeRootName(root, changes::registerDelete);
+		if (translator.canHandle(root) && translator.shouldMap(root)) {
+			rootNames.consumeRootName(root, changes::registerDelete);
+		}
 	}
 }
