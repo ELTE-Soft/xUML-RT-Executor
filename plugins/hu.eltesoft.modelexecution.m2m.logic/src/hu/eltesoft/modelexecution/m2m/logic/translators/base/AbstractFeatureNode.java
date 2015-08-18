@@ -16,7 +16,6 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
 import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
@@ -108,29 +107,28 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> ex
 		return meta;
 	}
 
-	public ReversibleTask addListeners(RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
-		return new AddListenerTask(translator, context);
+	public ReversibleTask addListeners(RootElementTranslator<?, ?, ?> translator) {
+		return new AddListenerTask(translator);
 	}
 
 	private final class AddListenerTask extends CompositeReversibleTask {
 
-		private final ListenerContext context;
 		private final IMatchUpdateListener<Match> listener;
 
-		public AddListenerTask(RootElementTranslator<?, ?, ?> translator, ListenerContext context) {
-			this.context = context;
-			AdvancedIncQueryEngine engine = context.getEngine();
-
+		public AddListenerTask(RootElementTranslator<?, ?, ?> translator) {
 			listener = new MatchUpdateListener<>(translator);
-			engine.addMatchUpdateListener(matcher, listener, false);
-			childNodes.forEach(node -> add(node.addListeners(translator, context)));
+			getEngine().addMatchUpdateListener(matcher, listener, false);
+			childNodes.forEach(node -> add(node.addListeners(translator)));
 		}
 
 		@Override
 		public boolean revert() {
-			AdvancedIncQueryEngine engine = context.getEngine();
-			engine.removeMatchUpdateListener(matcher, listener);
+			getEngine().removeMatchUpdateListener(matcher, listener);
 			return super.revert();
+		}
+
+		private AdvancedIncQueryEngine getEngine() {
+			return AdvancedIncQueryEngine.from(matcher.getEngine());
 		}
 	};
 }

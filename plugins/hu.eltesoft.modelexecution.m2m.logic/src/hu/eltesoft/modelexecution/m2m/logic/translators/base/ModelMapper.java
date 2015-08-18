@@ -9,17 +9,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
-import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.RootMatchUpdateListener;
-import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
-import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
@@ -31,9 +26,11 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
  */
 public abstract class ModelMapper<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch> {
 
-	private final RootNode<UML, Trans, Match> root;
+	protected final RootNode<UML, Trans, Match> root;
+	protected final AdvancedIncQueryEngine engine;
 
 	public ModelMapper(IncQueryEngine engine) throws IncQueryException {
+		this.engine = AdvancedIncQueryEngine.from(engine);
 		root = buildMapper(engine);
 	}
 
@@ -73,37 +70,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	/**
 	 * @return A task to remove the registered match update listeners
 	 */
-	public ReversibleTask addListeners(ListenerContext context) {
-		return new AddListenerTask(context);
-	}
-
-	private final class AddListenerTask extends CompositeReversibleTask {
-
-		private final ListenerContext context;
-		private final IMatchUpdateListener<Match> listener;
-
-		public AddListenerTask(ListenerContext context) {
-			this.context = context;
-			AdvancedIncQueryEngine engine = context.getEngine();
-			RootNameStorage rootNames = context.getRootNames();
-
-			root.matcher.forEachMatch(m -> {
-				UML root = getRoot(m);
-				String rootName = getRootName(root);
-				rootNames.saveRootName(root, rootName);
-			});
-			listener = new RootMatchUpdateListener<>(root.translator, rootNames);
-			engine.addMatchUpdateListener(root.matcher, listener, false);
-			root.childNodes.forEach(node -> add(node.addListeners(root.translator, context)));
-		}
-
-		@Override
-		public boolean revert() {
-			AdvancedIncQueryEngine engine = context.getEngine();
-			engine.removeMatchUpdateListener(root.matcher, listener);
-			return super.revert();
-		}
-	}
+	public abstract ReversibleTask addListeners();
 
 	/**
 	 * @param source
@@ -138,8 +105,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		return models;
 	}
 
-	@SuppressWarnings("unchecked")
-	private UML getRoot(Match m) {
+	@SuppressWarnings("unchecked") UML getRoot(Match m) {
 		return (UML) m.get(0);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
@@ -13,7 +14,11 @@ import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2m.logic.listeners.MatchUpdateListener;
 import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
+import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
+import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.TypeConverter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BasePackage;
@@ -33,6 +38,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	protected TypeConverter typeTranslator = new TypeConverter();
 	private BaseMatcher<Match> matcher;
 	private final ChangeRegistry changes = new ChangeRegistry();
+	private final RootNameStorage rootNames = new RootNameStorage();
 
 	public RootElementTranslator(IncQueryEngine engine) throws IncQueryException {
 		super(engine);
@@ -92,8 +98,63 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 		return rootType.isInstance(root);
 	}
 
-	// delegates for methods of converters (sub-translators)
+	@Override
+	public ReversibleTask addListeners() {
+		return new AddListenerTask();
+	}
+	
+	private final class AddListenerTask extends CompositeReversibleTask {
 
+		private final IMatchUpdateListener<Match> listener;
+
+		public AddListenerTask() {
+			root.matcher.forEachMatch(m -> {
+				UML root = getRoot(m);
+				String rootName = getRootName(root);
+				getRootNames().saveRootName(root, rootName);
+			});
+			listener = new RootMatchUpdateListener(RootElementTranslator.this);
+			engine.addMatchUpdateListener(root.matcher, listener, false);
+			root.childNodes.forEach(node -> add(node.addListeners(root.translator)));
+		}
+
+		@Override
+		public boolean revert() {
+			engine.removeMatchUpdateListener(root.matcher, listener);
+			return super.revert();
+		}
+	}
+	
+	/**
+	 * A match update listener which is intended to be used with root m2m model
+	 * elements. Every object disappearance will indicate a delete operation in the
+	 * change registry.
+	 */
+	public class RootMatchUpdateListener extends MatchUpdateListener<UML, Match> {
+
+		public RootMatchUpdateListener(RootElementTranslator<UML, ?, Match> translator) {
+			super(translator);
+		}
+
+		@Override
+		public void notifyAppearance(Match match) {
+			UML root = extractRoot(match);
+			if (translator.shouldMap(root)) {
+				String rootName = translator.getRootName(root);
+				rootNames.saveRootName(root, rootName);
+				translator.getChangeRegistry().registerUpdate(root, translator);
+			}
+		}
+
+		@Override
+		public void notifyDisappearance(Match match) {
+			UML root = extractRoot(match);
+			if (translator.shouldMap(root)) {
+				rootNames.consumeRootName(root, translator.getChangeRegistry()::registerDelete);
+			}
+		}
+	}
+	
 	public ScalarType convert(org.eclipse.uml2.uml.Type type) {
 		return typeTranslator.convert(type);
 	}
@@ -112,6 +173,10 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	public ChangeRegistry getChangeRegistry() {
 		return changes;
+	}
+	
+	public RootNameStorage getRootNames() {
+		return rootNames;
 	}
 
 }

@@ -14,8 +14,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
@@ -41,8 +39,6 @@ public class ResourceTranslator {
 		return new ResourceTranslator(resource, false);
 	}
 
-	private final RootNameStorage rootNames = new RootNameStorage();
-
 	private Resource resource;
 	private boolean incremental;
 	private boolean disposed;
@@ -59,9 +55,7 @@ public class ResourceTranslator {
 
 	private void setupEngine() {
 		disposed = false;
-
-		rootNames.clear();
-
+		
 		try {
 			// Only allows library resources to be indexed, but not metamodels
 			// or profiles. This is necessary because indexing metamodels
@@ -112,9 +106,8 @@ public class ResourceTranslator {
 
 	private void attachListeners() {
 		CompositeReversibleTask task = new CompositeReversibleTask();
-		ListenerContext context = new ListenerContext(engine, rootNames);
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
-			task.add(translator.addListeners(context));
+			task.add(translator.addListeners());
 		}
 		attachListeners = task;
 	}
