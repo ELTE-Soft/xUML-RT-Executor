@@ -3,15 +3,11 @@ package hu.eltesoft.modelexecution.m2m.logic.translators;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
-import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
-import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
+
+import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
@@ -32,8 +28,6 @@ import hu.eltesoft.modelexecution.uml.incquery.Queries;
  */
 public class ResourceTranslator {
 
-	public static final String PATHMAP_SCHEME = "pathmap";
-	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
 	public static ResourceTranslator createIncremental(ModelSet modelSet) {
 		return new ResourceTranslator(modelSet, true);
@@ -53,6 +47,7 @@ public class ResourceTranslator {
 	private ReversibleTask attachListeners;
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
+	private IncQueryEngineService service;
 
 	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
 		this.resource = modelSet;
@@ -67,28 +62,8 @@ public class ResourceTranslator {
 		rootNames.clear();
 
 		try {
-			// Only allows library resources to be indexed, but not metamodels
-			// or profiles. This is necessary because indexing metamodels
-			// extremely degrades performance.
-			BaseIndexOptions options = new BaseIndexOptions()
-					.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
-
-						@Override
-						public boolean isResourceFiltered(Resource resource) {
-							URI uri = resource.getURI();
-							return PATHMAP_SCHEME.equals(uri.scheme())
-									&& !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
-						}
-						
-					});
-
-			EMFScope emfScope = new EMFScope(resource, options);
-
-			if (incremental) {
-				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(emfScope));
-			} else {
-				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
-			}
+			service = IncQueryEngineService.getOrStartService(resource);
+			engine = AdvancedIncQueryEngine.from(service.getOrCreateEngine(resource));
 
 			setupTranslators();
 			Queries.instance().prepare(engine);
@@ -153,9 +128,10 @@ public class ResourceTranslator {
 
 		if (incremental) {
 			attachListeners.revert();
-		} else {
-			engine.dispose();
 		}
+		
+		service.disposeEngine(resource);
+		
 		disposed = true;
 	}
 

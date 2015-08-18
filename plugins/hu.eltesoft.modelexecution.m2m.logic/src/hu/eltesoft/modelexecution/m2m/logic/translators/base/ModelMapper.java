@@ -21,7 +21,6 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
 import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
-import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
@@ -31,6 +30,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
  */
 public abstract class ModelMapper<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch> {
 
+	private static final Object PATHMAP_SCHEME = "pathmap";
 	private final RootNode<UML, Trans, Match> root;
 
 	public ModelMapper(IncQueryEngine engine) throws IncQueryException {
@@ -56,7 +56,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 	// for stereotypes is available.
 	public boolean shouldMap(UML source) {
 		URI uri = source.eResource().getURI();
-		return !ResourceTranslator.PATHMAP_SCHEME.equals(uri.scheme());
+		return !PATHMAP_SCHEME.equals(uri.scheme());
 	}
 
 	/**
