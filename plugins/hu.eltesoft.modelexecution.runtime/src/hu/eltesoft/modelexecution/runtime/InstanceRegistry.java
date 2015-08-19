@@ -35,13 +35,6 @@ public final class InstanceRegistry {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
-	@SuppressWarnings("unchecked")
-	public StatefulClass getInstance(String key) throws NumberFormatException, ClassNotFoundException {
-		String[] split = key.split("#");
-		return getInstance((Class<? extends StatefulClass>) getClass().getClassLoader().loadClass(split[0]),
-				Integer.parseInt(split[1]));
-	}
-
 	/**
 	 * Registers an instance of a class that can receive messages. As long as an
 	 * instance is registered, it cannot be garbage-collected.

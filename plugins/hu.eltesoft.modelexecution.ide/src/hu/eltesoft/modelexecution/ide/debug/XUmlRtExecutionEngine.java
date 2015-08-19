@@ -279,7 +279,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 				// TODO
 				XUmlRtStEmptyStackFrame stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
 				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
-				stackFrame.loadData(virtualMachineConnection, elementRegistry);
+				stackFrame.loadData(virtualMachineConnection, resourceSet);
 				if (smInstance.getName().equals(actualSMInstance)) {
 					int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
 					sendEvent(new Suspend_Event(smInstance, eventCode, new MokaThread[] { smInstance }));

@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
@@ -16,6 +19,7 @@ import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
+import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
@@ -28,7 +32,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtSMStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStEmptyStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
-import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
@@ -61,14 +64,20 @@ public class VirtualMachineConnection {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			List<Method> getInstanceID = owner.referenceType().methodsByName(TO_STRING_METHOD);
-			getInstanceID.removeIf(m -> m.isAbstract() || !m.argumentTypeNames().isEmpty());
-			Value result = mainThread.invokeMethod(owner, getInstanceID.get(0));
-			return ((StringReference) result).value();
+			StringReference result = invokeToString(mainThread, owner);
+			return result.value();
 		} catch (Exception e) {
 			IdePlugin.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
 			return null;
 		}
+	}
+
+	private StringReference invokeToString(JDTThreadWrapper mainThread, ObjectReference owner) throws InvocationException,
+			InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
+		List<Method> getInstanceID = owner.referenceType().methodsByName(TO_STRING_METHOD);
+		getInstanceID.removeIf(m -> m.isAbstract() || !m.argumentTypeNames().isEmpty());
+		Value result = mainThread.invokeMethod(owner, getInstanceID.get(0));
+		return (StringReference) result;
 	}
 
 	/**
@@ -123,7 +132,7 @@ public class VirtualMachineConnection {
 		return new JDTThreadWrapper(mainThread);
 	}
 
-	public void loadDataOfSMInstance(XUmlRtStEmptyStackFrame stackFrame, ModelElementsRegistry elementRegistry)
+	public void loadDataOfSMInstance(XUmlRtStEmptyStackFrame stackFrame, ResourceSet resourceSet)
 			throws DebugException {
 		JDTThreadWrapper mainThread = getMainThread();
 		ClassType instanceRegistryClass = (ClassType) virtualMachine
@@ -131,30 +140,42 @@ public class VirtualMachineConnection {
 		ObjectReference instanceRegistry = (ObjectReference) instanceRegistryClass
 				.getValue(instanceRegistryClass.fieldByName("INSTANCE"));
 		List<Method> getInstance = instanceRegistryClass.methodsByName("getInstance");
-		getInstance.removeIf(m -> m.argumentTypeNames().size() != 1
-				|| !m.argumentTypeNames().get(0).equals(String.class.getCanonicalName()));
+		getInstance.removeIf(Method::isAbstract);
 		try {
 			XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
-			String classInstanceId = stateMachineInstance.getClassId() + "#" + stateMachineInstance.getInstanceId();
+			List<ReferenceType> actualClass = virtualMachine.classesByName(stateMachineInstance.getClassId());
 			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, getInstance.get(0),
-					virtualMachine.mirrorOf(classInstanceId));
+					actualClass.get(0).classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
 			List<Method> getSM = instance.referenceType().methodsByName("getStateMachine");
 			getSM.removeIf(Method::isAbstract);
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, getSM.get(0));
-			Value value = stateMachine
+			ObjectReference actualState = (ObjectReference) stateMachine
 					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 			stackFrame
 					.setVariables(
 							new MokaVariable[] {
 									createMokaVariable(stackFrame, mainThread, instance, new OwnerM(
 											Messages.VirtualMachineConnection_variable_this_label)),
-							createMokaVariable(stackFrame, mainThread, value,
+							createMokaVariable(stackFrame, mainThread, actualState,
 									new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label)) });
-			stackFrame.setModelElement(elementRegistry.get(value.toString()).iterator().next());
+			List<Method> nameMethod = actualState.referenceType().methodsByName("name");
+			nameMethod.removeIf(Method::isAbstract);
+			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, nameMethod.get(0));
+			stackFrame.setModelElement(findActualState(stringVal.value(), resourceSet));
 		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException
 				| IncompatibleThreadStateException e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
 		}
+	}
+	
+	private EObject findActualState(String id, ResourceSet resourceSet) {
+		for (Resource resource : resourceSet.getResources()) {
+			EObject eObject = resource.getEObject(id);
+			if (eObject != null) {
+				return eObject;
+			}
+		}
+		return null;
 	}
 
 }
