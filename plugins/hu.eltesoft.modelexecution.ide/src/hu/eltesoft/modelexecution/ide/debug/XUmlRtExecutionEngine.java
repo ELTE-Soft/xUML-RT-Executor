@@ -267,13 +267,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		animation.setSuspendedMarker(modelElement);
 
 		String actualSMInstance = virtualMachineConnection.getActualSMInstance();
-
-		// if (actualSMInstance != null) {
-		// show the current element as a stack frame
-		// XUmlRtSMStackFrame frame = new XUmlRtSMStackFrame(debugTarget,
-		// (NamedElement) modelElement);
-		// frame.setThread(actualSMInstance);
-
 		try {
 			for (XUmlRtStateMachineInstance smInstance : smInstances) {
 				// TODO
@@ -289,14 +282,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances");
 		}
-
-		// actualSMInstance.setStackFrames(new IStackFrame[] { frame
-		// });
-		//
-		// virtualMachineConnection.loadSMVariables(frame);
-
-		// causes debug target to be suspended
-
 	}
 
 	@Override

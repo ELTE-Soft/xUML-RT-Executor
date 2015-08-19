@@ -11,7 +11,6 @@ import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InterfaceType;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
-import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -52,21 +51,13 @@ public class JDTUtils {
 	 *            a reference to a collection in the virtual machine
 	 */
 	public List<Value> getCollectionValues(ObjectReference value) {
-		Method iteratorMethod = selectMethod(value.referenceType(), TO_ARRAY_METHOD);
-		if (iteratorMethod != null) {
-			try {
-				ArrayReference arrayRef = (ArrayReference) thread.invokeMethod(value, iteratorMethod);
-				if (arrayRef.length() > 0) {
-					// getValues cannot be used on a reference of an empty array
-					return arrayRef.getValues();
-				}
-			} catch (InvocationException e) {
-				// error while calling toArray, fall through
-			} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException e) {
-				IdePlugin.logError("Error while accessing collection elements", e);
-			}
+		try {
+			return ((ArrayReference) thread.invokeMethod(value, TO_ARRAY_METHOD)).getValues();
+		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException | InvocationException
+				| NoSuchMethodException e) {
+			IdePlugin.logError("Error while accessing collection elements", e);
+			return new LinkedList<>();
 		}
-		return new LinkedList<>();
 	}
 
 	/**
@@ -78,47 +69,12 @@ public class JDTUtils {
 	 */
 	public String invokeToString(ObjectReference objectReference)
 			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
-		Method toStringMethod = selectMethod(objectReference.referenceType(), TO_STRING_METHOD);
-		if (toStringMethod == null) {
+		try {
+			return ((StringReference) thread.invokeMethod(objectReference, TO_STRING_METHOD)).value();
+		} catch (InvocationException e1) {
+			// exception in toString
+		} catch (NoSuchMethodException e1) {
 			IdePlugin.logError("No toString method on value");
-		} else {
-			Value toStringResult;
-			try {
-				toStringResult = thread.invokeMethod(objectReference, toStringMethod);
-			} catch (InvocationException e) {
-				// exception in toString
-				return null;
-			}
-			if (toStringResult instanceof StringReference) {
-				return ((StringReference) toStringResult).value();
-			} else {
-				IdePlugin.logError("The result of toString is not a String");
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * @param refType the mirror of the type where the method can be found
-	 * @param name the name of the method
-	 * @param argumentTypeNames the names of argument types
-	 * @return the mirror referencing the (non-abstract) method
-	 */
-	private Method selectMethod(ReferenceType refType, String name, String... argumentTypeNames) {
-		List<Method> methodsByName = refType.methodsByName(name);
-		for (Method method : methodsByName) {
-			if (!method.isAbstract()) {
-				List<String> argumentTypes = method.argumentTypeNames();
-				if (argumentTypes.size() != argumentTypeNames.length) {
-					continue;
-				}
-				for (int i = 0; i < argumentTypeNames.length; i++) {
-					if (!argumentTypeNames[i].equals(argumentTypes.get(i))) {
-						continue;
-					}
-				}
-				return method;
-			}
 		}
 		return null;
 	}

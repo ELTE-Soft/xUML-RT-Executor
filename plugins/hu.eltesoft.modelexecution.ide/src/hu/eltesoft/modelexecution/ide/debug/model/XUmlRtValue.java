@@ -53,7 +53,7 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 	 * presentation.
 	 */
 	protected JDTThreadWrapper thread;
-	
+
 	protected JDTUtils jdtUtils;
 
 	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
@@ -94,17 +94,15 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 			throws DebugException {
 		ObjectReference meta = (ObjectReference) type.getValue(metaField);
 		try {
-			StringReference res = (StringReference) thread.invokeMethod(meta,
-					meta.referenceType().methodsByName(SERIALIZE_METHOD_NAME).get(0));
+			StringReference res = (StringReference) thread.invokeMethod(meta, SERIALIZE_METHOD_NAME);
 			ClassM metaInfo = ClassM.deserialize(res.value());
 			Map<PropertyM, Value> attribValues = new HashMap<PropertyM, Value>();
 			for (PropertyM attrib : metaInfo.getAttributes()) {
-				List<Method> getter = type.methodsByName(attrib.getIdentifier());
-				attribValues.put(attrib, thread.invokeMethod(valueObj, getter.get(0)));
+				attribValues.put(attrib, thread.invokeMethod(valueObj, attrib.getIdentifier()));
 			}
 			return presentAttributes(attribValues);
-		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
-				| InvocationException e) {
+		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException | InvocationException
+				| NoSuchMethodException e) {
 			IdePlugin.logError("Error while retrieving metainfo", e);
 			return new IVariable[0];
 		}
@@ -153,7 +151,7 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 	 *         be decided
 	 */
 	protected abstract String resolveSingletonObject(ObjectReference objectReference)
-			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException; 
+			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException;
 
 	@Override
 	public String getReferenceTypeName() throws DebugException {
@@ -169,7 +167,7 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 	public boolean hasVariables() throws DebugException {
 		return getVariables().length > 0;
 	}
-	
+
 	@Override
 	public String getDetails() {
 		try {
@@ -179,12 +177,12 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 			return e.getMessage();
 		}
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return null; // not displayed
 	}
-	
+
 	@Override
 	public Image getImage() {
 		return null; // not displayed

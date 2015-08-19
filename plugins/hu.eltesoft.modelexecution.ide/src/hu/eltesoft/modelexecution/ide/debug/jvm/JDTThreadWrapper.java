@@ -41,11 +41,41 @@ public class JDTThreadWrapper {
 			IncompatibleThreadStateException {
 		return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
 	}
-	
+
+	public synchronized Value invokeMethod(ObjectReference instance, String methodName, Value... args)
+			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
+			IncompatibleThreadStateException, NoSuchMethodException {
+		List<Method> methodsByName = instance.referenceType().methodsByName(methodName);
+		methodsByName.removeIf(Method::isAbstract);
+		for (Method method : methodsByName) {
+			try {
+				return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
+			} catch (InvalidTypeException e) {
+				// an other overloaded method must be tried
+			}
+		}
+		throw new NoSuchMethodException("No suitable overloaded method is found");
+	}
+
 	public synchronized Value invokeStaticMethod(ClassType type, Method method, Value... args)
 			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
 			IncompatibleThreadStateException {
 		return type.invokeMethod(thread, method, Arrays.asList(args), 0);
+	}
+	
+	public synchronized Value invokeStaticMethod(ClassType type, String methodName, Value... args)
+			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
+			IncompatibleThreadStateException, NoSuchMethodException {
+		List<Method> methodsByName = type.methodsByName(methodName);
+		methodsByName.removeIf(m -> !m.isStatic());
+		for (Method method : methodsByName) {
+			try {
+				return type.invokeMethod(thread, method, Arrays.asList(args), 0);
+			} catch (InvalidTypeException e) {
+				// an other overloaded method must be tried
+			}
+		}
+		throw new NoSuchMethodException("No suitable overloaded method is found");
 	}
 
 	/**

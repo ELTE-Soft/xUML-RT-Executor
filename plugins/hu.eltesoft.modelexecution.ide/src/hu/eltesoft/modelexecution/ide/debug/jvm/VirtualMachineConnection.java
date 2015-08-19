@@ -37,7 +37,6 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
 import hu.eltesoft.modelexecution.runtime.meta.SignalM;
-import hu.eltesoft.modelexecution.runtime.meta.StateM;
 
 /**
  * A class to query the state of the runtime running in the given virtual
@@ -72,8 +71,9 @@ public class VirtualMachineConnection {
 		}
 	}
 
-	private StringReference invokeToString(JDTThreadWrapper mainThread, ObjectReference owner) throws InvocationException,
-			InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
+	private StringReference invokeToString(JDTThreadWrapper mainThread, ObjectReference owner)
+			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
+			IncompatibleThreadStateException {
 		List<Method> getInstanceID = owner.referenceType().methodsByName(TO_STRING_METHOD);
 		getInstanceID.removeIf(m -> m.isAbstract() || !m.argumentTypeNames().isEmpty());
 		Value result = mainThread.invokeMethod(owner, getInstanceID.get(0));
@@ -100,10 +100,8 @@ public class VirtualMachineConnection {
 		Value stateObj = smObj.getValue(smObj.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 		Field ownerField = smObj.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 		ObjectReference owner = (ObjectReference) smObj.getValue(ownerField);
-		ret.add(createMokaVariable(frame, mainThread, owner,
-				new OwnerM(Messages.VirtualMachineConnection_variable_this_label)));
-		ret.add(createMokaVariable(frame, mainThread, stateObj,
-				new StateM(Messages.VirtualMachineConnection_variable_currentState_label)));
+		ret.add(createThisVariable(frame, mainThread, owner));
+		ret.add(createCurrentStateVariable(frame, mainThread, stateObj));
 	}
 
 	private void addEventVariable(XUmlRtSMStackFrame frame, List<MokaVariable> ret, JDTThreadWrapper mainThread) {
@@ -134,40 +132,40 @@ public class VirtualMachineConnection {
 
 	public void loadDataOfSMInstance(XUmlRtStEmptyStackFrame stackFrame, ResourceSet resourceSet)
 			throws DebugException {
-		JDTThreadWrapper mainThread = getMainThread();
-		ClassType instanceRegistryClass = (ClassType) virtualMachine
-				.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
-		ObjectReference instanceRegistry = (ObjectReference) instanceRegistryClass
-				.getValue(instanceRegistryClass.fieldByName("INSTANCE"));
-		List<Method> getInstance = instanceRegistryClass.methodsByName("getInstance");
-		getInstance.removeIf(Method::isAbstract);
+		XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
 		try {
-			XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
-			List<ReferenceType> actualClass = virtualMachine.classesByName(stateMachineInstance.getClassId());
-			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, getInstance.get(0),
-					actualClass.get(0).classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
-			List<Method> getSM = instance.referenceType().methodsByName("getStateMachine");
-			getSM.removeIf(Method::isAbstract);
-			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, getSM.get(0));
+			JDTThreadWrapper mainThread = getMainThread();
+			ClassType instanceRegistryClass = (ClassType) virtualMachine
+					.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
+			ObjectReference instanceRegistry = (ObjectReference) mainThread.invokeStaticMethod(instanceRegistryClass,
+					"getInstanceRegistry");
+			ReferenceType actualClass = virtualMachine.classesByName(stateMachineInstance.getClassId()).get(0);
+			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, "getInstance",
+					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
+			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, "getStateMachine");
 			ObjectReference actualState = (ObjectReference) stateMachine
 					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
-			stackFrame
-					.setVariables(
-							new MokaVariable[] {
-									createMokaVariable(stackFrame, mainThread, instance, new OwnerM(
-											Messages.VirtualMachineConnection_variable_this_label)),
-							createMokaVariable(stackFrame, mainThread, actualState,
-									new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label)) });
-			List<Method> nameMethod = actualState.referenceType().methodsByName("name");
-			nameMethod.removeIf(Method::isAbstract);
-			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, nameMethod.get(0));
+			stackFrame.setVariables(new MokaVariable[] { createThisVariable(stackFrame, mainThread, instance),
+					createCurrentStateVariable(stackFrame, mainThread, actualState) });
+			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, "name");
 			stackFrame.setModelElement(findActualState(stringVal.value(), resourceSet));
-		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException
-				| IncompatibleThreadStateException e) {
+		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
+				| NoSuchMethodException e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
 		}
 	}
-	
+
+	private MokaVariable createThisVariable(MokaStackFrame stackFrame, JDTThreadWrapper mainThread, Value instance) {
+		return createMokaVariable(stackFrame, mainThread, instance,
+				new OwnerM(Messages.VirtualMachineConnection_variable_this_label));
+	}
+
+	private MokaVariable createCurrentStateVariable(MokaStackFrame stackFrame, JDTThreadWrapper mainThread,
+			Value actualState) {
+		return createMokaVariable(stackFrame, mainThread, actualState,
+				new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label));
+	}
+
 	private EObject findActualState(String id, ResourceSet resourceSet) {
 		for (Resource resource : resourceSet.getResources()) {
 			EObject eObject = resource.getEObject(id);
