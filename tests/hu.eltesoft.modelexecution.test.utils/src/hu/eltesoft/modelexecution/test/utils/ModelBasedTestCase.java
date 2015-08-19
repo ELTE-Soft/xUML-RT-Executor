@@ -19,6 +19,12 @@ public abstract class ModelBasedTestCase {
 
 	protected Resource resource;
 	protected Model model;
+	protected boolean usePluginUri = false;
+
+	protected ModelBasedTestCase(String modelPath, boolean usePluginUri) {
+		this(modelPath);
+		this.usePluginUri = usePluginUri;
+	}
 
 	protected ModelBasedTestCase(String modelPath) {
 		this.modelPath = modelPath;
@@ -35,7 +41,7 @@ public abstract class ModelBasedTestCase {
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
-		URI uri = URI.createFileURI(path);
+		URI uri = usePluginUri ? URI.createPlatformPluginURI(path, true) : URI.createFileURI(path);
 		return resourceSet.getResource(uri, true);
 	}
 

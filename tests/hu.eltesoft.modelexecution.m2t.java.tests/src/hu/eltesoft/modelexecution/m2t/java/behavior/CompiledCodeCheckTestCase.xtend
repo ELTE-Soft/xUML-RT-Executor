@@ -22,7 +22,7 @@ abstract class CompiledCodeCheckTestCase {
 	@Inject
 	protected var IUMLContextProvider provider
 
-	protected var Compiler compiler
+	protected var CompilerBase compiler
 
 	@Before
 	def setup() {

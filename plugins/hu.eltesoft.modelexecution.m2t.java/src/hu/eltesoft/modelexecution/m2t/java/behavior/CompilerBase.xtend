@@ -15,7 +15,7 @@ import java.util.WeakHashMap
 import org.apache.commons.lang.StringUtils
 import org.eclipse.emf.ecore.EObject
 
-abstract class Compiler {
+abstract class CompilerBase {
 
 	public static val Multiplicity SINGLE = BaseFactory.eINSTANCE.createMultiplicity()
 	public static val CONTEXT_NAME = "context"

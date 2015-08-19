@@ -100,10 +100,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
 	@Override
-	public TerminationResult run(String className, String feedName) throws Exception {
+	public TerminationResult run(String className, String mainName) throws Exception {
 		try {
 			logInfo("Preparing system for execution");
-			prepare(className, feedName);
+			prepare(className, mainName);
 			logInfo("Starting execution");
 			while (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
 				// events read from trace will not be written to trace

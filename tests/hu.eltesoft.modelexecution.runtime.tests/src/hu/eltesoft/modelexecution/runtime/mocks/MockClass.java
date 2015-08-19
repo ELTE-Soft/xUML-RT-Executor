@@ -11,15 +11,12 @@ public class MockClass extends ClassWithState {
 
 	private static MockClass instance = null;
 
-	private Runtime runtime;
-
 	public static MockClass create(Runtime runtime) {
 		return new MockClass(runtime);
 	}
 
 	public MockClass(Runtime runtime) {
 		super(runtime, 0);
-		this.runtime = runtime;
 		instance = this;
 		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 	}
@@ -28,8 +25,9 @@ public class MockClass extends ClassWithState {
 		instance.dispose();
 	}
 
-	public void feedEvent() {
-		runtime.addEventToQueue(this, new SignalEvent(new DummySignal()));
+	public static void feedEvent() {
+		MockClass instance = create(runtime);
+		runtime.addEventToQueue(instance, new SignalEvent(new DummySignal()));
 		// do not dispose the instance here as it will be
 		// unregistered before entering the event loop
 	}

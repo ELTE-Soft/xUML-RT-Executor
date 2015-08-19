@@ -17,7 +17,9 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		this.runtime = runtime;
 		this.instanceID = instanceID;
 		stateMachine = createStateMachine();
-		stateMachine.doInitialTransition();
+		if (null != stateMachine) {
+			stateMachine.doInitialTransition();
+		}
 	}
 
 	/**

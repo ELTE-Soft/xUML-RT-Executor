@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguageFactory
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
@@ -22,7 +25,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 	var Class aClass
 
 	new() {
-		super(ModelProperties.PATH)
+		super(ModelProperties.PATH, true)
 	}
 
 	@Before
@@ -40,7 +43,17 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
 		behavior.reference = makeNewReference("TestBehavior")
-		behavior.code = "this.x();";
+		behavior.parsingResults = new ParsingResults(null, null) {
+
+			override boolean validationOK() {
+				true
+			}
+
+			override Statements getModel() {
+				val factory = ReducedAlfLanguageFactory.eINSTANCE
+				factory.createStatements
+			}
+		};
 		behavior.containerClass = makeNewReference("TestClass")
 		val template = new BehaviorTemplateSmap(behavior)
 

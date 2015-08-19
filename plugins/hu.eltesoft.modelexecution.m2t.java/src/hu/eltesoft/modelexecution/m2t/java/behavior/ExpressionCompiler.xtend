@@ -9,7 +9,6 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LocalNameDeclarationStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameLeftHandSide
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NaturalLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NullExpression
@@ -31,7 +30,7 @@ import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
 
-class ExpressionCompiler extends Compiler {
+class ExpressionCompiler extends CompilerBase {
 
 	extension TypeConverter typeConverter = new TypeConverter
 	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
@@ -76,7 +75,7 @@ class ExpressionCompiler extends Compiler {
 	}
 
 	def dispatch void compile(ThisExpression expr) {
-		append('''wrap(«Compiler.CONTEXT_NAME»)''')
+		append('''wrap(«CompilerBase.CONTEXT_NAME»)''')
 	}
 
 	def dispatch void compile(LocalNameDeclarationStatement declaration) {
@@ -115,11 +114,6 @@ class ExpressionCompiler extends Compiler {
 			Variable: append(ref.localName)
 			default: append(NamedReference.getIdentifier(ref))
 		}
-	}
-
-	def dispatch void compile(NameLeftHandSide lhs) {
-		// TODO: handle lhs.index?
-		compile(lhs.expression)
 	}
 
 	def dispatch void compile(InstanceCreationExpression expr) {
@@ -179,14 +173,14 @@ class ExpressionCompiler extends Compiler {
 		append("unwrap(")
 		compile(call.context)
 		append(").")
-		append(NamedReference.getIdentifier(call.operation))
+		append(NamedReference.getIdentifier(call.feature))
 		append("(")
-		compile(call.parameters, call.operation)
+		compile(call.parameters, call.feature)
 		append(")")
 	}
 
 	def dispatch void compile(StaticFeatureInvocationExpression call) {
-		val op = call.operation
+		val op = call.operation.reference as Operation
 		var cls = op.class_
 		if (Stereotypes.isExternalEntity(cls)) {
 			append(CONTEXT_NAME)

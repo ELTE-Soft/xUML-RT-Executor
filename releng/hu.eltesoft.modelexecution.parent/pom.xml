@@ -25,7 +25,6 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.profile/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.runtime/pom.xml</module>
-		<module>../../plugins/hu.eltesoft.modelexecution.uml.alf/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
 
  
@@ -38,7 +37,6 @@
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module>
-		<module>../../tests/hu.eltesoft.modelexecution.uml.alf.tests/pom.xml</module>
 
  
 		<module>../../features/hu.eltesoft.modelexecution.feature/pom.xml</module>

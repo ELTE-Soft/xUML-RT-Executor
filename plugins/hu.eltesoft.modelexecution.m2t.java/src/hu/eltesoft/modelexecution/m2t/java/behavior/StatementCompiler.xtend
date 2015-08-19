@@ -11,6 +11,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReturnStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.SendSignalStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.WhileStatement
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.IfClause
 
 // TODO: missing statements: SwitchStatement, ForEachStatement ClassifyStatement
 class StatementCompiler extends ExpressionCompiler {
@@ -49,20 +50,23 @@ class StatementCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch void compile(IfStatement statement) {
-		for (i : 0 ..< statement.nonFinalClauses.size) {
-			// simply get the first concurrent clause as they are not really supported
-			val clause = statement.nonFinalClauses.get(i).clause.get(0)
-			if (i > 0) {
-				append("else ")
+		for (i : 0 ..< statement.clauses.size) {
+			val clause = statement.clauses.get(i)
+			switch clause {
+				IfClause: {
+					if (i > 0) {
+						append("else ")
+					}
+					append("if (unwrap(")
+					compile(clause.condition)
+					append(")) ")
+					compile(clause.body)
+				}
+				BlockStatement: {
+					append("else ")
+					compile(clause)
+				}
 			}
-			append("if (unwrap(")
-			compile(clause.condition)
-			append(")) ")
-			compile(clause.body)
-		}
-		if (null != statement.finalClause) {
-			append("else ")
-			compile(statement.finalClause)
 		}
 	}
 
@@ -75,7 +79,7 @@ class StatementCompiler extends ExpressionCompiler {
 
 	def dispatch void compile(DoStatement loop) {
 		append("do ")
-		compile(loop.body, false)
+		compile(loop.body as Block, false)
 		append(" while (unwrap(")
 		compile(loop.condition)
 		append("));")
