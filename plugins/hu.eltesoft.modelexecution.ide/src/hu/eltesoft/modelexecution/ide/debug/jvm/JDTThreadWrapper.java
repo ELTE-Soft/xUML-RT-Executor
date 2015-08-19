@@ -110,9 +110,13 @@ public class JDTThreadWrapper {
 	}
 
 	private void checkUsable() {
-		if (!thread.isSuspended() || !thread.isAtBreakpoint()) {
+		if (!isValid()) {
 			throw new IllegalStateException("Thread is not suspended at a breakpoint");
 		}
+	}
+
+	public boolean isValid() {
+		return thread.isSuspended() && thread.isAtBreakpoint();
 	}
 
 	private StackFrame getExecutionPoint() {

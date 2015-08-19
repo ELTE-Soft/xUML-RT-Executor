@@ -51,6 +51,7 @@ public class VirtualMachineConnection {
 	private static final String MAIN_THREAD_NAME = "main"; //$NON-NLS-1$
 
 	private VirtualMachine virtualMachine;
+	private JDTThreadWrapper mainThread;
 
 	public VirtualMachineConnection(VirtualMachine virtualMachine) {
 		this.virtualMachine = virtualMachine;
@@ -106,17 +107,20 @@ public class VirtualMachineConnection {
 	}
 
 	/**
-	 * Gets the thread on which the runtime runs
+	 * Gets the thread on which the runtime runs. It is safe to use this method
+	 * multiple times, because if a valid thread exists, it returns that and
+	 * evade concurrent use of the same jvm thread.
 	 */
 	public JDTThreadWrapper getMainThread() {
-		List<ThreadReference> threads = virtualMachine.allThreads();
-		ThreadReference mainThread = null;
-		for (ThreadReference thread : threads) {
-			if (thread.name().equals(MAIN_THREAD_NAME)) {
-				mainThread = thread;
+		if (mainThread == null || !mainThread.isValid()) {
+			List<ThreadReference> threads = virtualMachine.allThreads();
+			for (ThreadReference thread : threads) {
+				if (thread.name().equals(MAIN_THREAD_NAME)) {
+					mainThread = new JDTThreadWrapper(thread);
+				}
 			}
 		}
-		return new JDTThreadWrapper(mainThread);
+		return mainThread;
 	}
 
 	/**
