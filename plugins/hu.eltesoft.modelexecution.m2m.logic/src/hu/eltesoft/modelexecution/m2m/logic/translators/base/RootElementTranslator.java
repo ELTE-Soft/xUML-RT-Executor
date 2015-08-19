@@ -182,9 +182,9 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 			UML root = extractRoot(match);
 			// To generalize patterns, we allow subpattern updates to appear for
 			// multiple translators. For example when an attribute is created
-			// for an
-			// AssociationClass, both the Class and AssociationClass translators
-			// register it, but only the later can handle the change.
+			// for an AssociationClass, both the Class and AssociationClass
+			// translators register it, but only the later can handle the
+			// change.
 			if (canHandle(root)) {
 				registerUpdate(extractRoot(match));
 			}
