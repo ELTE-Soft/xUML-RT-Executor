@@ -19,6 +19,10 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.runtime.RuntimeControllerServer;
 
+/**
+ * This class receives event notifications and sends commands to a
+ * {@linkplain RuntimeControllerServer}
+ */
 public class RuntimeControllerClient {
 
 	private ServerSocket server;
@@ -64,12 +68,12 @@ public class RuntimeControllerClient {
 		switch (command[0]) {
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_CREATED:
 			for (ReactiveClassListener listener : reactiveClassListeners) {
-				listener.instanceCreated(command[1]);
+				listener.instanceCreated(command[1], Integer.parseInt(command[2]), command[3]);
 			}
 			break;
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_TERMINATED:
 			for (ReactiveClassListener listener : reactiveClassListeners) {
-				listener.instanceDestroyed(command[1]);
+				listener.instanceDestroyed(command[1], Integer.parseInt(command[2]));
 			}
 			break;
 		}

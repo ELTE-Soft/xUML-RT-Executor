@@ -16,8 +16,15 @@ import org.eclipse.uml2.uml.UMLFactory;
  */
 public class XUmlRtStateMachineInstance extends MokaThread implements IPresentation {
 
-	public XUmlRtStateMachineInstance(MokaDebugTarget debugTarget) {
+	private String classId;
+	private int instanceId;
+
+	public XUmlRtStateMachineInstance(MokaDebugTarget debugTarget, String classId, int instanceId,
+			String originalName) {
 		super(debugTarget);
+		this.classId = classId;
+		this.instanceId = instanceId;
+		setName(originalName + "#" + instanceId);
 	}
 
 	@Override
@@ -38,5 +45,13 @@ public class XUmlRtStateMachineInstance extends MokaThread implements IPresentat
 		IImage image = ImageQuery.getEObjectImage(component);
 		Device device = Display.getCurrent();
 		return new Image(device, image.getInputStream());
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+	
+	public int getInstanceId() {
+		return instanceId;
 	}
 }

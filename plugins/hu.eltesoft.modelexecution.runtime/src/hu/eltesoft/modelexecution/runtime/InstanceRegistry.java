@@ -20,7 +20,7 @@ public final class InstanceRegistry {
 	// If multiple runtimes are executed simultaneously, the mapping should be
 	// partitioned by Runtime and synchronized.
 	private Map<InstanceKey, ClassWithState> instanceRegistry = new HashMap<>();
-	
+
 	private List<InstanceListener> listeners = new LinkedList<>();
 
 	private static final InstanceRegistry INSTANCE = new InstanceRegistry();
@@ -33,6 +33,13 @@ public final class InstanceRegistry {
 	 */
 	public StatefulClass getInstance(Class<? extends StatefulClass> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
+	}
+
+	@SuppressWarnings("unchecked")
+	public StatefulClass getInstance(String key) throws NumberFormatException, ClassNotFoundException {
+		String[] split = key.split("#");
+		return getInstance((Class<? extends StatefulClass>) getClass().getClassLoader().loadClass(split[0]),
+				Integer.parseInt(split[1]));
 	}
 
 	/**
@@ -63,7 +70,7 @@ public final class InstanceRegistry {
 	public boolean isEmpty() {
 		return instanceRegistry.isEmpty();
 	}
-	
+
 	public void addInstanceListener(InstanceListener listener) {
 		listeners.add(listener);
 	}
@@ -78,7 +85,7 @@ public final class InstanceRegistry {
 	public static final class InstanceKey {
 		private Class<? extends StatefulClass> klass;
 		private int instanceID;
-		
+
 		public InstanceKey(StatefulClass instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
@@ -93,11 +100,11 @@ public final class InstanceRegistry {
 		public int hashCode() {
 			return Objects.hash(klass, instanceID);
 		}
-		
+
 		public Class<?> getKlass() {
 			return klass;
 		}
-		
+
 		public int getInstanceID() {
 			return instanceID;
 		}

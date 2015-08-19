@@ -2,8 +2,8 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TimerTask;
 
@@ -30,7 +30,6 @@ import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
-import org.eclipse.uml2.uml.NamedElement;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -45,7 +44,7 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStEmptyStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
@@ -79,7 +78,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	// access must be synchronized to intrinsic lock of "animation"!
 	private boolean waitingForSuspend = false;
 
-	private Map<String, MokaThread> smInstances = new HashMap<>();
+	private List<XUmlRtStateMachineInstance> smInstances = new LinkedList<>();
 	private VirtualMachineConnection virtualMachineConnection;
 
 	@Override
@@ -120,15 +119,15 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 				if (runtimeController != null) {
 					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
 						@Override
-						public void instanceCreated(String instanceName) {
-							XUmlRtStateMachineInstance thread = new XUmlRtStateMachineInstance(debugTarget);
-							thread.setName(instanceName);
-							smInstances.put(instanceName, thread);
+						public void instanceCreated(String classId, int instanceId, String originalName) {
+							smInstances.add(
+									new XUmlRtStateMachineInstance(debugTarget, classId, instanceId, originalName));
 						}
 
 						@Override
-						public void instanceDestroyed(String instanceName) {
-							smInstances.remove(instanceName);
+						public void instanceDestroyed(String classId, int instanceId) {
+							smInstances
+									.removeIf(t -> t.getClassId().equals(classId) && t.getInstanceId() == instanceId);
 						}
 					});
 				}
@@ -267,23 +266,36 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		MokaThread actualSMInstance = smInstances.get(virtualMachineConnection.getActualSMInstance());
+		String actualSMInstance = virtualMachineConnection.getActualSMInstance();
 
-		if (actualSMInstance != null) {
-			// show the current element as a stack frame
-			XUmlRtStackFrame frame = new XUmlRtStackFrame(debugTarget, (NamedElement) modelElement);
-			frame.setThread(actualSMInstance);
-			actualSMInstance.setStackFrames(new IStackFrame[] { frame });
+		// if (actualSMInstance != null) {
+		// show the current element as a stack frame
+		// XUmlRtSMStackFrame frame = new XUmlRtSMStackFrame(debugTarget,
+		// (NamedElement) modelElement);
+		// frame.setThread(actualSMInstance);
 
-			virtualMachineConnection.loadSMVariables(frame);
-
-			// causes debug target to be suspended
-			int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
-			sendEvent(new Suspend_Event(actualSMInstance, eventCode, new MokaThread[] { actualSMInstance }));
-			actualSMInstance.setSuspended(true);
-		} else {
-			IdePlugin.logError("No thread registered for state machine instance: " + actualSMInstance);
+		try {
+			for (XUmlRtStateMachineInstance smInstance : smInstances) {
+				// TODO
+				XUmlRtStEmptyStackFrame stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
+				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
+				stackFrame.loadData(virtualMachineConnection, elementRegistry);
+				if (smInstance.getName().equals(actualSMInstance)) {
+					int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
+					sendEvent(new Suspend_Event(smInstance, eventCode, new MokaThread[] { smInstance }));
+					smInstance.setSuspended(true);
+				}
+			}
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while updating sm instances");
 		}
+
+		// actualSMInstance.setStackFrames(new IStackFrame[] { frame
+		// });
+		//
+		// virtualMachineConnection.loadSMVariables(frame);
+
+		// causes debug target to be suspended
 
 	}
 
@@ -291,7 +303,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
 			// remove stack frames from all threads before resuming
-			smInstances.values().forEach(t -> t.setStackFrames(new IStackFrame[0]));
+			smInstances.forEach(t -> t.setStackFrames(new IStackFrame[0]));
 
 			waitingForSuspend = false;
 			virtualMachine.resume();
@@ -340,7 +352,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public MokaThread[] getThreads() {
-		return smInstances.values().toArray(new MokaThread[] {});
+		return smInstances.toArray(new MokaThread[] {});
 	}
 
 	@Override

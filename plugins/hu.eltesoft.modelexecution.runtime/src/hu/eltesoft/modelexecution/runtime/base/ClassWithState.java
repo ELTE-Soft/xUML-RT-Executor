@@ -33,6 +33,10 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	public int getInstanceID() {
 		return instanceID;
 	}
+	
+	public StateMachineRegion getStateMachine() {
+		return stateMachine;
+	}
 
 	public void init() {
 		stateMachine.doInitialTransition();

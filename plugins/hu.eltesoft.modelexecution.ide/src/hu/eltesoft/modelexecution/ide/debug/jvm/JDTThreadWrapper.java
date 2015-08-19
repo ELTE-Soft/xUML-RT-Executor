@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ClassNotLoadedException;
+import com.sun.jdi.ClassType;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
@@ -39,6 +40,12 @@ public class JDTThreadWrapper {
 			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
 			IncompatibleThreadStateException {
 		return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
+	}
+	
+	public synchronized Value invokeStaticMethod(ClassType type, Method method, Value... args)
+			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
+			IncompatibleThreadStateException {
+		return type.invokeMethod(thread, method, Arrays.asList(args), 0);
 	}
 
 	/**

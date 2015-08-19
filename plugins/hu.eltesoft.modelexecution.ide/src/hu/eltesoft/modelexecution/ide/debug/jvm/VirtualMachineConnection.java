@@ -3,10 +3,17 @@ package hu.eltesoft.modelexecution.ide.debug.jvm;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
+import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
 
+import com.sun.jdi.ClassNotLoadedException;
+import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
+import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.InvalidTypeException;
+import com.sun.jdi.InvocationException;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.StringReference;
@@ -17,9 +24,13 @@ import com.sun.jdi.VirtualMachine;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtSMStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStEmptyStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
+import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
 import hu.eltesoft.modelexecution.runtime.meta.SignalM;
@@ -64,26 +75,35 @@ public class VirtualMachineConnection {
 	 * Fill the stack frame with standard data that can be shown in the
 	 * variables view
 	 */
-	public void loadSMVariables(XUmlRtStackFrame frame) {
+	public void loadSMVariables(XUmlRtSMStackFrame frame) {
 		List<MokaVariable> ret = new LinkedList<>();
 		JDTThreadWrapper mainThread = getMainThread();
 
 		ObjectReference smObj = mainThread.getActualThis();
-		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
+		addOwnerAndStateVariables(frame, ret, mainThread, smObj);
+		addEventVariable(frame, ret, mainThread);
+
+		frame.setVariables(ret.toArray(new MokaVariable[ret.size()]));
+	}
+
+	private void addOwnerAndStateVariables(XUmlRtSMStackFrame frame, List<MokaVariable> ret,
+			JDTThreadWrapper mainThread, ObjectReference smObj) {
 		Value stateObj = smObj.getValue(smObj.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 		Field ownerField = smObj.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 		ObjectReference owner = (ObjectReference) smObj.getValue(ownerField);
 		ret.add(createMokaVariable(frame, mainThread, owner,
 				new OwnerM(Messages.VirtualMachineConnection_variable_this_label)));
-		ret.add(createMokaVariable(frame, mainThread, eventObj,
-				new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
 		ret.add(createMokaVariable(frame, mainThread, stateObj,
 				new StateM(Messages.VirtualMachineConnection_variable_currentState_label)));
-
-		frame.setVariables(ret.toArray(new MokaVariable[ret.size()]));
 	}
 
-	protected MokaVariable createMokaVariable(XUmlRtStackFrame frame, JDTThreadWrapper mainThread, Value value,
+	private void addEventVariable(XUmlRtSMStackFrame frame, List<MokaVariable> ret, JDTThreadWrapper mainThread) {
+		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
+		ret.add(createMokaVariable(frame, mainThread, eventObj,
+				new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
+	}
+
+	protected MokaVariable createMokaVariable(MokaStackFrame frame, JDTThreadWrapper mainThread, Value value,
 			LeftValueM leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
 		return new XUmlRtVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
@@ -101,6 +121,40 @@ public class VirtualMachineConnection {
 			}
 		}
 		return new JDTThreadWrapper(mainThread);
+	}
+
+	public void loadDataOfSMInstance(XUmlRtStEmptyStackFrame stackFrame, ModelElementsRegistry elementRegistry)
+			throws DebugException {
+		JDTThreadWrapper mainThread = getMainThread();
+		ClassType instanceRegistryClass = (ClassType) virtualMachine
+				.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
+		ObjectReference instanceRegistry = (ObjectReference) instanceRegistryClass
+				.getValue(instanceRegistryClass.fieldByName("INSTANCE"));
+		List<Method> getInstance = instanceRegistryClass.methodsByName("getInstance");
+		getInstance.removeIf(m -> m.argumentTypeNames().size() != 1
+				|| !m.argumentTypeNames().get(0).equals(String.class.getCanonicalName()));
+		try {
+			XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
+			String classInstanceId = stateMachineInstance.getClassId() + "#" + stateMachineInstance.getInstanceId();
+			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, getInstance.get(0),
+					virtualMachine.mirrorOf(classInstanceId));
+			List<Method> getSM = instance.referenceType().methodsByName("getStateMachine");
+			getSM.removeIf(Method::isAbstract);
+			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, getSM.get(0));
+			Value value = stateMachine
+					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
+			stackFrame
+					.setVariables(
+							new MokaVariable[] {
+									createMokaVariable(stackFrame, mainThread, instance, new OwnerM(
+											Messages.VirtualMachineConnection_variable_this_label)),
+							createMokaVariable(stackFrame, mainThread, value,
+									new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label)) });
+			stackFrame.setModelElement(elementRegistry.get(value.toString()).iterator().next());
+		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException
+				| IncompatibleThreadStateException e) {
+			IdePlugin.logError("Error while accessing state machine instance", e);
+		}
 	}
 
 }

@@ -13,7 +13,8 @@ import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 
 /**
  * This class accepts textual control messages through an input stream and
- * performs them while the runtime is running.
+ * performs them while the runtime is running. It also sends notifications about
+ * created and destroyed state machine instances.
  */
 public class RuntimeControllerServer implements InstanceListener {
 
@@ -73,16 +74,18 @@ public class RuntimeControllerServer implements InstanceListener {
 
 	@Override
 	public void instanceCreated(ClassWithState instance) {
-		String eventLine = EVENT_REACTIVE_CLASS_CREATED + " " + instance;
+		String eventLine = EVENT_REACTIVE_CLASS_CREATED + " " + instance.getClass().getCanonicalName() + " "
+				+ instance.getInstanceID() + " " + instance.getOriginalClassName();
 		trySendEvent(eventLine);
 	}
 
 	@Override
 	public void instanceDeleted(ClassWithState instance) {
-		String eventLine = EVENT_REACTIVE_CLASS_TERMINATED + " " + instance;
+		String eventLine = EVENT_REACTIVE_CLASS_TERMINATED + " " + instance.getClass().getCanonicalName() + " "
+				+ instance.getInstanceID();
 		trySendEvent(eventLine);
 	}
-	
+
 	private void trySendEvent(String eventLine) {
 		try {
 			controlWriter.write(eventLine + "\n");

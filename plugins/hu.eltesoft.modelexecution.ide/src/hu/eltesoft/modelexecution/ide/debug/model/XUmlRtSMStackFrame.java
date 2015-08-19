@@ -10,9 +10,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.NamedElement;
 
-public class XUmlRtStackFrame extends MokaStackFrame implements IPresentation {
+public class XUmlRtSMStackFrame extends MokaStackFrame implements IPresentation {
 
-	public XUmlRtStackFrame(MokaDebugTarget target, NamedElement modelElement) {
+	public XUmlRtSMStackFrame(MokaDebugTarget target, NamedElement modelElement) {
 		super(target);
 		setModelElement(modelElement);
 		setName(modelElement.getQualifiedName());
