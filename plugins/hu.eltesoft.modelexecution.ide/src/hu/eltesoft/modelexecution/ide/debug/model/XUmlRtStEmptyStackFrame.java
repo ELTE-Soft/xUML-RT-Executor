@@ -2,7 +2,6 @@ package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
@@ -15,7 +14,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
 
 public class XUmlRtStEmptyStackFrame  extends MokaStackFrame implements IPresentation {
 
@@ -34,14 +32,6 @@ public class XUmlRtStEmptyStackFrame  extends MokaStackFrame implements IPresent
 		}
 	}
 	
-	public void loadData(VirtualMachineConnection connection, ResourceSet resourceSet) {
-		try {
-			connection.loadDataOfSMInstance(this, resourceSet);
-		} catch (DebugException e) {
-			IdePlugin.logError("Cannot load data from runtime for stack frame");
-		}
-	}
-
 	@Override
 	public String getDetails() {
 		return null; // not inspected

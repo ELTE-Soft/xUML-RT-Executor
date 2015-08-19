@@ -26,10 +26,12 @@ import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Req
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
+import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.debug.MokaThread;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
+import org.eclipse.uml2.uml.NamedElement;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -44,6 +46,7 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
+import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtSMStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStEmptyStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
@@ -269,15 +272,19 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		String actualSMInstance = virtualMachineConnection.getActualSMInstance();
 		try {
 			for (XUmlRtStateMachineInstance smInstance : smInstances) {
-				// TODO
-				XUmlRtStEmptyStackFrame stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
-				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
-				stackFrame.loadData(virtualMachineConnection, resourceSet);
+				MokaStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
+					stackFrame = new XUmlRtSMStackFrame(debugTarget, smInstance, (NamedElement) modelElement);
+					virtualMachineConnection.addEventVariable(stackFrame);
 					int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
 					sendEvent(new Suspend_Event(smInstance, eventCode, new MokaThread[] { smInstance }));
 					smInstance.setSuspended(true);
+				} else {
+					stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
 				}
+				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
+				virtualMachineConnection.loadDataOfSMInstance(stackFrame, resourceSet);
+				
 			}
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances");

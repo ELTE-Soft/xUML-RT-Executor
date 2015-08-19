@@ -12,9 +12,10 @@ import org.eclipse.uml2.uml.NamedElement;
 
 public class XUmlRtSMStackFrame extends MokaStackFrame implements IPresentation {
 
-	public XUmlRtSMStackFrame(MokaDebugTarget target, NamedElement modelElement) {
+	public XUmlRtSMStackFrame(MokaDebugTarget target, XUmlRtStateMachineInstance smInstance, NamedElement modelElement) {
 		super(target);
 		setModelElement(modelElement);
+		setThread(smInstance);
 		setName(modelElement.getQualifiedName());
 	}
 
