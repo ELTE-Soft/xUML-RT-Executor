@@ -123,8 +123,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
 						@Override
 						public void instanceCreated(String classId, int instanceId, String originalName) {
-							smInstances.add(
-									new XUmlRtStateMachineInstance(debugTarget, classId, instanceId, originalName));
+							XUmlRtStateMachineInstance smInstance = new XUmlRtStateMachineInstance(debugTarget, classId,
+									instanceId, originalName);
+							smInstances.add(smInstance);
 						}
 
 						@Override
@@ -276,15 +277,14 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 				if (smInstance.getName().equals(actualSMInstance)) {
 					stackFrame = new XUmlRtSMStackFrame(debugTarget, smInstance, (NamedElement) modelElement);
 					virtualMachineConnection.addEventVariable(stackFrame);
-					int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
-					sendEvent(new Suspend_Event(smInstance, eventCode, new MokaThread[] { smInstance }));
-					smInstance.setSuspended(true);
 				} else {
 					stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
 				}
 				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
 				virtualMachineConnection.loadDataOfSMInstance(stackFrame, resourceSet);
-				
+				int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
+				sendEvent(new Suspend_Event(smInstance, eventCode, getThreads()));
+				smInstance.setSuspended(true);
 			}
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances");
@@ -344,7 +344,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public MokaThread[] getThreads() {
-		return smInstances.toArray(new MokaThread[] {});
+		return smInstances.toArray(new MokaThread[smInstances.size()]);
 	}
 
 	@Override
