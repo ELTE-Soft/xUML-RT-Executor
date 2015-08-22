@@ -46,8 +46,8 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtSMStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStEmptyStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.BreakpointStoppedStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.PausedStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
@@ -275,10 +275,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			for (XUmlRtStateMachineInstance smInstance : smInstances) {
 				MokaStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
-					stackFrame = new XUmlRtSMStackFrame(debugTarget, smInstance, (NamedElement) modelElement);
+					stackFrame = new BreakpointStoppedStackFrame(debugTarget, smInstance, (NamedElement) modelElement);
 					virtualMachineConnection.addEventVariable(stackFrame);
 				} else {
-					stackFrame = new XUmlRtStEmptyStackFrame(smInstance);
+					stackFrame = new PausedStackFrame(smInstance);
 				}
 				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
 				virtualMachineConnection.loadDataOfSMInstance(stackFrame, resourceSet);
