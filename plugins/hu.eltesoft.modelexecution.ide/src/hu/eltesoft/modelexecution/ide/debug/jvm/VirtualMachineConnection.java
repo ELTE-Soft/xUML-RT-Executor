@@ -51,7 +51,7 @@ public class VirtualMachineConnection {
 	private static final String MAIN_THREAD_NAME = "main"; //$NON-NLS-1$
 
 	private VirtualMachine virtualMachine;
-	private JDTThreadWrapper mainThread;
+	private JDIThreadWrapper mainThread;
 
 	public VirtualMachineConnection(VirtualMachine virtualMachine) {
 		this.virtualMachine = virtualMachine;
@@ -62,7 +62,7 @@ public class VirtualMachineConnection {
 	 *         currently under execution
 	 */
 	public String getActualSMInstance() {
-		JDTThreadWrapper mainThread = getMainThread();
+		JDIThreadWrapper mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
@@ -79,7 +79,7 @@ public class VirtualMachineConnection {
 	 * transition breakpoint.
 	 */
 	public void addEventVariable(MokaStackFrame frame) {
-		JDTThreadWrapper mainThread = getMainThread();
+		JDIThreadWrapper mainThread = getMainThread();
 		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
 		addVariable(frame, createMokaVariable(frame, mainThread, eventObj,
 				new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
@@ -100,7 +100,7 @@ public class VirtualMachineConnection {
 		frame.setVariables(newVars.toArray(new MokaVariable[newVars.size()]));
 	}
 
-	protected MokaVariable createMokaVariable(MokaStackFrame frame, JDTThreadWrapper mainThread, Value value,
+	protected MokaVariable createMokaVariable(MokaStackFrame frame, JDIThreadWrapper mainThread, Value value,
 			LeftValueM leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
 		return new XUmlRtVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
@@ -111,12 +111,12 @@ public class VirtualMachineConnection {
 	 * multiple times, because if a valid thread exists, it returns that and
 	 * evade concurrent use of the same jvm thread.
 	 */
-	public JDTThreadWrapper getMainThread() {
+	public JDIThreadWrapper getMainThread() {
 		if (mainThread == null || !mainThread.isValid()) {
 			List<ThreadReference> threads = virtualMachine.allThreads();
 			for (ThreadReference thread : threads) {
 				if (thread.name().equals(MAIN_THREAD_NAME)) {
-					mainThread = new JDTThreadWrapper(thread);
+					mainThread = new JDIThreadWrapper(thread);
 				}
 			}
 		}
@@ -130,7 +130,7 @@ public class VirtualMachineConnection {
 	public void loadDataOfSMInstance(MokaStackFrame stackFrame, ResourceSet resourceSet) throws DebugException {
 		XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
 		try {
-			JDTThreadWrapper mainThread = getMainThread();
+			JDIThreadWrapper mainThread = getMainThread();
 			ClassType instanceRegistryClass = (ClassType) virtualMachine
 					.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
 			ObjectReference instanceRegistry = (ObjectReference) mainThread.invokeStaticMethod(instanceRegistryClass,
@@ -154,12 +154,12 @@ public class VirtualMachineConnection {
 		}
 	}
 
-	private MokaVariable createThisVariable(MokaStackFrame stackFrame, JDTThreadWrapper mainThread, Value instance) {
+	private MokaVariable createThisVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {
 		return createMokaVariable(stackFrame, mainThread, instance,
 				new OwnerM(Messages.VirtualMachineConnection_variable_this_label));
 	}
 
-	private MokaVariable createCurrentStateVariable(MokaStackFrame stackFrame, JDTThreadWrapper mainThread,
+	private MokaVariable createCurrentStateVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread,
 			Value actualState) {
 		return createMokaVariable(stackFrame, mainThread, actualState,
 				new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label));

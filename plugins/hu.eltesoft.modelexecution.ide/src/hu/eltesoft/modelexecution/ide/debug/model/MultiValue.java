@@ -12,13 +12,17 @@ import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.Value;
 
-import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 import hu.eltesoft.modelexecution.runtime.meta.IndexM;
 
+/**
+ * The debug model representation of a value that can have more than 1 elements.
+ * When showing the value, the elements are put inside braces.
+ */
 @SuppressWarnings("restriction")
 public class MultiValue extends XUmlRtValue {
 
-	public MultiValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
+	public MultiValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
 

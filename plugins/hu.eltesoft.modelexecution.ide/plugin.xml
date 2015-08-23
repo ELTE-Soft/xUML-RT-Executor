@@ -170,7 +170,7 @@
    <extension
          point="org.eclipse.debug.ui.debugModelPresentations">
       <debugModelPresentation
-            class="hu.eltesoft.modelexecution.ide.debug.DebugModelPresentation"
+            class="hu.eltesoft.modelexecution.ide.debug.XUmlRtDebugModelPresentation"
             id="org.eclipse.papyrus.moka">
       </debugModelPresentation>
    </extension>

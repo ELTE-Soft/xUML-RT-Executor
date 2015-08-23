@@ -4,11 +4,16 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 
-public class PausedStackFrame extends XUmlRtStackFrame implements IPresentation {
+/**
+ * A state machine stack frame that is created for state machine instances that
+ * are not stopped directly but only paused according to the sequential nature
+ * of the execution.
+ */
+public class PausedStackFrame extends StateMachineStackFrame implements IPresentation {
 
 	public PausedStackFrame(XUmlRtStateMachineInstance smInstance) throws DebugException {
 		super((MokaDebugTarget) smInstance.getDebugTarget(), smInstance);
 		setThread(thread);
 	}
-	
+
 }

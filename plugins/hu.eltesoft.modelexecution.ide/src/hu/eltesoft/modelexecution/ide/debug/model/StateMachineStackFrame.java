@@ -13,9 +13,9 @@ import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 
-public abstract class XUmlRtStackFrame extends MokaStackFrame implements IPresentation {
+public abstract class StateMachineStackFrame extends MokaStackFrame implements IPresentation {
 
-	public XUmlRtStackFrame(MokaDebugTarget target, XUmlRtStateMachineInstance stateMachine) {
+	public StateMachineStackFrame(MokaDebugTarget target, XUmlRtStateMachineInstance stateMachine) {
 		super(target);
 		setName(name);
 		setThread(stateMachine);

@@ -12,12 +12,16 @@ import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.Value;
 
-import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 
+/**
+ * The debug model representation of a value with at most 1 elements. If it has
+ * no value it is shown as "null" otherwise the single value is simply shown.
+ */
 @SuppressWarnings("restriction")
 public class SingleValue extends XUmlRtValue {
 
-	public SingleValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
+	public SingleValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
 
@@ -45,5 +49,5 @@ public class SingleValue extends XUmlRtValue {
 			return jdtUtils.invokeToString(objectReference);
 		}
 	}
-	
+
 }

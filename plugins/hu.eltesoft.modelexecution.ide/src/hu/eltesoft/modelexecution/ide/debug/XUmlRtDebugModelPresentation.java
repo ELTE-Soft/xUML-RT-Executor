@@ -8,7 +8,11 @@ import org.eclipse.papyrus.moka.ui.presentation.MokaDebugModelPresentation;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 
-public class DebugModelPresentation extends MokaDebugModelPresentation {
+/**
+ * Allows to switch between state machine instances and each time the
+ * corresponding stack frame is highlighted in the state machine.
+ */
+public class XUmlRtDebugModelPresentation extends MokaDebugModelPresentation {
 
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
 

@@ -17,7 +17,7 @@ import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 
 @SuppressWarnings("restriction")
 public class JDTUtils {
@@ -25,9 +25,9 @@ public class JDTUtils {
 	protected static final String TO_ARRAY_METHOD = "toArray";
 	private static final String TO_STRING_METHOD = "toString";
 
-	private JDTThreadWrapper thread;
+	private JDIThreadWrapper thread;
 
-	public JDTUtils(JDTThreadWrapper thread) {
+	public JDTUtils(JDIThreadWrapper thread) {
 		this.thread = thread;
 	}
 

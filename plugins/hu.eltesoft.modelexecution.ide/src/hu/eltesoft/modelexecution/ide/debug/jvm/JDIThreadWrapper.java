@@ -23,11 +23,11 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
  * used other than through this wrapper.
  */
 @SuppressWarnings("restriction")
-public class JDTThreadWrapper {
+public class JDIThreadWrapper {
 
 	private ThreadReference thread;
 
-	public JDTThreadWrapper(ThreadReference thread) {
+	public JDIThreadWrapper(ThreadReference thread) {
 		this.thread = thread;
 	}
 

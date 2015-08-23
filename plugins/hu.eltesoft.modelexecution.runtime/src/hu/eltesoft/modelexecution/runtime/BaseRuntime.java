@@ -150,9 +150,12 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 
 		Method creator = classClass.getMethod("create", Runtime.class);
 		ClassWithState classInstance = (ClassWithState) creator.invoke(null, this);
+		ClassWithState classInstance2 = (ClassWithState) creator.invoke(null, this);
 		classInstance.init();
+		classInstance2.init();
 		Method method = classClass.getMethod(feedName);
 		method.invoke(classInstance);
+		method.invoke(classInstance2);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.jvm.JDTThreadWrapper;
+import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 import hu.eltesoft.modelexecution.ide.debug.util.JDTUtils;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
@@ -51,11 +51,11 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 	 * Main thread for invoking methods in the virtual machine to support
 	 * presentation.
 	 */
-	protected JDTThreadWrapper thread;
+	protected JDIThreadWrapper thread;
 
 	protected JDTUtils jdtUtils;
 
-	public XUmlRtValue(MokaDebugTarget debugTarget, JDTThreadWrapper mainThread, Value value) {
+	public XUmlRtValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;

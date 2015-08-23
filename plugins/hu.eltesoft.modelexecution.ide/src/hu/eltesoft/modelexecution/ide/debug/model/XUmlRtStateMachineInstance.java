@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
- * Thread-like presentation of a state machine instance.
+ * Thread-like debug model element for a state machine instance.
  */
 public class XUmlRtStateMachineInstance extends MokaThread implements IPresentation {
 

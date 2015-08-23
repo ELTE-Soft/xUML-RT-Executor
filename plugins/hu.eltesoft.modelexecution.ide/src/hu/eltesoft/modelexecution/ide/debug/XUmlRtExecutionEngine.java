@@ -260,8 +260,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	}
 
 	/**
-	 * Marks the thread and the debug target as suspended. Can only be called
-	 * when the underlying virtual machine is suspended.
+	 * Marks each state machine as suspended. Can only be called when the
+	 * underlying virtual machine is suspended.
 	 *
 	 * @param modelElement
 	 *            the current element under the breakpoint (currently only a
