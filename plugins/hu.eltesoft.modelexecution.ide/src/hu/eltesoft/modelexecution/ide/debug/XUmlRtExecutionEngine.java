@@ -26,6 +26,7 @@ import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.jvm.ReactiveClassListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
@@ -37,20 +38,24 @@ import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 /**
  * Execution engine for Moka.
  * 
- * Communicates with the moka system by events and with the runtime by the control thread.
+ * Communicates with the moka system by events and with the runtime by the
+ * control thread.
  */
 public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IExecutionEngine {
 
-	private static final String DEBUG_TARGET_NAME = "xUML-Rt Model";
-	private static final String DEFAULT_STRATUM_NAME = "xUML-rt";
+	private static final String DEFAULT_STRATUM_NAME = "xUML-rt"; //$NON-NLS-1$
 
-	private LaunchConfigReader configReader;
+	/** Synchronization, timing and cleanup of animation is performed by this class */
 	private AnimationController animation;
 
 	private BreakpointRegistry breakpoints;
+	
+	/** Direct control over the virtual machine running the runtime */
 	private VirtualMachineManager virtualMachine;
 
+	/** The state machine instances (threads) in the debug model */
 	private final List<XUmlRtStateMachineInstance> smInstances = new LinkedList<>();
+	
 	private VirtualMachineHandler virtualMachineHandler;
 
 	@Override
@@ -58,10 +63,10 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			int replyPort, int eventPort) throws UnknownHostException, IOException {
 		super.init(eObjectToExecute, args, mokaDebugTarget, requestPort, replyPort, eventPort);
 
-		debugTarget.setName(DEBUG_TARGET_NAME);
+		debugTarget.setName(Messages.XUmlRtExecutionEngine_debug_model_label);
 
 		ILaunch launch = debugTarget.getLaunch();
-		configReader = new LaunchConfigReader(launch);
+		LaunchConfigReader configReader = new LaunchConfigReader(launch);
 		animation = new AnimationController(configReader);
 		breakpoints = new BreakpointRegistry();
 		virtualMachine = new VirtualMachineManager(launch);
@@ -73,6 +78,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		setupControllerListeners(launch);
 	}
 
+	/**
+	 * Sets up event handlers for changes reported by the runtime.
+	 */
 	protected void setupControllerListeners(ILaunch launch) {
 		for (IProcess process : launch.getProcesses()) {
 			if (process instanceof IProcessWithController) {
@@ -147,7 +155,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			virtualMachine.terminate();
 			animation.removeAllMarkers();
 		} catch (DebugException e) {
-			IdePlugin.logError("Error while terminating debug target", e);
+			IdePlugin.logError("Error while terminating debug target", e); //$NON-NLS-1$
 		}
 
 		// clear only after the machine's event queue is surely stopped

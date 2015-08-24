@@ -35,37 +35,60 @@ import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
+/**
+ * Communicates with the runtime through the JDI. Maintains the JDI's list of
+ * breakpoints. Suspends threads when the VM is stoppend on breakpoints.
+ */
 @SuppressWarnings("restriction")
 public final class VirtualMachineHandler implements VirtualMachineListener {
 
+	/** Link to the execution engine connected to the vm. */
 	private final XUmlRtExecutionEngine executionEngine;
+
+	/**
+	 * For deciding which model elements have been loaded to the runtime in case
+	 * of a class prepared event.
+	 */
 	private final ModelElementsRegistry elementRegistry;
+
+	/**
+	 * For converting breakpoint locations between model and generated java
+	 * source locations
+	 */
 	private final LocationConverter locationConverter;
-	private final SymbolsRegistry symbolsRegistry;
+
+	/** For getting details about debug model elements */
 	private final VirtualMachineConnection virtualMachineConnection;
+
+	/** To look up EObjects for animation */
 	private ResourceSet resourceSet;
-	
-	// access must be synchronized to intrinsic lock of "animation"!
+
+	/** Access must be synchronized to intrinsic lock of "animation"! */
 	private boolean waitingForSuspend = false;
-	
+
+	/** Direct control over the virtual machine */
 	private VirtualMachineManager virtualMachine;
+
+	/** For animating when stopped on breakpoint */
 	private AnimationController animation;
+
 	private BreakpointRegistry breakpoints;
 
 	public VirtualMachineHandler(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
-			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation, BreakpointRegistry breakpoints) {
+			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation,
+			BreakpointRegistry breakpoints) {
 		this.virtualMachine = virtualMachine;
 		this.animation = animation;
 		this.breakpoints = breakpoints;
 		virtualMachineConnection = virtualMachine.createConnection();
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
-		// the constructor sets itself as a resource locator for the resource set
+		// the constructor sets itself as resource locator for the resource set
 		new FilePathResourceLocator(resourceSet);
 		executionEngine = xUmlRtExecutionEngine;
 		IProject project = configReader.getProject();
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
-		this.symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
+		SymbolsRegistry symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
 		this.locationConverter = new LocationConverter(symbolsRegistry);
 		this.elementRegistry = new ModelElementsRegistry(eObjectToExecute);
 	}
@@ -79,11 +102,13 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 	public void handleVMDisconnect(VMDisconnectEvent event) {
 		forceTermination();
 	}
-	
+
+	/**
+	 * Force the debug target to send a termination request, which will be
+	 * handled by {@linkplain XUmlRtExecutionEngine#terminate}
+	 */
 	private void forceTermination() {
 		try {
-			// force the debug target to send a termination request,
-			// which will be handled by the terminate method below
 			executionEngine.getDebugTarget().terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
@@ -109,8 +134,8 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 	}
 
 	/**
-	 * The breakpoint is set on the related file. It is assumed that the
-	 * file is already loaded into the virtual machine.
+	 * The breakpoint is set on the related file. It is assumed that the file is
+	 * already loaded into the virtual machine.
 	 *
 	 * @param modelElement
 	 */
@@ -152,7 +177,7 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 		}
 		return ThreadAction.ShouldResume;
 	}
-	
+
 	/**
 	 * Suspends the current thread if there was a user-defined breakpoint here
 	 * or a previous suspension request was waiting for the next JDI breakpoint.
@@ -191,7 +216,8 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 			for (XUmlRtStateMachineInstance smInstance : executionEngine.getSmInstances()) {
 				MokaStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
-					stackFrame = new BreakpointStoppedStackFrame(executionEngine.getDebugTarget(), smInstance, (NamedElement) modelElement);
+					stackFrame = new BreakpointStoppedStackFrame(executionEngine.getDebugTarget(), smInstance,
+							(NamedElement) modelElement);
 					virtualMachineConnection.addEventVariable(stackFrame);
 				} else {
 					stackFrame = new PausedStackFrame(smInstance);
@@ -207,10 +233,18 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 		}
 	}
 
+	/**
+	 * Puts the handler in suspending mode where it stops on each possible
+	 * point.
+	 */
 	public void waitForSuspend() {
 		waitingForSuspend = true;
 	}
 
+	/**
+	 * Orders the handler to continue running, don't stop on the next
+	 * breakpoint.
+	 */
 	public void resume() {
 		waitingForSuspend = false;
 	}
