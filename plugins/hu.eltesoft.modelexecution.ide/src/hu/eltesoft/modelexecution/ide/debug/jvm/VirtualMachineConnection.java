@@ -30,7 +30,7 @@ import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
-import hu.eltesoft.modelexecution.ide.debug.util.JDTUtils;
+import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
@@ -67,7 +67,7 @@ public class VirtualMachineConnection {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			return new JDTUtils(mainThread).invokeToString(owner);
+			return new JDIUtils(mainThread).invokeToString(owner);
 		} catch (Exception e) {
 			IdePlugin.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
 			return null;

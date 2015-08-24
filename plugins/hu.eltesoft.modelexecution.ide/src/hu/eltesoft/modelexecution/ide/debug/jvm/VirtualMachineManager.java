@@ -25,6 +25,9 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener.ThreadAction;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
+/**
+ * Two way communication with the virtual machine running the runtime.
+ */
 @SuppressWarnings("restriction")
 public class VirtualMachineManager implements ITerminate {
 

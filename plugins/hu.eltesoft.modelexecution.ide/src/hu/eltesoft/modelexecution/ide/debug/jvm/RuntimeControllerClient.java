@@ -32,55 +32,66 @@ public class RuntimeControllerClient {
 
 	private CountDownLatch ready = new CountDownLatch(1);
 
-	private List<ReactiveClassListener> reactiveClassListeners = new LinkedList<>();
+	private List<StateMachnineInstanceListener> reactiveClassListeners = new LinkedList<>();
 
 	public RuntimeControllerClient(ILaunchConfiguration launchConfig) {
 		try {
 			int controlPort = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_CONTROL_PORT, -1);
-			server = new ServerSocket(controlPort);
-
-			if (controlPort != -1) {
-				// this thread will only live until the runtime is started
-				Thread thread = new Thread(() -> {
-					try {
-						socket = server.accept();
-						writer = new OutputStreamWriter(socket.getOutputStream());
-						reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-						ready.countDown();
-						String line;
-						while ((line = reader.readLine()) != null) {
-							processLine(line);
-						}
-					} catch (SocketException e) {
-						// normal, runtime is terminated
-					} catch (Exception e) {
-						IdePlugin.logError("Error while trying to set up control stream", e);
-					}
-				});
-				thread.setName("Control stream reader thread");
-				thread.start();
-			}
+			connectToRuntime(controlPort);
 		} catch (CoreException | IOException e) {
 			IdePlugin.logError("Error while trying to set up control stream", e);
 		}
 	}
 
+	private void connectToRuntime(int controlPort) throws IOException {
+		if (controlPort != -1) {
+			server = new ServerSocket(controlPort);
+
+			Thread thread = new Thread(() -> {
+				try {
+					socket = server.accept();
+					writer = new OutputStreamWriter(socket.getOutputStream());
+					reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					ready.countDown();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						processLine(line);
+					}
+				} catch (SocketException e) {
+					// normal, runtime is terminated
+				} catch (Exception e) {
+					IdePlugin.logError("Error while trying to set up control stream", e);
+				}
+			});
+			thread.setName("Control stream reader thread");
+			thread.start();
+		}
+	}
+
+	/**
+	 * Processes one event coming from the runtime and informs the registered
+	 * listeners.
+	 */
 	private void processLine(String line) {
 		String[] command = line.split(" ");
 		switch (command[0]) {
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_CREATED:
-			for (ReactiveClassListener listener : reactiveClassListeners) {
+			for (StateMachnineInstanceListener listener : reactiveClassListeners) {
 				listener.instanceCreated(command[1], Integer.parseInt(command[2]), command[3]);
 			}
 			break;
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_TERMINATED:
-			for (ReactiveClassListener listener : reactiveClassListeners) {
+			for (StateMachnineInstanceListener listener : reactiveClassListeners) {
 				listener.instanceDestroyed(command[1], Integer.parseInt(command[2]));
 			}
 			break;
 		}
 	}
 
+	/**
+	 * Instructs the runtime to terminate in a graceful way. This call blocks
+	 * until the runtime starts and connects to the IDE.
+	 */
 	public boolean terminate() {
 		return sendCommand(RuntimeControllerServer.COMMAND_TERMINATE);
 	}
@@ -97,6 +108,9 @@ public class RuntimeControllerClient {
 		}
 	}
 
+	/**
+	 * Blocks until the runtime starts and connects to the IDE.
+	 */
 	private void awaitControllerReady() {
 		try {
 			ready.await();
@@ -105,7 +119,11 @@ public class RuntimeControllerClient {
 		}
 	}
 
-	public void addReactiveClassListener(ReactiveClassListener listener) {
+	/**
+	 * Adds a new listener to be notified when a new state machine instance is
+	 * created in the runtime or one is destroyed.
+	 */
+	public void addStateMachineInstanceListener(StateMachnineInstanceListener listener) {
 		reactiveClassListeners.add(listener);
 	}
 

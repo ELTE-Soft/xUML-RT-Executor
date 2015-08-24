@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.util;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -10,6 +10,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
+/**
+ * Access class for project and launch related configurations used during debug.
+ */
 public class LaunchConfigReader {
 
 	private static final String ERRMSG_MISSING_PROJECT = "Unable to retrieve project";

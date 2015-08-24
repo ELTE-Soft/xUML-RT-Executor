@@ -29,9 +29,13 @@ import hu.eltesoft.modelexecution.ide.debug.model.BreakpointStoppedStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.PausedStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
+import hu.eltesoft.modelexecution.ide.debug.registry.LocationConverter;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation;
+import hu.eltesoft.modelexecution.ide.debug.util.FilePathResourceLocator;
+import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -177,11 +181,13 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 
 				@Override
 				public void run() {
+					// the virtual machine is resumed after the animation
 					virtualMachine.resume();
 				}
 			});
 			return ThreadAction.RemainSuspended;
 		} else {
+			// the virtual machine is resumed immediately
 			return ThreadAction.ShouldResume;
 		}
 	}
@@ -199,6 +205,7 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 			}
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while animating", e);
+			// fall through
 		}
 		return false;
 	}

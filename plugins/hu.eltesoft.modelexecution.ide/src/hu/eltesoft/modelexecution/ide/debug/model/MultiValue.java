@@ -39,7 +39,7 @@ public class MultiValue extends XUmlRtValue {
 	@Override
 	protected String resolveSingletonObject(ObjectReference objectReference)
 			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
-		return jdtUtils.invokeToString(objectReference);
+		return jdiUtils.invokeToString(objectReference);
 	}
 
 }

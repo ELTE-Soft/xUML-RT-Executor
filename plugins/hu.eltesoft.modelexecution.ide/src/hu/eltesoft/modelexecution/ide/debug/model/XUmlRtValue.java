@@ -27,7 +27,7 @@ import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
-import hu.eltesoft.modelexecution.ide.debug.util.JDTUtils;
+import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.ClassM;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
@@ -36,6 +36,8 @@ import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
  * Presentation of values in the executed model. It appears in the variables
  * view. The value can have its inner structure, and in that case it can be
  * accessed through this class.
+ * 
+ * The life of these values lasts only while the debugger is stopped.
  */
 @SuppressWarnings("restriction")
 public abstract class XUmlRtValue extends MokaValue implements IValue, IPresentation {
@@ -53,13 +55,13 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 	 */
 	protected JDIThreadWrapper thread;
 
-	protected JDTUtils jdtUtils;
+	protected JDIUtils jdiUtils;
 
 	public XUmlRtValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
-		this.jdtUtils = new JDTUtils(mainThread);
+		this.jdiUtils = new JDIUtils(mainThread);
 	}
 
 	@Override
@@ -71,10 +73,10 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 			if (metaField != null) {
 				// structure
 				return getVariablesUsingMetainfo(valueObj, type, metaField);
-			} else if (jdtUtils.isCollectionType(type)) {
+			} else if (jdiUtils.isCollectionType(type)) {
 				// collection
 				List<IVariable> list = new LinkedList<IVariable>();
-				List<Value> collectionValues = jdtUtils.getCollectionValues(valueObj);
+				List<Value> collectionValues = jdiUtils.getCollectionValues(valueObj);
 				return handleCollectionValues(list, collectionValues);
 
 			}

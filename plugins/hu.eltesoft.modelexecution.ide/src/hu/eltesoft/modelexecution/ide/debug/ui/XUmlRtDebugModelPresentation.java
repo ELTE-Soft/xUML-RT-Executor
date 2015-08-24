@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.ui;
 
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.ui.AbstractDebugView;
@@ -18,9 +18,11 @@ public class XUmlRtDebugModelPresentation extends MokaDebugModelPresentation {
 
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
 
+	private static final AnimationUtils UTIL = AnimationUtils.getInstance();
+
 	@Override
 	public boolean addAnnotations(IEditorPart editorPart, IStackFrame frame) {
-		AnimationUtils.getInstance().removeSuspendedMarker(frame.getThread());
+		UTIL.removeSuspendedMarker(frame.getThread());
 		Object[] selected = getSelectedDebugElements();
 
 		for (Object selectedFrame : selected) {

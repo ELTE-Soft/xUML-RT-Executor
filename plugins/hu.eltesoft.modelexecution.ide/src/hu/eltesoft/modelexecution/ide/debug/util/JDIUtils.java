@@ -20,14 +20,14 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 
 @SuppressWarnings("restriction")
-public class JDTUtils {
+public class JDIUtils {
 
 	protected static final String TO_ARRAY_METHOD = "toArray";
 	private static final String TO_STRING_METHOD = "toString";
 
 	private JDIThreadWrapper thread;
 
-	public JDTUtils(JDIThreadWrapper thread) {
+	public JDIUtils(JDIThreadWrapper thread) {
 		this.thread = thread;
 	}
 

@@ -27,12 +27,13 @@ import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.jvm.ReactiveClassListener;
+import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 
 /**
@@ -86,7 +87,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			if (process instanceof IProcessWithController) {
 				RuntimeControllerClient runtimeController = ((IProcessWithController) process).getController();
 				if (runtimeController != null) {
-					runtimeController.addReactiveClassListener(new ReactiveClassListener() {
+					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
 						@Override
 						public void instanceCreated(String classId, int instanceId, String originalName) {
 							XUmlRtStateMachineInstance smInstance = new XUmlRtStateMachineInstance(debugTarget, classId,

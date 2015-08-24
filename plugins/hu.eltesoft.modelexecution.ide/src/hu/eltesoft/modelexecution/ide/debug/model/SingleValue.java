@@ -38,15 +38,15 @@ public class SingleValue extends XUmlRtValue {
 	@Override
 	protected String resolveSingletonObject(ObjectReference objectReference)
 			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
-		if (jdtUtils.isCollectionType(objectReference.referenceType())) {
-			List<Value> collectionValues = jdtUtils.getCollectionValues(objectReference);
+		if (jdiUtils.isCollectionType(objectReference.referenceType())) {
+			List<Value> collectionValues = jdiUtils.getCollectionValues(objectReference);
 			if (collectionValues.size() > 0) {
-				return jdtUtils.invokeToString((ObjectReference) collectionValues.get(0));
+				return jdiUtils.invokeToString((ObjectReference) collectionValues.get(0));
 			} else {
 				return "null";
 			}
 		} else {
-			return jdtUtils.invokeToString(objectReference);
+			return jdiUtils.invokeToString(objectReference);
 		}
 	}
 
