@@ -36,7 +36,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 
 	protected static final BaseFactory BASE_FACTORY = BaseFactory.eINSTANCE;
 	protected static final BasePackage BASE_PACKAGE = BasePackage.eINSTANCE;
-	protected TypeConverter typeTranslator = new TypeConverter();
+	protected static final TypeConverter TYPE_CONVERTER = new TypeConverter();
 	private BaseMatcher<Match> matcher;
 	private final ChangeRegistry changes = new ChangeRegistry();
 	private final RootNameStorage rootNames = new RootNameStorage();
@@ -221,14 +221,14 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	 * Converts a UML type to a type in the metamodel.
 	 */
 	protected ScalarType convert(org.eclipse.uml2.uml.Type type) {
-		return typeTranslator.convert(type);
+		return TYPE_CONVERTER.convert(type);
 	}
 
 	/**
 	 * Converts a UML parameter direction to a direction in the metamodel.
 	 */
 	protected Direction convert(ParameterDirectionKind direction) {
-		return typeTranslator.convert(direction);
+		return TYPE_CONVERTER.convert(direction);
 	}
 
 }
