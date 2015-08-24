@@ -2,10 +2,12 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.ui.AbstractDebugView;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 import org.eclipse.papyrus.moka.ui.presentation.MokaDebugModelPresentation;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -19,19 +21,41 @@ public class XUmlRtDebugModelPresentation extends MokaDebugModelPresentation {
 	@Override
 	public boolean addAnnotations(IEditorPart editorPart, IStackFrame frame) {
 		AnimationUtils.getInstance().removeSuspendedMarker(frame.getThread());
+		Object[] selected = getSelectedDebugElements();
+
+		for (Object selectedFrame : selected) {
+			if (frame.equals(selectedFrame)) {
+				return super.addAnnotations(editorPart, frame);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @return the debug elements selected in the debug view or an empty array,
+	 *         if the debug view is not open.
+	 */
+	public static Object[] getSelectedDebugElements() {
+		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow == null) {
+			// we must perform this operation on a UI thread
+			Object[][] ret = new Object[1][];
+			Display.getDefault().syncExec(() -> ret[0] = getSelectedDebugElementsUIThread());
+			return ret[0];
+		} else {
+			return getSelectedDebugElementsUIThread();
+		}
+	}
+
+	private static Object[] getSelectedDebugElementsUIThread() {
 		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().findView(DEBUG_VIEW_ID);
 		if (debugView == null) {
 			// debug view is not open
-			return true;
+			return new Object[0];
 		}
-		TreeSelection selection = (TreeSelection) debugView.getViewer().getSelection();
-		if (frame.equals(selection.getFirstElement())) {
-			return super.addAnnotations(editorPart, frame);
-		} else {
-			// not the selected stack frame
-			return true;
-		}
+		StructuredSelection selection = (StructuredSelection) debugView.getViewer().getSelection();
+		return selection.toArray();
 	}
 
 }

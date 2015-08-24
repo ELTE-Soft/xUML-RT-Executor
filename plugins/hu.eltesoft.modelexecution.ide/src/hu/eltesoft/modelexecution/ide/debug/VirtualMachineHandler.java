@@ -164,18 +164,43 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 
 		if (animation.getAnimate()) {
 			synchronized (animation) {
-				animation.setAnimationMarker(modelElement);
-				animation.startAnimationTimer(new TimerTask() {
-
-					@Override
-					public void run() {
-						virtualMachine.resume();
-					}
-				});
+				return animateIfSelected(modelElement);
 			}
-			return ThreadAction.RemainSuspended;
 		}
 		return ThreadAction.ShouldResume;
+	}
+
+	private ThreadAction animateIfSelected(EObject modelElement) {
+		if (actualSMInstanceIsSelected()) {
+			animation.setAnimationMarker(modelElement);
+			animation.startAnimationTimer(new TimerTask() {
+
+				@Override
+				public void run() {
+					virtualMachine.resume();
+				}
+			});
+			return ThreadAction.RemainSuspended;
+		} else {
+			return ThreadAction.ShouldResume;
+		}
+	}
+
+	private boolean actualSMInstanceIsSelected() {
+		try {
+			String actualSMInstance = virtualMachineConnection.getActualSMInstance();
+			for (Object debugElem : XUmlRtDebugModelPresentation.getSelectedDebugElements()) {
+				if (debugElem instanceof XUmlRtStateMachineInstance) {
+					XUmlRtStateMachineInstance smInstance = (XUmlRtStateMachineInstance) debugElem;
+					if (smInstance.getName().equals(actualSMInstance)) {
+						return true;
+					}
+				}
+			}
+		} catch (DebugException e) {
+			IdePlugin.logError("Error while animating", e);
+		}
+		return false;
 	}
 
 	/**
