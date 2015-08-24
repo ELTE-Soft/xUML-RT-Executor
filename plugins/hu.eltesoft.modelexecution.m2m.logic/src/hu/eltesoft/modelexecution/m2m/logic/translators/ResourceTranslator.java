@@ -14,9 +14,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
@@ -42,9 +39,6 @@ public class ResourceTranslator {
 		return new ResourceTranslator(resource, false);
 	}
 
-	private final ChangeRegistry changes = new ChangeRegistry();
-	private final RootNameStorage rootNames = new RootNameStorage();
-
 	private Resource resource;
 	private boolean incremental;
 	private boolean disposed;
@@ -61,10 +55,7 @@ public class ResourceTranslator {
 
 	private void setupEngine() {
 		disposed = false;
-
-		changes.clear();
-		rootNames.clear();
-
+		
 		try {
 			// Only allows library resources to be indexed, but not metamodels
 			// or profiles. This is necessary because indexing metamodels
@@ -89,8 +80,8 @@ public class ResourceTranslator {
 				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
 			}
 
-			setupTranslators();
 			Queries.instance().prepare(engine);
+			setupTranslators();
 
 			if (incremental) {
 				attachListeners();
@@ -115,9 +106,8 @@ public class ResourceTranslator {
 
 	private void attachListeners() {
 		CompositeReversibleTask task = new CompositeReversibleTask();
-		ListenerContext context = new ListenerContext(engine, changes, rootNames);
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
-			task.add(translator.addListeners(context));
+			task.add(translator.addListeners());
 		}
 		attachListeners = task;
 	}
@@ -161,8 +151,6 @@ public class ResourceTranslator {
 	public List<SourceCodeTask> fullTranslation() {
 		checkDisposed();
 
-		changes.clear();
-
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
 			performBatchTranslation(updateTasks, translator);
@@ -171,6 +159,7 @@ public class ResourceTranslator {
 	}
 
 	private void performBatchTranslation(List<SourceCodeTask> updateTasks, RootElementTranslator<?, ?, ?> translator) {
+		translator.clear();
 		translator.getAllTemplates().forEach((rootName, template) -> {
 			updateTasks.add(new UpdateSourceCodeTask(rootName, template));
 		});
@@ -182,6 +171,11 @@ public class ResourceTranslator {
 		if (!incremental) {
 			return fullTranslation();
 		}
-		return changes.performTranslation();
+		
+		List<SourceCodeTask> changes = new LinkedList<>();
+		for (RootElementTranslator<?, ?, ?> translator : translators) {
+			changes.addAll(translator.incrementalTranslation());
+		}
+		return changes;
 	}
 }
