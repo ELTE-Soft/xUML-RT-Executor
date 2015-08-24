@@ -28,7 +28,6 @@ import hu.eltesoft.modelexecution.uml.incquery.Queries;
  */
 public class ResourceTranslator {
 
-
 	public static ResourceTranslator createIncremental(ModelSet modelSet) {
 		return new ResourceTranslator(modelSet, true);
 	}
@@ -62,8 +61,7 @@ public class ResourceTranslator {
 		rootNames.clear();
 
 		try {
-			service = IncQueryEngineService.getOrStartService(resource);
-			engine = AdvancedIncQueryEngine.from(service.getOrCreateEngine(resource));
+			engine = AdvancedIncQueryEngine.from(IncQueryEngineService.getOrCreateEngineCheckingService(resource));
 
 			setupTranslators();
 			Queries.instance().prepare(engine);
@@ -129,9 +127,9 @@ public class ResourceTranslator {
 		if (incremental) {
 			attachListeners.revert();
 		}
-		
+
 		service.disposeEngine(resource);
-		
+
 		disposed = true;
 	}
 
