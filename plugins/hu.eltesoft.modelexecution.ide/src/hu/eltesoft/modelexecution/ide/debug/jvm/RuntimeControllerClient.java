@@ -41,7 +41,7 @@ public class RuntimeControllerClient {
 
 			if (controlPort != -1) {
 				// this thread will only live until the runtime is started
-				new Thread(() -> {
+				Thread thread = new Thread(() -> {
 					try {
 						socket = server.accept();
 						writer = new OutputStreamWriter(socket.getOutputStream());
@@ -56,7 +56,9 @@ public class RuntimeControllerClient {
 					} catch (Exception e) {
 						IdePlugin.logError("Error while trying to set up control stream", e);
 					}
-				}).start();
+				});
+				thread.setName("Control stream reader thread");
+				thread.start();
 			}
 		} catch (CoreException | IOException e) {
 			IdePlugin.logError("Error while trying to set up control stream", e);

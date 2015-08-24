@@ -81,8 +81,10 @@ public class VirtualMachineConnection {
 	public void addEventVariable(MokaStackFrame frame) {
 		JDIThreadWrapper mainThread = getMainThread();
 		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
-		addVariable(frame, createMokaVariable(frame, mainThread, eventObj,
-				new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
+		if (eventObj != null) {
+			addVariable(frame, createMokaVariable(frame, mainThread, eventObj,
+					new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
+		}
 	}
 
 	private static void addVariable(MokaStackFrame frame, MokaVariable variable) {

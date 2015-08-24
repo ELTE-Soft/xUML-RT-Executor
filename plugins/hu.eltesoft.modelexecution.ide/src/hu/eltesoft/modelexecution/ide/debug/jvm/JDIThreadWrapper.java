@@ -9,6 +9,7 @@ import com.sun.jdi.ClassType;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.InvocationException;
+import com.sun.jdi.LocalVariable;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.StackFrame;
@@ -103,8 +104,13 @@ public class JDIThreadWrapper {
 	public Value getLocalVariable(String varName) {
 		checkUsable();
 		try {
-			return getExecutionPoint().getValue(getExecutionPoint().visibleVariableByName(varName));
+			LocalVariable variable = getExecutionPoint().visibleVariableByName(varName);
+			if (variable == null) {
+				return null;
+			}
+			return getExecutionPoint().getValue(variable);
 		} catch (AbsentInformationException e) {
+			IdePlugin.logError("Error while accessing local variable value", null);
 			return null;
 		}
 	}
