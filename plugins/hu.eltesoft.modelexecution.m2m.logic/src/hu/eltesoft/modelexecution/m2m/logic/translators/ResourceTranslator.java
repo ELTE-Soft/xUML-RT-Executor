@@ -3,23 +3,19 @@ package hu.eltesoft.modelexecution.m2m.logic.translators;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
-import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
-import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
+
+import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.listeners.ListenerContext;
-import hu.eltesoft.modelexecution.m2m.logic.registry.ChangeRegistry;
-import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorage;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
+import hu.eltesoft.modelexecution.uml.incquery.Queries;
 
 /**
  * This translator converts model resources into a set of translational models
@@ -30,21 +26,15 @@ import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslat
  */
 public class ResourceTranslator {
 
-	private static final String PATHMAP_SCHEME = "pathmap";
-	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
-
-	public static ResourceTranslator createIncremental(Resource resource) {
-		return new ResourceTranslator(resource, true);
+	public static ResourceTranslator createIncremental(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, true);
 	}
 
-	public static ResourceTranslator create(Resource resource) {
-		return new ResourceTranslator(resource, false);
+	public static ResourceTranslator create(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, false);
 	}
 
-	private final ChangeRegistry changes = new ChangeRegistry();
-	private final RootNameStorage rootNames = new RootNameStorage();
-
-	private Resource resource;
+	private ModelSet resource;
 	private boolean incremental;
 	private boolean disposed;
 	private AdvancedIncQueryEngine engine;
@@ -52,42 +42,20 @@ public class ResourceTranslator {
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
 
-	private ResourceTranslator(Resource resource, boolean incremental) {
-		this.resource = resource;
+	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
+		this.resource = modelSet;
 		this.incremental = incremental;
 		setupEngine();
 	}
 
 	private void setupEngine() {
 		disposed = false;
-
-		changes.clear();
-		rootNames.clear();
-
+		
 		try {
-			// Only allows library resources to be indexed, but not metamodels
-			// or profiles. This is neccessary because indexing metamodels
-			// extremely degrades
-			// performance.
-			BaseIndexOptions options = new BaseIndexOptions()
-					.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
+			IncQueryEngine incQueryEngine = IncQueryEngineService.getOrCreateEngineEvenIfModelIsClosed(resource);
+			engine = AdvancedIncQueryEngine.from(incQueryEngine);
 
-						@Override
-						public boolean isResourceFiltered(Resource resource) {
-							URI uri = resource.getURI();
-							return PATHMAP_SCHEME.equals(uri.scheme())
-									&& !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
-						}
-					});
-
-			EMFScope emfScope = new EMFScope(resource.getResourceSet(), options);
-
-			if (incremental) {
-				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(emfScope));
-			} else {
-				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
-			}
-
+			Queries.instance().prepare(engine);
 			setupTranslators();
 
 			if (incremental) {
@@ -113,14 +81,13 @@ public class ResourceTranslator {
 
 	private void attachListeners() {
 		CompositeReversibleTask task = new CompositeReversibleTask();
-		ListenerContext context = new ListenerContext(engine, changes, rootNames);
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
-			task.add(translator.addListeners(context));
+			task.add(translator.addListeners());
 		}
 		attachListeners = task;
 	}
 
-	public void toIncremental(Resource resource) {
+	public void toIncremental(ModelSet resource) {
 		checkDisposed();
 
 		if (incremental) {
@@ -150,16 +117,13 @@ public class ResourceTranslator {
 
 		if (incremental) {
 			attachListeners.revert();
-		} else {
-			engine.dispose();
 		}
+
 		disposed = true;
 	}
 
 	public List<SourceCodeTask> fullTranslation() {
 		checkDisposed();
-
-		changes.clear();
 
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
@@ -169,6 +133,7 @@ public class ResourceTranslator {
 	}
 
 	private void performBatchTranslation(List<SourceCodeTask> updateTasks, RootElementTranslator<?, ?, ?> translator) {
+		translator.clear();
 		translator.getAllTemplates().forEach((rootName, template) -> {
 			updateTasks.add(new UpdateSourceCodeTask(rootName, template));
 		});
@@ -180,6 +145,11 @@ public class ResourceTranslator {
 		if (!incremental) {
 			return fullTranslation();
 		}
-		return changes.performTranslation();
+		
+		List<SourceCodeTask> changes = new LinkedList<>();
+		for (RootElementTranslator<?, ?, ?> translator : translators) {
+			changes.addAll(translator.incrementalTranslation());
+		}
+		return changes;
 	}
 }

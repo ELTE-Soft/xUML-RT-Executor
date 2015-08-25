@@ -10,9 +10,8 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
@@ -26,51 +25,41 @@ public class TranslatorRegistry {
 
 	public static final TranslatorRegistry INSTANCE = new TranslatorRegistry();
 
-	private final Map<URI, Resource> resources = new HashMap<>();
-	private final Map<URI, ResourceTranslator> translators = new HashMap<>();
+	private final Map<ModelSet, ResourceTranslator> translators = new HashMap<>();
+	private final Map<URI, ModelSet> modelContainment = new HashMap<>();
 
 	protected TranslatorRegistry() {
 	}
 
-	/**
-	 * This is an idempotent operation.
-	 */
-	public synchronized void resourceLoaded(Resource resource) {
-		if (!isUMLResource(resource)) {
-			return;
+	public void modelSetLoaded(ModelSet modelSet) {
+		ResourceTranslator t = translatorFor(modelSet, ResourceTranslator::createIncremental);
+		t.toIncremental(modelSet);
+	
+		for (Resource resource : modelSet.getResources()) {
+			modelContainment.put(resource.getURI(), modelSet);
 		}
-
-		URI uri = resource.getURI();
-		resources.put(uri, resource);
-		ResourceTranslator t = translatorFor(uri, ResourceTranslator::createIncremental);
-		t.toIncremental(resource);
 	}
 
-	public synchronized void resourceUnloaded(Resource resource) {
-		if (!isUMLResource(resource)) {
-			return;
-		}
-
-		URI uri = resource.getURI();
-		ResourceTranslator translator = translators.get(uri);
-		if (null != translator) {
-			translator.dispose();
-			translators.remove(uri);
-		}
-		resources.remove(uri);
+	public void modelSetUnloaded(ModelSet modelSet) {
 	}
 
-	public synchronized void resourceUnloaded(IResource resource) {
+	public synchronized void resourceRemoved(IResource resource) {
 		try {
 			resource.accept(new IResourceVisitor() {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					Resource model = get(resource);
-					if (null != model) {
-						resourceUnloaded(model);
+					ModelSet removed = modelContainment.remove(resource.getLocationURI());
+					if (removed != null) {
+						checkIfUsed(removed);
 					}
 					return true;
+				}
+
+				private void checkIfUsed(ModelSet removed) {
+					if (!modelContainment.values().contains(removed)) {
+						// TODO: release resource
+					}
 				}
 			});
 		} catch (CoreException e) {
@@ -86,7 +75,7 @@ public class TranslatorRegistry {
 		}
 
 		ResourceTranslator translator;
-		Resource model;
+		ModelSet model;
 		TransactionalEditingDomain domain = null;
 
 		synchronized (this) {
@@ -94,8 +83,7 @@ public class TranslatorRegistry {
 			model = get(file);
 
 			if (null != model) {
-				ResourceSet resourceSet = model.getResourceSet();
-				domain = DomainRegistry.INSTANCE.getDomain(resourceSet);
+				domain = model.getTransactionalEditingDomain();
 			}
 		}
 
@@ -116,40 +104,46 @@ public class TranslatorRegistry {
 	}
 
 	private ResourceTranslator translatorFor(IResource file) {
-		URI uri = fileToURI(file);
-		return translatorFor(uri);
+		return translatorFor(fileToURI(file));
 	}
 
 	private ResourceTranslator translatorFor(URI uri) {
 		return translatorFor(uri, ResourceTranslator::create);
 	}
 
-	private ResourceTranslator translatorFor(URI uri, Function<Resource, ResourceTranslator> createTranslator) {
-		ResourceTranslator translator = translators.get(uri);
+	private ResourceTranslator translatorFor(URI uri, Function<ModelSet, ResourceTranslator> createTranslator) {
+		ModelSet modelSet = modelContainment.get(uri);
+		if (null == modelSet) {
+			modelSet = loadModelOnDemand(uri);
+		}
+		return translatorFor(modelSet, createTranslator);
+	}
+
+	private ResourceTranslator translatorFor(ModelSet modelSet,
+			Function<ModelSet, ResourceTranslator> createTranslator) {
+		ResourceTranslator translator = translators.get(modelSet);
 		if (null == translator) {
-			Resource model = loadModelOnDemand(uri);
-			translator = createTranslator.apply(model);
-			translators.put(uri, translator);
+			translator = createTranslator.apply(modelSet);
+			translators.put(modelSet, translator);
 		}
 		return translator;
 	}
 
-	private Resource loadModelOnDemand(URI uri) {
-		Resource loadedModel = resources.get(uri);
-		if (null == loadedModel) {
+	private ModelSet loadModelOnDemand(URI uri) {
+		ModelSet modelSet = modelContainment.get(uri);
+		if (null == modelSet) {
 			try {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				loadedModel = resourceSet.getResource(uri, true);
+				modelSet = new ModelSet();
+				modelSet.getResource(uri, true);
 			} catch (Exception e) {
 				IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
-				return null;
 			}
 		}
-		return loadedModel;
+		return modelSet;
 	}
 
-	private Resource get(IResource file) {
-		return resources.get(fileToURI(file));
+	private ModelSet get(IResource file) {
+		return modelContainment.get(fileToURI(file));
 	}
 
 	private URI fileToURI(IResource file) {
@@ -166,11 +160,4 @@ public class TranslatorRegistry {
 		return extension.toLowerCase().equals(UML_EXTENSION);
 	}
 
-	private boolean isUMLResource(Resource resource) {
-		String extension = resource.getURI().fileExtension();
-		if (null == extension) {
-			return false;
-		}
-		return extension.toLowerCase().equals(UML_EXTENSION);
-	}
 }

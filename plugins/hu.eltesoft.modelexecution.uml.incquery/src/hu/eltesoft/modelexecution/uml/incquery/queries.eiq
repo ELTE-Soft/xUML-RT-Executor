@@ -155,6 +155,8 @@ pattern ClassOrAssocClass(cls : Class) {
 	Class(cls);
 	neg find IsBehavior(cls);
 	neg find IsStereotype(cls);
+	neg find IsComponent(cls);
+	neg find IsNode(cls);
 }
 
 private pattern IsBehavior(behavior : Behavior) {
@@ -163,6 +165,14 @@ private pattern IsBehavior(behavior : Behavior) {
 
 private pattern IsStereotype(stereotype : Stereotype) {
 	Stereotype(stereotype);
+}
+
+private pattern IsComponent(component : Component) {
+	Component(component);
+}
+
+private pattern IsNode(node : Node) {
+	Node(node);
 }
 
 pattern Parent(child : Class, parent : Class) {

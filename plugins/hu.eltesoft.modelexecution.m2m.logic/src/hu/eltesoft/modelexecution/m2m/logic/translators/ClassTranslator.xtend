@@ -14,6 +14,7 @@ import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher
@@ -21,10 +22,9 @@ import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
-import org.eclipse.incquery.runtime.api.IncQueryEngine
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationParentMatcher
 
 /**
  * Creates the metamodel for implementation classes of UML classes.
@@ -34,11 +34,11 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	static val ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
 	static val ClassdefPackage PACKAGE = ClassdefPackage.eINSTANCE;
 
-	new(IncQueryEngine engine) throws IncQueryException {
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine);
 	}
 
-	override protected createMapper(IncQueryEngine engine) {
+	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(ClsMatcher.on(engine)) [
 			val root = FACTORY.createClClass
 			root.setReference(new NamedReference(cls));
@@ -47,7 +47,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		return rootNode
 	}
 
-	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+	override protected initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 
 		// parent classes
 		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
@@ -101,18 +101,19 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		]
 
 		ClassConvertHelper.fillAssociation(assocNode, engine)
-		
+
 		// inherited associations
-		val inheritedAssoc = rootNode.onEObject(PACKAGE.clClass_InheritedAssociations, InheritedAssociationMatcher.on(engine)) [
+		val inheritedAssoc = rootNode.onEObject(PACKAGE.clClass_InheritedAssociations,
+			InheritedAssociationMatcher.on(engine)) [
 			val elem = FACTORY.createClInheritedAssociation
 			elem.reference = new NamedReference(end)
 			return elem
 		]
-		
+
 		inheritedAssoc.on(BASE_PACKAGE.inherited_Parent, InheritedAssociationParentMatcher.on(engine)) [
 			new NamedReference(parent)
 		]
-		
+
 		ClassConvertHelper.fillAssociation(inheritedAssoc, engine)
 
 		// receptions
@@ -139,8 +140,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override shouldMap(Class cls) {
-
 		// do not generate code for external entities using this builder
-		!Stereotypes.isExternalEntity(cls)
+		super.shouldMap(cls) && !Stereotypes.isExternalEntity(cls)
 	}
 }

@@ -54,17 +54,13 @@ public class BaseRuntimeTest {
 	@Test
 	public void testRun_eventFeeded() throws Exception {
 		when(readerMock.hasEvent()).thenReturn(false);
-		when(readerMock.dispatchEvent(any(TargetedEvent.class), same(loggerMock)))
-				.thenAnswer(new Answer<EventSource>() {
+		when(readerMock.dispatchEvent(any(TargetedEvent.class), same(loggerMock))).thenAnswer(invocation -> {
+			// simply dispatch the event to the target object
+			TargetedEvent event = (TargetedEvent) invocation.getArguments()[0];
+			event.getTarget().receive(event.getEvent());
+			return EventSource.Queue;
 
-					@Override
-					public EventSource answer(InvocationOnMock invocation) throws Throwable {
-						// simply dispatch the event to the target object
-						TargetedEvent event = (TargetedEvent) invocation.getArguments()[0];
-						event.getTarget().receive(event.getEvent());
-						return EventSource.Queue;
-					}
-				});
+		});
 
 		BaseRuntime sut = new BaseRuntime(getClass().getClassLoader());
 		sut.setLogger(loggerMock);

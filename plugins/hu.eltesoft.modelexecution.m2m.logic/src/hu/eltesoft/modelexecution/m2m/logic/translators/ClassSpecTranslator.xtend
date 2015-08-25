@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
+import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
@@ -20,10 +21,9 @@ import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import java.util.Comparator
-import org.eclipse.incquery.runtime.api.IncQueryEngine
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.m2m.logic.translators.helpers.ClassConvertHelper
 
 /**
  * Creates the metamodel for specification interfaces of UML classes.
@@ -33,11 +33,11 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 	static val ClassdefFactory FACTORY = ClassdefFactory.eINSTANCE;
 	static val ClassdefPackage PACKAGE = ClassdefPackage.eINSTANCE;
 
-	new(IncQueryEngine engine) throws IncQueryException {
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine);
 	}
 
-	override protected createMapper(IncQueryEngine engine) {
+	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(ClassOrAssocClassMatcher.on(engine)) [
 			val root = FACTORY.createClClassSpec
 			root.setReference(new NamedReference(cls));
@@ -46,7 +46,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 		return rootNode
 	}
 
-	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+	override protected initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 
 		// parent classes
 		rootNode.on(PACKAGE.clClassSpec_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
@@ -112,8 +112,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 	}
 
 	override shouldMap(Class cls) {
-
 		// do not generate code for external entities using this builder
-		!Stereotypes.isExternalEntity(cls)
+		super.shouldMap(cls) && !Stereotypes.isExternalEntity(cls)
 	}
 }

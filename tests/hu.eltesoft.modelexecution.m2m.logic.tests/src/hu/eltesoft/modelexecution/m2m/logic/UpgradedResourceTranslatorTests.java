@@ -6,11 +6,11 @@ public class UpgradedResourceTranslatorTests extends IncrementalResourceTranslat
 
 	@Override
 	protected ResourceTranslator createTranslator() {
-		ResourceTranslator translator = ResourceTranslator.createIncremental(resource);
+		ResourceTranslator translator = ResourceTranslator.createIncremental(modelSet);
 		// override resource and model before upgrade
-		resource = loadResource(modelPath);
-		model = loadModel(resource);
-		translator.toIncremental(resource);
+		modelSet = loadModelSet();
+		model = loadModel(modelSet, modelPath);
+		translator.toIncremental(modelSet);
 		return translator;
 	}
 }

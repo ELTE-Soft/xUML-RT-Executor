@@ -23,7 +23,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 
 	@Override
 	protected ResourceTranslator createTranslator() {
-		return ResourceTranslator.createIncremental(resource);
+		return ResourceTranslator.createIncremental(modelSet);
 	}
 
 	@Test
@@ -46,6 +46,8 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		queue.forEach(t -> t.perform(listener));
 
 		verify(listener).sourceCodeChanged(eq(classRootName), any(SourceMappedText.class), any(DebugSymbols.class));
+		verify(listener).sourceCodeChanged(eq(classRootName + "_impl"), any(SourceMappedText.class),
+				any(DebugSymbols.class));
 	}
 
 	@Test
@@ -85,5 +87,23 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		queue.forEach(t -> t.perform(listener));
 
 		verify(listener).sourceCodeDeleted(eq(signalRootName));
+	}
+
+	@Test
+	public void testBothClassSpecAndClassIsRemoved() throws Exception {
+		Class newClass = model.createOwnedClass("TestClass", false);
+		String classRootName = NamedReference.getIdentifier(newClass);
+
+		// creation is not important
+		translator.incrementalTranslation();
+
+		newClass.destroy();
+		List<SourceCodeTask> queue = translator.incrementalTranslation();
+		assertEquals(2, queue.size());
+
+		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
+		queue.forEach(t -> t.perform(listener));
+		verify(listener).sourceCodeDeleted(eq(classRootName));
+		verify(listener).sourceCodeDeleted(eq(classRootName + "_impl"));
 	}
 }
