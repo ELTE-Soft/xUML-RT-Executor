@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="default" sequenceNumber="23">
+<?pde version="3.8"?><target name="default" sequenceNumber="27">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.11.0.v20150603-2000"/>
@@ -17,6 +17,18 @@
 <repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.6.0"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="it.xsemantics.sdk.source.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.feature.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.doc.feature.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.sdk.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.implemented.examples.feature.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.runtime.feature.source.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.feature.source.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.0.v20150331-0735"/>
+<unit id="it.xsemantics.examples.feature.feature.group" version="1.8.0.v20150331-0735"/>
+<repository location="http://sourceforge.net/projects/xsemantics/files/updates/releases/1.8"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.papyrus.extra.moka.feature.feature.group" version="1.1.0.201506101813"/>
 <repository location="http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/mars"/>
 </location>
@@ -25,14 +37,19 @@
 <unit id="org.eclipse.ocl.examples.feature.group" version="6.0.0.v20150608-1714"/>
 <unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.4.0.v20150610-1925"/>
 <unit id="org.eclipse.emf.sdk.feature.group" version="2.11.0.v20150601-0402"/>
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.3.v201506010551"/>
-<unit id="org.eclipse.xtext.sdk.feature.group" version="2.8.3.v201506010551"/>
 <repository location="http://download.eclipse.org/releases/mars"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="1.1.0.201508041235"/>
-<unit id="org.eclipse.incquery.uml.feature.feature.group" version="1.1.0.201508041235"/>
-<repository location="http://static.incquerylabs.com/projects/incquery/index-bug-snapshot/update-site/"/>
+<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201508241626"/>
+<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201508241626"/>
+<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201508241626"/>
+<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201508241626"/>
+<repository location="http://static.incquerylabs.com/projects/ericsson/emdw-common-ci/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.incquery.uml.feature.feature.group" version="1.0.1.201508191609"/>
+<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="1.0.1.201508191609"/>
+<repository location="http://download.eclipse.org/incquery/updates/release"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
