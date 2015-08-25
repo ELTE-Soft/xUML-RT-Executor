@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
+import org.eclipse.uml2.uml.State;
 
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.ClassType;
@@ -142,14 +143,20 @@ public class VirtualMachineConnection {
 					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
 					GET_STATE_MACHINE_METHOD);
-			ObjectReference actualState = (ObjectReference) stateMachine
-					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
-			addVariable(stackFrame, createThisVariable(stackFrame, mainThread, instance));
-			addVariable(stackFrame, createCurrentStateVariable(stackFrame, mainThread, actualState));
-			if (stackFrame.getModelElement() == null) {
-				StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
-				stackFrame.setModelElement(findActualState(stringVal.value(), resourceSet));
+			EObject modelElement = stackFrame.getModelElement();
+			if (modelElement == null || modelElement instanceof State) {
+				ObjectReference actualState = (ObjectReference) stateMachine
+						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
+				addVariable(stackFrame, createCurrentStateVariable(stackFrame, mainThread, actualState));
+				if (modelElement == null) {
+					// we are not stopped on a breakpoint, or getModelElement()
+					// wont be null, so the current model element can only be a
+					// state
+					StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
+					stackFrame.setModelElement(findActualState(stringVal.value(), resourceSet));
+				}
 			}
+			addVariable(stackFrame, createThisVariable(stackFrame, mainThread, instance));
 		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
 				| NoSuchMethodException e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
