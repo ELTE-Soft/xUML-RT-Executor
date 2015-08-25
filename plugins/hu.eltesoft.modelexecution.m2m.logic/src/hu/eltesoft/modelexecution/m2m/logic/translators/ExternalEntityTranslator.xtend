@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
+import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType
 import hu.eltesoft.modelexecution.m2m.metamodel.external.ExExternalEntity
@@ -13,21 +14,20 @@ import hu.eltesoft.modelexecution.uml.incquery.ExternalOperationParameterMatcher
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.NamedOperationMatcher
-import org.eclipse.incquery.runtime.api.IncQueryEngine
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 
 class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEntity, NamedClsMatch> {
 
 	static val ExternalFactory FACTORY = ExternalFactory.eINSTANCE;
 	static val ExternalPackage PACKAGE = ExternalPackage.eINSTANCE;
 
-	new(IncQueryEngine engine) throws IncQueryException {
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine);
 	}
 
-	override protected createMapper(IncQueryEngine engine) {
+	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(NamedClsMatcher.on(engine)) [
 			val root = FACTORY.createExExternalEntity
 			root.reference = new NamedReference(cls)
@@ -38,7 +38,7 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 		return rootNode
 	}
 
-	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+	override protected initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 		val operationNode = rootNode.onEObject(PACKAGE.exExternalEntity_Operations, NamedOperationMatcher.on(engine)) [
 			val elem = FACTORY.createExOperation
 			elem.reference = new NamedReference(operation)

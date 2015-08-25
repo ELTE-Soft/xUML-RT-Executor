@@ -8,7 +8,7 @@ public class BatchResourceTranslatorTests extends ResourceTranslatorTests {
 
 	@Override
 	protected ResourceTranslator createTranslator() {
-		return ResourceTranslator.create(resource);
+		return ResourceTranslator.create(modelSet);
 	};
 
 	@Test

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.junit.Test;
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
@@ -36,14 +36,15 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
 	@Test
 	public void testFullBuildAfterUpgradeOnSameResource() {
-		translator.toIncremental(resource);
+		translator.toIncremental(modelSet);
 		assertFullBuildQueueSizeIsCorrect();
 	}
 
 	@Test
 	public void testFullBuildAfterUpgradeWithNewResource() {
-		Resource newResource = loadResource(modelPath);
-		translator.toIncremental(newResource);
+		ModelSet modelSet = loadModelSet();
+		loadModel(modelSet, UML_TEST_MODEL_PATH);
+		translator.toIncremental(modelSet);
 		assertFullBuildQueueSizeIsCorrect();
 	}
 
@@ -55,8 +56,8 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
 	@Test
 	public void testIncrementalBuildAfterUpgrade() {
-		Resource newResource = loadResource(modelPath);
-		translator.toIncremental(newResource);
+		ModelSet modelSet = loadModelSet();
+		translator.toIncremental(modelSet);
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 		assertTrue(queue.isEmpty());
 	}
@@ -76,8 +77,8 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 	@Test(expected = IllegalStateException.class)
 	public void testUpgradeAfterDisposeFails() {
 		translator.dispose();
-		Resource newResource = loadResource(modelPath);
-		translator.toIncremental(newResource);
+		ModelSet modelSet = loadModelSet();
+		translator.toIncremental(modelSet);
 	}
 
 	@Test

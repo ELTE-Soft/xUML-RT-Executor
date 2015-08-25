@@ -46,6 +46,8 @@ public class ExecutableModelProjectSetup {
 
 	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin"; //$NON-NLS-1$
 
+	private static final String EMDW_COMMON_NATURE_ID = "com.incquerylabs.emdw.common.nature"; //$NON-NLS-1$
+
 	/**
 	 * Creates an xUMLRt project with the given name, at the given location.
 	 */
@@ -91,7 +93,8 @@ public class ExecutableModelProjectSetup {
 
 	private static void setProjectNatures(IProject project) throws CoreException {
 		IProjectDescription description = project.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID, ExecutableModelNature.NATURE_ID });
+		description.setNatureIds(
+				new String[] { JavaCore.NATURE_ID, EMDW_COMMON_NATURE_ID, ExecutableModelNature.NATURE_ID });
 		project.setDescription(description, null);
 	}
 

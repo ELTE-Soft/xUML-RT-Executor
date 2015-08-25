@@ -23,7 +23,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 
 	@Override
 	protected ResourceTranslator createTranslator() {
-		return ResourceTranslator.createIncremental(resource);
+		return ResourceTranslator.createIncremental(modelSet);
 	}
 
 	@Test

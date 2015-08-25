@@ -36,9 +36,9 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
@@ -287,7 +287,9 @@ public class ConsoleModelRunner {
 			registerUmlResourceType();
 
 			verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
-			Resource resource = loadModel(modelPath);
+			URI fileURI = URI.createFileURI(modelPath);
+			ModelSet modelSet = new ModelSet();
+			Resource resource = modelSet.getResource(fileURI, true);
 
 			if (resource == null) {
 				throw new ModelLoadFailedException(modelPath);
@@ -329,7 +331,7 @@ public class ConsoleModelRunner {
 					fileMan.remove(qualifiedName);
 				}
 			};
-			ResourceTranslator translator = ResourceTranslator.create(resource);
+			ResourceTranslator translator = ResourceTranslator.create(modelSet);
 			List<SourceCodeTask> taskQueue = translator.fullTranslation();
 
 			verboseTimeMsg(Messages.ANALYSING_MODEL);
@@ -442,16 +444,6 @@ public class ConsoleModelRunner {
 		if (!Opt.ROOT.isPresent(cmd))
 			return null;
 		return Paths.get(Opt.ROOT.getOption(cmd, 0).get()).toAbsolutePath().toString();
-	}
-
-	private Resource loadModel(String modelPath) {
-		URI fileURI = URI.createFileURI(modelPath);
-		return loadModel(fileURI);
-	}
-
-	private Resource loadModel(URI fileURI) {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		return resourceSet.getResource(fileURI, true);
 	}
 
 	private void registerUmlResourceType() {

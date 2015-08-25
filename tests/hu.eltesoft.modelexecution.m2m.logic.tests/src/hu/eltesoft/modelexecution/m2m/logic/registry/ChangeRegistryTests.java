@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.Class;
 import org.junit.Test;
@@ -90,12 +90,12 @@ public class ChangeRegistryTests extends ModelBasedTestCase {
 		}
 
 		@Override
-		protected RootNode<Class, ClClass, ClsMatch> createMapper(IncQueryEngine engine) {
+		protected RootNode<Class, ClClass, ClsMatch> createMapper(AdvancedIncQueryEngine engine) {
 			return null;
 		}
 
 		@Override
-		protected void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+		protected void initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 		}
 
 		@Override

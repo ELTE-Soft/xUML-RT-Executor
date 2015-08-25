@@ -53,7 +53,6 @@
 				<exclude>p2.eclipse-plugin:org.eclipse.ocl*</exclude>
 				<exclude>p2.eclipse-plugin:org.eclipse.osgi*</exclude>
 				<exclude>p2.eclipse-plugin:org.eclipse.papyrus.emf*</exclude>
-				<exclude>p2.eclipse-plugin:org.eclipse.papyrus.infra*</exclude>
 				<exclude>p2.eclipse-plugin:org.eclipse.pde.*</exclude>
 				<exclude>p2.eclipse-plugin:org.eclipse.search*</exclude>
 				<exclude>p2.eclipse-plugin:org.eclipse.swt.*</exclude>

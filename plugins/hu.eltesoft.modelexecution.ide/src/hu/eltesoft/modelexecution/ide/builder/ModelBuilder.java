@@ -155,7 +155,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 							t -> queue.put(resource, t.incrementalTranslation()));
 					break;
 				case IResourceDelta.REMOVED:
-					TranslatorRegistry.INSTANCE.resourceUnloaded(resource);
+					TranslatorRegistry.INSTANCE.resourceRemoved(resource);
 					needsCleanAndRebuild = true;
 					break;
 				}

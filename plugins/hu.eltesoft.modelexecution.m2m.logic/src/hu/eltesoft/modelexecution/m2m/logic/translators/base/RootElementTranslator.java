@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
@@ -41,7 +41,7 @@ public abstract class RootElementTranslator<UML extends NamedElement, Trans exte
 	private final ChangeRegistry changes = new ChangeRegistry();
 	private final RootNameStorage rootNames = new RootNameStorage();
 
-	public RootElementTranslator(IncQueryEngine engine) throws IncQueryException {
+	public RootElementTranslator(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine);
 	}
 
