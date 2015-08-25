@@ -5,8 +5,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -17,7 +16,7 @@ public abstract class ModelBasedTestCase {
 
 	protected final String modelPath;
 
-	protected Resource resource;
+	protected ModelSet modelSet;
 	protected Model model;
 
 	protected ModelBasedTestCase(String modelPath) {
@@ -26,20 +25,21 @@ public abstract class ModelBasedTestCase {
 
 	@Before
 	public void setUp() {
-		resource = loadResource(modelPath);
-		model = loadModel(resource);
+		modelSet = loadModelSet();
+		model = loadModel(modelSet, modelPath);
 	}
 
-	public Resource loadResource(String path) {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+	public ModelSet loadModelSet() {
+		ModelSet modelSet = new ModelSet();
+		modelSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		modelSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
-		URI uri = URI.createFileURI(path);
-		return resourceSet.getResource(uri, true);
+		return modelSet;
 	}
 
-	public Model loadModel(Resource resource) {
+	public Model loadModel(ModelSet modelSet, String modelPath) {
+		URI uri = URI.createFileURI(modelPath);
+		Resource resource = modelSet.getResource(uri, true);
 		List<EObject> contents = resource.getContents();
 		for (EObject eobj : contents) {
 			if (eobj instanceof Model) {

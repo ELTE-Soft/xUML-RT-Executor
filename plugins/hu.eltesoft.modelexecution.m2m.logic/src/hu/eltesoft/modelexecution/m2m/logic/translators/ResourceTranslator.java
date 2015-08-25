@@ -46,7 +46,6 @@ public class ResourceTranslator {
 	private ReversibleTask attachListeners;
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
-	private IncQueryEngineService service;
 
 	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
 		this.resource = modelSet;
@@ -127,8 +126,6 @@ public class ResourceTranslator {
 		if (incremental) {
 			attachListeners.revert();
 		}
-
-		service.disposeEngine(resource);
 
 		disposed = true;
 	}
