@@ -130,14 +130,14 @@ class RegionTemplate extends Template {
 				«IF null != initTransition.effect»
 					new «initTransition.effect.identifier»(«OWNER_FIELD_NAME»).execute();
 				«ENDIF»
+				
+				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
 		
 				// First state entry
 				«OWNER_FIELD_NAME».getRuntime().logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
 					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME»);
 				«ENDIF»
-				
-				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
 				«IF firstState.isFinal»
 					
 					// The class cannot get more events
@@ -189,13 +189,13 @@ class RegionTemplate extends Template {
 										«transition.effect.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
 								
+									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
+									
 									// State entry
 									«OWNER_FIELD_NAME».getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
 									«IF null != transition.target.entry»
 										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
-									
-									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
 									«IF transition.target.isFinal»
 										
 										// The class cannot get more events
