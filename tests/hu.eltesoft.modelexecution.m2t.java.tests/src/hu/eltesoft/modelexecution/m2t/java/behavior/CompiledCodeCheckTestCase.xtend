@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 import com.google.inject.Inject
 import com.incquerylabs.uml.ralf.api.IReducedAlfParser
 import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
-import com.incquerylabs.uml.ralf.tests.util.TestModelUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner

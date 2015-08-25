@@ -7,11 +7,9 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.incquerylabs.uml.ralf.ReducedAlfLanguageInjectorProvider;
 import com.incquerylabs.uml.ralf.api.IReducedAlfParser;
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser;
 import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider;
-import com.incquerylabs.uml.ralf.tests.util.TestModelUMLContextProvider;
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties;
 

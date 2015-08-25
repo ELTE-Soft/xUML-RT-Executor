@@ -123,7 +123,7 @@ class ExpressionCompiler extends CompilerBase {
 				append("wrap(new ")
 				append(NamedReference.getIdentifier(expr.instance))
 				append("(")
-				compile(expr.tuple, expr.instance as Signal)
+				compile(expr.parameters, expr.instance as Signal)
 				append("))")
 			}
 			Class: {
@@ -137,7 +137,7 @@ class ExpressionCompiler extends CompilerBase {
 					append("i -> i.")
 					append(NamedReference.getIdentifier(constructor))
 					append("(")
-					compile(expr.tuple, constructor)
+					compile(expr.parameters, constructor)
 					append(")")
 				}
 				append("))")
