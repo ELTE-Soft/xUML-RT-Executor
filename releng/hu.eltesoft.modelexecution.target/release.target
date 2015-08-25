@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="default" sequenceNumber="29">
+<?pde version="3.8"?><target name="default" sequenceNumber="31">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.11.0.v20150603-2000"/>
@@ -26,20 +26,18 @@
 <repository location="http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/mars"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201508241626"/>
-<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201508241626"/>
-<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201508241626"/>
-<unit id="org.eclipse.xtext.runtime.feature.group" version="2.8.4.v201508050135"/>
-<unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.0.v20150331-0735"/>
-<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201508241626"/>
-<repository location="http://static.incquerylabs.com/projects/ericsson/emdw-common-ci/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.papyrus.sdk.feature.feature.group" version="1.1.0.201506101814"/>
 <unit id="org.eclipse.ocl.examples.feature.group" version="6.0.0.v20150608-1714"/>
 <unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.4.0.v20150610-1925"/>
 <unit id="org.eclipse.emf.sdk.feature.group" version="2.11.0.v20150601-0402"/>
 <repository location="http://download.eclipse.org/releases/mars"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201508251359"/>
+<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201508251359"/>
+<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201508251359"/>
+<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201508251359"/>
+<repository location="http://mextest.inf.elte.hu/updates/mirrors/emdw-common"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
