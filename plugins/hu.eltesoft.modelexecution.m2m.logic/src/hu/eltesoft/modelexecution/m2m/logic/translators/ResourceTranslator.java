@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
+import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 
@@ -60,7 +61,8 @@ public class ResourceTranslator {
 		rootNames.clear();
 
 		try {
-			engine = AdvancedIncQueryEngine.from(IncQueryEngineService.getOrCreateEngineCheckingService(resource));
+			IncQueryEngine incQueryEngine = IncQueryEngineService.getOrCreateEngineEvenIfModelIsClosed(resource);
+			engine = AdvancedIncQueryEngine.from(incQueryEngine);
 
 			setupTranslators();
 			Queries.instance().prepare(engine);
