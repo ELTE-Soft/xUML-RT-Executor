@@ -51,7 +51,4 @@ public class RootNameStorage {
 		}
 	}
 
-	public void clear() {
-		instanceToRootName.clear();
-	}
 }

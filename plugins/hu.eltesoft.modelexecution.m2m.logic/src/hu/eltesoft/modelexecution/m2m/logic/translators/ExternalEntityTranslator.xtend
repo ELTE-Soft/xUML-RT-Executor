@@ -61,9 +61,8 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 	}
 
 	override shouldMap(Class cls) {
-
 		// generate code only for external entities using this builder
-		Stereotypes.isExternalEntity(cls)
+		super.shouldMap(cls) && Stereotypes.isExternalEntity(cls)
 	}
 
 	override getRootName(Class cls) {

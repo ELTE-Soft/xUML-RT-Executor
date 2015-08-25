@@ -139,8 +139,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	}
 
 	override shouldMap(Class cls) {
-
 		// do not generate code for external entities using this builder
-		!Stereotypes.isExternalEntity(cls)
+		super.shouldMap(cls) && !Stereotypes.isExternalEntity(cls)
 	}
 }
