@@ -10,13 +10,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
-import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 
@@ -26,28 +24,29 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
  */
 public abstract class ModelMapper<UML extends NamedElement, Trans extends Named, Match extends IPatternMatch> {
 
+	private static final Object PATHMAP_SCHEME = "pathmap";
 	protected final RootNode<UML, Trans, Match> root;
 	protected final AdvancedIncQueryEngine engine;
 
-	public ModelMapper(IncQueryEngine engine) throws IncQueryException {
-		this.engine = AdvancedIncQueryEngine.from(engine);
+	public ModelMapper(AdvancedIncQueryEngine engine) throws IncQueryException {
 		root = buildMapper(engine);
+		this.engine = engine;
 	}
 
 	/**
 	 * @return the root node of the translation tree
 	 */
-	protected abstract RootNode<UML, Trans, Match> createMapper(IncQueryEngine engine);
+	protected abstract RootNode<UML, Trans, Match> createMapper(AdvancedIncQueryEngine engine);
 
 	/**
 	 * Builds up the translation tree adding branches to the root node.
 	 */
-	protected abstract void initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine);
+	protected abstract void initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine);
 
 	/**
 	 * Creates the whole translation tree.
 	 */
-	protected RootNode<UML, Trans, Match> buildMapper(IncQueryEngine engine) throws IncQueryException {
+	protected RootNode<UML, Trans, Match> buildMapper(AdvancedIncQueryEngine engine) throws IncQueryException {
 		RootNode<UML, Trans, Match> mapper = createMapper(engine);
 		initMapper(mapper, engine);
 		return mapper;
@@ -66,7 +65,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 		if (uri == null) {
 			return true;
 		}
-		return !ResourceTranslator.PATHMAP_SCHEME.equals(uri.scheme());
+		return !PATHMAP_SCHEME.equals(uri.scheme());
 	}
 
 	/**

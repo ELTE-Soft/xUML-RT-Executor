@@ -13,7 +13,7 @@ import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalAttributeUpperBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatch
 import hu.eltesoft.modelexecution.uml.incquery.SignalMatcher
-import org.eclipse.incquery.runtime.api.IncQueryEngine
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Signal
 
@@ -22,11 +22,11 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 	static val SignalFactory FACTORY = SignalFactory.eINSTANCE;
 	static val SignalPackage PACKAGE = SignalPackage.eINSTANCE;
 
-	new(IncQueryEngine engine) throws IncQueryException {
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine)
 	}
 
-	override protected createMapper(IncQueryEngine engine) {
+	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(SignalMatcher.on(engine)) [
 			val root = FACTORY.createSgSignal
 			root.reference = new NamedReference(signal)
@@ -35,7 +35,7 @@ class SignalTranslator extends RootElementTranslator<Signal, SgSignal, SignalMat
 		return rootNode
 	}
 
-	override protected initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+	override protected initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 		val attributeNode = rootNode.onEObject(PACKAGE.sgSignal_Attributes, SignalAttributeMatcher.on(engine)) [
 			val elem = FACTORY.createSgAttribute
 			elem.reference = new NamedReference(attribute)

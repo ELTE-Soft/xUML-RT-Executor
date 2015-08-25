@@ -3,14 +3,12 @@ package hu.eltesoft.modelexecution.m2m.logic.translators;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
-import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
-import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
+
+import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
@@ -28,18 +26,15 @@ import hu.eltesoft.modelexecution.uml.incquery.Queries;
  */
 public class ResourceTranslator {
 
-	public static final String PATHMAP_SCHEME = "pathmap";
-	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
-
-	public static ResourceTranslator createIncremental(Resource resource) {
-		return new ResourceTranslator(resource, true);
+	public static ResourceTranslator createIncremental(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, true);
 	}
 
-	public static ResourceTranslator create(Resource resource) {
-		return new ResourceTranslator(resource, false);
+	public static ResourceTranslator create(ModelSet modelSet) {
+		return new ResourceTranslator(modelSet, false);
 	}
 
-	private Resource resource;
+	private ModelSet resource;
 	private boolean incremental;
 	private boolean disposed;
 	private AdvancedIncQueryEngine engine;
@@ -47,8 +42,8 @@ public class ResourceTranslator {
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
 
-	private ResourceTranslator(Resource resource, boolean incremental) {
-		this.resource = resource;
+	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
+		this.resource = modelSet;
 		this.incremental = incremental;
 		setupEngine();
 	}
@@ -57,28 +52,8 @@ public class ResourceTranslator {
 		disposed = false;
 		
 		try {
-			// Only allows library resources to be indexed, but not metamodels
-			// or profiles. This is necessary because indexing metamodels
-			// extremely degrades performance.
-			BaseIndexOptions options = new BaseIndexOptions()
-					.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
-
-						@Override
-						public boolean isResourceFiltered(Resource resource) {
-							URI uri = resource.getURI();
-							return PATHMAP_SCHEME.equals(uri.scheme())
-									&& !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
-						}
-						
-					});
-
-			EMFScope emfScope = new EMFScope(resource.getResourceSet(), options);
-
-			if (incremental) {
-				engine = AdvancedIncQueryEngine.from(IncQueryEngine.on(emfScope));
-			} else {
-				engine = AdvancedIncQueryEngine.createUnmanagedEngine(emfScope);
-			}
+			IncQueryEngine incQueryEngine = IncQueryEngineService.getOrCreateEngineEvenIfModelIsClosed(resource);
+			engine = AdvancedIncQueryEngine.from(incQueryEngine);
 
 			Queries.instance().prepare(engine);
 			setupTranslators();
@@ -112,7 +87,7 @@ public class ResourceTranslator {
 		attachListeners = task;
 	}
 
-	public void toIncremental(Resource resource) {
+	public void toIncremental(ModelSet resource) {
 		checkDisposed();
 
 		if (incremental) {
@@ -142,9 +117,8 @@ public class ResourceTranslator {
 
 		if (incremental) {
 			attachListeners.revert();
-		} else {
-			engine.dispose();
 		}
+
 		disposed = true;
 	}
 

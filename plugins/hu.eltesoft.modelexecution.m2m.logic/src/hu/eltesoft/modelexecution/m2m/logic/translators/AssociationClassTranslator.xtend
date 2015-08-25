@@ -8,7 +8,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.templates.AssociationClassTemplateSmap
 import hu.eltesoft.modelexecution.uml.incquery.AssociationClassMatch
 import hu.eltesoft.modelexecution.uml.incquery.AssociationClassMatcher
-import org.eclipse.incquery.runtime.api.IncQueryEngine
+import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.AssociationClass
 
@@ -16,11 +16,11 @@ class AssociationClassTranslator extends RootElementTranslator<AssociationClass,
 
 	static val AssociationFactory FACTORY = AssociationFactory.eINSTANCE;
 
-	new(IncQueryEngine engine) throws IncQueryException {
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
 		super(engine)
 	}
 
-	override createMapper(IncQueryEngine engine) {
+	override createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(AssociationClassMatcher.on(engine)) [
 			val root = FACTORY.createAsAssociationClass
 			root.reference = new NamedReference(assocClass)
@@ -29,7 +29,7 @@ class AssociationClassTranslator extends RootElementTranslator<AssociationClass,
 		return rootNode;
 	}
 
-	override initMapper(RootNode<?, ?, ?> rootNode, IncQueryEngine engine) {
+	override initMapper(RootNode<?, ?, ?> rootNode, AdvancedIncQueryEngine engine) {
 		val assocTrans = new AssociationTranslator(engine)
 		assocTrans.initMapper(rootNode, engine)
 		val classTrans = new ClassTranslator(engine)
