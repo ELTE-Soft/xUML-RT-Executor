@@ -41,7 +41,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 /**
  * Communicates with the runtime through the JDI. Maintains the JDI's list of
- * breakpoints. Suspends threads when the VM is stoppend on breakpoints.
+ * breakpoints. Suspends threads when the VM is stopped on breakpoints.
  */
 @SuppressWarnings("restriction")
 public final class VirtualMachineHandler implements VirtualMachineListener {
