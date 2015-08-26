@@ -30,9 +30,6 @@ class BehaviorTemplate extends Template {
 	override wrapContent(CharSequence content) '''
 		/** Class for implementing behavior «behavior.javadoc» 
 		 */
-		import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*;
-		
-		@SuppressWarnings("unused")
 		«generatedHeaderForClass(behavior)»
 		public class «behavior.identifier» extends «ActionCode.canonicalName» {
 			«content»

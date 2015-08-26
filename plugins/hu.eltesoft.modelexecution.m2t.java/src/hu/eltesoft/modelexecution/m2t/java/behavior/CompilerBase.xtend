@@ -15,6 +15,11 @@ import java.util.WeakHashMap
 import org.apache.commons.lang.StringUtils
 import org.eclipse.emf.ecore.EObject
 
+interface Appendable {
+
+	def void append(Object object)
+}
+
 abstract class CompilerBase {
 
 	public static val Multiplicity SINGLE = BaseFactory.eINSTANCE.createMultiplicity()

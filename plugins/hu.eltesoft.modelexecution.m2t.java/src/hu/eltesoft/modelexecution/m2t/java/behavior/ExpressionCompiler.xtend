@@ -23,6 +23,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.Template
+import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.uml2.uml.Class
@@ -32,22 +34,23 @@ import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
-import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 
 class ExpressionCompiler extends CompilerBase {
 
 	extension TypeConverter typeConverter = new TypeConverter
 	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
 
-	// this is required to be defined here, as it makes unit testing of this class possible
-	// FIXME: do not define it here, move it to stmt compiler and inherit a class for tests?
+	// Needed to be defined here for testing purposes.
 	def dispatch void compile(ExpressionStatement statement) {
 		compile(statement.expression)
 		append(";")
 	}
 
 	def dispatch void compile(BooleanLiteralExpression lit) {
-		append('''booleanLiteral(«lit.value»)''')
+		append(PrimitiveOperations.BOOLEAN_LITERAL)
+		append("(")
+		append(lit.value)
+		append(")")
 	}
 
 	def dispatch void compile(NaturalLiteralExpression lit) {
@@ -63,23 +66,38 @@ class ExpressionCompiler extends CompilerBase {
 			digits = digits.substring(1)
 			radix = 8
 		}
-		append('''integerLiteral("«digits»", «radix»)''')
+		append(PrimitiveOperations.INTEGER_LITERAL)
+		append('("')
+		append(digits)
+		append('", ')
+		append(radix)
+		append(")")
 	}
 
 	def dispatch void compile(RealLiteralExpression lit) {
-		append('''realLiteral(«lit.value»)''')
+		append(PrimitiveOperations.REAL_LITERAL)
+		append("(")
+		append(lit.value)
+		append(")")
 	}
 
 	def dispatch void compile(StringLiteralExpression lit) {
-		append('''stringLiteral("«StringEscapeUtils.escapeJava(lit.value)»")''')
+		append(PrimitiveOperations.STRING_LITERAL)
+		append('("')
+		append(StringEscapeUtils.escapeJava(lit.value))
+		append('")')
 	}
 
 	def dispatch void compile(NullExpression expr) {
-		append("nullValue()")
+		append(PrimitiveOperations.NULL_VALUE)
+		append("()")
 	}
 
 	def dispatch void compile(ThisExpression expr) {
-		append('''wrap(«CompilerBase.CONTEXT_NAME»)''')
+		append(PrimitiveOperations.WRAP)
+		append("(")
+		append(CONTEXT_NAME)
+		append(")")
 	}
 
 	def dispatch void compile(LocalNameDeclarationStatement declaration) {
@@ -88,26 +106,39 @@ class ExpressionCompiler extends CompilerBase {
 		append(type.convert.javaType(SINGLE))
 		append(" ")
 		append(localName)
+		append(" = ")
 		if (null != declaration.expression) {
-			append(" = ")
 			compile(declaration.expression)
 		} else {
-			append(declaration.variable.type.type.typeInitializer)
+			compileTypeInitializer(declaration.variable.type.type)
 		}
 		append(";")
 	}
 
-	def dispatch typeInitializer(PrimitiveType type) {
+	def dispatch compileTypeInitializer(PrimitiveType type) {
 		switch type.name {
-			case "Boolean": ''' = booleanLiteral(false)'''
-			case "Integer": ''' = integerLiteral("0", 10)'''
-			case "Real": ''' = realLiteral(0.0)'''
-			case "String": ''' = stringLiteral("")'''
+			case "Boolean": {
+				append(PrimitiveOperations.BOOLEAN_LITERAL)
+				append("(false)")
+			}
+			case "Integer": {
+				append(PrimitiveOperations.INTEGER_LITERAL)
+				append('("0", 10)')
+			}
+			case "Real": {
+				append(PrimitiveOperations.REAL_LITERAL)
+				append("(0.0)")
+			}
+			case "String": {
+				append(PrimitiveOperations.STRING_LITERAL)
+				append('("")')
+			}
 		}
 	}
 
-	def dispatch typeInitializer(Type type) {
-		" = nullValue()"
+	def dispatch compileTypeInitializer(Type type) {
+		append(PrimitiveOperations.NULL_VALUE)
+		append("()")
 	}
 
 	def dispatch void compile(NameExpression expr) {
@@ -122,16 +153,20 @@ class ExpressionCompiler extends CompilerBase {
 		switch expr.instance {
 			// TODO: add data types later
 			Signal: {
-				append("wrap(new ")
+				append(PrimitiveOperations.WRAP)
+				append("(new ")
 				append(NamedReference.getIdentifier(expr.instance))
 				append("(")
 				compile(expr.parameters, expr.instance as Signal)
 				append("))")
 			}
 			Class: {
-				append("wrap(")
+				append(PrimitiveOperations.WRAP)
+				append("(")
 				append(NamedReference.getIdentifier(expr.instance))
-				append(".create(context.getRuntime(), ")
+				append(".create(")
+				append(CONTEXT_NAME)
+				append(".getRuntime(), ")
 				val constructor = getConstructor(expr.instance as Class)
 				if (null == constructor) {
 					append("null")
@@ -166,13 +201,15 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch void compile(InstanceDeletionExpression expr) {
-		append("unwrap(")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(expr.reference)
 		append(").dispose()")
 	}
 
 	def dispatch void compile(FeatureInvocationExpression call) {
-		append("unwrap(")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(call.context)
 		append(").")
 		switch call.feature {
@@ -257,7 +294,8 @@ class ExpressionCompiler extends CompilerBase {
 		switch lhs {
 			// attribute assignment
 			FeatureInvocationExpression: {
-				append("unwrap(")
+				append(PrimitiveOperations.UNWRAP)
+				append("(")
 				compile(lhs.context)
 				append(").")
 				append(Template.SETTER_PREFIX)
@@ -268,7 +306,8 @@ class ExpressionCompiler extends CompilerBase {
 			}
 			// local variable assignment
 			NameExpression: {
-				append("setValue(")
+				append(PrimitiveOperations.SET_VALUE)
+				append("(")
 				compile(lhs)
 				append(", ")
 				compile(assignment.rightHandSide)

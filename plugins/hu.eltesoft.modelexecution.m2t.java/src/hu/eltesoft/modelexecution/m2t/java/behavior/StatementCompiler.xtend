@@ -12,6 +12,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.SendSignalStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.WhileStatement
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.IfClause
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 // TODO: missing statements: SwitchStatement, ForEachStatement ClassifyStatement
 class StatementCompiler extends ExpressionCompiler {
@@ -57,7 +58,9 @@ class StatementCompiler extends ExpressionCompiler {
 					if (i > 0) {
 						append("else ")
 					}
-					append("if (unwrap(")
+					append("if (")
+					append(PrimitiveOperations.UNWRAP)
+					append("(")
 					compile(clause.condition)
 					append(")) ")
 					compile(clause.body)
@@ -71,7 +74,9 @@ class StatementCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch void compile(WhileStatement loop) {
-		append("while (unwrap(")
+		append("while (")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(loop.condition)
 		append(")) ")
 		compile(loop.body)
@@ -80,7 +85,9 @@ class StatementCompiler extends ExpressionCompiler {
 	def dispatch void compile(DoStatement loop) {
 		append("do ")
 		compile(loop.body as Block, false)
-		append(" while (unwrap(")
+		append(" while (")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(loop.condition)
 		append("));")
 	}
@@ -102,11 +109,14 @@ class StatementCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch void compile(SendSignalStatement send) {
-		append("unwrap(")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(send.target)
 		append(").send(new ")
 		append(SignalEvent.canonicalName)
-		append("(unwrap(")
+		append("(")
+		append(PrimitiveOperations.UNWRAP)
+		append("(")
 		compile(send.signal)
 		append(")));")
 	}

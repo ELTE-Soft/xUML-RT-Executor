@@ -2,6 +2,8 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import org.junit.Test
+import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
@@ -11,12 +13,12 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testEmptyStatement() {
-		assertCompilesTo(";", ";")
+		assertCompilesTo(''';''', ''';''')
 	}
 
 	@Test
 	def testEmptyBlock() {
-		assertCompilesTo("{}", '''
+		assertCompilesTo('''{}''', '''
 			{
 			}
 		''')
@@ -24,7 +26,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testEmptyBlockSequence() {
-		assertCompilesTo("{}{}{}", '''
+		assertCompilesTo('''{}{}{}''', '''
 			{
 			}
 			{
@@ -36,7 +38,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testNestedEmptyBlocks() {
-		assertCompilesTo("{{{}}}", '''
+		assertCompilesTo('''{{{}}}''', '''
 			{
 			{
 			{
@@ -48,14 +50,14 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testTwoLocalVarsInDifferentBlocks() {
-		assertCompilesTo("{Real x;}{Integer x = 10;}", '''
+		assertCompilesTo('''{Real x;}{Integer x = 10;}''', '''
 			{
-			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
+			java.util.ArrayList<java.lang.Double> _local0 = «REAL_LITERAL»(0.0);
 			}
 			{
-			java.util.ArrayList<java.math.BigInteger> _local1 = integerLiteral("10", 10);
+			java.util.ArrayList<java.math.BigInteger> _local1 = «INTEGER_LITERAL»("10", 10);
 			}
-		''');
+		''')
 	}
 
 	@Test
@@ -66,91 +68,91 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 				x;
 			}
 		''', '''
-			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
+			java.util.ArrayList<java.lang.Double> _local0 = «REAL_LITERAL»(0.0);
 			{
 			_local0;
 			}
-		''');
+		''')
 	}
 
 	@Test
 	def testReturnVoid() {
-		assertCompilesTo("return;", "return;");
+		assertCompilesTo('''return;''', '''return;''')
 	}
 
 	@Test
 	def testReturnFalse() {
-		operation = ModelProperties.BOOL_OPERATION;
-		assertCompilesTo("return false;", "return booleanLiteral(false);");
+		operation = ModelProperties.BOOL_OPERATION
+		assertCompilesTo('''return false;''', '''return «BOOLEAN_LITERAL»(false);''')
 	}
 
 	@Test
 	def testIf() {
-		assertCompilesTo("if(false){}", '''
-			if (unwrap(booleanLiteral(false))) {
+		assertCompilesTo('''if(false){}''', '''
+			if («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			}
-		''');
+		''')
 	}
 
 	@Test
 	def testIfElse() {
-		assertCompilesTo("if(false){}else{}", '''
-			if (unwrap(booleanLiteral(false))) {
+		assertCompilesTo('''if(false){}else{}''', '''
+			if («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			}
 			else {
 			}
-		''');
+		''')
 	}
 
 	@Test
 	def testIfElseIfElseIfElse() {
-		assertCompilesTo("if(false){}else if(true){}else if(false){}else{}", '''
-			if (unwrap(booleanLiteral(false))) {
+		assertCompilesTo('''if(false){}else if(true){}else if(false){}else{}''', '''
+			if («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			}
-			else if (unwrap(booleanLiteral(true))) {
+			else if («UNWRAP»(«BOOLEAN_LITERAL»(true))) {
 			}
-			else if (unwrap(booleanLiteral(false))) {
+			else if («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			}
 			else {
 			}
-		''');
+		''')
 	}
 
 	@Test
 	def testWhile() {
-		assertCompilesTo("while(false){}", '''
-			while (unwrap(booleanLiteral(false))) {
+		assertCompilesTo('''while(false){}''', '''
+			while («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			}
 		''')
 	}
 
 	@Test
 	def testDoWhile() {
-		assertCompilesTo("do{}while(false);", '''
-		do {
-		} while (unwrap(booleanLiteral(false)));''')
+		assertCompilesTo('''do{}while(false);''', '''
+			do {
+			} while («UNWRAP»(«BOOLEAN_LITERAL»(false)));''')
 	}
 
 	@Test
 	def testForWithEmptyUpdate() {
-		assertCompilesTo("for(Integer i = 0; false; ){}", '''
-			for (java.util.ArrayList<java.math.BigInteger> _local0 = integerLiteral("0", 10); booleanLiteral(false); ;) {
+		assertCompilesTo('''for(Integer i = 0; false; ){}''', '''
+			for (java.util.ArrayList<java.math.BigInteger> _local0 = «INTEGER_LITERAL»("0", 10); «BOOLEAN_LITERAL»(false); ;) {
 			}
 		''')
 	}
 
 	@Test
 	def testForWithNonEmptyUpdate() {
-		assertCompilesTo("for(Integer i = 0; false; false ){}", '''
-			for (java.util.ArrayList<java.math.BigInteger> _local0 = integerLiteral("0", 10); booleanLiteral(false); booleanLiteral(false);) {
+		assertCompilesTo('''for(Integer i = 0; false; false ){}''', '''
+			for (java.util.ArrayList<java.math.BigInteger> _local0 = «INTEGER_LITERAL»("0", 10); «BOOLEAN_LITERAL»(false); «BOOLEAN_LITERAL»(false);) {
 			}
 		''')
 	}
 
 	@Test
 	def testBreak() {
-		assertCompilesTo("while(false){break;}", '''
-			while (unwrap(booleanLiteral(false))) {
+		assertCompilesTo('''while(false){break;}''', '''
+			while («UNWRAP»(«BOOLEAN_LITERAL»(false))) {
 			break;
 			}
 		''')
@@ -158,18 +160,12 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def sendNewSignalToNewObject() {
-		assertCompilesTo(
-			"send new S() to new B();",
-			'''unwrap(wrap(_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()))).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(wrap(new _47IQsEGyEeWzwYgcaM4qwA()))));'''
-		)
+		assertCompilesTo('''send new S() to new B();''', '''«UNWRAP»(«WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()))).send(new «SignalEvent.canonicalName»(«UNWRAP»(«WRAP»(new _47IQsEGyEeWzwYgcaM4qwA()))));''')
 	}
 
 	@Test
 	def sendNewSignalToThisObject() {
-		assertCompilesTo(
-			"send new S() to this;",
-			'''unwrap(wrap(context)).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(wrap(new _47IQsEGyEeWzwYgcaM4qwA()))));'''
-		)
+		assertCompilesTo('''send new S() to this;''', '''«UNWRAP»(«WRAP»(«CompilerBase.CONTEXT_NAME»)).send(new «SignalEvent.canonicalName»(«UNWRAP»(«WRAP»(new _47IQsEGyEeWzwYgcaM4qwA()))));''')
 	}
 
 	@Test
@@ -179,9 +175,9 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 			B b = new B();
 			send s to b;
 		''', '''
-			java.util.ArrayList<_47IQsEGyEeWzwYgcaM4qwA> _local0 = wrap(new _47IQsEGyEeWzwYgcaM4qwA());
-			java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1 = wrap(_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));
-			unwrap(_local1).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(_local0)));
+			java.util.ArrayList<_47IQsEGyEeWzwYgcaM4qwA> _local0 = «WRAP»(new _47IQsEGyEeWzwYgcaM4qwA());
+			java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));
+			«UNWRAP»(_local1).send(new «SignalEvent.canonicalName»(«UNWRAP»(_local0)));
 		''')
 	}
 }

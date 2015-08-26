@@ -6,6 +6,17 @@ import java.util.Arrays;
 
 public class PrimitiveOperations {
 
+	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
+
+	public static final String NULL_VALUE = CLASS_PREFIX + "nullValue";
+	public static final String WRAP = CLASS_PREFIX + "wrap";
+	public static final String UNWRAP = CLASS_PREFIX + "unwrap";
+	public static final String SET_VALUE = CLASS_PREFIX + "setValue";
+	public static final String BOOLEAN_LITERAL = CLASS_PREFIX + "booleanLiteral";
+	public static final String INTEGER_LITERAL = CLASS_PREFIX + "integerLiteral";
+	public static final String REAL_LITERAL = CLASS_PREFIX + "realLiteral";
+	public static final String STRING_LITERAL = CLASS_PREFIX + "stringLiteral";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -18,8 +29,8 @@ public class PrimitiveOperations {
 		return wrapper.get(0);
 	}
 
-	public static <T> T setValue(final ArrayList<T> wrapper, T newValue) {
-		wrapper.set(0, newValue);
+	public static <T> ArrayList<T> setValue(final ArrayList<T> wrapper, final ArrayList<T> newValue) {
+		wrapper.set(0, unwrap(newValue));
 		return newValue;
 	}
 

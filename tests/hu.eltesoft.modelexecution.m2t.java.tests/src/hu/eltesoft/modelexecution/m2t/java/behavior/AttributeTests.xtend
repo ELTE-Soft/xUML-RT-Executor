@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import org.junit.Before
 import org.junit.Test
+import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*
 
 class AttributeTests extends CompiledCodeCheckTestCase {
 
@@ -17,11 +18,11 @@ class AttributeTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testReadingBoolProperty() {
-		assertCompilesTo("this.a;", "unwrap(wrap(context)).get__dxeMEEvUEeWbvJ0DeAHZOQ();")
+		assertCompilesTo('''this.a;''', '''«UNWRAP»(«WRAP»(«CompilerBase.CONTEXT_NAME»)).get__dxeMEEvUEeWbvJ0DeAHZOQ();''')
 	}
 
 	@Test
 	def testWritingBoolProperty() {
-		assertCompilesTo("this.a = true;", "unwrap(wrap(context)).set__dxeMEEvUEeWbvJ0DeAHZOQ(booleanLiteral(true));")
+		assertCompilesTo('''this.a = true;''', '''«UNWRAP»(«WRAP»(«CompilerBase.CONTEXT_NAME»)).set__dxeMEEvUEeWbvJ0DeAHZOQ(«BOOLEAN_LITERAL»(true));''')
 	}
 }

@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import org.junit.Test
+import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*
 
 class DeclarationTests extends CompiledCodeCheckTestCase {
 
@@ -10,23 +11,22 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testBooleanDefaultInitialization() {
-		assertCompilesTo("Boolean x;", '''java.util.ArrayList<java.lang.Boolean> _local0 = booleanLiteral(false);''');
+		assertCompilesTo('''Boolean x;''', '''java.util.ArrayList<java.lang.Boolean> _local0 = «BOOLEAN_LITERAL»(false);''')
 	}
 
 	@Test
 	def testRealDefaultInitialization() {
-		assertCompilesTo("Real x;", '''java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);''');
+		assertCompilesTo('''Real x;''', '''java.util.ArrayList<java.lang.Double> _local0 = «REAL_LITERAL»(0.0);''')
 	}
 
 	@Test
 	def testIntegerDefaultInitialization() {
-		assertCompilesTo(
-			"Integer x;", '''java.util.ArrayList<java.math.BigInteger> _local0 = integerLiteral("0", 10);''');
+		assertCompilesTo('''Integer x;''', '''java.util.ArrayList<java.math.BigInteger> _local0 = «INTEGER_LITERAL»("0", 10);''')
 	}
 
 	@Test
 	def testStringDefaultInitialization() {
-		assertCompilesTo("String x;", '''java.util.ArrayList<java.lang.String> _local0 = stringLiteral("");''');
+		assertCompilesTo('''String x;''', '''java.util.ArrayList<java.lang.String> _local0 = «STRING_LITERAL»("");''')
 	}
 
 	@Test
@@ -35,8 +35,8 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 			Real x;
 			Integer y;
 		''', '''
-			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
-			java.util.ArrayList<java.math.BigInteger> _local1 = integerLiteral("0", 10);
+			java.util.ArrayList<java.lang.Double> _local0 = «REAL_LITERAL»(0.0);
+			java.util.ArrayList<java.math.BigInteger> _local1 = «INTEGER_LITERAL»("0", 10);
 		''');
 	}
 
@@ -46,21 +46,18 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 			Real x;
 			x;
 		''', '''
-			java.util.ArrayList<java.lang.Double> _local0 = realLiteral(0.0);
+			java.util.ArrayList<java.lang.Double> _local0 = «REAL_LITERAL»(0.0);
 			_local0;
 		''');
 	}
 
 	@Test
 	def testUsingUserDefinedClassAsLocalVariableType() {
-		assertCompilesTo("B b;", "java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = nullValue();");
+		assertCompilesTo('''B b;''', '''java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = «NULL_VALUE»();''');
 	}
 
 	@Test
 	def testUsingUserDefinedClassAsLocalVariableTypeWithDefaultConstructor() {
-		assertCompilesTo(
-			"B b = new B();",
-			"java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = wrap(_9SdsIEDoEeWCNoKXHvCpUQ.create(context.getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));"
-		);
+		assertCompilesTo('''B b = new B();''', '''java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));''')
 	}
 }
