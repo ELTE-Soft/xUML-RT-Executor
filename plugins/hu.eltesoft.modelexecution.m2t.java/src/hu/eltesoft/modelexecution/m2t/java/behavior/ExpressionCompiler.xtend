@@ -174,9 +174,11 @@ class ExpressionCompiler extends CompilerBase {
 		compile(call.context)
 		append(").")
 		append(NamedReference.getIdentifier(call.feature))
-		append("(")
-		compile(call.parameters, call.feature)
-		append(")")
+		if (call.feature instanceof Operation) {
+			append("(")
+			compile(call.parameters, call.feature)
+			append(")")
+		}
 	}
 
 	def dispatch void compile(StaticFeatureInvocationExpression call) {

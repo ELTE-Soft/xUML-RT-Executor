@@ -165,6 +165,14 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
+	def sendNewSignalToThisObject() {
+		assertCompilesTo(
+			"send new S() to this;",
+			'''unwrap(wrap(context)).send(new hu.eltesoft.modelexecution.runtime.base.SignalEvent(unwrap(wrap(new _47IQsEGyEeWzwYgcaM4qwA()))));'''
+		)
+	}
+
+	@Test
 	def sendExistingSignalToExistingObject() {
 		assertCompilesTo('''
 			S s = new S();
