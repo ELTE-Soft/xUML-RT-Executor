@@ -1,0 +1,45 @@
+package hu.eltesoft.modelexecution.m2t.java.behavior.codegen
+
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
+
+class CodeGenNodeExtensons {
+
+	static extension CodeGenNode = CodeGenNode.extension
+
+	def static dispatch CodeGenNode wrap(Object item) {
+		wrap(sequence(item))
+	}
+
+	def static dispatch CodeGenNode wrap(CodeGenNode node) {
+		if (node.isUnwrap) {
+			return node.extractInner
+		}
+		PrimitiveOperations.WRAP + paren(node)
+	}
+
+	def static dispatch CodeGenNode unwrap(Object item) {
+		unwrap(sequence(item))
+	}
+
+	def static dispatch CodeGenNode unwrap(CodeGenNode node) {
+		if (node.isWrap) {
+			return node.extractInner
+		}
+		PrimitiveOperations.UNWRAP + paren(node)
+	}
+
+	def static isWrap(CodeGenNode node) {
+		node.isSequence && 2 == node.size && PrimitiveOperations.WRAP == node.itemAt(0) &&
+			node.itemAt(1) instanceof CodeGenNode && node.childNodeAt(1).isParen
+	}
+
+	def static isUnwrap(CodeGenNode node) {
+		node.isSequence && 2 == node.size && PrimitiveOperations.UNWRAP == node.itemAt(0) &&
+			node.itemAt(1) instanceof CodeGenNode && node.childNodeAt(1).isParen
+	}
+
+	def static extractInner(CodeGenNode node) {
+		val paren = node.childNodeAt(1)
+		paren.childNodeAt(0)
+	}
+}

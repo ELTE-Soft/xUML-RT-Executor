@@ -12,10 +12,14 @@ import hu.eltesoft.modelexecution.m2t.java.behavior.InvocationTests;
 import hu.eltesoft.modelexecution.m2t.java.behavior.LifecycleTests;
 import hu.eltesoft.modelexecution.m2t.java.behavior.LiteralTests;
 import hu.eltesoft.modelexecution.m2t.java.behavior.StatementCompilerTests;
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensonsTests;
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeSmapTests;
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({ StepPartitioningTests.class, TemplateSmokeTests.class, AssignmentTests.class, AttributeTests.class,
 		DeclarationTests.class, ExternalEntityTests.class, InvocationTests.class, LifecycleTests.class,
-		LiteralTests.class, StatementCompilerTests.class })
+		LiteralTests.class, StatementCompilerTests.class, CodeGenNodeExtensonsTests.class, CodeGenNodeSmapTests.class,
+		CodeGenNodeTests.class })
 public class AllTests {
 }
