@@ -11,6 +11,7 @@ import java.util.Date
 import javax.annotation.Generated
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
+import hu.eltesoft.modelexecution.runtime.BaseRuntime
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -182,5 +183,7 @@ abstract class Template extends EmfTraceExtensions {
 	def implementation(Named ref) { ref.identifier + CLASS_IMPL_SUFFIX }
 	
 	def implementation(NamedReference ref) { ref.identifier + CLASS_IMPL_SUFFIX }
+	
+	protected val runtime = '''«BaseRuntime.canonicalName».getInstance()'''
 
 }

@@ -165,8 +165,6 @@ class ExpressionCompiler extends CompilerBase {
 				append("(")
 				append(NamedReference.getIdentifier(expr.instance))
 				append(".create(")
-				append(CONTEXT_NAME)
-				append(".getRuntime(), ")
 				val constructor = getConstructor(expr.instance as Class)
 				if (null == constructor) {
 					append("null")
@@ -231,15 +229,20 @@ class ExpressionCompiler extends CompilerBase {
 		val op = call.operation.reference as Operation
 		var cls = op.class_
 		if (Stereotypes.isExternalEntity(cls)) {
-			append(CONTEXT_NAME)
-			append(".getRuntime().getExternalEntity(")
+			append(RUNTIME_INSTANCE)
+			append(".getExternalEntity(")
 			append(cls.name)
 			append(".class).")
 			append(op.name)
 			append("(")
 			if (1 == op.ownedParameters.length) {
 				// proxy parameter
+				val param = op.ownedParameters.get(0)
+				append("new ")
+				append(param.type.name)
+				append("(")
 				append(CONTEXT_NAME)
+				append(")")
 			}
 			append(")")
 		} else {

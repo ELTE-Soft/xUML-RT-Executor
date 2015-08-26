@@ -113,10 +113,10 @@ class RegionTemplate extends Template {
 			@Override
 			public void doInitialTransition() {
 				// Initial state exit
-				owner.getRuntime().logExitState(«traceLiteral(initState, Exit)»);
+				«runtime».logExitState(«traceLiteral(initState, Exit)»);
 		
 				// Initial transition effect
-				owner.getRuntime().logTransition(
+				«runtime».logTransition(
 						"<init transition>",
 						"<init transition>",
 						«trace(initState.nameLiteral, initTransition.reference)»,
@@ -126,7 +126,7 @@ class RegionTemplate extends Template {
 				«ENDIF»
 		
 				// First state entry
-				owner.getRuntime().logEnterState(«traceLiteral(firstState, Entry)»);
+				«runtime».logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
 					«firstState.entry.identifier».execute(owner);
 				«ENDIF»
@@ -168,13 +168,13 @@ class RegionTemplate extends Template {
 								if (signal instanceof «transition.message.identifier»)
 								{
 									// State exit
-									owner.getRuntime().logExitState(«traceLiteral(state, Exit)»);
+									«runtime».logExitState(«traceLiteral(state, Exit)»);
 									«IF null != state.exit»
 										«state.exit.identifier».execute(owner);
 									«ENDIF»
 								
 									// Transition effect
-									owner.getRuntime().logTransition(
+									«runtime».logTransition(
 											«transition.event.nameLiteral»,
 											«transition.message.nameLiteral»,
 											«trace(state.nameLiteral, transition.reference)»,
@@ -184,7 +184,7 @@ class RegionTemplate extends Template {
 									«ENDIF»
 								
 									// State entry
-									owner.getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
+									«runtime».logEnterState(«traceLiteral(transition.target, Entry)»);
 									«IF null != transition.target.entry»
 										«transition.target.entry.identifier».execute(owner);
 									«ENDIF»

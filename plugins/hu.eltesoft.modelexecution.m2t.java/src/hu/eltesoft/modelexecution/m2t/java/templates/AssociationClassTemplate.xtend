@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.association.AsAssociationClass
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Association
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
@@ -36,8 +35,10 @@ class AssociationClassTemplate extends Template {
 			implements «Association.canonicalName», «assocClass.identifier» {
 		
 			/** Association constructor for UML class «assocClass.javadoc» */
-			public «assocClass.implementation»(«Runtime.canonicalName» runtime
-					«FOR parent : assocClass.parents», «parent.implementation» «parent.inherited»«ENDFOR»,
+			public «assocClass.implementation»(
+					«FOR parent : assocClass.parents SEPARATOR ','»
+						«parent.implementation» «parent.inherited»
+					«ENDFOR»,
 					«assocTemplate.endParams») {
 				«IF stateful»super(runtime, instanceCount.getAndIncrement());«ENDIF»
 				«FOR parent : assocClass.parents»

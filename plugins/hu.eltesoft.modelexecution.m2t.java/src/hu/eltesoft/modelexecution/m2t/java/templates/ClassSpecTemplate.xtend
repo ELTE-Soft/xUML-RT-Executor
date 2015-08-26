@@ -8,7 +8,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry
-import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.StatefulClass
 import java.util.LinkedList
 import java.util.function.Consumer
@@ -36,12 +35,12 @@ class ClassSpecTemplate extends Template {
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 		
 			/** Creator for UML class «classSpec.javadoc» */
-			public static «classSpec.identifier» create(«Runtime.canonicalName» runtime, «Consumer.canonicalName»<«classSpec.identifier»> initializer) {
+			public static «classSpec.identifier» create(«Consumer.canonicalName»<«classSpec.identifier»> initializer) {
 				«FOR rec : classSpec.ctorRecords»
 					«rec.implementation» «rec.inherited» 
-						= new «rec.implementation»(runtime«FOR par : rec.directParents», «par.inherited»«ENDFOR»);
+						= new «rec.implementation»(«FOR par : rec.directParents SEPARATOR ','»«par.inherited»«ENDFOR»);
 				«ENDFOR»
-				«classSpec.implementation» created = new «classSpec.implementation»(runtime«FOR parent : classSpec.parents», «parent.inherited»«ENDFOR»);
+				«classSpec.implementation» created = new «classSpec.implementation»(«FOR parent : classSpec.parents SEPARATOR ','»«parent.inherited»«ENDFOR»);
 				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
 				if (null != initializer) {
 					initializer.accept(created);
@@ -101,11 +100,21 @@ class ClassSpecTemplate extends Template {
 		/** Method for operation «operation.javadoc» 
 		 «javadocParams(operation.parameters)»
 		 */
-		 «IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
-		 	«FOR parameter : operation.parameters SEPARATOR ','»
-		 		«javaType(parameter.type)» «parameter.identifier»
-		 	«ENDFOR»
-		 );
+		«IF operation.isStatic»
+			static «IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+				«FOR parameter : operation.parameters SEPARATOR ','»
+					«javaType(parameter.type)» «parameter.identifier»
+				«ENDFOR»
+			) {
+				«IF operation.returns»return «ENDIF»«classSpec.implementation».«operation.identifier»(«FOR parameter : operation.parameters SEPARATOR ','»«parameter.identifier»«ENDFOR»);
+			}
+		 «ELSE»
+			«IF operation.returns»«javaType(operation.returnType)»«ELSE»void«ENDIF» «operation.identifier»(
+				«FOR parameter : operation.parameters SEPARATOR ','»
+					«javaType(parameter.type)» «parameter.identifier»
+				«ENDFOR»
+			);
+		 «ENDIF»
 	'''
 
 	def generateReception(ClReceptionSpec reception, boolean isExternal) '''

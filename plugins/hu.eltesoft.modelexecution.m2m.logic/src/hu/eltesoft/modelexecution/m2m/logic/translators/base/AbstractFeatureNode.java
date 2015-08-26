@@ -71,7 +71,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> ex
 			throw new GenerationException("Required feature not found: " + feature.getName() + " in "
 					+ feature.getEContainingClass().getName());
 		}
-
+		
 		childNodes.forEach(node -> {
 			childInvocations.forEach(invocation -> invocation.accept(node));
 		});

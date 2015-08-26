@@ -11,18 +11,18 @@ class LifecycleTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testDefaultConstructor() {
-		assertCompilesTo('''new A();''', '''«WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(«CompilerBase.CONTEXT_NAME».getRuntime(), null));''')
+		assertCompilesTo('''new A();''', '''«WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(null));''')
 	}
 
 	@Test
 	def testCustomConstructorNoParams() {
-		assertCompilesTo('''new B();''', '''«WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));''')
+		assertCompilesTo('''new B();''', '''«WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(i -> i._LAXgUEHKEeWzwYgcaM4qwA()));''')
 	}
 
 	@Test
 	def testCustomConstructorInParams() {
-		assertCompilesTo('''new C(pInString => "world", pInBool => false);''', '''«WRAP»(_5FoZEEHJEeWzwYgcaM4qwA.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._7BAgoEHJEeWzwYgcaM4qwA(«BOOLEAN_LITERAL»(false), «STRING_LITERAL»("world"))));''')
-		assertCompilesTo('''new C(pInBool => false, pInString => "world");''', '''«WRAP»(_5FoZEEHJEeWzwYgcaM4qwA.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._7BAgoEHJEeWzwYgcaM4qwA(«BOOLEAN_LITERAL»(false), «STRING_LITERAL»("world"))));''')
+		assertCompilesTo('''new C(pInString => "world", pInBool => false);''', '''«WRAP»(_5FoZEEHJEeWzwYgcaM4qwA.create(i -> i._7BAgoEHJEeWzwYgcaM4qwA(«BOOLEAN_LITERAL»(false), «STRING_LITERAL»("world"))));''')
+		assertCompilesTo('''new C(pInBool => false, pInString => "world");''', '''«WRAP»(_5FoZEEHJEeWzwYgcaM4qwA.create(i -> i._7BAgoEHJEeWzwYgcaM4qwA(«BOOLEAN_LITERAL»(false), «STRING_LITERAL»("world"))));''')
 	}
 
 	@Test
@@ -40,7 +40,7 @@ class LifecycleTests extends CompiledCodeCheckTestCase {
 	def testDeleteExpression() {
 		assertCompilesTo(
 			"A a = new A(); delete a;", '''
-				java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0 = «WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(«CompilerBase.CONTEXT_NAME».getRuntime(), null));
+				java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0 = «WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(null));
 				«UNWRAP»(_local0).dispose();
 			''')
 	}

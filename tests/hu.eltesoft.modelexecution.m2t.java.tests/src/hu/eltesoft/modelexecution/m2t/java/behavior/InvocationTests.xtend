@@ -17,7 +17,7 @@ class InvocationTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testNonStaticLocalCallNoParams() {
 		assertCompilesTo('''A a = new A(); a.Op();''', '''
-			java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0 = «WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(«CompilerBase.CONTEXT_NAME».getRuntime(), null));
+			java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0 = «WRAP»(_aeMPwMc1EeSnK7LttAdTLw.create(null));
 			«UNWRAP»(_local0)._oMFm4EG6EeWzwYgcaM4qwA();
 		''');
 	}

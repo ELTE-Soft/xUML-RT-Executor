@@ -58,6 +58,6 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testUsingUserDefinedClassAsLocalVariableTypeWithDefaultConstructor() {
-		assertCompilesTo('''B b = new B();''', '''java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));''')
+		assertCompilesTo('''B b = new B();''', '''java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(i -> i._LAXgUEHKEeWzwYgcaM4qwA()));''')
 	}
 }

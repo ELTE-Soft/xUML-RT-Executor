@@ -48,10 +48,6 @@ class BehaviorTemplate extends Template {
 			«ENDFOR»
 		) {
 			«compiledCode»
-			«IF behavior.returnType != null»
-				// walkaround while we are not generating actual action code
-				return null;
-			«ENDIF»
 		}
 	'''
 }

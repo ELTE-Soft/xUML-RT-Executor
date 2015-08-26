@@ -306,10 +306,6 @@ pattern Operation(cls : Class, operation : Operation, isStatic) {
 	find OwnedOperation(ancestor, operation, isStatic);
 }
 
-pattern InstanceOperation(cls : Class, operation : Operation) {
-	find OwnedOperation(cls, operation, false);
-}
-
 private pattern OwnedOperation(cls : Class, operation : Operation, isStatic) {
 	Class.ownedOperation(cls, operation);
 	Operation.isStatic(operation, isStatic);

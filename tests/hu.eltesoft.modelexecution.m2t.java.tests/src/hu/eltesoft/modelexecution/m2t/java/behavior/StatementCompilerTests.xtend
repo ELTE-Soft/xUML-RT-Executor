@@ -160,7 +160,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def sendNewSignalToNewObject() {
-		assertCompilesTo('''send new S() to new B();''', '''«UNWRAP»(«WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()))).send(new «SignalEvent.canonicalName»(«UNWRAP»(«WRAP»(new _47IQsEGyEeWzwYgcaM4qwA()))));''')
+		assertCompilesTo('''send new S() to new B();''', '''«UNWRAP»(«WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(i -> i._LAXgUEHKEeWzwYgcaM4qwA()))).send(new «SignalEvent.canonicalName»(«UNWRAP»(«WRAP»(new _47IQsEGyEeWzwYgcaM4qwA()))));''')
 	}
 
 	@Test
@@ -176,7 +176,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 			send s to b;
 		''', '''
 			java.util.ArrayList<_47IQsEGyEeWzwYgcaM4qwA> _local0 = «WRAP»(new _47IQsEGyEeWzwYgcaM4qwA());
-			java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(«CompilerBase.CONTEXT_NAME».getRuntime(), i -> i._LAXgUEHKEeWzwYgcaM4qwA()));
+			java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1 = «WRAP»(_9SdsIEDoEeWCNoKXHvCpUQ.create(i -> i._LAXgUEHKEeWzwYgcaM4qwA()));
 			«UNWRAP»(_local1).send(new «SignalEvent.canonicalName»(«UNWRAP»(_local0)));
 		''')
 	}

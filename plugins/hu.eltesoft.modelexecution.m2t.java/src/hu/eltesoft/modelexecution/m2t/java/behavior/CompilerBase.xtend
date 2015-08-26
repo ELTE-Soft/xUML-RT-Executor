@@ -14,6 +14,7 @@ import java.util.Map
 import java.util.WeakHashMap
 import org.apache.commons.lang.StringUtils
 import org.eclipse.emf.ecore.EObject
+import hu.eltesoft.modelexecution.runtime.BaseRuntime
 
 interface Appendable {
 
@@ -24,6 +25,7 @@ abstract class CompilerBase {
 
 	public static val Multiplicity SINGLE = BaseFactory.eINSTANCE.createMultiplicity()
 	public static val CONTEXT_NAME = "context"
+	public static val RUNTIME_INSTANCE = BaseRuntime.canonicalName + ".getInstance()"
 
 	private var SmapStringConcatenation builder
 

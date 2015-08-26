@@ -44,7 +44,7 @@ public class TraceReplayerTest {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
 		createEvents(fileSystem, traceFileName,
-				new TargetedEvent(new MockClass(null), new SignalEvent(new DummySignal())));
+				new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem, getClass().getClassLoader())) {
 			assertTrue(sut.hasEvent());
@@ -67,7 +67,7 @@ public class TraceReplayerTest {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
 		createEvents(fileSystem, traceFileName,
-				new TargetedEvent(new MockClass(null), new SignalEvent(new DummySignal())));
+				new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem, getClass().getClassLoader())) {
 			sut.dispatchEvent(null);
@@ -78,7 +78,7 @@ public class TraceReplayerTest {
 	public void testDispatchEvent_WithExternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		MockClass target = new MockClass(null);
+		MockClass target = new MockClass();
 		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName, TargetedEvent.createOutsideEvent(target, event));
 
@@ -92,7 +92,7 @@ public class TraceReplayerTest {
 	public void testDispatchEventWithParam_WithoutMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		MockClass target = new MockClass(null);
+		MockClass target = new MockClass();
 		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName);
 
@@ -106,7 +106,7 @@ public class TraceReplayerTest {
 	public void testDispatchEventWithParam_WithSameInternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		MockClass target = new MockClass(null);
+		MockClass target = new MockClass();
 		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName, new TargetedEvent(target, event));
 
@@ -120,7 +120,7 @@ public class TraceReplayerTest {
 	public void testDispatchEventWithParam_WithDifferentInternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		MockClass target = new MockClass(null);
+		MockClass target = new MockClass();
 		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName, new TargetedEvent(target, event));
 
@@ -136,7 +136,7 @@ public class TraceReplayerTest {
 	public void testDispatchEventWithParam_WithExternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		MockClass target = new MockClass(null);
+		MockClass target = new MockClass();
 		Event event = new SignalEvent(new DummySignal());
 		createEvents(fileSystem, traceFileName, TargetedEvent.createOutsideEvent(target, event));
 

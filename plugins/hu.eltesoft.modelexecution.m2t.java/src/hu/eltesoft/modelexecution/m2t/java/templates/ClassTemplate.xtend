@@ -3,13 +3,13 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
@@ -17,7 +17,6 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -43,9 +42,11 @@ class ClassTemplate extends Template {
 	
 	override generateContent() '''
 		/** Constructor for UML class «classDefinition.javadoc» */
-		public «classDefinition.implementation»(«Runtime.canonicalName» runtime
-				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
-			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
+		public «classDefinition.implementation»(
+				«FOR parent : classDefinition.parents SEPARATOR ','»
+					«parent.implementation» «parent.inherited»
+				«ENDFOR») {
+			«IF hasStateMachine»super(instanceCount.getAndIncrement());«ENDIF»
 			«FOR parent : classDefinition.parents»
 				this.«parent.inherited» = «parent.inherited»;
 			«ENDFOR»
@@ -231,7 +232,7 @@ class ClassTemplate extends Template {
 					«parameter.identifier»
 				«ENDFOR»
 			);
-			getRuntime().add«IF isExternal»External«ENDIF»EventToQueue(this, new «SignalEvent.canonicalName»(signal));
+			«runtime».add«IF isExternal»External«ENDIF»EventToQueue(this, new «SignalEvent.canonicalName»(signal));
 		}
 	'''
 

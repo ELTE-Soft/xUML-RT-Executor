@@ -60,7 +60,7 @@ class ClassConvertHelper {
 		]
 	}
 
-	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode, IncQueryEngine engine) {
+	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode, IncQueryEngine engine) {	
 		// operation parameters
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperationSpec_Parameters,
 			OperationParameterMatcher.on(engine)) [

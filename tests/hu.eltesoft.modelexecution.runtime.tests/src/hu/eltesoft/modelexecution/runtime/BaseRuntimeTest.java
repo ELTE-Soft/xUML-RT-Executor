@@ -39,7 +39,8 @@ public class BaseRuntimeTest {
 	public void testRun() throws Exception {
 		when(readerMock.hasEvent()).thenReturn(false);
 
-		BaseRuntime sut = new BaseRuntime(getClass().getClassLoader());
+		BaseRuntime sut = BaseRuntime.getInstance();
+		sut.setClassLoader(getClass().getClassLoader());
 		sut.setLogger(loggerMock);
 		sut.setTraceWriter(tracerMock);
 		sut.setTraceReader(readerMock);
@@ -66,7 +67,8 @@ public class BaseRuntimeTest {
 					}
 				});
 
-		BaseRuntime sut = new BaseRuntime(getClass().getClassLoader());
+		BaseRuntime sut = BaseRuntime.getInstance();
+		sut.setClassLoader(getClass().getClassLoader());
 		sut.setLogger(loggerMock);
 		sut.setTraceWriter(tracerMock);
 		sut.setTraceReader(readerMock);
