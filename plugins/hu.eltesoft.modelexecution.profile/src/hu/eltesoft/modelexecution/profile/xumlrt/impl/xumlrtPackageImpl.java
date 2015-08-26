@@ -204,7 +204,7 @@ public class xumlrtPackageImpl extends EPackageImpl implements xumlrtPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getExternalEntity__AllOperationsAreNonStatic__DiagnosticChain_Map() {
+	public EOperation getExternalEntity__AllOperationsAreStatic__DiagnosticChain_Map() {
 		return externalEntityEClass.getEOperations().get(0);
 	}
 
@@ -344,7 +344,7 @@ public class xumlrtPackageImpl extends EPackageImpl implements xumlrtPackage {
 		createEReference(externalEntityEClass, EXTERNAL_ENTITY__BASE_CLASS);
 		createEAttribute(externalEntityEClass, EXTERNAL_ENTITY__CLASS);
 		createEAttribute(externalEntityEClass, EXTERNAL_ENTITY__TYPE);
-		createEOperation(externalEntityEClass, EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_NON_STATIC__DIAGNOSTICCHAIN_MAP);
+		createEOperation(externalEntityEClass, EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_STATIC__DIAGNOSTICCHAIN_MAP);
 		createEOperation(externalEntityEClass, EXTERNAL_ENTITY___HAS_NO_ATTRIBUTES__DIAGNOSTICCHAIN_MAP);
 		createEOperation(externalEntityEClass, EXTERNAL_ENTITY___REFERENCED_CLASS_NAME_IS_VALID__DIAGNOSTICCHAIN_MAP);
 		createEOperation(externalEntityEClass, EXTERNAL_ENTITY___OPERATION_NAMES_ARE_VALID__DIAGNOSTICCHAIN_MAP);
@@ -420,7 +420,7 @@ public class xumlrtPackageImpl extends EPackageImpl implements xumlrtPackage {
 		initEAttribute(getExternalEntity_Class(), theTypesPackage.getString(), "class", null, 1, 1, ExternalEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getExternalEntity_Type(), this.getEntityType(), "type", "Stateless", 1, 1, ExternalEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
-		op = initEOperation(getExternalEntity__AllOperationsAreNonStatic__DiagnosticChain_Map(), ecorePackage.getEBoolean(), "AllOperationsAreNonStatic", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getExternalEntity__AllOperationsAreStatic__DiagnosticChain_Map(), ecorePackage.getEBoolean(), "AllOperationsAreStatic", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDiagnosticChain(), "diagnostics", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(ecorePackage.getEMap());
 		g2 = createEGenericType(ecorePackage.getEJavaObject());

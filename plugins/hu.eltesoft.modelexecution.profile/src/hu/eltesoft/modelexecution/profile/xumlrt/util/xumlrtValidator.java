@@ -56,12 +56,12 @@ public class xumlrtValidator extends EObjectValidator {
 	public static final int CALLABLE__RECEPTION_NAMES_ARE_VALID = 2;
 
 	/**
-	 * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'All Operations Are Non Static' of 'External Entity'.
+	 * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'All Operations Are Static' of 'External Entity'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final int EXTERNAL_ENTITY__ALL_OPERATIONS_ARE_NON_STATIC = 3;
+	public static final int EXTERNAL_ENTITY__ALL_OPERATIONS_ARE_STATIC = 3;
 
 	/**
 	 * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Has No Attributes' of 'External Entity'.
@@ -255,7 +255,7 @@ public class xumlrtValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(externalEntity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(externalEntity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(externalEntity, diagnostics, context);
-		if (result || diagnostics != null) result &= validateExternalEntity_AllOperationsAreNonStatic(externalEntity, diagnostics, context);
+		if (result || diagnostics != null) result &= validateExternalEntity_AllOperationsAreStatic(externalEntity, diagnostics, context);
 		if (result || diagnostics != null) result &= validateExternalEntity_HasNoAttributes(externalEntity, diagnostics, context);
 		if (result || diagnostics != null) result &= validateExternalEntity_ReferencedClassNameIsValid(externalEntity, diagnostics, context);
 		if (result || diagnostics != null) result &= validateExternalEntity_OperationNamesAreValid(externalEntity, diagnostics, context);
@@ -270,13 +270,13 @@ public class xumlrtValidator extends EObjectValidator {
 	}
 
 	/**
-	 * Validates the AllOperationsAreNonStatic constraint of '<em>External Entity</em>'.
+	 * Validates the AllOperationsAreStatic constraint of '<em>External Entity</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateExternalEntity_AllOperationsAreNonStatic(ExternalEntity externalEntity, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return externalEntity.AllOperationsAreNonStatic(diagnostics, context);
+	public boolean validateExternalEntity_AllOperationsAreStatic(ExternalEntity externalEntity, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return externalEntity.AllOperationsAreStatic(diagnostics, context);
 	}
 
 	/**

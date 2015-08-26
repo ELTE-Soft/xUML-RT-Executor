@@ -47,9 +47,9 @@
         lowerBound="1" eType="ecore:EClass ../../org.eclipse.uml2.uml/model/UML.ecore#//Class"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExternalEntity">
-    <eOperations name="AllOperationsAreNonStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eOperations name="AllOperationsAreStatic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Tuple{&#xD;&#xA;  status=base_Class.ownedOperation->forAll(op | not op.isStatic),&#xD;&#xA;  message='Only non-static operations are accepted on an external entity.',&#xD;&#xA;  severity=-5&#xD;&#xA;}.status"/>
+        <details key="documentation" value="Tuple{&#xD;&#xA;  status=base_Class.ownedOperation->forAll(op | op.isStatic),&#xD;&#xA;  message='Only static operations are accepted on an external entity.',&#xD;&#xA;  severity=-5&#xD;&#xA;}.status"/>
       </eAnnotations>
       <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -144,7 +144,7 @@
     </eOperations>
     <eOperations name="ParameterIsCallable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Tuple{&#xD;&#xA;  status=base_Class.ownedOperation->forAll(op | op.ownedParameter->size() = 1 implies&#xD;&#xA;      let param : Parameter = op.ownedParameter->first()&#xD;&#xA;      in param.type.getAppliedStereotype('xUML-RT::External::Callable') &lt;> null&#xD;&#xA;  ),&#xD;&#xA;  message='Type of a parameter on an external entity operation must be a class with Callable stereotype applied.',&#xD;&#xA;  severity=-5&#xD;&#xA;}.status"/>
+        <details key="documentation" value="Tuple{&#xD;&#xA;  status=base_Class.ownedOperation->forAll(op | op.ownedParameter->size() = 1 implies&#xD;&#xA;      let param : Parameter = op.ownedParameter->first()&#xD;&#xA;      in param.type.getAppliedStereotype('xUML-RT::Callable') &lt;> null&#xD;&#xA;  ),&#xD;&#xA;  message='Type of a parameter on an external entity operation must be a class with Callable stereotype applied.',&#xD;&#xA;  severity=-5&#xD;&#xA;}.status"/>
       </eAnnotations>
       <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
