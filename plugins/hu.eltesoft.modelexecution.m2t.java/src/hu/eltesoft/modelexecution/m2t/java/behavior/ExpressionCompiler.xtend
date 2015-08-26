@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
@@ -20,6 +22,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
+import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
@@ -27,11 +30,9 @@ import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.PrimitiveType
+import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
-import hu.eltesoft.modelexecution.m2t.java.Template
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 
 class ExpressionCompiler extends CompilerBase {
 
@@ -181,7 +182,7 @@ class ExpressionCompiler extends CompilerBase {
 				compile(call.parameters, call.feature)
 				append(")")
 			}
-			org.eclipse.uml2.uml.Property: {
+			Property: {
 				append(Template.GETTER_PREFIX)
 				append(NamedReference.getIdentifier(call.feature))
 				append("()")
@@ -254,6 +255,7 @@ class ExpressionCompiler extends CompilerBase {
 		}
 		val lhs = assignment.leftHandSide
 		switch lhs {
+			// attribute assignment
 			FeatureInvocationExpression: {
 				append("unwrap(")
 				compile(lhs.context)
@@ -261,6 +263,14 @@ class ExpressionCompiler extends CompilerBase {
 				append(Template.SETTER_PREFIX)
 				append(NamedReference.getIdentifier(lhs.feature))
 				append("(")
+				compile(assignment.rightHandSide)
+				append(")")
+			}
+			// local variable assignment
+			NameExpression: {
+				append("setValue(")
+				compile(lhs)
+				append(", ")
 				compile(assignment.rightHandSide)
 				append(")")
 			}

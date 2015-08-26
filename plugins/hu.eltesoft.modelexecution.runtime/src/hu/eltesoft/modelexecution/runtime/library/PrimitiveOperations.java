@@ -18,6 +18,11 @@ public class PrimitiveOperations {
 		return wrapper.get(0);
 	}
 
+	public static <T> T setValue(final ArrayList<T> wrapper, T newValue) {
+		wrapper.set(0, newValue);
+		return newValue;
+	}
+
 	public static ArrayList<Boolean> booleanLiteral(final boolean value) {
 		return wrap(value);
 	}
