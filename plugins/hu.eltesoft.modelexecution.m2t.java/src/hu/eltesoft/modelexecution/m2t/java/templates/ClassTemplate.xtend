@@ -53,10 +53,6 @@ class ClassTemplate extends Template {
 					«ENDFOR»
 				}
 			);
-			
-			public String getOriginalClassName() {
-				return «META_REPR_NAME».getName();
-			}
 		
 			«content»
 		}
@@ -70,6 +66,10 @@ class ClassTemplate extends Template {
 			«FOR parent : classDefinition.parents»
 				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
+		}
+		
+		public String getOriginalClassName() {
+			return «META_REPR_NAME».getName();
 		}
 
 		«IF hasStateMachine»
