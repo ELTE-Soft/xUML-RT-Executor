@@ -42,17 +42,6 @@ class ClassTemplate extends Template {
 		public class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
-				
-			/** Meta-description of the structure of the class */
-			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
-				«classDefinition.nameLiteral»,
-				new «PropertyM.canonicalName»[] { 
-					«FOR attr : classDefinition.allAttributes SEPARATOR ','»
-						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
-							new «BoundsM.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
-					«ENDFOR»
-				}
-			);
 		
 			«content»
 		}
@@ -67,6 +56,17 @@ class ClassTemplate extends Template {
 				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
 		}
+		
+		/** Meta-description of the structure of the class */
+		public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
+			«classDefinition.nameLiteral»,
+			new «PropertyM.canonicalName»[] { 
+				«FOR attr : classDefinition.allAttributes SEPARATOR ','»
+					new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
+						new «BoundsM.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
+				«ENDFOR»
+			}
+		);
 		
 		public String getOriginalClassName() {
 			return «META_REPR_NAME».getName();
