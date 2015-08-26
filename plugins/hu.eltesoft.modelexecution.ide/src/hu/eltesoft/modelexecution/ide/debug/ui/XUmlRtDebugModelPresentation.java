@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug.ui;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 import org.eclipse.papyrus.moka.ui.presentation.MokaDebugModelPresentation;
 import org.eclipse.swt.widgets.Display;
@@ -22,6 +23,9 @@ public class XUmlRtDebugModelPresentation extends MokaDebugModelPresentation {
 
 	@Override
 	public boolean addAnnotations(IEditorPart editorPart, IStackFrame frame) {
+		if (frame == null || !(frame instanceof MokaStackFrame) || ((MokaStackFrame) frame).getModelElement() == null) {
+			return false;
+		}
 		UTIL.removeSuspendedMarker(frame.getThread());
 		Object[] selected = getSelectedDebugElements();
 
@@ -30,7 +34,7 @@ public class XUmlRtDebugModelPresentation extends MokaDebugModelPresentation {
 				return super.addAnnotations(editorPart, frame);
 			}
 		}
-		return true;
+		return false;
 	}
 
 	/**

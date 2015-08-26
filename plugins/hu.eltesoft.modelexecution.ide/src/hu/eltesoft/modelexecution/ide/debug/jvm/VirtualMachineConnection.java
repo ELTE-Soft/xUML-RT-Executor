@@ -6,12 +6,11 @@ import java.util.List;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.papyrus.moka.debug.MokaStackFrame;
 import org.eclipse.papyrus.moka.debug.MokaVariable;
-import org.eclipse.uml2.uml.State;
+import org.eclipse.uml2.uml.Vertex;
 
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.ClassType;
@@ -32,6 +31,7 @@ import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
+import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
@@ -144,7 +144,7 @@ public class VirtualMachineConnection {
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
 					GET_STATE_MACHINE_METHOD);
 			EObject modelElement = stackFrame.getModelElement();
-			if (modelElement == null || modelElement instanceof State) {
+			if (modelElement == null || modelElement instanceof Vertex) {
 				ObjectReference actualState = (ObjectReference) stateMachine
 						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 				addVariable(stackFrame, createCurrentStateVariable(stackFrame, mainThread, actualState));
@@ -153,7 +153,7 @@ public class VirtualMachineConnection {
 					// wont be null, so the current model element can only be a
 					// state
 					StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
-					stackFrame.setModelElement(findActualState(stringVal.value(), resourceSet));
+					stackFrame.setModelElement(ModelUtils.javaNameToEObject(stringVal.value(), resourceSet));
 				}
 			}
 			addVariable(stackFrame, createThisVariable(stackFrame, mainThread, instance));
@@ -172,16 +172,6 @@ public class VirtualMachineConnection {
 			Value actualState) {
 		return createMokaVariable(stackFrame, mainThread, actualState,
 				new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label));
-	}
-
-	private EObject findActualState(String id, ResourceSet resourceSet) {
-		for (Resource resource : resourceSet.getResources()) {
-			EObject eObject = resource.getEObject(id);
-			if (eObject != null) {
-				return eObject;
-			}
-		}
-		return null;
 	}
 
 }

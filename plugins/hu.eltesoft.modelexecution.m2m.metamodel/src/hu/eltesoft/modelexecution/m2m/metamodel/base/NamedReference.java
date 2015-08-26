@@ -31,11 +31,27 @@ public class NamedReference extends Reference {
 
 	/**
 	 * Converts a UUID to a valid Java identifier.
-	 */
+	 */	
 	private static String uuidToIdentifier(String uuid) {
 		// The fragment is a generated UUID. As hyphens are not valid in Java
 		// identifiers, they are replaced by dollar signs.
-		return URI.createURI(uuid).fragment().replace('-', '$');
+		return uuidToJavaId(URI.createURI(uuid).fragment());
+	}
+	
+	/**
+	 * Converts a UUID fragment to a valid Java identifier.
+	 */	
+	private static String uuidToJavaId(String uuid) {
+		// The fragment is a generated UUID. As hyphens are not valid in Java
+		// identifiers, they are replaced by dollar signs.
+		return uuid.replace('-', '$');
+	}
+	
+	/**
+	 * Converts a valid Java identifier to the original UUID fragment.
+	 */
+	public static String javaIDToUUID(String identifier) {
+		return identifier.replace('$', '-');
 	}
 
 	private final String originalName;
