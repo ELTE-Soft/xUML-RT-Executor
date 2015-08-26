@@ -23,7 +23,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.Template
-import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.uml2.uml.Class
@@ -33,6 +32,7 @@ import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
+import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 
 class ExpressionCompiler extends CompilerBase {
 
