@@ -44,7 +44,7 @@ pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
 }
 
 // -- behavior.eiq -------------------------------------------------------------
-pattern Behavior(behavior : Behavior) {
+pattern Behavior(behavior : OpaqueBehavior) {
 	OpaqueBehavior(behavior);
 }
 
@@ -131,7 +131,7 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
-pattern ActionCode(behavior : Behavior, containerClass : Class, actionCode) {
+pattern ActionCode(behavior : OpaqueBehavior, containerClass : Class, actionCode) {
 	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
 	find ContainerClassOfBehavior(behavior, containerClass);

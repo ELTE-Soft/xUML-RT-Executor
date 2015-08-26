@@ -29,12 +29,12 @@ class InvocationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testStaticCallNoParams() {
-		assertCompilesTo("A::OpStatic();", "_aeMPwMc1EeSnK7LttAdTLw._M0$PUEG7EeWzwYgcaM4qwA();")
+		assertCompilesTo("A::OpStatic();", "_aeMPwMc1EeSnK7LttAdTLw_impl._M0$PUEG7EeWzwYgcaM4qwA();")
 	}
 
 	@Test
 	def testStaticCallInParams() {
-		assertCompilesTo('''B::OpStaticIn(pInString => "hello", pInReal => 3.1415);''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
-		assertCompilesTo('''B::OpStaticIn(pInReal => 3.1415, pInString => "hello");''', '''_9SdsIEDoEeWCNoKXHvCpUQ._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
+		assertCompilesTo('''B::OpStaticIn(pInString => "hello", pInReal => 3.1415);''', '''_9SdsIEDoEeWCNoKXHvCpUQ_impl._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
+		assertCompilesTo('''B::OpStaticIn(pInReal => 3.1415, pInString => "hello");''', '''_9SdsIEDoEeWCNoKXHvCpUQ_impl._VlbpQEHEEeWzwYgcaM4qwA(stringLiteral("hello"), realLiteral(3.1415));''')
 	}
 }

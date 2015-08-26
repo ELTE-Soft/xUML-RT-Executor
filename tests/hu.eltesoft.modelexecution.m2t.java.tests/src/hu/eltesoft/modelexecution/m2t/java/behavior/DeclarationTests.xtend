@@ -53,7 +53,7 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testUsingUserDefinedClassAsLocalVariableType() {
-		assertCompilesTo("B b;", "java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0;");
+		assertCompilesTo("B b;", "java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0 = nullValue();");
 	}
 
 	@Test

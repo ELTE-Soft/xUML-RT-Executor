@@ -10,7 +10,7 @@ class LiteralTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testNull() {
-		assertCompilesTo("null;", "wrap(null);")
+		assertCompilesTo("null;", "nullValue();")
 	}
 
 	@Test
@@ -36,6 +36,7 @@ class LiteralTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testNaturalHexadecimalHundred() {
 		assertCompilesTo("0x64;", '''integerLiteral("64", 16);''')
+		assertCompilesTo("0X64;", '''integerLiteral("64", 16);''')
 	}
 
 	@Test

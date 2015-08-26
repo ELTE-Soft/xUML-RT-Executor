@@ -29,6 +29,9 @@ import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
+import hu.eltesoft.modelexecution.m2t.java.Template
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 
 class ExpressionCompiler extends CompilerBase {
 
@@ -49,7 +52,7 @@ class ExpressionCompiler extends CompilerBase {
 	def dispatch void compile(NaturalLiteralExpression lit) {
 		var String digits = lit.value.replace("_", "")
 		var int radix = 10
-		if (digits.startsWith("0x")) {
+		if (digits.startsWith("0x") || digits.startsWith("0X")) {
 			digits = digits.substring(2)
 			radix = 16
 		} else if (digits.startsWith("0b") || digits.startsWith("0B")) {
@@ -71,7 +74,7 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch void compile(NullExpression expr) {
-		append("wrap(null)")
+		append("nullValue()")
 	}
 
 	def dispatch void compile(ThisExpression expr) {
@@ -93,12 +96,6 @@ class ExpressionCompiler extends CompilerBase {
 		append(";")
 	}
 
-	def dispatch typeInitializer(Type type) {
-		"" // only primitive types are needed to be automatically initialized
-		// TODO: is this true? do we need an empty wrapper for reference types?
-		// depends on the implementation of assignment!
-	}
-
 	def dispatch typeInitializer(PrimitiveType type) {
 		switch type.name {
 			case "Boolean": ''' = booleanLiteral(false)'''
@@ -106,6 +103,10 @@ class ExpressionCompiler extends CompilerBase {
 			case "Real": ''' = realLiteral(0.0)'''
 			case "String": ''' = stringLiteral("")'''
 		}
+	}
+
+	def dispatch typeInitializer(Type type) {
+		" = nullValue()"
 	}
 
 	def dispatch void compile(NameExpression expr) {
@@ -173,11 +174,18 @@ class ExpressionCompiler extends CompilerBase {
 		append("unwrap(")
 		compile(call.context)
 		append(").")
-		append(NamedReference.getIdentifier(call.feature))
-		if (call.feature instanceof Operation) {
-			append("(")
-			compile(call.parameters, call.feature)
-			append(")")
+		switch call.feature {
+			Operation: {
+				append(NamedReference.getIdentifier(call.feature))
+				append("(")
+				compile(call.parameters, call.feature)
+				append(")")
+			}
+			org.eclipse.uml2.uml.Property: {
+				append(Template.GETTER_PREFIX)
+				append(NamedReference.getIdentifier(call.feature))
+				append("()")
+			}
 		}
 	}
 
@@ -198,6 +206,7 @@ class ExpressionCompiler extends CompilerBase {
 			append(")")
 		} else {
 			append(NamedReference.getIdentifier(cls))
+			append(Template.CLASS_IMPL_SUFFIX)
 			append(".")
 			append(NamedReference.getIdentifier(op))
 			append("(")
@@ -235,6 +244,25 @@ class ExpressionCompiler extends CompilerBase {
 		for (value : values.expressions) {
 			if (value.name == name) {
 				return value.expression
+			}
+		}
+	}
+
+	def dispatch compile(AssignmentExpression assignment) {
+		if (AssignmentOperator.ASSIGN != assignment.operator) {
+			throw new CompilationFailedException("Compound assignment operators are unsupported")
+		}
+		val lhs = assignment.leftHandSide
+		switch lhs {
+			FeatureInvocationExpression: {
+				append("unwrap(")
+				compile(lhs.context)
+				append(").")
+				append(Template.SETTER_PREFIX)
+				append(NamedReference.getIdentifier(lhs.feature))
+				append("(")
+				compile(assignment.rightHandSide)
+				append(")")
 			}
 		}
 	}

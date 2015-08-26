@@ -6,6 +6,10 @@ import java.util.Arrays;
 
 public class PrimitiveOperations {
 
+	public static <T> ArrayList<T> nullValue() {
+		return new ArrayList<>();
+	}
+
 	public static <T> ArrayList<T> wrap(final T value) {
 		return new ArrayList<>(Arrays.asList(value));
 	}

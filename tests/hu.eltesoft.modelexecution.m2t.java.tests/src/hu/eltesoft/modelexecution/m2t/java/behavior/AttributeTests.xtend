@@ -17,11 +17,11 @@ class AttributeTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testReadingBoolProperty() {
-		assertCompilesTo("this.a;", "_unknown_")
+		assertCompilesTo("this.a;", "unwrap(wrap(context)).get__dxeMEEvUEeWbvJ0DeAHZOQ();")
 	}
 
 	@Test
 	def testWritingBoolProperty() {
-		assertCompilesTo("this.a = true;", "_unknown_")
+		assertCompilesTo("this.a = true;", "unwrap(wrap(context)).set__dxeMEEvUEeWbvJ0DeAHZOQ(booleanLiteral(true));")
 	}
 }

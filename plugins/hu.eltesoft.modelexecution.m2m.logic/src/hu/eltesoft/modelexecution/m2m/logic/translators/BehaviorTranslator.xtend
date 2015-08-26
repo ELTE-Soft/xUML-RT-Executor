@@ -28,26 +28,21 @@ import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher
 import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
-import org.eclipse.uml2.uml.Behavior
 import org.eclipse.uml2.uml.OpaqueBehavior
 
-class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, BehaviorMatch> {
+class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavior, BehaviorMatch> {
 
 	static val FACTORY = BehaviorFactory.eINSTANCE
 	static val PACKAGE = BehaviorPackage.eINSTANCE
 
-	var OpaqueBehavior currentBehavior
-
-
-	new(AdvancedIncQueryEngine engine) throws IncQueryException {		super(engine);
+	new(AdvancedIncQueryEngine engine) throws IncQueryException {
+		super(engine);
 	}
 
 	override createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(BehaviorMatcher.on(engine)) [
-			currentBehavior = behavior as OpaqueBehavior
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
-			root.parsingResults = parse("", currentBehavior)
 			return root;
 		]
 		return rootNode;
@@ -94,7 +89,7 @@ class BehaviorTranslator extends RootElementTranslator<Behavior, BhBehavior, Beh
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ParsingResults, ActionCodeMatcher.on(engine)) [
-			parse(actionCode, currentBehavior)
+			parse(actionCode, behavior)
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
