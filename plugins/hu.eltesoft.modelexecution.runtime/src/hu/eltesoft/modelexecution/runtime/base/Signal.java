@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.json.JSONArray;
 
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
  * The base class of code generated for UML signals.
@@ -23,6 +23,13 @@ public abstract class Signal implements JSONSerializable {
 				consumer.accept((E) array.get(i));
 			}
 		}
+	}
+	
+	protected abstract String getOriginalSignalName();
+	
+	@Override
+	public String toString() {
+		return getOriginalSignalName();
 	}
 
 }

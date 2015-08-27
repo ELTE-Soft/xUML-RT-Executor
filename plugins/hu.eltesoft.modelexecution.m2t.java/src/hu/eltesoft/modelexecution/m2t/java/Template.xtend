@@ -23,7 +23,7 @@ import hu.eltesoft.modelexecution.runtime.BaseRuntime
  * should be passed as constructor parameters to a template.
  */
 abstract class Template extends EmfTraceExtensions {
-
+	public static val META_REPR_NAME = "metaRepr"
 	public static val GETTER_PREFIX = "get_"
 	public static val SETTER_PREFIX = "set_"
 	public static val INHERITED_SUFFIX = "_inherited"
@@ -41,8 +41,7 @@ abstract class Template extends EmfTraceExtensions {
 	}
 
 	new(Named genModel) {
-		val nameMapping = new NameMapper().mapNames(genModel)
-		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+		debugSymbols = new DebugSymbols(locationRegistry)
 	}
 
 	/**

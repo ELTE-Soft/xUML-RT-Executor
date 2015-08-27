@@ -300,24 +300,12 @@ public class ConsoleModelRunner {
 			FileManager fileMan = new FileManager(rootDir);
 
 			boolean[] anyErrorsDuringGeneration = { false };
-			Map<String, String> nameMapping = new HashMap<>();
 
 			SourceCodeChangeListener listener = new SourceCodeChangeListener() {
 				@Override
 				public void sourceCodeChanged(String qualifiedName, SourceMappedText smTxt, DebugSymbols symbols) {
 					String fileText = smTxt.getText().toString();
 					try {
-						Map<String, String> localNameMapping = symbols.getNameMapping();
-						nameMapping.putAll(localNameMapping);
-
-						String javaFileName = qualifiedName + ".java";
-						String objName = localNameMapping.get(qualifiedName);
-						if (objName != null) {
-							verboseTimeMsg(Messages.GENERATING_CLASS_NAMED, objName, javaFileName);
-						} else {
-							verboseTimeMsg(Messages.GENERATING_CLASS, javaFileName);
-						}
-
 						String path = fileMan.addOrUpdate(qualifiedName, fileText);
 						generatedFiles.add(path);
 					} catch (IOException e) {

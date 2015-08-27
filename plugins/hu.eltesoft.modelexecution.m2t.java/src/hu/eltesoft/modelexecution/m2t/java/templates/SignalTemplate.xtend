@@ -4,12 +4,15 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Signal
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder
+import java.util.Objects
 import org.json.JSONArray
 import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import java.util.Objects
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
+import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -38,6 +41,22 @@ class SignalTemplate extends Template {
 					this.«attribute.identifier» = «attribute.identifier»;
 				«ENDFOR»
 			}
+			
+			/** Meta-description of the structure of the class */
+			public static «ClassMeta.canonicalName» «META_REPR_NAME» = new «ClassMeta.canonicalName»(
+				«signal.nameLiteral»,
+				new «PropertyMeta.canonicalName»[] { 
+					«FOR attr : signal.attributes SEPARATOR ','»
+						new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
+							new «BoundsMeta.canonicalName»(«attr.upperBound», «attr.lowerBound»))
+					«ENDFOR»
+				}
+			);
+			
+			protected String getOriginalSignalName() {
+				return «META_REPR_NAME».getName();
+			}
+			
 			«content»
 		}
 	'''

@@ -4,6 +4,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -65,5 +67,20 @@ public class ModelUtils {
 	public static Stream<EObject> getSupportedContentNodes(EObject eObjectToExecute) {
 		final Iterable<EObject> iterable = () -> eObjectToExecute.eAllContents();
 		return StreamSupport.stream(iterable.spliterator(), false).filter(ModelUtils::isSupportedNode);
+	}
+
+	/**
+	 * @return any EObject that was generated with the given java name or null
+	 *         if none found in the resource set.
+	 */
+	public static EObject javaNameToEObject(String javaName, ResourceSet resourceSet) {
+		for (Resource resource : resourceSet.getResources()) {
+			EObject eObject = resource.getEObject(NamedReference.javaIDToUUID(javaName));
+			if (eObject != null) {
+				return eObject;
+			}
+		}
+		return null;
+
 	}
 }

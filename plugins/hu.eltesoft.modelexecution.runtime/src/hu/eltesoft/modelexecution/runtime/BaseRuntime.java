@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -35,7 +36,7 @@ public final class BaseRuntime implements AutoCloseable {
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
-	private RuntimeController controller;
+	private RuntimeControllerServer controller;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger.getLogger(LOGGER_ID); // $NON-NLS-1$
 
 	private final ExternalEntityRegistry externalEntities;
@@ -68,8 +69,8 @@ public final class BaseRuntime implements AutoCloseable {
 	 * This method may be called multiple times, in this case, the runtime
 	 * responds to messages on all control streams.
 	 */
-	public void addControlStream(InputStream controlStream) {
-		controller = new RuntimeController(controlStream, this);
+	public void addControlStreams(InputStream controlStream, OutputStream eventStream) {
+		controller = new RuntimeControllerServer(controlStream, eventStream, this);
 		controller.startListening();
 	}
 

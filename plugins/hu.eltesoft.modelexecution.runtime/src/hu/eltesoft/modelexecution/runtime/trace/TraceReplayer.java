@@ -6,8 +6,8 @@ import java.nio.file.FileSystem;
 import org.json.JSONException;
 
 import hu.eltesoft.modelexecution.runtime.log.Logger;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONObjectReader;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONObjectReader;
 
 /**
  * This tracer replays the incoming events previously recorded in a JSON file.

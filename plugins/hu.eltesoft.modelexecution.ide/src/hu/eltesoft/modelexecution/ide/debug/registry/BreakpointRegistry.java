@@ -10,6 +10,9 @@ import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 
+/**
+ * Breakpoints for each EObject.
+ */
 public class BreakpointRegistry {
 
 	private final Map<EObject, MokaBreakpoint> breakpointsForElements = new HashMap<>();
@@ -41,7 +44,7 @@ public class BreakpointRegistry {
 		try {
 			return breakpoint.isEnabled();
 		} catch (CoreException e) {
-			IdePlugin.logError("Unable to check whether a breakpoint is enalbed", e);
+			IdePlugin.logError("Unable to check whether a breakpoint is enabled", e);
 			return false;
 		}
 	}

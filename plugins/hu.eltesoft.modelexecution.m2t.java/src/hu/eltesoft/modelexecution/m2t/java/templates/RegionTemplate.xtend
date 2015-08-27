@@ -53,6 +53,10 @@ class StepPartitioning {
 @SourceMappedTemplate(stratumName=XUML_RT)
 class RegionTemplate extends Template {
 
+	public static val OWNER_FIELD_NAME = "owner"
+	public static val SIGNAL_VARIABLE = "signal"
+	public static val CURRENT_STATE_ATTRIBUTE = "currentState"
+	
 	val RgRegion region
 	val RgInitialPseudostate initState
 	val RgTransition initTransition
@@ -60,6 +64,8 @@ class RegionTemplate extends Template {
 
 	val StepPartitioning partitioning
 	var hasAnySignalChecks = false
+	
+	
 
 	new(RgRegion region) {
 		super(region)
@@ -79,7 +85,7 @@ class RegionTemplate extends Template {
 		public class «region.identifier» implements «StateMachineRegion.canonicalName» {
 			
 			public «region.identifier»(«region.containerClass.identifier» owner) {
-				this.owner = owner;
+				this.«OWNER_FIELD_NAME» = owner;
 			}
 			«content»
 		}
@@ -107,8 +113,8 @@ class RegionTemplate extends Template {
 				}
 			}
 		
-			private «region.containerClass.identifier» owner;
-			private State currentState = State.«initState.identifier»;
+			private «region.containerClass.identifier» «OWNER_FIELD_NAME»;
+			private State «CURRENT_STATE_ATTRIBUTE» = State.«initState.identifier»;
 		
 			@Override
 			public void doInitialTransition() {
@@ -122,20 +128,20 @@ class RegionTemplate extends Template {
 						«trace(initState.nameLiteral, initTransition.reference)»,
 						«firstState.nameLiteral»);
 				«IF null != initTransition.effect»
-					new «initTransition.effect.identifier»(owner).execute();
+					new «initTransition.effect.identifier»(«OWNER_FIELD_NAME»).execute();
 				«ENDIF»
+				
+				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
 		
 				// First state entry
 				«runtime».logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
-					«firstState.entry.identifier».execute(owner);
+					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME»);
 				«ENDIF»
-				
-				currentState = State.«firstState.identifier»;
 				«IF firstState.isFinal»
 					
 					// The class cannot get more events
-					owner.dispose();
+					«OWNER_FIELD_NAME».dispose();
 				«ENDIF»
 			}
 		
@@ -150,7 +156,7 @@ class RegionTemplate extends Template {
 			«ENDFOR»
 			@Override
 			public String toString() {
-				return «region.nameLiteral» + " { currentState = " + currentState + " }";
+				return «region.nameLiteral» + " { currentState = " + «CURRENT_STATE_ATTRIBUTE» + " }";
 			}	
 	'''
 
@@ -160,17 +166,17 @@ class RegionTemplate extends Template {
 		«ENDIF»
 		private void step«i»(«Event.canonicalName» event) {
 			if (event instanceof «SignalEvent.canonicalName») {
-				«IF hasAnySignalChecks»«Signal.canonicalName» signal = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
-				switch (currentState) {
+				«IF hasAnySignalChecks»«Signal.canonicalName» «SIGNAL_VARIABLE» = ((«SignalEvent.canonicalName») event).getSignal();«ENDIF»
+				switch («CURRENT_STATE_ATTRIBUTE») {
 					«FOR state : region.states.subList(partitioning.firstState(i), partitioning.afterLastState(i))»
 						case «state.identifier»:
 							«FOR transition : state.transitions SEPARATOR ' else '»
-								if (signal instanceof «transition.message.identifier»)
+								if («SIGNAL_VARIABLE» instanceof «transition.message.identifier»)
 								{
 									// State exit
 									«runtime».logExitState(«traceLiteral(state, Exit)»);
 									«IF null != state.exit»
-										«state.exit.identifier».execute(owner);
+										«state.exit.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
 								
 									// Transition effect
@@ -180,20 +186,20 @@ class RegionTemplate extends Template {
 											«trace(state.nameLiteral, transition.reference)»,
 											«transition.target.nameLiteral»);
 									«IF null != transition.effect»
-										«transition.effect.identifier».execute(owner);
+										«transition.effect.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
 								
+									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
+									
 									// State entry
 									«runtime».logEnterState(«traceLiteral(transition.target, Entry)»);
 									«IF null != transition.target.entry»
-										«transition.target.entry.identifier».execute(owner);
+										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
-									
-									currentState = State.«transition.target.identifier»;
 									«IF transition.target.isFinal»
 										
 										// The class cannot get more events
-										owner.dispose();
+										«OWNER_FIELD_NAME».dispose();
 									«ENDIF»
 								}
 							«ENDFOR»

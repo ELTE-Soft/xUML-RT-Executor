@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.ui;
+package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
@@ -11,10 +11,20 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
-public class XUmlRtThread extends MokaThread implements IPresentation {
+/**
+ * Thread-like debug model element for a state machine instance.
+ */
+public class StateMachineInstance extends MokaThread implements IPresentation {
 
-	public XUmlRtThread(MokaDebugTarget debugTarget) {
+	private String classId;
+	private int instanceId;
+
+	public StateMachineInstance(MokaDebugTarget debugTarget, String classId, int instanceId,
+			String originalName) {
 		super(debugTarget);
+		this.classId = classId;
+		this.instanceId = instanceId;
+		setName(originalName + "#" + instanceId);
 	}
 
 	@Override
@@ -24,15 +34,24 @@ public class XUmlRtThread extends MokaThread implements IPresentation {
 
 	@Override
 	public String getDetails() {
-		// currently we provide no details at all
+		// not shown
 		return null;
 	}
 
 	@Override
 	public Image getImage() {
-		EObject component = UMLFactory.eINSTANCE.createComponent();
+		// show the image corresponding to state machines
+		EObject component = UMLFactory.eINSTANCE.createStateMachine();
 		IImage image = ImageQuery.getEObjectImage(component);
 		Device device = Display.getCurrent();
 		return new Image(device, image.getInputStream());
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+	
+	public int getInstanceId() {
+		return instanceId;
 	}
 }
