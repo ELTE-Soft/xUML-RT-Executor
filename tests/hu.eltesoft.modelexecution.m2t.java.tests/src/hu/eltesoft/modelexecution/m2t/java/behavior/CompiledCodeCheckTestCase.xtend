@@ -39,7 +39,6 @@ abstract class CompiledCodeCheckTestCase {
 	protected def assertCompilesTo(CharSequence actionCode, CodeGenNode ... expectedNodes) {
 		val results = parser.parse(actionCode.toString, provider)
 		assertTrue(results.validationOK)
-		System.err.println(topLevelBlock(expectedNodes).toString)
 		assertStringEqualsWithoutBreaks(topLevelBlock(expectedNodes).toString, compiler.compile(results).toString)
 	}
 }

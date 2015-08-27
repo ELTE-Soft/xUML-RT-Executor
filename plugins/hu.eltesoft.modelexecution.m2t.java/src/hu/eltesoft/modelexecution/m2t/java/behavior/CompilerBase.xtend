@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import com.incquerylabs.uml.ralf.ReducedAlfSystem
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
@@ -10,6 +11,7 @@ import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.runtime.BaseRuntime
 import java.util.WeakHashMap
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.uml2.uml.Type
 
 abstract class CompilerBase {
 
@@ -20,6 +22,8 @@ abstract class CompilerBase {
 	public static val CONTEXT_NAME = "context"
 	public static val RUNTIME_INSTANCE = BaseRuntime.canonicalName + ".getInstance()"
 
+	var ReducedAlfSystem typeSystem
+
 	/**
 	 * Compile the specified operation body code to Java source code.
 	 */
@@ -27,7 +31,12 @@ abstract class CompilerBase {
 		if (!results.validationOK) {
 			throw new CompilationFailedException(results.toString)
 		}
+		typeSystem = results.typeSystem
 		compile(results.model)
+	}
+
+	protected def Type typeOf(EObject expression) {
+		typeSystem.type(expression).value.umlType
 	}
 
 	protected def CodeGenNode compile(Statements statements) {
