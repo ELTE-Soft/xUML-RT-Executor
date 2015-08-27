@@ -1,10 +1,6 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
-import com.google.inject.Guice
-import com.incquerylabs.uml.ralf.ReducedAlfLanguageRuntimeModule
-import com.incquerylabs.uml.ralf.api.IReducedAlfParser
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser
-import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
@@ -12,7 +8,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
 import hu.eltesoft.modelexecution.m2t.java.Template
-import hu.eltesoft.modelexecution.m2t.java.behavior.BehaviorUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
 import hu.eltesoft.modelexecution.uml.incquery.ActionCodeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorMatch
@@ -89,7 +84,8 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ParsingResults, ActionCodeMatcher.on(engine)) [
-			parse(actionCode, behavior)
+			val parser = new ReducedAlfParser()
+			parser.parse(behavior)
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
@@ -99,22 +95,5 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 
 	override Template createTemplate(BhBehavior behavior) {
 		return new BehaviorTemplateSmap(behavior)
-	}
-
-	private def parse(String code, OpaqueBehavior behavior) {
-		val provider = getProvider(behavior)
-		val parser = getParser(provider)
-		parser.parse(code, provider)
-	}
-
-	private def getProvider(OpaqueBehavior behavior) {
-		new BehaviorUMLContextProvider(behavior)
-	}
-
-	private def getParser(IUMLContextProvider provider) {
-		Guice.createInjector(new ReducedAlfLanguageRuntimeModule()) [
-			bind(IUMLContextProvider).toInstance(provider)
-			bind(IReducedAlfParser).toInstance(new ReducedAlfParser())
-		].getInstance(IReducedAlfParser)
 	}
 }

@@ -16,6 +16,7 @@ class TestModelUMLContextProvider extends UMLContextProvider {
 
 	var Model model
 	val ResourceSet resourceSet
+	var Operation definedOperation
 
 	new(String location) {
 		resourceSet = new ResourceSetImpl
@@ -33,11 +34,14 @@ class TestModelUMLContextProvider extends UMLContextProvider {
 	}
 
 	override protected getContextObject() {
-		getDefinedOperation()
+		definedOperation
+	}
+
+	override getDefinedOperation() {
+		definedOperation
 	}
 
 	override protected doGetEngine() {
 		IncQueryEngine.on(new EMFScope(resourceSet));
 	}
-
 }

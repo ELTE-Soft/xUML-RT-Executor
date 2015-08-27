@@ -28,7 +28,7 @@ abstract class CompiledCodeCheckTestCase {
 	protected var CompilerBase compiler
 
 	@Before
-	def setup() {
+	def void setup() {
 		operation = ModelProperties.VOID_OPERATION
 	}
 

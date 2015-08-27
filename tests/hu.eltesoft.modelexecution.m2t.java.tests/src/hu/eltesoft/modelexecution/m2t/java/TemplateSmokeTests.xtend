@@ -43,7 +43,7 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
 		behavior.reference = makeNewReference("TestBehavior")
-		behavior.parsingResults = new ParsingResults(null, null) {
+		behavior.parsingResults = new ParsingResults(null, null, null) {
 
 			override boolean validationOK() {
 				true
