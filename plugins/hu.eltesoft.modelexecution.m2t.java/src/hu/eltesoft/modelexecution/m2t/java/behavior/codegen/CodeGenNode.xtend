@@ -22,12 +22,20 @@ class CodeGenNode {
 		new CodeGenNode().add(items)
 	}
 
+	def apos(Object ...items) {
+		new CodeGenNode('"', '"').add(items)
+	}
+
 	def paren(Object ... items) {
 		new CodeGenNode("(", ")", ", ").add(items)
 	}
 
 	def block(Object ... items) {
 		new CodeGenNode("{\n", "}\n", "", ";\n").add(items)
+	}
+
+	def rawBlock(Object ... items) {
+		new CodeGenNode("", "", "", ";\n").add(items)
 	}
 
 	def dot(Object ... items) {
