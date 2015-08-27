@@ -2,7 +2,7 @@ package hu.eltesoft.modelexecution.m2t.smap.xtend
 
 import org.junit.Test
 
-import static hu.eltesoft.modelexecution.m2t.smap.xtend.Assert.assertStringEquals
+import static hu.eltesoft.modelexecution.test.utils.Assert.assertStringEquals
 
 class SmapStringConcatenationTest {
 
@@ -19,17 +19,17 @@ class SmapStringConcatenationTest {
 
 		assertStringEquals(
 			'''
-				SMAP
-				test.java
-				sm
-				*S sm
-				*F
-				+ 0 test.sm
-				test.sm
-				*L
-				17,2:4
-				*E
-			''', smText.smap.toString("test.java"))
+			SMAP
+			test.java
+			sm
+			*S sm
+			*F
+			+ 0 test.sm
+			test.sm
+			*L
+			17,2:4
+			*E
+		''', smText.smap.toString("test.java"))
 	}
 
 	private def createBuilderFromDataWithLocation() {
@@ -54,17 +54,17 @@ class SmapStringConcatenationTest {
 
 		assertStringEquals(
 			'''
-				SMAP
-				test.java
-				sm
-				*S sm
-				*F
-				+ 0 test.sm
-				test.sm
-				*L
-				17,2:7
-				*E
-			''', smText.smap.toString("test.java"))
+			SMAP
+			test.java
+			sm
+			*S sm
+			*F
+			+ 0 test.sm
+			test.sm
+			*L
+			17,2:7
+			*E
+		''', smText.smap.toString("test.java"))
 	}
 
 	def createBuilderFromNestedTemplate() {

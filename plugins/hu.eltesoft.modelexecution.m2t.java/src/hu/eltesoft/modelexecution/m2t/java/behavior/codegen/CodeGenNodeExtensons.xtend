@@ -6,6 +6,14 @@ class CodeGenNodeExtensons {
 
 	static extension CodeGenNode = CodeGenNode.extension
 
+	def static CodeGenNode fun(Object name, Object ... params) {
+		name + paren(params)
+	}
+
+	def static binOp(Object lhs, Object operator, Object rhs) {
+		lhs + " " + operator + " " + rhs
+	}
+
 	def static dispatch CodeGenNode wrap(Object item) {
 		wrap(sequence(item))
 	}
@@ -14,7 +22,7 @@ class CodeGenNodeExtensons {
 		if (node.isUnwrap) {
 			return node.extractInner
 		}
-		PrimitiveOperations.WRAP + paren(node)
+		CodeGenNodeExtensons.fun(PrimitiveOperations.WRAP, node)
 	}
 
 	def static dispatch CodeGenNode unwrap(Object item) {
@@ -25,7 +33,7 @@ class CodeGenNodeExtensons {
 		if (node.isWrap) {
 			return node.extractInner
 		}
-		PrimitiveOperations.UNWRAP + paren(node)
+		CodeGenNodeExtensons.fun(PrimitiveOperations.UNWRAP, node)
 	}
 
 	def static isWrap(CodeGenNode node) {

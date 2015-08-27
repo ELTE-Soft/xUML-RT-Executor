@@ -107,7 +107,7 @@ class CodeGenNode {
 	}
 
 	def dispatch CodeGenNode +(Object lhs, Object rhs) {
-		return sequence.add(lhs, rhs)
+		return sequence(lhs, rhs)
 	}
 
 	def dispatch CodeGenNode +(CodeGenNode lhs, Object rhs) {

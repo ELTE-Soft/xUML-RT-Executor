@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2t.smap.xtend;
+package hu.eltesoft.modelexecution.test.utils;
 
 import static org.junit.Assert.assertEquals;
 

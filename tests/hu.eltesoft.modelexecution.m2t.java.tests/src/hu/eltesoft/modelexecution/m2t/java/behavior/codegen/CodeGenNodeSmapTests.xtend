@@ -4,7 +4,7 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.DataWithLocation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.Location
 import org.junit.Test
 
-import static org.junit.Assert.assertEquals
+import static hu.eltesoft.modelexecution.test.utils.Assert.assertStringEquals
 
 class CodeGenNodeSmapTests {
 
@@ -15,13 +15,13 @@ class CodeGenNodeSmapTests {
 		val a = new DataWithLocation("a", new Location("a.txt", 10, 20))
 		val b = new DataWithLocation("b", new Location("b.txt", 20, 30))
 		val text = block(a, b).toSourceMappedText
-		assertEquals('''
+		assertStringEquals('''
 			{
 			a;
 			b;
 			}
 		'''.toString, text.toString)
-		assertEquals('''
+		assertStringEquals('''
 			SMAP
 			
 			rALF

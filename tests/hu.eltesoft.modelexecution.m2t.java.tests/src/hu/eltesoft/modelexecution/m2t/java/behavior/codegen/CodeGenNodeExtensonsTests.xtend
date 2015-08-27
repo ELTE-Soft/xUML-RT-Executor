@@ -11,6 +11,23 @@ class CodeGenNodeExtensonsTests {
 	static extension CodeGenNode = CodeGenNode.extension
 
 	@Test
+	def testFunWithoutParameters() {
+		val node = fun("f")
+		assertStringifiedTo(node, '''f()''')
+	}
+
+	def testFunWithParameters() {
+		val node = fun("f", "a", "b")
+		assertStringifiedTo(node, '''f(a, b)''')
+	}
+
+	@Test
+	def testBinOp() {
+		val node = binOp("a", "+", "b")
+		assertStringifiedTo(node, '''a + b''')
+	}
+
+	@Test
 	def testWrapObject() {
 		val node = wrap("a")
 		assertStringifiedTo(node, '''«PrimitiveOperations.WRAP»(a)''')
