@@ -7,11 +7,11 @@ class CodeGenNodeExtensons {
 	static extension CodeGenNode = CodeGenNode.extension
 
 	def static CodeGenNode fun(Object name, Object ... params) {
-		name + paren(params)
+		name <> paren(params)
 	}
 
 	def static binOp(Object lhs, Object operator, Object rhs) {
-		lhs + " " + operator + " " + rhs
+		lhs <> " " <> operator <> " " <> rhs
 	}
 
 	def static dispatch CodeGenNode wrap(Object item) {

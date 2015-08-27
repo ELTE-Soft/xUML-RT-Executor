@@ -106,11 +106,11 @@ class CodeGenNode {
 		toSourceMappedText.toString
 	}
 
-	def dispatch CodeGenNode +(Object lhs, Object rhs) {
-		return sequence(lhs, rhs)
+	def dispatch CodeGenNode <>(Object lhs, Object rhs) {
+		sequence(lhs, rhs)
 	}
 
-	def dispatch CodeGenNode +(CodeGenNode lhs, Object rhs) {
+	def dispatch CodeGenNode <>(CodeGenNode lhs, Object rhs) {
 		if (lhs.isSequence) {
 			// flatten sequence
 			return lhs.add(rhs)
@@ -118,7 +118,7 @@ class CodeGenNode {
 		sequence(lhs, rhs)
 	}
 
-	def dispatch CodeGenNode +(Object lhs, CodeGenNode rhs) {
+	def dispatch CodeGenNode <>(Object lhs, CodeGenNode rhs) {
 		if (rhs.isSequence) {
 			// flatten sequence
 			rhs.items.add(0, lhs)
@@ -127,11 +127,11 @@ class CodeGenNode {
 		sequence(lhs, rhs)
 	}
 
-	def dispatch CodeGenNode ..(Object lhs, Object rhs) {
+	def dispatch CodeGenNode ->(Object lhs, Object rhs) {
 		return dot.add(lhs, rhs)
 	}
 
-	def dispatch CodeGenNode ..(CodeGenNode lhs, Object rhs) {
+	def dispatch CodeGenNode ->(CodeGenNode lhs, Object rhs) {
 		if (lhs.isDot) {
 			// flatten dots
 			return lhs.add(rhs)
@@ -139,7 +139,7 @@ class CodeGenNode {
 		dot(lhs, rhs)
 	}
 
-	def dispatch CodeGenNode ..(Object lhs, CodeGenNode rhs) {
+	def dispatch CodeGenNode ->(Object lhs, CodeGenNode rhs) {
 		if (rhs.isDot) {
 			// flatten dots
 			rhs.items.add(0, lhs)

@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior.codegen
 
 import org.junit.Test
+
 import static org.junit.Assert.assertEquals
 
 class CodeGenNodeTests {
@@ -67,7 +68,7 @@ class CodeGenNodeTests {
 		node.add("a", "b", "c")
 		assertStringifiedTo(node, "(a;,b;,c;)")
 	}
-	
+
 	@Test
 	def testSequence() {
 		val node = sequence("a", "b", "c", "d")
@@ -82,7 +83,7 @@ class CodeGenNodeTests {
 
 	@Test
 	def testBlock() {
-		val node = block("a","b")
+		val node = block("a", "b")
 		assertStringifiedTo(node, '''
 			{
 			a;
@@ -99,38 +100,38 @@ class CodeGenNodeTests {
 
 	@Test
 	def testCreateSequenceWithObjects() {
-		val node = "a" + 42
+		val node = "a" <> 42
 		assertStringifiedTo(node, "a42")
 	}
 
 	@Test
-	def testAddParenToString() {
-		val node = "a" + paren("b")
+	def testAppendParenToString() {
+		val node = "a" <> paren("b")
 		assertStringifiedTo(node, "a(b)")
 	}
 
 	@Test
-	def testAddParenToSequence() {
-		val node = "a" + paren("b", "c") + 42
+	def testAppendParenToSequence() {
+		val node = "a" <> paren("b", "c") <> 42
 		assertStringifiedTo(node, "a(b, c)42")
 	}
 
 	@Test
-	def testAddedSequencesAreFlattened() {
-		val node = "a" + ("b" + "c") + "d"
+	def testAppendedSequencesAreFlattened() {
+		val node = "a" <> ("b" <> "c") <> "d"
 		assertStringifiedTo(node, "abcd")
 		assertEquals(4, node.size)
 	}
 
 	@Test
 	def testCreateDotWithObjects() {
-		val node = "a" .. 42
+		val node = "a" -> 42
 		assertStringifiedTo(node, "a.42")
 	}
 
 	@Test
 	def testDottedSequencesAreFlattened() {
-		val node = "a" .. ("b" .. "c") .. "d"
+		val node = "a" -> ("b" -> "c") -> "d"
 		assertStringifiedTo(node, "a.b.c.d")
 		assertEquals(4, node.size)
 	}

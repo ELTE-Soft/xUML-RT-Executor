@@ -35,7 +35,7 @@ class CodeGenNodeExtensonsTests {
 
 	@Test
 	def testWrapSequence() {
-		val node = wrap("a" + "b")
+		val node = wrap("a" <> "b")
 		assertStringifiedTo(node, '''«PrimitiveOperations.WRAP»(ab)''')
 	}
 
@@ -47,7 +47,7 @@ class CodeGenNodeExtensonsTests {
 
 	@Test
 	def testUnwrapSequence() {
-		val node = unwrap("a" + "b")
+		val node = unwrap("a" <> "b")
 		assertStringifiedTo(node, '''«PrimitiveOperations.UNWRAP»(ab)''')
 	}
 
@@ -59,7 +59,7 @@ class CodeGenNodeExtensonsTests {
 
 	@Test
 	def testWrapUnwrapFlattenedSequence() {
-		val node = wrap(unwrap("a" + "b"))
+		val node = wrap(unwrap("a" <> "b"))
 		assertStringifiedTo(node, '''ab''')
 	}
 
@@ -71,13 +71,13 @@ class CodeGenNodeExtensonsTests {
 
 	@Test
 	def testUnwrapWrapFlattenedSequence() {
-		val node = unwrap(wrap("a" + "b"))
+		val node = unwrap(wrap("a" <> "b"))
 		assertStringifiedTo(node, '''ab''')
 	}
 
 	@Test
 	def testFlatteningLongEvenWrapUnwrapSequence() {
-		val node = unwrap(wrap(unwrap(wrap(unwrap(wrap("a" + "b"))))))
+		val node = unwrap(wrap(unwrap(wrap(unwrap(wrap("a" <> "b"))))))
 		assertStringifiedTo(node, '''ab''')
 	}
 
@@ -89,7 +89,7 @@ class CodeGenNodeExtensonsTests {
 
 	@Test
 	def testFlatteningMixedWrapUnwrapSequence() {
-		val node = wrap(wrap(unwrap(unwrap("a" + "b"))))
+		val node = wrap(wrap(unwrap(unwrap("a" <> "b"))))
 		assertStringifiedTo(node, '''ab''')
 	}
 
