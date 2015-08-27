@@ -12,21 +12,21 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
-import hu.eltesoft.modelexecution.runtime.meta.IndexM;
-import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
-import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
-import hu.eltesoft.modelexecution.runtime.meta.SignalM;
-import hu.eltesoft.modelexecution.runtime.meta.StateM;
+import hu.eltesoft.modelexecution.runtime.meta.IndexMeta;
+import hu.eltesoft.modelexecution.runtime.meta.VariableMeta;
+import hu.eltesoft.modelexecution.runtime.meta.OwnerMeta;
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta;
+import hu.eltesoft.modelexecution.runtime.meta.SignalMeta;
+import hu.eltesoft.modelexecution.runtime.meta.StateMeta;
 
 /**
  * A presentation of a named read-only value.
  */
-public class XUmlRtVariable extends MokaVariable implements IPresentation {
+public class ModelVariable extends MokaVariable implements IPresentation {
 
-	private LeftValueM leftVal;
+	private VariableMeta leftVal;
 
-	public XUmlRtVariable(MokaDebugTarget debugTarget, LeftValueM leftVal, XUmlRtValue value) {
+	public ModelVariable(MokaDebugTarget debugTarget, VariableMeta leftVal, AbstractValue value) {
 		super(debugTarget);
 		this.leftVal = leftVal;
 		setName(leftVal.getName());
@@ -58,22 +58,21 @@ public class XUmlRtVariable extends MokaVariable implements IPresentation {
 
 	@Override
 	public Image getImage() {
-		if (leftVal instanceof PropertyM) {
+		if (leftVal instanceof PropertyMeta) {
 			return getIconForType(UMLFactory.eINSTANCE.createProperty());
-		} else if (leftVal instanceof SignalM) {
+		} else if (leftVal instanceof SignalMeta) {
 			return getIconForType(UMLFactory.eINSTANCE.createSignal());
-		} else if (leftVal instanceof OwnerM) {
+		} else if (leftVal instanceof OwnerMeta) {
 			return getIconForType(UMLFactory.eINSTANCE.createClass());
-		} else if (leftVal instanceof StateM) {
+		} else if (leftVal instanceof StateMeta) {
 			return getIconForType(UMLFactory.eINSTANCE.createState());
-		} else if (leftVal instanceof IndexM) {
+		} else if (leftVal instanceof IndexMeta) {
 			return getIconForType(UMLFactory.eINSTANCE.createLiteralInteger());
 		} else {
 			return null;
 		}
 	}
 
-	// TODO: cache icons
 	public Image getIconForType(EObject element) {
 		IImage image = ImageQuery.getEObjectImage(element);
 		Device device = Display.getCurrent();

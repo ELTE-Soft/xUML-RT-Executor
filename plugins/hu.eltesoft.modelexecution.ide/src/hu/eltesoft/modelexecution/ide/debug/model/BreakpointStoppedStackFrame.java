@@ -10,7 +10,7 @@ import org.eclipse.uml2.uml.NamedElement;
  */
 public class BreakpointStoppedStackFrame extends StateMachineStackFrame implements IPresentation {
 
-	public BreakpointStoppedStackFrame(MokaDebugTarget target, XUmlRtStateMachineInstance smInstance,
+	public BreakpointStoppedStackFrame(MokaDebugTarget target, StateMachineInstance smInstance,
 			NamedElement modelElement) {
 		super(target, smInstance);
 		setModelElement(modelElement);

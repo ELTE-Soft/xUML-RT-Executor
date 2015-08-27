@@ -13,9 +13,15 @@ import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 
+/**
+ * A stack frame that represents the execution at a state, transition or
+ * pseudostate.
+ */
 public abstract class StateMachineStackFrame extends MokaStackFrame implements IPresentation {
 
-	public StateMachineStackFrame(MokaDebugTarget target, XUmlRtStateMachineInstance stateMachine) {
+	private static final String UNKNOWN_STACK_FRAME = "?";
+
+	public StateMachineStackFrame(MokaDebugTarget target, StateMachineInstance stateMachine) {
 		super(target);
 		setName(name);
 		setThread(stateMachine);
@@ -27,7 +33,7 @@ public abstract class StateMachineStackFrame extends MokaStackFrame implements I
 			return getName();
 		} catch (DebugException e) {
 			IdePlugin.logError("Name could not be retrived", e);
-			return "?";
+			return UNKNOWN_STACK_FRAME;
 		}
 	}
 

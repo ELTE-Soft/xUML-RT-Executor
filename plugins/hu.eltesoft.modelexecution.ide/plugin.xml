@@ -174,11 +174,4 @@
             id="hu.eltesoft.modelexecution.ide.builder.StratumCompilationParticipant">
       </compilationParticipant>
    </extension>
-   <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation"
-            id="org.eclipse.papyrus.moka">
-      </debugModelPresentation>
-   </extension>
 </plugin>

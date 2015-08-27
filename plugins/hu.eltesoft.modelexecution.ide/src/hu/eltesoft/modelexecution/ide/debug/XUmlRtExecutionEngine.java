@@ -30,7 +30,7 @@ import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
@@ -55,9 +55,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	private VirtualMachineManager virtualMachine;
 
 	/** The state machine instances (threads) in the debug model */
-	private final List<XUmlRtStateMachineInstance> smInstances = new LinkedList<>();
+	private final List<StateMachineInstance> smInstances = new LinkedList<>();
 	
-	private VirtualMachineHandler virtualMachineHandler;
+	private ExecutionEngineVMConnection virtualMachineHandler;
 
 	@Override
 	public void init(EObject eObjectToExecute, String[] args, MokaDebugTarget mokaDebugTarget, int requestPort,
@@ -72,7 +72,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		breakpoints = new BreakpointRegistry();
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
-		virtualMachineHandler = new VirtualMachineHandler(this, eObjectToExecute, configReader, virtualMachine,
+		virtualMachineHandler = new ExecutionEngineVMConnection(this, eObjectToExecute, configReader, virtualMachine,
 				animation, breakpoints);
 		virtualMachine.addEventListener(virtualMachineHandler);
 
@@ -90,7 +90,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
 						@Override
 						public void instanceCreated(String classId, int instanceId, String originalName) {
-							XUmlRtStateMachineInstance smInstance = new XUmlRtStateMachineInstance(debugTarget, classId,
+							StateMachineInstance smInstance = new StateMachineInstance(debugTarget, classId,
 									instanceId, originalName);
 							smInstances.add(smInstance);
 						}
@@ -177,8 +177,8 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		return smInstances.toArray(new MokaThread[smInstances.size()]);
 	}
 
-	public XUmlRtStateMachineInstance[] getSmInstances() {
-		return smInstances.toArray(new XUmlRtStateMachineInstance[smInstances.size()]);
+	public StateMachineInstance[] getSmInstances() {
+		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
 	}
 
 	@Override

@@ -29,8 +29,8 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.m2t.java.Template;
-import hu.eltesoft.modelexecution.runtime.meta.ClassM;
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta;
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta;
 
 /**
  * Presentation of values in the executed model. It appears in the variables
@@ -40,7 +40,7 @@ import hu.eltesoft.modelexecution.runtime.meta.PropertyM;
  * The life of these values lasts only while the debugger is stopped.
  */
 @SuppressWarnings("restriction")
-public abstract class XUmlRtValue extends MokaValue implements IValue, IPresentation {
+public abstract class AbstractValue extends MokaValue implements IValue, IPresentation {
 
 	private static final String SERIALIZE_METHOD_NAME = "serialize";
 
@@ -57,7 +57,7 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 
 	protected JDIUtils jdiUtils;
 
-	public XUmlRtValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public AbstractValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
@@ -96,9 +96,9 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 		ObjectReference meta = (ObjectReference) type.getValue(metaField);
 		try {
 			StringReference res = (StringReference) thread.invokeMethod(meta, SERIALIZE_METHOD_NAME);
-			ClassM metaInfo = ClassM.deserialize(res.value());
-			Map<PropertyM, Value> attribValues = new HashMap<PropertyM, Value>();
-			for (PropertyM attrib : metaInfo.getAttributes()) {
+			ClassMeta metaInfo = ClassMeta.deserialize(res.value());
+			Map<PropertyMeta, Value> attribValues = new HashMap<PropertyMeta, Value>();
+			for (PropertyMeta attrib : metaInfo.getAttributes()) {
 				attribValues.put(attrib, thread.invokeMethod(valueObj, attrib.getIdentifier()));
 			}
 			return presentAttributes(attribValues);
@@ -109,20 +109,20 @@ public abstract class XUmlRtValue extends MokaValue implements IValue, IPresenta
 		}
 	}
 
-	private IVariable[] presentAttributes(Map<PropertyM, Value> propertyValues) throws DebugException {
-		List<XUmlRtVariable> shownAttributes = new LinkedList<>();
-		for (Entry<PropertyM, Value> propertyValue : propertyValues.entrySet()) {
-			PropertyM property = propertyValue.getKey();
-			XUmlRtValue varValue;
+	private IVariable[] presentAttributes(Map<PropertyMeta, Value> propertyValues) throws DebugException {
+		List<ModelVariable> shownAttributes = new LinkedList<>();
+		for (Entry<PropertyMeta, Value> propertyValue : propertyValues.entrySet()) {
+			PropertyMeta property = propertyValue.getKey();
+			AbstractValue varValue;
 			if (property.getBounds().isAtMostSingle()) {
 				varValue = new SingleValue(debugTarget, thread, propertyValue.getValue());
 			} else {
 				varValue = new MultiValue(debugTarget, thread, propertyValue.getValue());
 			}
-			shownAttributes.add(new XUmlRtVariable(debugTarget, property, varValue));
+			shownAttributes.add(new ModelVariable(debugTarget, property, varValue));
 		}
 		// sort the attributes alphabetically
-		shownAttributes.sort(Comparator.comparing(XUmlRtVariable::getName));
+		shownAttributes.sort(Comparator.comparing(ModelVariable::getName));
 		return shownAttributes.toArray(new IVariable[shownAttributes.size()]);
 	}
 

@@ -3,9 +3,9 @@ package hu.eltesoft.modelexecution.runtime.meta;
 /**
  * An element of an attribute with multiplicity.
  */
-public class IndexM extends LeftValueM {
+public class IndexMeta extends VariableMeta {
 
-	public IndexM(int index) {
+	public IndexMeta(int index) {
 		super(Integer.toString(index));
 	}
 	

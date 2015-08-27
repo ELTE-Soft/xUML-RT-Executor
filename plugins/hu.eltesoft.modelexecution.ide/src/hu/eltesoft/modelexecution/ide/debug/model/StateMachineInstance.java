@@ -14,12 +14,12 @@ import org.eclipse.uml2.uml.UMLFactory;
 /**
  * Thread-like debug model element for a state machine instance.
  */
-public class XUmlRtStateMachineInstance extends MokaThread implements IPresentation {
+public class StateMachineInstance extends MokaThread implements IPresentation {
 
 	private String classId;
 	private int instanceId;
 
-	public XUmlRtStateMachineInstance(MokaDebugTarget debugTarget, String classId, int instanceId,
+	public StateMachineInstance(MokaDebugTarget debugTarget, String classId, int instanceId,
 			String originalName) {
 		super(debugTarget);
 		this.classId = classId;

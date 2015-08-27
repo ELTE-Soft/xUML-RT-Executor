@@ -13,14 +13,14 @@ import com.sun.jdi.ObjectReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
-import hu.eltesoft.modelexecution.runtime.meta.IndexM;
+import hu.eltesoft.modelexecution.runtime.meta.IndexMeta;
 
 /**
  * The debug model representation of a value that can have more than 1 elements.
  * When showing the value, the elements are put inside braces.
  */
 @SuppressWarnings("restriction")
-public class MultiValue extends XUmlRtValue {
+public class MultiValue extends AbstractValue {
 
 	public MultiValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
@@ -30,7 +30,7 @@ public class MultiValue extends XUmlRtValue {
 	protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
 			throws DebugException {
 		for (int i = 0; i < collectionValues.size(); i++) {
-			list.add(new XUmlRtVariable(debugTarget, new IndexM(i),
+			list.add(new ModelVariable(debugTarget, new IndexMeta(i),
 					new SingleValue(debugTarget, thread, collectionValues.get(i))));
 		}
 		return list.toArray(new IVariable[list.size()]);

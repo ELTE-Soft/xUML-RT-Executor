@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.ResourceLocator;
 
 /**
- * A resource locator that is able to find the resources if they are given by
- * their file-URIs.
+ * A resource locator that is able to find the resources even if they are given
+ * by their file-URIs.
  */
 public class FilePathResourceLocator extends ResourceLocator {
 

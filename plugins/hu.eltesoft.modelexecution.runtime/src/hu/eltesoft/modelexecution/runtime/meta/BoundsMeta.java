@@ -5,14 +5,14 @@ import org.json.JSONObject;
 /**
  * Stores the multiplicity of an attribute on the meta-level.
  */
-public class BoundsM {
+public class BoundsMeta {
 
 	private static final String LOWER_FIELD = "lower";
 	private static final String UPPER_FIELD = "upper";
-	public static BoundsM SINGLE = new BoundsM(1, 1);
-	public static BoundsM OPTIONAL = new BoundsM(0, 1);
-	public static BoundsM ANY = new BoundsM(0, -1);
-	public static BoundsM MANY = new BoundsM(1, -1);
+	public static BoundsMeta SINGLE = new BoundsMeta(1, 1);
+	public static BoundsMeta OPTIONAL = new BoundsMeta(0, 1);
+	public static BoundsMeta ANY = new BoundsMeta(0, -1);
+	public static BoundsMeta MANY = new BoundsMeta(1, -1);
 	
 	/**
 	 * Upper bound on the multiplicity. -1 means no upper bound.
@@ -24,7 +24,7 @@ public class BoundsM {
 	 */
 	private int lower;
 
-	public BoundsM(int upper, int lower) {
+	public BoundsMeta(int upper, int lower) {
 		this.upper = upper;
 		this.lower = lower;
 	}
@@ -39,7 +39,7 @@ public class BoundsM {
 	
 	// serialization and deserialization
 
-	private BoundsM() {
+	private BoundsMeta() {
 	}
 	
 	public JSONObject serializeToJson() {
@@ -49,12 +49,12 @@ public class BoundsM {
 		return obj;
 	}
 	
-	public static BoundsM deserialize(String serialized) {
+	public static BoundsMeta deserialize(String serialized) {
 		return deserialize(new JSONObject(serialized));
 	}
 
-	public static BoundsM deserialize(JSONObject json) {
-		BoundsM ret = new BoundsM();
+	public static BoundsMeta deserialize(JSONObject json) {
+		BoundsMeta ret = new BoundsMeta();
 		ret.deserializeFromJson(json);
 		return ret;
 	}

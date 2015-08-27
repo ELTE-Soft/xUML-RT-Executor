@@ -22,12 +22,12 @@ import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineConnection;
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.BreakpointStoppedStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.PausedStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.LocationConverter;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
@@ -44,7 +44,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
  * breakpoints. Suspends threads when the VM is stopped on breakpoints.
  */
 @SuppressWarnings("restriction")
-public final class VirtualMachineHandler implements VirtualMachineListener {
+public final class ExecutionEngineVMConnection implements VirtualMachineListener {
 
 	/** Link to the execution engine connected to the vm. */
 	private final XUmlRtExecutionEngine executionEngine;
@@ -62,7 +62,7 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 	private final LocationConverter locationConverter;
 
 	/** For getting details about debug model elements */
-	private final VirtualMachineConnection virtualMachineConnection;
+	private final VirtualMachineBrowser virtualMachineBrowser;
 
 	/** To look up EObjects for animation */
 	private ResourceSet resourceSet;
@@ -78,13 +78,13 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 
 	private BreakpointRegistry breakpoints;
 
-	public VirtualMachineHandler(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
+	public ExecutionEngineVMConnection(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
 			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation,
 			BreakpointRegistry breakpoints) {
 		this.virtualMachine = virtualMachine;
 		this.animation = animation;
 		this.breakpoints = breakpoints;
-		virtualMachineConnection = virtualMachine.createConnection();
+		virtualMachineBrowser = virtualMachine.createConnection();
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
 		// the constructor sets itself as resource locator for the resource set
 		new FilePathResourceLocator(resourceSet);
@@ -194,10 +194,10 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 
 	private boolean actualSMInstanceIsSelected() {
 		try {
-			String actualSMInstance = virtualMachineConnection.getActualSMInstance();
+			String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
 			for (Object debugElem : XUmlRtDebugModelPresentation.getSelectedDebugElements()) {
-				if (debugElem instanceof XUmlRtStateMachineInstance) {
-					XUmlRtStateMachineInstance smInstance = (XUmlRtStateMachineInstance) debugElem;
+				if (debugElem instanceof StateMachineInstance) {
+					StateMachineInstance smInstance = (StateMachineInstance) debugElem;
 					if (smInstance.getName().equals(actualSMInstance)) {
 						return true;
 					}
@@ -243,19 +243,19 @@ public final class VirtualMachineHandler implements VirtualMachineListener {
 	private void markThreadAsSuspended(EObject modelElement) {
 		animation.setSuspendedMarker(modelElement);
 
-		String actualSMInstance = virtualMachineConnection.getActualSMInstance();
+		String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
 		try {
-			for (XUmlRtStateMachineInstance smInstance : executionEngine.getSmInstances()) {
+			for (StateMachineInstance smInstance : executionEngine.getSmInstances()) {
 				MokaStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
 					stackFrame = new BreakpointStoppedStackFrame(executionEngine.getDebugTarget(), smInstance,
 							(NamedElement) modelElement);
-					virtualMachineConnection.addEventVariable(stackFrame);
+					virtualMachineBrowser.addEventVariable(stackFrame);
 				} else {
 					stackFrame = new PausedStackFrame(smInstance);
 				}
 				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
-				virtualMachineConnection.loadDataOfSMInstance(stackFrame, resourceSet);
+				virtualMachineBrowser.loadDataOfSMInstance(stackFrame, resourceSet);
 				int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
 				executionEngine.sendEvent(new Suspend_Event(smInstance, eventCode, executionEngine.getThreads()));
 				smInstance.setSuspended(true);

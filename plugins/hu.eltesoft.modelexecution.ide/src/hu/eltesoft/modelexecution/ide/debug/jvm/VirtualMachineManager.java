@@ -224,8 +224,8 @@ public class VirtualMachineManager implements ITerminate {
 	 * @return the connection that allows querying the state of the runtime
 	 *         running in the virtual machine
 	 */
-	public VirtualMachineConnection createConnection() {
-		return new VirtualMachineConnection(virtualMachine);
+	public VirtualMachineBrowser createConnection() {
+		return new VirtualMachineBrowser(virtualMachine);
 	}
 
 }

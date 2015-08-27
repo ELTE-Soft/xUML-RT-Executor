@@ -28,22 +28,22 @@ import com.sun.jdi.VirtualMachine;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtStateMachineInstance;
-import hu.eltesoft.modelexecution.ide.debug.model.XUmlRtVariable;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
-import hu.eltesoft.modelexecution.runtime.meta.LeftValueM;
-import hu.eltesoft.modelexecution.runtime.meta.OwnerM;
-import hu.eltesoft.modelexecution.runtime.meta.SignalM;
+import hu.eltesoft.modelexecution.runtime.meta.VariableMeta;
+import hu.eltesoft.modelexecution.runtime.meta.OwnerMeta;
+import hu.eltesoft.modelexecution.runtime.meta.SignalMeta;
 
 /**
  * A class to query the state of the runtime running in the given virtual
  * machine.
  */
 @SuppressWarnings("restriction")
-public class VirtualMachineConnection {
+public class VirtualMachineBrowser {
 
 	private static final String NAME_METHOD = "name"; //$NON-NLS-1$
 	private static final String GET_STATE_MACHINE_METHOD = "getStateMachine"; //$NON-NLS-1$
@@ -54,7 +54,7 @@ public class VirtualMachineConnection {
 	private VirtualMachine virtualMachine;
 	private JDIThreadWrapper mainThread;
 
-	public VirtualMachineConnection(VirtualMachine virtualMachine) {
+	public VirtualMachineBrowser(VirtualMachine virtualMachine) {
 		this.virtualMachine = virtualMachine;
 	}
 
@@ -84,7 +84,7 @@ public class VirtualMachineConnection {
 		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
 		if (eventObj != null) {
 			addVariable(frame, createMokaVariable(frame, mainThread, eventObj,
-					new SignalM(Messages.VirtualMachineConnection_variable_signal_label)));
+					new SignalMeta(Messages.VirtualMachineConnection_variable_signal_label)));
 		}
 	}
 
@@ -104,9 +104,9 @@ public class VirtualMachineConnection {
 	}
 
 	protected MokaVariable createMokaVariable(MokaStackFrame frame, JDIThreadWrapper mainThread, Value value,
-			LeftValueM leftVal) {
+			VariableMeta leftVal) {
 		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
-		return new XUmlRtVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
+		return new ModelVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class VirtualMachineConnection {
 	 * model element if it is empty.
 	 */
 	public void loadDataOfSMInstance(MokaStackFrame stackFrame, ResourceSet resourceSet) throws DebugException {
-		XUmlRtStateMachineInstance stateMachineInstance = (XUmlRtStateMachineInstance) stackFrame.getThread();
+		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
 		try {
 			JDIThreadWrapper mainThread = getMainThread();
 			ClassType instanceRegistryClass = (ClassType) virtualMachine
@@ -165,13 +165,13 @@ public class VirtualMachineConnection {
 
 	private MokaVariable createThisVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {
 		return createMokaVariable(stackFrame, mainThread, instance,
-				new OwnerM(Messages.VirtualMachineConnection_variable_this_label));
+				new OwnerMeta(Messages.VirtualMachineConnection_variable_this_label));
 	}
 
 	private MokaVariable createCurrentStateVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread,
 			Value actualState) {
 		return createMokaVariable(stackFrame, mainThread, actualState,
-				new OwnerM(Messages.VirtualMachineConnection_variable_currentState_label));
+				new OwnerMeta(Messages.VirtualMachineConnection_variable_currentState_label));
 	}
 
 }

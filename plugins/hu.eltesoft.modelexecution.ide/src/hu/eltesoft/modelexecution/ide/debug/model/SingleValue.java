@@ -19,7 +19,9 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
  * no value it is shown as "null" otherwise the single value is simply shown.
  */
 @SuppressWarnings("restriction")
-public class SingleValue extends XUmlRtValue {
+public class SingleValue extends AbstractValue {
+
+	private static final String SINGLETON_VALUE_MISSING = "null";
 
 	public SingleValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
@@ -43,7 +45,7 @@ public class SingleValue extends XUmlRtValue {
 			if (collectionValues.size() > 0) {
 				return jdiUtils.invokeToString((ObjectReference) collectionValues.get(0));
 			} else {
-				return "null";
+				return SINGLETON_VALUE_MISSING;
 			}
 		} else {
 			return jdiUtils.invokeToString(objectReference);

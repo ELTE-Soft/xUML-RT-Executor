@@ -8,9 +8,9 @@ import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
  * Meta-representation of an attribute. Needs to be serialized because it is a
- * part of {@linkplain ClassM}
+ * part of {@linkplain ClassMeta}
  */
-public class PropertyM extends LeftValueM implements JSONSerializable {
+public class PropertyMeta extends VariableMeta implements JSONSerializable {
 
 	private static final String BOUNDS_FIELD = "bounds";
 
@@ -27,9 +27,9 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 	/**
 	 * Multiplicity of the property.
 	 */
-	private BoundsM bounds;
+	private BoundsMeta bounds;
 
-	public PropertyM(String name, String identifier, BoundsM bounds) {
+	public PropertyMeta(String name, String identifier, BoundsMeta bounds) {
 		this.name = name;
 		this.identifier = identifier;
 		this.bounds = bounds;
@@ -39,23 +39,23 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 		return identifier;
 	}
 
-	public BoundsM getBounds() {
+	public BoundsMeta getBounds() {
 		return bounds;
 	}
 
 	// serialization and deserialization
 
-	private PropertyM() {
+	private PropertyMeta() {
 	}
 
-	public static PropertyM deserialize(String serialized) {
+	public static PropertyMeta deserialize(String serialized) {
 		return deserialize(new JSONObject(serialized));
 	}
 
-	public static PropertyM deserialize(JSONObject json) {
-		PropertyM ret = new PropertyM();
+	public static PropertyMeta deserialize(JSONObject json) {
+		PropertyMeta ret = new PropertyMeta();
 		try {
-			ret.jsonDecode(new JSONDecoder(PropertyM.class.getClassLoader()), json);
+			ret.jsonDecode(new JSONDecoder(PropertyMeta.class.getClassLoader()), json);
 			return ret;
 		} catch (ClassNotFoundException | JSONException e) {
 			throw new RuntimeException(e);
@@ -75,7 +75,7 @@ public class PropertyM extends LeftValueM implements JSONSerializable {
 	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		name = obj.getString(NAME_FIELD);
 		identifier = obj.getString(IDENTIFIER_FIELD);
-		bounds = BoundsM.deserialize(obj.getJSONObject(BOUNDS_FIELD));
+		bounds = BoundsMeta.deserialize(obj.getJSONObject(BOUNDS_FIELD));
 	}
 
 }

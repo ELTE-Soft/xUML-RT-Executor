@@ -11,7 +11,7 @@ import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
  */
 public class PausedStackFrame extends StateMachineStackFrame implements IPresentation {
 
-	public PausedStackFrame(XUmlRtStateMachineInstance smInstance) throws DebugException {
+	public PausedStackFrame(StateMachineInstance smInstance) throws DebugException {
 		super((MokaDebugTarget) smInstance.getDebugTarget(), smInstance);
 		setThread(thread);
 	}

@@ -16,13 +16,13 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
-import hu.eltesoft.modelexecution.runtime.meta.BoundsM
-import hu.eltesoft.modelexecution.runtime.meta.ClassM
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM
 import java.util.LinkedList
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
+import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -58,12 +58,12 @@ class ClassTemplate extends Template {
 		}
 		
 		/** Meta-description of the structure of the class */
-		public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
+		public static «ClassMeta.canonicalName» «META_REPR_NAME» = new «ClassMeta.canonicalName»(
 			«classDefinition.nameLiteral»,
-			new «PropertyM.canonicalName»[] { 
+			new «PropertyMeta.canonicalName»[] { 
 				«FOR attr : classDefinition.allAttributes SEPARATOR ','»
-					new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
-						new «BoundsM.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
+					new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
+						new «BoundsMeta.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
 				«ENDFOR»
 			}
 		);

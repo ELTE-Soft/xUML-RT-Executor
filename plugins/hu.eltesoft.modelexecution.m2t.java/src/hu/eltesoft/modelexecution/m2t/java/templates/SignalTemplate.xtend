@@ -4,15 +4,15 @@ import hu.eltesoft.modelexecution.m2m.metamodel.signal.SgSignal
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.runtime.base.Signal
-import hu.eltesoft.modelexecution.runtime.meta.BoundsM
-import hu.eltesoft.modelexecution.runtime.meta.ClassM
-import hu.eltesoft.modelexecution.runtime.meta.PropertyM
 import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder
 import java.util.Objects
 import org.json.JSONArray
 import org.json.JSONObject
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
+import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class SignalTemplate extends Template {
@@ -43,12 +43,12 @@ class SignalTemplate extends Template {
 			}
 			
 			/** Meta-description of the structure of the class */
-			public static «ClassM.canonicalName» «META_REPR_NAME» = new «ClassM.canonicalName»(
+			public static «ClassMeta.canonicalName» «META_REPR_NAME» = new «ClassMeta.canonicalName»(
 				«signal.nameLiteral»,
-				new «PropertyM.canonicalName»[] { 
+				new «PropertyMeta.canonicalName»[] { 
 					«FOR attr : signal.attributes SEPARATOR ','»
-						new «PropertyM.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
-							new «BoundsM.canonicalName»(«attr.upperBound», «attr.lowerBound»))
+						new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
+							new «BoundsMeta.canonicalName»(«attr.upperBound», «attr.lowerBound»))
 					«ENDFOR»
 				}
 			);

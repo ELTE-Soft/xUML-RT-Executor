@@ -3,9 +3,9 @@ package hu.eltesoft.modelexecution.runtime.meta;
 /**
  * The meta-representation of the current state
  */
-public class StateM extends LeftValueM {
+public class StateMeta extends VariableMeta {
 
-	public StateM(String name) {
+	public StateMeta(String name) {
 		super(name);
 	}
 	
