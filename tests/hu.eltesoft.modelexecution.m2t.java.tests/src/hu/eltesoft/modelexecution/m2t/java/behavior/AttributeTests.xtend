@@ -1,11 +1,15 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import org.junit.Before
 import org.junit.Test
-import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*
+
+import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 class AttributeTests extends CompiledCodeCheckTestCase {
+
+	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
 		compiler = new ExpressionCompiler()
@@ -18,11 +22,12 @@ class AttributeTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testReadingBoolProperty() {
-		assertCompilesTo('''this.a;''', '''«UNWRAP»(«WRAP»(«CompilerBase.CONTEXT_NAME»)).get__dxeMEEvUEeWbvJ0DeAHZOQ();''')
+		assertCompilesTo('''this.a;''', CompilerBase.CONTEXT_NAME -> fun("get__dxeMEEvUEeWbvJ0DeAHZOQ"))
 	}
 
 	@Test
 	def testWritingBoolProperty() {
-		assertCompilesTo('''this.a = true;''', '''«UNWRAP»(«WRAP»(«CompilerBase.CONTEXT_NAME»)).set__dxeMEEvUEeWbvJ0DeAHZOQ(«BOOLEAN_LITERAL»(true));''')
+		assertCompilesTo('''this.a = true;''',
+			CompilerBase.CONTEXT_NAME -> fun("set__dxeMEEvUEeWbvJ0DeAHZOQ", booleanLiteral("true")))
 	}
 }

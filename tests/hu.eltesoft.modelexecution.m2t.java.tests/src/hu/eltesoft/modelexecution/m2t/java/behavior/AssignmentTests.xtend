@@ -1,7 +1,9 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.junit.Test
-import static hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations.*
+
+import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 class AssignmentTests extends CompiledCodeCheckTestCase {
 
@@ -11,9 +13,10 @@ class AssignmentTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testAssignToBoolVariable() {
-		assertCompilesTo('''Boolean b; b = true;''', '''
-			java.util.ArrayList<java.lang.Boolean> _local0 = «BOOLEAN_LITERAL»(false);
-			«SET_VALUE»(_local0, «BOOLEAN_LITERAL»(true));
-		''')
+		assertCompilesTo(
+			'''Boolean b; b = true;''',
+			binOp("java.util.ArrayList<java.lang.Boolean> _local0", "=", booleanLiteral("false")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0", booleanLiteral("true"))
+		)
 	}
 }

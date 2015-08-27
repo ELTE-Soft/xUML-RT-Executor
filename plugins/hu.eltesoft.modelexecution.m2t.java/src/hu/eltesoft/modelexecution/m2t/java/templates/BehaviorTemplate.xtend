@@ -24,7 +24,7 @@ class BehaviorTemplate extends Template {
 		this.behavior = behavior
 		val compiler = new BehaviorCompiler
 		returns = behavior.returnType != null
-		compiledCode = compiler.compile(behavior.parsingResults)
+		compiledCode = compiler.compile(behavior.parsingResults).toSourceMappedText
 	}
 
 	override wrapContent(CharSequence content) '''

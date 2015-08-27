@@ -1,74 +1,50 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.BlockStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
-import hu.eltesoft.modelexecution.m2t.java.Languages
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
-import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
-import java.util.Map
-import java.util.WeakHashMap
-import org.apache.commons.lang.StringUtils
-import org.eclipse.emf.ecore.EObject
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.runtime.BaseRuntime
-
-interface Appendable {
-
-	def void append(Object object)
-}
+import java.util.WeakHashMap
+import org.eclipse.emf.ecore.EObject
 
 abstract class CompilerBase {
 
+	static extension CodeGenNode = CodeGenNode.extension
+
 	public static val Multiplicity SINGLE = BaseFactory.eINSTANCE.createMultiplicity()
+
 	public static val CONTEXT_NAME = "context"
 	public static val RUNTIME_INSTANCE = BaseRuntime.canonicalName + ".getInstance()"
 
-	private var SmapStringConcatenation builder
-
 	/**
-	 * Compile the specified operation body code to Java source code. The output
-	 * code will be returned along with its source mapping information.
+	 * Compile the specified operation body code to Java source code.
 	 */
-	def SourceMappedText compile(ParsingResults results) {
-		builder = new SmapStringConcatenation(Languages.RALF)
+	def CodeGenNode compile(ParsingResults results) {
 		if (!results.validationOK) {
 			throw new CompilationFailedException(results.toString)
 		}
 		compile(results.model)
-		return builder.toSourceMappedText
 	}
 
-	def void compile(Statements statements) {
-		val breakLine = statements.statement.length > 1
+	protected def CodeGenNode compile(Statements statements) {
+		var node = topLevelBlock()
 		for (statement : statements.statement) {
-			compile(statement)
-			if (breakLine && !(statement instanceof BlockStatement)) {
-				append("\n")
-			}
+			node.add(compile(statement))
 		}
+		node
 	}
 
-	abstract protected def void compile(EObject node)
+	abstract protected def CodeGenNode compile(EObject node)
 
-	protected var level = 0;
-
-	protected def indent() {
-		StringUtils.repeat("\t", level)
-	}
-
-	protected def append(Object object) {
-		builder.append(object)
-	}
-
-	int variableCounter = 0;
-	Map<Variable, String> variableNames = new WeakHashMap<Variable, String>()
+	var variableCounter = 0
+	val variableNames = new WeakHashMap<Variable, String>()
 
 	def freshLocalName() {
-		val newName = "_local" + variableCounter
+		val String newName = "_local" + variableCounter
 		variableCounter += 1
 		newName
 	}

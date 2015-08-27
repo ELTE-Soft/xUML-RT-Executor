@@ -23,6 +23,7 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.Template
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
@@ -35,25 +36,25 @@ import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
 
+import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+
 class ExpressionCompiler extends CompilerBase {
+
+	static extension CodeGenNode = CodeGenNode.extension
 
 	extension TypeConverter typeConverter = new TypeConverter
 	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
 
 	// Needed to be defined here for testing purposes.
-	def dispatch void compile(ExpressionStatement statement) {
+	def dispatch CodeGenNode compile(ExpressionStatement statement) {
 		compile(statement.expression)
-		append(";")
 	}
 
-	def dispatch void compile(BooleanLiteralExpression lit) {
-		append(PrimitiveOperations.BOOLEAN_LITERAL)
-		append("(")
-		append(lit.value)
-		append(")")
+	def dispatch CodeGenNode compile(BooleanLiteralExpression lit) {
+		booleanLiteral(lit.value)
 	}
 
-	def dispatch void compile(NaturalLiteralExpression lit) {
+	def dispatch CodeGenNode compile(NaturalLiteralExpression lit) {
 		var String digits = lit.value.replace("_", "")
 		var int radix = 10
 		if (digits.startsWith("0x") || digits.startsWith("0X")) {
@@ -66,127 +67,84 @@ class ExpressionCompiler extends CompilerBase {
 			digits = digits.substring(1)
 			radix = 8
 		}
-		append(PrimitiveOperations.INTEGER_LITERAL)
-		append('("')
-		append(digits)
-		append('", ')
-		append(radix)
-		append(")")
+		integerLiteral(digits, radix)
 	}
 
-	def dispatch void compile(RealLiteralExpression lit) {
-		append(PrimitiveOperations.REAL_LITERAL)
-		append("(")
-		append(lit.value)
-		append(")")
+	def dispatch CodeGenNode compile(RealLiteralExpression lit) {
+		realLiteral(lit.value)
 	}
 
-	def dispatch void compile(StringLiteralExpression lit) {
-		append(PrimitiveOperations.STRING_LITERAL)
-		append('("')
-		append(StringEscapeUtils.escapeJava(lit.value))
-		append('")')
+	def dispatch CodeGenNode compile(StringLiteralExpression lit) {
+		stringLiteral(StringEscapeUtils.escapeJava(lit.value))
 	}
 
-	def dispatch void compile(NullExpression expr) {
-		append(PrimitiveOperations.NULL_VALUE)
-		append("()")
+	def dispatch CodeGenNode compile(NullExpression expr) {
+		fun(PrimitiveOperations.NULL_VALUE)
 	}
 
-	def dispatch void compile(ThisExpression expr) {
-		append(PrimitiveOperations.WRAP)
-		append("(")
-		append(CONTEXT_NAME)
-		append(")")
+	def dispatch CodeGenNode compile(ThisExpression expr) {
+		wrap(CONTEXT_NAME)
 	}
 
-	def dispatch void compile(LocalNameDeclarationStatement declaration) {
-		val type = declaration.variable.type.type
+	def dispatch CodeGenNode compile(LocalNameDeclarationStatement declaration) {
+		val type = declaration.variable.type.type.convert.javaType(SINGLE)
 		val localName = declaration.variable.localName
-		append(type.convert.javaType(SINGLE))
-		append(" ")
-		append(localName)
-		append(" = ")
-		if (null != declaration.expression) {
-			compile(declaration.expression)
-		} else {
-			compileTypeInitializer(declaration.variable.type.type)
-		}
-		append(";")
+		val rhs = if (null != declaration.expression) {
+				compile(declaration.expression)
+			} else {
+				compileTypeInitializer(declaration.variable.type.type)
+			}
+		binOp(type <> " " <> localName, "=", rhs)
 	}
 
-	def dispatch compileTypeInitializer(PrimitiveType type) {
+	def dispatch CodeGenNode compileTypeInitializer(PrimitiveType type) {
 		switch type.name {
-			case "Boolean": {
-				append(PrimitiveOperations.BOOLEAN_LITERAL)
-				append("(false)")
-			}
-			case "Integer": {
-				append(PrimitiveOperations.INTEGER_LITERAL)
-				append('("0", 10)')
-			}
-			case "Real": {
-				append(PrimitiveOperations.REAL_LITERAL)
-				append("(0.0)")
-			}
-			case "String": {
-				append(PrimitiveOperations.STRING_LITERAL)
-				append('("")')
-			}
+			case "Boolean": booleanLiteral("false")
+			case "Integer": integerLiteral("0", 10)
+			case "Real": realLiteral("0.0")
+			case "String": stringLiteral("")
 		}
 	}
 
-	def dispatch compileTypeInitializer(Type type) {
-		append(PrimitiveOperations.NULL_VALUE)
-		append("()")
+	def dispatch CodeGenNode compileTypeInitializer(Type type) {
+		fun(PrimitiveOperations.NULL_VALUE)
 	}
 
-	def dispatch void compile(NameExpression expr) {
+	def dispatch CodeGenNode compile(NameExpression expr) {
 		val ref = expr.reference
 		switch ref {
-			Variable: append(ref.localName)
-			default: append(NamedReference.getIdentifier(ref))
+			Variable: sequence(ref.localName)
+			default: sequence(NamedReference.getIdentifier(ref))
 		}
 	}
 
-	def dispatch void compile(InstanceCreationExpression expr) {
+	def dispatch CodeGenNode compile(InstanceCreationExpression expr) {
 		switch expr.instance {
 			// TODO: add data types later
 			Signal: {
-				append(PrimitiveOperations.WRAP)
-				append("(new ")
-				append(NamedReference.getIdentifier(expr.instance))
-				append("(")
-				compile(expr.parameters, expr.instance as Signal)
-				append("))")
+				wrap("new " <>
+					(NamedReference.getIdentifier(expr.instance) <> compile(expr.parameters, expr.instance as Signal)))
 			}
 			Class: {
-				append(PrimitiveOperations.WRAP)
-				append("(")
-				append(NamedReference.getIdentifier(expr.instance))
-				append(".create(")
+				var param = sequence("null")
 				val constructor = getConstructor(expr.instance as Class)
-				if (null == constructor) {
-					append("null")
-				} else {
-					append("i -> i.")
-					append(NamedReference.getIdentifier(constructor))
-					append("(")
-					compile(expr.parameters, constructor)
-					append(")")
+				if (null != constructor) {
+					param = "i -> i" ->
+						(NamedReference.getIdentifier(constructor) <> compile(expr.parameters, constructor))
 				}
-				append("))")
+				wrap(NamedReference.getIdentifier(expr.instance) -> fun("create", param))
 			}
 		}
 	}
 
-	def dispatch compile(ExpressionList values, Signal signal) {
+	def dispatch CodeGenNode compile(ExpressionList values, Signal signal) {
 		if (!values.expressions.empty) {
 			throw new CompilationFailedException("Only by-name parameter passing is supported")
 		}
+		paren()
 	}
 
-	def dispatch compile(NamedTuple values, Signal signal) {
+	def dispatch CodeGenNode compile(NamedTuple values, Signal signal) {
 		compileExpressionList(values, signal.ownedAttributes)
 	}
 
@@ -198,87 +156,56 @@ class ExpressionCompiler extends CompilerBase {
 		}
 	}
 
-	def dispatch void compile(InstanceDeletionExpression expr) {
-		append(PrimitiveOperations.UNWRAP)
-		append("(")
-		compile(expr.reference)
-		append(").dispose()")
+	def dispatch CodeGenNode compile(InstanceDeletionExpression expr) {
+		unwrap(compile(expr.reference)) -> fun("dispose")
 	}
 
-	def dispatch void compile(FeatureInvocationExpression call) {
-		append(PrimitiveOperations.UNWRAP)
-		append("(")
-		compile(call.context)
-		append(").")
-		switch call.feature {
-			Operation: {
-				append(NamedReference.getIdentifier(call.feature))
-				append("(")
-				compile(call.parameters, call.feature)
-				append(")")
-			}
-			Property: {
-				append(Template.GETTER_PREFIX)
-				append(NamedReference.getIdentifier(call.feature))
-				append("()")
-			}
+	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {
+		unwrap(compile(call.context)) -> switch call.feature {
+			Operation: NamedReference.getIdentifier(call.feature) <> compile(call.parameters, call.feature)
+			Property: fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
 		}
 	}
 
-	def dispatch void compile(StaticFeatureInvocationExpression call) {
+	def dispatch CodeGenNode compile(StaticFeatureInvocationExpression call) {
 		val op = call.operation.reference as Operation
 		var cls = op.class_
 		if (Stereotypes.isExternalEntity(cls)) {
-			append(RUNTIME_INSTANCE)
-			append(".getExternalEntity(")
-			append(cls.name)
-			append(".class).")
-			append(op.name)
-			append("(")
-			if (1 == op.ownedParameters.length) {
-				// proxy parameter
-				val param = op.ownedParameters.get(0)
-				append("new ")
-				append(param.type.name)
-				append("(")
-				append(CONTEXT_NAME)
-				append(")")
-			}
-			append(")")
+			RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") ->
+				fun(op.name, if (1 == op.ownedParameters.length) {
+					// proxy parameter
+					val param = op.ownedParameters.get(0)
+					"new " <> fun(param.type.name, CONTEXT_NAME)
+				} else {
+					empty
+				})
 		} else {
-			append(NamedReference.getIdentifier(cls))
-			append(Template.CLASS_IMPL_SUFFIX)
-			append(".")
-			append(NamedReference.getIdentifier(op))
-			append("(")
-			compile(call.parameters, op)
-			append(")")
+			(NamedReference.getIdentifier(cls) <> Template.CLASS_IMPL_SUFFIX) ->
+				(NamedReference.getIdentifier(op) <> compile(call.parameters, op))
 		}
 	}
 
-	def dispatch compile(ExpressionList values, Operation operation) {
+	def dispatch CodeGenNode compile(ExpressionList values, Operation operation) {
 		if (!values.expressions.empty) {
 			throw new CompilationFailedException("Only by-name parameter passing is supported")
 		}
+		paren()
 	}
 
-	def dispatch compile(NamedTuple values, Operation operation) {
+	def dispatch CodeGenNode compile(NamedTuple values, Operation operation) {
 		compileExpressionList(values, operation.ownedParameters)
 	}
 
-	def void compileExpressionList(NamedTuple values, EList<? extends NamedElement> qualifiers) {
-		val upper = qualifiers.length
-		for (i : 0 ..< upper) {
-			val parameter = qualifiers.get(i)
+	def CodeGenNode compileExpressionList(NamedTuple values, EList<? extends NamedElement> qualifiers) {
+		val node = paren()
+		for (parameter : qualifiers) {
 			val value = getExpressionByName(values, parameter.name)
 			if (null == value) {
 				throw new CompilationFailedException("Unable to match named parameter")
 			}
-			compile(value)
-			if (i < upper - 1) {
-				append(", ")
-			}
+			node.add(compile(value))
 		}
+		node
 	}
 
 	def Expression getExpressionByName(NamedTuple values, String name) {
@@ -297,24 +224,13 @@ class ExpressionCompiler extends CompilerBase {
 		switch lhs {
 			// attribute assignment
 			FeatureInvocationExpression: {
-				append(PrimitiveOperations.UNWRAP)
-				append("(")
-				compile(lhs.context)
-				append(").")
-				append(Template.SETTER_PREFIX)
-				append(NamedReference.getIdentifier(lhs.feature))
-				append("(")
-				compile(assignment.rightHandSide)
-				append(")")
+				unwrap(compile(lhs.context)) ->
+					fun(Template.SETTER_PREFIX <> NamedReference.getIdentifier(lhs.feature),
+						compile(assignment.rightHandSide))
 			}
 			// local variable assignment
 			NameExpression: {
-				append(PrimitiveOperations.SET_VALUE)
-				append("(")
-				compile(lhs)
-				append(", ")
-				compile(assignment.rightHandSide)
-				append(")")
+				fun(PrimitiveOperations.SET_VALUE, compile(lhs), compile(assignment.rightHandSide))
 			}
 		}
 	}

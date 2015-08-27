@@ -50,4 +50,20 @@ class CodeGenNodeExtensons {
 		val paren = node.childNodeAt(1)
 		paren.childNodeAt(0)
 	}
+
+	def static booleanLiteral(String value) {
+		CodeGenNodeExtensons.fun(PrimitiveOperations.BOOLEAN_LITERAL, value)
+	}
+
+	def static integerLiteral(String digits, int radix) {
+		CodeGenNodeExtensons.fun(PrimitiveOperations.INTEGER_LITERAL, str(digits), radix)
+	}
+
+	def static realLiteral(String value) {
+		CodeGenNodeExtensons.fun(PrimitiveOperations.REAL_LITERAL, value)
+	}
+
+	def static stringLiteral(String value) {
+		CodeGenNodeExtensons.fun(PrimitiveOperations.STRING_LITERAL, str(value))
+	}
 }

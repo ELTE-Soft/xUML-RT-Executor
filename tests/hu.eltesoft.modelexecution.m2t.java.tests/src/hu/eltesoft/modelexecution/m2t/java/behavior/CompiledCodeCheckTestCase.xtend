@@ -4,16 +4,20 @@ import com.google.inject.Inject
 import com.incquerylabs.uml.ralf.api.IReducedAlfParser
 import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
+import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.junit.Before
 import org.junit.runner.RunWith
 
+import static hu.eltesoft.modelexecution.test.utils.Assert.*
 import static org.junit.Assert.*
 
 @RunWith(XtextRunner)
 @InjectWith(ReducedAlfJUnitInjector)
 abstract class CompiledCodeCheckTestCase {
+
+	static extension CodeGenNode = CodeGenNode.extension
 
 	@Inject
 	var IReducedAlfParser parser
@@ -32,9 +36,10 @@ abstract class CompiledCodeCheckTestCase {
 		(provider as TestModelUMLContextProvider).definedOperation = fqn
 	}
 
-	protected def assertCompilesTo(CharSequence actionCode, CharSequence expectedJavaCode) {
+	protected def assertCompilesTo(CharSequence actionCode, CodeGenNode ... expectedNodes) {
 		val results = parser.parse(actionCode.toString, provider)
 		assertTrue(results.validationOK)
-		assertEquals(expectedJavaCode.toString, compiler.compile(results).toString)
+		System.err.println(topLevelBlock(expectedNodes).toString)
+		assertStringEqualsWithoutBreaks(topLevelBlock(expectedNodes).toString, compiler.compile(results).toString)
 	}
 }

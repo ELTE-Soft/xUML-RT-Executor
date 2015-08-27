@@ -8,21 +8,25 @@ import java.util.List
 
 class CodeGenNode {
 
-	val Object before
-	val Object after
-	val Object separator
-	val Object terminator
-	val List<Object> items = new ArrayList
+	protected val Object before
+	protected val Object after
+	protected val Object separator
+	protected val Object terminator
+	protected val List<Object> items = new ArrayList
 
 	def static getExtension() {
 		new CodeGenNode()
+	}
+
+	def empty() {
+		sequence
 	}
 
 	def sequence(Object ... items) {
 		new CodeGenNode().add(items)
 	}
 
-	def apos(Object ...items) {
+	def str(Object ...items) {
 		new CodeGenNode('"', '"').add(items)
 	}
 
@@ -34,7 +38,7 @@ class CodeGenNode {
 		new CodeGenNode("{\n", "}\n", "", ";\n").add(items)
 	}
 
-	def rawBlock(Object ... items) {
+	def topLevelBlock(Object ... items) {
 		new CodeGenNode("", "", "", ";\n").add(items)
 	}
 
@@ -50,6 +54,10 @@ class CodeGenNode {
 	def isParen(CodeGenNode node) {
 		"(" == node.before.toString && ")" == node.after.toString && ", " == node.separator.toString &&
 			node.terminator.toString.empty
+	}
+
+	def isBlock(CodeGenNode node) {
+		node.separator.toString.empty && ";\n" == node.terminator.toString
 	}
 
 	def isDot(CodeGenNode node) {
@@ -98,16 +106,33 @@ class CodeGenNode {
 		builder.append(before)
 		val itemCount = items.length
 		for (i : 0 ..< itemCount) {
+			val item = items.get(i)
 			// fill the indentation parameter to call the dynamically dispatched append
 			// it enabled to add location information when the item is a DataWithLocation<?>
-			builder.append(items.get(i), "")
-			builder.append(terminator)
+			builder.append(item, "")
+			if (!isBlock || !(item instanceof CodeGenNode) || !(item as CodeGenNode).endsWithBlock) {
+				builder.append(terminator)
+			}
 			if (i < itemCount - 1) {
 				builder.append(separator)
 			}
 		}
 		builder.append(after)
 		builder.toSourceMappedText
+	}
+
+	def boolean endsWithBlock() {
+		if (isBlock) {
+			return true
+		}
+		if (items.empty) {
+			return false
+		}
+		val last = items.last
+		switch last {
+			CodeGenNode: last.isBlock || last.endsWithBlock
+			default: false
+		}
 	}
 
 	override toString() {

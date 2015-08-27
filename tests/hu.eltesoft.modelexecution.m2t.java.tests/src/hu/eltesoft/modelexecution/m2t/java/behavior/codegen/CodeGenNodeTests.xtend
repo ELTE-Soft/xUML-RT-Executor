@@ -77,7 +77,7 @@ class CodeGenNodeTests {
 
 	@Test
 	def testApos() {
-		val node = apos("a", "b", "c", "d")
+		val node = str("a", "b", "c", "d")
 		assertStringifiedTo(node, '''"abcd"''')
 	}
 
