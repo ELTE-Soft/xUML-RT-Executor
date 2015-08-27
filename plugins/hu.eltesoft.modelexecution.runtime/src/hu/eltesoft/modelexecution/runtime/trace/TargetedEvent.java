@@ -8,8 +8,8 @@ import org.json.JSONObject;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONDecoder;
-import hu.eltesoft.modelexecution.runtime.trace.json.JSONSerializable;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
+import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
 /**
  * An event and the class object that will receive the event. The class is
@@ -95,7 +95,9 @@ public class TargetedEvent implements JSONSerializable {
 
 	@Override
 	public void jsonDecode(JSONDecoder decoder, JSONObject obj) throws ClassNotFoundException, JSONException {
-		Class<?> targetClass = (Class<?>) decoder.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
+		@SuppressWarnings("unchecked")
+		Class<? extends StatefulClass> targetClass = (Class<? extends StatefulClass>) decoder
+				.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
 		int instanceID = obj.getInt(JSON_INSTANCE_ID);
 		target = InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);
 		event = (Event) decoder.decodeJSON(obj.get(JSON_KEY_EVENT));

@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug;
+package hu.eltesoft.modelexecution.ide.debug.jvm;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,9 +22,12 @@ import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.EventRequestManager;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.ide.debug.VirtualMachineListener.ThreadAction;
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener.ThreadAction;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
+/**
+ * Two way communication with the virtual machine running the runtime.
+ */
 @SuppressWarnings("restriction")
 public class VirtualMachineManager implements ITerminate {
 
@@ -216,4 +219,13 @@ public class VirtualMachineManager implements ITerminate {
 	public void disconnect() {
 		virtualMachine.dispose();
 	}
+
+	/**
+	 * @return the connection that allows querying the state of the runtime
+	 *         running in the virtual machine
+	 */
+	public VirtualMachineBrowser createConnection() {
+		return new VirtualMachineBrowser(virtualMachine);
+	}
+
 }

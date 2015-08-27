@@ -4,7 +4,7 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.Runtime;
 
 /**
- * The base class of generated code from UML classes.
+ * The base class of generated code from UML classes that have a state machine.
  */
 public abstract class ClassWithState extends Class implements StatefulClass {
 
@@ -33,6 +33,10 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	public int getInstanceID() {
 		return instanceID;
 	}
+	
+	public StateMachineRegion getStateMachine() {
+		return stateMachine;
+	}
 
 	public void init() {
 		stateMachine.doInitialTransition();
@@ -46,5 +50,10 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	@Override
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
+	}
+	
+	@Override
+	public String toString() {
+		return getOriginalClassName() + "#" + getInstanceID();
 	}
 }

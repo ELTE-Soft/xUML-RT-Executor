@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
-import hu.eltesoft.modelexecution.ide.debug.LaunchConfigReader;
+import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 
 public class AnimationController {
 

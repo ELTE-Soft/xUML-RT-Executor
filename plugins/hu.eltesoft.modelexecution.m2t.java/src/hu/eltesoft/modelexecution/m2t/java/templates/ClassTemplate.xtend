@@ -2,7 +2,9 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttribute
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAttribute
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
@@ -14,10 +16,13 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
+import java.util.LinkedList
 import java.util.concurrent.atomic.AtomicInteger
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClInheritedAssociation
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
+import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -37,6 +42,7 @@ class ClassTemplate extends Template {
 		public class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
+		
 			«content»
 		}
 	'''
@@ -47,8 +53,23 @@ class ClassTemplate extends Template {
 				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
 			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
 			«FOR parent : classDefinition.parents»
-				this.«parent.inherited» = «parent.inherited»;
+				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
+		}
+		
+		/** Meta-description of the structure of the class */
+		public static «ClassMeta.canonicalName» «META_REPR_NAME» = new «ClassMeta.canonicalName»(
+			«classDefinition.nameLiteral»,
+			new «PropertyMeta.canonicalName»[] { 
+				«FOR attr : classDefinition.allAttributes SEPARATOR ','»
+					new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
+						new «BoundsMeta.canonicalName»(«attr.type.upperBound», «attr.type.lowerBound»))
+				«ENDFOR»
+			}
+		);
+		
+		public String getOriginalClassName() {
+			return «META_REPR_NAME».getName();
 		}
 
 		«IF hasStateMachine»
@@ -240,5 +261,12 @@ class ClassTemplate extends Template {
 	def hasBody(ClOperation op) { op.method != null }
 
 	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
+	
+	def allAttributes(ClClass cls) { 
+		val list = new LinkedList<ClAttributeSpec>
+		list.addAll(cls.attributes)
+		list.addAll(cls.inheritedAttributes)
+		return list
+	}
 	
 }

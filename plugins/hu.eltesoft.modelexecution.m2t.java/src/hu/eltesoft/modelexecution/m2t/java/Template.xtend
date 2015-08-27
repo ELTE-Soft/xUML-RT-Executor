@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList
  */
 abstract class Template extends EmfTraceExtensions {
 
+	public static val META_REPR_NAME = "metaRepr"
 	private val DebugSymbols debugSymbols
 	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 
@@ -35,8 +36,7 @@ abstract class Template extends EmfTraceExtensions {
 	}
 
 	new(Named genModel) {
-		val nameMapping = new NameMapper().mapNames(genModel)
-		debugSymbols = new DebugSymbols(locationRegistry, nameMapping)
+		debugSymbols = new DebugSymbols(locationRegistry)
 	}
 
 	/**

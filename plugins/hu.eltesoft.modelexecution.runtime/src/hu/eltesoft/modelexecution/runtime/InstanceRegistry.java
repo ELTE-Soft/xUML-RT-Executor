@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +21,8 @@ public final class InstanceRegistry {
 	// partitioned by Runtime and synchronized.
 	private Map<InstanceKey, ClassWithState> instanceRegistry = new HashMap<>();
 
+	private List<InstanceListener> listeners = new LinkedList<>();
+
 	private static final InstanceRegistry INSTANCE = new InstanceRegistry();
 
 	private InstanceRegistry() {
@@ -27,7 +31,7 @@ public final class InstanceRegistry {
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public StatefulClass getInstance(Class<?> targetClass, int instanceID) {
+	public StatefulClass getInstance(Class<? extends StatefulClass> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
@@ -36,7 +40,11 @@ public final class InstanceRegistry {
 	 * instance is registered, it cannot be garbage-collected.
 	 */
 	public void registerInstance(ClassWithState instance) {
-		instanceRegistry.put(new InstanceKey(instance), instance);
+		InstanceKey key = new InstanceKey(instance);
+		instanceRegistry.put(key, instance);
+		for (InstanceListener listener : listeners) {
+			listener.instanceCreated(instance);
+		}
 	}
 
 	/**
@@ -44,12 +52,20 @@ public final class InstanceRegistry {
 	 * unregistered if it is sure that they will not be a target of an external
 	 * message.
 	 */
-	public void unregisterInstance(StatefulClass instance) {
-		instanceRegistry.remove(new InstanceKey(instance));
+	public void unregisterInstance(ClassWithState instance) {
+		InstanceKey key = new InstanceKey(instance);
+		instanceRegistry.remove(key);
+		for (InstanceListener listener : listeners) {
+			listener.instanceDeleted(instance);
+		}
 	}
 
 	public boolean isEmpty() {
 		return instanceRegistry.isEmpty();
+	}
+
+	public void addInstanceListener(InstanceListener listener) {
+		listeners.add(listener);
 	}
 
 	/**
@@ -59,23 +75,31 @@ public final class InstanceRegistry {
 		return INSTANCE;
 	}
 
-	private static final class InstanceKey {
+	public static final class InstanceKey {
+		private Class<? extends StatefulClass> klass;
+		private int instanceID;
+
 		public InstanceKey(StatefulClass instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
 		}
 
-		public InstanceKey(Class<?> klass, int instanceID) {
+		public InstanceKey(Class<? extends StatefulClass> klass, int instanceID) {
 			this.klass = klass;
 			this.instanceID = instanceID;
 		}
 
-		private Class<?> klass;
-		private int instanceID;
-
 		@Override
 		public int hashCode() {
 			return Objects.hash(klass, instanceID);
+		}
+
+		public Class<?> getKlass() {
+			return klass;
+		}
+
+		public int getInstanceID() {
+			return instanceID;
 		}
 
 		@Override
