@@ -22,6 +22,11 @@ public class PrimitiveOperations {
 	public static final String NEGATE_INTEGER = CLASS_PREFIX + "negateInteger";
 	public static final String NEGATE_REAL = CLASS_PREFIX + "negateReal";
 
+	public static final String INTEGER_PREFIX_DECREMENT = CLASS_PREFIX + "integerPrefixDecrement";
+	public static final String INTEGER_PREFIX_INCREMENT = CLASS_PREFIX + "integerPrefixIncrement";
+	public static final String INTEGER_POSTFIX_DECREMENT = CLASS_PREFIX + "integerPostfixDecrement";
+	public static final String INTEGER_POSTFIX_INCREMENT = CLASS_PREFIX + "integerPostfixIncrement";
+
 	public static final String BOOLEAN_AND = CLASS_PREFIX + "booleanAnd";
 	public static final String BOOLEAN_OR = CLASS_PREFIX + "booleanOr";
 
@@ -76,6 +81,28 @@ public class PrimitiveOperations {
 
 	public static ArrayList<Double> negateReal(final ArrayList<Double> value) {
 		return wrap(-unwrap(value));
+	}
+
+	public static ArrayList<BigInteger> integerPrefixDecrement(final ArrayList<BigInteger> value) {
+		value.set(0, unwrap(value).subtract(BigInteger.ONE));
+		return value;
+	}
+
+	public static ArrayList<BigInteger> integerPrefixIncrement(final ArrayList<BigInteger> value) {
+		value.set(0, unwrap(value).add(BigInteger.ONE));
+		return value;
+	}
+
+	public static ArrayList<BigInteger> integerPostfixDecrement(final ArrayList<BigInteger> value) {
+		BigInteger old = unwrap(value);
+		value.set(0, old.subtract(BigInteger.ONE));
+		return wrap(old);
+	}
+
+	public static ArrayList<BigInteger> integerPostfixIncrement(final ArrayList<BigInteger> value) {
+		BigInteger old = unwrap(value);
+		value.set(0, old.add(BigInteger.ONE));
+		return wrap(old);
 	}
 
 	public static ArrayList<Boolean> booleanAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {

@@ -57,6 +57,42 @@ class ArithmeticTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
+	def testPrefixDecrement() {
+		assertCompilesTo(
+			'''Integer x; --x;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)),
+			fun(PrimitiveOperations.INTEGER_PREFIX_DECREMENT, "_local0")
+		)
+	}
+
+	@Test
+	def testPrefixIncrement() {
+		assertCompilesTo(
+			'''Integer x; ++x;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)),
+			fun(PrimitiveOperations.INTEGER_PREFIX_INCREMENT, "_local0")
+		)
+	}
+
+	@Test
+	def testPostfixDecrement() {
+		assertCompilesTo(
+			'''Integer x; x--;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)),
+			fun(PrimitiveOperations.INTEGER_POSTFIX_DECREMENT, "_local0")
+		)
+	}
+
+	@Test
+	def testPostfixIncrement() {
+		assertCompilesTo(
+			'''Integer x; x++;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)),
+			fun(PrimitiveOperations.INTEGER_POSTFIX_INCREMENT, "_local0")
+		)
+	}
+
+	@Test
 	def testBooleanAnd() {
 		assertCompilesTo(
 			'''true && false;''',
