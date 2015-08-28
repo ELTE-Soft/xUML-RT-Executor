@@ -7,6 +7,8 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperation
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LocalNameDeclarationStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
@@ -25,6 +27,7 @@ import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
+import org.eclipse.uml2.uml.Association
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
@@ -206,5 +209,20 @@ class ExpressionCompiler extends CompilerBase {
 				return value.expression
 			}
 		}
+	}
+
+	def dispatch CodeGenNode compile(LinkOperationExpression expr) {
+		if (!(expr.parameters instanceof NamedTuple)) {
+			throw new CompilationFailedException("Only by-name association linking is supported")
+		}
+		val association = expr.association.reference as Association
+		var name = NamedReference.getIdentifier(association)
+		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds)
+		var opName = if (LinkOperation.LINK == expr.linkOperation) {
+				"link"
+			} else {
+				"unlink"
+			}
+		name <> "::" <> opName <> parameters
 	}
 }
