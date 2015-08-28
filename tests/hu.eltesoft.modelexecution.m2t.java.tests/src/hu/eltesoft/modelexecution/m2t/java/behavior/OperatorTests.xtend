@@ -176,6 +176,27 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 			fun(PrimitiveOperations.NEGATE_BOOLEAN,
 				fun(PrimitiveOperations.INTEGER_LESS_THAN_INTEGER, INTEGER_ONE, INTEGER_ZERO)))
 	}
+
+	@Test
+	def testPrimitiveTypeEquality() {
+		assertCompilesTo('''0 == 1;''', fun(PrimitiveOperations.VALUE_EQUALITY, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testPrimitiveTypeInequality() {
+		assertCompilesTo('''0 != 1;''',
+			fun(PrimitiveOperations.NEGATE_BOOLEAN, fun(PrimitiveOperations.VALUE_EQUALITY, INTEGER_ZERO, INTEGER_ONE)))
+	}
+
+	@Test
+	def testClassReferenceEquality() {
+		assertCompilesTo(
+			'''B b1; B b2; b1 == b2;''',
+			binOp("java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0", "=", fun(PrimitiveOperations.NULL_VALUE)),
+			binOp("java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1", "=", fun(PrimitiveOperations.NULL_VALUE)),
+			fun(PrimitiveOperations.REFERENCE_EQUALITY, "_local0", "_local1")
+		)
+	}
 //	@Test
 //	def testAddIntegers() {
 //		assertCompilesTo('''2 + 4;''', empty)

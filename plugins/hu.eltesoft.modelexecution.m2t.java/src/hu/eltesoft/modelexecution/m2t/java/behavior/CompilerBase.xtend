@@ -12,6 +12,7 @@ import hu.eltesoft.modelexecution.runtime.BaseRuntime
 import java.util.WeakHashMap
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.Type
+import java.util.EventObject
 
 abstract class CompilerBase {
 
@@ -68,6 +69,19 @@ abstract class CompilerBase {
 
 	protected def isString(EObject expression) {
 		primitiveType(typeSystem.STRING) == typeOf(expression)
+	}
+
+	protected def isPrimitive(EObject expression) {
+		expression.isBoolean || expression.isInteger || expression.isReal || expression.isString
+	}
+
+	protected def hasValueType(EObject expression) {
+		expression.isPrimitive
+		// TODO: add data types later
+	}
+
+	protected def hasReferenceType(EObject expression) {
+		!expression.hasValueType
 	}
 
 	// local name helpers

@@ -47,6 +47,9 @@ public class PrimitiveOperations {
 	public static final String REAL_LESS_THAN_INTEGER = CLASS_PREFIX + "realLessThanInteger";
 	public static final String REAL_LESS_THAN_REAL = CLASS_PREFIX + "realLessThanReal";
 
+	public static final String VALUE_EQUALITY = CLASS_PREFIX + "valueEquality";
+	public static final String REFERENCE_EQUALITY = CLASS_PREFIX + "referenceEquality";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -183,4 +186,11 @@ public class PrimitiveOperations {
 		return wrap(unwrap(lhs) < unwrap(rhs));
 	}
 
+	public static ArrayList<Boolean> valueEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
+		return wrap(unwrap(lhs).equals(unwrap(rhs)));
+	}
+
+	public static ArrayList<Boolean> referenceEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
+		return wrap(unwrap(lhs) == unwrap(rhs));
+	}
 }

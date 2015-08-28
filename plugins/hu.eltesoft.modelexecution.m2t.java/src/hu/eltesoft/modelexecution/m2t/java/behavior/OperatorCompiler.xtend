@@ -5,6 +5,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanUnaryExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ConditionalLogicalExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.EqualityExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LeftHandSide
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LiteralExpression
@@ -15,7 +16,6 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.NumericUnaryOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.PostfixExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.PrefixExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.RelationalExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.RelationalOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ShiftExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ShiftOperator
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
@@ -137,7 +137,7 @@ class OperatorCompiler extends ExpressionCompiler {
 		}
 	}
 
-	def dispatch compile(RelationalExpression expr) {
+	def dispatch CodeGenNode compile(RelationalExpression expr) {
 		val intLhs = expr.operand1.isInteger
 		val intRhs = expr.operand2.isInteger
 		val opName = if (intLhs && intRhs) {
@@ -152,14 +152,27 @@ class OperatorCompiler extends ExpressionCompiler {
 		val lesser = fun(opName, compile(expr.operand1), compile(expr.operand2))
 		val greater = fun(opName, compile(expr.operand2), compile(expr.operand1))
 		switch expr.operator {
-			case RelationalOperator.LESSER_THAN: lesser
-			case RelationalOperator.GREATER_OR_EQUALS: fun(PrimitiveOperations.NEGATE_BOOLEAN, lesser)
-			case RelationalOperator.GREATER_THAN: greater
-			case RelationalOperator.LESSER_OR_EQUALS: fun(PrimitiveOperations.NEGATE_BOOLEAN, greater)
+			case LESSER_THAN: lesser
+			case GREATER_OR_EQUALS: fun(PrimitiveOperations.NEGATE_BOOLEAN, lesser)
+			case GREATER_THAN: greater
+			case LESSER_OR_EQUALS: fun(PrimitiveOperations.NEGATE_BOOLEAN, greater)
 		}
 	}
 
-	def dispatch compile(AssignmentExpression assignment) {
+	def dispatch CodeGenNode compile(EqualityExpression expr) {
+		val opName = if (expr.operand1.hasValueType) {
+				PrimitiveOperations.VALUE_EQUALITY
+			} else {
+				PrimitiveOperations.REFERENCE_EQUALITY
+			};
+		val eq = fun(opName, compile(expr.operand1), compile(expr.operand2))
+		switch expr.operator {
+			case EQUALS: eq
+			case NOT_EQUALS: fun(PrimitiveOperations.NEGATE_BOOLEAN, eq)
+		}
+	}
+
+	def dispatch CodeGenNode compile(AssignmentExpression assignment) {
 		val lhs = assignment.leftHandSide
 		val rhs = if (AssignmentOperator.ASSIGN == assignment.operator) {
 				compile(assignment.rightHandSide)
@@ -183,17 +196,17 @@ class OperatorCompiler extends ExpressionCompiler {
 
 	def getAssignmentOperatorFunction(AssignmentOperator operator, boolean forBoolean) {
 		switch operator {
-			case AssignmentOperator.INCREMENT_ASSIGN: ""
-			case AssignmentOperator.DECREMENT_ASSIGN: ""
-			case AssignmentOperator.MULTIPLY_ASSIGN: ""
-			case AssignmentOperator.DIVISION_ASSIGN: ""
-			case AssignmentOperator.MODULO_ASSIGN: ""
-			case AssignmentOperator.AND_ASSIGN: getBitwiseFunction("&", forBoolean)
-			case AssignmentOperator.OR_ASSIGN: getBitwiseFunction("|", forBoolean)
-			case AssignmentOperator.XOR_ASSIGN: getBitwiseFunction("^", forBoolean)
-			case AssignmentOperator.LEFT_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.LEFT)
-			case AssignmentOperator.RIGHT_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.RIGHT)
-			case AssignmentOperator.TRIPLE_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.TRIPLE)
+			case INCREMENT_ASSIGN: ""
+			case DECREMENT_ASSIGN: ""
+			case MULTIPLY_ASSIGN: ""
+			case DIVISION_ASSIGN: ""
+			case MODULO_ASSIGN: ""
+			case AND_ASSIGN: getBitwiseFunction("&", forBoolean)
+			case OR_ASSIGN: getBitwiseFunction("|", forBoolean)
+			case XOR_ASSIGN: getBitwiseFunction("^", forBoolean)
+			case LEFT_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.LEFT)
+			case RIGHT_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.RIGHT)
+			case TRIPLE_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.TRIPLE)
 			default: throw new CompilationFailedException("Unsupported compound assignment operator")
 		}
 	}
