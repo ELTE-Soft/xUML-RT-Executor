@@ -35,10 +35,6 @@ abstract class CompilerBase {
 		compile(results.model)
 	}
 
-	protected def Type typeOf(EObject expression) {
-		typeSystem.type(expression).value.umlType
-	}
-
 	protected def CodeGenNode compile(Statements statements) {
 		var node = topLevelBlock()
 		for (statement : statements.statement) {
@@ -49,6 +45,32 @@ abstract class CompilerBase {
 
 	abstract protected def CodeGenNode compile(EObject node)
 
+	// type helpers
+	protected def Type typeOf(EObject expression) {
+		typeSystem.type(expression).value.umlType
+	}
+
+	protected def Type primitiveType(Object name) {
+		typeSystem.typeFactory.primitiveTypeReference(name.toString).umlType
+	}
+
+	protected def isBoolean(EObject expression) {
+		primitiveType(typeSystem.BOOLEAN) == typeOf(expression)
+	}
+
+	protected def isInteger(EObject expression) {
+		primitiveType(typeSystem.INTEGER) == typeOf(expression)
+	}
+
+	protected def isReal(EObject expression) {
+		primitiveType(typeSystem.REAL) == typeOf(expression)
+	}
+
+	protected def isString(EObject expression) {
+		primitiveType(typeSystem.STRING) == typeOf(expression)
+	}
+
+	// local name helpers
 	var variableCounter = 0
 	val variableNames = new WeakHashMap<Variable, String>()
 

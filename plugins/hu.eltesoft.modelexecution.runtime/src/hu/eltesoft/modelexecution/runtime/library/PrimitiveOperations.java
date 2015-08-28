@@ -12,10 +12,15 @@ public class PrimitiveOperations {
 	public static final String WRAP = CLASS_PREFIX + "wrap";
 	public static final String UNWRAP = CLASS_PREFIX + "unwrap";
 	public static final String SET_VALUE = CLASS_PREFIX + "setValue";
+
 	public static final String BOOLEAN_LITERAL = CLASS_PREFIX + "booleanLiteral";
 	public static final String INTEGER_LITERAL = CLASS_PREFIX + "integerLiteral";
 	public static final String REAL_LITERAL = CLASS_PREFIX + "realLiteral";
 	public static final String STRING_LITERAL = CLASS_PREFIX + "stringLiteral";
+
+	public static final String NEGATE_BOOLEAN = CLASS_PREFIX + "negateBoolean";
+	public static final String NEGATE_INTEGER = CLASS_PREFIX + "negateInteger";
+	public static final String NEGATE_REAL = CLASS_PREFIX + "negateReal";
 
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
@@ -31,7 +36,7 @@ public class PrimitiveOperations {
 
 	public static <T> ArrayList<T> setValue(final ArrayList<T> wrapper, final ArrayList<T> newValue) {
 		wrapper.set(0, unwrap(newValue));
-		return newValue;
+		return wrapper;
 	}
 
 	public static ArrayList<Boolean> booleanLiteral(final boolean value) {
@@ -48,5 +53,20 @@ public class PrimitiveOperations {
 
 	public static ArrayList<String> stringLiteral(final String value) {
 		return wrap(value);
+	}
+
+	public static ArrayList<Boolean> negateBoolean(final ArrayList<Boolean> value) {
+		value.set(0, !unwrap(value));
+		return value;
+	}
+	
+	public static ArrayList<BigInteger> negateInteger(final ArrayList<BigInteger> value) {
+		value.set(0, unwrap(value).negate());
+		return value;
+	}
+
+	public static ArrayList<Double> negateReal(final ArrayList<Double> value) {
+		value.set(0, -unwrap(value));
+		return value;
 	}
 }
