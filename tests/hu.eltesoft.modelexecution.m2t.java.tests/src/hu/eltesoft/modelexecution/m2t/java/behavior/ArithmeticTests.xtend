@@ -156,6 +156,29 @@ class ArithmeticTests extends CompiledCodeCheckTestCase {
 		)
 	}
 
+	@Test
+	def testIntegerShiftLeft() {
+		assertCompilesTo(
+			'''1024 << 2;''',
+			fun(PrimitiveOperations.INTEGER_SHIFT_LEFT, integerLiteral("1024", 10), integerLiteral("2", 10))
+		)
+	}
+
+@Test
+	def testIntegerShiftRight() {
+		assertCompilesTo(
+			'''1024 >> 2;''',
+			fun(PrimitiveOperations.INTEGER_SHIFT_RIGHT, integerLiteral("1024", 10), integerLiteral("2", 10))
+		)
+	}
+
+@Test
+	def testIntegerShiftRightUnsigned() {
+		assertCompilesTo(
+			'''1024 >>> 2;''',
+			fun(PrimitiveOperations.INTEGER_SHIFT_RIGHT_UNSIGNED, integerLiteral("1024", 10), integerLiteral("2", 10))
+		)
+	}
 //	@Test
 //	def testAddIntegers() {
 //		assertCompilesTo('''2 + 4;''', empty)

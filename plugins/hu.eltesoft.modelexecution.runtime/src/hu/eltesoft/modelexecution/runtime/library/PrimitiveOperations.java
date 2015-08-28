@@ -38,6 +38,10 @@ public class PrimitiveOperations {
 	public static final String INTEGER_BITWISE_OR = CLASS_PREFIX + "integerBitwiseOr";
 	public static final String INTEGER_BITWISE_XOR = CLASS_PREFIX + "integerBitwiseXor";
 
+	public static final String INTEGER_SHIFT_LEFT = CLASS_PREFIX + "integerShiftLeft";
+	public static final String INTEGER_SHIFT_RIGHT = CLASS_PREFIX + "integerShiftRight";
+	public static final String INTEGER_SHIFT_RIGHT_UNSIGNED = CLASS_PREFIX + "integerShiftRightUnsigned";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -138,5 +142,22 @@ public class PrimitiveOperations {
 	public static ArrayList<BigInteger> integerBitwiseXor(final ArrayList<BigInteger> lhs,
 			final ArrayList<BigInteger> rhs) {
 		return wrap(unwrap(lhs).xor(unwrap(rhs)));
+	}
+
+	public static ArrayList<BigInteger> integerShiftLeft(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).shiftLeft(unwrap(rhs).intValue()));
+	}
+
+	public static ArrayList<BigInteger> integerShiftRight(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).shiftRight(unwrap(rhs).intValue()));
+	}
+
+	public static ArrayList<BigInteger> integerShiftRightUnsigned(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		// The unsigned shift is the same as the signed.
+		// This is guaranteed by the representation of BigInteger class.
+		return integerShiftRight(lhs, rhs);
 	}
 }

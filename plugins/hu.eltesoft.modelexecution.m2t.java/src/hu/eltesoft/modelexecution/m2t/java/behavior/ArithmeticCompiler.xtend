@@ -10,6 +10,8 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.NumericUnaryExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NumericUnaryOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.PostfixExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.PrefixExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ShiftExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ShiftOperator
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
@@ -95,6 +97,15 @@ class ArithmeticCompiler extends ExpressionCompiler {
 					PrimitiveOperations.BOOLEAN_BITWISE_XOR
 				else
 					PrimitiveOperations.INTEGER_BITWISE_XOR
+		}
+		fun(opName, compile(expr.operand1), compile(expr.operand2))
+	}
+
+	def dispatch CodeGenNode compile(ShiftExpression expr) {
+		val opName = switch expr.operator {
+			case ShiftOperator.LEFT: PrimitiveOperations.INTEGER_SHIFT_LEFT
+			case ShiftOperator.RIGHT: PrimitiveOperations.INTEGER_SHIFT_RIGHT
+			case ShiftOperator.TRIPLE: PrimitiveOperations.INTEGER_SHIFT_RIGHT_UNSIGNED
 		}
 		fun(opName, compile(expr.operand1), compile(expr.operand2))
 	}
