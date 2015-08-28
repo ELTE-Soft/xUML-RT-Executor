@@ -22,6 +22,17 @@ public class PrimitiveOperations {
 	public static final String NEGATE_INTEGER = CLASS_PREFIX + "negateInteger";
 	public static final String NEGATE_REAL = CLASS_PREFIX + "negateReal";
 
+	public static final String BOOLEAN_AND = CLASS_PREFIX + "booleanAnd";
+	public static final String BOOLEAN_OR = CLASS_PREFIX + "booleanOr";
+
+	public static final String BOOLEAN_BITWISE_AND = CLASS_PREFIX + "booleanBitwiseAnd";
+	public static final String BOOLEAN_BITWISE_OR = CLASS_PREFIX + "booleanBitwiseOr";
+	public static final String BOOLEAN_BITWISE_XOR = CLASS_PREFIX + "booleanBitwiseXor";
+
+	public static final String INTEGER_BITWISE_AND = CLASS_PREFIX + "integerBitwiseAnd";
+	public static final String INTEGER_BITWISE_OR = CLASS_PREFIX + "integerBitwiseOr";
+	public static final String INTEGER_BITWISE_XOR = CLASS_PREFIX + "integerBitwiseXor";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -36,7 +47,7 @@ public class PrimitiveOperations {
 
 	public static <T> ArrayList<T> setValue(final ArrayList<T> wrapper, final ArrayList<T> newValue) {
 		wrapper.set(0, unwrap(newValue));
-		return wrapper;
+		return newValue;
 	}
 
 	public static ArrayList<Boolean> booleanLiteral(final boolean value) {
@@ -56,17 +67,49 @@ public class PrimitiveOperations {
 	}
 
 	public static ArrayList<Boolean> negateBoolean(final ArrayList<Boolean> value) {
-		value.set(0, !unwrap(value));
-		return value;
+		return wrap(!unwrap(value));
 	}
-	
+
 	public static ArrayList<BigInteger> negateInteger(final ArrayList<BigInteger> value) {
-		value.set(0, unwrap(value).negate());
-		return value;
+		return wrap(unwrap(value).negate());
 	}
 
 	public static ArrayList<Double> negateReal(final ArrayList<Double> value) {
-		value.set(0, -unwrap(value));
-		return value;
+		return wrap(-unwrap(value));
+	}
+
+	public static ArrayList<Boolean> booleanAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+		return wrap(unwrap(lhs) && unwrap(rhs));
+	}
+
+	public static ArrayList<Boolean> booleanOr(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+		return wrap(unwrap(lhs) || unwrap(rhs));
+	}
+
+	public static ArrayList<Boolean> booleanBitwiseAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+		return wrap(unwrap(lhs) & unwrap(rhs));
+	}
+
+	public static ArrayList<Boolean> booleanBitwiseOr(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+		return wrap(unwrap(lhs) | unwrap(rhs));
+	}
+
+	public static ArrayList<Boolean> booleanBitwiseXor(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+		return wrap(unwrap(lhs) ^ unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerBitwiseAnd(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).and(unwrap(rhs)));
+	}
+
+	public static ArrayList<BigInteger> integerBitwiseOr(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).or(unwrap(rhs)));
+	}
+
+	public static ArrayList<BigInteger> integerBitwiseXor(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).xor(unwrap(rhs)));
 	}
 }

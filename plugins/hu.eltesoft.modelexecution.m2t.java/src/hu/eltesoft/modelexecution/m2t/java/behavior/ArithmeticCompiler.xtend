@@ -8,6 +8,9 @@ import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanUnaryExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ConditionalLogicalExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.LogicalExpression
+import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes
 
 class ArithmeticCompiler extends ExpressionCompiler {
 
@@ -25,7 +28,8 @@ class ArithmeticCompiler extends ExpressionCompiler {
 				value.value = if("true" == value.value) "false" else "true"
 				compile(expr.operand)
 			}
-			default: fun(PrimitiveOperations.NEGATE_BOOLEAN, compile(expr.operand))
+			default:
+				fun(PrimitiveOperations.NEGATE_BOOLEAN, compile(expr.operand))
 		}
 	}
 
@@ -44,5 +48,22 @@ class ArithmeticCompiler extends ExpressionCompiler {
 			}
 		}
 		compile(expr.operand)
+	}
+
+	def dispatch CodeGenNode compile(ConditionalLogicalExpression expr) {
+		val opName = if("&&" == expr.operator) PrimitiveOperations.BOOLEAN_AND else PrimitiveOperations.BOOLEAN_OR
+		fun(opName, compile(expr.operand1), compile(expr.operand2))
+	}
+
+	def dispatch CodeGenNode compile(LogicalExpression expr) {
+		val opName = switch expr.operator {
+			case "&": if(expr.isBoolean) PrimitiveOperations.BOOLEAN_BITWISE_AND else PrimitiveOperations.
+				INTEGER_BITWISE_AND
+			case "|": if(expr.isBoolean) PrimitiveOperations.BOOLEAN_BITWISE_OR else PrimitiveOperations.
+				INTEGER_BITWISE_OR
+			case "^": if(expr.isBoolean) PrimitiveOperations.BOOLEAN_BITWISE_XOR else PrimitiveOperations.
+				INTEGER_BITWISE_XOR
+		}
+		fun(opName, compile(expr.operand1), compile(expr.operand2))
 	}
 }

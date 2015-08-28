@@ -56,6 +56,70 @@ class ArithmeticTests extends CompiledCodeCheckTestCase {
 		)
 	}
 
+	@Test
+	def testBooleanAnd() {
+		assertCompilesTo(
+			'''true && false;''',
+			fun(PrimitiveOperations.BOOLEAN_AND, booleanLiteral("true"), booleanLiteral("false"))
+		)
+	}
+
+	@Test
+	def testBooleanOr() {
+		assertCompilesTo(
+			'''true || false;''',
+			fun(PrimitiveOperations.BOOLEAN_OR, booleanLiteral("true"), booleanLiteral("false"))
+		)
+	}
+
+	@Test
+	def testBooleanBitwiseAnd() {
+		assertCompilesTo(
+			'''true & false;''',
+			fun(PrimitiveOperations.BOOLEAN_BITWISE_AND, booleanLiteral("true"), booleanLiteral("false"))
+		)
+	}
+
+	@Test
+	def testBooleanBitwiseOr() {
+		assertCompilesTo(
+			'''true | false;''',
+			fun(PrimitiveOperations.BOOLEAN_BITWISE_OR, booleanLiteral("true"), booleanLiteral("false"))
+		)
+	}
+
+	@Test
+	def testBooleanBitwiseXor() {
+		assertCompilesTo(
+			'''true ^ false;''',
+			fun(PrimitiveOperations.BOOLEAN_BITWISE_XOR, booleanLiteral("true"), booleanLiteral("false"))
+		)
+	}
+
+	@Test
+	def testIntegerBitwiseAnd() {
+		assertCompilesTo(
+			'''10 & 20;''',
+			fun(PrimitiveOperations.INTEGER_BITWISE_AND, integerLiteral("10", 10), integerLiteral("20", 10))
+		)
+	}
+
+	@Test
+	def testIntegerBitwiseOr() {
+		assertCompilesTo(
+			'''10 | 20;''',
+			fun(PrimitiveOperations.INTEGER_BITWISE_OR, integerLiteral("10", 10), integerLiteral("20", 10))
+		)
+	}
+
+	@Test
+	def testIntegerBitwiseXor() {
+		assertCompilesTo(
+			'''10 ^ 20;''',
+			fun(PrimitiveOperations.INTEGER_BITWISE_XOR, integerLiteral("10", 10), integerLiteral("20", 10))
+		)
+	}
+
 //	@Test
 //	def testAddIntegers() {
 //		assertCompilesTo('''2 + 4;''', empty)

@@ -73,6 +73,16 @@
       </ownedAttribute>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_RZE2kEvVEeWbvJ0DeAHZOQ" name="OpAttr"/>
     </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_nmXLsEzTEeWKTdNBA6WBAA" name="AB" memberEnd="_nmqGokzTEeWKTdNBA6WBAA _nmqGo0zTEeWKTdNBA6WBAA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_nmqGoEzTEeWKTdNBA6WBAA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_nmqGoUzTEeWKTdNBA6WBAA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_nmqGokzTEeWKTdNBA6WBAA" name="b" type="_9SdsIEDoEeWCNoKXHvCpUQ" association="_nmXLsEzTEeWKTdNBA6WBAA"/>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_nmqGo0zTEeWKTdNBA6WBAA" name="a" type="_aeMPwMc1EeSnK7LttAdTLw" association="_nmXLsEzTEeWKTdNBA6WBAA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yYEawEzTEeWKTdNBA6WBAA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yYhGsEzTEeWKTdNBA6WBAA" value="*"/>
+      </ownedEnd>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z7Si8BWVEeWYQpLaR7ziYA">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkRWVEeWYQpLaR7ziYA" source="PapyrusVersion">
         <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Z7YpkhWVEeWYQpLaR7ziYA" key="Version" value="0.0.4"/>
