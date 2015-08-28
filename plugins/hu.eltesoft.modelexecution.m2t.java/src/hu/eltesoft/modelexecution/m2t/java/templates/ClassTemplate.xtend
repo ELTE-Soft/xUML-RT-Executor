@@ -84,9 +84,7 @@ class ClassTemplate extends Template {
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
-				«generateReception(reception, false)»
-				
-				«generateReception(reception, true)»
+				«generateExternalReception(reception)»
 			«ENDFOR»
 			
 		«ENDIF»
@@ -238,12 +236,12 @@ class ClassTemplate extends Template {
 		«ENDIF»
 	'''
 	
-	def generateReception(ClReception reception, boolean isExternal) '''
-		/** Method for reception «reception.javadoc» 
+	def generateExternalReception(ClReception reception) '''
+		/** Method for external reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
 		@Override
-		public void «reception.identifier»«IF isExternal»_external«ENDIF»(
+		public void «reception.identifier»_external(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»
 			«ENDFOR»
@@ -253,7 +251,7 @@ class ClassTemplate extends Template {
 					«parameter.identifier»
 				«ENDFOR»
 			);
-			«runtime».add«IF isExternal»External«ENDIF»EventToQueue(this, new «SignalEvent.canonicalName»(signal));
+			«runtime».addExternalEventToQueue(this, new «SignalEvent.canonicalName»(signal));
 		}
 	'''
 
