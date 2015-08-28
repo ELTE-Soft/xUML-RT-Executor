@@ -38,20 +38,20 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testNegateBooleanExpression() {
 		assertCompilesTo('''Boolean x; !x;''', binOp("java.util.ArrayList<java.lang.Boolean> _local0", "=", FALSE),
-			fun(PrimitiveOperations.NEGATE_BOOLEAN, "_local0"))
+			fun(PrimitiveOperations.BOOLEAN_NEGATE, "_local0"))
 	}
 
 	@Test
 	def testUnaryMinusIntegerExpression() {
 		assertCompilesTo('''Integer x; -x;''',
 			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", INTEGER_ZERO),
-			fun(PrimitiveOperations.NEGATE_INTEGER, "_local0"))
+			fun(PrimitiveOperations.INTEGER_NEGATE, "_local0"))
 	}
 
 	@Test
 	def testUnaryMinusRealExpression() {
 		assertCompilesTo('''Real x; -x;''', binOp("java.util.ArrayList<java.lang.Double> _local0", "=", REAL_ZERO),
-			fun(PrimitiveOperations.NEGATE_REAL, "_local0"))
+			fun(PrimitiveOperations.REAL_NEGATE, "_local0"))
 	}
 
 	@Test
@@ -166,14 +166,14 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testIntegerGreaterOrEqualInteger() {
 		assertCompilesTo('''0 >= 1;''',
-			fun(PrimitiveOperations.NEGATE_BOOLEAN,
+			fun(PrimitiveOperations.BOOLEAN_NEGATE,
 				fun(PrimitiveOperations.INTEGER_LESS_THAN_INTEGER, INTEGER_ZERO, INTEGER_ONE)))
 	}
 
 	@Test
 	def testIntegerLessOrEqualInteger() {
 		assertCompilesTo('''0 <= 1;''',
-			fun(PrimitiveOperations.NEGATE_BOOLEAN,
+			fun(PrimitiveOperations.BOOLEAN_NEGATE,
 				fun(PrimitiveOperations.INTEGER_LESS_THAN_INTEGER, INTEGER_ONE, INTEGER_ZERO)))
 	}
 
@@ -185,7 +185,7 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testPrimitiveTypeInequality() {
 		assertCompilesTo('''0 != 1;''',
-			fun(PrimitiveOperations.NEGATE_BOOLEAN, fun(PrimitiveOperations.VALUE_EQUALITY, INTEGER_ZERO, INTEGER_ONE)))
+			fun(PrimitiveOperations.BOOLEAN_NEGATE, fun(PrimitiveOperations.VALUE_EQUALITY, INTEGER_ZERO, INTEGER_ONE)))
 	}
 
 	@Test
@@ -197,28 +197,95 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 			fun(PrimitiveOperations.REFERENCE_EQUALITY, "_local0", "_local1")
 		)
 	}
-//	@Test
-//	def testAddIntegers() {
-//		assertCompilesTo('''2 + 4;''', empty)
-//	}
-//	
-//	@Test
-//	def testAddReals() {
-//		assertCompilesTo('''2.0 + 4.0;''', empty)
-//	}
-//	
-//	@Test
-//	def testAddIntegerToReal() {
-//		assertCompilesTo('''2 + 4.0;''', empty)
-//	}
-//	
-//	@Test
-//	def testAddRealToInteger() {
-//		assertCompilesTo('''2.0 + 4;''', empty)
-//	}
-//
-//	@Test
-//	def testConcatenateStrings() {
-//		assertCompilesTo('''"Hello " + "world!"''', empty)
-//	}
+
+	@Test
+	def testStringConcatenation() {
+		assertCompilesTo('''"a" + "b";''',
+			fun(PrimitiveOperations.STRING_CONCATENATION, stringLiteral("a"), stringLiteral("b")))
+	}
+
+	@Test
+	def testIntegerAddInteger() {
+		assertCompilesTo('''0 + 1;''', fun(PrimitiveOperations.INTEGER_ADD_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testIntegerAddReal() {
+		assertCompilesTo('''0 + 1.0;''', fun(PrimitiveOperations.INTEGER_ADD_REAL, INTEGER_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testRealAddInteger() {
+		assertCompilesTo('''0.0 + 1;''', fun(PrimitiveOperations.REAL_ADD_INTEGER, REAL_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testRealAddReal() {
+		assertCompilesTo('''0.0 + 1.0;''', fun(PrimitiveOperations.REAL_ADD_REAL, REAL_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testIntegerSubtractInteger() {
+		assertCompilesTo('''0 - 1;''', fun(PrimitiveOperations.INTEGER_SUBTRACT_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testIntegerSubtractReal() {
+		assertCompilesTo('''0 - 1.0;''', fun(PrimitiveOperations.INTEGER_SUBTRACT_REAL, INTEGER_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testRealSubtractInteger() {
+		assertCompilesTo('''0.0 - 1;''', fun(PrimitiveOperations.REAL_SUBTRACT_INTEGER, REAL_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testRealSubtractReal() {
+		assertCompilesTo('''0.0 - 1.0;''', fun(PrimitiveOperations.REAL_SUBTRACT_REAL, REAL_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testIntegerMultiplyInteger() {
+		assertCompilesTo('''0 * 1;''', fun(PrimitiveOperations.INTEGER_MULTIPLY_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testIntegerMultiplyReal() {
+		assertCompilesTo('''0 * 1.0;''', fun(PrimitiveOperations.INTEGER_MULTIPLY_REAL, INTEGER_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testRealMultiplyInteger() {
+		assertCompilesTo('''0.0 * 1;''', fun(PrimitiveOperations.REAL_MULTIPLY_INTEGER, REAL_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testRealMultiplyReal() {
+		assertCompilesTo('''0.0 * 1.0;''', fun(PrimitiveOperations.REAL_MULTIPLY_REAL, REAL_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testIntegerDivideInteger() {
+		assertCompilesTo('''0 / 1;''', fun(PrimitiveOperations.INTEGER_DIVIDE_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testIntegerDivideReal() {
+		assertCompilesTo('''0 / 1.0;''', fun(PrimitiveOperations.INTEGER_DIVIDE_REAL, INTEGER_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testRealDivideInteger() {
+		assertCompilesTo('''0.0 / 1;''', fun(PrimitiveOperations.REAL_DIVIDE_INTEGER, REAL_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testRealDivideReal() {
+		assertCompilesTo('''0.0 / 1.0;''', fun(PrimitiveOperations.REAL_DIVIDE_REAL, REAL_ZERO, REAL_ONE))
+	}
+
+	@Test
+	def testIntegerModuloInteger() {
+		assertCompilesTo('''0 % 1;''', fun(PrimitiveOperations.INTEGER_MODULO_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
 }

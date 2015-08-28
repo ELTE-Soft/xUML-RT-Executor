@@ -21,6 +21,66 @@ class AssignmentTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
+	def testStringConcatAssign() {
+		assertCompilesTo(
+			'''String x; x += "a";''',
+			binOp("java.util.ArrayList<java.lang.String> _local0", "=", stringLiteral("")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.STRING_CONCATENATION, "_local0", stringLiteral("a")))
+		)
+	}
+
+	@Test
+	def testRealAddIntegerAssign() {
+		assertCompilesTo(
+			'''Real x; x += 1;''',
+			binOp("java.util.ArrayList<java.lang.Double> _local0", "=", realLiteral("0.0")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.REAL_ADD_INTEGER, "_local0", integerLiteral("1", 10)))
+		)
+	}
+
+	@Test
+	def testRealSubtractIntegerAssign() {
+		assertCompilesTo(
+			'''Real x; x -= 1;''',
+			binOp("java.util.ArrayList<java.lang.Double> _local0", "=", realLiteral("0.0")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.REAL_SUBTRACT_INTEGER, "_local0", integerLiteral("1", 10)))
+		)
+	}
+
+	@Test
+	def testRealMultiplyIntegerAssign() {
+		assertCompilesTo(
+			'''Real x; x *= 1;''',
+			binOp("java.util.ArrayList<java.lang.Double> _local0", "=", realLiteral("0.0")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.REAL_MULTIPLY_INTEGER, "_local0", integerLiteral("1", 10)))
+		)
+	}
+
+	@Test
+	def testRealDivideIntegerAssign() {
+		assertCompilesTo(
+			'''Real x; x /= 1;''',
+			binOp("java.util.ArrayList<java.lang.Double> _local0", "=", realLiteral("0.0")),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.REAL_DIVIDE_INTEGER, "_local0", integerLiteral("1", 10)))
+		)
+	}
+
+	@Test
+	def testIntegerModuloIntegerAssign() {
+		assertCompilesTo(
+			'''Integer x; x %= 1;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)),
+			fun(PrimitiveOperations.SET_VALUE, "_local0",
+				fun(PrimitiveOperations.INTEGER_MODULO_INTEGER, "_local0", integerLiteral("1", 10)))
+		)
+	}
+
+	@Test
 	def testBooleanBitwiseAndAssign() {
 		assertCompilesTo(
 			'''Boolean b; b &= true;''',

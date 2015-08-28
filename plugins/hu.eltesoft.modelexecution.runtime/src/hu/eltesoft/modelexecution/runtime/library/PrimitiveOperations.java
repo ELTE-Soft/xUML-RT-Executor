@@ -18,14 +18,38 @@ public class PrimitiveOperations {
 	public static final String REAL_LITERAL = CLASS_PREFIX + "realLiteral";
 	public static final String STRING_LITERAL = CLASS_PREFIX + "stringLiteral";
 
-	public static final String NEGATE_BOOLEAN = CLASS_PREFIX + "negateBoolean";
-	public static final String NEGATE_INTEGER = CLASS_PREFIX + "negateInteger";
-	public static final String NEGATE_REAL = CLASS_PREFIX + "negateReal";
+	public static final String BOOLEAN_NEGATE = CLASS_PREFIX + "booleanNegate";
+	public static final String INTEGER_NEGATE = CLASS_PREFIX + "integerNegate";
+	public static final String REAL_NEGATE = CLASS_PREFIX + "realNegate";
 
 	public static final String INTEGER_PREFIX_DECREMENT = CLASS_PREFIX + "integerPrefixDecrement";
 	public static final String INTEGER_PREFIX_INCREMENT = CLASS_PREFIX + "integerPrefixIncrement";
 	public static final String INTEGER_POSTFIX_DECREMENT = CLASS_PREFIX + "integerPostfixDecrement";
 	public static final String INTEGER_POSTFIX_INCREMENT = CLASS_PREFIX + "integerPostfixIncrement";
+
+	public static final String STRING_CONCATENATION = CLASS_PREFIX + "stringConcatenation";
+
+	public static final String INTEGER_ADD_INTEGER = CLASS_PREFIX + "integerAddInteger";
+	public static final String INTEGER_ADD_REAL = CLASS_PREFIX + "integerAddReal";
+	public static final String REAL_ADD_INTEGER = CLASS_PREFIX + "realAddInteger";
+	public static final String REAL_ADD_REAL = CLASS_PREFIX + "realAddReal";
+
+	public static final String INTEGER_SUBTRACT_INTEGER = CLASS_PREFIX + "integerSubtractInteger";
+	public static final String INTEGER_SUBTRACT_REAL = CLASS_PREFIX + "integerSubtractReal";
+	public static final String REAL_SUBTRACT_INTEGER = CLASS_PREFIX + "realSubtractInteger";
+	public static final String REAL_SUBTRACT_REAL = CLASS_PREFIX + "realSubtractReal";
+
+	public static final String INTEGER_MULTIPLY_INTEGER = CLASS_PREFIX + "integerMultiplyInteger";
+	public static final String INTEGER_MULTIPLY_REAL = CLASS_PREFIX + "integerMultiplyReal";
+	public static final String REAL_MULTIPLY_INTEGER = CLASS_PREFIX + "realMultiplyInteger";
+	public static final String REAL_MULTIPLY_REAL = CLASS_PREFIX + "realMultiplyReal";
+
+	public static final String INTEGER_DIVIDE_INTEGER = CLASS_PREFIX + "integerDivideInteger";
+	public static final String INTEGER_DIVIDE_REAL = CLASS_PREFIX + "integerDivideReal";
+	public static final String REAL_DIVIDE_INTEGER = CLASS_PREFIX + "realDivideInteger";
+	public static final String REAL_DIVIDE_REAL = CLASS_PREFIX + "realDivideReal";
+
+	public static final String INTEGER_MODULO_INTEGER = CLASS_PREFIX + "integerModuloInteger";
 
 	public static final String BOOLEAN_AND = CLASS_PREFIX + "booleanAnd";
 	public static final String BOOLEAN_OR = CLASS_PREFIX + "booleanOr";
@@ -83,15 +107,15 @@ public class PrimitiveOperations {
 		return wrap(value);
 	}
 
-	public static ArrayList<Boolean> negateBoolean(final ArrayList<Boolean> value) {
+	public static ArrayList<Boolean> booleanNegate(final ArrayList<Boolean> value) {
 		return wrap(!unwrap(value));
 	}
 
-	public static ArrayList<BigInteger> negateInteger(final ArrayList<BigInteger> value) {
+	public static ArrayList<BigInteger> integerNegate(final ArrayList<BigInteger> value) {
 		return wrap(unwrap(value).negate());
 	}
 
-	public static ArrayList<Double> negateReal(final ArrayList<Double> value) {
+	public static ArrayList<Double> realNegate(final ArrayList<Double> value) {
 		return wrap(-unwrap(value));
 	}
 
@@ -115,6 +139,83 @@ public class PrimitiveOperations {
 		BigInteger old = unwrap(value);
 		value.set(0, old.add(BigInteger.ONE));
 		return wrap(old);
+	}
+
+	public static ArrayList<String> stringConcatenation(final ArrayList<String> lhs, final ArrayList<String> rhs) {
+		return wrap(unwrap(lhs) + unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerAddInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).add(unwrap(rhs)));
+	}
+
+	public static ArrayList<Double> integerAddReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs).doubleValue() + unwrap(rhs));
+	}
+
+	public static ArrayList<Double> realAddInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs) + unwrap(rhs).doubleValue());
+	}
+
+	public static ArrayList<Double> realAddReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs) + unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerSubtractInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).subtract(unwrap(rhs)));
+	}
+
+	public static ArrayList<Double> integerSubtractReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs).doubleValue() - unwrap(rhs));
+	}
+
+	public static ArrayList<Double> realSubtractInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs) - unwrap(rhs).doubleValue());
+	}
+
+	public static ArrayList<Double> realSubtractReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs) - unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerMultiplyInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).multiply(unwrap(rhs)));
+	}
+
+	public static ArrayList<Double> integerMultiplyReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs).doubleValue() * unwrap(rhs));
+	}
+
+	public static ArrayList<Double> realMultiplyInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs) * unwrap(rhs).doubleValue());
+	}
+
+	public static ArrayList<Double> realMultiplyReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs) * unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerDivideInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).divide(unwrap(rhs)));
+	}
+
+	public static ArrayList<Double> integerDivideReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs).doubleValue() / unwrap(rhs));
+	}
+
+	public static ArrayList<Double> realDivideInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs) / unwrap(rhs).doubleValue());
+	}
+
+	public static ArrayList<Double> realDivideReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs) / unwrap(rhs));
+	}
+
+	public static ArrayList<BigInteger> integerModuloInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).mod(unwrap(rhs)));
 	}
 
 	public static ArrayList<Boolean> booleanAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
