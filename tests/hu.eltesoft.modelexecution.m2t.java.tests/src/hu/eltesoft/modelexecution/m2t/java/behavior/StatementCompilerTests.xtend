@@ -138,4 +138,38 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 				wrap("_9SdsIEDoEeWCNoKXHvCpUQ" -> fun("create", "i -> i._LAXgUEHKEeWzwYgcaM4qwA()"))),
 			unwrap("_local1") -> fun("send", "new " <> fun(SignalEvent.canonicalName, unwrap("_local0"))))
 	}
+
+	@Test
+	def testSwitchWithIntegerLiterals() {
+		assertCompilesTo(
+			'''
+				switch (0) {
+					case 1: 
+					case 2: break;
+					default: return;
+				}
+			''',
+			"switch " <> paren(unwrap(integerLiteral("0", 10))->fun("longValue")) <> " " <> block(
+				"case 1: " <> "case 2: " <> block("break"),
+				"default: " <> block("return")
+			)
+		)
+	}
+
+	@Test
+	def testSwitchWithStringLiterals() {
+		assertCompilesTo(
+			'''
+				switch ("c") {
+					case "a": 
+					case "b": break;
+					default: return;
+				}
+			''',
+			"switch " <> paren(unwrap(stringLiteral("c"))) <> " " <> block(
+				'case "a": ' <> 'case "b": ' <> block("break"),
+				"default: " <> block("return")
+			)
+		)
+	}
 }
