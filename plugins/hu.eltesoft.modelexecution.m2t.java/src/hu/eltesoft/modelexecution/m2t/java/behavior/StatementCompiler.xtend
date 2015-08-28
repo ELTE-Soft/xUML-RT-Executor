@@ -17,7 +17,7 @@ import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 // TODO: missing statements: SwitchStatement, ForEachStatement, ClassifyStatement
-class StatementCompiler extends ArithmeticCompiler {
+class StatementCompiler extends OperatorCompiler {
 
 	static extension CodeGenNode = CodeGenNode.extension
 

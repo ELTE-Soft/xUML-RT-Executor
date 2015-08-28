@@ -42,6 +42,11 @@ public class PrimitiveOperations {
 	public static final String INTEGER_SHIFT_RIGHT = CLASS_PREFIX + "integerShiftRight";
 	public static final String INTEGER_SHIFT_RIGHT_UNSIGNED = CLASS_PREFIX + "integerShiftRightUnsigned";
 
+	public static final String INTEGER_LESS_THAN_INTEGER = CLASS_PREFIX + "integerLessThanInteger";
+	public static final String INTEGER_LESS_THAN_REAL = CLASS_PREFIX + "integerLessThanReal";
+	public static final String REAL_LESS_THAN_INTEGER = CLASS_PREFIX + "realLessThanInteger";
+	public static final String REAL_LESS_THAN_REAL = CLASS_PREFIX + "realLessThanReal";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -160,4 +165,22 @@ public class PrimitiveOperations {
 		// This is guaranteed by the representation of BigInteger class.
 		return integerShiftRight(lhs, rhs);
 	}
+
+	public static ArrayList<Boolean> integerLessThanInteger(final ArrayList<BigInteger> lhs,
+			final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs).compareTo(unwrap(rhs)) < 0);
+	}
+
+	public static ArrayList<Boolean> integerLessThanReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs).doubleValue() < unwrap(rhs));
+	}
+
+	public static ArrayList<Boolean> realLessThanInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+		return wrap(unwrap(lhs) < unwrap(rhs).doubleValue());
+	}
+
+	public static ArrayList<Boolean> realLessThanReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+		return wrap(unwrap(lhs) < unwrap(rhs));
+	}
+
 }

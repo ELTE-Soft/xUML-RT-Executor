@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
@@ -212,25 +210,6 @@ class ExpressionCompiler extends CompilerBase {
 		for (value : values.expressions) {
 			if (value.name == name) {
 				return value.expression
-			}
-		}
-	}
-
-	def dispatch compile(AssignmentExpression assignment) {
-		if (AssignmentOperator.ASSIGN != assignment.operator) {
-			throw new CompilationFailedException("Compound assignment operators are unsupported")
-		}
-		val lhs = assignment.leftHandSide
-		switch lhs {
-			// attribute assignment
-			FeatureInvocationExpression: {
-				unwrap(compile(lhs.context)) ->
-					fun(Template.SETTER_PREFIX <> NamedReference.getIdentifier(lhs.feature),
-						compile(assignment.rightHandSide))
-			}
-			// local variable assignment
-			NameExpression: {
-				fun(PrimitiveOperations.SET_VALUE, compile(lhs), compile(assignment.rightHandSide))
 			}
 		}
 	}

@@ -12,7 +12,7 @@ class AttributeTests extends CompiledCodeCheckTestCase {
 	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
-		compiler = new ExpressionCompiler()
+		compiler = new OperatorCompiler()
 	}
 
 	@Before
