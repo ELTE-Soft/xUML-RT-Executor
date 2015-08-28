@@ -19,6 +19,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.incquerylabs.uml.ralf.ReducedAlfSystem
 
 class TemplateSmokeTests extends ModelBasedTestCase {
 
@@ -52,6 +53,10 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 			override Statements getModel() {
 				val factory = ReducedAlfLanguageFactory.eINSTANCE
 				factory.createStatements
+			}
+
+			override ReducedAlfSystem getTypeSystem() {
+				null
 			}
 		};
 		behavior.containerClass = makeNewReference("TestClass")
