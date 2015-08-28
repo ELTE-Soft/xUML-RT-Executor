@@ -19,7 +19,6 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
-import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
@@ -37,11 +36,6 @@ import org.eclipse.uml2.uml.Type
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 class ExpressionCompiler extends CompilerBase {
-
-	static extension CodeGenNode = CodeGenNode.extension
-
-	extension TypeConverter typeConverter = new TypeConverter
-	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
 
 	// Needed to be defined here for testing purposes.
 	def dispatch CodeGenNode compile(ExpressionStatement statement) {

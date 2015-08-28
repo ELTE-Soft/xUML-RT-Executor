@@ -1,15 +1,12 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
+import hu.eltesoft.modelexecution.m2t.java.ModelProperties
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import hu.eltesoft.modelexecution.m2t.java.ModelProperties
-import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
-
-	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
 		compiler = new StatementCompiler()

@@ -1,14 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 class DeclarationTests extends CompiledCodeCheckTestCase {
-
-	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
 		compiler = new ExpressionCompiler()

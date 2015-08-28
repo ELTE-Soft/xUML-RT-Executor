@@ -1,15 +1,12 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
-import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import org.junit.Before
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 class AttributeTests extends CompiledCodeCheckTestCase {
-
-	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
 		compiler = new OperatorCompiler()
