@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,30 +29,30 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 	private MokaDebugTarget mokaDebugTarget;
 
 	private List<StateMachineInstance> smInstances = new LinkedList<>();
-	
+
 	private List<Component> components = new LinkedList<>();
-	
+
 	private BreakpointRegistry breakpoints = new BreakpointRegistry();
 
 	private ResourceSet resourceSet;
-	
+
 	private VirtualMachineBrowser vmBrowser;
 
 	private ILaunch launch;
 
-	public DebugTarget(VirtualMachineBrowser vmBrowser, MokaDebugTarget mokaDebugTarget, ResourceSet resourceSet, ILaunch launch) {
+	public DebugTarget(VirtualMachineBrowser vmBrowser, MokaDebugTarget mokaDebugTarget, ResourceSet resourceSet,
+			ILaunch launch) {
 		super(null);
 		this.vmBrowser = vmBrowser;
 		this.mokaDebugTarget = mokaDebugTarget;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
 		setDebugTarget(this);
-		components.add(new Component("Component"));
 	}
 
 	@Override
 	public IThread[] getThreads() throws DebugException {
-		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
+		return smInstances.toArray(new IThread[smInstances.size()]);
 	}
 
 	@Override
@@ -82,6 +83,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 	}
 
 	public void terminated() {
+		components.clear();
 		smInstances.clear();
 		XUmlRtDebugModelPresentation.refreshDebugElements();
 	}
@@ -206,7 +208,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 				}
 				smInstance.setStackFrames(new StackFrame[] { stackFrame });
 				vmBrowser.loadDataOfSMInstance(stackFrame, resourceSet);
-				
+
 				smInstance.setSuspended(true, breakpoints.get(modelElement));
 				XUmlRtDebugModelPresentation.refreshDebugElements();
 			}
@@ -226,15 +228,43 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 	public void removeBreakpoint(MokaBreakpoint breakpoint) {
 		breakpoints.remove(breakpoint);
 	}
-	
+
 	@Override
 	public VirtualMachineBrowser getVMBrowser() {
 		return vmBrowser;
 	}
-	
+
 	@Override
 	public ILaunch getLaunch() {
 		return launch;
+	}
+
+	@SuppressWarnings({ "unchecked", "restriction" })
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
+			return (T) new CombiningElementDebugContentProvider<DebugTarget>(
+					dt -> new Object[][] { dt.getComponents() });
+		}
+		return null;
+	}
+
+	public Component[] getComponents() {
+		if ((components.isEmpty() || !smInstances.isEmpty()) && !isTerminated()) {
+			ArrayList<Object> ret = new ArrayList<>(components.size() + 1);
+			Component defaultComponent = new Component("Default Component");
+			ret.add(defaultComponent);
+			for (StateMachineInstance instance : smInstances) {
+				defaultComponent.addStateMachineInstance(instance);
+			}
+			ret.addAll(components);
+			return ret.toArray(new Component[ret.size()]);
+		}
+		return components.toArray(new Component[components.size()]);
+	}
+
+	public StateMachineInstance[] getStateMachineInstances() {
+		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
 	}
 
 }

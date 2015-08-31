@@ -16,12 +16,11 @@ import org.eclipse.uml2.uml.UMLFactory;
 public class Component extends PlatformObject implements IPresentation {
 
 	private List<StateMachineInstance> instances = new LinkedList<>();
-	
-	private List<Component> components = new LinkedList<>();
-	
+
+	private List<Component> subcomponents = new LinkedList<>();
+
 	private String name;
-	
-	
+
 	public Component(String name) {
 		this.name = name;
 	}
@@ -29,17 +28,25 @@ public class Component extends PlatformObject implements IPresentation {
 	public StateMachineInstance[] getStateMachines() {
 		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
-	
+
 	public void addStateMachineInstance(StateMachineInstance instance) {
 		instances.add(instance);
 	}
-	
-	public Component[] getComponents() {
-		return components.toArray(new Component[components.size()]);
+
+	public StateMachineInstance[] getInstances() {
+		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
-	
+
+	public Component[] getComponents() {
+		return subcomponents.toArray(new Component[subcomponents.size()]);
+	}
+
 	public void addSubcomponent(Component component) {
-		components.add(component);
+		subcomponents.add(component);
+	}
+
+	public Component[] getSubcomponents() {
+		return subcomponents.toArray(new Component[subcomponents.size()]);
 	}
 
 	@Override
@@ -59,5 +66,19 @@ public class Component extends PlatformObject implements IPresentation {
 		Device device = Display.getCurrent();
 		return new Image(device, image.getInputStream());
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "restriction" })
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
+			return (T) new CombiningElementDebugContentProvider<Component>(
+					c -> new Object[][] { c.getSubcomponents(), c.getInstances() });
+		} else if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider.class) {
+			return (T) new PresentationLabelProvider();
+		} else {
+			return null;
+		}
+
+	}
+
 }
