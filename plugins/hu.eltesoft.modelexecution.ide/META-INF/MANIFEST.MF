@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  hu.eltesoft.modelexecution.runtime;bundle-version="0.5.0",
  org.eclipse.papyrus.infra.core,
  org.eclipse.papyrus.emf.facet.query.java.core;bundle-version="1.1.0",
- hu.eltesoft.modelexecution.uml.incquery
+ hu.eltesoft.modelexecution.uml.incquery,
+ org.eclipse.gmf.runtime.notation;bundle-version="1.8.0"
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Activator: hu.eltesoft.modelexecution.ide.IdePlugin
 Export-Package: hu.eltesoft.modelexecution.ide,

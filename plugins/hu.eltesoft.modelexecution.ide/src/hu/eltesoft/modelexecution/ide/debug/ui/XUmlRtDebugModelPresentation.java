@@ -7,9 +7,12 @@ import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.debug.ui.IDebugEditorPresentation;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.papyrus.moka.MokaConstants;
+import org.eclipse.papyrus.moka.launch.EditorUtils;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -17,6 +20,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.uml2.uml.NamedElement;
+
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
 
 /**
  * Allows to switch between state machine instances and each time the
@@ -25,7 +31,9 @@ import org.eclipse.ui.PlatformUI;
 public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, IDebugEditorPresentation {
 
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
-
+	
+	private StackHighlighter highlighter = new StackHighlighter();
+	
 	@Override
 	public void addListener(ILabelProviderListener listener) {
 		// TODO Auto-generated method stub
@@ -52,14 +60,12 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 
 	@Override
 	public IEditorInput getEditorInput(Object element) {
-		// TODO Auto-generated method stub
-		return null;
+		return EditorUtils.getFileEditorInput((EObject) element);
 	}
 
 	@Override
 	public String getEditorId(IEditorInput input, Object element) {
-		// TODO Auto-generated method stub
-		return null;
+		return MokaConstants.PAPYRUS_EDITOR_ID;
 	}
 
 	@Override
@@ -141,14 +147,16 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 
 	@Override
 	public boolean addAnnotations(IEditorPart editorPart, IStackFrame frame) {
-		// TODO Auto-generated method stub
+		if (frame instanceof StateMachineStackFrame) {
+			NamedElement element = ((StateMachineStackFrame) frame).getModelElement();
+			highlighter.setHighlighted(element);
+		}
 		return false;
 	}
 
 	@Override
 	public void removeAnnotations(IEditorPart editorPart, IThread thread) {
-		// TODO Auto-generated method stub
-		
+		highlighter.removeHighlight();
 	}
 
 }
