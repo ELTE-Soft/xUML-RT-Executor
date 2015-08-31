@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.debug.ui;
 
 import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -39,6 +40,27 @@ public class XUmlRtDebugModelPresentation {
 		}
 		StructuredSelection selection = (StructuredSelection) debugView.getViewer().getSelection();
 		return selection.toArray();
+	}
+	
+	public static void refreshDebugElements() {
+		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow == null) {
+			// we must perform this operation on a UI thread
+			Display.getDefault().syncExec(() -> refreshDebugElementsUIThread());
+		} else {
+			refreshDebugElementsUIThread();
+		}
+	}
+
+	private static void refreshDebugElementsUIThread() {
+		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(DEBUG_VIEW_ID);
+		if (debugView == null) {
+			// debug view is not open
+			return;
+		}
+		StructuredViewer viewer = (StructuredViewer) debugView.getViewer();
+		viewer.refresh(false);
 	}
 
 }

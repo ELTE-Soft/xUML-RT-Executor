@@ -48,4 +48,8 @@ public class BreakpointRegistry {
 			return false;
 		}
 	}
+	
+	public MokaBreakpoint get(EObject modelElement) {
+		return breakpointsForElements.get(modelElement);
+	}
 }

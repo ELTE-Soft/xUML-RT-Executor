@@ -3,9 +3,6 @@ package hu.eltesoft.modelexecution.ide.debug.model;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
-import org.eclipse.papyrus.moka.debug.MokaStackFrame;
-import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -17,14 +14,15 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
  * A stack frame that represents the execution at a state, transition or
  * pseudostate.
  */
-public abstract class StateMachineStackFrame extends MokaStackFrame implements IPresentation {
+public class StateMachineStackFrame extends StackFrame {
 
 	private static final String UNKNOWN_STACK_FRAME = "?";
+	
+	private NamedElement modelElement;
 
-	public StateMachineStackFrame(MokaDebugTarget target, StateMachineInstance stateMachine) {
-		super(target);
-		setName(name);
-		setThread(stateMachine);
+	public StateMachineStackFrame(StateMachineInstance stateMachine, NamedElement modelElement) {
+		super(stateMachine);
+		this.modelElement = modelElement;
 	}
 
 	@Override
@@ -62,6 +60,61 @@ public abstract class StateMachineStackFrame extends MokaStackFrame implements I
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public int getLineNumber() throws DebugException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getCharStart() throws DebugException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getCharEnd() throws DebugException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean canStepInto() {
+		// currently not supported to step into the action code
+		return false;
+	}
+
+	@Override
+	public boolean canStepOver() {
+		return true;
+	}
+
+	@Override
+	public boolean canStepReturn() {
+		return false;
+	}
+
+	@Override
+	public void stepInto() throws DebugException {
+	}
+
+	@Override
+	public void stepOver() throws DebugException {
+		getXUmlRtDebugTarget().stepOver(this);
+	}
+
+	@Override
+	public void stepReturn() throws DebugException {
+	}
+
+	public void setModelElement(NamedElement modelElement) {
+		this.modelElement = modelElement;
+	}
+
+	public NamedElement getModelElement() {
+		return modelElement;
 	}
 
 }

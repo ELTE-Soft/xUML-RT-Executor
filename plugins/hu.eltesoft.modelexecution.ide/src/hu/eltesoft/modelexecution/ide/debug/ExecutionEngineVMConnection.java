@@ -5,14 +5,9 @@ import java.util.TimerTask;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.papyrus.moka.communication.event.isuspendresume.Suspend_Event;
-import org.eclipse.papyrus.moka.debug.MokaStackFrame;
-import org.eclipse.uml2.uml.NamedElement;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -25,10 +20,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.BreakpointStoppedStackFrame;
-import hu.eltesoft.modelexecution.ide.debug.model.PausedStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
-import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.LocationConverter;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
@@ -76,14 +68,10 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	/** For animating when stopped on breakpoint */
 	private AnimationController animation;
 
-	private BreakpointRegistry breakpoints;
-
 	public ExecutionEngineVMConnection(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
-			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation,
-			BreakpointRegistry breakpoints) {
+			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation) {
 		this.virtualMachine = virtualMachine;
 		this.animation = animation;
-		this.breakpoints = breakpoints;
 		virtualMachineBrowser = virtualMachine.createConnection();
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
 		// the constructor sets itself as resource locator for the resource set
@@ -161,7 +149,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			return ThreadAction.ShouldResume;
 		}
 
-		boolean hasBreak = breakpoints.hasEnabledBreakpointOn(modelElement);
+		boolean hasBreak = executionEngine.getXUmlRtDebugTarget().hasEnabledBreakpointOn(modelElement);
 		if (suspendIfWaitingOrHasBreak(modelElement, hasBreak)) {
 			return ThreadAction.RemainSuspended;
 		}
@@ -224,44 +212,12 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	private boolean suspendIfWaitingOrHasBreak(EObject modelElement, boolean hasBreak) {
 		synchronized (animation) {
 			if (waitingForSuspend || hasBreak) {
-				markThreadAsSuspended(modelElement);
+				animation.setSuspendedMarker(modelElement);
+				executionEngine.getXUmlRtDebugTarget().markThreadAsSuspended(modelElement);
 				waitingForSuspend = false;
 				return true;
 			}
 			return false;
-		}
-	}
-
-	/**
-	 * Marks each state machine as suspended. Can only be called when the
-	 * underlying virtual machine is suspended.
-	 *
-	 * @param modelElement
-	 *            the current element under the breakpoint (currently only a
-	 *            state or transition)
-	 */
-	private void markThreadAsSuspended(EObject modelElement) {
-		animation.setSuspendedMarker(modelElement);
-
-		String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
-		try {
-			for (StateMachineInstance smInstance : executionEngine.getSmInstances()) {
-				MokaStackFrame stackFrame;
-				if (smInstance.getName().equals(actualSMInstance)) {
-					stackFrame = new BreakpointStoppedStackFrame(executionEngine.getDebugTarget(), smInstance,
-							(NamedElement) modelElement);
-					virtualMachineBrowser.addEventVariable(stackFrame);
-				} else {
-					stackFrame = new PausedStackFrame(smInstance);
-				}
-				smInstance.setStackFrames(new IStackFrame[] { stackFrame });
-				virtualMachineBrowser.loadDataOfSMInstance(stackFrame, resourceSet);
-				int eventCode = waitingForSuspend ? DebugEvent.CLIENT_REQUEST : DebugEvent.BREAKPOINT;
-				executionEngine.sendEvent(new Suspend_Event(smInstance, eventCode, executionEngine.getThreads()));
-				smInstance.setSuspended(true);
-			}
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while updating sm instances");
 		}
 	}
 

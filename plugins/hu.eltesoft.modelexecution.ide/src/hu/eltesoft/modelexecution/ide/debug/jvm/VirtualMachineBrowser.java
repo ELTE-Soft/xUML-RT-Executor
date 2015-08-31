@@ -1,15 +1,11 @@
 package hu.eltesoft.modelexecution.ide.debug.jvm;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
-import org.eclipse.papyrus.moka.debug.MokaStackFrame;
-import org.eclipse.papyrus.moka.debug.MokaVariable;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Vertex;
 
 import com.sun.jdi.ClassNotLoadedException;
@@ -27,16 +23,18 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
-import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
+import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
-import hu.eltesoft.modelexecution.runtime.meta.VariableMeta;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerMeta;
 import hu.eltesoft.modelexecution.runtime.meta.SignalMeta;
+import hu.eltesoft.modelexecution.runtime.meta.VariableMeta;
 
 /**
  * A class to query the state of the runtime running in the given virtual
@@ -79,34 +77,19 @@ public class VirtualMachineBrowser {
 	 * Adds the event variable to the stack frame when stopped at state or
 	 * transition breakpoint.
 	 */
-	public void addEventVariable(MokaStackFrame frame) {
+	public void addEventVariable(StackFrame frame) {
 		JDIThreadWrapper mainThread = getMainThread();
 		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
 		if (eventObj != null) {
-			addVariable(frame, createMokaVariable(frame, mainThread, eventObj,
+			frame.addVariable(createVariable(frame, mainThread, eventObj,
 					new SignalMeta(Messages.VirtualMachineConnection_variable_signal_label)));
 		}
 	}
 
-	private static void addVariable(MokaStackFrame frame, MokaVariable variable) {
-		List<MokaVariable> newVars = new LinkedList<>();
-		try {
-			for (IVariable var : frame.getVariables()) {
-				if (var instanceof MokaVariable) {
-					newVars.add((MokaVariable) var);
-				}
-			}
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while accessing variables", e);
-		}
-		newVars.add(variable);
-		frame.setVariables(newVars.toArray(new MokaVariable[newVars.size()]));
-	}
-
-	protected MokaVariable createMokaVariable(MokaStackFrame frame, JDIThreadWrapper mainThread, Value value,
+	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
 			VariableMeta leftVal) {
-		MokaDebugTarget debugTarget = (MokaDebugTarget) frame.getDebugTarget();
-		return new ModelVariable(debugTarget, leftVal, new SingleValue(debugTarget, mainThread, value));
+		DebugTarget debugTarget = frame.getXUmlRtDebugTarget();
+		return new ModelVariable(debugTarget, leftVal, mainThread, value);
 	}
 
 	/**
@@ -130,7 +113,7 @@ public class VirtualMachineBrowser {
 	 * Loads the actual state machine instance into a stack frame. Fills the
 	 * model element if it is empty.
 	 */
-	public void loadDataOfSMInstance(MokaStackFrame stackFrame, ResourceSet resourceSet) throws DebugException {
+	public void loadDataOfSMInstance(StateMachineStackFrame stackFrame, ResourceSet resourceSet) throws DebugException {
 		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
 		try {
 			JDIThreadWrapper mainThread = getMainThread();
@@ -147,30 +130,30 @@ public class VirtualMachineBrowser {
 			if (modelElement == null || modelElement instanceof Vertex) {
 				ObjectReference actualState = (ObjectReference) stateMachine
 						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
-				addVariable(stackFrame, createCurrentStateVariable(stackFrame, mainThread, actualState));
+				stackFrame.addVariable(createCurrentStateVariable(stackFrame, mainThread, actualState));
 				if (modelElement == null) {
 					// we are not stopped on a breakpoint, or getModelElement()
 					// wont be null, so the current model element can only be a
 					// state
 					StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
-					stackFrame.setModelElement(ModelUtils.javaNameToEObject(stringVal.value(), resourceSet));
+					stackFrame.setModelElement((NamedElement) ModelUtils.javaNameToEObject(stringVal.value(), resourceSet));
 				}
 			}
-			addVariable(stackFrame, createThisVariable(stackFrame, mainThread, instance));
+			stackFrame.addVariable(createThisVariable(stackFrame, mainThread, instance));
 		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
 				| NoSuchMethodException e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
 		}
 	}
 
-	private MokaVariable createThisVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {
-		return createMokaVariable(stackFrame, mainThread, instance,
+	private ModelVariable createThisVariable(StackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {
+		return createVariable(stackFrame, mainThread, instance,
 				new OwnerMeta(Messages.VirtualMachineConnection_variable_this_label));
 	}
 
-	private MokaVariable createCurrentStateVariable(MokaStackFrame stackFrame, JDIThreadWrapper mainThread,
+	private ModelVariable createCurrentStateVariable(StackFrame stackFrame, JDIThreadWrapper mainThread,
 			Value actualState) {
-		return createMokaVariable(stackFrame, mainThread, actualState,
+		return createVariable(stackFrame, mainThread, actualState,
 				new OwnerMeta(Messages.VirtualMachineConnection_variable_currentState_label));
 	}
 

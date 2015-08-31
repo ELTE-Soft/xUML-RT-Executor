@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
-import org.eclipse.papyrus.moka.debug.MokaValue;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 import org.eclipse.swt.graphics.Image;
 
@@ -40,7 +38,7 @@ import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta;
  * The life of these values lasts only while the debugger is stopped.
  */
 @SuppressWarnings("restriction")
-public abstract class AbstractValue extends MokaValue implements IValue, IPresentation {
+public abstract class AbstractValue extends DebugElement implements IValue, IPresentation {
 
 	private static final String SERIALIZE_METHOD_NAME = "serialize";
 
@@ -57,7 +55,7 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 
 	protected JDIUtils jdiUtils;
 
-	public AbstractValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public AbstractValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
@@ -113,13 +111,7 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 		List<ModelVariable> shownAttributes = new LinkedList<>();
 		for (Entry<PropertyMeta, Value> propertyValue : propertyValues.entrySet()) {
 			PropertyMeta property = propertyValue.getKey();
-			AbstractValue varValue;
-			if (property.getBounds().isAtMostSingle()) {
-				varValue = new SingleValue(debugTarget, thread, propertyValue.getValue());
-			} else {
-				varValue = new MultiValue(debugTarget, thread, propertyValue.getValue());
-			}
-			shownAttributes.add(new ModelVariable(debugTarget, property, varValue));
+			shownAttributes.add(new ModelVariable(getXUmlRtDebugTarget(), property, thread, propertyValue.getValue()));
 		}
 		// sort the attributes alphabetically
 		shownAttributes.sort(Comparator.comparing(ModelVariable::getName));

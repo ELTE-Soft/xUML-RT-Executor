@@ -8,5 +8,10 @@ public class StateMeta extends VariableMeta {
 	public StateMeta(String name) {
 		super(name);
 	}
+
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
 	
 }
