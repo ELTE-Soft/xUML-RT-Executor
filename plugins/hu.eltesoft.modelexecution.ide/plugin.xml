@@ -177,7 +177,7 @@
    <extension
          point="org.eclipse.debug.ui.debugModelPresentations">
       <debugModelPresentation
-            class="hu.eltesoft.modelexecution.ide.debug.DebugModelPresentation"
+            class="hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation"
             id="hu.eltesoft.modelexecution.debug.model">
       </debugModelPresentation>
    </extension>

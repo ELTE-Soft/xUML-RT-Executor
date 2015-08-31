@@ -29,6 +29,8 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 
 	private List<StateMachineInstance> smInstances = new LinkedList<>();
 	
+	private List<Component> components = new LinkedList<>();
+	
 	private BreakpointRegistry breakpoints = new BreakpointRegistry();
 
 	private ResourceSet resourceSet;
@@ -44,6 +46,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 		this.resourceSet = resourceSet;
 		this.launch = launch;
 		setDebugTarget(this);
+		components.add(new Component("Component"));
 	}
 
 	@Override
