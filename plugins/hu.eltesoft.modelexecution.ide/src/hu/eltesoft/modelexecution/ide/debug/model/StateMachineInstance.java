@@ -28,11 +28,13 @@ public class StateMachineInstance extends DebugElement implements IThread, IPres
 	private boolean isSuspended;
 	private List<StackFrame> stackFrames = new LinkedList<>();
 	private IBreakpoint breakPointStoppedOn;
+	private String className;
 
 	public StateMachineInstance(DebugTarget debugTarget, String classId, int instanceId, String originalName) {
 		super(debugTarget);
 		this.classId = classId;
 		this.instanceId = instanceId;
+		this.className = originalName;
 		name = originalName + "#" + instanceId;
 	}
 
@@ -184,5 +186,9 @@ public class StateMachineInstance extends DebugElement implements IThread, IPres
 	public void setStackFrames(StackFrame[] stackFrames) {
 		this.stackFrames.clear();
 		this.stackFrames.addAll(Arrays.asList(stackFrames));
+	}
+
+	public String getClassName() {
+		return className;
 	}
 }

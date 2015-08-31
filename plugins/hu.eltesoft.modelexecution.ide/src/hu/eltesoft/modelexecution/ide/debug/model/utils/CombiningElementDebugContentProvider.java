@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.model;
+package hu.eltesoft.modelexecution.ide.debug.model.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -9,9 +9,7 @@ import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
 import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 
-public class AnimationController {
-
-	private static final AnimationUtils UTILS = AnimationUtils.getInstance();
+public class AnimationController extends MokaAnimationBase {
 
 	private int animationTimeMultiplier;
 
@@ -85,6 +83,7 @@ public class AnimationController {
 		removeAllMarkers();
 		lastSuspended = AnimationUtils.resolve(modelElement);
 		UTILS.addSuspendedMarker(lastSuspended);
+		openContainingDiagram(modelElement);
 	}
 
 	public synchronized void removeSuspendedMarker() {

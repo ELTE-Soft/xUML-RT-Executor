@@ -32,6 +32,7 @@ import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
+import hu.eltesoft.modelexecution.ide.debug.util.PersistableSourceLocator;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 
 /**

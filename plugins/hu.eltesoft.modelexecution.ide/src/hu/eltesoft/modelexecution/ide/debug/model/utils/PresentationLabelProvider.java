@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.model;
+package hu.eltesoft.modelexecution.ide.debug.model.utils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.internal.ui.model.elements.ElementLabelProvider;
