@@ -23,7 +23,7 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
+import hu.eltesoft.modelexecution.ide.debug.model.DelegatingDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
 import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
@@ -88,7 +88,7 @@ public class VirtualMachineBrowser {
 
 	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
 			VariableMeta leftVal) {
-		DebugTarget debugTarget = frame.getXUmlRtDebugTarget();
+		DelegatingDebugTarget debugTarget = frame.getXUmlRtDebugTarget();
 		return new ModelVariable(debugTarget, leftVal, mainThread, value);
 	}
 

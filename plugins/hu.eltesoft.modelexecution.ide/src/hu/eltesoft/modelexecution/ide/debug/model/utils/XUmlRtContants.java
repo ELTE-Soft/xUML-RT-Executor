@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.debug.model;
+package hu.eltesoft.modelexecution.ide.debug.model.utils;
 
 public class XUmlRtContants {
 

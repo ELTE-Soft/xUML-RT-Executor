@@ -30,7 +30,7 @@ public class StateMachineInstance extends DebugElement implements IThread, IPres
 	private IBreakpoint breakPointStoppedOn;
 	private String className;
 
-	public StateMachineInstance(DebugTarget debugTarget, String classId, int instanceId, String originalName) {
+	public StateMachineInstance(DelegatingDebugTarget debugTarget, String classId, int instanceId, String originalName) {
 		super(debugTarget);
 		this.classId = classId;
 		this.instanceId = instanceId;

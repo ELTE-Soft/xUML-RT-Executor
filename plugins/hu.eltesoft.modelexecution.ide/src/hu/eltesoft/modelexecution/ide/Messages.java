@@ -5,6 +5,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.messages"; //$NON-NLS-1$
 	public static String ClasspathRuntimeLibrary_model_execution_classpath_library;
+	public static String DebugTarget_debug_target_label;
+	public static String DebugTarget_default_component_label;
 	public static String Dialogs_another_debug_abort_button;
 	public static String Dialogs_another_debug_force_button;
 	public static String Dialogs_another_debug_launch_caption;

@@ -6,12 +6,13 @@ import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
+import hu.eltesoft.modelexecution.ide.debug.model.utils.XUmlRtContants;
 
 public abstract class DebugElement extends PlatformObject implements IDebugElement {
 
-	private DebugTarget debugTarget;
+	private DelegatingDebugTarget debugTarget;
 	
-	public DebugElement(DebugTarget debugTarget) {
+	public DebugElement(DelegatingDebugTarget debugTarget) {
 		this.debugTarget = debugTarget;
 	}
 	
@@ -29,11 +30,11 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 		return debugTarget;
 	}
 	
-	public DebugTarget getXUmlRtDebugTarget() {
+	public DelegatingDebugTarget getXUmlRtDebugTarget() {
 		return debugTarget;
 	}
 
-	public void setDebugTarget(DebugTarget debugTarget) {
+	public void setDebugTarget(DelegatingDebugTarget debugTarget) {
 		this.debugTarget = debugTarget;
 	}
 

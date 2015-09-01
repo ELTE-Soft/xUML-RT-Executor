@@ -5,13 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.debug.core.model.IMemoryBlock;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -20,14 +16,13 @@ import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation;
 
-public class DebugTarget extends DebugElement implements IDebugTarget {
-
-	private MokaDebugTarget mokaDebugTarget;
+public class DebugTarget extends DelegatingDebugTarget {
 
 	private List<StateMachineInstance> smInstances = new LinkedList<>();
 
@@ -43,9 +38,8 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 
 	public DebugTarget(VirtualMachineBrowser vmBrowser, MokaDebugTarget mokaDebugTarget, ResourceSet resourceSet,
 			ILaunch launch) {
-		super(null);
+		super(null, mokaDebugTarget);
 		this.vmBrowser = vmBrowser;
-		this.mokaDebugTarget = mokaDebugTarget;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
 		setDebugTarget(this);
@@ -63,24 +57,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 
 	@Override
 	public String getName() throws DebugException {
-		return "xUML-RT debug target";
-	}
-
-	// rest of the functionality is delegated to the moka debug target
-
-	@Override
-	public boolean canTerminate() {
-		return mokaDebugTarget.canTerminate();
-	}
-
-	@Override
-	public boolean isTerminated() {
-		return mokaDebugTarget.isTerminated();
-	}
-
-	@Override
-	public void terminate() throws DebugException {
-		mokaDebugTarget.terminate();
+		return Messages.DebugTarget_debug_target_label;
 	}
 
 	public void terminated() {
@@ -89,34 +66,9 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 		XUmlRtDebugModelPresentation.refreshDebugElements();
 	}
 
-	@Override
-	public boolean canResume() {
-		return mokaDebugTarget.canResume();
-	}
-
-	@Override
-	public void resume() throws DebugException {
-		mokaDebugTarget.resume();
-	}
-
 	public void resumed() {
 		smInstances.forEach(inst -> inst.clearStackFrames());
 		XUmlRtDebugModelPresentation.refreshDebugElements();
-	}
-
-	@Override
-	public boolean canSuspend() {
-		return mokaDebugTarget.canSuspend();
-	}
-
-	@Override
-	public boolean isSuspended() {
-		return mokaDebugTarget.isSuspended();
-	}
-
-	@Override
-	public void suspend() throws DebugException {
-		mokaDebugTarget.suspend();
 	}
 
 	@Override
@@ -132,49 +84,6 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 	@Override
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		mokaDebugTarget.breakpointChanged(breakpoint, delta);
-	}
-
-	@Override
-	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
-		return mokaDebugTarget.supportsBreakpoint(breakpoint);
-	}
-
-	@Override
-	public boolean canDisconnect() {
-		return mokaDebugTarget.canDisconnect();
-	}
-
-	@Override
-	public void disconnect() throws DebugException {
-		mokaDebugTarget.disconnect();
-	}
-
-	@Override
-	public boolean isDisconnected() {
-		return mokaDebugTarget.isDisconnected();
-	}
-
-	@Override
-	public boolean supportsStorageRetrieval() {
-		return mokaDebugTarget.supportsStorageRetrieval();
-	}
-
-	@Override
-	public IMemoryBlock getMemoryBlock(long startAddress, long length) throws DebugException {
-		return mokaDebugTarget.getMemoryBlock(startAddress, length);
-	}
-
-	@Override
-	public IProcess getProcess() {
-		return mokaDebugTarget.getProcess();
-	}
-
-	public void stepOver(StateMachineStackFrame stateMachineStackFrame) {
-		try {
-			mokaDebugTarget.resume(stateMachineStackFrame, DebugEvent.STEP_OVER);
-		} catch (DebugException e) {
-			IdePlugin.logError("While trying to step over", e);
-		}
 	}
 
 	public void addSMInstance(StateMachineInstance smInstance) {
@@ -214,7 +123,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 				XUmlRtDebugModelPresentation.refreshDebugElements();
 			}
 		} catch (DebugException e) {
-			IdePlugin.logError("Error while updating sm instances");
+			IdePlugin.logError("Error while updating sm instances"); //$NON-NLS-1$
 		}
 	}
 
@@ -253,7 +162,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget {
 	public Component[] getComponents() {
 		if ((components.isEmpty() || !smInstances.isEmpty()) && !isTerminated()) {
 			ArrayList<Object> ret = new ArrayList<>(components.size() + 1);
-			Component defaultComponent = new Component("Default Component");
+			Component defaultComponent = new Component(Messages.DebugTarget_default_component_label);
 			ret.add(defaultComponent);
 			for (StateMachineInstance instance : smInstances) {
 				defaultComponent.addStateMachineInstance(instance);
