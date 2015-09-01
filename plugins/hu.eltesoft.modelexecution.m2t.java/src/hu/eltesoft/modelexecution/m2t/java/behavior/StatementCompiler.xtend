@@ -25,7 +25,7 @@ import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeEx
 // TODO: missing statements: ForEachStatement, ClassifyStatement
 class StatementCompiler extends OperatorCompiler {
 
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	def dispatch CodeGenNode compile(EmptyStatement statement) {
 		empty

@@ -8,7 +8,7 @@ import static hu.eltesoft.modelexecution.test.utils.Assert.assertStringEquals
 
 class CodeGenNodeSmapTests {
 
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	@Test
 	def testBlockWithMappedObjects() {

@@ -17,7 +17,7 @@ abstract class CompilerBase {
 	public static val CONTEXT_NAME = "context"
 	public static val RUNTIME_INSTANCE = BaseRuntime.canonicalName + ".getInstance()"
 
-	protected extension CodeGenNode = CodeGenNode.extension
+	protected extension CodeGenNode = CodeGenNode.EXTENSION
 	protected extension NameExtensions = new NameExtensions
 	protected extension TypeConverter = new TypeConverter
 	protected extension JavaTypeConverter = new JavaTypeConverter

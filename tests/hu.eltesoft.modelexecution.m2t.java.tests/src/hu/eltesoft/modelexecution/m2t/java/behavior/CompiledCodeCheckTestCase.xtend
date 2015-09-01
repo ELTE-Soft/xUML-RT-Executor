@@ -17,7 +17,7 @@ import static org.junit.Assert.*
 @InjectWith(ReducedAlfJUnitInjector)
 abstract class CompiledCodeCheckTestCase {
 
-	protected extension CodeGenNode = CodeGenNode.extension
+	protected extension CodeGenNode = CodeGenNode.EXTENSION
 
 	@Inject
 	var IReducedAlfParser parser

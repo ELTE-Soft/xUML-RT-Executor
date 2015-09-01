@@ -6,7 +6,7 @@ import static hu.eltesoft.modelexecution.test.utils.Assert.assertStringEqualsWit
 
 class CodeGenNodeBlockTests {
 	
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	@Test
 	def testSingleBlock() {

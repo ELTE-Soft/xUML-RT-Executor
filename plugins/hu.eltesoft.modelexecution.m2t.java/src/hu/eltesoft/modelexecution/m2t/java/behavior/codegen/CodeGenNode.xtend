@@ -8,15 +8,13 @@ import java.util.List
 
 class CodeGenNode {
 
+	public static val EXTENSION = new CodeGenNode();
+
 	protected val Object before
 	protected val Object after
 	protected val Object separator
 	protected val Object terminator
 	protected val List<Object> items = new ArrayList
-
-	def static getExtension() {
-		new CodeGenNode()
-	}
 
 	def empty() {
 		sequence

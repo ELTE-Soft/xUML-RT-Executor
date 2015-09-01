@@ -4,7 +4,7 @@ import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 class CodeGenNodeExtensons {
 
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	def static CodeGenNode fun(Object name, Object ... params) {
 		name <> paren(params)

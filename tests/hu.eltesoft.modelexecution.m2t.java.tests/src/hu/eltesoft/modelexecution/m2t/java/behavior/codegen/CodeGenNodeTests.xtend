@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals
 
 class CodeGenNodeTests {
 
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	@Test
 	def testEmptyNodeWithBeforeAndAfter() {
