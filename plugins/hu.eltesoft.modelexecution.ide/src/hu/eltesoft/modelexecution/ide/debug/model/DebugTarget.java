@@ -20,7 +20,7 @@ import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation;
+import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 
 public class DebugTarget extends DelegatingDebugTarget {
 
@@ -36,6 +36,8 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 	private ILaunch launch;
 
+	private DebugViewController debugControl = new DebugViewController();
+	
 	public DebugTarget(VirtualMachineBrowser vmBrowser, MokaDebugTarget mokaDebugTarget, ResourceSet resourceSet,
 			ILaunch launch) {
 		super(null, mokaDebugTarget);
@@ -63,12 +65,12 @@ public class DebugTarget extends DelegatingDebugTarget {
 	public void terminated() {
 		components.clear();
 		smInstances.clear();
-		XUmlRtDebugModelPresentation.refreshDebugElements();
+		debugControl.refreshDebugElements();
 	}
 
 	public void resumed() {
 		smInstances.forEach(inst -> inst.clearStackFrames());
-		XUmlRtDebugModelPresentation.refreshDebugElements();
+		debugControl.refreshDebugElements();
 	}
 
 	@Override
@@ -88,12 +90,12 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 	public void addSMInstance(StateMachineInstance smInstance) {
 		smInstances.add(smInstance);
-		XUmlRtDebugModelPresentation.refreshDebugElements();
+		debugControl.refreshDebugElements();
 	}
 
 	public void removeSMInstance(String classId, int instanceId) {
 		smInstances.removeIf(t -> t.getClassId().equals(classId) && t.getInstanceId() == instanceId);
-		XUmlRtDebugModelPresentation.refreshDebugElements();
+		debugControl.refreshDebugElements();
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class DebugTarget extends DelegatingDebugTarget {
 				vmBrowser.loadDataOfSMInstance(stackFrame, resourceSet);
 
 				smInstance.setSuspended(true, breakpoints.get(modelElement));
-				XUmlRtDebugModelPresentation.refreshDebugElements();
+				debugControl.refreshDebugElements();
 			}
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances"); //$NON-NLS-1$
@@ -149,18 +151,9 @@ public class DebugTarget extends DelegatingDebugTarget {
 		return launch;
 	}
 
-	@SuppressWarnings({ "unchecked", "restriction" })
-	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
-			return (T) new CombiningElementDebugContentProvider<DebugTarget>(
-					dt -> new Object[][] { dt.getComponents() });
-		}
-		return null;
-	}
-
 	public Component[] getComponents() {
 		if ((components.isEmpty() || !smInstances.isEmpty()) && !isTerminated()) {
+			// puts the state machine instances into a default component
 			ArrayList<Object> ret = new ArrayList<>(components.size() + 1);
 			Component defaultComponent = new Component(Messages.DebugTarget_default_component_label);
 			ret.add(defaultComponent);
@@ -175,6 +168,16 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 	public StateMachineInstance[] getStateMachineInstances() {
 		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
+	}
+
+	@SuppressWarnings({ "unchecked", "restriction" })
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
+			return (T) new CombiningElementDebugContentProvider<DebugTarget>(
+					dt -> new Object[][] { dt.getComponents() });
+		}
+		return super.getAdapter(adapter);
 	}
 
 }

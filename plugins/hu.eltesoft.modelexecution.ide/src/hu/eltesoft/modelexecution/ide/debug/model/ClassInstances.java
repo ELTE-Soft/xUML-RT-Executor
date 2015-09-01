@@ -65,7 +65,7 @@ public class ClassInstances extends PlatformObject implements IPresentation {
 		} else if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider.class) {
 			return (T) new PresentationLabelProvider();
 		} else {
-			return null;
+			return super.getAdapter(adapter);
 		}
 
 	}	

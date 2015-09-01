@@ -25,7 +25,7 @@ import hu.eltesoft.modelexecution.ide.debug.registry.LocationConverter;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
-import hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation;
+import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.FilePathResourceLocator;
 import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
@@ -67,6 +67,8 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 
 	/** For animating when stopped on breakpoint */
 	private AnimationController animation;
+	
+	private DebugViewController debugControl = new DebugViewController();
 
 	public ExecutionEngineVMConnection(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
 			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation) {
@@ -183,7 +185,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	private boolean actualSMInstanceIsSelected() {
 		try {
 			String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
-			for (Object debugElem : XUmlRtDebugModelPresentation.getSelectedDebugElements()) {
+			for (Object debugElem : debugControl.getSelectedDebugElements()) {
 				if (debugElem instanceof StateMachineInstance) {
 					StateMachineInstance smInstance = (StateMachineInstance) debugElem;
 					if (smInstance.getName().equals(actualSMInstance)) {
