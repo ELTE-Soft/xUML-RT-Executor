@@ -76,7 +76,9 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 
 pattern
 BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
-	Behavior.ownedParameter(behavior, parameter);
+	// fetch parameters from the specification
+	Behavior.specification(behavior, operation);
+	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, direction);
 	direction != ParameterDirectionKind::^return;
 }
@@ -105,7 +107,9 @@ BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : T
 
 pattern
 BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
-	Behavior.ownedParameter(behavior, parameter);
+	// fetch return parameter from the specification
+	Behavior.specification(behavior, operation);
+	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);

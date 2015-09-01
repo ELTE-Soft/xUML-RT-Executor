@@ -73,10 +73,7 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 			elem.isUnique = unique
 			return elem
 		]
-		returnNode.on(
-			BASE_PACKAGE.multiplicity_LowerBound,
-			BehaviorReturnLowerBoundMatcher.on(engine)
-		) [
+		returnNode.on(BASE_PACKAGE.multiplicity_LowerBound, BehaviorReturnLowerBoundMatcher.on(engine)) [
 			lowerBound
 		]
 		returnNode.on(BASE_PACKAGE.multiplicity_UpperBound, BehaviorReturnUpperBoundMatcher.on(engine)) [
