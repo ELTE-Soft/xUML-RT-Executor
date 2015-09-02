@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="mirrors" sequenceNumber="39">
+<?pde version="3.8"?><target name="mirrors" sequenceNumber="40">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.google.jimfs" version="1.0.0"/>
@@ -34,11 +34,11 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.xtext.runtime.feature.group" version="2.8.4.v201508050135"/>
-<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201509021201"/>
+<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201509021259"/>
 <unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.0.v20150331-0735"/>
-<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201509021201"/>
-<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201509021201"/>
-<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201509021201"/>
+<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201509021259"/>
+<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201509021259"/>
+<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201509021259"/>
 <repository location="http://mextest.inf.elte.hu/updates/mirrors/emdw-common"/>
 </location>
 </locations>
