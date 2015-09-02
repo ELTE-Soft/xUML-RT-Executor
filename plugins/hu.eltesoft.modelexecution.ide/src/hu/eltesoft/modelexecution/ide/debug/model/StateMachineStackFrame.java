@@ -130,7 +130,7 @@ public class StateMachineStackFrame extends StackFrame {
 	@Override
 	protected void loadVariables() throws DebugException {
 		if (variables == null) {
-			variables = getVMBrowser().loadDataOfStackFrame(this);
+			variables = getVMBrowser().getVariables(this);
 		}
 	}
 

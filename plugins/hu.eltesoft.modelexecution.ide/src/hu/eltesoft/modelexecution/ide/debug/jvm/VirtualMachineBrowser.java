@@ -141,7 +141,7 @@ public class VirtualMachineBrowser {
 	 * 
 	 * @return
 	 */
-	public List<ModelVariable> loadDataOfStackFrame(StateMachineStackFrame stackFrame) throws DebugException {
+	public List<ModelVariable> getVariables(StateMachineStackFrame stackFrame) throws DebugException {
 		List<ModelVariable> ret = new LinkedList<>();
 		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
 		try {

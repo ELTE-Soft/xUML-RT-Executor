@@ -122,7 +122,7 @@ public class JDIThreadWrapper {
 	}
 
 	public boolean isValid() {
-		return thread.isSuspended() && thread.isAtBreakpoint();
+		return thread.isSuspended();
 	}
 
 	private StackFrame getExecutionPoint() {
