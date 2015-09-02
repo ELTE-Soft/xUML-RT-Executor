@@ -135,10 +135,9 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
-pattern ActionCode(behavior : OpaqueBehavior, containerClass : Class, actionCode) {
+pattern ActionCode(behavior : OpaqueBehavior, actionCode) {
 	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
-	find ContainerClassOfBehavior(behavior, containerClass);
 	check(Utils.toLowerCase(langName).equals("ralf"));
 }
 
