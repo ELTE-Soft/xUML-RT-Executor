@@ -77,19 +77,6 @@ public class VirtualMachineBrowser {
 		}
 	}
 
-	/**
-	 * Adds the event variable to the stack frame when stopped at state or
-	 * transition breakpoint.
-	 */
-	public void addEventVariable(StackFrame frame) {
-		JDIThreadWrapper mainThread = getMainThread();
-		Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
-		if (eventObj != null) {
-			frame.addVariable(createVariable(frame, mainThread, eventObj,
-					new SignalMeta(Messages.VirtualMachineConnection_variable_signal_label)));
-		}
-	}
-
 	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
 			VariableMeta leftVal) {
 		DelegatingDebugTarget debugTarget = frame.getXUmlRtDebugTarget();
@@ -114,20 +101,25 @@ public class VirtualMachineBrowser {
 	}
 
 	public List<ModelVariable> getAttributes(StateMachineInstance instance) throws DebugException {
-		List<ModelVariable> ret = new LinkedList<>();
-		JDIThreadWrapper mainThread = getMainThread();
-		ObjectReference smInstance = getInstanceFromRegistry(instance, mainThread);
-		SingleValue value = new SingleValue(instance.getXUmlRtDebugTarget(), mainThread, smInstance);
-		for (IVariable variable : value.getVariables()) {
-			if (variable instanceof ModelVariable) {
-				ret.add((ModelVariable) variable);
+		try {
+			List<ModelVariable> ret = new LinkedList<>();
+			JDIThreadWrapper mainThread = getMainThread();
+			ObjectReference smInstance = getInstanceFromRegistry(instance, mainThread);
+			SingleValue value = new SingleValue(instance.getXUmlRtDebugTarget(), mainThread, smInstance);
+			for (IVariable variable : value.getVariables()) {
+				if (variable instanceof ModelVariable) {
+					ret.add((ModelVariable) variable);
+				}
 			}
+			return ret;
+		} catch (IncompatibleThreadStateException e) {
+			// thread not suspended: fall through
+			return null;
 		}
-		return ret;
 	}
 
 	private ObjectReference getInstanceFromRegistry(StateMachineInstance stateMachineInstance,
-			JDIThreadWrapper mainThread) {
+			JDIThreadWrapper mainThread) throws IncompatibleThreadStateException {
 		try {
 			ClassType instanceRegistryClass = (ClassType) virtualMachine
 					.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
@@ -137,8 +129,7 @@ public class VirtualMachineBrowser {
 			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, GET_INSTANCE_METHOD,
 					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
 			return instance;
-		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException
-				| IncompatibleThreadStateException e) {
+		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
 			throw new RuntimeException(e);
 		}
@@ -165,7 +156,9 @@ public class VirtualMachineBrowser {
 				ObjectReference actualState = (ObjectReference) stateMachine
 						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 				ret.add(createCurrentStateVariable(stackFrame, mainThread, actualState));
-
+			} else {
+				// the model element is a transition
+				addEventVariable(stackFrame, ret, mainThread);
 			}
 			ret.add(createThisVariable(stackFrame, mainThread, instance));
 		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
@@ -175,18 +168,34 @@ public class VirtualMachineBrowser {
 		return ret;
 	}
 
+	private void addEventVariable(StateMachineStackFrame stackFrame, List<ModelVariable> ret,
+			JDIThreadWrapper mainThread) {
+		try {
+			Value eventObj = mainThread.getLocalVariable(RegionTemplate.SIGNAL_VARIABLE);
+			if (eventObj != null) {
+				ret.add(createVariable(stackFrame, mainThread, eventObj,
+						new SignalMeta(Messages.VirtualMachineConnection_variable_signal_label)));
+			}
+		} catch (IllegalStateException e) {
+			// thread not suspended: fall through
+		}
+	}
+
 	public NamedElement loadModelElement(StateMachineStackFrame stackFrame, ResourceSet resourceSet) {
 		try {
 			JDIThreadWrapper mainThread = getMainThread();
 			ObjectReference instance = getInstanceFromRegistry(stackFrame.getStateMachineInstance(), mainThread);
-			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, GET_STATE_MACHINE_METHOD);
+			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
+					GET_STATE_MACHINE_METHOD);
 			ObjectReference actualState = (ObjectReference) stateMachine
 					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
 			return (NamedElement) ModelUtils.javaNameToEObject(stringVal.value(), resourceSet);
-		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException
-				| IncompatibleThreadStateException e) {
+		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException e) {
 			IdePlugin.logError("Error while accessing stack frame model element", e);
+			return null;
+		} catch (IncompatibleThreadStateException e) {
+			// thread not suspended: fall through
 			return null;
 		}
 	}

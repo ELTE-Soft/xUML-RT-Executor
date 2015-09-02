@@ -14,11 +14,13 @@ public abstract class DelegatingDebugTarget extends DebugElement implements IDeb
 
 	protected MokaDebugTarget mokaDebugTarget;
 	
+	protected boolean isSuspended = false;
+
 	public DelegatingDebugTarget(DelegatingDebugTarget debugTarget, MokaDebugTarget mokaDebugTarget) {
 		super(debugTarget);
 		this.mokaDebugTarget = mokaDebugTarget;
 	}
-	
+
 	@Override
 	public boolean canTerminate() {
 		return mokaDebugTarget.canTerminate();
@@ -36,26 +38,28 @@ public abstract class DelegatingDebugTarget extends DebugElement implements IDeb
 
 	@Override
 	public boolean canResume() {
-		return mokaDebugTarget.canResume();
+		return isSuspended;
 	}
 
 	@Override
 	public void resume() throws DebugException {
+		isSuspended = false;
 		mokaDebugTarget.resume();
 	}
 
 	@Override
 	public boolean canSuspend() {
-		return mokaDebugTarget.canSuspend();
+		return !isSuspended;
 	}
 
 	@Override
 	public boolean isSuspended() {
-		return mokaDebugTarget.isSuspended();
+		return isSuspended;
 	}
 
 	@Override
 	public void suspend() throws DebugException {
+		isSuspended = true;
 		mokaDebugTarget.suspend();
 	}
 

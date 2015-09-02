@@ -37,7 +37,7 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 
 	@Override
 	public void suspend() throws DebugException {
-		getXUmlRtDebugTarget().resume();
+		getXUmlRtDebugTarget().suspend();
 	}
 
 	@Override

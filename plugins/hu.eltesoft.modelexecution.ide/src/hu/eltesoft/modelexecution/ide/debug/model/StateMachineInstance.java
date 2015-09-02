@@ -129,6 +129,9 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 				return new ModelVariable[0];
 			}
 		}
+		if (attributes == null) {
+			return new ModelVariable[0];
+		}
 		return attributes.toArray(new ModelVariable[attributes.size()]);
 	}
 

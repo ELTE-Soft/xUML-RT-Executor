@@ -12,11 +12,11 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
@@ -38,9 +38,9 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 	private DebugViewController debugControl = new DebugViewController();
 	
-	public DebugTarget(VirtualMachineBrowser vmBrowser, MokaDebugTarget mokaDebugTarget, ResourceSet resourceSet,
+	public DebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine, ResourceSet resourceSet,
 			ILaunch launch) {
-		super(null, mokaDebugTarget);
+		super(null, xUmlRtExecutionEngine.getDebugTarget());
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
@@ -114,12 +114,12 @@ public class DebugTarget extends DelegatingDebugTarget {
 				StateMachineStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
 					stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
-					vmBrowser.addEventVariable(stackFrame);
 				} else {
-					stackFrame = new StateMachineStackFrame(smInstance, null);
+					stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 				}
 				smInstance.setStackFrames(new StackFrame[] { stackFrame });
-				vmBrowser.getAttributes(smInstance);
+				
+				isSuspended = true;
 
 				smInstance.setSuspended(true, breakpoints.get(modelElement));
 				debugControl.refreshDebugElements();

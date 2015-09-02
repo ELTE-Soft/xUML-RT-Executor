@@ -88,12 +88,14 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	
 	protected abstract void loadVariables() throws DebugException;
 
-	public ModelVariable[] getModelVariables() {
+	public ModelVariable[] getModelVariables() throws DebugException {
+		loadVariables();
 		return variables.toArray(new ModelVariable[variables.size()]);
 	}
 
 	@Override
 	public boolean hasVariables() throws DebugException {
+		loadVariables();
 		return !variables.isEmpty();
 	}
 
@@ -106,10 +108,5 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	public boolean hasRegisterGroups() throws DebugException {
 		return false;
 	}
-
-	public void addVariable(ModelVariable createVariable) {
-		variables.add(createVariable);
-	}
-
 
 }

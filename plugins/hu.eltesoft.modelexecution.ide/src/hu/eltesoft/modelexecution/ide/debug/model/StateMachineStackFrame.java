@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
 import org.eclipse.swt.graphics.Device;
@@ -23,6 +24,11 @@ public class StateMachineStackFrame extends StackFrame {
 	public StateMachineStackFrame(StateMachineInstance stateMachine, NamedElement modelElement) {
 		super(stateMachine, null);
 		setModelElement(modelElement);
+	}
+
+	public StateMachineStackFrame(StateMachineInstance stateMachine, ResourceSet resourceSet) {
+		super(stateMachine, null);
+		this.resourceSet = resourceSet;
 	}
 
 	@Override
