@@ -6,6 +6,62 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import java.util.ArrayList
 import java.util.List
 
+/** Represents a node sequence without any separator or boundary markers. Abstracts string concatenation. */
+package class Sequence extends CodeGenNode {
+}
+
+/** Dot separated sequence, like "a.b.c.d". */
+package class DotSeparatedSequence extends CodeGenNode {
+
+	new() {
+		super("", "", ".")
+	}
+}
+
+/** Encapsulates items into a parenthesized tuple, like "(a, b, c, d)". */
+package class ParenthesizedTuple extends CodeGenNode {
+
+	new() {
+		super("(", ")", ", ")
+	}
+}
+
+/** Sequence encapsulated within double quotes. */
+package class StringWrapper extends CodeGenNode {
+
+	new() {
+		super('"', '"')
+	}
+}
+
+/** Code block with opening and closing curly braces. Each item is terminated by a semicolon. */
+package class StatementBlock extends CodeGenNode {
+
+	new() {
+		super("{\n", "}\n", "", ";\n")
+	}
+}
+
+/** Code block without curly braces. Each item is terminated by a semicolon. */
+package class TopLevelStatementBlock extends CodeGenNode {
+
+	new() {
+		super("", "", "", ";\n")
+	}
+}
+
+/**
+ * Helps code generation and testing by providing a tree-like abstraction. Each node contains four predefined objects,
+ * and a list of child items. The four predefined items are used when a node is converted to its string representation:
+ * <p><dl>
+ * <dt>before</dt><dd>prepended before the text of child items, even there are no children</dd> 
+ * <dt>after</dt><dd>appended after the text of child items, even there are no children</dd>
+ * <dt>separator</dt><dd>emitted between the text of two child items</dd> 
+ * <dt>terminator</dt><dd>emitted after each child item, before the separator between them</dd> 
+ * </dl><p>
+ * This class is able to generate a source mapped text. When a child item with type DataWithLocation<?> is added,
+ * its location information will be traced into the generated source mapping.
+ */
 class CodeGenNode {
 
 	public static val EXTENSION = new CodeGenNode();
@@ -21,46 +77,43 @@ class CodeGenNode {
 	}
 
 	def sequence(Object ... items) {
-		new CodeGenNode().add(items)
-	}
-
-	def str(Object ...items) {
-		new CodeGenNode('"', '"').add(items)
-	}
-
-	def paren(Object ... items) {
-		new CodeGenNode("(", ")", ", ").add(items)
-	}
-
-	def block(Object ... items) {
-		new CodeGenNode("{\n", "}\n", "", ";\n").add(items)
-	}
-
-	def topLevelBlock(Object ... items) {
-		new CodeGenNode("", "", "", ";\n").add(items)
+		new Sequence().add(items)
 	}
 
 	def dot(Object ... items) {
-		new CodeGenNode("", "", ".").add(items)
+		new DotSeparatedSequence().add(items)
+	}
+
+	def paren(Object ... items) {
+		new ParenthesizedTuple().add(items)
+	}
+
+	def str(Object ... items) {
+		new StringWrapper().add(items)
+	}
+
+	def block(Object ... items) {
+		new StatementBlock().add(items)
+	}
+
+	def topLevelBlock(Object ... items) {
+		new TopLevelStatementBlock().add(items)
 	}
 
 	def isSequence(CodeGenNode node) {
-		node.before.toString.empty && node.after.toString.empty && node.separator.toString.empty &&
-			node.terminator.toString.empty
-	}
-
-	def isParen(CodeGenNode node) {
-		"(" == node.before.toString && ")" == node.after.toString && ", " == node.separator.toString &&
-			node.terminator.toString.empty
-	}
-
-	def isBlock(CodeGenNode node) {
-		node.separator.toString.empty && ";\n" == node.terminator.toString
+		node instanceof Sequence
 	}
 
 	def isDot(CodeGenNode node) {
-		node.before.toString.empty && node.after.toString.empty && "." == node.separator.toString &&
-			node.terminator.toString.empty
+		node instanceof DotSeparatedSequence
+	}
+
+	def isParen(CodeGenNode node) {
+		node instanceof ParenthesizedTuple
+	}
+
+	def isBlock(CodeGenNode node) {
+		node instanceof StatementBlock || node instanceof TopLevelStatementBlock
 	}
 
 	new() {
