@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser
+import hu.eltesoft.modelexecution.m2m.logic.GenerationException
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
@@ -82,7 +84,11 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 
 		rootNode.on(PACKAGE.bhBehavior_ParsingResults, ActionCodeMatcher.on(engine)) [
 			val parser = new ReducedAlfParser()
-			parser.parse(behavior)
+			val results = parser.parse(behavior)
+			if (!results.validationOK) {
+				throw new GenerationException(results.formatDiagnostics(behavior))
+			}
+			results
 		]
 
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
@@ -92,5 +98,23 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 
 	override Template createTemplate(BhBehavior behavior) {
 		return new BehaviorTemplateSmap(behavior)
+	}
+
+	private def String formatDiagnostics(ParsingResults results, OpaqueBehavior behavior) {
+		val builder = new StringBuilder
+		builder.append("Error parsing action code in behavior '")
+		builder.append(behavior.qualifiedName)
+		builder.append("':\n")
+		results.allDiagnostics.forEach [
+			builder.append("(")
+			builder.append(lineNumber)
+			builder.append(":")
+			builder.append(offset)
+			builder.append(")")
+			builder.append(": ")
+			builder.append(message)
+			builder.append("\n")
+		]
+		builder.toString
 	}
 }
