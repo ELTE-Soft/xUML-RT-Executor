@@ -21,6 +21,8 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
+import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
 public class DebugTarget extends DelegatingDebugTarget {
 
@@ -37,13 +39,17 @@ public class DebugTarget extends DelegatingDebugTarget {
 	private ILaunch launch;
 
 	private DebugViewController debugControl = new DebugViewController();
+
+	private EObject entryPoint;
 	
 	public DebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine, ResourceSet resourceSet,
 			ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
+		this.entryPoint = ModelUtils.findEObject(ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet) ;
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
+		
 		setDebugTarget(this);
 	}
 
@@ -58,8 +64,8 @@ public class DebugTarget extends DelegatingDebugTarget {
 	}
 
 	@Override
-	public String getName() throws DebugException {
-		return Messages.DebugTarget_debug_target_label;
+	public String getName() {
+		return ((NamedElement) entryPoint).getQualifiedName();
 	}
 
 	public void terminated() {
@@ -121,8 +127,8 @@ public class DebugTarget extends DelegatingDebugTarget {
 				
 				isSuspended = true;
 
-				debugControl.refreshDebugElements();
 			}
+			debugControl.refreshDebugElements();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances"); //$NON-NLS-1$
 		}
@@ -175,8 +181,9 @@ public class DebugTarget extends DelegatingDebugTarget {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
 			return (T) new CombiningElementDebugContentProvider<DebugTarget>(
 					dt -> new Object[][] { dt.getComponents() });
+		} else {
+			return super.getAdapter(adapter);
 		}
-		return super.getAdapter(adapter);
 	}
 
 }

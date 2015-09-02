@@ -13,6 +13,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.moka.communication.Marshaller;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -66,6 +67,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		debugTarget.setName(Messages.XUmlRtExecutionEngine_debug_model_label);
 
 		ILaunch launch = debugTarget.getLaunch();
+		
 
 		LaunchConfigReader configReader = new LaunchConfigReader(launch);
 		animation = new AnimationController(configReader);
@@ -200,4 +202,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	public DebugTarget getXUmlRtDebugTarget() {
 		return xumlrtDebugTarget;
 	}
+	
+	
+	@Override
+	protected void resume_reply(String message) {
+		Resume_Request request = Marshaller.getInstance().resume_request_unmarshal(message);
+		this.resume(request);
+	}
+	
+	@Override
+	protected void suspend_reply(String message) {
+		Suspend_Request request = Marshaller.getInstance().suspend_request_unmarshal(message);
+		this.suspend(request);
+	}
+	
 }

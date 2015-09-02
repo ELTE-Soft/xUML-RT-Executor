@@ -233,7 +233,14 @@ public class ModelExecutionLaunchConfig {
 	private static IProject getProject(ILaunchConfigurationWorkingCopy configuration) throws CoreException {
 		String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR);
 		return (IProject) ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
-
+	}
+	
+	public static String getEntryPoint(ILaunchConfiguration launchConfiguration) {
+		try {
+			return launchConfiguration.getAttribute(ATTR_FEED_FUN_NAME, "");
+		} catch (CoreException e) {
+			return "";
+		}
 	}
 
 }

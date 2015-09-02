@@ -12,7 +12,7 @@ import org.eclipse.ui.PlatformUI;
 public class DebugViewController {
 
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
-	
+
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
 	 *         if the debug view is not open.
@@ -22,11 +22,11 @@ public class DebugViewController {
 		accessViewer(v -> ret[0] = ((StructuredSelection) v.getSelection()).toArray());
 		return ret[0];
 	}
-	
+
 	public void refreshDebugElements() {
 		accessViewer(v -> v.refresh(false));
 	}
-	
+
 	public void accessViewer(Consumer<StructuredViewer> action) {
 		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
@@ -36,7 +36,7 @@ public class DebugViewController {
 			accessViewerUIThread(action);
 		}
 	}
-	
+
 	private void accessViewerUIThread(Consumer<StructuredViewer> action) {
 		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().findView(DEBUG_VIEW_ID);
@@ -45,5 +45,5 @@ public class DebugViewController {
 		}
 		action.accept((StructuredViewer) debugView.getViewer());
 	}
-	
+
 }
