@@ -17,12 +17,12 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 public class StateMachineStackFrame extends StackFrame {
 
 	private static final String UNKNOWN_STACK_FRAME = "?";
-	
+
 	private NamedElement modelElement;
 
 	public StateMachineStackFrame(StateMachineInstance stateMachine, NamedElement modelElement) {
-		super(stateMachine);
-		this.modelElement = modelElement;
+		super(stateMachine, null);
+		setModelElement(modelElement);
 	}
 
 	@Override
@@ -111,10 +111,21 @@ public class StateMachineStackFrame extends StackFrame {
 
 	public void setModelElement(NamedElement modelElement) {
 		this.modelElement = modelElement;
+		this.resourceSet = modelElement.eResource().getResourceSet();
 	}
 
 	public NamedElement getModelElement() {
+		if (modelElement == null) {
+			setModelElement(getVMBrowser().loadModelElement(this, resourceSet));
+		}
 		return modelElement;
+	}
+
+	@Override
+	protected void loadVariables() throws DebugException {
+		if (variables == null) {
+			variables = getVMBrowser().loadDataOfStackFrame(this);
+		}
 	}
 
 }

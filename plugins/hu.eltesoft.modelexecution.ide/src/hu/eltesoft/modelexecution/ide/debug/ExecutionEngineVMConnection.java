@@ -74,7 +74,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation) {
 		this.virtualMachine = virtualMachine;
 		this.animation = animation;
-		virtualMachineBrowser = virtualMachine.createConnection();
+		virtualMachineBrowser = virtualMachine.getVMBrowser();
 		resourceSet = eObjectToExecute.eResource().getResourceSet();
 		// the constructor sets itself as resource locator for the resource set
 		new FilePathResourceLocator(resourceSet);

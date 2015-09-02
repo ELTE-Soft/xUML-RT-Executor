@@ -1,8 +1,10 @@
 package hu.eltesoft.modelexecution.ide.debug.jvm;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.NamedElement;
@@ -25,6 +27,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.model.DelegatingDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
+import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
@@ -38,7 +41,8 @@ import hu.eltesoft.modelexecution.runtime.meta.VariableMeta;
 
 /**
  * A class to query the state of the runtime running in the given virtual
- * machine.
+ * machine. Only one {@link VirtualMachineBrowser} should be used for each
+ * {@link VirtualMachine}.
  */
 @SuppressWarnings("restriction")
 public class VirtualMachineBrowser {
@@ -109,14 +113,22 @@ public class VirtualMachineBrowser {
 		return mainThread;
 	}
 
-	/**
-	 * Loads the actual state machine instance into a stack frame. Fills the
-	 * model element if it is empty.
-	 */
-	public void loadDataOfSMInstance(StateMachineStackFrame stackFrame, ResourceSet resourceSet) throws DebugException {
-		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
+	public List<ModelVariable> getAttributes(StateMachineInstance instance) throws DebugException {
+		List<ModelVariable> ret = new LinkedList<>();
+		JDIThreadWrapper mainThread = getMainThread();
+		ObjectReference smInstance = getInstanceFromRegistry(instance, mainThread);
+		SingleValue value = new SingleValue(instance.getXUmlRtDebugTarget(), mainThread, smInstance);
+		for (IVariable variable : value.getVariables()) {
+			if (variable instanceof ModelVariable) {
+				ret.add((ModelVariable) variable);
+			}
+		}
+		return ret;
+	}
+
+	private ObjectReference getInstanceFromRegistry(StateMachineInstance stateMachineInstance,
+			JDIThreadWrapper mainThread) {
 		try {
-			JDIThreadWrapper mainThread = getMainThread();
 			ClassType instanceRegistryClass = (ClassType) virtualMachine
 					.classesByName(InstanceRegistry.class.getCanonicalName()).get(0);
 			ObjectReference instanceRegistry = (ObjectReference) mainThread.invokeStaticMethod(instanceRegistryClass,
@@ -124,25 +136,58 @@ public class VirtualMachineBrowser {
 			ReferenceType actualClass = virtualMachine.classesByName(stateMachineInstance.getClassId()).get(0);
 			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, GET_INSTANCE_METHOD,
 					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
+			return instance;
+		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException
+				| IncompatibleThreadStateException e) {
+			IdePlugin.logError("Error while accessing state machine instance", e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Loads the actual state machine instance into a stack frame. Fills the
+	 * model element if it is empty.
+	 * 
+	 * @return
+	 */
+	public List<ModelVariable> loadDataOfStackFrame(StateMachineStackFrame stackFrame) throws DebugException {
+		List<ModelVariable> ret = new LinkedList<>();
+		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
+		try {
+			JDIThreadWrapper mainThread = getMainThread();
+			ObjectReference instance = getInstanceFromRegistry(stateMachineInstance, mainThread);
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
 					GET_STATE_MACHINE_METHOD);
 			EObject modelElement = stackFrame.getModelElement();
 			if (modelElement == null || modelElement instanceof Vertex) {
+				// because null means we are not stopped on a breakpoint, so the
+				// current model element can only be a vertex
 				ObjectReference actualState = (ObjectReference) stateMachine
 						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
-				stackFrame.addVariable(createCurrentStateVariable(stackFrame, mainThread, actualState));
-				if (modelElement == null) {
-					// we are not stopped on a breakpoint, or getModelElement()
-					// wont be null, so the current model element can only be a
-					// state
-					StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
-					stackFrame.setModelElement((NamedElement) ModelUtils.javaNameToEObject(stringVal.value(), resourceSet));
-				}
+				ret.add(createCurrentStateVariable(stackFrame, mainThread, actualState));
+
 			}
-			stackFrame.addVariable(createThisVariable(stackFrame, mainThread, instance));
+			ret.add(createThisVariable(stackFrame, mainThread, instance));
 		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
 				| NoSuchMethodException e) {
-			IdePlugin.logError("Error while accessing state machine instance", e);
+			IdePlugin.logError("Error while accessing stack frame variables", e);
+		}
+		return ret;
+	}
+
+	public NamedElement loadModelElement(StateMachineStackFrame stackFrame, ResourceSet resourceSet) {
+		try {
+			JDIThreadWrapper mainThread = getMainThread();
+			ObjectReference instance = getInstanceFromRegistry(stackFrame.getStateMachineInstance(), mainThread);
+			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance, GET_STATE_MACHINE_METHOD);
+			ObjectReference actualState = (ObjectReference) stateMachine
+					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
+			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
+			return (NamedElement) ModelUtils.javaNameToEObject(stringVal.value(), resourceSet);
+		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException
+				| IncompatibleThreadStateException e) {
+			IdePlugin.logError("Error while accessing stack frame model element", e);
+			return null;
 		}
 	}
 

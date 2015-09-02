@@ -119,7 +119,7 @@ public class DebugTarget extends DelegatingDebugTarget {
 					stackFrame = new StateMachineStackFrame(smInstance, null);
 				}
 				smInstance.setStackFrames(new StackFrame[] { stackFrame });
-				vmBrowser.loadDataOfSMInstance(stackFrame, resourceSet);
+				vmBrowser.getAttributes(smInstance);
 
 				smInstance.setSuspended(true, breakpoints.get(modelElement));
 				debugControl.refreshDebugElements();

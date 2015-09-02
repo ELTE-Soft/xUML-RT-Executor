@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -14,6 +15,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
+import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 
 /**
@@ -26,8 +28,12 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	protected String name;
 	private IBreakpoint breakPointStoppedOn;
 	private String className;
+	
+	// lazily populated
+	private List<ModelVariable> attributes = null;
 
-	public StateMachineInstance(DelegatingDebugTarget debugTarget, String classId, int instanceId, String originalName) {
+	public StateMachineInstance(DelegatingDebugTarget debugTarget, String classId, int instanceId,
+			String originalName) {
 		super(debugTarget);
 		this.classId = classId;
 		this.instanceId = instanceId;
@@ -113,13 +119,25 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	public String getClassName() {
 		return className;
 	}
-	
+
+	public ModelVariable[] getAttributes() {
+		if (attributes == null) {
+			VirtualMachineBrowser vmBrowser = getVMBrowser();
+			try {
+				attributes = vmBrowser.getAttributes(this);
+			} catch (DebugException e) {
+				return new ModelVariable[0];
+			}
+		}
+		return attributes.toArray(new ModelVariable[attributes.size()]);
+	}
+
 	@SuppressWarnings({ "unchecked", "restriction" })
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
 			return (T) new CombiningElementDebugContentProvider<StateMachineInstance>(
-					dt -> new Object[][] { dt.getStackFrames() });
+					dt -> new Object[][] { dt.getStackFrames(), dt.getAttributes() });
 		}
 		return super.getAdapter(adapter);
 	}

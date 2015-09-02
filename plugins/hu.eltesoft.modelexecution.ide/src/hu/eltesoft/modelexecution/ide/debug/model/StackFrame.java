@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
@@ -8,17 +7,21 @@ import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 
 public abstract class StackFrame extends DebugElement implements IStackFrame, IPresentation {
 
 	private final StateMachineInstance instance;
 	
-	private final List<ModelVariable> variables = new LinkedList<>();
+	protected List<ModelVariable> variables = null;
+
+	protected ResourceSet resourceSet;
 	
-	public StackFrame(StateMachineInstance instance) {
+	public StackFrame(StateMachineInstance instance, ResourceSet resourceSet) {
 		super(instance.getXUmlRtDebugTarget());
 		this.instance = instance;
+		this.resourceSet = resourceSet;
 	}
 
 	// default implementation: every stack frame behaves like the thread
@@ -79,9 +82,12 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 
 	@Override
 	public IVariable[] getVariables() throws DebugException {
+		loadVariables();
 		return variables.toArray(new IVariable[variables.size()]);
 	}
 	
+	protected abstract void loadVariables() throws DebugException;
+
 	public ModelVariable[] getModelVariables() {
 		return variables.toArray(new ModelVariable[variables.size()]);
 	}

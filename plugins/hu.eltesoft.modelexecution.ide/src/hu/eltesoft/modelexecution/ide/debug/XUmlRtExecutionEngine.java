@@ -77,7 +77,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 		setupControllerListeners(launch);
 
-		xumlrtDebugTarget = new DebugTarget(virtualMachine.createConnection(),
+		xumlrtDebugTarget = new DebugTarget(virtualMachine.getVMBrowser(),
 				mokaDebugTarget, eObjectToExecute.eResource().getResourceSet(), launch);
 		
 		launch.setSourceLocator(new PersistableSourceLocator());
