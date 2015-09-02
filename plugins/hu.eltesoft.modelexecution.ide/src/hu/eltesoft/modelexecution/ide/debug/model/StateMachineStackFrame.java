@@ -43,6 +43,7 @@ public class StateMachineStackFrame extends StackFrame {
 
 	@Override
 	public String getName() throws DebugException {
+		NamedElement modelElement = getModelElement();
 		if (modelElement != null && modelElement instanceof NamedElement) {
 			String elementType = modelElement.eClass().getName();
 			return String.format("%s [%s]", ((NamedElement) modelElement).getName(), elementType);
@@ -59,6 +60,7 @@ public class StateMachineStackFrame extends StackFrame {
 	@Override
 	public Image getImage() {
 		// show the icon corresponding to the element on the debugger is stopped
+		NamedElement modelElement = getModelElement();
 		if (modelElement != null) {
 			IImage image = ImageQuery.getEObjectImage(modelElement);
 			Device device = Display.getCurrent();

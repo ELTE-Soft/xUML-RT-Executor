@@ -8,7 +8,6 @@ import org.eclipse.debug.core.model.IThread;
 
 public abstract class SuspendableThread extends DebugElement implements IThread {
 
-	protected boolean isSuspended;
 	protected List<StackFrame> stackFrames = new LinkedList<>();
 
 	public SuspendableThread(DelegatingDebugTarget debugTarget) {
@@ -17,17 +16,17 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 
 	@Override
 	public boolean canResume() {
-		return isSuspended();
+		return getXUmlRtDebugTarget().canResume();
 	}
 
 	@Override
 	public boolean canSuspend() {
-		return !isSuspended();
+		return getXUmlRtDebugTarget().canSuspend();
 	}
 
 	@Override
 	public boolean isSuspended() {
-		return isSuspended;
+		return getXUmlRtDebugTarget().isSuspended();
 	}
 
 	@Override

@@ -121,7 +121,6 @@ public class DebugTarget extends DelegatingDebugTarget {
 				
 				isSuspended = true;
 
-				smInstance.setSuspended(true, breakpoints.get(modelElement));
 				debugControl.refreshDebugElements();
 			}
 		} catch (DebugException e) {

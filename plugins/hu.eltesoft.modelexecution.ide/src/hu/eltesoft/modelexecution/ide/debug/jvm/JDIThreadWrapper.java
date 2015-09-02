@@ -83,7 +83,7 @@ public class JDIThreadWrapper {
 	 * @return a reference to the this object in the top stack frame of the
 	 *         thread running the runtime
 	 */
-	public ObjectReference getActualThis() {
+	public synchronized ObjectReference getActualThis() {
 		checkUsable();
 		return getExecutionPoint().thisObject();
 	}
@@ -92,7 +92,7 @@ public class JDIThreadWrapper {
 	 * @return the arguments of the method call on the top stack frame of the
 	 *         thread running the runtime
 	 */
-	public List<Value> getActualArguments() {
+	public synchronized List<Value> getActualArguments() {
 		checkUsable();
 		return getExecutionPoint().getArgumentValues();
 	}
@@ -101,7 +101,7 @@ public class JDIThreadWrapper {
 	 * @return the local variables of the method call on the top stack frame of
 	 *         the thread running the runtime
 	 */
-	public Value getLocalVariable(String varName) {
+	public synchronized Value getLocalVariable(String varName) {
 		checkUsable();
 		try {
 			LocalVariable variable = getExecutionPoint().visibleVariableByName(varName);

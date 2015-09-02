@@ -26,7 +26,6 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	private String classId;
 	private int instanceId;
 	protected String name;
-	private IBreakpoint breakPointStoppedOn;
 	private String className;
 	
 	// lazily populated
@@ -68,11 +67,6 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 		return instanceId;
 	}
 
-	public void setSuspended(boolean isSuspended, IBreakpoint breakPoint) {
-		this.isSuspended = isSuspended;
-		breakPointStoppedOn = breakPoint;
-	}
-
 	@Override
 	public IStackFrame[] getStackFrames() {
 		return stackFrames.toArray(new StateMachineStackFrame[stackFrames.size()]);
@@ -100,11 +94,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 
 	@Override
 	public IBreakpoint[] getBreakpoints() {
-		if (isSuspended) {
-			return new IBreakpoint[] { breakPointStoppedOn };
-		} else {
-			return new IBreakpoint[0];
-		}
+		return new IBreakpoint[0];
 	}
 
 	public void clearStackFrames() {

@@ -38,7 +38,7 @@ public abstract class DelegatingDebugTarget extends DebugElement implements IDeb
 
 	@Override
 	public boolean canResume() {
-		return isSuspended;
+		return isSuspended && !isTerminated();
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public abstract class DelegatingDebugTarget extends DebugElement implements IDeb
 
 	@Override
 	public boolean canSuspend() {
-		return !isSuspended;
+		return !isSuspended && !isTerminated();
 	}
 
 	@Override
 	public boolean isSuspended() {
-		return isSuspended;
+		return isSuspended && !isTerminated();
 	}
 
 	@Override
