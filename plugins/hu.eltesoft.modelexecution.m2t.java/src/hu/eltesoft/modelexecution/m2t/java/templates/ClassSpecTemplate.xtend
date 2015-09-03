@@ -73,9 +73,7 @@ class ClassSpecTemplate extends Template {
 		// receptions
 		«FOR reception : classSpec.receptions»
 			
-			«generateReception(reception, false)»
-			
-			«generateReception(reception, true)»
+			«generateExternalReception(reception)»
 		«ENDFOR»
 	'''
 
@@ -117,11 +115,11 @@ class ClassSpecTemplate extends Template {
 		 «ENDIF»
 	'''
 
-	def generateReception(ClReceptionSpec reception, boolean isExternal) '''
+	def generateExternalReception(ClReceptionSpec reception) '''
 		/** Method for reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
-		void «reception.identifier»«IF isExternal»_external«ENDIF»(
+		void «reception.identifier»_external(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»
 			«ENDFOR»

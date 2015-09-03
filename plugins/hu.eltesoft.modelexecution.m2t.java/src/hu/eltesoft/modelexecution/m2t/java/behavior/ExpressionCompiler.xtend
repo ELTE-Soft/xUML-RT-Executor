@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
@@ -9,6 +7,8 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperation
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LocalNameDeclarationStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NameExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
@@ -21,13 +21,13 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Variable
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
-import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
+import org.eclipse.uml2.uml.Association
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
@@ -39,11 +39,6 @@ import org.eclipse.uml2.uml.Type
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
 class ExpressionCompiler extends CompilerBase {
-
-	static extension CodeGenNode = CodeGenNode.extension
-
-	extension TypeConverter typeConverter = new TypeConverter
-	extension JavaTypeConverter javaTypeConverter = new JavaTypeConverter
 
 	// Needed to be defined here for testing purposes.
 	def dispatch CodeGenNode compile(ExpressionStatement statement) {
@@ -216,22 +211,18 @@ class ExpressionCompiler extends CompilerBase {
 		}
 	}
 
-	def dispatch compile(AssignmentExpression assignment) {
-		if (AssignmentOperator.ASSIGN != assignment.operator) {
-			throw new CompilationFailedException("Compound assignment operators are unsupported")
+	def dispatch CodeGenNode compile(LinkOperationExpression expr) {
+		if (!(expr.parameters instanceof NamedTuple)) {
+			throw new CompilationFailedException("Only by-name association linking is supported")
 		}
-		val lhs = assignment.leftHandSide
-		switch lhs {
-			// attribute assignment
-			FeatureInvocationExpression: {
-				unwrap(compile(lhs.context)) ->
-					fun(Template.SETTER_PREFIX <> NamedReference.getIdentifier(lhs.feature),
-						compile(assignment.rightHandSide))
+		val association = expr.association.reference as Association
+		var name = NamedReference.getIdentifier(association)
+		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds)
+		var opName = if (LinkOperation.LINK == expr.linkOperation) {
+				"link"
+			} else {
+				"unlink"
 			}
-			// local variable assignment
-			NameExpression: {
-				fun(PrimitiveOperations.SET_VALUE, compile(lhs), compile(assignment.rightHandSide))
-			}
-		}
+		name <> "::" <> opName <> parameters
 	}
 }

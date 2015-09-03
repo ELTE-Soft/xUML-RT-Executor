@@ -1,15 +1,12 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
-import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
+import hu.eltesoft.modelexecution.m2t.java.ModelProperties
+import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import hu.eltesoft.modelexecution.m2t.java.ModelProperties
-import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
-
-	static extension CodeGenNode = CodeGenNode.extension
 
 	new() {
 		compiler = new StatementCompiler()
@@ -140,5 +137,39 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 			binOp("java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1", "=",
 				wrap("_9SdsIEDoEeWCNoKXHvCpUQ" -> fun("create", "i -> i._LAXgUEHKEeWzwYgcaM4qwA()"))),
 			unwrap("_local1") -> fun("send", "new " <> fun(SignalEvent.canonicalName, unwrap("_local0"))))
+	}
+
+	@Test
+	def testSwitchWithIntegerLiterals() {
+		assertCompilesTo(
+			'''
+				switch (0) {
+					case 1: 
+					case 2: break;
+					default: return;
+				}
+			''',
+			"switch " <> paren(unwrap(integerLiteral("0", 10))->fun("longValue")) <> " " <> block(
+				"case 1: " <> "case 2: " <> block("break"),
+				"default: " <> block("return")
+			)
+		)
+	}
+
+	@Test
+	def testSwitchWithStringLiterals() {
+		assertCompilesTo(
+			'''
+				switch ("c") {
+					case "a": 
+					case "b": break;
+					default: return;
+				}
+			''',
+			"switch " <> paren(unwrap(stringLiteral("c"))) <> " " <> block(
+				'case "a": ' <> 'case "b": ' <> block("break"),
+				"default: " <> block("return")
+			)
+		)
 	}
 }

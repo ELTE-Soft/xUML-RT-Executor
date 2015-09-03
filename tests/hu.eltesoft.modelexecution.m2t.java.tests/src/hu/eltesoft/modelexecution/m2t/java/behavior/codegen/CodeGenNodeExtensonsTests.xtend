@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals
 
 class CodeGenNodeExtensonsTests {
 
-	static extension CodeGenNode = CodeGenNode.extension
+	static extension CodeGenNode = CodeGenNode.EXTENSION
 
 	@Test
 	def testFunWithoutParameters() {
