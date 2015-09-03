@@ -3,6 +3,8 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 import com.incquerylabs.uml.ralf.ReducedAlfSystem
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.Type
+import org.eclipse.uml2.uml.DataType
+import org.eclipse.uml2.uml.Signal
 
 class TypeSystemExtensions {
 
@@ -41,8 +43,8 @@ class TypeSystemExtensions {
 	}
 
 	protected def hasValueType(EObject expression) {
-		expression.isPrimitive
-	// TODO: add data types later
+		val type = typeSystem.type(expression).value.umlType
+		expression.isPrimitive || type instanceof Signal || type instanceof DataType
 	}
 
 	protected def hasReferenceType(EObject expression) {
