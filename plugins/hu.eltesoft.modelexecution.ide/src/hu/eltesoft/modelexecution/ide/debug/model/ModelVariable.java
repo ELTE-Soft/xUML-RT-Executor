@@ -31,9 +31,11 @@ public class ModelVariable extends DebugElement implements IVariable, IPresentat
 	private VariableMeta leftVal;
 	private Value value;
 	private JDIThreadWrapper operationThread;
+	private DebugElement owner;
 
-	public ModelVariable(DebugTarget debugTarget, VariableMeta leftVal, JDIThreadWrapper operationThread, Value value) {
-		super(debugTarget);
+	public ModelVariable(DebugElement owner, VariableMeta leftVal, JDIThreadWrapper operationThread, Value value) {
+		super(owner.getXUmlRtDebugTarget());
+		this.owner = owner;
 		this.leftVal = leftVal;
 		this.operationThread = operationThread;
 		this.value = value;
@@ -108,9 +110,9 @@ public class ModelVariable extends DebugElement implements IVariable, IPresentat
 	@Override
 	public IValue getValue() throws DebugException {
 		if (leftVal.isSingle()) {
-			return new SingleValue(getXUmlRtDebugTarget(), operationThread, value);
+			return new SingleValue(this, operationThread, value);
 		} else {
-			return new MultiValue(getXUmlRtDebugTarget(), operationThread, value);
+			return new MultiValue(this, operationThread, value);
 		}
 	}
 
@@ -123,6 +125,11 @@ public class ModelVariable extends DebugElement implements IVariable, IPresentat
 	public boolean hasValueChanged() throws DebugException {
 		// change notifications are currently not supported
 		return false;
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return owner;
 	}
 
 }

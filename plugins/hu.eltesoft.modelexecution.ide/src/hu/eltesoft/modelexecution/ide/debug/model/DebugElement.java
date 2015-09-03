@@ -13,8 +13,8 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 
 	private DebugTarget debugTarget;
 	
-	public DebugElement(DebugTarget debugTarget) {
-		this.debugTarget = debugTarget;
+	public DebugElement(DebugTarget target) {
+		this.debugTarget = target;
 	}
 
 	public DebugViewController getDebugControl() {
@@ -47,5 +47,7 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 	public ILaunch getLaunch() {
 		return debugTarget.getLaunch();
 	}
+	
+	public abstract DebugElement getParent();
 
 }

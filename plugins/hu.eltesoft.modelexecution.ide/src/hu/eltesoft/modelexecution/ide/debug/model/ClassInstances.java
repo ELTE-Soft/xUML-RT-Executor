@@ -20,9 +20,11 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	private List<StateMachineInstance> instances = new LinkedList<>();
 	private String name;
 	private String classId;
+	private Component component;
 
-	public ClassInstances(DebugTarget target, String className, String classId) {
-		super(target);
+	public ClassInstances(Component component, String classId, String className) {
+		super(component.getXUmlRtDebugTarget());
+		this.component = component;
 		this.name = className;
 		this.classId = classId;
 	}
@@ -31,9 +33,11 @@ public class ClassInstances extends DebugElement implements IPresentation {
 		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
 
-	public void addStateMachineInstance(StateMachineInstance instance) {
-		instances.add(instance);
-		getDebugControl().addDebugElement(this, instance);
+	public StateMachineInstance addStateMachineInstance(int instanceId) {
+		StateMachineInstance added = new StateMachineInstance(this, instanceId);
+		instances.add(added);
+		getDebugControl().addDebugElement(this, added);
+		return added;
 	}
 
 	public void removeStateMachineInstance(StateMachineInstance instance) {
@@ -52,6 +56,10 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	
 	public String getClassId() {
 		return classId;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	@Override
@@ -83,6 +91,11 @@ public class ClassInstances extends DebugElement implements IPresentation {
 
 	public List<StateMachineInstance> getSmInstances() {
 		return instances;
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return component;
 	}	
 
 }

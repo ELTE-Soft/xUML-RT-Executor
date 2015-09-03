@@ -23,26 +23,22 @@ import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugCon
  */
 public class StateMachineInstance extends SuspendableThread implements IPresentation {
 
-	private String classId;
 	private int instanceId;
-	protected String name;
-	private String className;
 	
 	// lazily populated
 	private List<ModelVariable> attributes = null;
 
-	public StateMachineInstance(DebugTarget debugTarget, String classId, int instanceId,
-			String originalName) {
-		super(debugTarget);
-		this.classId = classId;
+	private ClassInstances cls;
+
+	public StateMachineInstance(ClassInstances parent, int instanceId) {
+		super(parent);
+		this.cls = parent;
 		this.instanceId = instanceId;
-		this.className = originalName;
-		name = originalName + "#" + instanceId;
 	}
 
 	@Override
 	public String getLabel() {
-		return name;
+		return getName();
 	}
 
 	@Override
@@ -60,7 +56,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	public String getClassId() {
-		return classId;
+		return cls.getClassId();
 	}
 
 	public int getInstanceId() {
@@ -88,8 +84,8 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	@Override
-	public String getName() throws DebugException {
-		return name;
+	public String getName() {
+		return getClassName() + "#" + getInstanceId();
 	}
 
 	@Override
@@ -112,7 +108,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	public String getClassName() {
-		return className;
+		return cls.getName();
 	}
 
 	public ModelVariable[] getAttributes() {
@@ -138,6 +134,11 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 					dt -> new Object[][] { dt.getStackFrames(), dt.getAttributes() });
 		}
 		return super.getAdapter(adapter);
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return cls;
 	}
 
 }

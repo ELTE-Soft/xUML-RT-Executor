@@ -21,8 +21,8 @@ import hu.eltesoft.modelexecution.runtime.meta.IndexMeta;
 @SuppressWarnings("restriction")
 public class MultiValue extends AbstractValue {
 
-	public MultiValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
-		super(debugTarget, mainThread, value);
+	public MultiValue(ModelVariable variable, JDIThreadWrapper mainThread, Value value) {
+		super(variable, mainThread, value);
 	}
 
 	@Override

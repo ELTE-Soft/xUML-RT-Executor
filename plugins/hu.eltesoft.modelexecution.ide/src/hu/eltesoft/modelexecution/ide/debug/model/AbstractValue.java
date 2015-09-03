@@ -55,6 +55,16 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 
 	protected JDIUtils jdiUtils;
 
+	protected ModelVariable variable;
+
+	public AbstractValue(ModelVariable variable, JDIThreadWrapper mainThread, Value value) {
+		super(variable.getXUmlRtDebugTarget());
+		this.variable = variable;
+		this.thread = mainThread;
+		this.value = value;
+		this.jdiUtils = new JDIUtils(mainThread);
+	}
+
 	public AbstractValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
@@ -179,6 +189,11 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 	@Override
 	public Image getImage() {
 		return null; // not displayed
+	}
+	
+	@Override
+	public DebugElement getParent() {
+		return variable;
 	}
 
 }

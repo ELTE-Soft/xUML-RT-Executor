@@ -23,8 +23,17 @@ public class Component extends DebugElement implements IPresentation {
 
 	private String name;
 
-	public Component(DebugTarget target, String name) {
-		super(target);
+	private DebugElement parent;
+
+	public Component(DebugTarget parent, String name) {
+		super(parent);
+		this.parent = parent;
+		this.name = name;
+	}
+	
+	public Component(Component parent, String name) {
+		super(parent.getXUmlRtDebugTarget());
+		this.parent = parent;
 		this.name = name;
 	}
 
@@ -36,14 +45,14 @@ public class Component extends DebugElement implements IPresentation {
 	public ClassInstances[] getStateMachineClasses() {
 		return classes.toArray(new ClassInstances[classes.size()]);
 	}
-
-	public void addStateMachineInstance(StateMachineInstance instance) {
-		ClassInstances cls = getOrCreateClassFor(instance);
-		cls.addStateMachineInstance(instance);
-	}
 	
+	public StateMachineInstance addStateMachineInstance(String classId, int instanceId, String originalName) {
+		ClassInstances cls = getOrCreateClassFor(classId, originalName);
+		return cls.addStateMachineInstance(instanceId);
+	}
+
 	public void removeStateMachineInstance(StateMachineInstance instance) {
-		ClassInstances cls = getOrCreateClassFor(instance);
+		ClassInstances cls = getOrCreateClassFor(instance.getClassId(), instance.getClassName());
 		cls.removeStateMachineInstance(instance);
 	}
 
@@ -119,16 +128,21 @@ public class Component extends DebugElement implements IPresentation {
 		return ret;
 	}
 
-	public ClassInstances getOrCreateClassFor(StateMachineInstance smInstance) {
+	public ClassInstances getOrCreateClassFor(String classId, String className) {
 		for (ClassInstances cls : classes) {
-			if (cls.getClassId().equals(smInstance.getClassId())) {
+			if (cls.getClassId().equals(classId)) {
 				return cls;
 			}
 		}
-		ClassInstances cls = new ClassInstances(getXUmlRtDebugTarget(), smInstance.getClassName(), smInstance.getClassId());
+		ClassInstances cls = new ClassInstances(this, classId, className);
 		classes.add(cls);
 		getDebugControl().addDebugElement(this, cls);
 		return cls;
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return parent;
 	}
 
 }

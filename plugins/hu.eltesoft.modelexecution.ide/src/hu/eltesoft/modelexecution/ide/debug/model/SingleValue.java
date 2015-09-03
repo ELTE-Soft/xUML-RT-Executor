@@ -22,6 +22,10 @@ public class SingleValue extends AbstractValue {
 
 	private static final String SINGLETON_VALUE_MISSING = "null";
 
+	public SingleValue(ModelVariable modelVariable, JDIThreadWrapper mainThread, Value value) {
+		super(modelVariable, mainThread, value);
+	}
+
 	public SingleValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
@@ -30,7 +34,7 @@ public class SingleValue extends AbstractValue {
 	protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
 			throws DebugException {
 		if (!collectionValues.isEmpty()) {
-			return new SingleValue(getXUmlRtDebugTarget(), thread, collectionValues.get(0)).getVariables();
+			return new SingleValue(variable, thread, collectionValues.get(0)).getVariables();
 		} else {
 			return new IVariable[0];
 		}

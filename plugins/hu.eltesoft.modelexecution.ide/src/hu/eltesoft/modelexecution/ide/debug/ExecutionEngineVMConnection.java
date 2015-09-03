@@ -183,19 +183,14 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	}
 
 	private boolean actualSMInstanceIsSelected() {
-		try {
-			String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
-			for (Object debugElem : debugControl.getSelectedDebugElements()) {
-				if (debugElem instanceof StateMachineInstance) {
-					StateMachineInstance smInstance = (StateMachineInstance) debugElem;
-					if (smInstance.getName().equals(actualSMInstance)) {
-						return true;
-					}
+		String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
+		for (Object debugElem : debugControl.getSelectedDebugElements()) {
+			if (debugElem instanceof StateMachineInstance) {
+				StateMachineInstance smInstance = (StateMachineInstance) debugElem;
+				if (smInstance.getName().equals(actualSMInstance)) {
+					return true;
 				}
 			}
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while animating", e);
-			// fall through
 		}
 		return false;
 	}

@@ -10,8 +10,8 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 
 	protected List<StackFrame> stackFrames = new LinkedList<>();
 
-	public SuspendableThread(DebugTarget debugTarget) {
-		super(debugTarget);
+	public SuspendableThread(ClassInstances parent) {
+		super(parent.getXUmlRtDebugTarget());
 	}
 
 	@Override

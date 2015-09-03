@@ -108,5 +108,10 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	public boolean hasRegisterGroups() throws DebugException {
 		return false;
 	}
+	
+	@Override
+	public DebugElement getParent() {
+		return instance;
+	}
 
 }

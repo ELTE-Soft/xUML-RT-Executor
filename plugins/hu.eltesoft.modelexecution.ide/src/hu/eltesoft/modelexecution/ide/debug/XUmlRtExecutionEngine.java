@@ -30,7 +30,6 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
-import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
 import hu.eltesoft.modelexecution.ide.debug.util.PersistableSourceLocator;
@@ -97,9 +96,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
 						@Override
 						public void instanceCreated(String classId, int instanceId, String originalName) {
-							StateMachineInstance smInstance = new StateMachineInstance(xumlrtDebugTarget, classId,
-									instanceId, originalName);
-							xumlrtDebugTarget.addSMInstance(smInstance);
+							xumlrtDebugTarget.addSMInstance(classId, instanceId, originalName);
 						}
 
 						@Override

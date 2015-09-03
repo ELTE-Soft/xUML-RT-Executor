@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
@@ -108,16 +107,15 @@ public class DebugTarget extends DelegatingDebugTarget {
 		mokaDebugTarget.breakpointChanged(breakpoint, delta);
 	}
 
-	public void addSMInstance(StateMachineInstance smInstance) {
+	public void addSMInstance(String classId, int instanceId, String originalName) {
 		boolean selectElement = !hasSMInstance();
 		if (defaultComponent == null) {
 			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
 			debugControl.addDebugElement(this, defaultComponent);
 		}
-		ClassInstances cls = defaultComponent.getOrCreateClassFor(smInstance);
-		cls.addStateMachineInstance(smInstance);
+		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		if (selectElement) {
-			debugControl.selectAndExpand(this, smInstance);
+			debugControl.expandAndSelect(added);
 		}
 	}
 
@@ -148,23 +146,19 @@ public class DebugTarget extends DelegatingDebugTarget {
 	public void markThreadAsSuspended(EObject modelElement) {
 
 		String actualSMInstance = vmBrowser.getActualSMInstance();
-		try {
-			List<StateMachineInstance> smInstances = getSmInstances();
-			for (StateMachineInstance smInstance : smInstances) {
-				StateMachineStackFrame stackFrame;
-				if (smInstance.getName().equals(actualSMInstance)) {
-					stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
-				} else {
-					stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
-				}
-				debugControl.updateElement(smInstance);
-				smInstance.setStackFrames(new StackFrame[] { stackFrame });
-				debugControl.reselect();
-
-				isSuspended = true;
+		List<StateMachineInstance> smInstances = getSmInstances();
+		for (StateMachineInstance smInstance : smInstances) {
+			StateMachineStackFrame stackFrame;
+			if (smInstance.getName().equals(actualSMInstance)) {
+				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
+			} else {
+				stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 			}
-		} catch (DebugException e) {
-			IdePlugin.logError("Error while updating sm instances"); //$NON-NLS-1$
+			debugControl.updateElement(smInstance);
+			smInstance.setStackFrames(new StackFrame[] { stackFrame });
+			debugControl.reselect();
+
+			isSuspended = true;
 		}
 	}
 
@@ -209,6 +203,9 @@ public class DebugTarget extends DelegatingDebugTarget {
 	}
 
 	public boolean hasSMInstance() {
+		if (defaultComponent != null) {
+			return true;
+		}
 		for (Component component : components) {
 			if (component.hasSMInstance()) {
 				return true;
@@ -237,6 +234,11 @@ public class DebugTarget extends DelegatingDebugTarget {
 		} else {
 			return super.getAdapter(adapter);
 		}
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return null;
 	}
 
 }
