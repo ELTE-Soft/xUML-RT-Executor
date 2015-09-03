@@ -31,7 +31,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	// lazily populated
 	private List<ModelVariable> attributes = null;
 
-	public StateMachineInstance(DelegatingDebugTarget debugTarget, String classId, int instanceId,
+	public StateMachineInstance(DebugTarget debugTarget, String classId, int instanceId,
 			String originalName) {
 		super(debugTarget);
 		this.classId = classId;
@@ -98,12 +98,17 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	public void clearStackFrames() {
+		for (StackFrame stackFrame : stackFrames) {
+			getDebugControl().removeDebugElement(stackFrame);
+		}
 		stackFrames.clear();
 	}
 
 	public void setStackFrames(StackFrame[] stackFrames) {
-		this.stackFrames.clear();
 		this.stackFrames.addAll(Arrays.asList(stackFrames));
+		for (StackFrame stackFrame : stackFrames) {
+			getDebugControl().addDebugElement(this, stackFrame);
+		}
 	}
 
 	public String getClassName() {

@@ -10,7 +10,7 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 
 	protected List<StackFrame> stackFrames = new LinkedList<>();
 
-	public SuspendableThread(DelegatingDebugTarget debugTarget) {
+	public SuspendableThread(DebugTarget debugTarget) {
 		super(debugTarget);
 	}
 

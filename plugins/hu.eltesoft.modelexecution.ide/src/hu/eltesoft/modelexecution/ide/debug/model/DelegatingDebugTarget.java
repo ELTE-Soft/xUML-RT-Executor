@@ -16,7 +16,7 @@ public abstract class DelegatingDebugTarget extends DebugElement implements IDeb
 	
 	protected boolean isSuspended = false;
 
-	public DelegatingDebugTarget(DelegatingDebugTarget debugTarget, MokaDebugTarget mokaDebugTarget) {
+	public DelegatingDebugTarget(DebugTarget debugTarget, MokaDebugTarget mokaDebugTarget) {
 		super(debugTarget);
 		this.mokaDebugTarget = mokaDebugTarget;
 	}

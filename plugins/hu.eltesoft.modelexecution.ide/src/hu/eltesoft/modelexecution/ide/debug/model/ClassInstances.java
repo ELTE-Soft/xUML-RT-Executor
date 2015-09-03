@@ -3,7 +3,6 @@ package hu.eltesoft.modelexecution.ide.debug.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
@@ -16,14 +15,16 @@ import org.eclipse.uml2.uml.UMLFactory;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.PresentationLabelProvider;
 
-public class ClassInstances extends PlatformObject implements IPresentation {
+public class ClassInstances extends DebugElement implements IPresentation {
 
 	private List<StateMachineInstance> instances = new LinkedList<>();
-
 	private String name;
+	private String classId;
 
-	public ClassInstances(String className) {
+	public ClassInstances(DebugTarget target, String className, String classId) {
+		super(target);
 		this.name = className;
+		this.classId = classId;
 	}
 
 	public StateMachineInstance[] getStateMachines() {
@@ -32,6 +33,12 @@ public class ClassInstances extends PlatformObject implements IPresentation {
 
 	public void addStateMachineInstance(StateMachineInstance instance) {
 		instances.add(instance);
+		getDebugControl().addDebugElement(this, instance);
+	}
+
+	public void removeStateMachineInstance(StateMachineInstance instance) {
+		instances.remove(instance);
+		getDebugControl().removeDebugElement(instance);
 	}
 
 	public StateMachineInstance[] getInstances() {
@@ -41,6 +48,10 @@ public class ClassInstances extends PlatformObject implements IPresentation {
 	@Override
 	public String getLabel() {
 		return name;
+	}
+	
+	public String getClassId() {
+		return classId;
 	}
 
 	@Override
@@ -68,6 +79,10 @@ public class ClassInstances extends PlatformObject implements IPresentation {
 			return super.getAdapter(adapter);
 		}
 
+	}
+
+	public List<StateMachineInstance> getSmInstances() {
+		return instances;
 	}	
 
 }

@@ -22,7 +22,7 @@ public class SingleValue extends AbstractValue {
 
 	private static final String SINGLETON_VALUE_MISSING = "null";
 
-	public SingleValue(DelegatingDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public SingleValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
 

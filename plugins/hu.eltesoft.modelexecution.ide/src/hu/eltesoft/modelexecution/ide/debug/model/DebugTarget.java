@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
 public class DebugTarget extends DelegatingDebugTarget {
 
-	private List<StateMachineInstance> smInstances = new LinkedList<>();
+	private Component defaultComponent = null;
 
 	private List<Component> components = new LinkedList<>();
 
@@ -41,26 +40,32 @@ public class DebugTarget extends DelegatingDebugTarget {
 	private DebugViewController debugControl = new DebugViewController();
 
 	private EObject entryPoint;
-	
-	public DebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine, ResourceSet resourceSet,
-			ILaunch launch) {
+
+	public DebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
+			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
-		this.entryPoint = ModelUtils.findEObject(ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet) ;
+		this.entryPoint = ModelUtils
+				.findEObject(ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
-		
+
 		setDebugTarget(this);
+	}
+
+	public DebugViewController getDebugControl() {
+		return debugControl;
 	}
 
 	@Override
 	public IThread[] getThreads() throws DebugException {
+		List<StateMachineInstance> smInstances = getSmInstances();
 		return smInstances.toArray(new IThread[smInstances.size()]);
 	}
 
 	@Override
 	public boolean hasThreads() throws DebugException {
-		return !smInstances.isEmpty();
+		return hasSMInstance();
 	}
 
 	@Override
@@ -69,14 +74,23 @@ public class DebugTarget extends DelegatingDebugTarget {
 	}
 
 	public void terminated() {
+		if (defaultComponent != null) {
+			debugControl.removeDebugElement(defaultComponent);
+		}
+		defaultComponent = null;
+		for (Component component : components) {
+			debugControl.removeDebugElement(component);
+		}
 		components.clear();
-		smInstances.clear();
-		debugControl.refreshDebugElements();
 	}
 
 	public void resumed() {
-		smInstances.forEach(inst -> inst.clearStackFrames());
-		debugControl.refreshDebugElements();
+		List<StateMachineInstance> smInstances = getSmInstances();
+		smInstances.forEach(inst -> {
+			inst.clearStackFrames();
+			debugControl.updateElement(inst);
+		});
+
 	}
 
 	@Override
@@ -95,13 +109,32 @@ public class DebugTarget extends DelegatingDebugTarget {
 	}
 
 	public void addSMInstance(StateMachineInstance smInstance) {
-		smInstances.add(smInstance);
-		debugControl.refreshDebugElements();
+		boolean selectElement = !hasSMInstance();
+		if (defaultComponent == null) {
+			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
+			debugControl.addDebugElement(this, defaultComponent);
+		}
+		ClassInstances cls = defaultComponent.getOrCreateClassFor(smInstance);
+		cls.addStateMachineInstance(smInstance);
+		if (selectElement) {
+			debugControl.selectAndExpand(this, smInstance);
+		}
 	}
 
 	public void removeSMInstance(String classId, int instanceId) {
-		smInstances.removeIf(t -> t.getClassId().equals(classId) && t.getInstanceId() == instanceId);
-		debugControl.refreshDebugElements();
+		List<StateMachineInstance> smInstances = defaultComponent.getSmInstances();
+		StateMachineInstance removedInstance = null;
+		for (StateMachineInstance smInstance : smInstances) {
+			if (smInstance.getClassId().equals(classId) && smInstance.getInstanceId() == instanceId) {
+				removedInstance = smInstance;
+			}
+		}
+		defaultComponent.removeStateMachineInstance(removedInstance);
+		// remove default component if became empty
+		if (!defaultComponent.hasSMInstance()) {
+			debugControl.removeDebugElement(defaultComponent);
+			defaultComponent = null;
+		}
 	}
 
 	/**
@@ -116,6 +149,7 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 		String actualSMInstance = vmBrowser.getActualSMInstance();
 		try {
+			List<StateMachineInstance> smInstances = getSmInstances();
 			for (StateMachineInstance smInstance : smInstances) {
 				StateMachineStackFrame stackFrame;
 				if (smInstance.getName().equals(actualSMInstance)) {
@@ -123,12 +157,12 @@ public class DebugTarget extends DelegatingDebugTarget {
 				} else {
 					stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 				}
+				debugControl.updateElement(smInstance);
 				smInstance.setStackFrames(new StackFrame[] { stackFrame });
-				
-				isSuspended = true;
+				debugControl.reselect();
 
+				isSuspended = true;
 			}
-			debugControl.refreshDebugElements();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while updating sm instances"); //$NON-NLS-1$
 		}
@@ -156,23 +190,42 @@ public class DebugTarget extends DelegatingDebugTarget {
 		return launch;
 	}
 
+	public Component getDefaultComponent() {
+		return defaultComponent;
+	}
+
 	public Component[] getComponents() {
-		if ((components.isEmpty() || !smInstances.isEmpty()) && !isTerminated()) {
-			// puts the state machine instances into a default component
-			ArrayList<Object> ret = new ArrayList<>(components.size() + 1);
-			Component defaultComponent = new Component(Messages.DebugTarget_default_component_label);
+		LinkedList<Component> ret = new LinkedList<>();
+		if (defaultComponent != null) {
 			ret.add(defaultComponent);
-			for (StateMachineInstance instance : smInstances) {
-				defaultComponent.addStateMachineInstance(instance);
-			}
-			ret.addAll(components);
-			return ret.toArray(new Component[ret.size()]);
 		}
-		return components.toArray(new Component[components.size()]);
+		ret.addAll(components);
+		return ret.toArray(new Component[ret.size()]);
 	}
 
 	public StateMachineInstance[] getStateMachineInstances() {
+		List<StateMachineInstance> smInstances = getSmInstances();
 		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
+	}
+
+	public boolean hasSMInstance() {
+		for (Component component : components) {
+			if (component.hasSMInstance()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<StateMachineInstance> getSmInstances() {
+		List<StateMachineInstance> ret = new LinkedList<>();
+		if (defaultComponent != null) {
+			ret.addAll(defaultComponent.getSmInstances());
+		}
+		for (Component component : components) {
+			ret.addAll(component.getSmInstances());
+		}
+		return ret;
 	}
 
 	@SuppressWarnings({ "unchecked", "restriction" })

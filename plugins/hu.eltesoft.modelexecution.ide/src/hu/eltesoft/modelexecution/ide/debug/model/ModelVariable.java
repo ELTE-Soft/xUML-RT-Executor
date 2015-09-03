@@ -32,7 +32,7 @@ public class ModelVariable extends DebugElement implements IVariable, IPresentat
 	private Value value;
 	private JDIThreadWrapper operationThread;
 
-	public ModelVariable(DelegatingDebugTarget debugTarget, VariableMeta leftVal, JDIThreadWrapper operationThread, Value value) {
+	public ModelVariable(DebugTarget debugTarget, VariableMeta leftVal, JDIThreadWrapper operationThread, Value value) {
 		super(debugTarget);
 		this.leftVal = leftVal;
 		this.operationThread = operationThread;

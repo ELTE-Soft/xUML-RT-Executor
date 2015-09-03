@@ -2,13 +2,20 @@ package hu.eltesoft.modelexecution.ide.debug.ui;
 
 import java.util.function.Consumer;
 
+import org.eclipse.debug.internal.ui.viewers.model.provisional.TreeModelViewer;
 import org.eclipse.debug.ui.AbstractDebugView;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.TreePath;
+import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
+
+@SuppressWarnings("restriction")
 public class DebugViewController {
 
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
@@ -23,11 +30,22 @@ public class DebugViewController {
 		return ret[0];
 	}
 
-	public void refreshDebugElements() {
-		accessViewer(v -> v.refresh(false));
+	public void selectAndExpand(DebugTarget debugTarget, Object element) {
+		accessViewer(v -> {
+			if (v instanceof TreeModelViewer) {
+				TreeModelViewer tmv = (TreeModelViewer) v;
+				// FIXME: why don't it expand
+				tmv.reveal(element);
+				TreePath[] pathes = tmv.getElementPaths(element);
+				tmv.isExpandable(debugTarget);
+				if (pathes.length > 0) {
+					tmv.setSelection(new TreeSelection(pathes[0]), true, true);
+				}
+			}
+		});
 	}
 
-	public void accessViewer(Consumer<StructuredViewer> action) {
+	public void accessViewer(Consumer<TreeViewer> action) {
 		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
 			// we must perform this operation on a UI thread
@@ -37,13 +55,35 @@ public class DebugViewController {
 		}
 	}
 
-	private void accessViewerUIThread(Consumer<StructuredViewer> action) {
+	private void accessViewerUIThread(Consumer<TreeViewer> action) {
 		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().findView(DEBUG_VIEW_ID);
 		if (debugView == null) {
 			return; // debug view is not open
 		}
-		action.accept((StructuredViewer) debugView.getViewer());
+		action.accept((TreeViewer) debugView.getViewer());
+	}
+	
+	public void addDebugElement(Object parent, Object child) {
+		accessViewer(v -> v.add(parent, child));
+	}
+	
+	public void removeDebugElement(Object removed) {
+		accessViewer(v -> v.remove(removed));
 	}
 
+	public void updateElement(Object toUpdate) {
+		accessViewer(v -> v.update(toUpdate, null));
+	}
+
+	public void refreshDebugElements() {
+		accessViewer(v -> v.refresh());
+	}
+
+	public void reselect() {
+		accessViewer(v -> {
+			ISelection selection = v.getSelection();
+			v.setSelection(selection);
+		});
+	}
 }

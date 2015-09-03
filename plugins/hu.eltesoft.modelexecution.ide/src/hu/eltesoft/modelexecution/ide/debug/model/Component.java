@@ -1,12 +1,8 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
@@ -19,41 +15,40 @@ import org.eclipse.uml2.uml.UMLFactory;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.PresentationLabelProvider;
 
-public class Component extends PlatformObject implements IPresentation {
+public class Component extends DebugElement implements IPresentation {
 
-	private List<StateMachineInstance> instances = new LinkedList<>();
+	private List<ClassInstances> classes = new LinkedList<>();
 
 	private List<Component> subcomponents = new LinkedList<>();
 
 	private String name;
 
-	public Component(String name) {
+	public Component(DebugTarget target, String name) {
+		super(target);
 		this.name = name;
 	}
 
 	public StateMachineInstance[] getStateMachines() {
+		List<StateMachineInstance> instances = getSmInstances();
 		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
 	
 	public ClassInstances[] getStateMachineClasses() {
-		Map<String, ClassInstances> ret = new HashMap<>();
-		for (StateMachineInstance instance : instances) {
-			ClassInstances cls = ret.get(instance.getClassId());
-			if (cls == null) {
-				cls = new ClassInstances(instance.getClassName());
-				ret.put(instance.getClassId(), cls);
-			}
-			cls.addStateMachineInstance(instance);
-		}
-		Collection<ClassInstances> values = ret.values();
-		return values.toArray(new ClassInstances[values.size()]);
+		return classes.toArray(new ClassInstances[classes.size()]);
 	}
 
 	public void addStateMachineInstance(StateMachineInstance instance) {
-		instances.add(instance);
+		ClassInstances cls = getOrCreateClassFor(instance);
+		cls.addStateMachineInstance(instance);
+	}
+	
+	public void removeStateMachineInstance(StateMachineInstance instance) {
+		ClassInstances cls = getOrCreateClassFor(instance);
+		cls.removeStateMachineInstance(instance);
 	}
 
 	public StateMachineInstance[] getInstances() {
+		List<StateMachineInstance> instances = getSmInstances();
 		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
 
@@ -99,6 +94,41 @@ public class Component extends PlatformObject implements IPresentation {
 			return super.getAdapter(adapter);
 		}
 
+	}
+
+	public boolean hasSMInstance() {
+		if (!classes.isEmpty()) {
+			return true;
+		}
+		for (Component component : subcomponents) {
+			if (component.hasSMInstance()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<StateMachineInstance> getSmInstances() {
+		List<StateMachineInstance> ret = new LinkedList<>();
+		for (Component component : subcomponents) {
+			ret.addAll(component.getSmInstances());
+		}
+		for (ClassInstances cls : classes) {
+			ret.addAll(cls.getSmInstances());
+		}
+		return ret;
+	}
+
+	public ClassInstances getOrCreateClassFor(StateMachineInstance smInstance) {
+		for (ClassInstances cls : classes) {
+			if (cls.getClassId().equals(smInstance.getClassId())) {
+				return cls;
+			}
+		}
+		ClassInstances cls = new ClassInstances(getXUmlRtDebugTarget(), smInstance.getClassName(), smInstance.getClassId());
+		classes.add(cls);
+		getDebugControl().addDebugElement(this, cls);
+		return cls;
 	}
 
 }

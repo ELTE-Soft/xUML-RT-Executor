@@ -36,7 +36,8 @@ public class CombiningElementDebugContentProvider<T> extends ElementContentProvi
 	protected int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor)
 			throws CoreException {
 		int ret = 0;
-		for (Object[] objects : fun.apply((T) element)) {
+		Object[][] children = fun.apply((T) element);
+		for (Object[] objects : children) {
 			ret += objects.length;
 		}
 		return ret;

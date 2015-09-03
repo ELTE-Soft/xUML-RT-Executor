@@ -67,7 +67,6 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		debugTarget.setName(Messages.XUmlRtExecutionEngine_debug_model_label);
 
 		ILaunch launch = debugTarget.getLaunch();
-		
 
 		LaunchConfigReader configReader = new LaunchConfigReader(launch);
 		animation = new AnimationController(configReader);
@@ -79,11 +78,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 		setupControllerListeners(launch);
 
-		xumlrtDebugTarget = new DebugTarget(virtualMachine.getVMBrowser(),
-				this, eObjectToExecute.eResource().getResourceSet(), launch);
-		
+		xumlrtDebugTarget = new DebugTarget(virtualMachine.getVMBrowser(), this,
+				eObjectToExecute.eResource().getResourceSet(), launch);
+
 		launch.setSourceLocator(new PersistableSourceLocator());
-		
+
 		launch.addDebugTarget(xumlrtDebugTarget);
 	}
 
@@ -202,18 +201,17 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	public DebugTarget getXUmlRtDebugTarget() {
 		return xumlrtDebugTarget;
 	}
-	
-	
+
 	@Override
 	protected void resume_reply(String message) {
 		Resume_Request request = Marshaller.getInstance().resume_request_unmarshal(message);
 		this.resume(request);
 	}
-	
+
 	@Override
 	protected void suspend_reply(String message) {
 		Suspend_Request request = Marshaller.getInstance().suspend_request_unmarshal(message);
 		this.suspend(request);
 	}
-	
+
 }
