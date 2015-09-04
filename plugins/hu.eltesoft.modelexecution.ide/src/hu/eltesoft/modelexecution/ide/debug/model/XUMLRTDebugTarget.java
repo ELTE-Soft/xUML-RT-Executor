@@ -144,6 +144,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	 *            state or transition)
 	 */
 	public void markThreadAsSuspended(EObject modelElement) {
+		isSuspended = true;
 
 		String actualSMInstance = vmBrowser.getActualSMInstance();
 		List<StateMachineInstance> smInstances = getSmInstances();
@@ -157,12 +158,9 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 				// the current state of the state machine will be queried later
 				stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 			}
-			debugControl.updateElement(smInstance);
 			smInstance.setStackFrames(new StackFrame[] { stackFrame });
 			// force refresh of debug controls on toolbar
 			debugControl.reselect();
-
-			isSuspended = true;
 		}
 	}
 

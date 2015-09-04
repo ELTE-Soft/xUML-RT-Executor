@@ -101,6 +101,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	public void setStackFrames(StackFrame[] stackFrames) {
+		clearStackFrames();
 		this.stackFrames.addAll(Arrays.asList(stackFrames));
 		for (StackFrame stackFrame : stackFrames) {
 			getDebugControl().addDebugElement(this, stackFrame);
