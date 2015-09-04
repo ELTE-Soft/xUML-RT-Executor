@@ -2,13 +2,13 @@ package hu.eltesoft.modelexecution.m2m.logic.translators
 
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.api.impl.ReducedAlfParser
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
+import hu.eltesoft.modelexecution.m2t.java.GenerationException
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.templates.BehaviorTemplateSmap
 import hu.eltesoft.modelexecution.uml.incquery.ActionCodeMatcher

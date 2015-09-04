@@ -16,9 +16,9 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
 /**
  * A node of the translator tree that corresponds to a feature of the

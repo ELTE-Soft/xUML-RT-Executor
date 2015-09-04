@@ -3,13 +3,13 @@ package hu.eltesoft.modelexecution.m2m.logic.translators.helpers;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 
-import hu.eltesoft.modelexecution.m2m.logic.UnsupportedUMLFeatureException;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Direction;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveTypes;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ReferencedType;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType;
+import hu.eltesoft.modelexecution.m2t.java.UnsupportedUMLFeatureException;
 
 /**
  * Convenient translators for parts of the model concerning types.

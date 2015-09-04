@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.IdePlugin;
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
 /**
  * The model builder triggers the source code generation from the UML model.
