@@ -7,6 +7,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 
+/**
+ * Allows the presentation of model elements in the debug view that implement
+ * the {@link IPresentation} interface.
+ */
 @SuppressWarnings("restriction")
 public class PresentationLabelProvider extends ElementLabelProvider {
 
@@ -30,5 +34,4 @@ public class PresentationLabelProvider extends ElementLabelProvider {
 		return null;
 	}
 
-	
 }

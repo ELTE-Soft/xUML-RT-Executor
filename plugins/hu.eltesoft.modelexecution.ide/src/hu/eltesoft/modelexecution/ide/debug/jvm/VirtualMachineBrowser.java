@@ -25,7 +25,7 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
@@ -64,7 +64,7 @@ public class VirtualMachineBrowser {
 	 * @return the instance of a class that has a state machine which is
 	 *         currently under execution
 	 */
-	public String getActualSMInstance() {
+	public synchronized String getActualSMInstance() {
 		JDIThreadWrapper mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
@@ -79,7 +79,7 @@ public class VirtualMachineBrowser {
 
 	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
 			VariableMeta leftVal) {
-		DebugTarget debugTarget = frame.getXUmlRtDebugTarget();
+		XUMLRTDebugTarget debugTarget = frame.getXUmlRtDebugTarget();
 		return new ModelVariable(debugTarget, leftVal, mainThread, value);
 	}
 
@@ -100,7 +100,7 @@ public class VirtualMachineBrowser {
 		return mainThread;
 	}
 
-	public List<ModelVariable> getAttributes(StateMachineInstance instance) throws DebugException {
+	public synchronized List<ModelVariable> getAttributes(StateMachineInstance instance) throws DebugException {
 		try {
 			List<ModelVariable> ret = new LinkedList<>();
 			JDIThreadWrapper mainThread = getMainThread();
@@ -138,10 +138,8 @@ public class VirtualMachineBrowser {
 	/**
 	 * Loads the actual state machine instance into a stack frame. Fills the
 	 * model element if it is empty.
-	 * 
-	 * @return
 	 */
-	public List<ModelVariable> getVariables(StateMachineStackFrame stackFrame) throws DebugException {
+	public synchronized List<ModelVariable> getVariables(StateMachineStackFrame stackFrame) throws DebugException {
 		List<ModelVariable> ret = new LinkedList<>();
 		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
 		try {
@@ -153,6 +151,7 @@ public class VirtualMachineBrowser {
 			if (modelElement == null || modelElement instanceof Vertex) {
 				// because null means we are not stopped on a breakpoint, so the
 				// current model element can only be a vertex
+				// see: StateMachineStackFrame
 				ObjectReference actualState = (ObjectReference) stateMachine
 						.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 				ret.add(createCurrentStateVariable(stackFrame, mainThread, actualState));
@@ -181,7 +180,7 @@ public class VirtualMachineBrowser {
 		}
 	}
 
-	public NamedElement loadModelElement(StateMachineStackFrame stackFrame, ResourceSet resourceSet) {
+	public synchronized NamedElement loadModelElement(StateMachineStackFrame stackFrame, ResourceSet resourceSet) {
 		try {
 			JDIThreadWrapper mainThread = getMainThread();
 			ObjectReference instance = getInstanceFromRegistry(stackFrame.getStateMachineInstance(), mainThread);

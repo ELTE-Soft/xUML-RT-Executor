@@ -22,7 +22,7 @@ import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
-public class DebugTarget extends DelegatingDebugTarget {
+public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
 	private Component defaultComponent = null;
 
@@ -40,7 +40,7 @@ public class DebugTarget extends DelegatingDebugTarget {
 
 	private EObject entryPoint;
 
-	public DebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
+	public XUMLRTDebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
 			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
 		this.entryPoint = ModelUtils
@@ -150,12 +150,15 @@ public class DebugTarget extends DelegatingDebugTarget {
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
 			if (smInstance.getName().equals(actualSMInstance)) {
+				// this is necessary, because the model element could be a transition
 				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
 			} else {
+				// the current state of the state machine will be queried later
 				stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 			}
 			debugControl.updateElement(smInstance);
 			smInstance.setStackFrames(new StackFrame[] { stackFrame });
+			// force refresh of debug controls on toolbar
 			debugControl.reselect();
 
 			isSuspended = true;
@@ -229,7 +232,7 @@ public class DebugTarget extends DelegatingDebugTarget {
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
-			return (T) new CombiningElementDebugContentProvider<DebugTarget>(
+			return (T) new CombiningElementDebugContentProvider<XUMLRTDebugTarget>(
 					dt -> new Object[][] { dt.getComponents() });
 		} else {
 			return super.getAdapter(adapter);

@@ -7,7 +7,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
 
-public class PersistableSourceLocator implements IPersistableSourceLocator {
+public class XUMLRTSourceLocator implements IPersistableSourceLocator {
 
 	@Override
 	public Object getSourceElement(IStackFrame stackFrame) {

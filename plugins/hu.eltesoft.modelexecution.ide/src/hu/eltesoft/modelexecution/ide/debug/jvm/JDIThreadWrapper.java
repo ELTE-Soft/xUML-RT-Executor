@@ -51,7 +51,7 @@ public class JDIThreadWrapper {
 		for (Method method : methodsByName) {
 			try {
 				return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
-			} catch (InvalidTypeException e) {
+			} catch (InvalidTypeException | IllegalArgumentException e) {
 				// an other overloaded method must be tried
 			}
 		}
@@ -72,7 +72,7 @@ public class JDIThreadWrapper {
 		for (Method method : methodsByName) {
 			try {
 				return type.invokeMethod(thread, method, Arrays.asList(args), 0);
-			} catch (InvalidTypeException e) {
+			} catch (InvalidTypeException | IllegalArgumentException e) {
 				// an other overloaded method must be tried
 			}
 		}

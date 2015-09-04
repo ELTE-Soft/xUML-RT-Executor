@@ -25,7 +25,7 @@ public class DebugViewController {
 	 *         if the debug view is not open.
 	 */
 	public Object[] getSelectedDebugElements() {
-		Object[][] ret = new Object[1][];
+		Object[][] ret = new Object[][] { new Object[] {} };
 		accessViewer(v -> ret[0] = ((StructuredSelection) v.getSelection()).toArray());
 		return ret[0];
 	}
@@ -57,26 +57,7 @@ public class DebugViewController {
 		}
 		
 	}
-
-	public void accessViewer(Consumer<TreeViewer> action) {
-		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		if (activeWorkbenchWindow == null) {
-			// we must perform this operation on a UI thread
-			DISPLAY.syncExec(() -> accessViewerUIThread(action));
-		} else {
-			accessViewerUIThread(action);
-		}
-	}
-
-	private void accessViewerUIThread(Consumer<TreeViewer> action) {
-		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().findView(DEBUG_VIEW_ID);
-		if (debugView == null) {
-			return; // debug view is not open
-		}
-		action.accept((TreeViewer) debugView.getViewer());
-	}
-
+	
 	public void addDebugElement(Object parent, Object child) {
 		accessViewer(v -> v.add(parent, child));
 	}
@@ -98,5 +79,24 @@ public class DebugViewController {
 			ISelection selection = v.getSelection();
 			v.setSelection(selection);
 		});
+	}
+
+	public void accessViewer(Consumer<TreeViewer> action) {
+		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow == null) {
+			// we must perform this operation on a UI thread
+			DISPLAY.syncExec(() -> accessViewerUIThread(action));
+		} else {
+			accessViewerUIThread(action);
+		}
+	}
+
+	private void accessViewerUIThread(Consumer<TreeViewer> action) {
+		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(DEBUG_VIEW_ID);
+		if (debugView == null) {
+			return; // debug view is not open
+		}
+		action.accept((TreeViewer) debugView.getViewer());
 	}
 }

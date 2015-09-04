@@ -28,26 +28,22 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 	
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
+		// not supported
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		// intentionally left blank
 	}
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
+		// not supported
 	}
 
 	@Override
@@ -62,8 +58,7 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 
 	@Override
 	public void setAttribute(String attribute, Object value) {
-		// TODO Auto-generated method stub
-
+		// not supported
 	}
 
 	@Override
@@ -86,7 +81,7 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 
 	@Override
 	public void computeDetail(IValue value, IValueDetailListener listener) {
-		
+		// intentionally left blank
 	}
 	
 	@Override

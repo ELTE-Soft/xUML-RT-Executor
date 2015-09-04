@@ -14,6 +14,12 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 /**
  * A stack frame that represents the execution at a state, transition or
  * pseudostate.
+ * 
+ * In the runtime only one state machine instance can perform a state transition
+ * at a time. If this transition is stopped by a breakpoint, it will be a stack
+ * frame with a transition model element. Otherwise the model element will be a
+ * state, or will be null and later the model element will be populated with a
+ * state.
  */
 public class StateMachineStackFrame extends StackFrame {
 

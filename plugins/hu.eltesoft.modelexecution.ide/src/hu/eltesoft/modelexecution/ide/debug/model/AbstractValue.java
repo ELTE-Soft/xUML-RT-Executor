@@ -65,7 +65,7 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 		this.jdiUtils = new JDIUtils(mainThread);
 	}
 
-	public AbstractValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public AbstractValue(XUMLRTDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;

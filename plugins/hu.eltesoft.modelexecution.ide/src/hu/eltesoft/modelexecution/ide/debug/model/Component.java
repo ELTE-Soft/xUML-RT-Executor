@@ -25,7 +25,7 @@ public class Component extends DebugElement implements IPresentation {
 
 	private DebugElement parent;
 
-	public Component(DebugTarget parent, String name) {
+	public Component(XUMLRTDebugTarget parent, String name) {
 		super(parent);
 		this.parent = parent;
 		this.name = name;

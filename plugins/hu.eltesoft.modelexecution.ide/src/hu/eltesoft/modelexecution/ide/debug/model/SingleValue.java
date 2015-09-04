@@ -26,7 +26,7 @@ public class SingleValue extends AbstractValue {
 		super(modelVariable, mainThread, value);
 	}
 
-	public SingleValue(DebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public SingleValue(XUMLRTDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
 

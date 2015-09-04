@@ -14,6 +14,8 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 		super(parent.getXUmlRtDebugTarget());
 	}
 
+	// delegates up
+	
 	@Override
 	public boolean canResume() {
 		return getXUmlRtDebugTarget().canResume();
@@ -38,6 +40,23 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 	public void suspend() throws DebugException {
 		getXUmlRtDebugTarget().suspend();
 	}
+
+	@Override
+	public boolean canTerminate() {
+		return getDebugTarget().canTerminate();
+	}
+
+	@Override
+	public boolean isTerminated() {
+		return getDebugTarget().isTerminated();
+	}
+
+	@Override
+	public void terminate() throws DebugException {
+		getXUmlRtDebugTarget().terminate();
+	}
+	
+	// delegates down
 
 	@Override
 	public boolean canStepInto() {
@@ -72,21 +91,6 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 	@Override
 	public void stepReturn() throws DebugException {
 		stackFrames.get(0).stepReturn();
-	}
-
-	@Override
-	public boolean canTerminate() {
-		return getDebugTarget().canTerminate();
-	}
-
-	@Override
-	public boolean isTerminated() {
-		return getDebugTarget().isTerminated();
-	}
-
-	@Override
-	public void terminate() throws DebugException {
-		getXUmlRtDebugTarget().terminate();
 	}
 
 }

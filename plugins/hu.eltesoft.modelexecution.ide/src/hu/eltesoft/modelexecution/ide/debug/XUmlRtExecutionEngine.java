@@ -3,11 +3,13 @@ package hu.eltesoft.modelexecution.ide.debug;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
@@ -26,14 +28,11 @@ import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
-import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.DebugTarget;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
-import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
-import hu.eltesoft.modelexecution.ide.debug.util.PersistableSourceLocator;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
+import hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
 /**
  * Execution engine for Moka.
@@ -51,7 +50,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	 */
 	private AnimationController animation;
 
-	private DebugTarget xumlrtDebugTarget;
+	private XUMLRTDebugTarget xumlrtDebugTarget;
 
 	/** Direct control over the virtual machine running the runtime */
 	private VirtualMachineManager virtualMachine;
@@ -67,45 +66,22 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 		ILaunch launch = debugTarget.getLaunch();
 
-		LaunchConfigReader configReader = new LaunchConfigReader(launch);
-		animation = new AnimationController(configReader);
+		int xumlRTDelay = ModelExecutionLaunchConfig.getAnimationTimerMultiplier(launch.getLaunchConfiguration());
+		animation = new AnimationController(xumlRTDelay);
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
-		virtualMachineHandler = new ExecutionEngineVMConnection(this, eObjectToExecute, configReader, virtualMachine,
-				animation);
-		virtualMachine.addEventListener(virtualMachineHandler);
 
-		setupControllerListeners(launch);
-
-		xumlrtDebugTarget = new DebugTarget(virtualMachine.getVMBrowser(), this,
+		xumlrtDebugTarget = new XUMLRTDebugTarget(virtualMachine.getVMBrowser(), this,
 				eObjectToExecute.eResource().getResourceSet(), launch);
-
-		launch.setSourceLocator(new PersistableSourceLocator());
-
 		launch.addDebugTarget(xumlrtDebugTarget);
-	}
+		launch.setSourceLocator(new XUMLRTSourceLocator());
 
-	/**
-	 * Sets up event handlers for changes reported by the runtime.
-	 */
-	protected void setupControllerListeners(ILaunch launch) {
-		for (IProcess process : launch.getProcesses()) {
-			if (process instanceof IProcessWithController) {
-				RuntimeControllerClient runtimeController = ((IProcessWithController) process).getController();
-				if (runtimeController != null) {
-					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
-						@Override
-						public void instanceCreated(String classId, int instanceId, String originalName) {
-							xumlrtDebugTarget.addSMInstance(classId, instanceId, originalName);
-						}
-
-						@Override
-						public void instanceDestroyed(String classId, int instanceId) {
-							xumlrtDebugTarget.removeSMInstance(classId, instanceId);
-						}
-					});
-				}
-			}
+		try {
+			IProject project = ModelExecutionLaunchConfig.getProject(debugTarget.getLaunch().getLaunchConfiguration());
+			virtualMachineHandler = new ExecutionEngineVMConnection(xumlrtDebugTarget, project, eObjectToExecute,
+					virtualMachine, animation);
+		} catch (CoreException e) {
+			IdePlugin.logError("Error while retrieving project", e);
 		}
 	}
 
@@ -195,16 +171,24 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		return new IRegisterGroup[0];
 	}
 
-	public DebugTarget getXUmlRtDebugTarget() {
+	public XUMLRTDebugTarget getXUmlRtDebugTarget() {
 		return xumlrtDebugTarget;
 	}
 
+	/**
+	 * This override is necessary because the original method sends events to
+	 * the {@link DebugPlugin} that changes the selection in the debug view.
+	 */
 	@Override
 	protected void resume_reply(String message) {
 		Resume_Request request = Marshaller.getInstance().resume_request_unmarshal(message);
 		this.resume(request);
 	}
 
+	/**
+	 * This override is necessary because the original method sends events to
+	 * the {@link DebugPlugin} that changes the selection in the debug view.
+	 */
 	@Override
 	protected void suspend_reply(String message) {
 		Suspend_Request request = Marshaller.getInstance().suspend_request_unmarshal(message);

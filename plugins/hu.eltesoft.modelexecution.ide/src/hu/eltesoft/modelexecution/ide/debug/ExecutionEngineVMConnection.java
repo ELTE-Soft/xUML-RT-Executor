@@ -6,6 +6,8 @@ import java.util.TimerTask;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
@@ -17,17 +19,20 @@ import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.registry.LocationConverter;
 import hu.eltesoft.modelexecution.ide.debug.registry.ModelElementsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.FilePathResourceLocator;
-import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
@@ -39,7 +44,7 @@ import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 public final class ExecutionEngineVMConnection implements VirtualMachineListener {
 
 	/** Link to the execution engine connected to the vm. */
-	private final XUmlRtExecutionEngine executionEngine;
+	private final XUMLRTDebugTarget debugTarget;
 
 	/**
 	 * For deciding which model elements have been loaded to the runtime in case
@@ -57,34 +62,62 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	private final VirtualMachineBrowser virtualMachineBrowser;
 
 	/** To look up EObjects for animation */
-	private ResourceSet resourceSet;
+	private final ResourceSet resourceSet;
+
+	/** Direct control over the virtual machine */
+	private final VirtualMachineManager virtualMachine;
+
+	/** For animating when stopped on breakpoint */
+	private final AnimationController animation;
+
+	/** Access the state of the debug control buttons */
+	private final DebugViewController debugControl = new DebugViewController();
 
 	/** Access must be synchronized to intrinsic lock of "animation"! */
 	private boolean waitingForSuspend = false;
 
-	/** Direct control over the virtual machine */
-	private VirtualMachineManager virtualMachine;
-
-	/** For animating when stopped on breakpoint */
-	private AnimationController animation;
-	
-	private DebugViewController debugControl = new DebugViewController();
-
-	public ExecutionEngineVMConnection(XUmlRtExecutionEngine xUmlRtExecutionEngine, EObject eObjectToExecute,
-			LaunchConfigReader configReader, VirtualMachineManager virtualMachine, AnimationController animation) {
+	public ExecutionEngineVMConnection(XUMLRTDebugTarget debugTarget, IProject project, EObject eObjectToExecute,
+			VirtualMachineManager virtualMachine, AnimationController animation) {
 		this.virtualMachine = virtualMachine;
 		this.animation = animation;
-		virtualMachineBrowser = virtualMachine.getVMBrowser();
-		resourceSet = eObjectToExecute.eResource().getResourceSet();
+		this.virtualMachineBrowser = virtualMachine.getVMBrowser();
+		this.resourceSet = eObjectToExecute.eResource().getResourceSet();
+
 		// the constructor sets itself as resource locator for the resource set
 		new FilePathResourceLocator(resourceSet);
-		executionEngine = xUmlRtExecutionEngine;
-		IProject project = configReader.getProject();
+		this.debugTarget = debugTarget;
+		
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		SymbolsRegistry symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
 		this.locationConverter = new LocationConverter(symbolsRegistry);
 		this.elementRegistry = new ModelElementsRegistry(eObjectToExecute);
+		setupControllerListeners(debugTarget.getLaunch());
+		virtualMachine.addEventListener(this);
+	}
+
+	/**
+	 * Sets up event handlers for changes reported by the runtime.
+	 */
+	protected void setupControllerListeners(ILaunch launch) {
+		for (IProcess process : launch.getProcesses()) {
+			if (process instanceof IProcessWithController) {
+				RuntimeControllerClient runtimeController = ((IProcessWithController) process).getController();
+				if (runtimeController != null) {
+					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
+						@Override
+						public void instanceCreated(String classId, int instanceId, String originalName) {
+							debugTarget.addSMInstance(classId, instanceId, originalName);
+						}
+
+						@Override
+						public void instanceDestroyed(String classId, int instanceId) {
+							debugTarget.removeSMInstance(classId, instanceId);
+						}
+					});
+				}
+			}
+		}
 	}
 
 	@Override
@@ -103,7 +136,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	 */
 	private void forceTermination() {
 		try {
-			executionEngine.getDebugTarget().terminate();
+			debugTarget.terminate();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e);
 		}
@@ -151,7 +184,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			return ThreadAction.ShouldResume;
 		}
 
-		boolean hasBreak = executionEngine.getXUmlRtDebugTarget().hasEnabledBreakpointOn(modelElement);
+		boolean hasBreak = debugTarget.hasEnabledBreakpointOn(modelElement);
 		if (suspendIfWaitingOrHasBreak(modelElement, hasBreak)) {
 			return ThreadAction.RemainSuspended;
 		}
@@ -210,7 +243,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 		synchronized (animation) {
 			if (waitingForSuspend || hasBreak) {
 				animation.setSuspendedMarker(modelElement);
-				executionEngine.getXUmlRtDebugTarget().markThreadAsSuspended(modelElement);
+				debugTarget.markThreadAsSuspended(modelElement);
 				waitingForSuspend = false;
 				return true;
 			}
@@ -223,7 +256,9 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	 * point.
 	 */
 	public void waitForSuspend() {
-		waitingForSuspend = true;
+		synchronized (animation) {
+			waitingForSuspend = true;
+		}
 	}
 
 	/**
@@ -231,6 +266,8 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	 * breakpoint.
 	 */
 	public void resume() {
-		waitingForSuspend = false;
+		synchronized (animation) {
+			waitingForSuspend = false;
+		}
 	}
 }

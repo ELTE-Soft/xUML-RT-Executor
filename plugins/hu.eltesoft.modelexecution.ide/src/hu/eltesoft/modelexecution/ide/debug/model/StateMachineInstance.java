@@ -24,7 +24,7 @@ import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugCon
 public class StateMachineInstance extends SuspendableThread implements IPresentation {
 
 	private int instanceId;
-	
+
 	// lazily populated
 	private List<ModelVariable> attributes = null;
 
@@ -111,6 +111,8 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 		return cls.getName();
 	}
 
+	// FIXME: this should be called when the debug view populates the variables
+	// view when selecting a state machine instance
 	public ModelVariable[] getAttributes() {
 		if (attributes == null) {
 			VirtualMachineBrowser vmBrowser = getVMBrowser();
@@ -131,7 +133,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
 			return (T) new CombiningElementDebugContentProvider<StateMachineInstance>(
-					dt -> new Object[][] { dt.getStackFrames(), dt.getAttributes() });
+					dt -> new Object[][] { dt.getStackFrames() });
 		}
 		return super.getAdapter(adapter);
 	}
