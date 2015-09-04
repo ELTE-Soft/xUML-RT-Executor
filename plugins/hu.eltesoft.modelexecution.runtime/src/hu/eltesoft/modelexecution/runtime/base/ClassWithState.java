@@ -15,9 +15,6 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		super();
 		this.instanceID = instanceID;
 		stateMachine = createStateMachine();
-		if (null != stateMachine) {
-			stateMachine.doInitialTransition();
-		}
 	}
 
 	/**
@@ -31,6 +28,12 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	
 	public StateMachineRegion getStateMachine() {
 		return stateMachine;
+	}
+	
+	public void initializeStateMachine() {
+		if (null != stateMachine) {
+			stateMachine.doInitialTransition();
+		}
 	}
 
 	public void send(Event event) {

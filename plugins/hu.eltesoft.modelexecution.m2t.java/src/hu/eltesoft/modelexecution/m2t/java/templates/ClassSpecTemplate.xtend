@@ -41,10 +41,11 @@ class ClassSpecTemplate extends Template {
 						= new «rec.implementation»(«FOR par : rec.directParents SEPARATOR ','»«par.inherited»«ENDFOR»);
 				«ENDFOR»
 				«classSpec.implementation» created = new «classSpec.implementation»(«FOR parent : classSpec.parents SEPARATOR ','»«parent.inherited»«ENDFOR»);
-				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
 				if (null != initializer) {
 					initializer.accept(created);
 				}
+				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
+				«IF classSpec.hasStateMachine»created.initializeStateMachine();«ENDIF»
 				return created;
 			}
 			«content»
