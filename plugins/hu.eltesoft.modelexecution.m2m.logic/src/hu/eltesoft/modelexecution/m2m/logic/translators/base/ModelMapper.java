@@ -13,10 +13,10 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Named;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
 /**
  * A class for mapping UML elements into the translational model. These are

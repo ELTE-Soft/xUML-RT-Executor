@@ -4,7 +4,6 @@ import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import hu.eltesoft.modelexecution.m2m.metamodel.base.BaseFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Multiplicity
-import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.JavaTypeConverter
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.runtime.BaseRuntime
@@ -27,9 +26,6 @@ abstract class CompilerBase {
 	 * Compile the specified operation body code to Java source code.
 	 */
 	def CodeGenNode compile(ParsingResults results) {
-		if (!results.validationOK) {
-			throw new CompilationFailedException(results.toString)
-		}
 		typeExtensions = new TypeSystemExtensions(results.typeSystem)
 		compile(results.model)
 	}

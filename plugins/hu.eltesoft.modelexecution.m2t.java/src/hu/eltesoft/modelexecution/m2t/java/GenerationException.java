@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.m2m.logic;
+package hu.eltesoft.modelexecution.m2t.java;
 
 @SuppressWarnings("serial")
 public class GenerationException extends RuntimeException {

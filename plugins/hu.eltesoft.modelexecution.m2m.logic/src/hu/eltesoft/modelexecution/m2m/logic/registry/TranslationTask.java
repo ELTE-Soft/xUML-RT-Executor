@@ -2,9 +2,9 @@ package hu.eltesoft.modelexecution.m2m.logic.registry;
 
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 
 /**

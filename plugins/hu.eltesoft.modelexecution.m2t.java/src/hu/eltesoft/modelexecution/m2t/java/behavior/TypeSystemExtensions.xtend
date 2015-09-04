@@ -50,4 +50,8 @@ class TypeSystemExtensions {
 	protected def hasReferenceType(EObject expression) {
 		!expression.hasValueType
 	}
+
+	protected def contextClassName() {
+		typeSystem.umlContext.thisType.name
+	}
 }
