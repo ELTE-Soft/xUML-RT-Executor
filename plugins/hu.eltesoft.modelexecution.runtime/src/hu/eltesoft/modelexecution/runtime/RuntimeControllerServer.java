@@ -28,6 +28,7 @@ public class RuntimeControllerServer implements InstanceListener {
 	 * A command that asks the runtime to terminate in a gentle way.
 	 */
 	public static final String COMMAND_TERMINATE = "COMMAND_TERMINATE";
+	public static final String COMMAND_START = "COMMAND_START";
 	public static final String EVENT_REACTIVE_CLASS_CREATED = "EVENT_REACTIVE_CLASS_CREATED";
 	public static final String EVENT_REACTIVE_CLASS_TERMINATED = "EVENT_REACTIVE_CLASS_TERMINATED";
 
@@ -53,6 +54,9 @@ public class RuntimeControllerServer implements InstanceListener {
 				switch (controlLine) {
 				case COMMAND_TERMINATE:
 					baseRuntime.terminate();
+					return;
+				case COMMAND_START:
+					baseRuntime.start();
 					return;
 				default:
 					BaseRuntime.logError("Illegal command on control stream: " + controlLine);

@@ -95,6 +95,13 @@ public class RuntimeControllerClient {
 	public boolean terminate() {
 		return sendCommand(RuntimeControllerServer.COMMAND_TERMINATE);
 	}
+	
+	/**
+	 * Instructs the runtime to start the engine.
+	 */
+	public boolean start() {
+		return sendCommand(RuntimeControllerServer.COMMAND_START);
+	}
 
 	protected boolean sendCommand(String command) {
 		awaitControllerReady();

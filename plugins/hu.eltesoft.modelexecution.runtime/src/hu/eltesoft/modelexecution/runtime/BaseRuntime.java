@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
@@ -42,16 +43,18 @@ public final class BaseRuntime implements AutoCloseable {
 	private final ExternalEntityRegistry externalEntities;
 
 	private ClassLoader classLoader = BaseRuntime.class.getClassLoader();
-		
+	private CountDownLatch executionReady = new CountDownLatch(1);
+
 	/**
-	 * If has to set the class loader it must be done before the runtime is used.
+	 * If has to set the class loader it must be done before the runtime is
+	 * used.
 	 */
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
-	
+
 	private static BaseRuntime INSTANCE = null;
-	
+
 	public static BaseRuntime getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BaseRuntime();
@@ -72,6 +75,10 @@ public final class BaseRuntime implements AutoCloseable {
 	public void addControlStreams(InputStream controlStream, OutputStream eventStream) {
 		controller = new RuntimeControllerServer(controlStream, eventStream, this);
 		controller.startListening();
+	}
+
+	public void start() {
+		executionReady.countDown();
 	}
 
 	/**
@@ -119,20 +126,25 @@ public final class BaseRuntime implements AutoCloseable {
 			logInfo("Preparing system for execution");
 			prepare(className, mainName);
 			logInfo("Starting execution");
-			while (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
-				// events read from trace will not be written to trace
-				if (queue.isEmpty() && traceReader.hasEvent()) {
-					traceReader.dispatchEvent(logger);
-				} else {
-					// if queue is empty, take blocks
-					TargetedEvent currQueueEvent = queue.take();
-					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
-						// put back the event to the original position
-						queue.addFirst(currQueueEvent);
-					} else {
-						traceWriter.traceEvent(currQueueEvent);
-					}
+			if (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
+				if (controller != null) {
+					executionReady.await();
 				}
+				do {
+					// events read from trace will not be written to trace
+					if (queue.isEmpty() && traceReader.hasEvent()) {
+						traceReader.dispatchEvent(logger);
+					} else {
+						// if queue is empty, take blocks
+						TargetedEvent currQueueEvent = queue.take();
+						if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
+							// put back the event to the original position
+							queue.addFirst(currQueueEvent);
+						} else {
+							traceWriter.traceEvent(currQueueEvent);
+						}
+					}
+				} while (!InstanceRegistry.getInstanceRegistry().isEmpty());
 			}
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;

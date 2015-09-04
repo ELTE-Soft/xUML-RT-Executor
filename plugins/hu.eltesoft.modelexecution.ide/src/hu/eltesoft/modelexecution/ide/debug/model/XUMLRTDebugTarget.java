@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -15,12 +16,14 @@ import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
+import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
 
 public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
@@ -116,6 +119,17 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		if (selectElement) {
 			debugControl.expandAndSelect(added);
+			sendStartSignal(launch);			
+		}
+	}
+
+	private void sendStartSignal(ILaunch launch) {
+		for (IProcess process : launch.getProcesses()) {
+			if (process instanceof IProcessWithController) {
+				RuntimeControllerClient controller = ((IProcessWithController) process).getController();
+				controller.start();
+				return;
+			}
 		}
 	}
 
