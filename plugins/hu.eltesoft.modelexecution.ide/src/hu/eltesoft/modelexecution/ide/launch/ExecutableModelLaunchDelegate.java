@@ -25,6 +25,8 @@ import org.eclipse.papyrus.moka.Activator;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
@@ -175,9 +177,21 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 			ILaunchConfiguration mokaConfigs, ILaunchConfiguration javaConfigs) throws CoreException {
 		javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			Display.getDefault().asyncExec(() -> launchMokaDelegate(mokaConfigs, mode, launch, monitor));
+			Display.getDefault().asyncExec(() -> {
+				changePerspective();
+				launchMokaDelegate(mokaConfigs, mode, launch, monitor);
+			});
 		}
 		setFoldersToRefresh(launch, javaConfigs);
+	}
+
+	private void changePerspective() {
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		try {
+			workbenchWindow.getWorkbench().showPerspective("org.eclipse.debug.ui.DebugPerspective", workbenchWindow);
+		} catch (Exception e) {
+			IdePlugin.logError("Error while changing perspective", e);
+		}
 	}
 
 	protected void setFoldersToRefresh(ILaunch launch, ILaunchConfiguration javaConfigs) throws CoreException {
