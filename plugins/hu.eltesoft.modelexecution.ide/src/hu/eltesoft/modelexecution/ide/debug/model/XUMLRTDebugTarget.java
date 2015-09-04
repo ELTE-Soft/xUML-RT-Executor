@@ -43,8 +43,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public XUMLRTDebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
 			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
-		this.entryPoint = ModelUtils
-				.findEObject(ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
+		this.entryPoint = ModelUtils.javaNameToEObject(
+				ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
@@ -150,7 +150,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
 			if (smInstance.getName().equals(actualSMInstance)) {
-				// this is necessary, because the model element could be a transition
+				// this is necessary, because the model element could be a
+				// transition
 				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
 			} else {
 				// the current state of the state machine will be queried later
