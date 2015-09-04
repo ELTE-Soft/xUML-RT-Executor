@@ -52,9 +52,9 @@ public class JDIUtils {
 	 */
 	public List<Value> getCollectionValues(ObjectReference value) {
 		try {
-			return ((ArrayReference) thread.invokeMethod(value, TO_ARRAY_METHOD)).getValues();
-		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException | InvocationException
-				| NoSuchMethodException e) {
+			return withInfiniteTimeout(value.virtualMachine(),
+					() -> ((ArrayReference) thread.invokeMethod(value, TO_ARRAY_METHOD)).getValues());
+		} catch (Exception e) {
 			IdePlugin.logError("Error while accessing collection elements", e);
 			return new LinkedList<>();
 		}
@@ -70,13 +70,34 @@ public class JDIUtils {
 	public String invokeToString(ObjectReference objectReference)
 			throws InvalidTypeException, ClassNotLoadedException, IncompatibleThreadStateException {
 		try {
-			return ((StringReference) thread.invokeMethod(objectReference, TO_STRING_METHOD)).value();
+			return JDIUtils.withInfiniteTimeout(objectReference.virtualMachine(),
+					() -> ((StringReference) thread.invokeMethod(objectReference, TO_STRING_METHOD)).value());
 		} catch (InvocationException e1) {
 			// exception in toString
-		} catch (NoSuchMethodException e1) {
-			IdePlugin.logError("No toString method on value");
+		} catch (Exception e) {
+			IdePlugin.logError("Error while invoking toString", e);
 		}
 		return null;
+	}
+
+	public static <T> T withInfiniteTimeout(com.sun.jdi.VirtualMachine vm, VMJob<T> action) throws Exception {
+		T ret;
+		if (vm instanceof org.eclipse.jdi.VirtualMachine) {
+			org.eclipse.jdi.VirtualMachine jdiVM = (org.eclipse.jdi.VirtualMachine) vm;
+			int timeout = jdiVM.getRequestTimeout();
+			jdiVM.setRequestTimeout(Integer.MAX_VALUE);
+			ret = action.exec();
+			jdiVM.setRequestTimeout(timeout);
+		}
+		ret = action.exec();
+		return ret;
+	}
+
+	@FunctionalInterface
+	public interface VMJob<T> {
+
+		T exec() throws Exception;
+
 	}
 
 }

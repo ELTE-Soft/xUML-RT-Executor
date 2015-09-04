@@ -17,7 +17,6 @@ import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
-import com.sun.jdi.InvocationException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -104,14 +103,15 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 		ObjectReference meta = (ObjectReference) type.getValue(metaField);
 		try {
 			StringReference res = (StringReference) thread.invokeMethod(meta, SERIALIZE_METHOD_NAME);
-			ClassMeta metaInfo = ClassMeta.deserialize(res.value());
+
+			ClassMeta metaInfo = JDIUtils.withInfiniteTimeout(res.virtualMachine(),
+					() -> ClassMeta.deserialize(res.value()));
 			Map<PropertyMeta, Value> attribValues = new HashMap<PropertyMeta, Value>();
 			for (PropertyMeta attrib : metaInfo.getAttributes()) {
 				attribValues.put(attrib, thread.invokeMethod(valueObj, attrib.getIdentifier()));
 			}
 			return presentAttributes(attribValues);
-		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException | InvocationException
-				| NoSuchMethodException e) {
+		} catch (Exception e) {
 			IdePlugin.logError("Error while retrieving metainfo", e);
 			return new IVariable[0];
 		}
@@ -190,7 +190,7 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 	public Image getImage() {
 		return null; // not displayed
 	}
-	
+
 	@Override
 	public DebugElement getParent() {
 		return variable;

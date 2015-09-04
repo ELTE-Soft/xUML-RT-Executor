@@ -10,12 +10,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Vertex;
 
-import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
-import com.sun.jdi.InvalidTypeException;
-import com.sun.jdi.InvocationException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -25,12 +22,12 @@ import com.sun.jdi.VirtualMachine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
 import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
@@ -129,7 +126,7 @@ public class VirtualMachineBrowser {
 			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, GET_INSTANCE_METHOD,
 					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
 			return instance;
-		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException e) {
+		} catch (Exception e) {
 			IdePlugin.logError("Error while accessing state machine instance", e);
 			throw new RuntimeException(e);
 		}
@@ -160,8 +157,7 @@ public class VirtualMachineBrowser {
 				addEventVariable(stackFrame, ret, mainThread);
 			}
 			ret.add(createThisVariable(stackFrame, mainThread, instance));
-		} catch (InvocationException | InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException
-				| NoSuchMethodException e) {
+		} catch (Exception e) {
 			IdePlugin.logError("Error while accessing stack frame variables", e);
 		}
 		return ret;
@@ -190,13 +186,13 @@ public class VirtualMachineBrowser {
 					.getValue(stateMachine.referenceType().fieldByName(RegionTemplate.CURRENT_STATE_ATTRIBUTE));
 			StringReference stringVal = (StringReference) mainThread.invokeMethod(actualState, NAME_METHOD);
 			return (NamedElement) ModelUtils.javaNameToEObject(stringVal.value(), resourceSet);
-		} catch (NoSuchMethodException | InvocationException | InvalidTypeException | ClassNotLoadedException e) {
-			IdePlugin.logError("Error while accessing stack frame model element", e);
-			return null;
 		} catch (IncompatibleThreadStateException e) {
 			// thread not suspended: fall through
 			return null;
-		}
+		} catch (Exception e) {
+			IdePlugin.logError("Error while accessing stack frame model element", e);
+			return null;
+		} 
 	}
 
 	private ModelVariable createThisVariable(StackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {

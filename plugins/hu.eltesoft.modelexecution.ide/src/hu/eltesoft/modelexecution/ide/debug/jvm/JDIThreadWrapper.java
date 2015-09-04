@@ -4,11 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.sun.jdi.AbsentInformationException;
-import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.ClassType;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
-import com.sun.jdi.InvocationException;
 import com.sun.jdi.LocalVariable;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
@@ -17,6 +15,7 @@ import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 
 /**
  * Used to guarantee mutual exclusive access for multiple view components using
@@ -37,43 +36,38 @@ public class JDIThreadWrapper {
 	 * This method is synchronized, because the thread can only execute one
 	 * method at a time.
 	 */
-	public synchronized Value invokeMethod(ObjectReference instance, Method method, Value... args)
-			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
-			IncompatibleThreadStateException {
-		return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
+	public synchronized Value invokeMethod(ObjectReference instance, Method method, Value... args) throws Exception {
+		return JDIUtils.withInfiniteTimeout(thread.virtualMachine(),
+				() -> instance.invokeMethod(thread, method, Arrays.asList(args), 0));
 	}
 
 	public synchronized Value invokeMethod(ObjectReference instance, String methodName, Value... args)
-			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
-			IncompatibleThreadStateException, NoSuchMethodException {
+			throws Exception {
 		List<Method> methodsByName = instance.referenceType().methodsByName(methodName);
 		methodsByName.removeIf(Method::isAbstract);
 		for (Method method : methodsByName) {
 			try {
-				return instance.invokeMethod(thread, method, Arrays.asList(args), 0);
+				return invokeMethod(instance, method, args);
 			} catch (InvalidTypeException | IllegalArgumentException e) {
-				// an other overloaded method must be tried
+				// try another overload
 			}
 		}
 		throw new NoSuchMethodException("No suitable overloaded method is found");
 	}
 
-	public synchronized Value invokeStaticMethod(ClassType type, Method method, Value... args)
-			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
-			IncompatibleThreadStateException {
-		return type.invokeMethod(thread, method, Arrays.asList(args), 0);
+	public synchronized Value invokeStaticMethod(ClassType type, Method method, Value... args) throws Exception {
+		return JDIUtils.withInfiniteTimeout(thread.virtualMachine(),
+				() -> type.invokeMethod(thread, method, Arrays.asList(args), 0));
 	}
-	
-	public synchronized Value invokeStaticMethod(ClassType type, String methodName, Value... args)
-			throws InvocationException, InvalidTypeException, ClassNotLoadedException,
-			IncompatibleThreadStateException, NoSuchMethodException {
+
+	public synchronized Value invokeStaticMethod(ClassType type, String methodName, Value... args) throws Exception {
 		List<Method> methodsByName = type.methodsByName(methodName);
 		methodsByName.removeIf(m -> !m.isStatic());
 		for (Method method : methodsByName) {
 			try {
-				return type.invokeMethod(thread, method, Arrays.asList(args), 0);
+				return invokeStaticMethod(type, method, args);
 			} catch (InvalidTypeException | IllegalArgumentException e) {
-				// an other overloaded method must be tried
+				// try another overload
 			}
 		}
 		throw new NoSuchMethodException("No suitable overloaded method is found");
