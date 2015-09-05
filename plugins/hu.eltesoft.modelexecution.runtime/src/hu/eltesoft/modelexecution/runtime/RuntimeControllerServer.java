@@ -18,17 +18,17 @@ import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
  */
 public class RuntimeControllerServer implements InstanceListener {
 
-	private BaseRuntime baseRuntime;
-	private BufferedReader controlReader;
-	private Writer controlWriter;
+	private final BaseRuntime baseRuntime;
+	private final BufferedReader controlReader;
+	private final Writer controlWriter;
 
 	private volatile boolean running = true;
 
-	/**
-	 * A command that asks the runtime to terminate in a gentle way.
-	 */
-	public static final String COMMAND_TERMINATE = "COMMAND_TERMINATE";
+	/** Starts the event loop. */
 	public static final String COMMAND_START = "COMMAND_START";
+	/** Asks the runtime to terminate gracefully. */
+	public static final String COMMAND_TERMINATE = "COMMAND_TERMINATE";
+
 	public static final String EVENT_REACTIVE_CLASS_CREATED = "EVENT_REACTIVE_CLASS_CREATED";
 	public static final String EVENT_REACTIVE_CLASS_TERMINATED = "EVENT_REACTIVE_CLASS_TERMINATED";
 
@@ -52,11 +52,11 @@ public class RuntimeControllerServer implements InstanceListener {
 		try {
 			while (running && (controlLine = controlReader.readLine()) != null) {
 				switch (controlLine) {
-				case COMMAND_TERMINATE:
-					baseRuntime.terminate();
-					return;
 				case COMMAND_START:
 					baseRuntime.start();
+					continue;
+				case COMMAND_TERMINATE:
+					baseRuntime.terminate();
 					return;
 				default:
 					BaseRuntime.logError("Illegal command on control stream: " + controlLine);

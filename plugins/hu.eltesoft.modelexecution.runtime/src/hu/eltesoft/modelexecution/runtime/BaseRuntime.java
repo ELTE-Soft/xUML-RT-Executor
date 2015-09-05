@@ -43,7 +43,8 @@ public final class BaseRuntime implements AutoCloseable {
 	private final ExternalEntityRegistry externalEntities;
 
 	private ClassLoader classLoader = BaseRuntime.class.getClassLoader();
-	private CountDownLatch executionReady = new CountDownLatch(1);
+
+	private final CountDownLatch executionReady = new CountDownLatch(1);
 
 	/**
 	 * If has to set the class loader it must be done before the runtime is
@@ -125,11 +126,11 @@ public final class BaseRuntime implements AutoCloseable {
 		try {
 			logInfo("Preparing system for execution");
 			prepare(className, mainName);
-			logInfo("Starting execution");
 			if (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
 				if (controller != null) {
 					executionReady.await();
 				}
+				logInfo("Starting execution");
 				do {
 					// events read from trace will not be written to trace
 					if (queue.isEmpty() && traceReader.hasEvent()) {
