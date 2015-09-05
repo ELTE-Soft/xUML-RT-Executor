@@ -54,7 +54,7 @@ public class RuntimeControllerServer implements InstanceListener {
 				switch (controlLine) {
 				case COMMAND_START:
 					baseRuntime.start();
-					continue;
+					break;
 				case COMMAND_TERMINATE:
 					baseRuntime.terminate();
 					return;
