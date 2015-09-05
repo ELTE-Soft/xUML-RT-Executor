@@ -86,7 +86,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 		// the constructor sets itself as resource locator for the resource set
 		new FilePathResourceLocator(resourceSet);
 		this.debugTarget = debugTarget;
-		
+
 		String directory = ExecutableModelProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		SymbolsRegistry symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);

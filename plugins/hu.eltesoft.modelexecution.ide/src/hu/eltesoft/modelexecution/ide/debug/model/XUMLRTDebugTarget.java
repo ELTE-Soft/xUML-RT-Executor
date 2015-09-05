@@ -119,7 +119,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		if (selectElement) {
 			debugControl.expandAndSelect(added);
-			sendStartSignal(launch);			
+			sendStartSignal(launch);
 		}
 	}
 
