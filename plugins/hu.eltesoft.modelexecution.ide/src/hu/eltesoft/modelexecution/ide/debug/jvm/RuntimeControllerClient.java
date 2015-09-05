@@ -26,13 +26,13 @@ import hu.eltesoft.modelexecution.runtime.RuntimeControllerServer;
 public class RuntimeControllerClient {
 
 	private ServerSocket server;
-	private Socket socket;
-	private Writer writer;
-	private BufferedReader reader;
 
-	private CountDownLatch ready = new CountDownLatch(1);
+	private volatile Socket socket;
+	private volatile Writer writer;
 
-	private List<StateMachnineInstanceListener> reactiveClassListeners = new LinkedList<>();
+	private final CountDownLatch ready = new CountDownLatch(1);
+
+	private final List<StateMachnineInstanceListener> reactiveClassListeners = new LinkedList<>();
 
 	public RuntimeControllerClient(ILaunchConfiguration launchConfig) {
 		try {
@@ -51,7 +51,7 @@ public class RuntimeControllerClient {
 				try {
 					socket = server.accept();
 					writer = new OutputStreamWriter(socket.getOutputStream());
-					reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					ready.countDown();
 					String line;
 					while ((line = reader.readLine()) != null) {
@@ -95,7 +95,7 @@ public class RuntimeControllerClient {
 	public boolean terminate() {
 		return sendCommand(RuntimeControllerServer.COMMAND_TERMINATE);
 	}
-	
+
 	/**
 	 * Instructs the runtime to start the engine.
 	 */
