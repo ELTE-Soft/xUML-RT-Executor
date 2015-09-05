@@ -73,7 +73,8 @@ public class RuntimeControllerClient {
 	 * listeners.
 	 */
 	private void processLine(String line) {
-		String[] command = line.split(" ");
+		// limit array length to 4 as original name (the last argument) could contain spaces
+		String[] command = line.split(" ", 4);
 		switch (command[0]) {
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_CREATED:
 			for (StateMachnineInstanceListener listener : reactiveClassListeners) {
