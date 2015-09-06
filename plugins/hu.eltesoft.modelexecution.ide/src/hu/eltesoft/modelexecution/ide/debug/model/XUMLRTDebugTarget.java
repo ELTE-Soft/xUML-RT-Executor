@@ -51,6 +51,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
+		debugControl.init();
 
 		setDebugTarget(this);
 	}
@@ -72,7 +73,11 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
 	@Override
 	public String getName() {
+		if (entryPoint != null) {
 		return ((NamedElement) entryPoint).getQualifiedName();
+		} else {
+			return Messages.XUMLRTDebugTarget_debug_target_name;
+		}
 	}
 
 	public void terminated() {
@@ -118,8 +123,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		}
 		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		if (selectElement) {
-			debugControl.expandAndSelect(added);
-			sendStartSignal(launch);
+			debugControl.expandAndSelect(added, () -> sendStartSignal(launch));
 		}
 	}
 
