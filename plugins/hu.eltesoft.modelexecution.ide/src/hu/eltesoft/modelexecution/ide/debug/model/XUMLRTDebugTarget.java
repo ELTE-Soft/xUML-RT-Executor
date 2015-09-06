@@ -74,7 +74,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	@Override
 	public String getName() {
 		if (entryPoint != null) {
-		return ((NamedElement) entryPoint).getQualifiedName();
+			return ((NamedElement) entryPoint).getQualifiedName();
 		} else {
 			return Messages.XUMLRTDebugTarget_debug_target_name;
 		}
@@ -179,6 +179,9 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			smInstance.setStackFrames(new StackFrame[] { stackFrame });
 			// force refresh of debug controls on toolbar
 			debugControl.reselect();
+			// force the refresh of the state machine instance to get rid of
+			// phantom stack frames
+			debugControl.refresh(smInstance);
 		}
 	}
 

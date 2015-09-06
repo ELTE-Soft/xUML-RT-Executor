@@ -91,6 +91,10 @@ public class DebugViewController {
 	public void refreshDebugElements() {
 		accessViewer(v -> v.refresh());
 	}
+	
+	public void refresh(Object toRefresh) {
+		accessViewer(v -> v.refresh(toRefresh));
+	}
 
 	public void reselect() {
 		accessViewer(v -> {
