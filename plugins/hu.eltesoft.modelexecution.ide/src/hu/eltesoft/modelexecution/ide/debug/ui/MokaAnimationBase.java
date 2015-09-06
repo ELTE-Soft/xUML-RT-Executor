@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
+import org.eclipse.swt.widgets.Display;
 
 public class MokaAnimationBase {
 
@@ -15,10 +16,12 @@ public class MokaAnimationBase {
 	}
 
 	protected void openContainingDiagram(EObject element) {
-		List<Diagram> diagrams = UTILS.getDiagrams(element);
-		for (Diagram diagram : diagrams) {
-			UTILS.openDiagram(diagram, false);
-		}
+		Display.getDefault().asyncExec(() -> {
+			List<Diagram> diagrams = UTILS.getDiagrams(element);
+			if (!diagrams.isEmpty()) {
+				UTILS.openDiagram(diagrams.get(0), false);
+			}
+		});
 	}
 
 }
