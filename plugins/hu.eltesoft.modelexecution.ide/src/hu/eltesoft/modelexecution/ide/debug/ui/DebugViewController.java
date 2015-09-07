@@ -22,6 +22,8 @@ public class DebugViewController {
 
 	private static final Display DISPLAY = Display.getDefault();
 	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
+	private static final int MAX_WAIT_TIME = 5000;
+	private static final long WAIT_INTERVAL = 10;
 
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
@@ -41,7 +43,7 @@ public class DebugViewController {
 			v.setSelection(new TreeSelection(new TreePath[] { path }));
 			v.setAutoExpandLevel(0);
 			postAction.run();
-		});
+		}, postAction);
 
 	}
 
@@ -49,12 +51,14 @@ public class DebugViewController {
 	 * Starts a new thread that waits until the element is visible in the debug
 	 * view and then executes the given action.
 	 */
-	public void performWhenVisible(Object element, BiConsumer<TreeModelViewer, TreePath> action) {
+	public void performWhenVisible(Object element, BiConsumer<TreeModelViewer, TreePath> action, Runnable failure) {
 		new Thread(() -> {
 			boolean selectionCompleted[] = new boolean[] { false };
-			while (!selectionCompleted[0]) {
+			long start_time = System.currentTimeMillis();
+			while (!selectionCompleted[0] && System.currentTimeMillis() - start_time < MAX_WAIT_TIME) {
+				System.out.println(System.currentTimeMillis() - start_time);
 				try {
-					Thread.sleep(10);
+					Thread.sleep(WAIT_INTERVAL);
 				} catch (Exception e) {
 					IdePlugin.logError("interrupted", e);
 				}
@@ -64,8 +68,10 @@ public class DebugViewController {
 						action.accept(v, toSelect[0]);
 						selectionCompleted[0] = true;
 					}
-
 				});
+			}
+			if (!selectionCompleted[0]) {
+				failure.run();
 			}
 		}).start();
 	}
@@ -91,7 +97,7 @@ public class DebugViewController {
 	public void refreshDebugElements() {
 		accessViewer(v -> v.refresh());
 	}
-	
+
 	public void refresh(Object toRefresh) {
 		accessViewer(v -> v.refresh(toRefresh));
 	}
