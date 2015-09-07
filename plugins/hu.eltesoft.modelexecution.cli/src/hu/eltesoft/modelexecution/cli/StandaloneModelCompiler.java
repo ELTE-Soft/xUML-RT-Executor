@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
@@ -31,6 +34,7 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 import hu.eltesoft.modelexecution.cli.exceptions.CliIncQueryException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliJavaCompilerException;
+import hu.eltesoft.modelexecution.cli.exceptions.CliRuntimeException;
 import hu.eltesoft.modelexecution.cli.exceptions.FileWriteException;
 import hu.eltesoft.modelexecution.cli.exceptions.JavaFileGenerationError;
 import hu.eltesoft.modelexecution.cli.exceptions.MissingJavaCompilerException;
@@ -45,6 +49,9 @@ import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
 public class StandaloneModelCompiler {
+
+	private static final String ACTION_LANGUAGE_PATHMAP = "pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/";
+	private static final String XUMLRT_PROFILE_PATHMAP = "pathmap://XUMLRT_PROFILE/";
 
 	private ConsoleLogger logger;
 
@@ -88,11 +95,11 @@ public class StandaloneModelCompiler {
 		try {
 			logger.verboseTimeMsg(Messages.COMPILING_MODEL_TO_JAVA);
 			registerUmlResourceType();
+			registerPathMaps();
 
 			logger.verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
 			URI fileURI = URI.createFileURI(modelPath);
 			ModelSet modelSet = new ModelSet();
-			new PathmapResourceLocator(modelSet);
 			Resource resource = modelSet.getResource(fileURI, true);
 
 			if (resource == null) {
@@ -233,4 +240,29 @@ public class StandaloneModelCompiler {
 				UMLResource.Factory.INSTANCE);
 	}
 
+	private void registerPathMaps() {
+		String jarPath;
+		try {
+			jarPath = URLDecoder.decode(
+					StandaloneModelCompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
+					"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new CliRuntimeException(e);
+		}
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
+		uriMap.clear();
+		URI uri = URI.createURI("jar:file:" + jarPath + "!/");
+		uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
+		uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
+		uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
+
+		uriMap.put(URI.createURI(ACTION_LANGUAGE_PATHMAP),
+				uri.appendSegment("resources").appendSegment("action-language-profile").appendSegment(""));
+
+		// FIXME: how to resolve "pathmap://RALF/library.uml" ?
+
+		uriMap.put(URI.createURI(XUMLRT_PROFILE_PATHMAP), uri.appendSegment("profile").appendSegment(""));
+	}
 }
