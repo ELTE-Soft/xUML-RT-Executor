@@ -2,6 +2,8 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
@@ -10,8 +12,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.impl.NamedImpl;
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage;
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior;
-
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 import java.util.Collection;
 
@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getContainerClass <em>Container Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getAlfResult <em>Alf Result</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getParsingResults <em>Parsing Results</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#isIsStatic <em>Is Static</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReturnType <em>Return Type</em>}</li>
@@ -65,24 +65,24 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	protected NamedReference containerClass = CONTAINER_CLASS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getAlfResult() <em>Alf Result</em>}' attribute.
+	 * The default value of the '{@link #getParsingResults() <em>Parsing Results</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlfResult()
+	 * @see #getParsingResults()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final AlfAnalyzerResult ALF_RESULT_EDEFAULT = null;
+	protected static final ParsingResults PARSING_RESULTS_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getAlfResult() <em>Alf Result</em>}' attribute.
+	 * The cached value of the '{@link #getParsingResults() <em>Parsing Results</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlfResult()
+	 * @see #getParsingResults()
 	 * @generated
 	 * @ordered
 	 */
-	protected AlfAnalyzerResult alfResult = ALF_RESULT_EDEFAULT;
+	protected ParsingResults parsingResults = PARSING_RESULTS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
@@ -169,8 +169,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AlfAnalyzerResult getAlfResult() {
-		return alfResult;
+	public ParsingResults getParsingResults() {
+		return parsingResults;
 	}
 
 	/**
@@ -178,11 +178,11 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAlfResult(AlfAnalyzerResult newAlfResult) {
-		AlfAnalyzerResult oldAlfResult = alfResult;
-		alfResult = newAlfResult;
+	public void setParsingResults(ParsingResults newParsingResults) {
+		ParsingResults oldParsingResults = parsingResults;
+		parsingResults = newParsingResults;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__ALF_RESULT, oldAlfResult, alfResult));
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__PARSING_RESULTS, oldParsingResults, parsingResults));
 	}
 
 	/**
@@ -266,8 +266,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 		switch (featureID) {
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				return getContainerClass();
-			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
-				return getAlfResult();
+			case BehaviorPackage.BH_BEHAVIOR__PARSING_RESULTS:
+				return getParsingResults();
 			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
 				return getParameters();
 			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
@@ -291,8 +291,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass((NamedReference)newValue);
 				return;
-			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
-				setAlfResult((AlfAnalyzerResult)newValue);
+			case BehaviorPackage.BH_BEHAVIOR__PARSING_RESULTS:
+				setParsingResults((ParsingResults)newValue);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
 				getParameters().clear();
@@ -319,8 +319,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				setContainerClass(CONTAINER_CLASS_EDEFAULT);
 				return;
-			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
-				setAlfResult(ALF_RESULT_EDEFAULT);
+			case BehaviorPackage.BH_BEHAVIOR__PARSING_RESULTS:
+				setParsingResults(PARSING_RESULTS_EDEFAULT);
 				return;
 			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
 				getParameters().clear();
@@ -345,8 +345,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 		switch (featureID) {
 			case BehaviorPackage.BH_BEHAVIOR__CONTAINER_CLASS:
 				return CONTAINER_CLASS_EDEFAULT == null ? containerClass != null : !CONTAINER_CLASS_EDEFAULT.equals(containerClass);
-			case BehaviorPackage.BH_BEHAVIOR__ALF_RESULT:
-				return ALF_RESULT_EDEFAULT == null ? alfResult != null : !ALF_RESULT_EDEFAULT.equals(alfResult);
+			case BehaviorPackage.BH_BEHAVIOR__PARSING_RESULTS:
+				return PARSING_RESULTS_EDEFAULT == null ? parsingResults != null : !PARSING_RESULTS_EDEFAULT.equals(parsingResults);
 			case BehaviorPackage.BH_BEHAVIOR__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 			case BehaviorPackage.BH_BEHAVIOR__IS_STATIC:
@@ -369,8 +369,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (containerClass: ");
 		result.append(containerClass);
-		result.append(", alfResult: ");
-		result.append(alfResult);
+		result.append(", parsingResults: ");
+		result.append(parsingResults);
 		result.append(", isStatic: ");
 		result.append(isStatic);
 		result.append(')');

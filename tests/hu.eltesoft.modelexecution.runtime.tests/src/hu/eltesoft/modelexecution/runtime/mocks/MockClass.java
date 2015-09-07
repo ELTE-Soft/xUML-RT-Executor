@@ -1,7 +1,7 @@
 package hu.eltesoft.modelexecution.runtime.mocks;
 
+import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
-import hu.eltesoft.modelexecution.runtime.Runtime;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
@@ -9,33 +9,25 @@ import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
 
 public class MockClass extends ClassWithState {
 
-	private static MockClass instance = null;
-
-	private Runtime runtime;
-
-	public static MockClass create(Runtime runtime) {
-		return new MockClass(runtime);
+	public static MockClass create() {
+		return new MockClass();
 	}
 
-	public MockClass(Runtime runtime) {
-		super(runtime, 0);
-		this.runtime = runtime;
-		instance = this;
+	public MockClass() {
+		super(0);
 		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 	}
 
 	public static void emptyFeed() {
+		MockClass instance = create();
 		instance.dispose();
 	}
 
-	public void feedEvent() {
-		runtime.addEventToQueue(this, new SignalEvent(new DummySignal()));
+	public static void feedEvent() {
+		MockClass instance = create();
+		BaseRuntime.getInstance().addEventToQueue(instance, new SignalEvent(new DummySignal()));
 		// do not dispose the instance here as it will be
 		// unregistered before entering the event loop
-	}
-
-	@Override
-	public void init() {
 	}
 
 	@Override

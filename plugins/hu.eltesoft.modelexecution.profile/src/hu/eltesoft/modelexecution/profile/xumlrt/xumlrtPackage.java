@@ -161,13 +161,13 @@ public interface xumlrtPackage extends EPackage {
 	int EXTERNAL_ENTITY_FEATURE_COUNT = 3;
 
 	/**
-	 * The operation id for the '<em>All Operations Are Non Static</em>' operation.
+	 * The operation id for the '<em>All Operations Are Static</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_NON_STATIC__DIAGNOSTICCHAIN_MAP = 0;
+	int EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_STATIC__DIAGNOSTICCHAIN_MAP = 0;
 
 	/**
 	 * The operation id for the '<em>Has No Attributes</em>' operation.
@@ -364,14 +364,14 @@ public interface xumlrtPackage extends EPackage {
 	EAttribute getExternalEntity_Type();
 
 	/**
-	 * Returns the meta object for the '{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#AllOperationsAreNonStatic(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map) <em>All Operations Are Non Static</em>}' operation.
+	 * Returns the meta object for the '{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#AllOperationsAreStatic(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map) <em>All Operations Are Static</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>All Operations Are Non Static</em>' operation.
-	 * @see hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#AllOperationsAreNonStatic(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
+	 * @return the meta object for the '<em>All Operations Are Static</em>' operation.
+	 * @see hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#AllOperationsAreStatic(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
 	 * @generated
 	 */
-	EOperation getExternalEntity__AllOperationsAreNonStatic__DiagnosticChain_Map();
+	EOperation getExternalEntity__AllOperationsAreStatic__DiagnosticChain_Map();
 
 	/**
 	 * Returns the meta object for the '{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#HasNoAttributes(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map) <em>Has No Attributes</em>}' operation.
@@ -575,12 +575,12 @@ public interface xumlrtPackage extends EPackage {
 		EAttribute EXTERNAL_ENTITY__TYPE = eINSTANCE.getExternalEntity_Type();
 
 		/**
-		 * The meta object literal for the '<em><b>All Operations Are Non Static</b></em>' operation.
+		 * The meta object literal for the '<em><b>All Operations Are Static</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_NON_STATIC__DIAGNOSTICCHAIN_MAP = eINSTANCE.getExternalEntity__AllOperationsAreNonStatic__DiagnosticChain_Map();
+		EOperation EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_STATIC__DIAGNOSTICCHAIN_MAP = eINSTANCE.getExternalEntity__AllOperationsAreStatic__DiagnosticChain_Map();
 
 		/**
 		 * The meta object literal for the '<em><b>Has No Attributes</b></em>' operation.

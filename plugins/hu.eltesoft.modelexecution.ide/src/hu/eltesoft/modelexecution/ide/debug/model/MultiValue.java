@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.IncompatibleThreadStateException;
@@ -22,16 +21,16 @@ import hu.eltesoft.modelexecution.runtime.meta.IndexMeta;
 @SuppressWarnings("restriction")
 public class MultiValue extends AbstractValue {
 
-	public MultiValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
-		super(debugTarget, mainThread, value);
+	public MultiValue(ModelVariable variable, JDIThreadWrapper mainThread, Value value) {
+		super(variable, mainThread, value);
 	}
 
 	@Override
 	protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
 			throws DebugException {
 		for (int i = 0; i < collectionValues.size(); i++) {
-			list.add(new ModelVariable(debugTarget, new IndexMeta(i),
-					new SingleValue(debugTarget, thread, collectionValues.get(i))));
+			list.add(new ModelVariable(getXUmlRtDebugTarget(), new IndexMeta(i), thread,
+					collectionValues.get(i)));
 		}
 		return list.toArray(new IVariable[list.size()]);
 	}

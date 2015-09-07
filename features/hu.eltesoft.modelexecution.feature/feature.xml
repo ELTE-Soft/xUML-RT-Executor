@@ -104,8 +104,9 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <requires>
-      <import feature="com.incquerylabs.emdw.common.project.feature" version="1.0.0.qualifier"/>
-      <import feature="com.incquerylabs.uml.papyrus.feature" version="1.0.0.qualifier"/>
+      <import feature="com.incquerylabs.emdw.common.project.feature" version="1.0.0.201508251538"/>
+      <import feature="com.incquerylabs.uml.papyrus.feature" version="1.0.0.201508251538"/>
+      <import feature="com.incquerylabs.uml.ralf.feature" version="1.0.0.201508251538"/>
    </requires>
 
    <plugin
@@ -131,13 +132,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <plugin
          id="hu.eltesoft.modelexecution.filemanager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="hu.eltesoft.modelexecution.uml.alf"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -7,11 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
-import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
-
-public class AnimationController {
-
-	private static final AnimationUtils UTILS = AnimationUtils.getInstance();
+public class AnimationController extends MokaAnimationBase {
 
 	private int animationTimeMultiplier;
 
@@ -24,8 +20,8 @@ public class AnimationController {
 	private final Timer animationTimer = new Timer();
 	private TimerTask lastAnimationEndTask;
 
-	public AnimationController(LaunchConfigReader configReader) {
-		animationTimeMultiplier = configReader.getAnimationTimerMultiplier();
+	public AnimationController(int xumlRTDelay) {
+		animationTimeMultiplier = xumlRTDelay;
 
 		AnimationUtils.init();
 	}
@@ -85,6 +81,7 @@ public class AnimationController {
 		removeAllMarkers();
 		lastSuspended = AnimationUtils.resolve(modelElement);
 		UTILS.addSuspendedMarker(lastSuspended);
+		openContainingDiagram(modelElement);
 	}
 
 	public synchronized void removeSuspendedMarker() {

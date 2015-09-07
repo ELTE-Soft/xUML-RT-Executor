@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 
 import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.IncompatibleThreadStateException;
@@ -23,7 +22,11 @@ public class SingleValue extends AbstractValue {
 
 	private static final String SINGLETON_VALUE_MISSING = "null";
 
-	public SingleValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	public SingleValue(ModelVariable modelVariable, JDIThreadWrapper mainThread, Value value) {
+		super(modelVariable, mainThread, value);
+	}
+
+	public SingleValue(XUMLRTDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget, mainThread, value);
 	}
 
@@ -31,7 +34,7 @@ public class SingleValue extends AbstractValue {
 	protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
 			throws DebugException {
 		if (!collectionValues.isEmpty()) {
-			return new SingleValue(debugTarget, thread, collectionValues.get(0)).getVariables();
+			return new SingleValue(variable, thread, collectionValues.get(0)).getVariables();
 		} else {
 			return new IVariable[0];
 		}

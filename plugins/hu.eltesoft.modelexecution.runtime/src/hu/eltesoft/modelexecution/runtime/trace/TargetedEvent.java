@@ -6,8 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
 import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 
@@ -25,19 +25,19 @@ public class TargetedEvent implements JSONSerializable {
 
 	private Event event;
 	private boolean fromOutside = false;
-	private StatefulClass target;
+	private ClassWithState target;
 
 	public TargetedEvent(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		jsonDecode(reader, obj);
 	}
 
-	public TargetedEvent(StatefulClass target, Event event) {
+	public TargetedEvent(ClassWithState target, Event event) {
 		super();
 		this.target = target;
 		this.event = event;
 	}
 
-	public static TargetedEvent createOutsideEvent(StatefulClass target, Event event) {
+	public static TargetedEvent createOutsideEvent(ClassWithState target, Event event) {
 		TargetedEvent ret = new TargetedEvent(target, event);
 		ret.fromOutside = true;
 		return ret;
@@ -82,7 +82,7 @@ public class TargetedEvent implements JSONSerializable {
 		return event;
 	}
 
-	public StatefulClass getTarget() {
+	public ClassWithState getTarget() {
 		return target;
 	}
 
@@ -96,7 +96,7 @@ public class TargetedEvent implements JSONSerializable {
 	@Override
 	public void jsonDecode(JSONDecoder decoder, JSONObject obj) throws ClassNotFoundException, JSONException {
 		@SuppressWarnings("unchecked")
-		Class<? extends StatefulClass> targetClass = (Class<? extends StatefulClass>) decoder
+		Class<? extends ClassWithState> targetClass = (Class<? extends ClassWithState>) decoder
 				.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
 		int instanceID = obj.getInt(JSON_INSTANCE_ID);
 		target = InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);

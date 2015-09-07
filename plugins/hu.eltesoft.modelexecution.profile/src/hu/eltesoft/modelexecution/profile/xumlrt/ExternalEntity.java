@@ -15,12 +15,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#getBase_Class <em>Base Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#getClass_ <em>Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage#getExternalEntity()
  * @model
@@ -114,8 +114,8 @@ public interface ExternalEntity extends EObject {
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Tuple{
-	 *   status=base_Class.ownedOperation->forAll(op | not op.isStatic),
-	 *   message='Only non-static operations are accepted on an external entity.',
+	 *   status=base_Class.ownedOperation->forAll(op | op.isStatic),
+	 *   message='Only static operations are accepted on an external entity.',
 	 *   severity=-5
 	 * }.status
 	 * @param diagnostics The chain of diagnostics to which problems are to be appended.
@@ -124,7 +124,7 @@ public interface ExternalEntity extends EObject {
 	 * @model
 	 * @generated
 	 */
-	boolean AllOperationsAreNonStatic(DiagnosticChain diagnostics, Map<Object, Object> context);
+	boolean AllOperationsAreStatic(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -202,7 +202,7 @@ public interface ExternalEntity extends EObject {
 	 * Tuple{
 	 *   status=base_Class.ownedOperation->forAll(op | op.ownedParameter->size() = 1 implies
 	 *       let param : Parameter = op.ownedParameter->first()
-	 *       in param.type.getAppliedStereotype('xUML-RT::External::Callable') <> null
+	 *       in param.type.getAppliedStereotype('xUML-RT::Callable') <> null
 	 *   ),
 	 *   message='Type of a parameter on an external entity operation must be a class with Callable stereotype applied.',
 	 *   severity=-5

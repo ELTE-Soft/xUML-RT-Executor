@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
-import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Signal;
 import org.junit.Test;
 
@@ -38,8 +38,7 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		String classRootName = NamedReference.getIdentifier(newClass);
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		assertEquals(2, queue.size()); // 2 = class specification + class
-										// implementation
+		assertEquals(2, queue.size()); // 2 = class specification + class implementation
 
 		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 
@@ -51,24 +50,23 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 	}
 
 	@Test
-	public void testIncrementalBuildAfterMethodRemoved() {
+	public void testIncrementalBuildAfterOperationRemoved() {
 		Class class1 = namedChild(model, Class.class, "Class1");
 		String classRootName = NamedReference.getIdentifier(class1);
 
-		Behavior method1 = namedChild(class1, Behavior.class, "Method1");
-		String behaviorRootName = NamedReference.getIdentifier(method1);
-		method1.destroy();
+		Operation operation1 = namedChild(class1, Operation.class, "Operation1");
+		operation1.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 
-		// 2 = delete method, changed class implementation
+		// 2 = class specification + class implementation
 		assertEquals(2, queue.size());
 
 		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 
 		queue.forEach(t -> t.perform(listener));
 
-		verify(listener).sourceCodeDeleted(eq(behaviorRootName));
+		verify(listener).sourceCodeChanged(eq(classRootName), any(SourceMappedText.class), any(DebugSymbols.class));
 		verify(listener).sourceCodeChanged(eq(classRootName + "_impl"), any(SourceMappedText.class),
 				any(DebugSymbols.class));
 	}

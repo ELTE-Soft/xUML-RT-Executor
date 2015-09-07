@@ -18,6 +18,12 @@ public abstract class ModelBasedTestCase {
 
 	protected ModelSet modelSet;
 	protected Model model;
+	protected boolean usePluginUri = false;
+
+	protected ModelBasedTestCase(String modelPath, boolean usePluginUri) {
+		this(modelPath);
+		this.usePluginUri = usePluginUri;
+	}
 
 	protected ModelBasedTestCase(String modelPath) {
 		this.modelPath = modelPath;
@@ -34,12 +40,12 @@ public abstract class ModelBasedTestCase {
 		modelSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		modelSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
+		modelSet.getResource(createModelUri(modelPath), true);
 		return modelSet;
 	}
 
 	public Model loadModel(ModelSet modelSet, String modelPath) {
-		URI uri = URI.createFileURI(modelPath);
-		Resource resource = modelSet.getResource(uri, true);
+		Resource resource = modelSet.getResource(createModelUri(modelPath), true);
 		List<EObject> contents = resource.getContents();
 		for (EObject eobj : contents) {
 			if (eobj instanceof Model) {
@@ -47,6 +53,10 @@ public abstract class ModelBasedTestCase {
 			}
 		}
 		return null;
+	}
+
+	private URI createModelUri(String modelPath) {
+		return usePluginUri ? URI.createPlatformPluginURI(modelPath, true) : URI.createFileURI(modelPath);
 	}
 
 	@SuppressWarnings("unchecked")

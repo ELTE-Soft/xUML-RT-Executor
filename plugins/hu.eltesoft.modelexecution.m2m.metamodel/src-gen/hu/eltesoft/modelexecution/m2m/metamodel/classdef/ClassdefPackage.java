@@ -305,13 +305,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_OPERATION_SPEC__PARAMETERS = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_OPERATION_SPEC__IS_STATIC = BasePackage.NAMED_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Cl Operation Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_OPERATION_SPEC_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
+	int CL_OPERATION_SPEC_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Cl Operation Spec</em>' class.
@@ -360,6 +369,15 @@ public interface ClassdefPackage extends EPackage {
 	int CL_OPERATION__PARAMETERS = CL_OPERATION_SPEC__PARAMETERS;
 
 	/**
+	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_OPERATION__IS_STATIC = CL_OPERATION_SPEC__IS_STATIC;
+
+	/**
 	 * The feature id for the '<em><b>Method</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -369,22 +387,13 @@ public interface ClassdefPackage extends EPackage {
 	int CL_OPERATION__METHOD = CL_OPERATION_SPEC_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CL_OPERATION__IS_STATIC = CL_OPERATION_SPEC_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Cl Operation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_OPERATION_FEATURE_COUNT = CL_OPERATION_SPEC_FEATURE_COUNT + 2;
+	int CL_OPERATION_FEATURE_COUNT = CL_OPERATION_SPEC_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Cl Operation</em>' class.
@@ -1135,17 +1144,6 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClOperation_Method();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#isIsStatic <em>Is Static</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Static</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation#isIsStatic()
-	 * @see #getClOperation()
-	 * @generated
-	 */
-	EAttribute getClOperation_IsStatic();
-
-	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec <em>Cl Operation Spec</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1176,6 +1174,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClOperationSpec_Parameters();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec#isIsStatic <em>Is Static</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Static</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec#isIsStatic()
+	 * @see #getClOperationSpec()
+	 * @generated
+	 */
+	EAttribute getClOperationSpec_IsStatic();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception <em>Cl Reception</em>}'.
@@ -1514,14 +1523,6 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_OPERATION__METHOD = eINSTANCE.getClOperation_Method();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Static</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CL_OPERATION__IS_STATIC = eINSTANCE.getClOperation_IsStatic();
-
-		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl <em>Cl Operation Spec</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1546,6 +1547,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_OPERATION_SPEC__PARAMETERS = eINSTANCE.getClOperationSpec_Parameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Static</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_OPERATION_SPEC__IS_STATIC = eINSTANCE.getClOperationSpec_IsStatic();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClReceptionImpl <em>Cl Reception</em>}' class.

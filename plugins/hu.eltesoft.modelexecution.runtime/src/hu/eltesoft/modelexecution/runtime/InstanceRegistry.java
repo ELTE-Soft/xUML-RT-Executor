@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 
 /**
  * Stores references for objects that can receive events. These events can come
@@ -31,7 +30,7 @@ public final class InstanceRegistry {
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public StatefulClass getInstance(Class<? extends StatefulClass> targetClass, int instanceID) {
+	public ClassWithState getInstance(Class<? extends ClassWithState> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
@@ -53,8 +52,7 @@ public final class InstanceRegistry {
 	 * message.
 	 */
 	public void unregisterInstance(ClassWithState instance) {
-		InstanceKey key = new InstanceKey(instance);
-		instanceRegistry.remove(key);
+		instanceRegistry.remove(new InstanceKey(instance));
 		for (InstanceListener listener : listeners) {
 			listener.instanceDeleted(instance);
 		}
@@ -76,15 +74,15 @@ public final class InstanceRegistry {
 	}
 
 	public static final class InstanceKey {
-		private Class<? extends StatefulClass> klass;
+		private Class<? extends ClassWithState> klass;
 		private int instanceID;
 
-		public InstanceKey(StatefulClass instance) {
+		public InstanceKey(ClassWithState instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
 		}
 
-		public InstanceKey(Class<? extends StatefulClass> klass, int instanceID) {
+		public InstanceKey(Class<? extends ClassWithState> klass, int instanceID) {
 			this.klass = klass;
 			this.instanceID = instanceID;
 		}

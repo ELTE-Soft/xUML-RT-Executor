@@ -2,10 +2,6 @@
  */
 package hu.eltesoft.modelexecution.profile.xumlrt.impl;
 
-import hu.eltesoft.modelexecution.profile.xumlrt.Callable;
-import hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage;
-import hu.eltesoft.modelexecution.profile.xumlrt.util.xumlrtValidator;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -22,16 +18,20 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.uml2.uml.Reception;
 
+import hu.eltesoft.modelexecution.profile.xumlrt.Callable;
+import hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage;
+import hu.eltesoft.modelexecution.profile.xumlrt.util.xumlrtValidator;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Callable</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.impl.CallableImpl#getBase_Class <em>Base Class</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

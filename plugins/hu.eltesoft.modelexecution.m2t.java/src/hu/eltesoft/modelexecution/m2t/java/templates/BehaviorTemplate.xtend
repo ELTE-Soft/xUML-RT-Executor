@@ -1,8 +1,9 @@
 package hu.eltesoft.modelexecution.m2t.java.templates
 
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior
-import hu.eltesoft.modelexecution.m2t.java.BehaviorBodyGenerator
 import hu.eltesoft.modelexecution.m2t.java.Template
+import hu.eltesoft.modelexecution.m2t.java.behavior.BehaviorCompiler
+import hu.eltesoft.modelexecution.m2t.java.behavior.CompilerBase
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.runtime.base.ActionCode
@@ -12,18 +13,18 @@ import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 @SourceMappedTemplate(stratumName=XUML_RT)
 class BehaviorTemplate extends Template {
 
-	static val CONTEXT_NAME = BehaviorBodyGenerator.CONTEXT_NAME
+	static val CONTEXT_NAME = CompilerBase.CONTEXT_NAME
 
 	val BhBehavior behavior
-	val SourceMappedText compiledAlfCode
+	val SourceMappedText compiledCode
 	val boolean returns
 
 	new(BhBehavior behavior) {
 		super(behavior)
 		this.behavior = behavior
-		val generator = new BehaviorBodyGenerator
+		val compiler = new BehaviorCompiler
 		returns = behavior.returnType != null
-		compiledAlfCode = generator.generate(behavior.alfResult)
+		compiledCode = compiler.compile(behavior.parsingResults).toSourceMappedText
 	}
 
 	override wrapContent(CharSequence content) '''
@@ -41,20 +42,12 @@ class BehaviorTemplate extends Template {
 		 «javadocParams(behavior.parameters)»
 		 */
 		public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
-			«IF !behavior.isStatic»«behavior.containerClass.identifier» 
-					«CONTEXT_NAME»
-					«IF !behavior.parameters.empty»,«ENDIF»
-			«ENDIF»
-			«FOR param : behavior.parameters SEPARATOR ','»
+			«IF !behavior.isStatic»«behavior.containerClass.identifier» «CONTEXT_NAME»«ENDIF»
+			«FOR param : behavior.parameters BEFORE (if (!behavior.isStatic) ',' else '') SEPARATOR ','»
 				«javaType(param.type)» «param.identifier»
 			«ENDFOR»
 		) {
-			«compiledAlfCode»
-			«IF behavior.returnType != null»
-				// walkaround while we are not generating actual action code
-				return null;
-			«ENDIF»
+			«compiledCode»
 		}
 	'''
-
 }

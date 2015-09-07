@@ -119,10 +119,10 @@ class RegionTemplate extends Template {
 			@Override
 			public void doInitialTransition() {
 				// Initial state exit
-				«OWNER_FIELD_NAME».getRuntime().logExitState(«traceLiteral(initState, Exit)»);
+				«runtime».logExitState(«traceLiteral(initState, Exit)»);
 		
 				// Initial transition effect
-				«OWNER_FIELD_NAME».getRuntime().logTransition(
+				«runtime».logTransition(
 						"<init transition>",
 						"<init transition>",
 						«trace(initState.nameLiteral, initTransition.reference)»,
@@ -134,7 +134,7 @@ class RegionTemplate extends Template {
 				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
 		
 				// First state entry
-				«OWNER_FIELD_NAME».getRuntime().logEnterState(«traceLiteral(firstState, Entry)»);
+				«runtime».logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
 					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME»);
 				«ENDIF»
@@ -174,13 +174,13 @@ class RegionTemplate extends Template {
 								if («SIGNAL_VARIABLE» instanceof «transition.message.identifier»)
 								{
 									// State exit
-									«OWNER_FIELD_NAME».getRuntime().logExitState(«traceLiteral(state, Exit)»);
+									«runtime».logExitState(«traceLiteral(state, Exit)»);
 									«IF null != state.exit»
 										«state.exit.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»
 								
 									// Transition effect
-									«OWNER_FIELD_NAME».getRuntime().logTransition(
+									«runtime».logTransition(
 											«transition.event.nameLiteral»,
 											«transition.message.nameLiteral»,
 											«trace(state.nameLiteral, transition.reference)»,
@@ -192,7 +192,7 @@ class RegionTemplate extends Template {
 									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
 									
 									// State entry
-									«OWNER_FIELD_NAME».getRuntime().logEnterState(«traceLiteral(transition.target, Entry)»);
+									«runtime».logEnterState(«traceLiteral(transition.target, Entry)»);
 									«IF null != transition.target.entry»
 										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME»);
 									«ENDIF»

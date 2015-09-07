@@ -2,19 +2,20 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.moka.communication.Marshaller;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Resume_Request;
 import org.eclipse.papyrus.moka.communication.request.isuspendresume.Suspend_Request;
 import org.eclipse.papyrus.moka.communication.request.iterminate.Terminate_Request;
@@ -27,14 +28,11 @@ import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.debug.jvm.StateMachnineInstanceListener;
-import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
-import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
-import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
-import hu.eltesoft.modelexecution.ide.debug.util.LaunchConfigReader;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
+import hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator;
+import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 
 /**
  * Execution engine for Moka.
@@ -46,17 +44,17 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	private static final String DEFAULT_STRATUM_NAME = "xUML-rt"; //$NON-NLS-1$
 
-	/** Synchronization, timing and cleanup of animation is performed by this class */
+	/**
+	 * Synchronization, timing and cleanup of animation is performed by this
+	 * class
+	 */
 	private AnimationController animation;
 
-	private BreakpointRegistry breakpoints;
-	
+	private XUMLRTDebugTarget xumlrtDebugTarget;
+
 	/** Direct control over the virtual machine running the runtime */
 	private VirtualMachineManager virtualMachine;
 
-	/** The state machine instances (threads) in the debug model */
-	private final List<StateMachineInstance> smInstances = new LinkedList<>();
-	
 	private ExecutionEngineVMConnection virtualMachineHandler;
 
 	@Override
@@ -67,42 +65,23 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		debugTarget.setName(Messages.XUmlRtExecutionEngine_debug_model_label);
 
 		ILaunch launch = debugTarget.getLaunch();
-		LaunchConfigReader configReader = new LaunchConfigReader(launch);
-		animation = new AnimationController(configReader);
-		breakpoints = new BreakpointRegistry();
+
+		int xumlRTDelay = ModelExecutionLaunchConfig.getAnimationTimerMultiplier(launch.getLaunchConfiguration());
+		animation = new AnimationController(xumlRTDelay);
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
-		virtualMachineHandler = new ExecutionEngineVMConnection(this, eObjectToExecute, configReader, virtualMachine,
-				animation, breakpoints);
-		virtualMachine.addEventListener(virtualMachineHandler);
 
-		setupControllerListeners(launch);
-	}
+		xumlrtDebugTarget = new XUMLRTDebugTarget(virtualMachine.getVMBrowser(), this,
+				eObjectToExecute.eResource().getResourceSet(), launch);
+		launch.addDebugTarget(xumlrtDebugTarget);
+		launch.setSourceLocator(new XUMLRTSourceLocator());
 
-	/**
-	 * Sets up event handlers for changes reported by the runtime.
-	 */
-	protected void setupControllerListeners(ILaunch launch) {
-		for (IProcess process : launch.getProcesses()) {
-			if (process instanceof IProcessWithController) {
-				RuntimeControllerClient runtimeController = ((IProcessWithController) process).getController();
-				if (runtimeController != null) {
-					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
-						@Override
-						public void instanceCreated(String classId, int instanceId, String originalName) {
-							StateMachineInstance smInstance = new StateMachineInstance(debugTarget, classId,
-									instanceId, originalName);
-							smInstances.add(smInstance);
-						}
-
-						@Override
-						public void instanceDestroyed(String classId, int instanceId) {
-							smInstances
-									.removeIf(t -> t.getClassId().equals(classId) && t.getInstanceId() == instanceId);
-						}
-					});
-				}
-			}
+		try {
+			IProject project = ModelExecutionLaunchConfig.getProject(debugTarget.getLaunch().getLaunchConfiguration());
+			virtualMachineHandler = new ExecutionEngineVMConnection(xumlrtDebugTarget, project, eObjectToExecute,
+					virtualMachine, animation);
+		} catch (CoreException e) {
+			IdePlugin.logError("Error while retrieving project", e);
 		}
 	}
 
@@ -113,19 +92,18 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public void addBreakpoint(MokaBreakpoint breakpoint) {
-		breakpoints.add(breakpoint);
+		xumlrtDebugTarget.addBreakpoint(breakpoint);
 	}
 
 	@Override
 	public void removeBreakpoint(MokaBreakpoint breakpoint) {
-		breakpoints.remove(breakpoint);
+		xumlrtDebugTarget.removeBreakpoint(breakpoint);
 	}
 
 	@Override
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
-			// remove stack frames from all threads before resuming
-			smInstances.forEach(t -> t.setStackFrames(new IStackFrame[0]));
+			xumlrtDebugTarget.resumed();
 
 			virtualMachineHandler.resume();
 			virtualMachine.resume();
@@ -155,6 +133,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 			// it will not indicate a disconnect event
 			virtualMachine.terminate();
 			animation.removeAllMarkers();
+			xumlrtDebugTarget.terminated();
 		} catch (DebugException e) {
 			IdePlugin.logError("Error while terminating debug target", e); //$NON-NLS-1$
 		}
@@ -174,28 +153,46 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	@Override
 	public MokaThread[] getThreads() {
-		return smInstances.toArray(new MokaThread[smInstances.size()]);
-	}
-
-	public StateMachineInstance[] getSmInstances() {
-		return smInstances.toArray(new StateMachineInstance[smInstances.size()]);
+		return new MokaThread[0];
 	}
 
 	@Override
 	public IStackFrame[] getStackFrames(IThread thread) {
-		// stack frames are added directly to the state machine instances
 		return new IStackFrame[0];
 	}
 
 	@Override
 	public IVariable[] getVariables(IDebugElement stackFrameOrValue) {
-		// variables are added directly to the stack frames and values
 		return new MokaVariable[0];
 	}
 
 	@Override
 	public IRegisterGroup[] getRegisterGroups(IStackFrame stackFrame) {
-		// register groups are not used
 		return new IRegisterGroup[0];
 	}
+
+	public XUMLRTDebugTarget getXUmlRtDebugTarget() {
+		return xumlrtDebugTarget;
+	}
+
+	/**
+	 * This override is necessary because the original method sends events to
+	 * the {@link DebugPlugin} that changes the selection in the debug view.
+	 */
+	@Override
+	protected void resume_reply(String message) {
+		Resume_Request request = Marshaller.getInstance().resume_request_unmarshal(message);
+		this.resume(request);
+	}
+
+	/**
+	 * This override is necessary because the original method sends events to
+	 * the {@link DebugPlugin} that changes the selection in the debug view.
+	 */
+	@Override
+	protected void suspend_reply(String message) {
+		Suspend_Request request = Marshaller.getInstance().suspend_request_unmarshal(message);
+		this.suspend(request);
+	}
+
 }

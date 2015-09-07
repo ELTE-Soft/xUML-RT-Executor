@@ -14,10 +14,11 @@ import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
+import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
 /**
  * A node of the translator tree that corresponds to a feature of the
@@ -68,8 +69,13 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> ex
 		// If the metamodel feature had a default value, it had been set when
 		// the parent object was created.
 		if (feature.isRequired() && hasNoValue) {
-			throw new GenerationException("Required feature not found: " + feature.getName() + " in "
-					+ feature.getEContainingClass().getName());
+			String message = "Required feature not found: " + feature.getName() + " in "
+					+ feature.getEContainingClass().getName();
+			EObject source = stack.get(0);
+			if (source instanceof NamedElement) {
+				message += " on '" + ((NamedElement)source).getQualifiedName() + "'";
+			}
+			throw new GenerationException(message);
 		}
 
 		childNodes.forEach(node -> {

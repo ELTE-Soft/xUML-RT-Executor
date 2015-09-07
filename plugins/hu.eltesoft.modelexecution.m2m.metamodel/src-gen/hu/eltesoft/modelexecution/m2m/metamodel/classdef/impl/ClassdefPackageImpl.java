@@ -423,15 +423,6 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getClOperation_IsStatic() {
-		return (EAttribute)clOperationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getClOperationSpec() {
 		return clOperationSpecEClass;
 	}
@@ -452,6 +443,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 */
 	public EReference getClOperationSpec_Parameters() {
 		return (EReference)clOperationSpecEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getClOperationSpec_IsStatic() {
+		return (EAttribute)clOperationSpecEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -638,11 +638,11 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		clOperationEClass = createEClass(CL_OPERATION);
 		createEAttribute(clOperationEClass, CL_OPERATION__METHOD);
-		createEAttribute(clOperationEClass, CL_OPERATION__IS_STATIC);
 
 		clOperationSpecEClass = createEClass(CL_OPERATION_SPEC);
 		createEReference(clOperationSpecEClass, CL_OPERATION_SPEC__RETURN_TYPE);
 		createEReference(clOperationSpecEClass, CL_OPERATION_SPEC__PARAMETERS);
+		createEAttribute(clOperationSpecEClass, CL_OPERATION_SPEC__IS_STATIC);
 
 		clReceptionEClass = createEClass(CL_RECEPTION);
 		createEAttribute(clReceptionEClass, CL_RECEPTION__SIGNAL);
@@ -743,11 +743,11 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 
 		initEClass(clOperationEClass, ClOperation.class, "ClOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClOperation_Method(), theBasePackage.getNamedReference(), "method", null, 0, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getClOperation_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 1, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clOperationSpecEClass, ClOperationSpec.class, "ClOperationSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClOperationSpec_ReturnType(), theBasePackage.getType(), null, "returnType", null, 0, 1, ClOperationSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClOperationSpec_Parameters(), theBasePackage.getParameter(), null, "parameters", null, 0, -1, ClOperationSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClOperationSpec_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 1, 1, ClOperationSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clReceptionEClass, ClReception.class, "ClReception", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClReception_Signal(), theBasePackage.getNamedReference(), "signal", null, 1, 1, ClReception.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

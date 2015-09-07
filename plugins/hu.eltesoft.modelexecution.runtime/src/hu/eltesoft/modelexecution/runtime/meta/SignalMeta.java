@@ -9,4 +9,9 @@ public class SignalMeta extends VariableMeta {
 		super(name);
 	}
 
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
+
 }

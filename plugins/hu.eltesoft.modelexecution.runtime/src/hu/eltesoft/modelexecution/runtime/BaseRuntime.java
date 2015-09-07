@@ -4,11 +4,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
-import hu.eltesoft.modelexecution.runtime.base.StatefulClass;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityException;
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistry;
 import hu.eltesoft.modelexecution.runtime.log.Logger;
@@ -25,7 +25,7 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
  * Executes the model using logging and tracing. Receives the name of the class
  * and the name of a static function to execute.
  */
-public class BaseRuntime implements Runtime, AutoCloseable {
+public final class BaseRuntime implements AutoCloseable {
 
 	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
 	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
@@ -37,14 +37,33 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
-	private ClassLoader classLoader;
 	private RuntimeControllerServer controller;
 	private static java.util.logging.Logger errorLogger = java.util.logging.Logger.getLogger(LOGGER_ID); // $NON-NLS-1$
 
 	private final ExternalEntityRegistry externalEntities;
 
-	public BaseRuntime(ClassLoader classLoader) {
+	private ClassLoader classLoader = BaseRuntime.class.getClassLoader();
+
+	private final CountDownLatch executionReady = new CountDownLatch(1);
+
+	/**
+	 * If has to set the class loader it must be done before the runtime is
+	 * used.
+	 */
+	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
+	}
+
+	private static BaseRuntime INSTANCE = null;
+
+	public static BaseRuntime getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new BaseRuntime();
+		}
+		return INSTANCE;
+	}
+
+	private BaseRuntime() {
 		externalEntities = new ExternalEntityRegistry(classLoader);
 	}
 
@@ -57,6 +76,10 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	public void addControlStreams(InputStream controlStream, OutputStream eventStream) {
 		controller = new RuntimeControllerServer(controlStream, eventStream, this);
 		controller.startListening();
+	}
+
+	public void start() {
+		executionReady.countDown();
 	}
 
 	/**
@@ -72,15 +95,13 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		System.exit(1);
 	}
 
-	@Override
-	public void addEventToQueue(StatefulClass target, Event event) {
+	public void addEventToQueue(ClassWithState target, Event event) {
 		TargetedEvent targetedEvent = new TargetedEvent(target, event);
 		queue.addLast(targetedEvent);
 		logger.messageQueued(target, event);
 	}
 
-	@Override
-	public void addExternalEventToQueue(StatefulClass target, Event event) {
+	public void addExternalEventToQueue(ClassWithState target, Event event) {
 		TargetedEvent targetedEvent = TargetedEvent.createOutsideEvent(target, event);
 		queue.addLast(targetedEvent);
 		logger.messageQueued(target, event);
@@ -101,26 +122,30 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	/**
 	 * Runs the system. This can be an entry point of the runtime.
 	 */
-	@Override
-	public TerminationResult run(String className, String feedName) throws Exception {
+	public TerminationResult run(String className, String mainName) throws Exception {
 		try {
 			logInfo("Preparing system for execution");
-			prepare(className, feedName);
-			logInfo("Starting execution");
-			while (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
-				// events read from trace will not be written to trace
-				if (queue.isEmpty() && traceReader.hasEvent()) {
-					traceReader.dispatchEvent(logger);
-				} else {
-					// if queue is empty, take blocks
-					TargetedEvent currQueueEvent = queue.take();
-					if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
-						// put back the event to the original position
-						queue.addFirst(currQueueEvent);
-					} else {
-						traceWriter.traceEvent(currQueueEvent);
-					}
+			prepare(className, mainName);
+			if (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
+				if (controller != null) {
+					executionReady.await();
 				}
+				logInfo("Starting execution");
+				do {
+					// events read from trace will not be written to trace
+					if (queue.isEmpty() && traceReader.hasEvent()) {
+						traceReader.dispatchEvent(logger);
+					} else {
+						// if queue is empty, take blocks
+						TargetedEvent currQueueEvent = queue.take();
+						if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
+							// put back the event to the original position
+							queue.addFirst(currQueueEvent);
+						} else {
+							traceWriter.traceEvent(currQueueEvent);
+						}
+					}
+				} while (!InstanceRegistry.getInstanceRegistry().isEmpty());
 			}
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;
@@ -141,31 +166,23 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 	}
 
 	/**
-	 * Registers the runtime in the {@link InstanceRegistry}. Creates an
-	 * instance of the selected class and executes it.
+	 * Runs the selected static main method.
 	 */
-	private void prepare(String className, String feedName) throws ClassNotFoundException, NoSuchMethodException,
-			InstantiationException, IllegalAccessException, InvocationTargetException {
+	private void prepare(String className, String mainName)
+			throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		java.lang.Class<?> classClass = classLoader.loadClass(className);
-
-		Method creator = classClass.getMethod("create", Runtime.class);
-		ClassWithState classInstance = (ClassWithState) creator.invoke(null, this);
-		classInstance.init();
-		Method method = classClass.getMethod(feedName);
-		method.invoke(classInstance);
+		Method main = classClass.getMethod(mainName);
+		main.invoke(null);
 	}
 
-	@Override
 	public void logEnterState(String state) {
 		logger.enterState(state);
 	}
 
-	@Override
 	public void logExitState(String state) {
 		logger.exitState(state);
 	}
 
-	@Override
 	public void logTransition(String eventName, String messageName, String source, String target) {
 		logger.transition(eventName, messageName, source, target);
 	}
@@ -193,9 +210,9 @@ public class BaseRuntime implements Runtime, AutoCloseable {
 		logger.close();
 		traceWriter.close();
 		traceReader.close();
+		INSTANCE = null;
 	}
 
-	@Override
 	public <Impl> Impl getExternalEntity(Class<? super Impl> entityClass) {
 		return externalEntities.getInstance(entityClass);
 	}

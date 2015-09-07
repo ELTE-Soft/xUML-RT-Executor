@@ -24,7 +24,7 @@ public class TraceWriterTest {
 		String folderName = "traces";
 
 		try (TraceWriter sut = new TraceWriter(folderName, fileSystem)) {
-			sut.traceEvent(new TargetedEvent(new MockClass(null), new SignalEvent(new DummySignal())));
+			sut.traceEvent(new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
 		}
 
 		Path path = fileSystem.getPath(folderName);

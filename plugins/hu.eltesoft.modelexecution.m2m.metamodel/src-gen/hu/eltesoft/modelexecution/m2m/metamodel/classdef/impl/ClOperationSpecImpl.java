@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getReturnType <em>Return Type</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationSpecImpl#isIsStatic <em>Is Static</em>}</li>
  * </ul>
  *
  * @generated
@@ -57,6 +58,26 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 	 * @ordered
 	 */
 	protected EList<Parameter> parameters;
+
+	/**
+	 * The default value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsStatic()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_STATIC_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsStatic() <em>Is Static</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsStatic()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isStatic = IS_STATIC_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -132,6 +153,27 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsStatic() {
+		return isStatic;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsStatic(boolean newIsStatic) {
+		boolean oldIsStatic = isStatic;
+		isStatic = newIsStatic;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_OPERATION_SPEC__IS_STATIC, oldIsStatic, isStatic));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -140,6 +182,8 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 				return basicGetReturnType();
 			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
 				return getParameters();
+			case ClassdefPackage.CL_OPERATION_SPEC__IS_STATIC:
+				return isIsStatic();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -160,6 +204,9 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
+			case ClassdefPackage.CL_OPERATION_SPEC__IS_STATIC:
+				setIsStatic((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -178,6 +225,9 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
 				getParameters().clear();
 				return;
+			case ClassdefPackage.CL_OPERATION_SPEC__IS_STATIC:
+				setIsStatic(IS_STATIC_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -194,8 +244,26 @@ public class ClOperationSpecImpl extends NamedImpl implements ClOperationSpec {
 				return returnType != null;
 			case ClassdefPackage.CL_OPERATION_SPEC__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
+			case ClassdefPackage.CL_OPERATION_SPEC__IS_STATIC:
+				return isStatic != IS_STATIC_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (isStatic: ");
+		result.append(isStatic);
+		result.append(')');
+		return result.toString();
 	}
 
 } //ClOperationSpecImpl

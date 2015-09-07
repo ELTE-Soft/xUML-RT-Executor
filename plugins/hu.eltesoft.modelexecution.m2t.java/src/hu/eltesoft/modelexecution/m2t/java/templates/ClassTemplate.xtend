@@ -11,7 +11,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReception
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedTemplate
-import hu.eltesoft.modelexecution.runtime.Runtime
 import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
@@ -49,9 +48,11 @@ class ClassTemplate extends Template {
 	
 	override generateContent() '''
 		/** Constructor for UML class «classDefinition.javadoc» */
-		public «classDefinition.implementation»(«Runtime.canonicalName» runtime
-				«FOR parent : classDefinition.parents», «parent.implementation» «parent.inherited»«ENDFOR») {
-			«IF hasStateMachine»super(runtime, instanceCount.getAndIncrement());«ENDIF»
+		public «classDefinition.implementation»(
+				«FOR parent : classDefinition.parents SEPARATOR ','»
+					«parent.implementation» «parent.inherited»
+				«ENDFOR») {
+			«IF hasStateMachine»super(instanceCount.getAndIncrement());«ENDIF»
 			«FOR parent : classDefinition.parents»
 				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
@@ -83,9 +84,7 @@ class ClassTemplate extends Template {
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
-				«generateReception(reception, false)»
-				
-				«generateReception(reception, true)»
+				«generateExternalReception(reception)»
 			«ENDFOR»
 			
 		«ENDIF»
@@ -237,12 +236,12 @@ class ClassTemplate extends Template {
 		«ENDIF»
 	'''
 	
-	def generateReception(ClReception reception, boolean isExternal) '''
-		/** Method for reception «reception.javadoc» 
+	def generateExternalReception(ClReception reception) '''
+		/** Method for external reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
 		 */
 		@Override
-		public void «reception.identifier»«IF isExternal»_external«ENDIF»(
+		public void «reception.identifier»_external(
 			«FOR parameter : reception.parameters SEPARATOR ','»
 				«javaType(parameter.type, parameter)» «parameter.identifier»
 			«ENDFOR»
@@ -252,7 +251,7 @@ class ClassTemplate extends Template {
 					«parameter.identifier»
 				«ENDFOR»
 			);
-			getRuntime().add«IF isExternal»External«ENDIF»EventToQueue(this, new «SignalEvent.canonicalName»(signal));
+			«runtime».addExternalEventToQueue(this, new «SignalEvent.canonicalName»(signal));
 		}
 	'''
 

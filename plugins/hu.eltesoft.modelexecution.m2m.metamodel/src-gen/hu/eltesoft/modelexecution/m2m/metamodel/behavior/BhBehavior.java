@@ -2,12 +2,12 @@
  */
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior;
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ModelRoot;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
-
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzerResult;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getContainerClass <em>Container Class</em>}</li>
- *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParsingResults <em>Parsing Results</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isIsStatic <em>Is Static</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType <em>Return Type</em>}</li>
@@ -59,30 +59,30 @@ public interface BhBehavior extends ModelRoot {
 	void setContainerClass(NamedReference value);
 
 	/**
-	 * Returns the value of the '<em><b>Alf Result</b></em>' attribute.
+	 * Returns the value of the '<em><b>Parsing Results</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Alf Result</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Parsing Results</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Alf Result</em>' attribute.
-	 * @see #setAlfResult(AlfAnalyzerResult)
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_AlfResult()
-	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.behavior.AlfAnalyzerResult" required="true"
+	 * @return the value of the '<em>Parsing Results</em>' attribute.
+	 * @see #setParsingResults(ParsingResults)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_ParsingResults()
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.behavior.ParsingResults" required="true"
 	 * @generated
 	 */
-	AlfAnalyzerResult getAlfResult();
+	ParsingResults getParsingResults();
 
 	/**
-	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getAlfResult <em>Alf Result</em>}' attribute.
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParsingResults <em>Parsing Results</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Alf Result</em>' attribute.
-	 * @see #getAlfResult()
+	 * @param value the new value of the '<em>Parsing Results</em>' attribute.
+	 * @see #getParsingResults()
 	 * @generated
 	 */
-	void setAlfResult(AlfAnalyzerResult value);
+	void setParsingResults(ParsingResults value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.

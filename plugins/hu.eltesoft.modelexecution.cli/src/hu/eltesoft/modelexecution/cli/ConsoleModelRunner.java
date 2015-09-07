@@ -35,6 +35,7 @@ import org.apache.commons.cli.PosixParser;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -275,8 +276,33 @@ public class ConsoleModelRunner {
 	}
 
 	private void compileModel(String modelPath, String rootDir) {
+		preapareReducedAlfLanguage();
+
 		List<String> generatedJavaFiles = generateSources(modelPath, rootDir);
 		compileSources(rootDir, generatedJavaFiles);
+	}
+
+	private void preapareReducedAlfLanguage() {
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("ecore")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
+					new org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl());
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xmi")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi",
+					new org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl());
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xtextbin",
+					new org.eclipse.xtext.resource.impl.BinaryGrammarResourceFactoryImpl());
+		}
+		if (!EPackage.Registry.INSTANCE.containsKey(org.eclipse.xtext.XtextPackage.eNS_URI)) {
+			EPackage.Registry.INSTANCE.put(org.eclipse.xtext.XtextPackage.eNS_URI,
+					org.eclipse.xtext.XtextPackage.eINSTANCE);
+		}
+		if (!EPackage.Registry.INSTANCE.containsKey("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage")) {
+			EPackage.Registry.INSTANCE.put("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage",
+					com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguagePackage.eINSTANCE);
+		}
 	}
 
 	private List<String> generateSources(String modelPath, String rootDir) {

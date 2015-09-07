@@ -38,10 +38,12 @@ public class VirtualMachineManager implements ITerminate {
 	private List<VirtualMachineListener> eventListeners = new LinkedList<>();
 	private boolean eventsEnabled;
 	private boolean disconnectFired;
+	private VirtualMachineBrowser vmBrowser;
 
 	public VirtualMachineManager(ILaunch launch) {
 		javaProcess = getJavaProcess(launch);
 		virtualMachine = javaProcess.getVM();
+		vmBrowser = new VirtualMachineBrowser(virtualMachine);
 		if (virtualMachine == null) {
 			IdePlugin.logError("Cannot extract virtual machine from java process");
 		}
@@ -224,8 +226,8 @@ public class VirtualMachineManager implements ITerminate {
 	 * @return the connection that allows querying the state of the runtime
 	 *         running in the virtual machine
 	 */
-	public VirtualMachineBrowser createConnection() {
-		return new VirtualMachineBrowser(virtualMachine);
+	public VirtualMachineBrowser getVMBrowser() {
+		return vmBrowser;
 	}
 
 }

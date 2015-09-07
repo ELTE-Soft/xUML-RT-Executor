@@ -10,6 +10,6 @@ package hu.eltesoft.modelexecution.m2t.java
  */
 class Languages {
 
-	public static val ALF = "Alf";
+	public static val RALF = "rALF";
 	public static val XUML_RT = "xUML-rt";
 }

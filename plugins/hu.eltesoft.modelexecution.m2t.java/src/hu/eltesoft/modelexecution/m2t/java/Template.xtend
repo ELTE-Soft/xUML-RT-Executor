@@ -11,6 +11,7 @@ import java.util.Date
 import javax.annotation.Generated
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
+import hu.eltesoft.modelexecution.runtime.BaseRuntime
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -22,8 +23,12 @@ import org.eclipse.emf.common.util.EList
  * should be passed as constructor parameters to a template.
  */
 abstract class Template extends EmfTraceExtensions {
-
 	public static val META_REPR_NAME = "metaRepr"
+	public static val GETTER_PREFIX = "get_"
+	public static val SETTER_PREFIX = "set_"
+	public static val INHERITED_SUFFIX = "_inherited"
+	public static val CLASS_IMPL_SUFFIX = "_impl"
+
 	private val DebugSymbols debugSymbols
 	private val JavaTypeConverter typeConverter = new JavaTypeConverter
 
@@ -166,16 +171,18 @@ abstract class Template extends EmfTraceExtensions {
 		typeConverter.createEmpty(type)
 	}
 	
-	def getter(Named ref) { "get_" + ref.identifier }
+	def getter(Named ref) { GETTER_PREFIX + ref.identifier }
 	
-	def setter(Named ref) { "set_" + ref.identifier }
+	def setter(Named ref) { SETTER_PREFIX + ref.identifier }
 	
-	def inherited(Named ref) { ref.identifier + "_inherited" }
+	def inherited(Named ref) { ref.identifier + INHERITED_SUFFIX }
 	
-	def inherited(NamedReference ref) { ref.identifier + "_inherited" }
+	def inherited(NamedReference ref) { ref.identifier + INHERITED_SUFFIX }
 	
-	def implementation(Named ref) { ref.identifier + "_impl" }
+	def implementation(Named ref) { ref.identifier + CLASS_IMPL_SUFFIX }
 	
-	def implementation(NamedReference ref) { ref.identifier + "_impl" }
+	def implementation(NamedReference ref) { ref.identifier + CLASS_IMPL_SUFFIX }
+	
+	protected val runtime = '''«BaseRuntime.canonicalName».getInstance()'''
 
 }

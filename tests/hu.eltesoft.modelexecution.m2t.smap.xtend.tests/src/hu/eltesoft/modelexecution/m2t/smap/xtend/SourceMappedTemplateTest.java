@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.smap.xtend;
 
-import static hu.eltesoft.modelexecution.m2t.smap.xtend.Assert.assertStringEquals;
+import static hu.eltesoft.modelexecution.test.utils.Assert.assertStringEquals;
 
 import org.junit.Test;
 

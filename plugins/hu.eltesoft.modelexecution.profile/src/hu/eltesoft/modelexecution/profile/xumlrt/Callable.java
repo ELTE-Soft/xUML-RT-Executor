@@ -15,10 +15,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.Callable#getBase_Class <em>Base Class</em>}</li>
  * </ul>
- * </p>
  *
  * @see hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage#getCallable()
  * @model

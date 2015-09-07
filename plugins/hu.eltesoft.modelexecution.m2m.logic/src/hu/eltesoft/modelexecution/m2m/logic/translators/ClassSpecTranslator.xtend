@@ -16,7 +16,7 @@ import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InstanceAttributeMatcher
-import hu.eltesoft.modelexecution.uml.incquery.InstanceOperationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionMatcher
 import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
@@ -80,9 +80,10 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 		ClassConvertHelper.fillAttribute(attributeNode, engine)
 
 		// operations
-		val operationNode = rootNode.onEObject(PACKAGE.clClassSpec_Operations, InstanceOperationMatcher.on(engine)) [
+		val operationNode = rootNode.onEObject(PACKAGE.clClassSpec_Operations, OperationMatcher.on(engine)) [
 			val elem = FACTORY.createClOperationSpec
 			elem.reference = new NamedReference(operation)
+			elem.isStatic = isStatic
 			return elem
 		]
 

@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
-import org.eclipse.papyrus.moka.debug.MokaValue;
 import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 import org.eclipse.swt.graphics.Image;
 
@@ -19,7 +17,6 @@ import com.sun.jdi.ClassNotLoadedException;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.InvalidTypeException;
-import com.sun.jdi.InvocationException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -40,7 +37,7 @@ import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta;
  * The life of these values lasts only while the debugger is stopped.
  */
 @SuppressWarnings("restriction")
-public abstract class AbstractValue extends MokaValue implements IValue, IPresentation {
+public abstract class AbstractValue extends DebugElement implements IValue, IPresentation {
 
 	private static final String SERIALIZE_METHOD_NAME = "serialize";
 
@@ -57,7 +54,17 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 
 	protected JDIUtils jdiUtils;
 
-	public AbstractValue(MokaDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
+	protected ModelVariable variable;
+
+	public AbstractValue(ModelVariable variable, JDIThreadWrapper mainThread, Value value) {
+		super(variable.getXUmlRtDebugTarget());
+		this.variable = variable;
+		this.thread = mainThread;
+		this.value = value;
+		this.jdiUtils = new JDIUtils(mainThread);
+	}
+
+	public AbstractValue(XUMLRTDebugTarget debugTarget, JDIThreadWrapper mainThread, Value value) {
 		super(debugTarget);
 		this.thread = mainThread;
 		this.value = value;
@@ -96,14 +103,15 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 		ObjectReference meta = (ObjectReference) type.getValue(metaField);
 		try {
 			StringReference res = (StringReference) thread.invokeMethod(meta, SERIALIZE_METHOD_NAME);
-			ClassMeta metaInfo = ClassMeta.deserialize(res.value());
+
+			ClassMeta metaInfo = JDIUtils.withInfiniteTimeout(res.virtualMachine(),
+					() -> ClassMeta.deserialize(res.value()));
 			Map<PropertyMeta, Value> attribValues = new HashMap<PropertyMeta, Value>();
 			for (PropertyMeta attrib : metaInfo.getAttributes()) {
 				attribValues.put(attrib, thread.invokeMethod(valueObj, attrib.getIdentifier()));
 			}
 			return presentAttributes(attribValues);
-		} catch (InvalidTypeException | ClassNotLoadedException | IncompatibleThreadStateException | InvocationException
-				| NoSuchMethodException e) {
+		} catch (Exception e) {
 			IdePlugin.logError("Error while retrieving metainfo", e);
 			return new IVariable[0];
 		}
@@ -113,13 +121,7 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 		List<ModelVariable> shownAttributes = new LinkedList<>();
 		for (Entry<PropertyMeta, Value> propertyValue : propertyValues.entrySet()) {
 			PropertyMeta property = propertyValue.getKey();
-			AbstractValue varValue;
-			if (property.getBounds().isAtMostSingle()) {
-				varValue = new SingleValue(debugTarget, thread, propertyValue.getValue());
-			} else {
-				varValue = new MultiValue(debugTarget, thread, propertyValue.getValue());
-			}
-			shownAttributes.add(new ModelVariable(debugTarget, property, varValue));
+			shownAttributes.add(new ModelVariable(getXUmlRtDebugTarget(), property, thread, propertyValue.getValue()));
 		}
 		// sort the attributes alphabetically
 		shownAttributes.sort(Comparator.comparing(ModelVariable::getName));
@@ -187,6 +189,11 @@ public abstract class AbstractValue extends MokaValue implements IValue, IPresen
 	@Override
 	public Image getImage() {
 		return null; // not displayed
+	}
+
+	@Override
+	public DebugElement getParent() {
+		return variable;
 	}
 
 }

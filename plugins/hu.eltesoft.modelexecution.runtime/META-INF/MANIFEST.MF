@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: hu.eltesoft.modelexecution.runtime,
  hu.eltesoft.modelexecution.runtime.base,
  hu.eltesoft.modelexecution.runtime.external,
+ hu.eltesoft.modelexecution.runtime.library,
  hu.eltesoft.modelexecution.runtime.log,
  hu.eltesoft.modelexecution.runtime.meta,
  hu.eltesoft.modelexecution.runtime.serialize,

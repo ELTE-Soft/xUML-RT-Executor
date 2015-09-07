@@ -44,7 +44,7 @@ pattern AssociationOtherEnd(end : Property, otherEnd : Property) {
 }
 
 // -- behavior.eiq -------------------------------------------------------------
-pattern Behavior(behavior : Behavior) {
+pattern Behavior(behavior : OpaqueBehavior) {
 	OpaqueBehavior(behavior);
 }
 
@@ -76,7 +76,9 @@ ContainerClassOfBehavior(behavior : Behavior, containerClass : Class) {
 
 pattern
 BehaviorParameter(behavior : Behavior, parameter : Parameter, direction : ParameterDirectionKind) {
-	Behavior.ownedParameter(behavior, parameter);
+	// fetch parameters from the specification
+	Behavior.specification(behavior, operation);
+	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, direction);
 	direction != ParameterDirectionKind::^return;
 }
@@ -105,7 +107,9 @@ BehaviorParameterUpperBound(behavior : Behavior, parameter : Parameter, type : T
 
 pattern
 BehaviorReturnType(behavior : Behavior, parameter : Parameter, type : Type, ordered, unique) {
-	Behavior.ownedParameter(behavior, parameter);
+	// fetch return parameter from the specification
+	Behavior.specification(behavior, operation);
+	Operation.ownedParameter(operation, parameter);
 	Parameter.direction(parameter, ParameterDirectionKind::^return);
 	Parameter.type(parameter, type);
 	Parameter.isOrdered(parameter, ordered);
@@ -131,11 +135,10 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
-pattern AlfCode(behavior : Behavior, containerClass : Class, alfCode) {
-	OpaqueBehavior.body(behavior, alfCode);
+pattern ActionCode(behavior : OpaqueBehavior, actionCode) {
+	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
-	find ContainerClassOfBehavior(behavior, containerClass);
-	check(Utils.toLowerCase(langName).equals("alf"));
+	check(Utils.toLowerCase(langName).equals("ralf"));
 }
 
 private pattern
@@ -304,10 +307,6 @@ pattern Operation(cls : Class, operation : Operation, isStatic) {
 // inherited operation
 	find IsAncestor(cls, ancestor);
 	find OwnedOperation(ancestor, operation, isStatic);
-}
-
-pattern InstanceOperation(cls : Class, operation : Operation) {
-	find OwnedOperation(cls, operation, false);
 }
 
 private pattern OwnedOperation(cls : Class, operation : Operation, isStatic) {

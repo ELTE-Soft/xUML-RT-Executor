@@ -11,13 +11,13 @@ import org.eclipse.uml2.uml.Class;
 import org.junit.Test;
 
 import hu.eltesoft.modelexecution.m2m.logic.DeleteSourceCodeTask;
-import hu.eltesoft.modelexecution.m2m.logic.GenerationException;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootNode;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass;
+import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch;

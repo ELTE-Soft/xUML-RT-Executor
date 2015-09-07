@@ -113,6 +113,7 @@ public class ModelExecutionLaunchConfig {
 
 	public static final String ATTR_CONTROL_PORT = ATTR_PREFIX + "control_port";
 
+	
 	/**
 	 * Adds launch configuration attributes needed by Moka.
 	 */
@@ -230,10 +231,27 @@ public class ModelExecutionLaunchConfig {
 		return project.getLocation().append(ExecutableModelProperties.getTraceFilesPath(project)).toString();
 	}
 
-	private static IProject getProject(ILaunchConfigurationWorkingCopy configuration) throws CoreException {
-		String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR);
+	public static IProject getProject(ILaunchConfiguration iLaunchConfiguration) throws CoreException {
+		String projectName = iLaunchConfiguration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR);
 		return (IProject) ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
-
+	}
+	
+	public static String getEntryPoint(ILaunchConfiguration launchConfiguration) {
+		try {
+			return launchConfiguration.getAttribute(ATTR_FEED_FUN_NAME, "");
+		} catch (CoreException e) {
+			return "";
+		}
+	}
+	
+	public static int getAnimationTimerMultiplier(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN,
+					ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT);
+		} catch (CoreException e) {
+			IdePlugin.logError("Unable to read launch configuration", e);
+			return ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT;
+		}
 	}
 
 }

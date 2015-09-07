@@ -2,11 +2,6 @@
  */
 package hu.eltesoft.modelexecution.profile.xumlrt.impl;
 
-import hu.eltesoft.modelexecution.profile.xumlrt.EntityType;
-import hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity;
-import hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage;
-import hu.eltesoft.modelexecution.profile.xumlrt.util.xumlrtValidator;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -25,18 +20,23 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 
+import hu.eltesoft.modelexecution.profile.xumlrt.EntityType;
+import hu.eltesoft.modelexecution.profile.xumlrt.ExternalEntity;
+import hu.eltesoft.modelexecution.profile.xumlrt.xumlrtPackage;
+import hu.eltesoft.modelexecution.profile.xumlrt.util.xumlrtValidator;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>External Entity</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.impl.ExternalEntityImpl#getBase_Class <em>Base Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.impl.ExternalEntityImpl#getClass_ <em>Class</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.profile.xumlrt.impl.ExternalEntityImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -193,18 +193,18 @@ public class ExternalEntityImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
-	public boolean AllOperationsAreNonStatic(DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean AllOperationsAreStatic(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		for (Operation o : getBase_Class().getOwnedOperations()) {
-			if (o.isStatic()) {
+			if (!o.isStatic()) {
 				if (diagnostics != null) {
 					diagnostics.add
 						(new BasicDiagnostic
 							(Diagnostic.ERROR,
 							 xumlrtValidator.DIAGNOSTIC_SOURCE,
-							 xumlrtValidator.EXTERNAL_ENTITY__ALL_OPERATIONS_ARE_NON_STATIC,
-							 EcorePlugin.INSTANCE.getString("_UI_GenericInvariant_diagnostic", new Object[] { "AllOperationsAreNonStatic", EObjectValidator.getObjectLabel(this, context) }),
+							 xumlrtValidator.EXTERNAL_ENTITY__ALL_OPERATIONS_ARE_STATIC,
+							 EcorePlugin.INSTANCE.getString("_UI_GenericInvariant_diagnostic", new Object[] { "AllOperationsAreStatic", EObjectValidator.getObjectLabel(this, context) }),
 							 new Object [] { this }));
 				}
 				return false;
@@ -531,8 +531,8 @@ public class ExternalEntityImpl extends MinimalEObjectImpl.Container implements 
 	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case xumlrtPackage.EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_NON_STATIC__DIAGNOSTICCHAIN_MAP:
-				return AllOperationsAreNonStatic((DiagnosticChain)arguments.get(0), (Map<Object, Object>)arguments.get(1));
+			case xumlrtPackage.EXTERNAL_ENTITY___ALL_OPERATIONS_ARE_STATIC__DIAGNOSTICCHAIN_MAP:
+				return AllOperationsAreStatic((DiagnosticChain)arguments.get(0), (Map<Object, Object>)arguments.get(1));
 			case xumlrtPackage.EXTERNAL_ENTITY___HAS_NO_ATTRIBUTES__DIAGNOSTICCHAIN_MAP:
 				return HasNoAttributes((DiagnosticChain)arguments.get(0), (Map<Object, Object>)arguments.get(1));
 			case xumlrtPackage.EXTERNAL_ENTITY___REFERENCED_CLASS_NAME_IS_VALID__DIAGNOSTICCHAIN_MAP:

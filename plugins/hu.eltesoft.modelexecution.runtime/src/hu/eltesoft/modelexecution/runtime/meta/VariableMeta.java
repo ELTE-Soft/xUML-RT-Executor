@@ -19,5 +19,7 @@ public abstract class VariableMeta {
 	public String getName() {
 		return name;
 	}
+	
+	public abstract boolean isSingle();
 
 }

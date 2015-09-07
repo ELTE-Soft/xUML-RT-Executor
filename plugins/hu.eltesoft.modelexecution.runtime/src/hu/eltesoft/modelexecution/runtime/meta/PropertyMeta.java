@@ -77,5 +77,10 @@ public class PropertyMeta extends VariableMeta implements JSONSerializable {
 		identifier = obj.getString(IDENTIFIER_FIELD);
 		bounds = BoundsMeta.deserialize(obj.getJSONObject(BOUNDS_FIELD));
 	}
+	
+	@Override
+	public boolean isSingle() {
+		return bounds.isAtMostSingle();
+	}
 
 }

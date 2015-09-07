@@ -2,15 +2,86 @@
 <xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xUMLRT="http://modelexecution.eltesoft.hu/xumlrt/" xsi:schemaLocation="http://modelexecution.eltesoft.hu/xumlrt/ ../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml#_ZXyf0BU-EeWTWPlQOzBNMQ">
   <uml:Model xmi:id="_ZW7FsMc1EeSnK7LttAdTLw" name="model">
     <packagedElement xmi:type="uml:Class" xmi:id="_aeMPwMc1EeSnK7LttAdTLw" name="A">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_oMFm4EG6EeWzwYgcaM4qwA" name="Op"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_M0-PUEG7EeWzwYgcaM4qwA" name="OpStatic" isStatic="true"/>
       <ownedReception xmi:type="uml:Reception" xmi:id="_WJfJQARSEeW7b7s8CAsnqQ" name="x"/>
       <ownedReception xmi:type="uml:Reception" xmi:id="_gh8K0ARSEeW7b7s8CAsnqQ" name="y"/>
       <ownedReception xmi:type="uml:Reception" xmi:id="_g54JsARSEeW7b7s8CAsnqQ" name="z"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Class" xmi:id="_XHXCwBWVEeWYQpLaR7ziYA" name="E" isAbstract="true">
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_fUZ8sBWVEeWYQpLaR7ziYA" name="Op1"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_gXRH4BWVEeWYQpLaR7ziYA" name="Op2">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_fUZ8sBWVEeWYQpLaR7ziYA" name="Op1" isStatic="true"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_gXRH4BWVEeWYQpLaR7ziYA" name="Op2" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_inRboBWVEeWYQpLaR7ziYA" name="proxy" type="_aeMPwMc1EeSnK7LttAdTLw"/>
       </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_9SdsIEDoEeWCNoKXHvCpUQ" name="B">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_-1zHIEDoEeWCNoKXHvCpUQ" name="OpVoid"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_n2_6wEGFEeWzwYgcaM4qwA" name="OpBool">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_q1wK4EGFEeWzwYgcaM4qwA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_E59jwEG_EeWzwYgcaM4qwA" name="OpIn">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_MJqEoEG_EeWzwYgcaM4qwA" name="pInBool">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_drVLoEG_EeWzwYgcaM4qwA" name="pInInt">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_VlbpQEHEEeWzwYgcaM4qwA" name="OpStaticIn" isStatic="true">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_ZGvz4EHEEeWzwYgcaM4qwA" name="pInString">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_am-QgEHEEeWzwYgcaM4qwA" name="pInReal">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_LAXgUEHKEeWzwYgcaM4qwA" name="B"/>
+      <nestedClassifier xmi:type="uml:Signal" xmi:id="_47IQsEGyEeWzwYgcaM4qwA" name="S"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_5FoZEEHJEeWzwYgcaM4qwA" name="C">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_7BAgoEHJEeWzwYgcaM4qwA" name="C">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_9yslIEHJEeWzwYgcaM4qwA" name="pInBool">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="__exscEHJEeWzwYgcaM4qwA" name="pInString">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Signal" xmi:id="_MR4rMEHNEeWzwYgcaM4qwA" name="SParams">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_On_m8EHNEeWzwYgcaM4qwA" name="aBool">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_R-jTEEHNEeWzwYgcaM4qwA" name="aString">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_VsclsEvUEeWbvJ0DeAHZOQ" name="D">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_dxeMEEvUEeWbvJ0DeAHZOQ" name="a">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_is5kQEvUEeWbvJ0DeAHZOQ" name="b">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_k-DHgEvUEeWbvJ0DeAHZOQ" name="c">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_nKUKwEvUEeWbvJ0DeAHZOQ" name="d">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_RZE2kEvVEeWbvJ0DeAHZOQ" name="OpAttr"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_nmXLsEzTEeWKTdNBA6WBAA" name="AB" memberEnd="_nmqGokzTEeWKTdNBA6WBAA _nmqGo0zTEeWKTdNBA6WBAA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_nmqGoEzTEeWKTdNBA6WBAA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_nmqGoUzTEeWKTdNBA6WBAA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_nmqGokzTEeWKTdNBA6WBAA" name="b" type="_9SdsIEDoEeWCNoKXHvCpUQ" association="_nmXLsEzTEeWKTdNBA6WBAA"/>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_nmqGo0zTEeWKTdNBA6WBAA" name="a" type="_aeMPwMc1EeSnK7LttAdTLw" association="_nmXLsEzTEeWKTdNBA6WBAA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yYEawEzTEeWKTdNBA6WBAA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yYhGsEzTEeWKTdNBA6WBAA" value="*"/>
+      </ownedEnd>
     </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z7Si8BWVEeWYQpLaR7ziYA">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkRWVEeWYQpLaR7ziYA" source="PapyrusVersion">

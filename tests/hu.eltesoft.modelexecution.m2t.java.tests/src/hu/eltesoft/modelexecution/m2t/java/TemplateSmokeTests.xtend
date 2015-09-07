@@ -1,5 +1,8 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import com.incquerylabs.uml.ralf.api.impl.ParsingResults
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguageFactory
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
@@ -11,21 +14,19 @@ import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplateSmap
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase
-import hu.eltesoft.modelexecution.uml.alf.AlfAnalyzer
 import org.eclipse.uml2.uml.Class
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.incquerylabs.uml.ralf.ReducedAlfSystem
 
 class TemplateSmokeTests extends ModelBasedTestCase {
-
-	static val UML_TEST_MODEL_PATH = "resources/model.uml";
 
 	var Class aClass
 
 	new() {
-		super(UML_TEST_MODEL_PATH)
+		super(ModelProperties.PATH, true)
 	}
 
 	@Before
@@ -43,7 +44,21 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 		val factory = BehaviorFactory.eINSTANCE
 		val behavior = factory.createBhBehavior
 		behavior.reference = makeNewReference("TestBehavior")
-		behavior.alfResult = new AlfAnalyzer().analyze("this.x();", aClass)
+		behavior.parsingResults = new ParsingResults(null, null, null) {
+
+			override boolean validationOK() {
+				true
+			}
+
+			override Statements getModel() {
+				val factory = ReducedAlfLanguageFactory.eINSTANCE
+				factory.createStatements
+			}
+
+			override ReducedAlfSystem getTypeSystem() {
+				null
+			}
+		};
 		behavior.containerClass = makeNewReference("TestClass")
 		val template = new BehaviorTemplateSmap(behavior)
 

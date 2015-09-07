@@ -12,31 +12,31 @@
       <ownedAttribute xmi:type="uml:Property" xmi:id="_DgCSsBEHEeWqUf_YOii-sA" name="Attribute">
         <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
       </ownedAttribute>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_VrvWgBD5EeWqUf_YOii-sA" name="StaticOperation" isStatic="true"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_uHgkABEIEeWqUf_YOii-sA" name="Invalid operation name"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_D8hvgBEJEeWqUf_YOii-sA" name="NonCallableParameter">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_VrvWgBD5EeWqUf_YOii-sA" name="NonStaticOperation"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_uHgkABEIEeWqUf_YOii-sA" name="Invalid operation name" isStatic="true"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_D8hvgBEJEeWqUf_YOii-sA" name="NonCallableParameter" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_I3nwgBEJEeWqUf_YOii-sA" name="NonCallable" type="_wM0LABEFEeWqUf_YOii-sA"/>
       </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_nP9ygBEKEeWqUf_YOii-sA" name="NonInputParameter">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_nP9ygBEKEeWqUf_YOii-sA" name="NonInputParameter" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_s1tTABEKEeWqUf_YOii-sA" name="NonInput" type="_vJGrQBEFEeWqUf_YOii-sA" direction="inout"/>
       </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_tib2IBEKEeWqUf_YOii-sA" name="TooManyParameters">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_tib2IBEKEeWqUf_YOii-sA" name="TooManyParameters" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_wOGyMBEKEeWqUf_YOii-sA" name="First" type="_vJGrQBEFEeWqUf_YOii-sA"/>
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_xqhF0BEKEeWqUf_YOii-sA" name="Second" type="_vJGrQBEFEeWqUf_YOii-sA"/>
       </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_yYMrMBEKEeWqUf_YOii-sA" name="WrongLowerBound">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_yYMrMBEKEeWqUf_YOii-sA" name="WrongLowerBound" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_3YQrwBEKEeWqUf_YOii-sA" name="ZeroOrOne" type="_vJGrQBEFEeWqUf_YOii-sA">
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hhYwABETEeW-FJt9YDjaNQ"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hhZ-IBETEeW-FJt9YDjaNQ" value="1"/>
         </ownedParameter>
       </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_398ywBEKEeWqUf_YOii-sA" name="WrongUpperBound">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_398ywBEKEeWqUf_YOii-sA" name="WrongUpperBound" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_8jsO0BEKEeWqUf_YOii-sA" name="AtLeastOne" type="_vJGrQBEFEeWqUf_YOii-sA">
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ieClgBETEeW-FJt9YDjaNQ" value="1"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ieDMkBETEeW-FJt9YDjaNQ" value="*"/>
         </ownedParameter>
       </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_ZBqckBEREeW-FJt9YDjaNQ" name="InvalidParameterName">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_ZBqckBEREeW-FJt9YDjaNQ" name="InvalidParameterName" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_cn0D4BEREeW-FJt9YDjaNQ" name="Invalid parameter name" type="_vJGrQBEFEeWqUf_YOii-sA"/>
       </ownedOperation>
     </packagedElement>
@@ -49,8 +49,8 @@
     </packagedElement>
     <packagedElement xmi:type="uml:Signal" xmi:id="_48DMABEFEeWqUf_YOii-sA" name="Signal"/>
     <packagedElement xmi:type="uml:Class" xmi:id="_GhfuABEGEeWqUf_YOii-sA" name="ValidExternalEntity" isAbstract="true">
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_KTWPABEGEeWqUf_YOii-sA" name="ValidOperationWithoutParameter"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_NyUQQBEGEeWqUf_YOii-sA" name="ValidOperationWithCallable">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_KTWPABEGEeWqUf_YOii-sA" name="ValidOperationWithoutParameter" isStatic="true"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_NyUQQBEGEeWqUf_YOii-sA" name="ValidOperationWithCallable" isStatic="true">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_RecjwBEGEeWqUf_YOii-sA" name="Callable" type="_vJGrQBEFEeWqUf_YOii-sA"/>
       </ownedOperation>
     </packagedElement>
