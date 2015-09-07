@@ -56,7 +56,6 @@ public class DebugViewController {
 			boolean selectionCompleted[] = new boolean[] { false };
 			long start_time = System.currentTimeMillis();
 			while (!selectionCompleted[0] && System.currentTimeMillis() - start_time < MAX_WAIT_TIME) {
-				System.out.println(System.currentTimeMillis() - start_time);
 				try {
 					Thread.sleep(WAIT_INTERVAL);
 				} catch (Exception e) {

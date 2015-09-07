@@ -45,6 +45,7 @@ public final class BaseRuntime implements AutoCloseable {
 	private ClassLoader classLoader = BaseRuntime.class.getClassLoader();
 
 	private final CountDownLatch executionReady = new CountDownLatch(1);
+	private boolean controlledStart = false;
 
 	/**
 	 * If has to set the class loader it must be done before the runtime is
@@ -55,7 +56,6 @@ public final class BaseRuntime implements AutoCloseable {
 	}
 
 	private static BaseRuntime INSTANCE = null;
-
 	public static BaseRuntime getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BaseRuntime();
@@ -127,7 +127,7 @@ public final class BaseRuntime implements AutoCloseable {
 			logInfo("Preparing system for execution");
 			prepare(className, mainName);
 			if (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
-				if (controller != null) {
+				if (controlledStart) {
 					executionReady.await();
 				}
 				logInfo("Starting execution");
@@ -215,5 +215,10 @@ public final class BaseRuntime implements AutoCloseable {
 
 	public <Impl> Impl getExternalEntity(Class<? super Impl> entityClass) {
 		return externalEntities.getInstance(entityClass);
+	}
+
+	public void setControlledStart(boolean controlledStart) {
+		this.controlledStart = controlledStart;
+		
 	}
 }

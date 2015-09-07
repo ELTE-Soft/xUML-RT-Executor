@@ -18,6 +18,7 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
  */
 public class XUMLRTRuntime {
 
+	public static final String OPTION_CONTROLLED_START = "-control-start";
 	public static final String OPTION_LOG = "-log";
 	public static final String OPTION_CONTROL_SOCK = "-control-sock";
 	public static final String OPTION_READ_TRACE = "-read-trace";
@@ -63,6 +64,9 @@ public class XUMLRTRuntime {
 				break;
 			case OPTION_LOG:
 				runtime.setLogger(new MinimalLogger());
+				break;
+			case OPTION_CONTROLLED_START:
+				runtime.setControlledStart(true);
 				break;
 			case OPTION_CONTROL_SOCK:
 				Socket sock = createControlSocket(args[++i]);

@@ -9,6 +9,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.SocketUtil;
@@ -123,9 +124,10 @@ public class ModelExecutionLaunchConfig {
 
 	/**
 	 * Adds launch configuration attributes needed for JRE execution.
+	 * @param mode 
 	 */
-	public static ILaunchConfiguration addJavaConfigs(ILaunchConfiguration configuration) throws CoreException {
-		return addConfigs(configuration, c -> addJavaConfigs(c));
+	public static ILaunchConfiguration addJavaConfigs(ILaunchConfiguration configuration, String mode) throws CoreException {
+		return addConfigs(configuration, c -> addJavaConfigs(c, mode));
 	}
 
 	private static ILaunchConfiguration addConfigs(ILaunchConfiguration configuration,
@@ -155,14 +157,14 @@ public class ModelExecutionLaunchConfig {
 	 * Adds launch configuration attributes needed for JRE execution to a
 	 * configuration working copy.
 	 */
-	public static void addJavaConfigs(ILaunchConfigurationWorkingCopy configuration) {
+	public static void addJavaConfigs(ILaunchConfigurationWorkingCopy configuration, String mode) {
 		setJavaDefaultArgs(configuration);
 		try {
 			configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 					configuration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR));
 			int controlPort = SocketUtil.findFreePort();
 			configuration.setAttribute(ATTR_CONTROL_PORT, controlPort);
-			setupLaunchArgs(configuration);
+			setupLaunchArgs(configuration, mode);
 		} catch (CoreException e) {
 			IdePlugin.logError("Error while adding Java configs", e); //$NON-NLS-1$
 		}
@@ -179,7 +181,7 @@ public class ModelExecutionLaunchConfig {
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_STOP_IN_MAIN, true);
 	}
 
-	private static void setupLaunchArgs(ILaunchConfigurationWorkingCopy configuration) {
+	private static void setupLaunchArgs(ILaunchConfigurationWorkingCopy configuration, String mode) {
 		try {
 			CmArgBuilder argsBuilder = new CmArgBuilder();
 
@@ -207,6 +209,10 @@ public class ModelExecutionLaunchConfig {
 			if (controlPort != -1) {
 				argsBuilder.append(XUMLRTRuntime.OPTION_CONTROL_SOCK);
 				argsBuilder.append(controlPort);
+			}
+			
+			if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+				argsBuilder.append(XUMLRTRuntime.OPTION_CONTROLLED_START);
 			}
 
 			configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,

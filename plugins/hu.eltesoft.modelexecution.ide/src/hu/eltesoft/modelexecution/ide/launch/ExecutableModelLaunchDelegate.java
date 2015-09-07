@@ -165,7 +165,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 		try {
 			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig.addMokaConfigs(configuration);
-			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig.addJavaConfigs(configuration);
+			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig.addJavaConfigs(configuration, mode);
 			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
 
 		} catch (TraceFileMissingException e) {
