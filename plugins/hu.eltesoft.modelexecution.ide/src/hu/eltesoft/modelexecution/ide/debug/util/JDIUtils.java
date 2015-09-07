@@ -53,7 +53,15 @@ public class JDIUtils {
 	public List<Value> getCollectionValues(ObjectReference value) {
 		try {
 			return withInfiniteTimeout(value.virtualMachine(),
-					() -> ((ArrayReference) thread.invokeMethod(value, TO_ARRAY_METHOD)).getValues());
+					() -> {
+						ArrayReference array = (ArrayReference) thread.invokeMethod(value, TO_ARRAY_METHOD);
+						// getValues throws an exception on empty arrays
+						if (array.length() > 0) {
+							return array.getValues();
+						} else {
+							return new LinkedList<Value>();
+						}
+					});
 		} catch (Exception e) {
 			IdePlugin.logError("Error while accessing collection elements", e);
 			return new LinkedList<>();
