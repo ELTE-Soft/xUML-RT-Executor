@@ -4,13 +4,13 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2t.java.tests
 Bundle-Version: 0.6.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Fragment-Host: hu.eltesoft.modelexecution.m2t.java;bundle-version="0.5.0"
+Fragment-Host: hu.eltesoft.modelexecution.m2t.java;bundle-version="0.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.eclipse.xtext.smap,
  org.eclipse.uml2.uml;bundle-version="5.1.0",
  org.eclipse.uml2.uml.resources;bundle-version="5.1.0",
- hu.eltesoft.modelexecution.test.utils;bundle-version="0.5.0",
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.6.0",
  org.eclipse.xtext.junit4,
  it.xsemantics.runtime;bundle-version="1.8.0",
  com.incquerylabs.emdw.umlintegration.queries;bundle-version="1.0.0"
