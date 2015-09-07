@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +51,7 @@ public class StandaloneModelCompiler {
 	public StandaloneModelCompiler(ConsoleLogger logger) {
 		this.logger = logger;
 	}
-	
+
 	public void compileModel(String modelPath, String rootDir) {
 		preapareReducedAlfLanguage();
 
@@ -93,7 +92,7 @@ public class StandaloneModelCompiler {
 			logger.verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
 			URI fileURI = URI.createFileURI(modelPath);
 			ModelSet modelSet = new ModelSet();
-			new PathmapResourceLocator(modelSet, new LinkedList<File>());
+			new PathmapResourceLocator(modelSet);
 			Resource resource = modelSet.getResource(fileURI, true);
 
 			if (resource == null) {
@@ -233,5 +232,5 @@ public class StandaloneModelCompiler {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 	}
-	
+
 }
