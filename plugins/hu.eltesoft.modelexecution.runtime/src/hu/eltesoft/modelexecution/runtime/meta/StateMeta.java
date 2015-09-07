@@ -13,5 +13,5 @@ public class StateMeta extends VariableMeta {
 	public boolean isSingle() {
 		return true;
 	}
-	
+
 }

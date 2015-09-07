@@ -28,7 +28,7 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 				outputFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Unable to refresh output folder.", e);
+			IdePlugin.logError("Unable to refresh output folder.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -48,7 +48,7 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 			return null != project.getNature(ExecutableModelNature.NATURE_ID);
 		} catch (CoreException e) {
 			// do not enable the participant in case of any error
-			IdePlugin.logError("Unable to check nature on project.", e);
+			IdePlugin.logError("Unable to check nature on project.", e); //$NON-NLS-1$
 			return false;
 		}
 	}

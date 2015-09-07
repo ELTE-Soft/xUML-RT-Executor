@@ -19,7 +19,7 @@ public class CombiningElementDebugContentProvider<T> extends ElementContentProvi
 	public CombiningElementDebugContentProvider(Function<T, Object[][]> fun) {
 		this.fun = fun;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object[] getChildren(Object parent, int index, int length, IPresentationContext context,

@@ -53,11 +53,11 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	public String getLabel() {
 		return name;
 	}
-	
+
 	public String getClassId() {
 		return classId;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -96,6 +96,6 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	@Override
 	public DebugElement getParent() {
 		return component;
-	}	
+	}
 
 }

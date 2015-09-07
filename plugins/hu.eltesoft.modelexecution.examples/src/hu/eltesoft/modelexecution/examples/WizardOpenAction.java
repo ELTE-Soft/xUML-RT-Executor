@@ -33,7 +33,7 @@ public abstract class WizardOpenAction extends Action {
 				}
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Could not start the project creation wizard", e);
+			IdePlugin.logError("Could not start the project creation wizard", e); //$NON-NLS-1$
 		}
 	}
 

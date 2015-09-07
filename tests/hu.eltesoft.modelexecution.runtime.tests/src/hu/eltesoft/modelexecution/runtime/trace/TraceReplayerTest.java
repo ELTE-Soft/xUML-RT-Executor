@@ -43,8 +43,7 @@ public class TraceReplayerTest {
 	public void testHasEvent_WithMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		createEvents(fileSystem, traceFileName,
-				new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
+		createEvents(fileSystem, traceFileName, new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem, getClass().getClassLoader())) {
 			assertTrue(sut.hasEvent());
@@ -66,8 +65,7 @@ public class TraceReplayerTest {
 	public void testDispatchEvent_WithInternalMessage() throws Exception {
 		FileSystem fileSystem = Jimfs.newFileSystem();
 		String traceFileName = "trace";
-		createEvents(fileSystem, traceFileName,
-				new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
+		createEvents(fileSystem, traceFileName, new TargetedEvent(new MockClass(), new SignalEvent(new DummySignal())));
 
 		try (TraceReplayer sut = new TraceReplayer(traceFileName, fileSystem, getClass().getClassLoader())) {
 			sut.dispatchEvent(null);

@@ -24,9 +24,9 @@ public abstract class Signal implements JSONSerializable {
 			}
 		}
 	}
-	
+
 	protected abstract String getOriginalSignalName();
-	
+
 	@Override
 	public String toString() {
 		return getOriginalSignalName();

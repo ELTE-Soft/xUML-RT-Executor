@@ -13,7 +13,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 public abstract class DelegatingDebugTarget extends DebugElement implements IDebugTarget {
 
 	protected MokaDebugTarget mokaDebugTarget;
-	
+
 	protected boolean isSuspended = false;
 
 	public DelegatingDebugTarget(XUMLRTDebugTarget debugTarget, MokaDebugTarget mokaDebugTarget) {

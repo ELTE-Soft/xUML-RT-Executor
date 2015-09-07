@@ -13,11 +13,11 @@ import org.eclipse.papyrus.moka.ui.presentation.IPresentation;
 public abstract class StackFrame extends DebugElement implements IStackFrame, IPresentation {
 
 	private final StateMachineInstance instance;
-	
+
 	protected List<ModelVariable> variables = null;
 
 	protected ResourceSet resourceSet;
-	
+
 	public StackFrame(StateMachineInstance instance, ResourceSet resourceSet) {
 		super(instance.getXUmlRtDebugTarget());
 		this.instance = instance;
@@ -25,7 +25,7 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	}
 
 	// default implementation: every stack frame behaves like the thread
-	
+
 	@Override
 	public boolean isStepping() {
 		return instance.isStepping();
@@ -75,7 +75,7 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	public IThread getThread() {
 		return instance;
 	}
-	
+
 	public StateMachineInstance getStateMachineInstance() {
 		return instance;
 	}
@@ -85,7 +85,7 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 		loadVariables();
 		return variables.toArray(new IVariable[variables.size()]);
 	}
-	
+
 	protected abstract void loadVariables() throws DebugException;
 
 	public ModelVariable[] getModelVariables() throws DebugException {
@@ -108,7 +108,7 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	public boolean hasRegisterGroups() throws DebugException {
 		return false;
 	}
-	
+
 	@Override
 	public DebugElement getParent() {
 		return instance;

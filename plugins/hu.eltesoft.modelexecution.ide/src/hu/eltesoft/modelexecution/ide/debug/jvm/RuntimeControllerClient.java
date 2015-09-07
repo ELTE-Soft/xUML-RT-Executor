@@ -39,7 +39,7 @@ public class RuntimeControllerClient {
 			int controlPort = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_CONTROL_PORT, -1);
 			connectToRuntime(controlPort);
 		} catch (CoreException | IOException e) {
-			IdePlugin.logError("Error while trying to set up control stream", e);
+			IdePlugin.logError("Error while trying to set up control stream", e); //$NON-NLS-1$
 		}
 	}
 
@@ -60,10 +60,10 @@ public class RuntimeControllerClient {
 				} catch (SocketException e) {
 					// normal, runtime is terminated
 				} catch (Exception e) {
-					IdePlugin.logError("Error while trying to set up control stream", e);
+					IdePlugin.logError("Error while trying to set up control stream", e); //$NON-NLS-1$
 				}
 			});
-			thread.setName("Control stream reader thread");
+			thread.setName("Control stream reader thread"); //$NON-NLS-1$
 			thread.start();
 		}
 	}
@@ -73,8 +73,9 @@ public class RuntimeControllerClient {
 	 * listeners.
 	 */
 	private void processLine(String line) {
-		// limit array length to 4 as original name (the last argument) could contain spaces
-		String[] command = line.split(" ", 4);
+		// limit array length to 4 as original name (the last argument) could
+		// contain spaces
+		String[] command = line.split(" ", 4); //$NON-NLS-1$
 		switch (command[0]) {
 		case RuntimeControllerServer.EVENT_REACTIVE_CLASS_CREATED:
 			for (StateMachnineInstanceListener listener : reactiveClassListeners) {
@@ -107,11 +108,11 @@ public class RuntimeControllerClient {
 	protected boolean sendCommand(String command) {
 		awaitControllerReady();
 		try {
-			writer.append(command + "\n");
+			writer.append(command + "\n"); //$NON-NLS-1$
 			writer.flush();
 			return true;
 		} catch (IOException e) {
-			IdePlugin.logError("Error while trying to send terminate request", e);
+			IdePlugin.logError("Error while trying to send terminate request", e); //$NON-NLS-1$
 			return false;
 		}
 	}
@@ -123,7 +124,7 @@ public class RuntimeControllerClient {
 		try {
 			ready.await();
 		} catch (InterruptedException e) {
-			IdePlugin.logError("Error while waiting for socket connection", e);
+			IdePlugin.logError("Error while waiting for socket connection", e); //$NON-NLS-1$
 		}
 	}
 

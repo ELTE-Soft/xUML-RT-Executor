@@ -25,11 +25,11 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	public int getInstanceID() {
 		return instanceID;
 	}
-	
+
 	public StateMachineRegion getStateMachine() {
 		return stateMachine;
 	}
-	
+
 	public void initializeStateMachine() {
 		if (null != stateMachine) {
 			stateMachine.doInitialTransition();
@@ -51,7 +51,7 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getOriginalClassName() + "#" + getInstanceID();

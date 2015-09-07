@@ -24,7 +24,7 @@ public class UpdateSourceCodeTask implements SourceCodeTask {
 		DebugSymbols symbols = template.getDebugSymbols();
 		listener.sourceCodeChanged(rootName, output, symbols);
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "( rootName: " + rootName + ", template: " + template + ")";

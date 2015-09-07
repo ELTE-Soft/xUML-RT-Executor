@@ -114,7 +114,6 @@ public class ModelExecutionLaunchConfig {
 
 	public static final String ATTR_CONTROL_PORT = ATTR_PREFIX + "control_port";
 
-	
 	/**
 	 * Adds launch configuration attributes needed by Moka.
 	 */
@@ -124,9 +123,11 @@ public class ModelExecutionLaunchConfig {
 
 	/**
 	 * Adds launch configuration attributes needed for JRE execution.
-	 * @param mode 
+	 * 
+	 * @param mode
 	 */
-	public static ILaunchConfiguration addJavaConfigs(ILaunchConfiguration configuration, String mode) throws CoreException {
+	public static ILaunchConfiguration addJavaConfigs(ILaunchConfiguration configuration, String mode)
+			throws CoreException {
 		return addConfigs(configuration, c -> addJavaConfigs(c, mode));
 	}
 
@@ -210,7 +211,7 @@ public class ModelExecutionLaunchConfig {
 				argsBuilder.append(XUMLRTRuntime.OPTION_CONTROL_SOCK);
 				argsBuilder.append(controlPort);
 			}
-			
+
 			if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 				argsBuilder.append(XUMLRTRuntime.OPTION_CONTROLLED_START);
 			}
@@ -241,7 +242,7 @@ public class ModelExecutionLaunchConfig {
 		String projectName = iLaunchConfiguration.getAttribute(ATTR_PROJECT_NAME, EMPTY_STR);
 		return (IProject) ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
 	}
-	
+
 	public static String getEntryPoint(ILaunchConfiguration launchConfiguration) {
 		try {
 			return launchConfiguration.getAttribute(ATTR_FEED_FUN_NAME, "");
@@ -249,7 +250,7 @@ public class ModelExecutionLaunchConfig {
 			return "";
 		}
 	}
-	
+
 	public static int getAnimationTimerMultiplier(ILaunchConfiguration configuration) {
 		try {
 			return configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN,

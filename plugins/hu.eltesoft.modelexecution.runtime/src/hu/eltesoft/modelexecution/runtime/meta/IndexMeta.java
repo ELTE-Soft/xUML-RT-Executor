@@ -13,5 +13,5 @@ public class IndexMeta extends VariableMeta {
 	public boolean isSingle() {
 		return true;
 	}
-	
+
 }

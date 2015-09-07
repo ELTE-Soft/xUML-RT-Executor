@@ -12,7 +12,7 @@ import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 public abstract class DebugElement extends PlatformObject implements IDebugElement {
 
 	private XUMLRTDebugTarget debugTarget;
-	
+
 	public DebugElement(XUMLRTDebugTarget target) {
 		this.debugTarget = target;
 	}
@@ -20,11 +20,11 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 	public DebugViewController getDebugControl() {
 		return getXUmlRtDebugTarget().getDebugControl();
 	}
-	
+
 	public VirtualMachineBrowser getVMBrowser() {
 		return debugTarget.getVMBrowser();
 	}
-	
+
 	@Override
 	public String getModelIdentifier() {
 		return XUmlRtContants.XUML_RT_DEBUG_MODEL_ID;
@@ -34,7 +34,7 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 	public IDebugTarget getDebugTarget() {
 		return debugTarget;
 	}
-	
+
 	public XUMLRTDebugTarget getXUmlRtDebugTarget() {
 		return debugTarget;
 	}
@@ -47,7 +47,7 @@ public abstract class DebugElement extends PlatformObject implements IDebugEleme
 	public ILaunch getLaunch() {
 		return debugTarget.getLaunch();
 	}
-	
+
 	public abstract DebugElement getParent();
 
 }

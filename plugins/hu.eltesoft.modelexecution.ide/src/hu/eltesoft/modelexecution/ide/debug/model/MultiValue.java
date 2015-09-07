@@ -29,8 +29,7 @@ public class MultiValue extends AbstractValue {
 	protected IVariable[] handleCollectionValues(List<IVariable> list, List<Value> collectionValues)
 			throws DebugException {
 		for (int i = 0; i < collectionValues.size(); i++) {
-			list.add(new ModelVariable(getXUmlRtDebugTarget(), new IndexMeta(i), thread,
-					collectionValues.get(i)));
+			list.add(new ModelVariable(getXUmlRtDebugTarget(), new IndexMeta(i), thread, collectionValues.get(i)));
 		}
 		return list.toArray(new IVariable[list.size()]);
 	}

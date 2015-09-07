@@ -23,9 +23,9 @@ import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
  * corresponding stack frame is highlighted in the state machine.
  */
 public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, IDebugEditorPresentation {
-	
+
 	private StackHighlighter highlighter = new StackHighlighter();
-	
+
 	@Override
 	public void addListener(ILabelProviderListener listener) {
 		// not supported
@@ -83,7 +83,7 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 	public void computeDetail(IValue value, IValueDetailListener listener) {
 		// intentionally left blank
 	}
-	
+
 	@Override
 	public boolean addAnnotations(IEditorPart editorPart, IStackFrame frame) {
 		if (frame instanceof StateMachineStackFrame) {
@@ -93,10 +93,9 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 		return false;
 	}
 
-
 	@Override
 	public void removeAnnotations(IEditorPart editorPart, IThread thread) {
 		highlighter.removeHighlight();
 	}
-	
+
 }

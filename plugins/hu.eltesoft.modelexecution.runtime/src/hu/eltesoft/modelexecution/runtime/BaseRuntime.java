@@ -56,6 +56,7 @@ public final class BaseRuntime implements AutoCloseable {
 	}
 
 	private static BaseRuntime INSTANCE = null;
+
 	public static BaseRuntime getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BaseRuntime();
@@ -219,6 +220,6 @@ public final class BaseRuntime implements AutoCloseable {
 
 	public void setControlledStart(boolean controlledStart) {
 		this.controlledStart = controlledStart;
-		
+
 	}
 }

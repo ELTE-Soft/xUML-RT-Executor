@@ -45,7 +45,7 @@ public class ModelVariable extends DebugElement implements IVariable, IPresentat
 	public String getName() {
 		return leftVal.getName();
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return null; // not shown

@@ -38,7 +38,8 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		String classRootName = NamedReference.getIdentifier(newClass);
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
-		assertEquals(2, queue.size()); // 2 = class specification + class implementation
+		assertEquals(2, queue.size()); // 2 = class specification + class
+										// implementation
 
 		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 

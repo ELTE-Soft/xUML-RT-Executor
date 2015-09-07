@@ -20,7 +20,7 @@ public class RunProcessDecorator extends ProcessDecorator {
 		super(process);
 		this.runtimeController = new RuntimeControllerClient(launchConfig);
 	}
-	
+
 	@Override
 	public void terminate() throws DebugException {
 
@@ -30,7 +30,7 @@ public class RunProcessDecorator extends ProcessDecorator {
 			process.terminate();
 		}
 	}
-	
+
 	@Override
 	public RuntimeControllerClient getController() {
 		return runtimeController;

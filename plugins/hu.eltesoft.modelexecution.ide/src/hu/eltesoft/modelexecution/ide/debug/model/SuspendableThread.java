@@ -15,7 +15,7 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 	}
 
 	// delegates up
-	
+
 	@Override
 	public boolean canResume() {
 		return getXUmlRtDebugTarget().canResume();
@@ -55,7 +55,7 @@ public abstract class SuspendableThread extends DebugElement implements IThread 
 	public void terminate() throws DebugException {
 		getXUmlRtDebugTarget().terminate();
 	}
-	
+
 	// delegates down
 
 	@Override

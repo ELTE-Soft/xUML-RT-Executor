@@ -73,7 +73,7 @@ public abstract class AbstractFeatureNode<Trans, Match extends IPatternMatch> ex
 					+ feature.getEContainingClass().getName();
 			EObject source = stack.get(0);
 			if (source instanceof NamedElement) {
-				message += " on '" + ((NamedElement)source).getQualifiedName() + "'";
+				message += " on '" + ((NamedElement) source).getQualifiedName() + "'";
 			}
 			throw new GenerationException(message);
 		}

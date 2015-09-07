@@ -9,10 +9,10 @@ public class StackHighlighter extends MokaAnimationBase {
 		UTILS.addSuspendedMarker(element);
 		openContainingDiagram(element);
 	}
-	
+
 	public void removeHighlight() {
 		// actually removes all suspended markers
 		UTILS.removeSuspendedMarker(null);
 	}
-	
+
 }

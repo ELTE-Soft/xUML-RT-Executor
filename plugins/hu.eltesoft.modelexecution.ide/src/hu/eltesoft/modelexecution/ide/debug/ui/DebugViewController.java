@@ -43,7 +43,7 @@ public class DebugViewController {
 			v.setSelection(new TreeSelection(new TreePath[] { path }));
 			v.setAutoExpandLevel(0);
 			postAction.run();
-		}, postAction);
+		} , postAction);
 
 	}
 

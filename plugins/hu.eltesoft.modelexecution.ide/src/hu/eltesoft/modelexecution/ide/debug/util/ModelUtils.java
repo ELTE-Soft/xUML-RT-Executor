@@ -76,7 +76,7 @@ public class ModelUtils {
 	public static EObject javaNameToEObject(String javaName, ResourceSet resourceSet) {
 		return findEObject(NamedReference.javaIDToUUID(javaName), resourceSet);
 	}
-	
+
 	public static EObject findEObject(String fragment, ResourceSet resourceSet) {
 		if (fragment == null) {
 			return null;

@@ -30,7 +30,7 @@ public class Component extends DebugElement implements IPresentation {
 		this.parent = parent;
 		this.name = name;
 	}
-	
+
 	public Component(Component parent, String name) {
 		super(parent.getXUmlRtDebugTarget());
 		this.parent = parent;
@@ -41,11 +41,11 @@ public class Component extends DebugElement implements IPresentation {
 		List<StateMachineInstance> instances = getSmInstances();
 		return instances.toArray(new StateMachineInstance[instances.size()]);
 	}
-	
+
 	public ClassInstances[] getStateMachineClasses() {
 		return classes.toArray(new ClassInstances[classes.size()]);
 	}
-	
+
 	public StateMachineInstance addStateMachineInstance(String classId, int instanceId, String originalName) {
 		ClassInstances cls = getOrCreateClassFor(classId, originalName);
 		return cls.addStateMachineInstance(instanceId);

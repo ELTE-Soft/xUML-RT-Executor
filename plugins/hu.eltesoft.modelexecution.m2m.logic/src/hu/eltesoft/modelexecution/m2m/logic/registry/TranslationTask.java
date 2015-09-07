@@ -34,7 +34,7 @@ class TranslationTask<UML extends NamedElement> {
 		Template template = translator.getTemplate(source);
 		return new UpdateSourceCodeTask(rootName, template);
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "( source: " + source + ", translator: " + translator + ")";

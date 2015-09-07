@@ -8,5 +8,5 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.RuntimeControllerClient;
 public interface IProcessWithController {
 
 	RuntimeControllerClient getController();
-	
+
 }

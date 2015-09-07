@@ -12,7 +12,7 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
  */
 public class MarkerManager {
 
-	public static final String UML_MARKER_ID = "hu.eltesoft.modelexecution.markers.umlProblemMarker";
+	public static final String UML_MARKER_ID = "hu.eltesoft.modelexecution.markers.umlProblemMarker"; //$NON-NLS-1$
 
 	/**
 	 * Puts an UML marker on the given resource if there is none.
@@ -29,7 +29,7 @@ public class MarkerManager {
 				marker.setAttribute(IMarker.LOCATION, resource.getLocation().toString());
 			}
 		} catch (CoreException ce) {
-			IdePlugin.logError("Cannot set up error markers", ce);
+			IdePlugin.logError("Cannot set up error markers", ce); //$NON-NLS-1$
 		}
 	}
 
@@ -46,7 +46,7 @@ public class MarkerManager {
 				marker.delete();
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot remove markers from resource", e);
+			IdePlugin.logError("Cannot remove markers from resource", e); //$NON-NLS-1$
 		}
 	}
 
@@ -57,7 +57,7 @@ public class MarkerManager {
 				marker.delete();
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot remove markers from project", e);
+			IdePlugin.logError("Cannot remove markers from project", e); //$NON-NLS-1$
 		}
 	}
 

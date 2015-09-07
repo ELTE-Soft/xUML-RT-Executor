@@ -16,7 +16,7 @@ public class DeleteSourceCodeTask implements SourceCodeTask {
 	public void perform(SourceCodeChangeListener listener) {
 		listener.sourceCodeDeleted(rootName);
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "( rootName: " + rootName + ")";

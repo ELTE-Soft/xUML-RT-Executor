@@ -34,7 +34,7 @@ public class TranslatorRegistry {
 	public void modelSetLoaded(ModelSet modelSet) {
 		ResourceTranslator t = translatorFor(modelSet, ResourceTranslator::createIncremental);
 		t.toIncremental(modelSet);
-	
+
 		for (Resource resource : modelSet.getResources()) {
 			modelContainment.put(resource.getURI(), modelSet);
 		}

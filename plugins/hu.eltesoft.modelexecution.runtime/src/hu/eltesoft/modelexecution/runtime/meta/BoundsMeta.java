@@ -13,12 +13,12 @@ public class BoundsMeta {
 	public static BoundsMeta OPTIONAL = new BoundsMeta(0, 1);
 	public static BoundsMeta ANY = new BoundsMeta(0, -1);
 	public static BoundsMeta MANY = new BoundsMeta(1, -1);
-	
+
 	/**
 	 * Upper bound on the multiplicity. -1 means no upper bound.
 	 */
 	private int upper;
-	
+
 	/**
 	 * Lower bound on the multiplicity
 	 */
@@ -36,19 +36,19 @@ public class BoundsMeta {
 	public int getLower() {
 		return lower;
 	}
-	
+
 	// serialization and deserialization
 
 	private BoundsMeta() {
 	}
-	
+
 	public JSONObject serializeToJson() {
 		JSONObject obj = new JSONObject();
 		obj.put(UPPER_FIELD, upper);
 		obj.put(LOWER_FIELD, lower);
 		return obj;
 	}
-	
+
 	public static BoundsMeta deserialize(String serialized) {
 		return deserialize(new JSONObject(serialized));
 	}
@@ -58,7 +58,7 @@ public class BoundsMeta {
 		ret.deserializeFromJson(json);
 		return ret;
 	}
-	
+
 	public void deserializeFromJson(JSONObject json) {
 		upper = json.getInt(UPPER_FIELD);
 		lower = json.getInt(LOWER_FIELD);

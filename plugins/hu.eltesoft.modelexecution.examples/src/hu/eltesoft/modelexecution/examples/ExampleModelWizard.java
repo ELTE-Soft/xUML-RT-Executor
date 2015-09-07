@@ -17,13 +17,13 @@ import hu.eltesoft.modelexecution.ide.IdePlugin;
 
 public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 
-	private static final String PLUGIN_ID = "hu.eltesoft.modelexecution.examples";
-	private static final String RESOURCE_DIR = "resources";
+	private static final String PLUGIN_ID = "hu.eltesoft.modelexecution.examples"; //$NON-NLS-1$
+	private static final String RESOURCE_DIR = "resources"; //$NON-NLS-1$
 
-	private static final String DIAGRAM_EXTENSION = ".di";
-	private static final String NOTATION_EXTENSION = ".notation";
-	private static final String MODEL_EXTENSION = ".uml";
-	private static final String LAUNCH_EXTENSION = ".launch";
+	private static final String DIAGRAM_EXTENSION = ".di"; //$NON-NLS-1$
+	private static final String NOTATION_EXTENSION = ".notation"; //$NON-NLS-1$
+	private static final String MODEL_EXTENSION = ".uml"; //$NON-NLS-1$
+	private static final String LAUNCH_EXTENSION = ".launch"; //$NON-NLS-1$
 
 	public ExampleModelWizard() {
 		super();
@@ -42,11 +42,11 @@ public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 	private void copyResourceToProject(IProject project, String fileName) {
 		IFile file = project.getFile(fileName);
 		Bundle bundle = Platform.getBundle(PLUGIN_ID);
-		URL fileURL = bundle.getEntry(RESOURCE_DIR + "/" + fileName);
+		URL fileURL = bundle.getEntry(RESOURCE_DIR + "/" + fileName); //$NON-NLS-1$
 		try {
 			file.create(fileURL.openStream(), true, null);
 		} catch (CoreException | IOException e) {
-			IdePlugin.logError("Error while copying models to example project", e);
+			IdePlugin.logError("Error while copying models to example project", e); //$NON-NLS-1$
 		}
 	}
 

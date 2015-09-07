@@ -192,7 +192,7 @@ public class VirtualMachineBrowser {
 		} catch (Exception e) {
 			IdePlugin.logError("Error while accessing stack frame model element", e);
 			return null;
-		} 
+		}
 	}
 
 	private ModelVariable createThisVariable(StackFrame stackFrame, JDIThreadWrapper mainThread, Value instance) {

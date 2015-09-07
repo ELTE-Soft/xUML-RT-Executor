@@ -89,7 +89,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 			try {
 				Files.createDirectories(Paths.get(instrumentedBinFolder.toString()));
 			} catch (IOException e) {
-				IdePlugin.logError("Cannot create directories for instrumented class file", e);
+				IdePlugin.logError("Cannot create directories for instrumented class file", e); //$NON-NLS-1$
 				return;
 			}
 			if (newLocation.equals(res.getLocation()) || !res.getLocation().toFile().exists()) {

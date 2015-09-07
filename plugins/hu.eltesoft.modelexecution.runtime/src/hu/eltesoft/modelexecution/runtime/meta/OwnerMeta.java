@@ -10,5 +10,5 @@ public class OwnerMeta extends VariableMeta {
 	public boolean isSingle() {
 		return true;
 	}
-	
+
 }

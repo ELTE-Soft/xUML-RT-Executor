@@ -50,7 +50,7 @@ public class ResourceTranslator {
 
 	private void setupEngine() {
 		disposed = false;
-		
+
 		try {
 			IncQueryEngine incQueryEngine = IncQueryEngineService.getOrCreateEngineEvenIfModelIsClosed(resource);
 			engine = AdvancedIncQueryEngine.from(incQueryEngine);
@@ -145,7 +145,7 @@ public class ResourceTranslator {
 		if (!incremental) {
 			return fullTranslation();
 		}
-		
+
 		List<SourceCodeTask> changes = new LinkedList<>();
 		for (RootElementTranslator<?, ?, ?> translator : translators) {
 			changes.addAll(translator.incrementalTranslation());

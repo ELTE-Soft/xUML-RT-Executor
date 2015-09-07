@@ -12,9 +12,8 @@ import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
  * the model-level object while it has already gone through code generation and
  * represented as a java class.
  * 
- * Needs to be serialized because can be
- * written into class files and transported from the virtual machine running the
- * runtime to the eclipse host.
+ * Needs to be serialized because can be written into class files and
+ * transported from the virtual machine running the runtime to the eclipse host.
  */
 public class ClassMeta implements JSONSerializable {
 
