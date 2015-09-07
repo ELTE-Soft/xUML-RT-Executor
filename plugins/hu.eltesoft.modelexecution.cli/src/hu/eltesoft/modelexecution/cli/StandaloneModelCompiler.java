@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +93,7 @@ public class StandaloneModelCompiler {
 			logger.verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
 			URI fileURI = URI.createFileURI(modelPath);
 			ModelSet modelSet = new ModelSet();
+			new PathmapResourceLocator(modelSet, new LinkedList<File>());
 			Resource resource = modelSet.getResource(fileURI, true);
 
 			if (resource == null) {
