@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.cli
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.6.0.qualifier
 Export-Package: hu.eltesoft.modelexecution.cli,
  hu.eltesoft.modelexecution.cli.exceptions
 Bundle-Vendor: %Bundle-Vendor
