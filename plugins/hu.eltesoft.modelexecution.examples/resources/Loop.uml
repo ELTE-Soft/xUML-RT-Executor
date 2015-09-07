@@ -1,54 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_xbW7sK3yEeS9yN-by9sk6Q" name="model">
-  <packagedElement xmi:type="uml:Class" xmi:id="_4RQcgK3yEeS9yN-by9sk6Q" name="Loop">
-    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Hr17MK3zEeS9yN-by9sk6Q" name="FeedBehavior" specification="_9jz7QK3yEeS9yN-by9sk6Q">
-      <language>Alf</language>
-      <body>// This feed is empty on purpose.&#xD;
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_kwj8sK31EeS9yN-by9sk6Q" name="ForwardEvent" signal="_RSDVkK31EeS9yN-by9sk6Q"/>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_mXjvsK31EeS9yN-by9sk6Q" name="BackwardEvent" signal="_ScGG0K31EeS9yN-by9sk6Q"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_Kss10ETdEeWmWN8i46p-Hw" name="Loop">
+    <packagedElement xmi:type="uml:Package" xmi:id="_MQQ6UETdEeWmWN8i46p-Hw" name="Loop">
+      <packagedElement xmi:type="uml:Class" xmi:id="_4RQcgK3yEeS9yN-by9sk6Q" name="Loop" classifierBehavior="_9_zeQK3zEeS9yN-by9sk6Q">
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Hr17MK3zEeS9yN-by9sk6Q" name="FeedBehavior" specification="_9jz7QK3yEeS9yN-by9sk6Q">
+          <language>rALF</language>
+          <body>// This feed only creates the object.&#xD;
 // The initial transition goes to A. &#xD;
 // Its entry sends a Forward signal, that fires the A2B transition.&#xD;
 // That transition has an effect sending the second Forward signal, consumed by B2C.&#xD;
 // The exit action of B sends a Backward signal that will trigger C2A.&#xD;
 // The loop starts again.&#xD;
-{}</body>
-    </ownedBehavior>
-    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_9_zeQK3zEeS9yN-by9sk6Q" name="LoopBehavior">
-      <region xmi:type="uml:Region" xmi:id="_BgQtQK30EeS9yN-by9sk6Q" name="Region1">
-        <transition xmi:type="uml:Transition" xmi:id="_Zo8kgK30EeS9yN-by9sk6Q" name="TInit" source="_Ed6xMK30EeS9yN-by9sk6Q" target="_X7rxcK30EeS9yN-by9sk6Q"/>
-        <transition xmi:type="uml:Transition" xmi:id="_6S2O4K30EeS9yN-by9sk6Q" name="TA2B" source="_X7rxcK30EeS9yN-by9sk6Q" target="_vkoYsK30EeS9yN-by9sk6Q">
-          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_dlKQgK32EeS9yN-by9sk6Q" name="A2BEffect">
-            <language>Alf</language>
-            <body>this.ForwardReception();</body>
-          </effect>
-          <trigger xmi:type="uml:Trigger" xmi:id="__k5P8K33EeS9yN-by9sk6Q" name="A2BTrigger" event="_kwj8sK31EeS9yN-by9sk6Q"/>
-        </transition>
-        <transition xmi:type="uml:Transition" xmi:id="_EVq-sK31EeS9yN-by9sk6Q" name="TB2C" source="_vkoYsK30EeS9yN-by9sk6Q" target="_BBWuQK31EeS9yN-by9sk6Q">
-          <trigger xmi:type="uml:Trigger" xmi:id="_MnbSIK34EeS9yN-by9sk6Q" name="B2CTrigger" event="_kwj8sK31EeS9yN-by9sk6Q"/>
-        </transition>
-        <transition xmi:type="uml:Transition" xmi:id="_FTBXwK31EeS9yN-by9sk6Q" name="TC2A" source="_BBWuQK31EeS9yN-by9sk6Q" target="_X7rxcK30EeS9yN-by9sk6Q">
-          <trigger xmi:type="uml:Trigger" xmi:id="_Z1sDMK34EeS9yN-by9sk6Q" name="C2BTrigger" event="_mXjvsK31EeS9yN-by9sk6Q"/>
-        </transition>
-        <subvertex xmi:type="uml:Pseudostate" xmi:id="_Ed6xMK30EeS9yN-by9sk6Q" name="Initial"/>
-        <subvertex xmi:type="uml:State" xmi:id="_X7rxcK30EeS9yN-by9sk6Q" name="A">
-          <entry xmi:type="uml:OpaqueBehavior" xmi:id="_0WrV8K31EeS9yN-by9sk6Q" name="AEntry">
-            <language>Alf</language>
-            <body>this.ForwardReception();</body>
-          </entry>
-        </subvertex>
-        <subvertex xmi:type="uml:State" xmi:id="_vkoYsK30EeS9yN-by9sk6Q" name="B">
-          <exit xmi:type="uml:OpaqueBehavior" xmi:id="_xa8SsK33EeS9yN-by9sk6Q" name="BExit">
-            <language>Alf</language>
-            <body>this.BackwardReception();</body>
-          </exit>
-        </subvertex>
-        <subvertex xmi:type="uml:State" xmi:id="_BBWuQK31EeS9yN-by9sk6Q" name="C"/>
-      </region>
-    </ownedBehavior>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_9jz7QK3yEeS9yN-by9sk6Q" name="feed" method="_Hr17MK3zEeS9yN-by9sk6Q"/>
-    <nestedClassifier xmi:type="uml:Signal" xmi:id="_RSDVkK31EeS9yN-by9sk6Q" name="Forward"/>
-    <nestedClassifier xmi:type="uml:Signal" xmi:id="_ScGG0K31EeS9yN-by9sk6Q" name="Backward"/>
-    <ownedReception xmi:type="uml:Reception" xmi:id="_aJJ5IK31EeS9yN-by9sk6Q" name="ForwardReception" signal="_RSDVkK31EeS9yN-by9sk6Q"/>
-    <ownedReception xmi:type="uml:Reception" xmi:id="_a3fl0K31EeS9yN-by9sk6Q" name="BackwardReception" signal="_ScGG0K31EeS9yN-by9sk6Q"/>
+new Loop();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_9_zeQK3zEeS9yN-by9sk6Q" name="LoopBehavior">
+          <region xmi:type="uml:Region" xmi:id="_BgQtQK30EeS9yN-by9sk6Q" name="Region1">
+            <transition xmi:type="uml:Transition" xmi:id="_Zo8kgK30EeS9yN-by9sk6Q" name="TInit" source="_Ed6xMK30EeS9yN-by9sk6Q" target="_X7rxcK30EeS9yN-by9sk6Q"/>
+            <transition xmi:type="uml:Transition" xmi:id="_6S2O4K30EeS9yN-by9sk6Q" name="TA2B" source="_X7rxcK30EeS9yN-by9sk6Q" target="_vkoYsK30EeS9yN-by9sk6Q">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_dlKQgK32EeS9yN-by9sk6Q" name="A2BEffect">
+                <language>rALF</language>
+                <body>send new Forward() to this;</body>
+              </effect>
+              <trigger xmi:type="uml:Trigger" xmi:id="__k5P8K33EeS9yN-by9sk6Q" name="A2BTrigger" event="_kwj8sK31EeS9yN-by9sk6Q"/>
+            </transition>
+            <transition xmi:type="uml:Transition" xmi:id="_EVq-sK31EeS9yN-by9sk6Q" name="TB2C" source="_vkoYsK30EeS9yN-by9sk6Q" target="_BBWuQK31EeS9yN-by9sk6Q">
+              <trigger xmi:type="uml:Trigger" xmi:id="_MnbSIK34EeS9yN-by9sk6Q" name="B2CTrigger" event="_kwj8sK31EeS9yN-by9sk6Q"/>
+            </transition>
+            <transition xmi:type="uml:Transition" xmi:id="_FTBXwK31EeS9yN-by9sk6Q" name="TC2A" source="_BBWuQK31EeS9yN-by9sk6Q" target="_X7rxcK30EeS9yN-by9sk6Q">
+              <trigger xmi:type="uml:Trigger" xmi:id="_Z1sDMK34EeS9yN-by9sk6Q" name="C2BTrigger" event="_mXjvsK31EeS9yN-by9sk6Q"/>
+            </transition>
+            <subvertex xmi:type="uml:Pseudostate" xmi:id="_Ed6xMK30EeS9yN-by9sk6Q" name="Initial"/>
+            <subvertex xmi:type="uml:State" xmi:id="_X7rxcK30EeS9yN-by9sk6Q" name="A">
+              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_0WrV8K31EeS9yN-by9sk6Q" name="AEntry">
+                <language>rALF</language>
+                <body>send new Forward() to this;</body>
+              </entry>
+            </subvertex>
+            <subvertex xmi:type="uml:State" xmi:id="_vkoYsK30EeS9yN-by9sk6Q" name="B">
+              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_xa8SsK33EeS9yN-by9sk6Q" name="BExit">
+                <language>rALF</language>
+                <body>send new Backward() to this;</body>
+              </exit>
+            </subvertex>
+            <subvertex xmi:type="uml:State" xmi:id="_BBWuQK31EeS9yN-by9sk6Q" name="C"/>
+          </region>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_9jz7QK3yEeS9yN-by9sk6Q" name="feed" isStatic="true" method="_Hr17MK3zEeS9yN-by9sk6Q"/>
+        <nestedClassifier xmi:type="uml:Signal" xmi:id="_RSDVkK31EeS9yN-by9sk6Q" name="Forward"/>
+        <nestedClassifier xmi:type="uml:Signal" xmi:id="_ScGG0K31EeS9yN-by9sk6Q" name="Backward"/>
+        <ownedReception xmi:type="uml:Reception" xmi:id="_aJJ5IK31EeS9yN-by9sk6Q" name="ForwardReception" signal="_RSDVkK31EeS9yN-by9sk6Q"/>
+        <ownedReception xmi:type="uml:Reception" xmi:id="_a3fl0K31EeS9yN-by9sk6Q" name="BackwardReception" signal="_ScGG0K31EeS9yN-by9sk6Q"/>
+      </packagedElement>
+    </packagedElement>
   </packagedElement>
-  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_kwj8sK31EeS9yN-by9sk6Q" name="ForwardEvent" signal="_RSDVkK31EeS9yN-by9sk6Q"/>
-  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_mXjvsK31EeS9yN-by9sk6Q" name="BackwardEvent" signal="_ScGG0K31EeS9yN-by9sk6Q"/>
 </uml:Model>

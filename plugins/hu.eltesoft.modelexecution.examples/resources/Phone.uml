@@ -5,8 +5,9 @@
       <region xmi:type="uml:Region" xmi:id="_UMVpUK3dEeSfGL0Ju9NCPQ" name="Region1">
         <transition xmi:type="uml:Transition" xmi:id="_UciEoK3hEeSfGL0Ju9NCPQ" name="TInitial" source="_U5axwK3dEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">
           <effect xmi:type="uml:OpaqueBehavior" xmi:id="_A1Y9kK3vEeS9yN-by9sk6Q" name="InitialEffect">
-            <language>Alf</language>
-            <body>this.StartCallReception();</body>
+            <language>rALF</language>
+            <body>send new StartCall() to this;&#xD;
+</body>
           </effect>
         </transition>
         <transition xmi:type="uml:Transition" xmi:id="_dgYqwK3hEeSfGL0Ju9NCPQ" name="TIncomingCall" source="_m3PpQK3dEeSfGL0Ju9NCPQ" target="_tNZysK3gEeSfGL0Ju9NCPQ">
@@ -37,31 +38,34 @@
         <subvertex xmi:type="uml:State" xmi:id="_m3PpQK3dEeSfGL0Ju9NCPQ" name="Idle"/>
         <subvertex xmi:type="uml:State" xmi:id="_tNZysK3gEeSfGL0Ju9NCPQ" name="Called">
           <entry xmi:type="uml:OpaqueBehavior" xmi:id="_GQ6qwK3yEeS9yN-by9sk6Q" name="CalledEntry">
-            <language>Alf</language>
-            <body>this.AcceptReception();</body>
+            <language>rALF</language>
+            <body>send new Accept() to this;&#xD;
+</body>
           </entry>
         </subvertex>
         <subvertex xmi:type="uml:State" xmi:id="_1qhwAK3gEeSfGL0Ju9NCPQ" name="InCall">
           <entry xmi:type="uml:OpaqueBehavior" xmi:id="_U0wPAK3vEeS9yN-by9sk6Q" name="InCallEntry">
-            <language>Alf</language>
-            <body>this.FinishReception();</body>
+            <language>rALF</language>
+            <body>send new Finish() to this;&#xD;
+</body>
           </entry>
         </subvertex>
         <subvertex xmi:type="uml:State" xmi:id="_P20dwK3hEeSfGL0Ju9NCPQ" name="Calling"/>
       </region>
     </ownedBehavior>
     <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_SqmZsK3xEeS9yN-by9sk6Q" name="FeedBehavior" specification="_lgjd8K3vEeS9yN-by9sk6Q">
-      <language>Alf</language>
-      <body>// The initial transition's effect sends a StartCall signal.&#xD;
-// It triggers the transition from Idle to Calling.&#xD;
+      <language>rALF</language>
+      <body>// It triggers the transition from Idle to Calling.&#xD;
 // The first message sent from 'feed' refuses this call, making the phone going to Idle.&#xD;
 // The second instruction in 'feed' sends an IncomingCall signal.&#xD;
 // The entry of the Called state accepts this call.&#xD;
 // The entry of InCall finishes this call, that results in returning to Idle again.&#xD;
-this.RefusedReception();&#xD;
-this.IncomingCallReception();</body>
+Phone p = new Phone();&#xD;
+send new Refused() to p;&#xD;
+send new IncomingCall() to p;&#xD;
+</body>
     </ownedBehavior>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_lgjd8K3vEeS9yN-by9sk6Q" name="feed" method="_SqmZsK3xEeS9yN-by9sk6Q"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_lgjd8K3vEeS9yN-by9sk6Q" name="feed" isStatic="true" method="_SqmZsK3xEeS9yN-by9sk6Q"/>
     <nestedClassifier xmi:type="uml:Signal" xmi:id="_6KOp8K3qEeSfGL0Ju9NCPQ" name="IncomingCall"/>
     <nestedClassifier xmi:type="uml:Signal" xmi:id="_D_ISgK3rEeSfGL0Ju9NCPQ" name="Refuse"/>
     <nestedClassifier xmi:type="uml:Signal" xmi:id="_GeLH0K3rEeSfGL0Ju9NCPQ" name="Accept"/>

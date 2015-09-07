@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_BnDGwN9BEeS1Ge-g6TNhew" name="model">
-  <packagedElement xmi:type="uml:Class" xmi:id="_XiCXYN9BEeS1Ge-g6TNhew" name="HelloWorld">
-    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_lbKqYN9BEeS1Ge-g6TNhew" name="HelloWorldBehavior">
-      <nestedClassifier xmi:type="uml:Signal" xmi:id="_1QWvgN9DEeS1Ge-g6TNhew" name="FinishSignal"/>
-      <nestedClassifier xmi:type="uml:Signal" xmi:id="_KShhwN9EEeS1Ge-g6TNhew" name="TheWorldSignal"/>
-      <nestedClassifier xmi:type="uml:Signal" xmi:id="_dSZFEN9EEeS1Ge-g6TNhew" name="GreetAgainSignal"/>
-      <region xmi:type="uml:Region" xmi:id="_sIWUEN9BEeS1Ge-g6TNhew" name="Region1">
-        <transition xmi:type="uml:Transition" xmi:id="_Q5h84N9CEeS1Ge-g6TNhew" name="Greet" source="_vvbIcN9BEeS1Ge-g6TNhew" target="_ygRfcN9BEeS1Ge-g6TNhew"/>
-        <transition xmi:type="uml:Transition" xmi:id="_bPMJIN9CEeS1Ge-g6TNhew" name="TheWorld" source="_ygRfcN9BEeS1Ge-g6TNhew" target="_KF2CkN9CEeS1Ge-g6TNhew">
-          <trigger xmi:type="uml:Trigger" xmi:id="_FHIa8N9EEeS1Ge-g6TNhew" name="TheWorldTrigger" event="_EceUYN9EEeS1Ge-g6TNhew"/>
-        </transition>
-        <transition xmi:type="uml:Transition" xmi:id="_gLxX4N9CEeS1Ge-g6TNhew" name="Finish" source="_KF2CkN9CEeS1Ge-g6TNhew" target="_w5JwoN9BEeS1Ge-g6TNhew">
-          <trigger xmi:type="uml:Trigger" xmi:id="_MK3B4Cl-EeWmZer5Ys8mGw" name="FinishTrigger" event="_s60A4N9DEeS1Ge-g6TNhew"/>
-        </transition>
-        <transition xmi:type="uml:Transition" xmi:id="_xayBkN9CEeS1Ge-g6TNhew" name="GreetAgain" source="_KF2CkN9CEeS1Ge-g6TNhew" target="_ygRfcN9BEeS1Ge-g6TNhew">
-          <trigger xmi:type="uml:Trigger" xmi:id="_XdnDAN9EEeS1Ge-g6TNhew" name="GreetAgainTrigger" event="_XAu5wN9EEeS1Ge-g6TNhew"/>
-        </transition>
-        <subvertex xmi:type="uml:Pseudostate" xmi:id="_vvbIcN9BEeS1Ge-g6TNhew" name="Initial"/>
-        <subvertex xmi:type="uml:FinalState" xmi:id="_w5JwoN9BEeS1Ge-g6TNhew" name="End"/>
-        <subvertex xmi:type="uml:State" xmi:id="_ygRfcN9BEeS1Ge-g6TNhew" name="Hello"/>
-        <subvertex xmi:type="uml:State" xmi:id="_KF2CkN9CEeS1Ge-g6TNhew" name="World"/>
-      </region>
-    </ownedBehavior>
-    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="__8HSIN9EEeS1Ge-g6TNhew" name="runBehavior" specification="_pGzuUN9EEeS1Ge-g6TNhew">
-      <language>Alf</language>
-      <body>TheWorldReception();&#xD;&#xD;
-GreetAgainReception();&#xD;&#xD;
-TheWorldReception();&#xD;&#xD;
-FinishReception();</body>
-    </ownedBehavior>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_pGzuUN9EEeS1Ge-g6TNhew" name="run" method="__8HSIN9EEeS1Ge-g6TNhew"/>
-    <ownedReception xmi:type="uml:Reception" xmi:id="_lc_4sOKqEeS_K6vF2Gr_pw" name="TheWorldReception" signal="_KShhwN9EEeS1Ge-g6TNhew"/>
-    <ownedReception xmi:type="uml:Reception" xmi:id="_uhVnAOKqEeS_K6vF2Gr_pw" name="FinishReception" signal="_1QWvgN9DEeS1Ge-g6TNhew"/>
-    <ownedReception xmi:type="uml:Reception" xmi:id="_zKZc0OKqEeS_K6vF2Gr_pw" name="GreetAgainReception" signal="_dSZFEN9EEeS1Ge-g6TNhew"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_s60A4N9DEeS1Ge-g6TNhew" name="FinishSignalEvent" signal="_1QWvgN9DEeS1Ge-g6TNhew"/>
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_EceUYN9EEeS1Ge-g6TNhew" name="TheWorldSignalEvent" signal="_KShhwN9EEeS1Ge-g6TNhew"/>
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_XAu5wN9EEeS1Ge-g6TNhew" name="GreetAgainSignalEvent" signal="_dSZFEN9EEeS1Ge-g6TNhew"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_UDuN0FL6EeWG2JsfEzlJog" name="HelloWorldComponent">
+    <packagedElement xmi:type="uml:Package" xmi:id="_ZqlIoFL6EeWG2JsfEzlJog" name="HelloWorld">
+      <packagedElement xmi:type="uml:Class" xmi:id="_XiCXYN9BEeS1Ge-g6TNhew" name="HelloWorld">
+        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_lbKqYN9BEeS1Ge-g6TNhew" name="HelloWorldBehavior">
+          <region xmi:type="uml:Region" xmi:id="_sIWUEN9BEeS1Ge-g6TNhew" name="Region1">
+            <transition xmi:type="uml:Transition" xmi:id="_Q5h84N9CEeS1Ge-g6TNhew" name="Greet" source="_vvbIcN9BEeS1Ge-g6TNhew" target="_ygRfcN9BEeS1Ge-g6TNhew"/>
+            <transition xmi:type="uml:Transition" xmi:id="_bPMJIN9CEeS1Ge-g6TNhew" name="TheWorld" source="_ygRfcN9BEeS1Ge-g6TNhew" target="_KF2CkN9CEeS1Ge-g6TNhew">
+              <trigger xmi:type="uml:Trigger" xmi:id="_FHIa8N9EEeS1Ge-g6TNhew" name="TheWorldTrigger" event="_EceUYN9EEeS1Ge-g6TNhew"/>
+            </transition>
+            <transition xmi:type="uml:Transition" xmi:id="_gLxX4N9CEeS1Ge-g6TNhew" name="Finish" source="_KF2CkN9CEeS1Ge-g6TNhew" target="_w5JwoN9BEeS1Ge-g6TNhew">
+              <trigger xmi:type="uml:Trigger" xmi:id="_MK3B4Cl-EeWmZer5Ys8mGw" name="FinishTrigger" event="_s60A4N9DEeS1Ge-g6TNhew"/>
+            </transition>
+            <transition xmi:type="uml:Transition" xmi:id="_xayBkN9CEeS1Ge-g6TNhew" name="GreetAgain" source="_KF2CkN9CEeS1Ge-g6TNhew" target="_ygRfcN9BEeS1Ge-g6TNhew">
+              <trigger xmi:type="uml:Trigger" xmi:id="_XdnDAN9EEeS1Ge-g6TNhew" name="GreetAgainTrigger" event="_XAu5wN9EEeS1Ge-g6TNhew"/>
+            </transition>
+            <subvertex xmi:type="uml:Pseudostate" xmi:id="_vvbIcN9BEeS1Ge-g6TNhew" name="Initial"/>
+            <subvertex xmi:type="uml:FinalState" xmi:id="_w5JwoN9BEeS1Ge-g6TNhew" name="End"/>
+            <subvertex xmi:type="uml:State" xmi:id="_ygRfcN9BEeS1Ge-g6TNhew" name="Hello"/>
+            <subvertex xmi:type="uml:State" xmi:id="_KF2CkN9CEeS1Ge-g6TNhew" name="World"/>
+          </region>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="__8HSIN9EEeS1Ge-g6TNhew" name="runBehavior" specification="_pGzuUN9EEeS1Ge-g6TNhew">
+          <language>rALF</language>
+          <body>HelloWorld hello = new HelloWorld();&#xD;
+send new TheWorldSignal() to hello;&#xD;
+send new GreetAgainSignal() to hello;&#xD;
+send new TheWorldSignal() to hello;&#xD;
+send new FinishSignal() to hello;</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_pGzuUN9EEeS1Ge-g6TNhew" name="run" isStatic="true" method="__8HSIN9EEeS1Ge-g6TNhew"/>
+        <nestedClassifier xmi:type="uml:Signal" xmi:id="_1QWvgN9DEeS1Ge-g6TNhew" name="FinishSignal"/>
+        <nestedClassifier xmi:type="uml:Signal" xmi:id="_KShhwN9EEeS1Ge-g6TNhew" name="TheWorldSignal"/>
+        <nestedClassifier xmi:type="uml:Signal" xmi:id="_dSZFEN9EEeS1Ge-g6TNhew" name="GreetAgainSignal"/>
+        <ownedReception xmi:type="uml:Reception" xmi:id="_lc_4sOKqEeS_K6vF2Gr_pw" name="TheWorldReception" signal="_KShhwN9EEeS1Ge-g6TNhew"/>
+        <ownedReception xmi:type="uml:Reception" xmi:id="_uhVnAOKqEeS_K6vF2Gr_pw" name="FinishReception" signal="_1QWvgN9DEeS1Ge-g6TNhew"/>
+        <ownedReception xmi:type="uml:Reception" xmi:id="_zKZc0OKqEeS_K6vF2Gr_pw" name="GreetAgainReception" signal="_dSZFEN9EEeS1Ge-g6TNhew"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
 </uml:Model>
