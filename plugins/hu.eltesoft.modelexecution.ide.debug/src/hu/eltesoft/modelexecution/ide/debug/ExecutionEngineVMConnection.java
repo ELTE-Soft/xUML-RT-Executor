@@ -91,7 +91,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		SymbolsRegistry symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
 		this.locationConverter = new LocationConverter(symbolsRegistry);
-		this.elementRegistry = new ModelElementsRegistry(eObjectToExecute);
+		this.elementRegistry = new ModelElementsRegistry(resourceSet);
 		setupControllerListeners(debugTarget.getLaunch());
 		virtualMachine.addEventListener(this);
 	}

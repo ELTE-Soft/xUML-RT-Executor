@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug.util;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -55,17 +56,17 @@ public class ModelUtils {
 	 * Currently, states (including the initial state) and transitions are
 	 * supported.
 	 */
-	public static boolean isSupportedNode(EObject modelElement) {
+	public static boolean isSupportedNode(Notifier modelElement) {
 		return modelElement instanceof Vertex || modelElement instanceof Transition;
 	}
 
 	/**
-	 * @param eObjectToExecute
+	 * @param resourceSet
 	 *            A {@code Region} model element.
 	 * @return a stream of the contained nodes of the region that are supported.
 	 */
-	public static Stream<EObject> getSupportedContentNodes(EObject eObjectToExecute) {
-		final Iterable<EObject> iterable = () -> eObjectToExecute.eAllContents();
+	public static Stream<Notifier> getSupportedContentNodes(ResourceSet resourceSet) {
+		final Iterable<Notifier> iterable = () -> resourceSet.getAllContents();
 		return StreamSupport.stream(iterable.spliterator(), false).filter(ModelUtils::isSupportedNode);
 	}
 

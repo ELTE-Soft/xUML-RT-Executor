@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import hu.eltesoft.modelexecution.ide.debug.util.MapUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
@@ -16,12 +17,12 @@ import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 public class ModelElementsRegistry {
 	private Map<String, Set<EObject>> elementsForClass = new HashMap<>();
 
-	public ModelElementsRegistry(EObject root) {
-		storeModelElements(root);
+	public ModelElementsRegistry(ResourceSet resourceSet) {
+		storeModelElements(resourceSet);
 	}
 
-	private void storeModelElements(EObject root) {
-		ModelUtils.getSupportedContentNodes(root).forEach(this::storeModelElement);
+	private void storeModelElements(ResourceSet resourceSet) {
+		ModelUtils.getSupportedContentNodes(resourceSet).forEach(n -> storeModelElement((EObject) n));
 	}
 
 	private void storeModelElement(EObject modelElement) {

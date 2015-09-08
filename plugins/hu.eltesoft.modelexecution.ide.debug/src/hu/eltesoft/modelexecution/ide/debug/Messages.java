@@ -3,7 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.debug.messages"; //$NON-NLS-1$
 	public static String DebugTarget_default_component_label;
 	public static String VirtualMachineConnection_variable_currentState_label;
 	public static String VirtualMachineConnection_variable_signal_label;
