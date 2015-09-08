@@ -51,6 +51,7 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 public class StandaloneModelCompiler {
 
 	private static final String ACTION_LANGUAGE_PATHMAP = "pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/";
+	private static final String RALF_LIBRARY_PATHMAP = "pathmap://RALF/library.uml";
 	private static final String XUMLRT_PROFILE_PATHMAP = "pathmap://XUMLRT_PROFILE/";
 
 	private ConsoleLogger logger;
@@ -60,33 +61,8 @@ public class StandaloneModelCompiler {
 	}
 
 	public void compileModel(String modelPath, String rootDir) {
-		preapareReducedAlfLanguage();
-
 		List<String> generatedJavaFiles = generateSources(modelPath, rootDir);
 		compileSources(rootDir, generatedJavaFiles);
-	}
-
-	private void preapareReducedAlfLanguage() {
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("ecore")) {
-			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
-					new org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl());
-		}
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xmi")) {
-			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi",
-					new org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl());
-		}
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin")) {
-			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xtextbin",
-					new org.eclipse.xtext.resource.impl.BinaryGrammarResourceFactoryImpl());
-		}
-		if (!EPackage.Registry.INSTANCE.containsKey(org.eclipse.xtext.XtextPackage.eNS_URI)) {
-			EPackage.Registry.INSTANCE.put(org.eclipse.xtext.XtextPackage.eNS_URI,
-					org.eclipse.xtext.XtextPackage.eINSTANCE);
-		}
-		if (!EPackage.Registry.INSTANCE.containsKey("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage")) {
-			EPackage.Registry.INSTANCE.put("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage",
-					com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguagePackage.eINSTANCE);
-		}
 	}
 
 	private List<String> generateSources(String modelPath, String rootDir) {
@@ -96,6 +72,7 @@ public class StandaloneModelCompiler {
 			logger.verboseTimeMsg(Messages.COMPILING_MODEL_TO_JAVA);
 			registerUmlResourceType();
 			registerPathMaps();
+			registerReducedAlfLanguage();
 
 			logger.verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
 			URI fileURI = URI.createFileURI(modelPath);
@@ -261,8 +238,32 @@ public class StandaloneModelCompiler {
 		uriMap.put(URI.createURI(ACTION_LANGUAGE_PATHMAP),
 				uri.appendSegment("resources").appendSegment("action-language-profile").appendSegment(""));
 
-		// FIXME: how to resolve "pathmap://RALF/library.uml" ?
+		uriMap.put(URI.createURI(RALF_LIBRARY_PATHMAP),
+				uri.appendSegment("model").appendSegment("collections").appendSegment("collections.uml"));
 
 		uriMap.put(URI.createURI(XUMLRT_PROFILE_PATHMAP), uri.appendSegment("profile").appendSegment(""));
+	}
+
+	private void registerReducedAlfLanguage() {
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("ecore")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
+					new org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl());
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xmi")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi",
+					new org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl());
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin")) {
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xtextbin",
+					new org.eclipse.xtext.resource.impl.BinaryGrammarResourceFactoryImpl());
+		}
+		if (!EPackage.Registry.INSTANCE.containsKey(org.eclipse.xtext.XtextPackage.eNS_URI)) {
+			EPackage.Registry.INSTANCE.put(org.eclipse.xtext.XtextPackage.eNS_URI,
+					org.eclipse.xtext.XtextPackage.eINSTANCE);
+		}
+		if (!EPackage.Registry.INSTANCE.containsKey("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage")) {
+			EPackage.Registry.INSTANCE.put("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage",
+					com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguagePackage.eINSTANCE);
+		}
 	}
 }
