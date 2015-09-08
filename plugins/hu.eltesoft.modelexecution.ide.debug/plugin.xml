@@ -20,7 +20,7 @@
       <sourceLocator
             class="hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator"
             id="hu.eltesoft.modelexecution.ide.debug.sourceLocator"
-            name="xUML-RT source locator">
+            name="%sourceLocatorName">
       </sourceLocator>
    </extension>
 </plugin>
