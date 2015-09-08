@@ -5,6 +5,7 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SmapStringConcatenation
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import java.util.ArrayList
 import java.util.List
+import java.util.function.Function
 
 /** Represents a node sequence without any separator or boundary markers. Abstracts string concatenation. */
 package class Sequence extends CodeGenNode {
@@ -70,7 +71,7 @@ class CodeGenNode {
 	protected val Object after
 	protected val Object separator
 	protected val Object terminator
-	protected val List<Object> items = new ArrayList
+	protected var List<Object> items = new ArrayList
 
 	def empty() {
 		sequence
@@ -138,6 +139,10 @@ class CodeGenNode {
 	def add(Object ... newItems) {
 		items.addAll(newItems)
 		this
+	}
+
+	def map(Function<Object, Object> transformation) {
+		items = items.map(transformation)
 	}
 
 	protected def getSize() {

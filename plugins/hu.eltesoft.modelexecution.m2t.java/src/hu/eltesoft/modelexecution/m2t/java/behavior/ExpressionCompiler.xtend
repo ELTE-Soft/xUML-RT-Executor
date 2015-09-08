@@ -223,6 +223,7 @@ class ExpressionCompiler extends CompilerBase {
 			} else {
 				"unlink"
 			}
-		name <> "::" <> opName <> parameters
+		parameters.map[unwrap(it)]
+		name -> opName <> parameters
 	}
 }

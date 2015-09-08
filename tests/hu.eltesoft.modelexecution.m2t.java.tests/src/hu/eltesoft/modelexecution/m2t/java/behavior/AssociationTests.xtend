@@ -16,7 +16,7 @@ class AssociationTests extends CompiledCodeCheckTestCase {
 			'''A a = new A(); AB::link(a => a, b => this);''',
 			binOp("java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0", "=",
 				wrap("_aeMPwMc1EeSnK7LttAdTLw" -> fun("create", "null"))),
-			"_nmXLsEzTEeWKTdNBA6WBAA::link" <> paren(wrap(CompilerBase.CONTEXT_NAME), "_local0")
+			"_nmXLsEzTEeWKTdNBA6WBAA" -> "link" <> paren(CompilerBase.CONTEXT_NAME, unwrap("_local0"))
 		)
 	}
 
@@ -26,7 +26,7 @@ class AssociationTests extends CompiledCodeCheckTestCase {
 			'''A a = new A(); AB::unlink(b => this, a => a);''',
 			binOp("java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0", "=",
 				wrap("_aeMPwMc1EeSnK7LttAdTLw" -> fun("create", "null"))),
-			"_nmXLsEzTEeWKTdNBA6WBAA::unlink" <> paren(wrap(CompilerBase.CONTEXT_NAME), "_local0")
+			"_nmXLsEzTEeWKTdNBA6WBAA" -> "unlink" <> paren(CompilerBase.CONTEXT_NAME, unwrap("_local0"))
 		)
 	}
 }
