@@ -72,7 +72,7 @@ class SignalTemplate extends Template {
 		public «JSONObject.canonicalName» jsonEncode() {
 			«JSONObject.canonicalName» json = new «JSONObject.canonicalName»();
 			json.put("«JSONDecoder.JSON_CLASS»", getClass().getCanonicalName());
-			«FOR attribute : signal.attributes SEPARATOR ','»
+			«FOR attribute : signal.attributes»
 				json.put("«attribute.identifier»", «attribute.identifier»);
 			«ENDFOR»
 			return json;
