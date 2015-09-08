@@ -18,6 +18,8 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.examples/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.filemanager/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.ide/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.ide.common/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.ide.debug/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.m2m.logic/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.m2m.metamodel/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.m2t.java/pom.xml</module>

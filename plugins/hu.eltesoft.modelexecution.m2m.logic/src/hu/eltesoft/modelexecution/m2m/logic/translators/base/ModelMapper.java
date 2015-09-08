@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
@@ -95,7 +94,7 @@ public abstract class ModelMapper<UML extends NamedElement, Trans extends Named,
 
 		Trans meta = root.transform.apply(match);
 
-		root.childNodes.forEach(node -> node.integrate((EObject) meta, Arrays.asList(source)));
+		root.childNodes.forEach(node -> node.integrate(meta, Arrays.asList(source)));
 		return meta;
 	}
 

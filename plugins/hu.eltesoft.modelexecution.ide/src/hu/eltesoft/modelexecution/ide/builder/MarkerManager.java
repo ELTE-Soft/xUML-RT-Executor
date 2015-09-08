@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 /**
  * A class for handling UML-related markers.
@@ -29,7 +29,7 @@ public class MarkerManager {
 				marker.setAttribute(IMarker.LOCATION, resource.getLocation().toString());
 			}
 		} catch (CoreException ce) {
-			IdePlugin.logError("Cannot set up error markers", ce); //$NON-NLS-1$
+			PluginLogger.logError("Cannot set up error markers", ce); //$NON-NLS-1$
 		}
 	}
 
@@ -46,7 +46,7 @@ public class MarkerManager {
 				marker.delete();
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot remove markers from resource", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot remove markers from resource", e); //$NON-NLS-1$
 		}
 	}
 
@@ -57,7 +57,7 @@ public class MarkerManager {
 				marker.delete();
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot remove markers from project", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot remove markers from project", e); //$NON-NLS-1$
 		}
 	}
 

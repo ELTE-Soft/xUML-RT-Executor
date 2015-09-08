@@ -23,6 +23,7 @@ import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.papyrus.infra.emf.providers.EMFLabelProvider;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
 import org.eclipse.papyrus.infra.widgets.providers.WorkspaceContentProvider;
@@ -42,9 +43,9 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
@@ -163,13 +164,13 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 								Messages.LaunchConfigMainTab_model_not_in_execution_project_text);
 					}
 				} catch (CoreException e) {
-					IdePlugin.logError("Error while checking model for execution", e); //$NON-NLS-1$
+					PluginLogger.logError("Error while checking model for execution", e); //$NON-NLS-1$
 				}
 			}
 		}
 
 		private boolean selectionIsOk(TreeSelectorDialog dialog, Object[] selection) {
-			return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+			return selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 					&& (selection[0] instanceof IFile);
 		}
 
@@ -218,7 +219,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				if (selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 						&& (selection[0] instanceof Class)) {
 					selectedClass = (Class) selection[0];
 					selectedClassField.setText(selectedClass.getName());
@@ -271,7 +272,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				if (selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 						&& (selection[0] instanceof Operation)) {
 					selectedFeedFunction = (Operation) selection[0];
 					selectedFeedFunctionField.setText(selectedFeedFunction.getName());
@@ -316,7 +317,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 				selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 			}
 		} catch (Exception e) {
-			IdePlugin.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
 		}
 	}
 
@@ -364,7 +365,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 			classMatcher = ClsMatcher.on(engine);
 			methodMatcher = MethodMatcher.on(engine);
 		} catch (IncQueryException e) {
-			IdePlugin.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
+			PluginLogger.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
 		}
 	}
 

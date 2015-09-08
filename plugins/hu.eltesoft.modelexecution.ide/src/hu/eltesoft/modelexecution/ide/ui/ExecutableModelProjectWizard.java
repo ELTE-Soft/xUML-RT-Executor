@@ -7,8 +7,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 
 /**
@@ -28,7 +28,7 @@ public class ExecutableModelProjectWizard extends Wizard implements INewWizard {
 
 			ExecutableModelProjectSetup.createProject(pageOne.getProjectName(), pageOne.getLocationURI());
 		} catch (CoreException e) {
-			IdePlugin.logError("Problem while creating project", e);
+			PluginLogger.logError("Problem while creating project", e);
 			Dialogs.openInternalErrorDialog();
 		}
 		return true;

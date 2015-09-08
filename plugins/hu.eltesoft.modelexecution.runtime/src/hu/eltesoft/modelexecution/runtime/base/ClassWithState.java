@@ -22,6 +22,7 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	 */
 	protected abstract StateMachineRegion createStateMachine();
 
+	@Override
 	public int getInstanceID() {
 		return instanceID;
 	}
@@ -36,18 +37,22 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 		}
 	}
 
+	@Override
 	public void send(Event event) {
 		BaseRuntime.getInstance().addEventToQueue(this, event);
 	}
 
+	@Override
 	public void sendExternal(Event event) {
 		BaseRuntime.getInstance().addExternalEventToQueue(this, event);
 	}
 
+	@Override
 	public void receive(Event event) {
 		stateMachine.step(event);
 	}
 
+	@Override
 	public void dispose() {
 		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
 	}
