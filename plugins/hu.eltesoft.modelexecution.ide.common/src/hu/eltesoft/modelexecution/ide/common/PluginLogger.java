@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 
 public class PluginLogger implements BundleActivator, IStartup {
 
-	private static final String PLUGIN_ID = "hu.eltesoft.modelexecution.logger";
+	private static final String PLUGIN_ID = "hu.eltesoft.modelexecution.ide.common";
 	
 	private static ILog log = null;
 
@@ -32,17 +32,16 @@ public class PluginLogger implements BundleActivator, IStartup {
 		log(new Status(IStatus.INFO, PLUGIN_ID, msg));
 	}
 	
+	@Override
 	public void earlyStartup() {
 		PluginLogger.log = Platform.getLog(Platform.getBundle(PLUGIN_ID));
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 }
