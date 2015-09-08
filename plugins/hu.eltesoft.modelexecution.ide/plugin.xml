@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension point="org.eclipse.ui.startup">
-     <startup class="hu.eltesoft.modelexecution.ide.IdePlugin"/>
+     <startup class="hu.eltesoft.modelexecution.ide.BuildInitializer"/>
    </extension>
   <extension id="hu.eltesoft.modelexecution.builders.modelbuilder" name="%builder.name" point="org.eclipse.core.resources.builders">
     <builder>

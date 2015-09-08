@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 
 /**
@@ -95,7 +95,7 @@ public class TranslatorRegistry {
 		try {
 			domain.runExclusive(() -> task.accept(translator));
 		} catch (InterruptedException e) {
-			IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 		} catch (NullPointerException e) {
 			// the editor had been closed while the task runs (the editor
 			// and the transaction is disposed)
@@ -136,7 +136,7 @@ public class TranslatorRegistry {
 				modelSet = new ModelSet();
 				modelSet.getResource(uri, true);
 			} catch (Exception e) {
-				IdePlugin.logError("Error while rebuilding resource", e); //$NON-NLS-1$
+				PluginLogger.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 			}
 		}
 		return modelSet;

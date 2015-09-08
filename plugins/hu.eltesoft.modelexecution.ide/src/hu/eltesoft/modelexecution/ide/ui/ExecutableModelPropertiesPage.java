@@ -23,10 +23,10 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.osgi.service.prefs.BackingStoreException;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * The appearance of the property page where properties of an executable model
@@ -145,7 +145,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 		} else if (owner instanceof IProject) {
 			return (IProject) owner;
 		} else {
-			IdePlugin.logError("ExecutableModelPropertiesPage owner is not a project"); //$NON-NLS-1$
+			PluginLogger.logError("ExecutableModelPropertiesPage owner is not a project"); //$NON-NLS-1$
 			return null;
 		}
 	}
@@ -176,7 +176,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				ClasspathUtils.addClasspathEntry(JavaCore.create(getProject()),
 						JavaCore.newSourceEntry(getProject().findMember(newSrcGenPath).getFullPath()));
 			} catch (JavaModelException e) {
-				IdePlugin.logError("Error while removing old source dir classpath entry.", //$NON-NLS-1$
+				PluginLogger.logError("Error while removing old source dir classpath entry.", //$NON-NLS-1$
 						e);
 			}
 		}
@@ -187,7 +187,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				try {
 					getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 				} catch (CoreException e) {
-					IdePlugin.logError("Error while building project after a directory had been changed.", //$NON-NLS-1$
+					PluginLogger.logError("Error while building project after a directory had been changed.", //$NON-NLS-1$
 							e);
 					return Status.CANCEL_STATUS;
 				}

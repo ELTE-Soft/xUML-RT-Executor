@@ -16,9 +16,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import hu.eltesoft.modelexecution.filemanager.FileManager;
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.SDEInstaller;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * A builder that activates after the Java builder runs. Takes the class files
@@ -58,7 +58,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 				return true;
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while rebuilding resources", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while rebuilding resources", e); //$NON-NLS-1$
 		}
 	}
 
@@ -72,7 +72,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 				return true;
 			});
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while doing incremental stratum build", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while doing incremental stratum build", e); //$NON-NLS-1$
 		}
 	}
 
@@ -89,7 +89,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 			try {
 				Files.createDirectories(Paths.get(instrumentedBinFolder.toString()));
 			} catch (IOException e) {
-				IdePlugin.logError("Cannot create directories for instrumented class file", e); //$NON-NLS-1$
+				PluginLogger.logError("Cannot create directories for instrumented class file", e); //$NON-NLS-1$
 				return;
 			}
 			if (newLocation.equals(res.getLocation()) || !res.getLocation().toFile().exists()) {
@@ -103,7 +103,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 							StandardCopyOption.REPLACE_EXISTING);
 				}
 			} catch (IOException e) {
-				IdePlugin.logError("Error while trying to install stratum.", e); //$NON-NLS-1$
+				PluginLogger.logError("Error while trying to install stratum.", e); //$NON-NLS-1$
 			}
 		}
 	}

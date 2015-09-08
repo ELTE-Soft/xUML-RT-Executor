@@ -8,8 +8,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.compiler.CompilationParticipant;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Refreshes the output folder of Java builder after it finished. This ensures
@@ -28,7 +28,7 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 				outputFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Unable to refresh output folder.", e); //$NON-NLS-1$
+			PluginLogger.logError("Unable to refresh output folder.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -48,7 +48,7 @@ public class StratumCompilationParticipant extends CompilationParticipant {
 			return null != project.getNature(ExecutableModelNature.NATURE_ID);
 		} catch (CoreException e) {
 			// do not enable the participant in case of any error
-			IdePlugin.logError("Unable to check nature on project.", e); //$NON-NLS-1$
+			PluginLogger.logError("Unable to check nature on project.", e); //$NON-NLS-1$
 			return false;
 		}
 	}

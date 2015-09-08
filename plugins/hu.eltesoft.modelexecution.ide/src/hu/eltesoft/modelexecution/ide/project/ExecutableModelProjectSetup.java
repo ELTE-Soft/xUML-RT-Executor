@@ -25,9 +25,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.launching.StandardVMType;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerInitializer;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
 
@@ -87,7 +87,7 @@ public class ExecutableModelProjectSetup {
 					BaseRuntime.STATES_LOGGER_ID, BaseRuntime.TRANSITIONS_LOGGER_ID, BaseRuntime.MESSAGES_LOGGER_ID,
 					StandardOutHandler.class.getCanonicalName()));
 		} catch (IOException e) {
-			IdePlugin.logError("Error while creating logging properties file.", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while creating logging properties file.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -124,7 +124,7 @@ public class ExecutableModelProjectSetup {
 		try {
 			sourceFolder.create(false, true, null);
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while creating folder.", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while creating folder.", e); //$NON-NLS-1$
 		}
 		return sourceFolder;
 	}
@@ -140,7 +140,7 @@ public class ExecutableModelProjectSetup {
 			entries.add(containerEntry);
 			javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
 		} catch (JavaModelException e) {
-			IdePlugin.logError("Cannot setup class path", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot setup class path", e); //$NON-NLS-1$
 		}
 	}
 }

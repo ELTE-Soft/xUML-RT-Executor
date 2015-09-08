@@ -44,7 +44,6 @@ public class Messages extends NLS {
 	public static String ExecutableModelPropertiesPage_instrumented_group_label;
 	public static String ExecutableModelPropertiesPage_java_class_files_label;
 	public static String ExecutableModelPropertiesPage_project_properties_folder_for_generated_sources_label;
-	public static String IdePlugin_logger_start_msg;
 	public static String LaunchConfigMainTab_all_extensions_filter;
 	public static String LaunchConfigMainTab_model_not_in_execution_project_caption;
 	public static String LaunchConfigMainTab_model_not_in_execution_project_text;

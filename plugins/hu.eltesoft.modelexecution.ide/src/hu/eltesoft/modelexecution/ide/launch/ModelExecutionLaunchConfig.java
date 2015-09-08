@@ -15,10 +15,10 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.CmArgBuilder;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
 public class ModelExecutionLaunchConfig {
@@ -150,7 +150,7 @@ public class ModelExecutionLaunchConfig {
 			configuration.setAttribute(MokaLaunchDelegate.FRAGMENT_ATTRIBUTE_NAME,
 					configuration.getAttribute(ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while adding Moka configs", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while adding Moka configs", e); //$NON-NLS-1$
 		}
 	}
 
@@ -167,7 +167,7 @@ public class ModelExecutionLaunchConfig {
 			configuration.setAttribute(ATTR_CONTROL_PORT, controlPort);
 			setupLaunchArgs(configuration, mode);
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while adding Java configs", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while adding Java configs", e); //$NON-NLS-1$
 		}
 	}
 
@@ -219,7 +219,7 @@ public class ModelExecutionLaunchConfig {
 			configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
 					argsBuilder.toString());
 		} catch (CoreException e) {
-			IdePlugin.logError("Cannot setup launch args", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot setup launch args", e); //$NON-NLS-1$
 		}
 	}
 
@@ -256,7 +256,7 @@ public class ModelExecutionLaunchConfig {
 			return configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN,
 					ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT);
 		} catch (CoreException e) {
-			IdePlugin.logError("Unable to read launch configuration", e);
+			PluginLogger.logError("Unable to read launch configuration", e);
 			return ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT;
 		}
 	}

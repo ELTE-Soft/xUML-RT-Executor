@@ -42,10 +42,10 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
 import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
@@ -163,7 +163,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 								Messages.LaunchConfigMainTab_model_not_in_execution_project_text);
 					}
 				} catch (CoreException e) {
-					IdePlugin.logError("Error while checking model for execution", e); //$NON-NLS-1$
+					PluginLogger.logError("Error while checking model for execution", e); //$NON-NLS-1$
 				}
 			}
 		}
@@ -316,7 +316,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 				selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 			}
 		} catch (Exception e) {
-			IdePlugin.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
+			PluginLogger.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
 		}
 	}
 
@@ -364,7 +364,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 			classMatcher = ClsMatcher.on(engine);
 			methodMatcher = MethodMatcher.on(engine);
 		} catch (IncQueryException e) {
-			IdePlugin.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
+			PluginLogger.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
 		}
 	}
 

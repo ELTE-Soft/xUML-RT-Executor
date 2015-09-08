@@ -28,12 +28,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
 import hu.eltesoft.modelexecution.ide.launch.process.RunProcessDecorator;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
@@ -190,7 +190,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		try {
 			workbenchWindow.getWorkbench().showPerspective("org.eclipse.debug.ui.DebugPerspective", workbenchWindow);
 		} catch (Exception e) {
-			IdePlugin.logError("Error while changing perspective", e);
+			PluginLogger.logError("Error while changing perspective", e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		try {
 			mokaDelegate.launch(configuration, mode, launch, monitor);
 		} catch (Exception e) {
-			IdePlugin.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
+			PluginLogger.logError("Unable to launch moka delegate", e); //$NON-NLS-1$
 		}
 	}
 

@@ -12,9 +12,9 @@ import org.eclipse.jdt.core.JavaCore;
 
 import hu.eltesoft.modelexecution.filemanager.IFileManager;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.util.ClasspathUtils;
+import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
@@ -51,9 +51,9 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 						symbols);
 			}
 		} catch (IOException e) {
-			IdePlugin.logError("Error while writing file: " + fileName, e); //$NON-NLS-1$
+			PluginLogger.logError("Error while writing file: " + fileName, e); //$NON-NLS-1$
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while updating classpath: ", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while updating classpath: ", e); //$NON-NLS-1$
 		}
 	}
 
@@ -88,7 +88,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while refreshing folder.", e); //$NON-NLS-1$
+			PluginLogger.logError("Exception while refreshing folder.", e); //$NON-NLS-1$
 		}
 	}
 
