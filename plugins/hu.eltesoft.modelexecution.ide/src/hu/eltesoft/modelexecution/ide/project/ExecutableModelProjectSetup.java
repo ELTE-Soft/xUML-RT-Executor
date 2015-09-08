@@ -24,8 +24,8 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerInitializer;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;

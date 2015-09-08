@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.runtime;
+package hu.eltesoft.modelexecution.ide.common.runtime;
 
 /**
  * An interface for receiving events about state machine instances created or

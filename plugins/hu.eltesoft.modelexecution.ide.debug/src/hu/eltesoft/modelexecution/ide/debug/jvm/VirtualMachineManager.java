@@ -22,8 +22,8 @@ import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.EventRequestManager;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.process.IProcessWithVM;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener.ThreadAction;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithVM;
 
 /**
  * Two way communication with the virtual machine running the runtime.

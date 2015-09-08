@@ -12,8 +12,8 @@ import org.eclipse.jdt.core.JavaCore;
 
 import hu.eltesoft.modelexecution.filemanager.IFileManager;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;

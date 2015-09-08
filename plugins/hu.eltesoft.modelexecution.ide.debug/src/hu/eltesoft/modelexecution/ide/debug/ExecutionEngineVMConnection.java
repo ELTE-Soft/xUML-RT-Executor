@@ -18,8 +18,11 @@ import com.sun.jdi.event.VMDeathEvent;
 import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.process.IProcessWithController;
+import hu.eltesoft.modelexecution.ide.common.runtime.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.common.runtime.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
@@ -31,9 +34,6 @@ import hu.eltesoft.modelexecution.ide.debug.registry.SymbolsRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.FilePathResourceLocator;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
-import hu.eltesoft.modelexecution.ide.runtime.RuntimeControllerClient;
-import hu.eltesoft.modelexecution.ide.runtime.StateMachnineInstanceListener;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 /**

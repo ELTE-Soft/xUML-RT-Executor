@@ -1,10 +1,10 @@
-package hu.eltesoft.modelexecution.ide.launch.process;
+package hu.eltesoft.modelexecution.ide.common.process;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 
-import hu.eltesoft.modelexecution.ide.runtime.RuntimeControllerClient;
+import hu.eltesoft.modelexecution.ide.common.runtime.RuntimeControllerClient;
 
 /**
  * This decorator changes the process to try to terminate in a gentle way.

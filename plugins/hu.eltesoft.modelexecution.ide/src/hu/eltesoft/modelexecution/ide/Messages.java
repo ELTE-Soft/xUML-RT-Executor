@@ -5,8 +5,6 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "hu.eltesoft.modelexecution.ide.messages"; //$NON-NLS-1$
 	public static String ClasspathRuntimeLibrary_model_execution_classpath_library;
-	public static String DebugTarget_debug_target_label;
-	public static String DebugTarget_default_component_label;
 	public static String Dialogs_another_debug_abort_button;
 	public static String Dialogs_another_debug_force_button;
 	public static String Dialogs_another_debug_launch_caption;
@@ -76,11 +74,6 @@ public class Messages extends NLS {
 	public static String RuntimeLibraryContainerWizardPage_AboutContainer;
 	public static String RuntimeLibraryContainerWizardPage_Description;
 	public static String RuntimeLibraryContainerWizardPage_Title;
-	public static String VirtualMachineConnection_variable_currentState_label;
-	public static String VirtualMachineConnection_variable_signal_label;
-	public static String VirtualMachineConnection_variable_this_label;
-	public static String XUMLRTDebugTarget_debug_target_name;
-	public static String XUmlRtExecutionEngine_debug_model_label;
 
 	static {
 		// initialize resource bundle

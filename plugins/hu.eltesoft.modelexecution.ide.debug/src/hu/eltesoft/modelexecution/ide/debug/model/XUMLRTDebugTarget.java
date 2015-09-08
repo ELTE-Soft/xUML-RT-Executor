@@ -15,6 +15,8 @@ import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.uml2.uml.NamedElement;
 
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.process.IProcessWithController;
+import hu.eltesoft.modelexecution.ide.common.runtime.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.Messages;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
@@ -22,8 +24,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugCon
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
-import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
-import hu.eltesoft.modelexecution.ide.runtime.RuntimeControllerClient;
 
 public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 

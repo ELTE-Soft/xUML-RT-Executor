@@ -24,8 +24,8 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.osgi.service.prefs.BackingStoreException;
 
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
 
 /**

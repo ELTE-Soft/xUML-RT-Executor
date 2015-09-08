@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import hu.eltesoft.modelexecution.filemanager.FileManager;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.util.SDEInstaller;
 
 /**

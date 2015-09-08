@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.ide.launch.process;
+package hu.eltesoft.modelexecution.ide.common.process;
 
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
