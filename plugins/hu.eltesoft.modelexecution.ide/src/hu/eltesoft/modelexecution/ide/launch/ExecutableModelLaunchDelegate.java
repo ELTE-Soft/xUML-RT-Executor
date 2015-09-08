@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.TraceFileMissingException;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
 import hu.eltesoft.modelexecution.ide.launch.process.RunProcessDecorator;

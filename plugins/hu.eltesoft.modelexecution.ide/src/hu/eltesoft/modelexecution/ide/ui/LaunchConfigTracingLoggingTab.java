@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**

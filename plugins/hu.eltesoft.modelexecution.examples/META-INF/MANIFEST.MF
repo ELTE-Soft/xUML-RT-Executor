@@ -14,4 +14,4 @@ Require-Bundle: org.eclipse.jface,
  org.eclipse.ui.intro,
  org.eclipse.ui.intro.universal,
  hu.eltesoft.modelexecution.ide,
- hu.eltesoft.modelexecution.logger
+ hu.eltesoft.modelexecution.ide.common

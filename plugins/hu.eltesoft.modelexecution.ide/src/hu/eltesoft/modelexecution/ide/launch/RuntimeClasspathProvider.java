@@ -18,8 +18,6 @@ import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 @SuppressWarnings("restriction")
 public class RuntimeClasspathProvider extends StandardClasspathProvider implements IRuntimeClasspathProvider {
 
-	public final static String PROVIDER_ID = "hu.eltesoft.modelexecution.ide.project.runtimeClasspathProvider"; //$NON-NLS-1$
-
 	@Override
 	public IRuntimeClasspathEntry[] resolveClasspath(IRuntimeClasspathEntry[] entries,
 			ILaunchConfiguration configuration) throws CoreException {

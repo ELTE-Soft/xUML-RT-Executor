@@ -17,16 +17,14 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.launching.StandardVMType;
-import org.eclipse.jdt.launching.JavaRuntime;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerInitializer;
+import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
@@ -38,16 +36,7 @@ import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
  */
 @SuppressWarnings("restriction")
 public class ExecutableModelProjectSetup {
-
-	private static final String JAVA_SE_VERSION = "JavaSE-1.8"; //$NON-NLS-1$
-
-	public static final IPath JRE_CONTAINER_PATH = JavaRuntime.newDefaultJREContainerPath()
-			.append(StandardVMType.ID_STANDARD_VM_TYPE).append(JAVA_SE_VERSION);
-
-	private static final String JAVA_COMPILER_OUTPUT_FOLDER = "bin"; //$NON-NLS-1$
-
-	private static final String EMDW_COMMON_NATURE_ID = "com.incquerylabs.emdw.common.nature"; //$NON-NLS-1$
-
+	
 	/**
 	 * Creates an xUMLRt project with the given name, at the given location.
 	 */
@@ -94,13 +83,13 @@ public class ExecutableModelProjectSetup {
 	private static void setProjectNatures(IProject project) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		description.setNatureIds(
-				new String[] { JavaCore.NATURE_ID, EMDW_COMMON_NATURE_ID, ExecutableModelNature.NATURE_ID });
+				new String[] { JavaCore.NATURE_ID, XUMLRTConstants.EMDW_COMMON_NATURE_ID, ExecutableModelNature.NATURE_ID });
 		project.setDescription(description, null);
 	}
 
 	private static void createBinFolders(IProject project, IJavaProject javaProject)
 			throws CoreException, JavaModelException {
-		IFolder binFolder = createFolder(project, JAVA_COMPILER_OUTPUT_FOLDER);
+		IFolder binFolder = createFolder(project, XUMLRTConstants.JAVA_COMPILER_OUTPUT_FOLDER);
 		IFolder instrumentedBinFolder = createFolder(project,
 				ExecutableModelProperties.getInstrumentedClassFilesPath(project));
 		instrumentedBinFolder.setTeamPrivateMember(true);
@@ -133,7 +122,7 @@ public class ExecutableModelProjectSetup {
 		try {
 			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
 			entries.add(JavaCore.newSourceEntry(javaProject.getPath().append(sourceFolder)));
-			IClasspathEntry jreEntry = JavaCore.newContainerEntry(JRE_CONTAINER_PATH);
+			IClasspathEntry jreEntry = JavaCore.newContainerEntry(XUMLRTConstants.JRE_CONTAINER_PATH);
 			entries.add(jreEntry);
 			IClasspathEntry containerEntry = JavaCore
 					.newContainerEntry(RuntimeLibraryContainerInitializer.LIBRARY_PATH);

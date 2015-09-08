@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: hu.eltesoft.modelexecution.ide;singleton:=true
+Bundle-SymbolicName: hu.eltesoft.modelexecution.ide.debug;singleton:=true
 Bundle-Version: 0.6.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.emf.transaction,
  org.eclipse.uml2.uml,
@@ -32,11 +31,10 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.papyrus.emf.facet.query.java.core;bundle-version="1.1.0",
  hu.eltesoft.modelexecution.uml.incquery,
  org.eclipse.gmf.runtime.notation;bundle-version="1.8.0",
- hu.eltesoft.modelexecution.ide.debug;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.ide.common;bundle-version="0.6.0"
+ hu.eltesoft.modelexecution.ide.common;bundle-version="0.6.0",
+ hu.eltesoft.modelexecution.m2t.smap.emf
 Bundle-Vendor: %Bundle-Vendor
-Export-Package: hu.eltesoft.modelexecution.ide,
- hu.eltesoft.modelexecution.ide.builder,
- hu.eltesoft.modelexecution.ide.project
-Import-Package: hu.eltesoft.modelexecution.m2t.smap.emf,
- org.eclipse.gmf.runtime.notation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.eclipse.ui.part
+Export-Package: hu.eltesoft.modelexecution.ide.debug,
+ hu.eltesoft.modelexecution.ide.debug.jvm
