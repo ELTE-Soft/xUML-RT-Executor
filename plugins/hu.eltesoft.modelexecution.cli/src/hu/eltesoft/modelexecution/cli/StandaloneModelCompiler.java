@@ -23,8 +23,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Class;
@@ -70,13 +68,13 @@ public class StandaloneModelCompiler {
 
 		try {
 			logger.verboseTimeMsg(Messages.COMPILING_MODEL_TO_JAVA);
-			registerUmlResourceType();
-			registerPathMaps();
+			ModelSet modelSet = new ModelSet();
+			registerUmlResourceType(modelSet);
+			registerPathMaps(modelSet);
 			registerReducedAlfLanguage();
 
 			logger.verboseTimeMsg(Messages.LOADING_MODEL, modelPath);
 			URI fileURI = URI.createFileURI(modelPath);
-			ModelSet modelSet = new ModelSet();
 			Resource resource = modelSet.getResource(fileURI, true);
 
 			if (resource == null) {
@@ -211,13 +209,13 @@ public class StandaloneModelCompiler {
 		}
 	}
 
-	private void registerUmlResourceType() {
-		new ResourceSetImpl().getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+	private void registerUmlResourceType(ModelSet modelSet) {
+		modelSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 	}
 
-	private void registerPathMaps() {
+	private void registerPathMaps(ModelSet modelSet) {
 		String jarPath;
 		try {
 			jarPath = URLDecoder.decode(
@@ -227,8 +225,7 @@ public class StandaloneModelCompiler {
 			throw new CliRuntimeException(e);
 		}
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
+		Map<URI, URI> uriMap = modelSet.getURIConverter().getURIMap();
 		uriMap.clear();
 		URI uri = URI.createURI("jar:file:" + jarPath + "!/");
 		uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
