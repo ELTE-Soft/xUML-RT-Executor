@@ -22,9 +22,9 @@ import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2t.java.Template;
 import hu.eltesoft.modelexecution.runtime.meta.ClassMeta;
 import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta;

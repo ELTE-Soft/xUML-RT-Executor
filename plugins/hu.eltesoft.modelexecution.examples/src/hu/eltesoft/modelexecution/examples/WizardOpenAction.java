@@ -11,7 +11,7 @@ import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 public abstract class WizardOpenAction extends Action {
 

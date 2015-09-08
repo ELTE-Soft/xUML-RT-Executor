@@ -16,8 +16,8 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.TerminationResult;
 
 /**

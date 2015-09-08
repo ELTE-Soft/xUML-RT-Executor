@@ -24,8 +24,9 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.buildpath.RuntimeLibraryContainerInitializer;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.log.StandardOutHandler;
 
@@ -61,9 +62,9 @@ public class ExecutableModelProjectSetup {
 
 		createBinFolders(project, javaProject);
 		createTracesFolder(project, javaProject);
-		createGenSourceFolder(project, ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
+		createGenSourceFolder(project, ProjectProperties.DEFAULT_SOURCE_GEN_PATH);
 		createLoggingPropertiesFile(project);
-		setupClassPath(javaProject, ExecutableModelProperties.DEFAULT_SOURCE_GEN_PATH);
+		setupClassPath(javaProject, ProjectProperties.DEFAULT_SOURCE_GEN_PATH);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
@@ -91,17 +92,17 @@ public class ExecutableModelProjectSetup {
 			throws CoreException, JavaModelException {
 		IFolder binFolder = createFolder(project, XUMLRTConstants.JAVA_COMPILER_OUTPUT_FOLDER);
 		IFolder instrumentedBinFolder = createFolder(project,
-				ExecutableModelProperties.getInstrumentedClassFilesPath(project));
+				ProjectProperties.getInstrumentedClassFilesPath(project));
 		instrumentedBinFolder.setTeamPrivateMember(true);
 		instrumentedBinFolder.setDerived(true, null);
-		IFolder smapFolder = createFolder(project, ExecutableModelProperties.getDebugFilesPath(project));
+		IFolder smapFolder = createFolder(project, ProjectProperties.getDebugFilesPath(project));
 		smapFolder.setTeamPrivateMember(true);
 		smapFolder.setDerived(true, null);
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
 	}
 
 	private static void createTracesFolder(IProject project, IJavaProject javaProject) {
-		createFolder(project, ExecutableModelProperties.getTraceFilesPath(project));
+		createFolder(project, ProjectProperties.getTraceFilesPath(project));
 	}
 
 	private static void createGenSourceFolder(IProject project, String name) throws CoreException {

@@ -8,8 +8,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelProjectSetup;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * A wizard to create a new executable model project.

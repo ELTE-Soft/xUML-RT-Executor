@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Breakpoints for each EObject.

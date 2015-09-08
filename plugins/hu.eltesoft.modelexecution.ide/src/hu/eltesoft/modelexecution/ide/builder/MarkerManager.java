@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 /**
  * A class for handling UML-related markers.

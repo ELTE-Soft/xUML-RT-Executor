@@ -1,11 +1,9 @@
-package hu.eltesoft.modelexecution.ide.project;
+package hu.eltesoft.modelexecution.ide.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-
-import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 
 /**
  * Utility functions for handling project properties of executable model
@@ -15,7 +13,7 @@ import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
  * Properties are stored under
  * .settings/hu.eltesoft.modelexecution.natures.executableModelNature.prefs
  */
-public class ExecutableModelProperties {
+public class ProjectProperties {
 
 	private static final String PROPERTY_PREFIX = "hu.eltesoft.modelexecution.attribute."; //$NON-NLS-1$
 

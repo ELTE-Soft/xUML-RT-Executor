@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 
 public class SymbolsRegistry {

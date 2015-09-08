@@ -12,9 +12,9 @@ import org.eclipse.jdt.core.JavaCore;
 
 import hu.eltesoft.modelexecution.filemanager.IFileManager;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeChangeListener;
 import hu.eltesoft.modelexecution.m2t.java.DebugSymbols;
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
@@ -63,7 +63,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	 */
 	private void checkGenDirIsSrcDir() throws CoreException {
 		IJavaProject javaProject = JavaCore.create(project);
-		String outputPath = ExecutableModelProperties.getSourceGenPath(project);
+		String outputPath = ProjectProperties.getSourceGenPath(project);
 
 		IFolder folder = project.getFolder(outputPath);
 		folder.refreshLocal(IFolder.DEPTH_ZERO, null);
@@ -83,7 +83,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	 */
 	public void refreshFolder() {
 		try {
-			IResource genSourceDir = project.findMember(ExecutableModelProperties.getSourceGenPath(project));
+			IResource genSourceDir = project.findMember(ProjectProperties.getSourceGenPath(project));
 			if (genSourceDir != null && genSourceDir.exists()) {
 				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
@@ -102,12 +102,12 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 
 	private IFileManager getGenSrcFileManager() {
 		return fileManagerFactory.createFileManager(
-				project.getLocation().append(ExecutableModelProperties.getSourceGenPath(project)).toString());
+				project.getLocation().append(ProjectProperties.getSourceGenPath(project)).toString());
 	}
 
 	private IFileManager getDebugInfoFileManager() {
 		return fileManagerFactory.createFileManager(
-				project.getLocation().append(ExecutableModelProperties.getDebugFilesPath(project)).toString());
+				project.getLocation().append(ProjectProperties.getDebugFilesPath(project)).toString());
 	}
 
 }

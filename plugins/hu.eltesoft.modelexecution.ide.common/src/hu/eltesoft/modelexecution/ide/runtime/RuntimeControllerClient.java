@@ -15,8 +15,8 @@ import java.util.concurrent.CountDownLatch;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.RuntimeControllerServer;
 
 /**

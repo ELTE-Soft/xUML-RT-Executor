@@ -24,9 +24,9 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.osgi.service.prefs.BackingStoreException;
 
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * The appearance of the property page where properties of an executable model
@@ -75,7 +75,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				ResourceSelector.ConfigBase.PROJECT_BASED, Messages.ExecutableModelPropertiesPage_gen_sources_label,
 				Messages.ExecutableModelPropertiesPage_gen_sources_button,
 				Messages.ExecutableModelPropertiesPage_gen_sources_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties.getSourceGenPath(getProject());
+		String sourceGenPath = ProjectProperties.getSourceGenPath(getProject());
 		generatedFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
 		generatedFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
@@ -91,7 +91,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 		generatedTracesFolderSelector = new ResourceSelector(generatedTracesFolderGroup,
 				ResourceSelector.ConfigBase.PROJECT_BASED, "Folder for generated trace files", "Select",
 				"Select folder for generated trace files");
-		String tracesPath = ExecutableModelProperties.getTraceFilesPath(getProject());
+		String tracesPath = ProjectProperties.getTraceFilesPath(getProject());
 		generatedTracesFolderSelector.setSelectedResource(getProject().findMember(tracesPath));
 		generatedTracesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
@@ -108,7 +108,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				ResourceSelector.ConfigBase.PROJECT_BASED, Messages.ExecutableModelPropertiesPage_debug_files_label,
 				Messages.ExecutableModelPropertiesPage_debug_files_button,
 				Messages.ExecutableModelPropertiesPage_debug_files_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties.getDebugFilesPath(getProject());
+		String sourceGenPath = ProjectProperties.getDebugFilesPath(getProject());
 		debugFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
 		debugFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
@@ -126,7 +126,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_label,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_button,
 				Messages.ExecutableModelPropertiesPage_instrumented_folder_dialog_caption);
-		String sourceGenPath = ExecutableModelProperties.getInstrumentedClassFilesPath(getProject());
+		String sourceGenPath = ProjectProperties.getInstrumentedClassFilesPath(getProject());
 		instrumentedClassFilesFolderSelector.setSelectedResource(getProject().findMember(sourceGenPath));
 		instrumentedClassFilesFolderSelector.addUpdateListener(sel -> updateApplyButton());
 
@@ -134,7 +134,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 	}
 
 	private IEclipsePreferences getPreferences() {
-		return ExecutableModelProperties.getProperties(getProject());
+		return ProjectProperties.getProperties(getProject());
 	}
 
 	private IProject getProject() {
@@ -159,14 +159,14 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 
 	@Override
 	public boolean performOk() {
-		String oldSrcGenPath = ExecutableModelProperties.getSourceGenPath(getProject());
+		String oldSrcGenPath = ProjectProperties.getSourceGenPath(getProject());
 		String newSrcGenPath = generatedFilesFolderSelector.getSelectedResourcePath().toString();
-		ExecutableModelProperties.setSourceGenPath(getProject(), newSrcGenPath);
-		ExecutableModelProperties.setDebugFilesPath(getProject(),
+		ProjectProperties.setSourceGenPath(getProject(), newSrcGenPath);
+		ProjectProperties.setDebugFilesPath(getProject(),
 				debugFilesFolderSelector.getSelectedResourcePath().toString());
-		ExecutableModelProperties.setInstrumentedClassFilesPath(getProject(),
+		ProjectProperties.setInstrumentedClassFilesPath(getProject(),
 				instrumentedClassFilesFolderSelector.getSelectedResourcePath().toString());
-		ExecutableModelProperties.setTraceFilesPath(getProject(),
+		ProjectProperties.setTraceFilesPath(getProject(),
 				generatedTracesFolderSelector.getSelectedResourcePath().toString());
 
 		if (!newSrcGenPath.equals(oldSrcGenPath)) {

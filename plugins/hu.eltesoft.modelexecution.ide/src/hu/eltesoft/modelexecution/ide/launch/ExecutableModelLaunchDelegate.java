@@ -28,14 +28,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.common.launch.TraceFileMissingException;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.launch.process.DebuggingProcessDecorator;
 import hu.eltesoft.modelexecution.ide.launch.process.RunProcessDecorator;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Starts JRE and Moka delegates to execute the given model. Checks if xUML-RT
@@ -199,7 +199,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	protected void setFoldersToRefresh(ILaunch launch, ILaunchConfiguration javaConfigs) throws CoreException {
 		for (IProcess process : launch.getProcesses()) {
 			IProject project = getProject(javaConfigs);
-			String path = ExecutableModelProperties.getTraceFilesPath(project);
+			String path = ProjectProperties.getTraceFilesPath(project);
 			process.setAttribute(PROC_ATTR_TO_REFRESH,
 					project.getFullPath() + ";" + project.findMember(path).getFullPath());
 		}

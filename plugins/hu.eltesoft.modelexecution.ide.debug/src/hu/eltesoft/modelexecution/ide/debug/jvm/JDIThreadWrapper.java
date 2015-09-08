@@ -14,8 +14,8 @@ import com.sun.jdi.StackFrame;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Used to guarantee mutual exclusive access for multiple view components using

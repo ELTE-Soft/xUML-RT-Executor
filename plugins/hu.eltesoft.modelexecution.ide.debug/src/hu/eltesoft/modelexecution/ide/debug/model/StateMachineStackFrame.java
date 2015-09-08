@@ -9,7 +9,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 /**
  * A stack frame that represents the execution at a state, transition or

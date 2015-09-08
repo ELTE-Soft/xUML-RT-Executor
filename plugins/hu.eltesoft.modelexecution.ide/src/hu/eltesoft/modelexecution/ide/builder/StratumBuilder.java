@@ -16,9 +16,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import hu.eltesoft.modelexecution.filemanager.FileManager;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.util.SDEInstaller;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * A builder that activates after the Java builder runs. Takes the class files
@@ -80,11 +80,11 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 		if (res.getFileExtension() != null && res.getFileExtension().equals(CLASS_FILE_EXTENSION)) {
 			IProject project = res.getProject();
 			IPath projectLoc = project.getLocation();
-			IPath smapPath = projectLoc.append(ExecutableModelProperties.getDebugFilesPath(project))
+			IPath smapPath = projectLoc.append(ProjectProperties.getDebugFilesPath(project))
 					.append(res.getProjectRelativePath().removeFileExtension().removeFirstSegments(1)
 							.addFileExtension(SMAP_FILE_EXTENSION));
 			IPath instrumentedBinFolder = projectLoc
-					.append(ExecutableModelProperties.getInstrumentedClassFilesPath(project));
+					.append(ProjectProperties.getInstrumentedClassFilesPath(project));
 			IPath newLocation = instrumentedBinFolder.append(res.getProjectRelativePath().removeFirstSegments(1));
 			try {
 				Files.createDirectories(Paths.get(instrumentedBinFolder.toString()));
@@ -110,6 +110,6 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 
 	private FileManager getFileManager() {
 		return new FileManager(getProject().getLocation()
-				.append(ExecutableModelProperties.getInstrumentedClassFilesPath(getProject())).toString());
+				.append(ProjectProperties.getInstrumentedClassFilesPath(getProject())).toString());
 	}
 }

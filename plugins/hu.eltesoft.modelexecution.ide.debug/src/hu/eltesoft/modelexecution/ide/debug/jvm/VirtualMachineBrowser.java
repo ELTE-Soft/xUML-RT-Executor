@@ -20,6 +20,7 @@ import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 import com.sun.jdi.VirtualMachine;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.Messages;
 import hu.eltesoft.modelexecution.ide.debug.model.ModelVariable;
 import hu.eltesoft.modelexecution.ide.debug.model.SingleValue;
@@ -29,7 +30,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 import hu.eltesoft.modelexecution.runtime.meta.OwnerMeta;

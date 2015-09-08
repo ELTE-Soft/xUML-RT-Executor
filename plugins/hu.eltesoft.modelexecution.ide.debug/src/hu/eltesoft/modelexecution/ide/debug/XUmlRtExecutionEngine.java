@@ -26,12 +26,12 @@ import org.eclipse.papyrus.moka.debug.MokaVariable;
 import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Execution engine for Moka.

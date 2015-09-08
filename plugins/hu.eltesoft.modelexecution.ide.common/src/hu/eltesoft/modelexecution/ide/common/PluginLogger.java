@@ -1,4 +1,4 @@
-package hu.eltesoft.modelexecution.logger;
+package hu.eltesoft.modelexecution.ide.common;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;

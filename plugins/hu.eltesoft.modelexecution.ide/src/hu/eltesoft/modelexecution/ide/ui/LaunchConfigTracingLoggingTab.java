@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution

@@ -8,8 +8,8 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 
 /**
  * This provider behaves like the standard provider except that it loads the
@@ -29,7 +29,7 @@ public class RuntimeClasspathProvider extends StandardClasspathProvider implemen
 					resolved[i] = new RuntimeClasspathEntry(resolved[i].getClasspathEntry()) {
 						@Override
 						public String getLocation() {
-							String folder = ExecutableModelProperties
+							String folder = ProjectProperties
 									.getInstrumentedClassFilesPath(getResource().getProject());
 							return ((IProject) getResource()).getLocation().append(folder).toOSString();
 						}

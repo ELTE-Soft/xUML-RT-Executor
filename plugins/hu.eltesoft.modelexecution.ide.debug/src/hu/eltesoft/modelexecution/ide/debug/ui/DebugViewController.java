@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.model.DebugElement;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 @SuppressWarnings("restriction")
 public class DebugViewController {

@@ -18,6 +18,8 @@ import com.sun.jdi.event.VMDeathEvent;
 import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
@@ -30,10 +32,8 @@ import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.FilePathResourceLocator;
 import hu.eltesoft.modelexecution.ide.launch.process.IProcessWithController;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
 import hu.eltesoft.modelexecution.ide.runtime.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.runtime.StateMachnineInstanceListener;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference;
 
 /**
@@ -87,7 +87,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 		new FilePathResourceLocator(resourceSet);
 		this.debugTarget = debugTarget;
 
-		String directory = ExecutableModelProperties.getDebugFilesPath(project);
+		String directory = ProjectProperties.getDebugFilesPath(project);
 		IPath debugSymbolsDir = project.getLocation().append(directory);
 		SymbolsRegistry symbolsRegistry = new SymbolsRegistry(debugSymbolsDir);
 		this.locationConverter = new LocationConverter(symbolsRegistry);

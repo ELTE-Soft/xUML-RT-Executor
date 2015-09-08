@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
 
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.RuntimePlugin;
 
 /**

@@ -16,8 +16,8 @@ import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
 import com.sun.jdi.Value;
 
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.jvm.JDIThreadWrapper;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 
 @SuppressWarnings("restriction")
 public class JDIUtils {

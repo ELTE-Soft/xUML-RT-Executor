@@ -15,10 +15,10 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.papyrus.moka.launch.MokaLaunchDelegate;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 import hu.eltesoft.modelexecution.ide.common.util.CmArgBuilder;
-import hu.eltesoft.modelexecution.ide.project.ExecutableModelProperties;
-import hu.eltesoft.modelexecution.logger.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
 public class ModelExecutionLaunchConfig {
@@ -235,7 +235,7 @@ public class ModelExecutionLaunchConfig {
 
 	private static String getProjectTraceFolder(ILaunchConfigurationWorkingCopy configuration) throws CoreException {
 		IProject project = getProject(configuration);
-		return project.getLocation().append(ExecutableModelProperties.getTraceFilesPath(project)).toString();
+		return project.getLocation().append(ProjectProperties.getTraceFilesPath(project)).toString();
 	}
 
 	public static IProject getProject(ILaunchConfiguration iLaunchConfiguration) throws CoreException {

@@ -2,6 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension point="org.eclipse.ui.startup">
-     <startup class="hu.eltesoft.modelexecution.logger.PluginLogger"/>
+     <startup class="hu.eltesoft.modelexecution.ide.common.PluginLogger"/>
    </extension>
 </plugin>

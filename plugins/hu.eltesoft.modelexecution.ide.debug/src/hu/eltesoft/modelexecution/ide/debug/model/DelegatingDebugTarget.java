@@ -8,7 +8,7 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 
-import hu.eltesoft.modelexecution.logger.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 public abstract class DelegatingDebugTarget extends DebugElement implements IDebugTarget {
 
