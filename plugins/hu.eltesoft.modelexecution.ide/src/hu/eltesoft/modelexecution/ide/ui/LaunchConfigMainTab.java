@@ -23,6 +23,7 @@ import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.papyrus.infra.emf.providers.EMFLabelProvider;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
 import org.eclipse.papyrus.infra.widgets.providers.WorkspaceContentProvider;
@@ -169,7 +170,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 		}
 
 		private boolean selectionIsOk(TreeSelectorDialog dialog, Object[] selection) {
-			return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+			return selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 					&& (selection[0] instanceof IFile);
 		}
 
@@ -218,7 +219,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				if (selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 						&& (selection[0] instanceof Class)) {
 					selectedClass = (Class) selection[0];
 					selectedClassField.setText(selectedClass.getName());
@@ -271,7 +272,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 				dialog.open();
 				Object[] selection = dialog.getResult();
-				if (selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+				if (selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 						&& (selection[0] instanceof Operation)) {
 					selectedFeedFunction = (Operation) selection[0];
 					selectedFeedFunctionField.setText(selectedFeedFunction.getName());

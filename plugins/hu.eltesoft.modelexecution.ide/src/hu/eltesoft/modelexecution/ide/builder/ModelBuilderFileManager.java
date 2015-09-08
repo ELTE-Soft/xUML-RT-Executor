@@ -66,7 +66,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 		String outputPath = ProjectProperties.getSourceGenPath(project);
 
 		IFolder folder = project.getFolder(outputPath);
-		folder.refreshLocal(IFolder.DEPTH_ZERO, null);
+		folder.refreshLocal(IResource.DEPTH_ZERO, null);
 		IResource outputDir = project.findMember(outputPath);
 		if (outputDir == null) {
 			folder.create(false, false, null);

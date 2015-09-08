@@ -18,20 +18,24 @@ public class ReducedAlfJUnitInjector extends ReducedAlfLanguageInjectorProvider 
 	@Override
 	protected Injector internalCreateInjector() {
 		// register default ePackages
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("ecore"))
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("ecore")) {
 			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
 					new org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl());
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xmi"))
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xmi")) {
 			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi",
 					new org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl());
-		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin"))
+		}
+		if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin")) {
 			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xtextbin",
 					new org.eclipse.xtext.resource.impl.BinaryGrammarResourceFactoryImpl());
-		if (!EPackage.Registry.INSTANCE.containsKey(org.eclipse.xtext.XtextPackage.eNS_URI))
+		}
+		if (!EPackage.Registry.INSTANCE.containsKey(org.eclipse.xtext.XtextPackage.eNS_URI)) {
 			EPackage.Registry.INSTANCE.put(org.eclipse.xtext.XtextPackage.eNS_URI,
 					org.eclipse.xtext.XtextPackage.eINSTANCE);
+		}
 		// Create the base rALF module
-		Module runtimeModule = (Module) new com.incquerylabs.uml.ralf.ReducedAlfLanguageRuntimeModule();
+		Module runtimeModule = new com.incquerylabs.uml.ralf.ReducedAlfLanguageRuntimeModule();
 		// create a new module that binds the API classes
 		Module customizations = new Module() {
 			@Override

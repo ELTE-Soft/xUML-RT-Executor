@@ -49,38 +49,47 @@ public class ProcessDecorator implements IProcess, IProcessWithVM, IProcessWithC
 		return process.getAdapter(adapter);
 	}
 
+	@Override
 	public boolean canTerminate() {
 		return process.canTerminate();
 	}
 
+	@Override
 	public boolean isTerminated() {
 		return process.isTerminated();
 	}
 
+	@Override
 	public void terminate() throws DebugException {
 		process.terminate();
 	}
 
+	@Override
 	public String getLabel() {
 		return process.getLabel();
 	}
 
+	@Override
 	public ILaunch getLaunch() {
 		return process.getLaunch();
 	}
 
+	@Override
 	public IStreamsProxy getStreamsProxy() {
 		return process.getStreamsProxy();
 	}
 
+	@Override
 	public void setAttribute(String key, String value) {
 		process.setAttribute(key, value);
 	}
 
+	@Override
 	public String getAttribute(String key) {
 		return process.getAttribute(key);
 	}
 
+	@Override
 	public int getExitValue() throws DebugException {
 		return process.getExitValue();
 	}

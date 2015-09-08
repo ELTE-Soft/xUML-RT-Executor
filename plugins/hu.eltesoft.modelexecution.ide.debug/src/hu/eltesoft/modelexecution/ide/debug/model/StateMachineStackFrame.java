@@ -52,7 +52,7 @@ public class StateMachineStackFrame extends StackFrame {
 		NamedElement modelElement = getModelElement();
 		if (modelElement != null && modelElement instanceof NamedElement) {
 			String elementType = modelElement.eClass().getName();
-			return String.format("%s [%s]", ((NamedElement) modelElement).getName(), elementType);
+			return String.format("%s [%s]", modelElement.getName(), elementType);
 		} else {
 			return getThread().getName();
 		}

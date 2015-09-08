@@ -153,8 +153,8 @@ public class SDEInstaller {
 	void writeAttrForSDE(int index) {
 		writeU2(index);
 		writeU4(sdeAttr.length);
-		for (int i = 0; i < sdeAttr.length; ++i) {
-			writeU1(sdeAttr[i]);
+		for (byte element : sdeAttr) {
+			writeU1(element);
 		}
 	}
 
@@ -208,8 +208,8 @@ public class SDEInstaller {
 	}
 
 	void writeBytes(byte[] bytes) {
-		for (int i = 0; i < bytes.length; ++i) {
-			gen[genPos++] = bytes[i];
+		for (byte b : bytes) {
+			gen[genPos++] = b;
 		}
 	}
 

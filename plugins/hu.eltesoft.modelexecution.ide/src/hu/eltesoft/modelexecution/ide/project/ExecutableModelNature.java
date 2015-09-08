@@ -68,16 +68,18 @@ public class ExecutableModelNature implements IProjectNature {
 
 	private boolean hasModelBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
-			if (ModelBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
+			if (ModelBuilder.BUILDER_ID.equals(buildSpec.getBuilderName())) {
 				return true;
+			}
 		}
 		return false;
 	}
 
 	private boolean hasStratumBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
-			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
+			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName())) {
 				return true;
+			}
 		}
 		return false;
 	}

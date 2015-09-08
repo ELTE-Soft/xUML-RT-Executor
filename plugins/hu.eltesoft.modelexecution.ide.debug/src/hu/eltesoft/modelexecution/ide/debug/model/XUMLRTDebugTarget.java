@@ -56,6 +56,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		setDebugTarget(this);
 	}
 
+	@Override
 	public DebugViewController getDebugControl() {
 		return debugControl;
 	}

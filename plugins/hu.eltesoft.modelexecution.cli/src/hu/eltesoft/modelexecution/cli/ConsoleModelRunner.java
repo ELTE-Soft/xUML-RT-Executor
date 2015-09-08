@@ -455,8 +455,9 @@ public class ConsoleModelRunner {
 	 *         expects it so.
 	 */
 	private String getRootDir(CommandLine cmd) {
-		if (!Opt.ROOT.isPresent(cmd))
+		if (!Opt.ROOT.isPresent(cmd)) {
 			return null;
+		}
 		return Paths.get(Opt.ROOT.getOption(cmd, 0).get()).toAbsolutePath().toString();
 	}
 
@@ -529,8 +530,9 @@ public class ConsoleModelRunner {
 	}
 
 	private void addLogArg(List<String> cmdLineArgs) {
-		if (!Opt.READ_TRACE.isPresent(cmd))
+		if (!Opt.READ_TRACE.isPresent(cmd)) {
 			return;
+		}
 
 		String readTraceFolder = Opt.READ_TRACE.getOption(cmd, 0).get();
 
@@ -539,8 +541,9 @@ public class ConsoleModelRunner {
 	}
 
 	private void addWriteTraceArg(List<String> cmdLineArgs) {
-		if (!Opt.WRITE_TRACE.isPresent(cmd))
+		if (!Opt.WRITE_TRACE.isPresent(cmd)) {
 			return;
+		}
 
 		String writeTraceFolder = Opt.WRITE_TRACE.getOption(cmd, 0).get();
 
@@ -573,7 +576,7 @@ public class ConsoleModelRunner {
 			return;
 		}
 
-		Object[] objParams = (Object[]) params;
+		Object[] objParams = params;
 		Date currentTime = new Date();
 		long msecDiff = currentTime.getTime() - startTime.getTime();
 		long msecPart = msecDiff % 1000;
