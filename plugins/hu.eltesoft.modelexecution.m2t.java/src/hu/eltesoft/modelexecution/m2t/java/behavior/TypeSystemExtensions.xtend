@@ -14,7 +14,7 @@ class TypeSystemExtensions {
 
 	new(ReducedAlfSystem typeSystem, EObject root) {
 		this.typeSystem = typeSystem
-		umlContext = typeSystem.typeFactory.umlContext(root)
+		umlContext = typeSystem?.typeFactory?.umlContext(root)
 	}
 
 	protected def Type typeOf(EObject expression) {
