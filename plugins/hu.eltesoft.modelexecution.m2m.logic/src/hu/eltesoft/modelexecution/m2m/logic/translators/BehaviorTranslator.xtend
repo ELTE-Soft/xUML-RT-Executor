@@ -103,7 +103,7 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 	private def String formatDiagnostics(ParsingResults results, OpaqueBehavior behavior) {
 		val builder = new StringBuilder
 		builder.append("Error parsing action code in behavior '")
-		builder.append(behavior.qualifiedName)
+		builder.append(behavior.qualifiedName ?: "<unnamed behavior>")
 		builder.append("':\n")
 		results.allDiagnostics.forEach [
 			builder.append("(")
