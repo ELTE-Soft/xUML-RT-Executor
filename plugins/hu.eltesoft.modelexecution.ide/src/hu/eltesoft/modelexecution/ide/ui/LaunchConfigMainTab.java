@@ -48,8 +48,7 @@ import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
-import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher;
-import hu.eltesoft.modelexecution.uml.incquery.MethodMatcher;
+import hu.eltesoft.modelexecution.uml.incquery.EntryPointMatcher;
 
 /**
  * Allows the user to configure the model that is loaded, the main class and the
@@ -69,8 +68,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	private ResourceSet resourceSet = new ResourceSetImpl();
 
 	private Resource resource;
-	private ClsMatcher classMatcher;
-	private MethodMatcher methodMatcher;
+	private EntryPointMatcher entryMatcher;
 	private Text selectedFeedFunctionField;
 	private Button browseClass;
 	private Button browseEObjectButton;
@@ -235,7 +233,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 	private Object[] getAllClasses() {
 		List<Class> classes = new LinkedList<>();
-		classMatcher.getAllMatches().forEach(m -> classes.add(m.getCls()));
+		entryMatcher.getAllMatches().forEach(m -> classes.add(m.getCls()));
 		Object[] classesArray = classes.toArray(new Object[classes.size()]);
 		return classesArray;
 	}
@@ -362,8 +360,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	private void initMatchers() {
 		try {
 			IncQueryEngine engine = IncQueryEngine.on(new EMFScope(resource));
-			classMatcher = ClsMatcher.on(engine);
-			methodMatcher = MethodMatcher.on(engine);
+			entryMatcher = EntryPointMatcher.on(engine);
 		} catch (IncQueryException e) {
 			PluginLogger.logError("Problem while creating IncQuery engine", e); //$NON-NLS-1$
 		}
@@ -372,11 +369,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	private Object[] getStaticOperations() {
 		List<Operation> operations = new LinkedList<>();
 
-		methodMatcher.getAllMatches(selectedClass, null, null).forEach(m -> {
-			if (m.getOperation().isStatic()) {
-				operations.add(m.getOperation());
-			}
-		});
+		entryMatcher.getAllMatches(selectedClass, null).forEach(m -> operations.add(m.getEntry()));
 		return operations.toArray(new Object[operations.size()]);
 	}
 
