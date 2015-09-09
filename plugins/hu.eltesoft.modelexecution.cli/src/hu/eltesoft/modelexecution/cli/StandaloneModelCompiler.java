@@ -27,8 +27,8 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import hu.eltesoft.modelexecution.cli.exceptions.CliIncQueryException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliJavaCompilerException;
@@ -69,7 +69,7 @@ public class StandaloneModelCompiler {
 		try {
 			logger.verboseTimeMsg(Messages.COMPILING_MODEL_TO_JAVA);
 			ModelSet modelSet = new ModelSet();
-			registerUmlResourceType(modelSet);
+			UMLResourcesUtil.init(modelSet);
 			registerPathMaps(modelSet);
 			registerReducedAlfLanguage();
 
@@ -209,12 +209,6 @@ public class StandaloneModelCompiler {
 		}
 	}
 
-	private void registerUmlResourceType(ModelSet modelSet) {
-		modelSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-				UMLResource.Factory.INSTANCE);
-	}
-
 	private void registerPathMaps(ModelSet modelSet) {
 		String jarPath;
 		try {
@@ -226,7 +220,6 @@ public class StandaloneModelCompiler {
 		}
 
 		Map<URI, URI> uriMap = modelSet.getURIConverter().getURIMap();
-		uriMap.clear();
 		URI uri = URI.createURI("jar:file:" + jarPath + "!/");
 		uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
 		uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
