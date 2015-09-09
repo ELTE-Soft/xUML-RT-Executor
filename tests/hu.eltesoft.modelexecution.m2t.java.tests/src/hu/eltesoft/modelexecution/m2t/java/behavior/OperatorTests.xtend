@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
+import java.math.BigInteger
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
@@ -287,5 +288,33 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testIntegerModuloInteger() {
 		assertCompilesTo('''0 % 1;''', fun(PrimitiveOperations.INTEGER_MODULO_INTEGER, INTEGER_ZERO, INTEGER_ONE))
+	}
+
+	@Test
+	def testCastingToBoolean() {
+		assertCompilesTo('''(Boolean) false;''', fun(PrimitiveOperations.CAST, Boolean.canonicalName -> "class", FALSE))
+	}
+
+	@Test
+	def testCastingToInteger() {
+		assertCompilesTo('''(Integer) 0.0;''',
+			fun(PrimitiveOperations.CAST, BigInteger.canonicalName -> "class", REAL_ZERO))
+	}
+
+	@Test
+	def testCastingToReal() {
+		assertCompilesTo('''(Real) 0;''', fun(PrimitiveOperations.CAST, Double.canonicalName -> "class", INTEGER_ZERO))
+	}
+
+	@Test
+	def testCastingToString() {
+		assertCompilesTo('''(String) "hello";''',
+			fun(PrimitiveOperations.CAST, String.canonicalName -> "class", stringLiteral("hello")))
+	}
+
+	@Test
+	def testCastingToReferenceType() {
+		assertCompilesTo('''(A) this;''',
+			fun(PrimitiveOperations.CAST, "_aeMPwMc1EeSnK7LttAdTLw" -> "class", wrap(CompilerBase.CONTEXT_NAME)))
 	}
 }

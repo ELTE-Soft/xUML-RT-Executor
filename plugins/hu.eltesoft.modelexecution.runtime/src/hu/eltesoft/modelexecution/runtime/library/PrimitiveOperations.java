@@ -4,6 +4,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Implements primitive operations used by the runtime.
+ */
+// TODO: verifications must be implemented
+// like division by zero, or invalid casts.
+// TODO: review compatibility of setValue, valueEquality, referenceEquality and
+// cast with collections
 public class PrimitiveOperations {
 
 	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
@@ -73,6 +80,8 @@ public class PrimitiveOperations {
 
 	public static final String VALUE_EQUALITY = CLASS_PREFIX + "valueEquality";
 	public static final String REFERENCE_EQUALITY = CLASS_PREFIX + "referenceEquality";
+
+	public static final String CAST = CLASS_PREFIX + "cast";
 
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
@@ -293,5 +302,10 @@ public class PrimitiveOperations {
 
 	public static ArrayList<Boolean> referenceEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
 		return wrap(unwrap(lhs) == unwrap(rhs));
+	}
+
+	public static <TargetType, SourceType> ArrayList<TargetType> cast(Class<TargetType> targetType,
+			ArrayList<SourceType> sourceExpression) {
+		return wrap(targetType.cast(unwrap(sourceExpression)));
 	}
 }
