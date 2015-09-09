@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.debug.internal.ui.viewers.model.provisional.TreeModelViewer;
 import org.eclipse.debug.ui.AbstractDebugView;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -21,7 +22,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.DebugElement;
 public class DebugViewController {
 
 	private static final Display DISPLAY = Display.getDefault();
-	private static final String DEBUG_VIEW_ID = "org.eclipse.debug.ui.DebugView";
 	private static final int MAX_WAIT_TIME = 5000;
 	private static final long WAIT_INTERVAL = 10;
 
@@ -120,7 +120,7 @@ public class DebugViewController {
 
 	private void accessViewerUIThread(Consumer<TreeModelViewer> action) {
 		AbstractDebugView debugView = (AbstractDebugView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().findView(DEBUG_VIEW_ID);
+				.getActivePage().findView(IDebugUIConstants.ID_DEBUG_VIEW);
 		if (debugView == null) {
 			return; // debug view is not open
 		}

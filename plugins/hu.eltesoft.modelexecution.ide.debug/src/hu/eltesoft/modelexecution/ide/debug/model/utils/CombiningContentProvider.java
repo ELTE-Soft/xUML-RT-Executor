@@ -2,22 +2,29 @@ package hu.eltesoft.modelexecution.ide.debug.model.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.internal.ui.model.elements.ElementContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IViewerUpdate;
-import org.eclipse.debug.ui.IDebugUIConstants;
+
+import com.sun.jdi.VMDisconnectedException;
 
 @SuppressWarnings("restriction")
-public class CombiningElementDebugContentProvider<T> extends ElementContentProvider {
+public class CombiningContentProvider<T> extends ElementContentProvider {
 
-	private Function<T, Object[][]> fun;
+	private Map<String, Function<T, Object[][]>> childrenAccess = new HashMap<>();
 
-	public CombiningElementDebugContentProvider(Function<T, Object[][]> fun) {
-		this.fun = fun;
+	public CombiningContentProvider() {
+	}
+
+	public CombiningContentProvider<T> setMapping(String id, Function<T, Object[][]> accessFunction) {
+		childrenAccess.put(id, accessFunction);
+		return this;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -25,8 +32,11 @@ public class CombiningElementDebugContentProvider<T> extends ElementContentProvi
 	protected Object[] getChildren(Object parent, int index, int length, IPresentationContext context,
 			IViewerUpdate monitor) throws CoreException {
 		List<Object> ret = new ArrayList<>();
-		for (Object[] objects : fun.apply((T) parent)) {
-			ret.addAll(Arrays.asList(objects));
+		String id = context.getId();
+		if (childrenAccess.containsKey(id)) {
+			for (Object[] objects : childrenAccess.get(id).apply((T) parent)) {
+				ret.addAll(Arrays.asList(objects));
+			}
 		}
 		return ret.toArray();
 	}
@@ -36,16 +46,23 @@ public class CombiningElementDebugContentProvider<T> extends ElementContentProvi
 	protected int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor)
 			throws CoreException {
 		int ret = 0;
-		Object[][] children = fun.apply((T) element);
-		for (Object[] objects : children) {
-			ret += objects.length;
+		String id = context.getId();
+		try {
+			if (childrenAccess.containsKey(id)) {
+				Object[][] children = childrenAccess.get(id).apply((T) element);
+				for (Object[] objects : children) {
+					ret += objects.length;
+				}
+			}
+		} catch (VMDisconnectedException e) {
+			// nothing to do, the launch already ended
 		}
 		return ret;
 	}
 
 	@Override
 	protected boolean supportsContextId(String id) {
-		return IDebugUIConstants.ID_DEBUG_VIEW.equals(id);
+		return childrenAccess.containsKey(id);
 	}
 
 }

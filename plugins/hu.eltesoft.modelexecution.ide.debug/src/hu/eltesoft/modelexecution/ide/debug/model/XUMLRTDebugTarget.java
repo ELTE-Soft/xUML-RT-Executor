@@ -9,6 +9,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
@@ -20,9 +21,10 @@ import hu.eltesoft.modelexecution.ide.common.runtime.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.Messages;
 import hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
-import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
+import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.registry.BreakpointRegistry;
 import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
+import hu.eltesoft.modelexecution.ide.debug.ui.VariablesViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 
 public class XUMLRTDebugTarget extends DelegatingDebugTarget {
@@ -40,6 +42,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	private ILaunch launch;
 
 	private DebugViewController debugControl = new DebugViewController();
+	
+	private VariablesViewController variableControl = new VariablesViewController();
 
 	private EObject entryPoint;
 
@@ -59,6 +63,11 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	@Override
 	public DebugViewController getDebugControl() {
 		return debugControl;
+	}
+	
+	@Override
+	public VariablesViewController getVariableControl() {
+		return variableControl;
 	}
 
 	@Override
@@ -253,7 +262,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
-			return (T) new CombiningElementDebugContentProvider<XUMLRTDebugTarget>(
+			return (T) new CombiningContentProvider<XUMLRTDebugTarget>().setMapping(IDebugUIConstants.ID_DEBUG_VIEW,
 					dt -> new Object[][] { dt.getComponents() });
 		} else {
 			return super.getAdapter(adapter);
