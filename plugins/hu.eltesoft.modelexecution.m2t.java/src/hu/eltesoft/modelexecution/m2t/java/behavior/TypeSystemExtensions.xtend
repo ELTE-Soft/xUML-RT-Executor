@@ -1,17 +1,20 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.ReducedAlfSystem
+import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.uml2.uml.Type
 import org.eclipse.uml2.uml.DataType
 import org.eclipse.uml2.uml.Signal
+import org.eclipse.uml2.uml.Type
 
 class TypeSystemExtensions {
 
 	val ReducedAlfSystem typeSystem
+	val IUMLContextProvider umlContext
 
-	new(ReducedAlfSystem typeSystem) {
+	new(ReducedAlfSystem typeSystem, EObject root) {
 		this.typeSystem = typeSystem
+		umlContext = typeSystem.typeFactory.umlContext(root)
 	}
 
 	protected def Type typeOf(EObject expression) {
@@ -19,7 +22,7 @@ class TypeSystemExtensions {
 	}
 
 	protected def Type primitiveType(Object name) {
-		typeSystem.typeFactory.primitiveTypeReference(name.toString).umlType
+		typeSystem.typeFactory.primitiveTypeReference(name.toString, umlContext).umlType
 	}
 
 	protected def isBoolean(EObject expression) {
@@ -52,6 +55,6 @@ class TypeSystemExtensions {
 	}
 
 	protected def contextClassName() {
-		typeSystem.umlContext.thisType.name
+		umlContext.thisType.name
 	}
 }

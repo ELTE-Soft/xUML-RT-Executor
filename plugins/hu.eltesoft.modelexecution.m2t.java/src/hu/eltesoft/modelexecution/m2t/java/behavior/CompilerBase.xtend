@@ -26,7 +26,7 @@ abstract class CompilerBase {
 	 * Compile the specified operation body code to Java source code.
 	 */
 	def CodeGenNode compile(ParsingResults results) {
-		typeExtensions = new TypeSystemExtensions(results.typeSystem)
+		typeExtensions = new TypeSystemExtensions(results.typeSystem, results.model)
 		compile(results.model)
 	}
 

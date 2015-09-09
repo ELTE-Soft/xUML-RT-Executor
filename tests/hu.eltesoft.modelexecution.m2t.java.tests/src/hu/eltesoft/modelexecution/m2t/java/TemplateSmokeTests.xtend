@@ -1,8 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import com.incquerylabs.uml.ralf.ReducedAlfSystem
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguageFactory
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
+import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
+import com.incquerylabs.uml.ralf.types.TypeFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.region.RegionFactory
@@ -14,12 +17,12 @@ import hu.eltesoft.modelexecution.m2t.java.templates.SignalTemplateSmap
 import hu.eltesoft.modelexecution.m2t.smap.emf.Reference
 import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.Class
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
-import com.incquerylabs.uml.ralf.ReducedAlfSystem
 
 class TemplateSmokeTests extends ModelBasedTestCase {
 
@@ -56,7 +59,13 @@ class TemplateSmokeTests extends ModelBasedTestCase {
 			}
 
 			override ReducedAlfSystem getTypeSystem() {
-				null
+				new ReducedAlfSystem {
+					
+					override TypeFactory getTypeFactory() {
+						new TypeFactory {
+						}
+					}
+				}
 			}
 		};
 		behavior.containerClass = makeNewReference("TestClass")
