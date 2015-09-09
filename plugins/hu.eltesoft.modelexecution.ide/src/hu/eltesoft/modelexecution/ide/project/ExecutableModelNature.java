@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import hu.eltesoft.modelexecution.ide.builder.ModelBuilder;
 import hu.eltesoft.modelexecution.ide.builder.StratumBuilder;
 import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
+import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 
 /**
  * A project nature for executable model projects. Installs a builder on
@@ -22,8 +23,8 @@ import hu.eltesoft.modelexecution.ide.builder.TranslatorRegistry;
 public class ExecutableModelNature implements IProjectNature {
 
 	private IProject project;
-	public static final String NATURE_ID = "hu.eltesoft.modelexecution.natures.executableModelNature"; //$NON-NLS-1$
-
+	public static final String NATURE_ID = XUMLRTConstants.NATURE_ID;
+	
 	@Override
 	public void configure() throws CoreException {
 		registerBuilders();
@@ -67,16 +68,18 @@ public class ExecutableModelNature implements IProjectNature {
 
 	private boolean hasModelBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
-			if (ModelBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
+			if (ModelBuilder.BUILDER_ID.equals(buildSpec.getBuilderName())) {
 				return true;
+			}
 		}
 		return false;
 	}
 
 	private boolean hasStratumBuilder() throws CoreException {
 		for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
-			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName()))
+			if (StratumBuilder.BUILDER_ID.equals(buildSpec.getBuilderName())) {
 				return true;
+			}
 		}
 		return false;
 	}

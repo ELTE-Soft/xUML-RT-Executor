@@ -12,6 +12,7 @@ public class FileWriteException extends IllegalArgumentException {
 		this.filename = filename;
 	}
 
+	@Override
 	public String toString() {
 		return Messages.CANNOT_WRITE_FILE.getMsg(filename);
 	}

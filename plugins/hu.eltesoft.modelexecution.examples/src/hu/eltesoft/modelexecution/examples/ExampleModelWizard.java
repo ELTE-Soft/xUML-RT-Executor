@@ -13,7 +13,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.osgi.framework.Bundle;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 
@@ -46,7 +46,7 @@ public abstract class ExampleModelWizard extends Wizard implements INewWizard {
 		try {
 			file.create(fileURL.openStream(), true, null);
 		} catch (CoreException | IOException e) {
-			IdePlugin.logError("Error while copying models to example project", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while copying models to example project", e); //$NON-NLS-1$
 		}
 	}
 

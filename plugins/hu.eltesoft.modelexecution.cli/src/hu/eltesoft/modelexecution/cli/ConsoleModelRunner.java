@@ -233,8 +233,9 @@ public class ConsoleModelRunner {
 	 *         expects it so.
 	 */
 	private String getRootDir(CommandLine cmd) {
-		if (!Opt.ROOT.isPresent(cmd))
+		if (!Opt.ROOT.isPresent(cmd)) {
 			return null;
+		}
 		return Paths.get(Opt.ROOT.getOption(cmd, 0).get()).toAbsolutePath().toString();
 	}
 

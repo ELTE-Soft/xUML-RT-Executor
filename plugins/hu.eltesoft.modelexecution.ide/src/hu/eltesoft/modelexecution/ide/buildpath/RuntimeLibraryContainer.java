@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.runtime.RuntimePlugin;
 
 /**
@@ -60,7 +60,7 @@ public class RuntimeLibraryContainer implements IClasspathContainer {
 			try {
 				path = new Path(FileLocator.getBundleFile(bundle).getAbsolutePath());
 			} catch (IOException e) {
-				IdePlugin.logError("Can't resolve path '" + bundle.getSymbolicName() + "'", e); //$NON-NLS-1$ //$NON-NLS-2$
+				PluginLogger.logError("Can't resolve path '" + bundle.getSymbolicName() + "'", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return path;
@@ -73,7 +73,7 @@ public class RuntimeLibraryContainer implements IClasspathContainer {
 				URL binFolderFileURL = FileLocator.toFileURL(binFolderURL);
 				return new Path(binFolderFileURL.getPath()).makeAbsolute();
 			} catch (IOException e) {
-				IdePlugin.logError("Can't resolve path '" + bundle.getSymbolicName() + "'", e); //$NON-NLS-1$ //$NON-NLS-2$
+				PluginLogger.logError("Can't resolve path '" + bundle.getSymbolicName() + "'", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return null;

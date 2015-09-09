@@ -299,6 +299,11 @@ AttributeUpperBound(cls : Class, attribute : Property, type : Type, upperBound) 
 
 // operations
 
+pattern EntryPoint(cls : Class, entry : Operation) {
+	find OwnedOperation(cls, entry, true);
+	neg find OperationParameter(cls, entry, _, _);
+}
+
 // Operations defined in the class and inherited from an ancestor are not separated in the metamodel. 
 // Both will just call the associated behavior.
 pattern Operation(cls : Class, operation : Operation, isStatic) {

@@ -26,6 +26,7 @@ public class ReferenceToLineMappingTests extends ModelBasedTestCase {
 		super(UML_TEST_MODEL_PATH);
 	}
 
+	@Override
 	@Before
 	public void setUp() {
 		super.setUp();

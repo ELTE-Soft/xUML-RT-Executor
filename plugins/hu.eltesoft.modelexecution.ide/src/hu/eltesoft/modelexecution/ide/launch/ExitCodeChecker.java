@@ -16,7 +16,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.papyrus.moka.debug.MokaDebugTarget;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.ui.Dialogs;
 import hu.eltesoft.modelexecution.runtime.TerminationResult;
 
@@ -88,7 +88,7 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 				try {
 					checkExitCode(process);
 				} catch (DebugException e) {
-					IdePlugin.logError("Error while accessing exit code.", e);
+					PluginLogger.logError("Error while accessing exit code.", e);
 				}
 			}
 		}
@@ -117,7 +117,7 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 				root.findMember(path).refreshLocal(IResource.DEPTH_ONE, null);
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while refreshing changed folders", e);
+			PluginLogger.logError("Error while refreshing changed folders", e);
 		}
 	}
 }

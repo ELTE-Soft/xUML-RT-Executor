@@ -18,10 +18,12 @@ public class UnknownArgForOptException extends IllegalArgumentException {
 		this.parserOpts = parserOpts;
 	}
 
+	@Override
 	public String toString() {
 		return Messages.UNKNOWN_OPT_PAR.getMsg(arg, opt.name());
 	}
 
+	@Override
 	public String getLocalizedMessage() {
 		return toString();
 	}

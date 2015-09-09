@@ -11,7 +11,7 @@ import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 
 public abstract class WizardOpenAction extends Action {
 
@@ -33,7 +33,7 @@ public abstract class WizardOpenAction extends Action {
 				}
 			}
 		} catch (CoreException e) {
-			IdePlugin.logError("Could not start the project creation wizard", e); //$NON-NLS-1$
+			PluginLogger.logError("Could not start the project creation wizard", e); //$NON-NLS-1$
 		}
 	}
 

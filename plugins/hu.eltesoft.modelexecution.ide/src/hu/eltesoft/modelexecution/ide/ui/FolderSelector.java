@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.window.Window;
 import org.eclipse.papyrus.infra.widgets.editors.TreeSelectorDialog;
 import org.eclipse.papyrus.infra.widgets.providers.WorkspaceContentProvider;
 import org.eclipse.swt.SWT;
@@ -113,7 +114,7 @@ class FolderSelector extends SelectionAdapter {
 	}
 
 	private boolean selectionValid(TreeSelectorDialog dialog, Object[] selection) {
-		return selection != null && dialog.getReturnCode() == TreeSelectorDialog.OK && selection.length > 0
+		return selection != null && dialog.getReturnCode() == Window.OK && selection.length > 0
 				&& (selection[0] instanceof IResource);
 	}
 

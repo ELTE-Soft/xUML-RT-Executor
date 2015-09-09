@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
-import hu.eltesoft.modelexecution.ide.IdePlugin;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
@@ -104,7 +104,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 
 			performAllTasks(queue);
 		} catch (CoreException e) {
-			IdePlugin.logError("Error while rebuilding resources", e); //$NON-NLS-1$
+			PluginLogger.logError("Error while rebuilding resources", e); //$NON-NLS-1$
 		}
 	}
 
@@ -125,7 +125,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 			}
 
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while incremental build.", e); //$NON-NLS-1$
+			PluginLogger.logError("Exception while incremental build.", e); //$NON-NLS-1$
 		}
 	}
 

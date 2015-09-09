@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+         point="org.eclipse.papyrus.moka.engine">
+      <engine
+            class="hu.eltesoft.modelexecution.ide.debug.XUmlRtExecutionEngine"
+            description="%mokaExecutionEngine.description">
+      </engine>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="hu.eltesoft.modelexecution.ide.debug.ui.XUmlRtDebugModelPresentation"
+            id="hu.eltesoft.modelexecution.debug.model">
+      </debugModelPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator"
+            id="hu.eltesoft.modelexecution.ide.debug.sourceLocator"
+            name="%sourceLocatorName">
+      </sourceLocator>
+   </extension>
+</plugin>

@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import hu.eltesoft.modelexecution.ide.IdePlugin;
 import hu.eltesoft.modelexecution.ide.Messages;
-import hu.eltesoft.modelexecution.ide.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
 
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
@@ -157,7 +157,7 @@ public class LaunchConfigTracingLoggingTab extends AbstractLaunchConfigurationTa
 			replayTraceSelector.initializeFrom(configuration);
 			refresh();
 		} catch (CoreException e) {
-			IdePlugin.logError("Exception while initializing dialog", e); //$NON-NLS-1$
+			PluginLogger.logError("Exception while initializing dialog", e); //$NON-NLS-1$
 			MessageDialog.openError(null, Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_title,
 					Messages.LaunchConfigurationTracingLoggingTab_tracing_config_data_error_description);
 		}

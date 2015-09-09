@@ -21,6 +21,7 @@ public class IncompatibleOptsException extends IllegalArgumentException {
 		this.parserOpts = parserOptions;
 	}
 
+	@Override
 	public String toString() {
 		List<String> optNames = opt.requiredOpts.stream().map(Opt::toString).collect(Collectors.toList());
 		String commaSepOptNames = Utils.join(optNames, ", ");
