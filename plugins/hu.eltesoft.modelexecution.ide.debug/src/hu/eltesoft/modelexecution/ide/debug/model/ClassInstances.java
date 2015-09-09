@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.ide.debug.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
@@ -12,7 +13,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
-import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
+import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.PresentationLabelProvider;
 
 public class ClassInstances extends DebugElement implements IPresentation {
@@ -79,7 +80,7 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
-			return (T) new CombiningElementDebugContentProvider<ClassInstances>(
+			return (T) new CombiningContentProvider<ClassInstances>().setMapping(IDebugUIConstants.ID_DEBUG_VIEW,
 					c -> new Object[][] { c.getInstances() });
 		} else if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider.class) {
 			return (T) new PresentationLabelProvider();

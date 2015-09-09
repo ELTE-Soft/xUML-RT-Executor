@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
 import org.eclipse.papyrus.emf.facet.custom.ui.internal.query.ImageQuery;
@@ -16,7 +17,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.uml2.uml.UMLFactory;
 
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineBrowser;
-import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningElementDebugContentProvider;
+import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 
 /**
  * Thread-like debug model element for a state machine instance.
@@ -98,6 +99,8 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 			getDebugControl().removeDebugElement(stackFrame);
 		}
 		stackFrames.clear();
+		// clear attributes
+		attributes = null;
 	}
 
 	public void setStackFrames(StackFrame[] stackFrames) {
@@ -106,16 +109,16 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 		for (StackFrame stackFrame : stackFrames) {
 			getDebugControl().addDebugElement(this, stackFrame);
 		}
+		// refresh attributes
+		getVariableControl().refresh();
 	}
 
 	public String getClassName() {
 		return cls.getName();
 	}
 
-	// FIXME: this should be called when the debug view populates the variables
-	// view when selecting a state machine instance
 	public ModelVariable[] getAttributes() {
-		if (attributes == null) {
+		if (attributes == null && isSuspended()) {
 			VirtualMachineBrowser vmBrowser = getVMBrowser();
 			try {
 				attributes = vmBrowser.getAttributes(this);
@@ -130,13 +133,39 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	}
 
 	@SuppressWarnings({ "unchecked", "restriction" })
+	// The return type of getAdapter requires the unchecked cast while we must
+	// adapt to non-API interfaces to provide data in debug and variable view.
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider.class) {
-			return (T) new CombiningElementDebugContentProvider<StateMachineInstance>(
-					dt -> new Object[][] { dt.getStackFrames() });
+			return (T) new CombiningContentProvider<StateMachineInstance>()
+					.setMapping(IDebugUIConstants.ID_DEBUG_VIEW, dt -> new Object[][] { dt.getStackFrames() })
+					.setMapping(IDebugUIConstants.ID_VARIABLE_VIEW, sm -> new Object[][] { sm.getAttributes() });
+		} else
+			if (adapter == org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory.class) {
+			return (T) new org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory() {
+
+				@Override
+				public org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentation createColumnPresentation(org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext context, Object element) {
+					String id = context.getId();
+					if (IDebugUIConstants.ID_VARIABLE_VIEW.equals(id) && element instanceof StateMachineInstance) {
+						return new org.eclipse.debug.internal.ui.elements.adapters.VariableColumnPresentation();
+					}
+					return null;
+				}
+
+				@Override
+				public String getColumnPresentationId(org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext context, Object element) {
+					String id = context.getId();
+					if (IDebugUIConstants.ID_VARIABLE_VIEW.equals(id) && element instanceof StateMachineInstance) {
+						return IDebugUIConstants.COLUMN_PRESENTATION_ID_VARIABLE;
+					}
+					return null;
+				}
+			};
 		}
 		return super.getAdapter(adapter);
+
 	}
 
 	@Override
