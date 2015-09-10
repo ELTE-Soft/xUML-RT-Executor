@@ -312,7 +312,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 				}
 				selectedFeedFunction = (Operation) resource.getEObject(
 						configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
-				selectedFeedFunctionField.setText(selectedFeedFunction.getName());
+				if (selectedFeedFunction != null) {
+					selectedFeedFunctionField.setText(selectedFeedFunction.getName());
+				}
 			}
 		} catch (Exception e) {
 			PluginLogger.logError("Cannot initialize from configuration", e); //$NON-NLS-1$
