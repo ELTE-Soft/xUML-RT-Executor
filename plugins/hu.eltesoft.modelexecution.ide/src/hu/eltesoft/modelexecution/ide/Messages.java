@@ -27,6 +27,8 @@ public class Messages extends NLS {
 	public static String Dialogs_resources_missing_text;
 	public static String Dialogs_trace_file_missing_caption;
 	public static String Dialogs_trace_file_missing_text;
+	public static String Dialogs_wrong_perspective_caption;
+	public static String Dialogs_wrong_perspective_text;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file;
 	public static String ExecutableModelProjectSetup_default_logging_properties_file_location;
 	public static String ExecutableModelProjectWizard_create_new_project_description;

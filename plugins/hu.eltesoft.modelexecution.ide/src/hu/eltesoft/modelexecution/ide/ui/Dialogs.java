@@ -97,4 +97,9 @@ public class Dialogs {
 				Messages.Dialogs_generated_sources_incorrect_text));
 	}
 
+	public static void openSwitchToDebugPerspective() {
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_wrong_perspective_caption,
+				Messages.Dialogs_wrong_perspective_text));
+	}
+
 }

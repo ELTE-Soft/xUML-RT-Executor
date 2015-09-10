@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -63,7 +64,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 			return false;
 		}
 		return checkResources(configuration) && checkExecutionEngine(mode) && checkDiagramFile(configuration, mode)
-				&& checkGeneratedSource(configuration, monitor);
+				&& checkGeneratedSource(configuration, monitor) && perspectiveIsDebug(mode);
 	}
 
 	private boolean checkResources(ILaunchConfiguration configuration) throws CoreException {
@@ -147,6 +148,25 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		return true;
 	}
 
+	private boolean perspectiveIsDebug(String mode) {
+		boolean[] debugMode = new boolean[] { false };
+		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			Display.getDefault().syncExec(() -> {
+				IWorkbenchWindow wb = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+				if (IDebugUIConstants.ID_DEBUG_PERSPECTIVE.equals(wb.getActivePage().getPerspective().getId())) {
+					debugMode[0] = true;
+				}
+			});
+		}
+
+		if (!debugMode[0]) {
+			Dialogs.openSwitchToDebugPerspective();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	private boolean executionEngineIsXUMLRT() {
 		IConfigurationElement selectedExecutionEngine = getSelectedExecutionEngine();
 		return (selectedExecutionEngine != null
@@ -211,20 +231,10 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			Display.getDefault().asyncExec(() -> {
-				changePerspective();
 				launchMokaDelegate(mokaConfigs, mode, launch, monitor);
 			});
 		}
 		setFoldersToRefresh(launch, javaConfigs);
-	}
-
-	private void changePerspective() {
-		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		try {
-			workbenchWindow.getWorkbench().showPerspective("org.eclipse.debug.ui.DebugPerspective", workbenchWindow);
-		} catch (Exception e) {
-			PluginLogger.logError("Error while changing perspective", e);
-		}
 	}
 
 	protected void setFoldersToRefresh(ILaunch launch, ILaunchConfiguration javaConfigs) throws CoreException {

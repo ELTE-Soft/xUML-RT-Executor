@@ -126,6 +126,9 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	}
 
 	public void addSMInstance(String classId, int instanceId, String originalName) {
+		if (isTerminated()) {
+			return;
+		}
 		boolean selectElement = !hasSMInstance();
 		if (defaultComponent == null) {
 			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
@@ -148,6 +151,9 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	}
 
 	public void removeSMInstance(String classId, int instanceId) {
+		if (isTerminated()) {
+			return;
+		}
 		List<StateMachineInstance> smInstances = defaultComponent.getSmInstances();
 		StateMachineInstance removedInstance = null;
 		for (StateMachineInstance smInstance : smInstances) {
