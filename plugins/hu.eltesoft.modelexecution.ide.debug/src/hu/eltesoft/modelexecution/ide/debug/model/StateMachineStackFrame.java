@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug.model;
 
+import java.util.LinkedList;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.emf.facet.custom.metamodel.custompt.IImage;
@@ -139,6 +141,9 @@ public class StateMachineStackFrame extends StackFrame {
 	protected void loadVariables() throws DebugException {
 		if (variables == null) {
 			variables = getVMBrowser().getVariables(this);
+		}
+		if (variables == null) {
+			variables = new LinkedList<>();
 		}
 	}
 
