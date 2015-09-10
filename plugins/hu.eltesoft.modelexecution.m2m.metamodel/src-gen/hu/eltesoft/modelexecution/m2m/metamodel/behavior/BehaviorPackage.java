@@ -124,13 +124,22 @@ public interface BehaviorPackage extends EPackage {
 	int BH_BEHAVIOR__RETURN_TYPE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Has Signal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BH_BEHAVIOR__HAS_SIGNAL = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Bh Behavior</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int BH_BEHAVIOR_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Bh Behavior</em>' class.
@@ -218,6 +227,17 @@ public interface BehaviorPackage extends EPackage {
 	EReference getBhBehavior_ReturnType();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isHasSignal <em>Has Signal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Has Signal</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isHasSignal()
+	 * @see #getBhBehavior()
+	 * @generated
+	 */
+	EAttribute getBhBehavior_HasSignal();
+
+	/**
 	 * Returns the meta object for data type '{@link com.incquerylabs.uml.ralf.api.impl.ParsingResults <em>Parsing Results</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -300,6 +320,14 @@ public interface BehaviorPackage extends EPackage {
 		 * @generated
 		 */
 		EReference BH_BEHAVIOR__RETURN_TYPE = eINSTANCE.getBhBehavior_ReturnType();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Signal</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BH_BEHAVIOR__HAS_SIGNAL = eINSTANCE.getBhBehavior_HasSignal();
 
 		/**
 		 * The meta object literal for the '<em>Parsing Results</em>' data type.

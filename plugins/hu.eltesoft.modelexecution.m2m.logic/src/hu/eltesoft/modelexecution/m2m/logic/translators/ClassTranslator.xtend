@@ -42,6 +42,7 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		val rootNode = fromRoot(ClsMatcher.on(engine)) [
 			val root = FACTORY.createClClass
 			root.setReference(new NamedReference(cls));
+			root.hasReceptions = Stereotypes.isCallable(cls);
 			return root;
 		]
 		return rootNode

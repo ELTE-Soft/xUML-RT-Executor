@@ -21,6 +21,7 @@ import hu.eltesoft.modelexecution.uml.incquery.BehaviorParameterUpperBoundMatche
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnLowerBoundMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnTypeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.BehaviorReturnUpperBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.BehaviorWithSignalMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ContainerClassOfBehaviorMatcher
 import hu.eltesoft.modelexecution.uml.incquery.StaticBehaviorMatcher
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
@@ -40,6 +41,7 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 		val rootNode = fromRoot(BehaviorMatcher.on(engine)) [
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
+			root.hasSignal = false
 			return root;
 		]
 		return rootNode;
@@ -94,6 +96,8 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 		rootNode.on(PACKAGE.bhBehavior_ContainerClass, ContainerClassOfBehaviorMatcher.on(engine)) [
 			new NamedReference(containerClass)
 		]
+
+		rootNode.on(PACKAGE.bhBehavior_HasSignal, BehaviorWithSignalMatcher.on(engine))[true]
 	}
 
 	override Template createTemplate(BhBehavior behavior) {

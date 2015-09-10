@@ -3,7 +3,6 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
-
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;
@@ -39,6 +38,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#isIsStatic <em>Is Static</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#getReturnType <em>Return Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl.BhBehaviorImpl#isHasSignal <em>Has Signal</em>}</li>
  * </ul>
  *
  * @generated
@@ -123,6 +123,26 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	 * @ordered
 	 */
 	protected Type returnType;
+
+	/**
+	 * The default value of the '{@link #isHasSignal() <em>Has Signal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasSignal()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean HAS_SIGNAL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isHasSignal() <em>Has Signal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasSignal()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean hasSignal = HAS_SIGNAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -261,6 +281,27 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isHasSignal() {
+		return hasSignal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setHasSignal(boolean newHasSignal) {
+		boolean oldHasSignal = hasSignal;
+		hasSignal = newHasSignal;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BehaviorPackage.BH_BEHAVIOR__HAS_SIGNAL, oldHasSignal, hasSignal));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -275,6 +316,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
 				if (resolve) return getReturnType();
 				return basicGetReturnType();
+			case BehaviorPackage.BH_BEHAVIOR__HAS_SIGNAL:
+				return isHasSignal();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -304,6 +347,9 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
 				setReturnType((Type)newValue);
 				return;
+			case BehaviorPackage.BH_BEHAVIOR__HAS_SIGNAL:
+				setHasSignal((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -331,6 +377,9 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
 				setReturnType((Type)null);
 				return;
+			case BehaviorPackage.BH_BEHAVIOR__HAS_SIGNAL:
+				setHasSignal(HAS_SIGNAL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -353,6 +402,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 				return isStatic != IS_STATIC_EDEFAULT;
 			case BehaviorPackage.BH_BEHAVIOR__RETURN_TYPE:
 				return returnType != null;
+			case BehaviorPackage.BH_BEHAVIOR__HAS_SIGNAL:
+				return hasSignal != HAS_SIGNAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -373,6 +424,8 @@ public class BhBehaviorImpl extends NamedImpl implements BhBehavior {
 		result.append(parsingResults);
 		result.append(", isStatic: ");
 		result.append(isStatic);
+		result.append(", hasSignal: ");
+		result.append(hasSignal);
 		result.append(')');
 		return result.toString();
 	}

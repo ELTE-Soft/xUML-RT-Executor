@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getParameters <em>Parameters</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isIsStatic <em>Is Static</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#getReturnType <em>Return Type</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isHasSignal <em>Has Signal</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior()
@@ -151,5 +152,32 @@ public interface BhBehavior extends ModelRoot {
 	 * @generated
 	 */
 	void setReturnType(Type value);
+
+	/**
+	 * Returns the value of the '<em><b>Has Signal</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Has Signal</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Has Signal</em>' attribute.
+	 * @see #setHasSignal(boolean)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.behavior.BehaviorPackage#getBhBehavior_HasSignal()
+	 * @model default="false" required="true"
+	 * @generated
+	 */
+	boolean isHasSignal();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.behavior.BhBehavior#isHasSignal <em>Has Signal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Has Signal</em>' attribute.
+	 * @see #isHasSignal()
+	 * @generated
+	 */
+	void setHasSignal(boolean value);
 
 } // BhBehavior

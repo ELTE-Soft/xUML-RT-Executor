@@ -128,7 +128,7 @@ class RegionTemplate extends Template {
 						«trace(initState.nameLiteral, initTransition.reference)»,
 						«firstState.nameLiteral»);
 				«IF null != initTransition.effect»
-					new «initTransition.effect.identifier»(«OWNER_FIELD_NAME»).execute();
+					new «initTransition.effect.identifier»().execute(«OWNER_FIELD_NAME», null);
 				«ENDIF»
 				
 				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
@@ -136,7 +136,7 @@ class RegionTemplate extends Template {
 				// First state entry
 				«runtime».logEnterState(«traceLiteral(firstState, Entry)»);
 				«IF null != firstState.entry»
-					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME»);
+					«firstState.entry.identifier».execute(«OWNER_FIELD_NAME», null);
 				«ENDIF»
 				«IF firstState.isFinal»
 					
@@ -176,7 +176,7 @@ class RegionTemplate extends Template {
 									// State exit
 									«runtime».logExitState(«traceLiteral(state, Exit)»);
 									«IF null != state.exit»
-										«state.exit.identifier».execute(«OWNER_FIELD_NAME»);
+										«state.exit.identifier».execute(«OWNER_FIELD_NAME», «SIGNAL_VARIABLE»);
 									«ENDIF»
 								
 									// Transition effect
@@ -186,7 +186,7 @@ class RegionTemplate extends Template {
 											«trace(state.nameLiteral, transition.reference)»,
 											«transition.target.nameLiteral»);
 									«IF null != transition.effect»
-										«transition.effect.identifier».execute(«OWNER_FIELD_NAME»);
+										«transition.effect.identifier».execute(«OWNER_FIELD_NAME», «SIGNAL_VARIABLE»);
 									«ENDIF»
 								
 									«CURRENT_STATE_ATTRIBUTE» = State.«transition.target.identifier»;
@@ -194,7 +194,7 @@ class RegionTemplate extends Template {
 									// State entry
 									«runtime».logEnterState(«traceLiteral(transition.target, Entry)»);
 									«IF null != transition.target.entry»
-										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME»);
+										«transition.target.entry.identifier».execute(«OWNER_FIELD_NAME», «SIGNAL_VARIABLE»);
 									«ENDIF»
 									«IF transition.target.isFinal»
 										

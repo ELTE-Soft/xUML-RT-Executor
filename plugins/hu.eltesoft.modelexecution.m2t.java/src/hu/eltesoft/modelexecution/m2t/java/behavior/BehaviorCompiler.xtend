@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject
 class BehaviorCompiler extends StatementCompiler {
 
 	def dispatch CodeGenNode compile(EObject node) {
-		throw new UnsupportedRalfFeature(
-			"Unsupported rALF feature " + node.class.simpleName + " in a behavior of class '" + contextClassName + "'");
+		throw new UnsupportedRalfFeature("Unsupported rALF feature `" + node.class.simpleName + "`.");
 	}
 }

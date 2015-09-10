@@ -135,6 +135,14 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
+pattern BehaviorWithSignal(behavior : Behavior) {
+	State.entry(_, behavior);
+} or {
+	State.exit(_, behavior);
+} or {
+	Transition.effect(_, behavior);
+}
+
 pattern ActionCode(behavior : OpaqueBehavior, actionCode) {
 	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
@@ -423,27 +431,26 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 }
 
 pattern
-ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type : Type, ordered, unique) {
+ReceptionParameter(cls : Class, reception : Reception, parameter : Property, type : Type, ordered, unique) {
 	find Reception(cls, reception, _);
-	Reception.ownedParameter(reception, parameter);
-	Parameter.direction(parameter, direction);
-	direction == ParameterDirectionKind::in;
-	Parameter.type(parameter, type);
-	Parameter.isOrdered(parameter, ordered);
-	Parameter.isUnique(parameter, unique);
+	Reception.signal(reception, signal);
+	Signal.ownedAttribute(signal, parameter);
+	Property.type(parameter, type);
+	Property.isOrdered(parameter, ordered);
+	Property.isUnique(parameter, unique);
 }
 
 pattern
-ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound) {
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Property, lowerBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.lowerValue(parameter, lowerBoundSpec);
+	Property.lowerValue(parameter, lowerBoundSpec);
 	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound) {
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Property, upperBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.upperValue(parameter, upperBoundSpec);
+	Property.upperValue(parameter, upperBoundSpec);
 	find NumericValue(upperBoundSpec, upperBound);
 }
 

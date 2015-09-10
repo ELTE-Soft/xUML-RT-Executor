@@ -47,7 +47,7 @@ class SignalTemplate extends Template {
 				«signal.nameLiteral»,
 				new «PropertyMeta.canonicalName»[] { 
 					«FOR attr : signal.attributes SEPARATOR ','»
-						new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.identifier»",
+						new «PropertyMeta.canonicalName»(«attr.nameLiteral»,"«attr.getter»",
 							new «BoundsMeta.canonicalName»(«attr.upperBound», «attr.lowerBound»))
 					«ENDFOR»
 				}
@@ -64,8 +64,13 @@ class SignalTemplate extends Template {
 	override generateContent() '''
 		«FOR attribute : signal.attributes»
 			/** Attribute for signal attribute «attribute.javadoc» */
-			«javaType(attribute.type, attribute)» «attribute.identifier»
+			private «javaType(attribute.type, attribute)» «attribute.identifier»
 				= «createEmpty(attribute)»;
+			
+			public «javaType(attribute.type, attribute)» «attribute.getter»() {
+				return «attribute.identifier»;
+			}
+			
 		«ENDFOR»
 
 		@Override

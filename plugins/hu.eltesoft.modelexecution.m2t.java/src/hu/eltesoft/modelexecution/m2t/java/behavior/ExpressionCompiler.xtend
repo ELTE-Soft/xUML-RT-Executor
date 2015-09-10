@@ -15,6 +15,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NaturalLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NullExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.RealLiteralExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.SignalDataExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StaticFeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StringLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
@@ -225,5 +226,9 @@ class ExpressionCompiler extends CompilerBase {
 			}
 		parameters.map[unwrap(it)]
 		name -> opName <> parameters
+	}
+
+	def dispatch CodeGenNode compile(SignalDataExpression expr) {
+		fun(PrimitiveOperations.CAST, typeOf(expr).convert.javaType -> "class", wrap(SIGDATA_NAME))
 	}
 }

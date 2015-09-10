@@ -70,12 +70,14 @@ class ClassSpecTemplate extends Template {
 			
 			«generateOperation(operation)»
 		«ENDFOR»
+		«IF classSpec.hasReceptions»
 		
 		// receptions
 		«FOR reception : classSpec.receptions»
 			
 			«generateExternalReception(reception)»
 		«ENDFOR»
+		«ENDIF»
 	'''
 
 	def generateAttribute(ClAttributeSpec attribute) '''

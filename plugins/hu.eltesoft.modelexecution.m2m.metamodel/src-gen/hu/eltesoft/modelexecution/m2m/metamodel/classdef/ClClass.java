@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getParents <em>Parents</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedAssociations <em>Inherited Associations</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions <em>Has Receptions</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass()
@@ -168,5 +169,32 @@ public interface ClClass extends ModelRoot {
 	 * @generated
 	 */
 	EList<ClInheritedAssociation> getInheritedAssociations();
+
+	/**
+	 * Returns the value of the '<em><b>Has Receptions</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Has Receptions</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Has Receptions</em>' attribute.
+	 * @see #setHasReceptions(boolean)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_HasReceptions()
+	 * @model default="false" required="true"
+	 * @generated
+	 */
+	boolean isHasReceptions();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions <em>Has Receptions</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Has Receptions</em>' attribute.
+	 * @see #isHasReceptions()
+	 * @generated
+	 */
+	void setHasReceptions(boolean value);
 
 } // ClClass

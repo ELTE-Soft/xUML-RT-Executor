@@ -80,13 +80,14 @@ class ClassTemplate extends Template {
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
 				return new «classDefinition.region.identifier»(this);
 			}
+			«IF classDefinition.hasReceptions»
 			
 			// receptions
 			«FOR reception : classDefinition.receptions»
 				
 				«generateExternalReception(reception)»
 			«ENDFOR»
-			
+			«ENDIF»
 		«ENDIF»
 		
 		«generateStructuralClassBody()»

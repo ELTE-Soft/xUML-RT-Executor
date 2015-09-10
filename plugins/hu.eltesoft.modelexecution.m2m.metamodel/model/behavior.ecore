@@ -12,6 +12,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" unique="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasSignal" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ParsingResults" instanceClassName="com.incquerylabs.uml.ralf.api.impl.ParsingResults"/>
 </ecore:EPackage>

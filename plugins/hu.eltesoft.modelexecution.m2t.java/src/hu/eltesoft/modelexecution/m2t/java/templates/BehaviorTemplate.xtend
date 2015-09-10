@@ -14,6 +14,7 @@ import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 class BehaviorTemplate extends Template {
 
 	static val CONTEXT_NAME = CompilerBase.CONTEXT_NAME
+	static val SIGDATA_NAME = CompilerBase.SIGDATA_NAME
 
 	val BhBehavior behavior
 	val SourceMappedText compiledCode
@@ -42,12 +43,25 @@ class BehaviorTemplate extends Template {
 		 «javadocParams(behavior.parameters)»
 		 */
 		public static «IF returns»«javaType(behavior.returnType)»«ELSE»void«ENDIF» execute(
-			«IF !behavior.isStatic»«behavior.containerClass.identifier» «CONTEXT_NAME»«ENDIF»
-			«FOR param : behavior.parameters BEFORE (if (!behavior.isStatic) ',' else '') SEPARATOR ','»
-				«javaType(param.type)» «param.identifier»
-			«ENDFOR»
+			«FOR param : allParameters SEPARATOR ', '»«param.value» «param.key»«ENDFOR»
 		) {
 			«compiledCode»
 		}
 	'''
+
+	def allParameters() {
+		val parameters = newLinkedList()
+		if (!behavior.isIsStatic) {
+			parameters.add(CONTEXT_NAME -> behavior.containerClass.identifier)
+		}
+		if (behavior.hasSignal) {
+			// As it is very complicated to calculate the appropriate signal type here, we are using Object.
+			// It will be casted to a specific signal type directly when its attributes are accessed in the body.
+			parameters.add(SIGDATA_NAME -> Object.canonicalName)
+		}
+		behavior.parameters.forEach [
+			parameters.add(identifier -> type.javaType)
+		]
+		parameters
+	}
 }

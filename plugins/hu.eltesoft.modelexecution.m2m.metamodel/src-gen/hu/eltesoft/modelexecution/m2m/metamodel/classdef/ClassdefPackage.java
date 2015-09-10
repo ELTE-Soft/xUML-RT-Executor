@@ -150,13 +150,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__INHERITED_ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Has Receptions</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__HAS_RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -250,13 +259,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC__CTOR_RECORDS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Has Receptions</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__HAS_RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Cl Class Spec</em>' class.
@@ -1036,6 +1054,17 @@ public interface ClassdefPackage extends EPackage {
 	EReference getClClass_InheritedAssociations();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions <em>Has Receptions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Has Receptions</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_HasReceptions();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1121,6 +1150,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClassSpec_CtorRecords();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasReceptions <em>Has Receptions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Has Receptions</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasReceptions()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_HasReceptions();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -1439,6 +1479,14 @@ public interface ClassdefPackage extends EPackage {
 		EReference CL_CLASS__INHERITED_ASSOCIATIONS = eINSTANCE.getClClass_InheritedAssociations();
 
 		/**
+		 * The meta object literal for the '<em><b>Has Receptions</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__HAS_RECEPTIONS = eINSTANCE.getClClass_HasReceptions();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1503,6 +1551,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS_SPEC__CTOR_RECORDS = eINSTANCE.getClClassSpec_CtorRecords();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Receptions</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__HAS_RECEPTIONS = eINSTANCE.getClClassSpec_HasReceptions();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.
