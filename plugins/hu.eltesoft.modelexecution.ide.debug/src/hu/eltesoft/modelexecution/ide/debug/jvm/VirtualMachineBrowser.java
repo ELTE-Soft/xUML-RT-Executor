@@ -159,6 +159,9 @@ public class VirtualMachineBrowser {
 				addEventVariable(stackFrame, ret, mainThread);
 			}
 			ret.add(createThisVariable(stackFrame, mainThread, instance));
+		} catch (IncompatibleThreadStateException e) {
+			// thread not suspended: fall through
+			return null;
 		} catch (Exception e) {
 			PluginLogger.logError("Error while accessing stack frame variables", e);
 		}
