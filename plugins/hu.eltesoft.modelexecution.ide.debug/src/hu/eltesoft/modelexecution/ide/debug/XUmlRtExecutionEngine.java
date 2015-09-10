@@ -27,7 +27,7 @@ import org.eclipse.papyrus.moka.engine.AbstractExecutionEngine;
 import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
@@ -65,7 +65,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 		ILaunch launch = debugTarget.getLaunch();
 
-		int xumlRTDelay = ModelExecutionLaunchConfig.getAnimationTimerMultiplier(launch.getLaunchConfiguration());
+		int xumlRTDelay = LaunchConfig.getAnimationTimerMultiplier(launch.getLaunchConfiguration());
 		animation = new AnimationController(xumlRTDelay);
 		virtualMachine = new VirtualMachineManager(launch);
 		virtualMachine.setDefaultStratum(DEFAULT_STRATUM_NAME);
@@ -76,7 +76,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 		launch.setSourceLocator(new XUMLRTSourceLocator());
 
 		try {
-			IProject project = ModelExecutionLaunchConfig.getProject(debugTarget.getLaunch().getLaunchConfiguration());
+			IProject project = LaunchConfig.getProject(debugTarget.getLaunch().getLaunchConfiguration());
 			virtualMachineHandler = new ExecutionEngineVMConnection(xumlrtDebugTarget, project, eObjectToExecute,
 					virtualMachine, animation);
 		} catch (CoreException e) {

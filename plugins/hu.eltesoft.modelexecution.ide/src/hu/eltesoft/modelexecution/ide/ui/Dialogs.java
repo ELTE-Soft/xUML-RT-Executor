@@ -87,4 +87,14 @@ public class Dialogs {
 				Messages.Dialogs_trace_file_missing_text));
 	}
 
+	public static void openGeneratedSourcesAreMissingNotification() {
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_generated_sources_missing_caption,
+				Messages.Dialogs_generated_sources_missing_text));
+	}
+
+	public static void openGeneratedSourcesAreIncorrectNotification() {
+		Display.getDefault().syncExec(() -> MessageDialog.openError(null, Messages.Dialogs_generated_sources_incorrect_caption,
+				Messages.Dialogs_generated_sources_incorrect_text));
+	}
+
 }

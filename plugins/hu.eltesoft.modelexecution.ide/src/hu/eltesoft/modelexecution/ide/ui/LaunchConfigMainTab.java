@@ -45,7 +45,7 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.uml.incquery.EntryPointMatcher;
@@ -290,7 +290,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		String uri;
 		try {
-			uri = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
+			uri = configuration.getAttribute(LaunchConfig.ATTR_UML_RESOURCE, EMPTY_STR);
 			if (!uri.equals(EMPTY_STR)) {
 				try {
 					resource = resourceSet.getResource(URI.createURI(uri), true);
@@ -306,12 +306,12 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 				}
 				initMatchers();
 				selectedClass = (Class) resource.getEObject(
-						configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
+						configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
 				if (selectedClass != null) {
 					selectedClassField.setText(selectedClass.getName());
 				}
 				selectedFeedFunction = (Operation) resource.getEObject(
-						configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
+						configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
 				if (selectedFeedFunction != null) {
 					selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 				}
@@ -334,17 +334,17 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 		}
 		String projectName = selectedModelResource.getProject().getName();
 
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, projectName);
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXEC_CLASS_NAME,
+		configuration.setAttribute(LaunchConfig.ATTR_PROJECT_NAME, projectName);
+		configuration.setAttribute(LaunchConfig.ATTR_EXEC_CLASS_NAME,
 				new NamedReference(selectedClass, selectedClass.getName()).getIdentifier());
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_FEED_FUN_NAME,
+		configuration.setAttribute(LaunchConfig.ATTR_FEED_FUN_NAME,
 				new NamedReference(selectedFeedFunction, selectedFeedFunction.getName()).getIdentifier());
 
 		String modelResourcePath = selectedModelResource.getFullPath().toString();
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, modelResourcePath);
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
+		configuration.setAttribute(LaunchConfig.ATTR_UML_RESOURCE, modelResourcePath);
+		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI,
 				resource.getURIFragment(selectedClass));
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
+		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI,
 				resource.getURIFragment(selectedFeedFunction));
 
 		// adds the model resource as a mapped resource path

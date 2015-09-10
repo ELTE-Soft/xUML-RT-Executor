@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Group;
 
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 
 /**
  * Allows the user to setup logging, tracing and trace replay for the execution
@@ -127,7 +127,7 @@ public class LaunchConfigTracingLoggingTab extends AbstractLaunchConfigurationTa
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_for_tracefiles,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_button_label,
 				Messages.LaunchConfigurationTracingLoggingTab_trace_replay_folder_dialog_title,
-				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_FILE);
+				LaunchConfig.ATTR_REPLAY_TRACE_FILE);
 		replayTraceSelector.addUpdateListener(tabUpdater());
 		replayTraceSelector.addResourceFilter(".trace", "trace files (.trace)");
 		replayTraceSelector.addResourceFilter(".*", "any file (.*)");
@@ -137,23 +137,23 @@ public class LaunchConfigTracingLoggingTab extends AbstractLaunchConfigurationTa
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
-				ModelExecutionLaunchConfig.ATTR_LOGGING_DEFAULT);
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
-				ModelExecutionLaunchConfig.ATTR_TRACING_DEFAULT);
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
-				ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT);
+		configuration.setAttribute(LaunchConfig.ATTR_LOGGING,
+				LaunchConfig.ATTR_LOGGING_DEFAULT);
+		configuration.setAttribute(LaunchConfig.ATTR_TRACING,
+				LaunchConfig.ATTR_TRACING_DEFAULT);
+		configuration.setAttribute(LaunchConfig.ATTR_REPLAY_TRACE,
+				LaunchConfig.ATTR_REPLAY_TRACE_DEFAULT);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			loggingEnabled.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING,
-					ModelExecutionLaunchConfig.ATTR_LOGGING_DEFAULT));
-			tracingEnabled.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TRACING,
-					ModelExecutionLaunchConfig.ATTR_TRACING_DEFAULT));
-			replayTrace.setSelection(configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE,
-					ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE_DEFAULT));
+			loggingEnabled.setSelection(configuration.getAttribute(LaunchConfig.ATTR_LOGGING,
+					LaunchConfig.ATTR_LOGGING_DEFAULT));
+			tracingEnabled.setSelection(configuration.getAttribute(LaunchConfig.ATTR_TRACING,
+					LaunchConfig.ATTR_TRACING_DEFAULT));
+			replayTrace.setSelection(configuration.getAttribute(LaunchConfig.ATTR_REPLAY_TRACE,
+					LaunchConfig.ATTR_REPLAY_TRACE_DEFAULT));
 			replayTraceSelector.initializeFrom(configuration);
 			refresh();
 		} catch (CoreException e) {
@@ -165,9 +165,9 @@ public class LaunchConfigTracingLoggingTab extends AbstractLaunchConfigurationTa
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING, loggingEnabled.getSelection());
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_TRACING, tracingEnabled.getSelection());
-		configuration.setAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, replayTrace.getSelection());
+		configuration.setAttribute(LaunchConfig.ATTR_LOGGING, loggingEnabled.getSelection());
+		configuration.setAttribute(LaunchConfig.ATTR_TRACING, tracingEnabled.getSelection());
+		configuration.setAttribute(LaunchConfig.ATTR_REPLAY_TRACE, replayTrace.getSelection());
 		replayTraceSelector.apply(configuration);
 	}
 

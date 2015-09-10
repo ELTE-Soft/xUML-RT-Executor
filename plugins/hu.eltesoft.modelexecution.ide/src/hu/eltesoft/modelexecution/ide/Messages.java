@@ -11,6 +11,10 @@ public class Messages extends NLS {
 	public static String Dialogs_another_debug_launch_text;
 	public static String Dialogs_executionEnginePreferenceChange_caption;
 	public static String Dialogs_executionEnginePreferenceChange_text;
+	public static String Dialogs_generated_sources_incorrect_caption;
+	public static String Dialogs_generated_sources_incorrect_text;
+	public static String Dialogs_generated_sources_missing_caption;
+	public static String Dialogs_generated_sources_missing_text;
 	public static String Dialogs_internal_error_caption;
 	public static String Dialogs_internal_error_text;
 	public static String Dialogs_invalid_external_entity_caption;

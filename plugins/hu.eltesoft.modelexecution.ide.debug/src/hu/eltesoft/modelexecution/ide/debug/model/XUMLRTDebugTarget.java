@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.uml2.uml.NamedElement;
 
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.common.process.IProcessWithController;
 import hu.eltesoft.modelexecution.ide.common.runtime.RuntimeControllerClient;
 import hu.eltesoft.modelexecution.ide.debug.Messages;
@@ -51,7 +51,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
 		this.entryPoint = ModelUtils.javaNameToEObject(
-				ModelExecutionLaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
+				LaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
