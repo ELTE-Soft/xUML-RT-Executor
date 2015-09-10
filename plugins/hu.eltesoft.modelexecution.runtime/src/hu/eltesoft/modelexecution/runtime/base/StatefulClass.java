@@ -2,8 +2,6 @@ package hu.eltesoft.modelexecution.runtime.base;
 
 public interface StatefulClass {
 
-	int getInstanceID();
-
 	void send(Event event);
 
 	void sendExternal(Event event);
@@ -14,5 +12,4 @@ public interface StatefulClass {
 	 * Unregisters the instance to allow garbage-collection
 	 */
 	void dispose();
-
 }

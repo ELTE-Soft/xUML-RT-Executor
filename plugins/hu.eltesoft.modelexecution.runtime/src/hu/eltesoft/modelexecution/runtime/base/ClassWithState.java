@@ -8,12 +8,10 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
  */
 public abstract class ClassWithState extends Class implements StatefulClass {
 
-	private final int instanceID;
 	private final StateMachineRegion stateMachine;
 
 	public ClassWithState(int instanceID) {
-		super();
-		this.instanceID = instanceID;
+		super(instanceID);
 		stateMachine = createStateMachine();
 	}
 
@@ -21,11 +19,6 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 	 * To be overridden by the generated child classes
 	 */
 	protected abstract StateMachineRegion createStateMachine();
-
-	@Override
-	public int getInstanceID() {
-		return instanceID;
-	}
 
 	public StateMachineRegion getStateMachine() {
 		return stateMachine;

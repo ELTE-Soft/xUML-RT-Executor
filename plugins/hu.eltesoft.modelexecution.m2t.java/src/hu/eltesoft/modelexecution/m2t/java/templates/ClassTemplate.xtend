@@ -47,12 +47,14 @@ class ClassTemplate extends Template {
 	'''
 	
 	override generateContent() '''
+		private static final «AtomicInteger.canonicalName» nextInstanceID = new «AtomicInteger.canonicalName»(0);
+		
 		/** Constructor for UML class «classDefinition.javadoc» */
 		public «classDefinition.implementation»(
 				«FOR parent : classDefinition.parents SEPARATOR ','»
 					«parent.implementation» «parent.inherited»
 				«ENDFOR») {
-			«IF hasStateMachine»super(instanceCount.getAndIncrement());«ENDIF»
+			super(nextInstanceID.getAndIncrement());
 			«FOR parent : classDefinition.parents»
 				this.«parent.inherited» = «parent.inherited»;«»
 			«ENDFOR»
@@ -74,8 +76,6 @@ class ClassTemplate extends Template {
 		}
 
 		«IF hasStateMachine»
-			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
-
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
 				return new «classDefinition.region.identifier»(this);
