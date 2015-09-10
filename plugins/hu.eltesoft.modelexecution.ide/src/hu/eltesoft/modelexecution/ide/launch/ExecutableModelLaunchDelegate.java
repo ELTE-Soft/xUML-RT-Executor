@@ -1,7 +1,9 @@
 package hu.eltesoft.modelexecution.ide.launch;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -15,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -30,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.common.launch.TraceFileMissingException;
 import hu.eltesoft.modelexecution.ide.common.process.DebuggingProcessDecorator;
 import hu.eltesoft.modelexecution.ide.common.process.RunProcessDecorator;
@@ -60,19 +63,13 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		if (!super.preLaunchCheck(configuration, mode, monitor)) {
 			return false;
 		}
+		return checkResources(configuration) && checkExecutionEngine(mode) && checkDiagramFile(configuration, mode)
+				&& checkGeneratedSource(configuration, monitor) && perspectiveIsDebug(mode);
+	}
+
+	private boolean checkResources(ILaunchConfiguration configuration) throws CoreException {
 		if (!mentionedResourcesExist(configuration)) {
 			Dialogs.openMentionedResourceDoesNotExistsDialog();
-			return false;
-		}
-		if (mode.equals(ILaunchManager.DEBUG_MODE) && !executionEngineIsXUMLRT()) {
-			if (!askUserToSetExecutionEngine()) {
-				return false;
-			}
-		}
-		String umlResource = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
-		String diResource = umlResource.replaceAll("\\." + MODEL_FILE_EXTENSION + "$", "." + DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		if (mode.equals(ILaunchManager.DEBUG_MODE) && !diResourceIsPresent(configuration, diResource, umlResource)) {
-			notifyUserThatDiIsMissing(diResource, umlResource);
 			return false;
 		}
 		return true;
@@ -81,11 +78,9 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	private boolean mentionedResourcesExist(ILaunchConfiguration configuration) throws CoreException {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		try {
-			String umlResourceURI = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_UML_RESOURCE, "");
-			String classURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_CLASS_URI,
-					"");
-			String functionURIFragment = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_EXECUTED_FEED_URI,
-					"");
+			String umlResourceURI = configuration.getAttribute(LaunchConfig.ATTR_UML_RESOURCE, "");
+			String classURIFragment = configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI, "");
+			String functionURIFragment = configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI, "");
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot workspaceRoot = workspace.getRoot();
 			URI umlURI = URI.createURI(workspaceRoot.findMember(umlResourceURI).getLocationURI().toString());
@@ -97,11 +92,13 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 	}
 
-	private boolean diResourceIsPresent(ILaunchConfiguration configuration, String diResource, String umlResource) {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot workspaceRoot = workspace.getRoot();
-		IFile modelElementIFile = (IFile) workspaceRoot.findMember(diResource);
-		return modelElementIFile != null;
+	private boolean checkExecutionEngine(String mode) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && !executionEngineIsXUMLRT()) {
+			if (!askUserToSetExecutionEngine()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private boolean askUserToSetExecutionEngine() {
@@ -112,8 +109,62 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		return false;
 	}
 
+	private boolean checkDiagramFile(ILaunchConfiguration configuration, String mode) throws CoreException {
+		String umlResource = configuration.getAttribute(LaunchConfig.ATTR_UML_RESOURCE, ""); //$NON-NLS-1$
+		String diResource = umlResource.replaceAll("\\." + MODEL_FILE_EXTENSION + "$", "." + DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && !diResourceIsPresent(configuration, diResource, umlResource)) {
+			notifyUserThatDiIsMissing(diResource, umlResource);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean diResourceIsPresent(ILaunchConfiguration configuration, String diResource, String umlResource) {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot workspaceRoot = workspace.getRoot();
+		IFile modelElementIFile = (IFile) workspaceRoot.findMember(diResource);
+		return modelElementIFile != null;
+	}
+
 	private void notifyUserThatDiIsMissing(String diResource, String umlResource) {
 		Dialogs.openDiMissingNotificationDialog(diResource, umlResource);
+	}
+
+	private boolean checkGeneratedSource(ILaunchConfiguration configuration, IProgressMonitor monitor)
+			throws CoreException {
+		IProject project = LaunchConfig.getProject(configuration);
+		String genPath = ProjectProperties.getSourceGenPath(project);
+		IResource genFolder = project.findMember(genPath);
+		if (genFolder == null || !genFolder.exists()) {
+			Dialogs.openGeneratedSourcesAreMissingNotification();
+			return false;
+		}
+		genFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+		IMarker[] problems = genFolder.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+		if (problems.length > 0) {
+			Dialogs.openGeneratedSourcesAreIncorrectNotification();
+			return false;
+		}
+		return true;
+	}
+
+	private boolean perspectiveIsDebug(String mode) {
+		boolean[] debugMode = new boolean[] { false };
+		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			Display.getDefault().syncExec(() -> {
+				IWorkbenchWindow wb = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+				if (IDebugUIConstants.ID_DEBUG_PERSPECTIVE.equals(wb.getActivePage().getPerspective().getId())) {
+					debugMode[0] = true;
+				}
+			});
+		}
+
+		if (!debugMode[0]) {
+			Dialogs.openSwitchToDebugPerspective();
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private boolean executionEngineIsXUMLRT() {
@@ -166,8 +217,8 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 			return;
 		}
 		try {
-			ILaunchConfiguration mokaConfigs = ModelExecutionLaunchConfig.addMokaConfigs(configuration);
-			ILaunchConfiguration javaConfigs = ModelExecutionLaunchConfig.addJavaConfigs(configuration, mode);
+			ILaunchConfiguration mokaConfigs = LaunchConfig.addMokaConfigs(configuration);
+			ILaunchConfiguration javaConfigs = LaunchConfig.addJavaConfigs(configuration, mode);
 			launchProcesses(mode, launch, monitor, mokaConfigs, javaConfigs);
 
 		} catch (TraceFileMissingException e) {
@@ -180,20 +231,10 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		javaDelegate.launch(javaConfigs, mode, launch, monitor);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			Display.getDefault().asyncExec(() -> {
-				changePerspective();
 				launchMokaDelegate(mokaConfigs, mode, launch, monitor);
 			});
 		}
 		setFoldersToRefresh(launch, javaConfigs);
-	}
-
-	private void changePerspective() {
-		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		try {
-			workbenchWindow.getWorkbench().showPerspective("org.eclipse.debug.ui.DebugPerspective", workbenchWindow);
-		} catch (Exception e) {
-			PluginLogger.logError("Error while changing perspective", e);
-		}
 	}
 
 	protected void setFoldersToRefresh(ILaunch launch, ILaunchConfiguration javaConfigs) throws CoreException {
@@ -206,7 +247,7 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 	}
 
 	private IProject getProject(ILaunchConfiguration launchConfig) throws CoreException {
-		String projectName = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_PROJECT_NAME, "");
+		String projectName = launchConfig.getAttribute(LaunchConfig.ATTR_PROJECT_NAME, "");
 		return (IProject) ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
 	}
 

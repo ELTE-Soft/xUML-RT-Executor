@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
-import hu.eltesoft.modelexecution.ide.common.launch.ModelExecutionLaunchConfig;
+import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.runtime.RuntimeControllerServer;
 
 /**
@@ -36,7 +36,7 @@ public class RuntimeControllerClient {
 
 	public RuntimeControllerClient(ILaunchConfiguration launchConfig) {
 		try {
-			int controlPort = launchConfig.getAttribute(ModelExecutionLaunchConfig.ATTR_CONTROL_PORT, -1);
+			int controlPort = launchConfig.getAttribute(LaunchConfig.ATTR_CONTROL_PORT, -1);
 			connectToRuntime(controlPort);
 		} catch (CoreException | IOException e) {
 			PluginLogger.logError("Error while trying to set up control stream", e); //$NON-NLS-1$

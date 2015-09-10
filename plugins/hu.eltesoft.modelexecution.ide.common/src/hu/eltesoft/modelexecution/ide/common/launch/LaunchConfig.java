@@ -21,7 +21,7 @@ import hu.eltesoft.modelexecution.ide.common.XUMLRTConstants;
 import hu.eltesoft.modelexecution.ide.common.util.CmArgBuilder;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
-public class ModelExecutionLaunchConfig {
+public class LaunchConfig {
 
 	private static final String JAVA_LOGGING_OPTION = "-Djava.util.logging.config.file=logging.properties"; //$NON-NLS-1$
 
@@ -189,16 +189,16 @@ public class ModelExecutionLaunchConfig {
 			argsBuilder.append(configuration.getAttribute(ATTR_EXEC_CLASS_NAME, EMPTY_STR));
 			argsBuilder.append(configuration.getAttribute(ATTR_FEED_FUN_NAME, EMPTY_STR));
 
-			boolean logging = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_LOGGING, false);
+			boolean logging = configuration.getAttribute(LaunchConfig.ATTR_LOGGING, false);
 			if (logging) {
 				argsBuilder.append(XUMLRTRuntime.OPTION_LOG);
 			}
-			boolean tracing = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TRACING, false);
+			boolean tracing = configuration.getAttribute(LaunchConfig.ATTR_TRACING, false);
 			if (tracing) {
 				argsBuilder.append(XUMLRTRuntime.OPTION_WRITE_TRACE);
 				argsBuilder.append(getProjectTraceFolder(configuration));
 			}
-			boolean traceReplay = configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_REPLAY_TRACE, false);
+			boolean traceReplay = configuration.getAttribute(LaunchConfig.ATTR_REPLAY_TRACE, false);
 			if (traceReplay) {
 				String replayTraceFolder = getReplayTraceFolder(configuration)
 						.orElseThrow(() -> new TraceFileMissingException());
@@ -253,11 +253,11 @@ public class ModelExecutionLaunchConfig {
 
 	public static int getAnimationTimerMultiplier(ILaunchConfiguration configuration) {
 		try {
-			return configuration.getAttribute(ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN,
-					ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT);
+			return configuration.getAttribute(LaunchConfig.ATTR_TIMER_SLOWDOWN,
+					LaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT);
 		} catch (CoreException e) {
 			PluginLogger.logError("Unable to read launch configuration", e);
-			return ModelExecutionLaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT;
+			return LaunchConfig.ATTR_TIMER_SLOWDOWN_DEFAULT;
 		}
 	}
 

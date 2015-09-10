@@ -126,6 +126,8 @@ public class VirtualMachineBrowser {
 			ObjectReference instance = (ObjectReference) mainThread.invokeMethod(instanceRegistry, GET_INSTANCE_METHOD,
 					actualClass.classObject(), virtualMachine.mirrorOf(stateMachineInstance.getInstanceId()));
 			return instance;
+		} catch (IncompatibleThreadStateException e) {
+			throw e;
 		} catch (Exception e) {
 			PluginLogger.logError("Error while accessing state machine instance", e);
 			throw new RuntimeException(e);
