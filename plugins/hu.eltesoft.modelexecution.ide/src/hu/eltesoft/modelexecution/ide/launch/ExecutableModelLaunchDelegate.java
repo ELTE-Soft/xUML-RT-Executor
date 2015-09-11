@@ -141,9 +141,11 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 		genFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		IMarker[] problems = genFolder.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		if (problems.length > 0) {
-			Dialogs.openGeneratedSourcesAreIncorrectNotification();
-			return false;
+		for (IMarker problem : problems) {
+			if (IMarker.SEVERITY_ERROR == problem.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO)) {
+				Dialogs.openGeneratedSourcesAreIncorrectNotification();
+				return false;
+			}
 		}
 		return true;
 	}
@@ -157,6 +159,8 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 					debugMode[0] = true;
 				}
 			});
+		} else {
+			return true;
 		}
 
 		if (!debugMode[0]) {
