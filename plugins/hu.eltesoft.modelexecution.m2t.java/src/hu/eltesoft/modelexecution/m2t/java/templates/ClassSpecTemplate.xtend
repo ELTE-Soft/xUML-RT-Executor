@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
@@ -55,8 +56,8 @@ class ClassSpecTemplate extends Template {
 			public static void delete(«classSpec.implementation» instance) {
 				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(instance);
 				instance.destroy();
-				«FOR rec : classSpec.ctorRecords.reverse»
-					«rec.inherited».destroy();
+				«FOR rec : dtorRecords»
+					instance.«rec.inherited».destroy();
 				«ENDFOR»
 			}
 		
@@ -66,6 +67,16 @@ class ClassSpecTemplate extends Template {
 			«content»
 		}
 	'''
+
+	def dtorRecords() {
+		// this is basically the reverse of the constructor records
+		// do not use reverse() on the original list as it will throw an exception!
+		val result = new LinkedList<ClCtorRecord>(); 
+		for (rec : classSpec.ctorRecords) {
+			result.add(0, rec)
+		}
+		result
+	}
 
 	override generateContent() '''
 		// attributes

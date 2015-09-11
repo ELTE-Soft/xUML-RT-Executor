@@ -106,7 +106,7 @@ class ClassTemplate extends Template {
 			// verification error: double destruction
 		}
 		«IF null != classDefinition.destructor»
-			«classDefinition.destructor.identifier».execute();
+			«classDefinition.destructor.identifier».execute(this);
 		«ELSE»
 			// default destructor, no destroy operation defined in the model
 		«ENDIF»
