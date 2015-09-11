@@ -9,6 +9,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.MokaConstants;
 import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
+/**
+ * Manages highlighting states and transitions for animation and when suspended
+ * at a breakpoint by putting animation and suspended markers on model elements.
+ * 
+ * Only one suspended marker can be placed on the model at any time, but each
+ * state machine instance has its own animation marker.
+ */
 public class AnimationController extends MokaAnimationBase {
 
 	private int animationTimeMultiplier;
@@ -18,7 +25,7 @@ public class AnimationController extends MokaAnimationBase {
 	 * marker setter and removal methods below.
 	 */
 	private EObject lastSuspended;
-	
+
 	private Map<Object, EObject> lastAnimated = new HashMap<>();
 
 	private final Timer animationTimer = new Timer();

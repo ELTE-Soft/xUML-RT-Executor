@@ -150,9 +150,14 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		}
 	}
 
-	public void removeSMInstance(String classId, int instanceId) {
+	/**
+	 * Removes a terminated state machine instance from the debug model.
+	 * 
+	 * @return The removed instance or null if such instance was not found.
+	 */
+	public StateMachineInstance removeSMInstance(String classId, int instanceId) {
 		if (isTerminated()) {
-			return;
+			return null;
 		}
 		List<StateMachineInstance> smInstances = defaultComponent.getSmInstances();
 		StateMachineInstance removedInstance = null;
@@ -167,6 +172,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			debugControl.removeDebugElement(defaultComponent);
 			defaultComponent = null;
 		}
+		return removedInstance;
 	}
 
 	/**

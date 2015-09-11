@@ -112,7 +112,8 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 
 						@Override
 						public void instanceDestroyed(String classId, int instanceId) {
-							debugTarget.removeSMInstance(classId, instanceId);
+							StateMachineInstance removed = debugTarget.removeSMInstance(classId, instanceId);
+							animation.removeAnimationMarker(removed);
 						}
 					});
 				}
