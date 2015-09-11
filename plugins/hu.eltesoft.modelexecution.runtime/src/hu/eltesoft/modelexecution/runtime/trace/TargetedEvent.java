@@ -96,10 +96,10 @@ public class TargetedEvent implements JSONSerializable {
 	@Override
 	public void jsonDecode(JSONDecoder decoder, JSONObject obj) throws ClassNotFoundException, JSONException {
 		@SuppressWarnings("unchecked")
-		Class<? extends ClassWithState> targetClass = (Class<? extends ClassWithState>) decoder
+		Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = (Class<? extends hu.eltesoft.modelexecution.runtime.base.Class>) decoder
 				.decodeClass(obj.getString(JSON_KEY_TARGET_CLASS));
 		int instanceID = obj.getInt(JSON_INSTANCE_ID);
-		target = InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);
+		target = (ClassWithState) InstanceRegistry.getInstanceRegistry().getInstance(targetClass, instanceID);
 		event = (Event) decoder.decodeJSON(obj.get(JSON_KEY_EVENT));
 		fromOutside = obj.getBoolean(JSON_KEY_FROM_OUTSIDE);
 	}

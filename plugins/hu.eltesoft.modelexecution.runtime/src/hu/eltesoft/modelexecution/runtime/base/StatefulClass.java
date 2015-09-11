@@ -7,9 +7,4 @@ public interface StatefulClass {
 	void sendExternal(Event event);
 
 	void receive(Event event);
-
-	/**
-	 * Unregisters the instance to allow garbage-collection
-	 */
-	void dispose();
 }

@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getRegion <em>Region</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getDestructor <em>Destructor</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassImpl#getAttributes <em>Attributes</em>}</li>
@@ -69,6 +70,26 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 	 * @ordered
 	 */
 	protected NamedReference region = REGION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final NamedReference DESTRUCTOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference destructor = DESTRUCTOR_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -205,6 +226,27 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public NamedReference getDestructor() {
+		return destructor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDestructor(NamedReference newDestructor) {
+		NamedReference oldDestructor = destructor;
+		destructor = newDestructor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS__DESTRUCTOR, oldDestructor, destructor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<ClOperation> getOperations() {
 		if (operations == null) {
 			operations = new EObjectResolvingEList<ClOperation>(ClOperation.class, this, ClassdefPackage.CL_CLASS__OPERATIONS);
@@ -315,6 +357,8 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		switch (featureID) {
 			case ClassdefPackage.CL_CLASS__REGION:
 				return getRegion();
+			case ClassdefPackage.CL_CLASS__DESTRUCTOR:
+				return getDestructor();
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return getOperations();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -346,6 +390,9 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		switch (featureID) {
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion((NamedReference)newValue);
+				return;
+			case ClassdefPackage.CL_CLASS__DESTRUCTOR:
+				setDestructor((NamedReference)newValue);
 				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -393,6 +440,9 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 			case ClassdefPackage.CL_CLASS__REGION:
 				setRegion(REGION_EDEFAULT);
 				return;
+			case ClassdefPackage.CL_CLASS__DESTRUCTOR:
+				setDestructor(DESTRUCTOR_EDEFAULT);
+				return;
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				getOperations().clear();
 				return;
@@ -431,6 +481,8 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		switch (featureID) {
 			case ClassdefPackage.CL_CLASS__REGION:
 				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
+			case ClassdefPackage.CL_CLASS__DESTRUCTOR:
+				return DESTRUCTOR_EDEFAULT == null ? destructor != null : !DESTRUCTOR_EDEFAULT.equals(destructor);
 			case ClassdefPackage.CL_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case ClassdefPackage.CL_CLASS__RECEPTIONS:
@@ -463,6 +515,8 @@ public class ClClassImpl extends NamedImpl implements ClClass {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (region: ");
 		result.append(region);
+		result.append(", destructor: ");
+		result.append(destructor);
 		result.append(", parents: ");
 		result.append(parents);
 		result.append(", hasReceptions: ");

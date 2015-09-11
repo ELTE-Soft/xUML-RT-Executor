@@ -141,7 +141,7 @@ class RegionTemplate extends Template {
 				«IF firstState.isFinal»
 					
 					// The class cannot get more events
-					«OWNER_FIELD_NAME».dispose();
+					«region.containerClass.identifier».delete((«region.containerClass.implementation») «OWNER_FIELD_NAME»);
 				«ENDIF»
 			}
 		
@@ -199,7 +199,7 @@ class RegionTemplate extends Template {
 									«IF transition.target.isFinal»
 										
 										// The class cannot get more events
-										«OWNER_FIELD_NAME».dispose();
+										«region.containerClass.identifier».delete((«region.containerClass.implementation») «OWNER_FIELD_NAME»);
 									«ENDIF»
 								}
 							«ENDFOR»

@@ -1,7 +1,6 @@
 package hu.eltesoft.modelexecution.runtime.base;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
-import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 
 /**
  * The base class of generated code from UML classes that have a state machine.
@@ -32,26 +31,27 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 
 	@Override
 	public void send(Event event) {
+		if (isDeleted()) {
+			// verification error: sending message to a deleted object
+			return;
+		}
 		BaseRuntime.getInstance().addEventToQueue(this, event);
 	}
 
 	@Override
 	public void sendExternal(Event event) {
+		if (isDeleted()) {
+			// verification error: sending message to a deleted object
+			return;
+		}
 		BaseRuntime.getInstance().addExternalEventToQueue(this, event);
 	}
 
 	@Override
 	public void receive(Event event) {
-		stateMachine.step(event);
-	}
-
-	@Override
-	public void dispose() {
-		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
-	}
-
-	@Override
-	public String toString() {
-		return getOriginalClassName() + "#" + getInstanceID();
+		if (!isDeleted()) {
+			// deliver events only to non-deleted objects
+			stateMachine.step(event);
+		}
 	}
 }

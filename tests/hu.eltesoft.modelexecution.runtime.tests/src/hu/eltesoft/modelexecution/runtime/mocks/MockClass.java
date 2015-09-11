@@ -37,6 +37,10 @@ public class MockClass extends ClassWithState {
 		dispose();
 	}
 
+	private void dispose() {
+		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return (obj != null && obj instanceof MockClass);

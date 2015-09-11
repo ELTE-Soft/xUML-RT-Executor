@@ -100,31 +100,43 @@ class ClassTemplate extends Template {
 		«parent.implementation» «parent.inherited»;
 	«ENDFOR»
 
+	// destructor
+	public void destroy() {
+		if (isDeleted()) {
+			// verification error: double destruction
+		}
+		«IF null != classDefinition.destructor»
+			«classDefinition.destructor.identifier».execute();
+		«ELSE»
+			// default destructor, no destroy operation defined in the model
+		«ENDIF»
+		setDeleted();
+	}
 
 	// attributes
 	«FOR attribute : classDefinition.attributes»
 		
 		«generateAttribute(attribute)»
 	«ENDFOR»
-	
+
 	// inherited attributes
 	«FOR attribute : classDefinition.inheritedAttributes»
 		
 		«generateInheritedAttribute(attribute)»
 	«ENDFOR»
-	
+
 	// associations
 	«FOR association : classDefinition.associations»
 		
 		«generateAssociation(association)»
 	«ENDFOR»
-	
+
 	// inherited associations
 	«FOR association : classDefinition.inheritedAssociations»
 		
 		«generateInheritedAssociation(association)»
 	«ENDFOR»
-	
+
 	// operations (both defined and inherited)
 	«FOR operation : classDefinition.operations»
 		

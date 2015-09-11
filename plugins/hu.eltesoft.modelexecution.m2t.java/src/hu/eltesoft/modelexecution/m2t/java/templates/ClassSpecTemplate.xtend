@@ -50,6 +50,19 @@ class ClassSpecTemplate extends Template {
 				«ENDIF»
 				return created;
 			}
+		
+			/** Deleter for UML class «classSpec.javadoc» */
+			public static void delete(«classSpec.implementation» instance) {
+				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(instance);
+				instance.destroy();
+				«FOR rec : classSpec.ctorRecords.reverse»
+					«rec.inherited».destroy();
+				«ENDFOR»
+			}
+		
+			/** Destructor */
+			void destroy();
+		
 			«content»
 		}
 	'''

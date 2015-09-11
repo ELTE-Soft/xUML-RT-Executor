@@ -1,11 +1,10 @@
 package hu.eltesoft.modelexecution.runtime;
 
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
+import hu.eltesoft.modelexecution.runtime.base.Class;
 
 public interface InstanceListener {
 
-	void instanceCreated(ClassWithState instance);
+	void instanceCreated(Class instance);
 
-	void instanceDeleted(ClassWithState instance);
-
+	void instanceDeleted(Class instance);
 }

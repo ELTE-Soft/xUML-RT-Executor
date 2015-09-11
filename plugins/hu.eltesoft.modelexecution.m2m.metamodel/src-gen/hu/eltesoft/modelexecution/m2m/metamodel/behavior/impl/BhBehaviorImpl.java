@@ -3,6 +3,7 @@
 package hu.eltesoft.modelexecution.m2m.metamodel.behavior.impl;
 
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults;
+
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Parameter;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type;

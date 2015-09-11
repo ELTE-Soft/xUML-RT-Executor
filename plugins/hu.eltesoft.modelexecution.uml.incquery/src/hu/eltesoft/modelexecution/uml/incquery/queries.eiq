@@ -229,6 +229,14 @@ pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
 	find Parent(ancestor, parent);
 }
 
+// destruction
+pattern DestructorOfClass(cls : Class, destructor : Behavior) {
+	Class.ownedOperation(cls, operation);
+	Operation.name(operation, operationName);
+	check(Utils.toLowerCase(operationName).equals("destroy"));
+	Operation.method(operation, destructor);
+}
+
 // state machine
 pattern RegionOfClass(cls : Class, region : Region) {
 	find AncestorOrSelf(cls, regionOwner, _);

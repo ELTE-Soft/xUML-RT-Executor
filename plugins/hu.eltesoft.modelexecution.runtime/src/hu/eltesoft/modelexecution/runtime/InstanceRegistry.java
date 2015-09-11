@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
-
 /**
  * Stores references for objects that can receive events. These events can come
  * from a serialized representation so they must be able to find their target
@@ -18,7 +16,7 @@ import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 public final class InstanceRegistry {
 	// If multiple runtimes are executed simultaneously, the mapping should be
 	// partitioned by Runtime and synchronized.
-	private Map<InstanceKey, ClassWithState> instanceRegistry = new HashMap<>();
+	private Map<InstanceKey, hu.eltesoft.modelexecution.runtime.base.Class> instanceRegistry = new HashMap<>();
 
 	private List<InstanceListener> listeners = new LinkedList<>();
 
@@ -30,7 +28,8 @@ public final class InstanceRegistry {
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public ClassWithState getInstance(Class<? extends ClassWithState> targetClass, int instanceID) {
+	public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
+			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, int instanceID) {
 		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
 	}
 
@@ -38,7 +37,7 @@ public final class InstanceRegistry {
 	 * Registers an instance of a class that can receive messages. As long as an
 	 * instance is registered, it cannot be garbage-collected.
 	 */
-	public void registerInstance(ClassWithState instance) {
+	public void registerInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
 		InstanceKey key = new InstanceKey(instance);
 		instanceRegistry.put(key, instance);
 		for (InstanceListener listener : listeners) {
@@ -51,7 +50,7 @@ public final class InstanceRegistry {
 	 * unregistered if it is sure that they will not be a target of an external
 	 * message.
 	 */
-	public void unregisterInstance(ClassWithState instance) {
+	public void unregisterInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
 		instanceRegistry.remove(new InstanceKey(instance));
 		for (InstanceListener listener : listeners) {
 			listener.instanceDeleted(instance);
@@ -74,15 +73,15 @@ public final class InstanceRegistry {
 	}
 
 	public static final class InstanceKey {
-		private Class<? extends ClassWithState> klass;
+		private Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> klass;
 		private int instanceID;
 
-		public InstanceKey(ClassWithState instance) {
+		public InstanceKey(hu.eltesoft.modelexecution.runtime.base.Class instance) {
 			this.klass = instance.getClass();
 			this.instanceID = instance.getInstanceID();
 		}
 
-		public InstanceKey(Class<? extends ClassWithState> klass, int instanceID) {
+		public InstanceKey(Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> klass, int instanceID) {
 			this.klass = klass;
 			this.instanceID = instanceID;
 		}

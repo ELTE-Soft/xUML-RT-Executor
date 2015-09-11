@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getRegion <em>Region</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getDestructor <em>Destructor</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getAttributes <em>Attributes</em>}</li>
@@ -57,6 +58,32 @@ public interface ClClass extends ModelRoot {
 	 * @generated
 	 */
 	void setRegion(NamedReference value);
+
+	/**
+	 * Returns the value of the '<em><b>Destructor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Destructor</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Destructor</em>' attribute.
+	 * @see #setDestructor(NamedReference)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_Destructor()
+	 * @model dataType="hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference"
+	 * @generated
+	 */
+	NamedReference getDestructor();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getDestructor <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Destructor</em>' attribute.
+	 * @see #getDestructor()
+	 * @generated
+	 */
+	void setDestructor(NamedReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Operations</b></em>' reference list.

@@ -270,8 +270,8 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_Operations() {
-		return (EReference)clClassEClass.getEStructuralFeatures().get(1);
+	public EAttribute getClClass_Destructor() {
+		return (EAttribute)clClassEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_Receptions() {
+	public EReference getClClass_Operations() {
 		return (EReference)clClassEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -288,7 +288,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_Attributes() {
+	public EReference getClClass_Receptions() {
 		return (EReference)clClassEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -297,7 +297,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_InheritedAttributes() {
+	public EReference getClClass_Attributes() {
 		return (EReference)clClassEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -306,7 +306,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClClass_Associations() {
+	public EReference getClClass_InheritedAttributes() {
 		return (EReference)clClassEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -315,8 +315,17 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getClClass_Associations() {
+		return (EReference)clClassEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getClClass_Parents() {
-		return (EAttribute)clClassEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)clClassEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -325,7 +334,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	public EReference getClClass_InheritedAssociations() {
-		return (EReference)clClassEClass.getEStructuralFeatures().get(7);
+		return (EReference)clClassEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -334,7 +343,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * @generated
 	 */
 	public EAttribute getClClass_HasReceptions() {
-		return (EAttribute)clClassEClass.getEStructuralFeatures().get(8);
+		return (EAttribute)clClassEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -637,6 +646,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		// Create classes and their features
 		clClassEClass = createEClass(CL_CLASS);
 		createEAttribute(clClassEClass, CL_CLASS__REGION);
+		createEAttribute(clClassEClass, CL_CLASS__DESTRUCTOR);
 		createEReference(clClassEClass, CL_CLASS__OPERATIONS);
 		createEReference(clClassEClass, CL_CLASS__RECEPTIONS);
 		createEReference(clClassEClass, CL_CLASS__ATTRIBUTES);
@@ -744,6 +754,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		// Initialize classes, features, and operations; add parameters
 		initEClass(clClassEClass, ClClass.class, "ClClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClClass_Region(), theBasePackage.getNamedReference(), "region", null, 0, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClClass_Destructor(), theBasePackage.getNamedReference(), "destructor", null, 0, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClClass_Operations(), this.getClOperation(), null, "operations", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getClClass_Receptions(), this.getClReception(), null, "receptions", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getClClass_Attributes(), this.getClAttribute(), null, "attributes", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

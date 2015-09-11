@@ -13,6 +13,7 @@ import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
+import hu.eltesoft.modelexecution.uml.incquery.DestructorOfClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
@@ -52,6 +53,9 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// parent classes
 		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// destructor
+		rootNode.on(PACKAGE.clClass_Destructor, DestructorOfClassMatcher.on(engine))[new NamedReference(destructor)]
 
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]

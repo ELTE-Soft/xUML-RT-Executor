@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.SocketException;
 
+import hu.eltesoft.modelexecution.runtime.base.Class;
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 
 /**
@@ -77,14 +78,20 @@ public class RuntimeControllerServer implements InstanceListener {
 	}
 
 	@Override
-	public void instanceCreated(ClassWithState instance) {
+	public void instanceCreated(Class instance) {
+		if (!(instance instanceof ClassWithState)) {
+			return;
+		}
 		String eventLine = EVENT_REACTIVE_CLASS_CREATED + " " + instance.getClass().getCanonicalName() + " "
 				+ instance.getInstanceID() + " " + instance.getOriginalClassName();
 		trySendEvent(eventLine);
 	}
 
 	@Override
-	public void instanceDeleted(ClassWithState instance) {
+	public void instanceDeleted(Class instance) {
+		if (!(instance instanceof ClassWithState)) {
+			return;
+		}
 		String eventLine = EVENT_REACTIVE_CLASS_TERMINATED + " " + instance.getClass().getCanonicalName() + " "
 				+ instance.getInstanceID();
 		trySendEvent(eventLine);

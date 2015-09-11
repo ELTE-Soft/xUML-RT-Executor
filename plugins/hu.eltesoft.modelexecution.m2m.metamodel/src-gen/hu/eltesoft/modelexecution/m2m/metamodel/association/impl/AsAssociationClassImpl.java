@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getRegion <em>Region</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getDestructor <em>Destructor</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAttributes <em>Attributes</em>}</li>
@@ -70,6 +71,26 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected NamedReference region = REGION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final NamedReference DESTRUCTOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference destructor = DESTRUCTOR_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -206,6 +227,27 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public NamedReference getDestructor() {
+		return destructor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDestructor(NamedReference newDestructor) {
+		NamedReference oldDestructor = destructor;
+		destructor = newDestructor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR, oldDestructor, destructor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<ClOperation> getOperations() {
 		if (operations == null) {
 			operations = new EObjectResolvingEList<ClOperation>(ClOperation.class, this, AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS);
@@ -316,6 +358,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return getRegion();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				return getDestructor();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return getOperations();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -347,6 +391,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion((NamedReference)newValue);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				setDestructor((NamedReference)newValue);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -394,6 +441,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion(REGION_EDEFAULT);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				setDestructor(DESTRUCTOR_EDEFAULT);
+				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
 				return;
@@ -432,6 +482,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				return DESTRUCTOR_EDEFAULT == null ? destructor != null : !DESTRUCTOR_EDEFAULT.equals(destructor);
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -462,6 +514,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (derivedFeatureID) {
 				case AssociationPackage.AS_ASSOCIATION_CLASS__REGION: return ClassdefPackage.CL_CLASS__REGION;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR: return ClassdefPackage.CL_CLASS__DESTRUCTOR;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS: return ClassdefPackage.CL_CLASS__OPERATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS: return ClassdefPackage.CL_CLASS__RECEPTIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES: return ClassdefPackage.CL_CLASS__ATTRIBUTES;
@@ -486,6 +539,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (baseFeatureID) {
 				case ClassdefPackage.CL_CLASS__REGION: return AssociationPackage.AS_ASSOCIATION_CLASS__REGION;
+				case ClassdefPackage.CL_CLASS__DESTRUCTOR: return AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR;
 				case ClassdefPackage.CL_CLASS__OPERATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS;
 				case ClassdefPackage.CL_CLASS__RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS;
 				case ClassdefPackage.CL_CLASS__ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES;
@@ -512,6 +566,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (region: ");
 		result.append(region);
+		result.append(", destructor: ");
+		result.append(destructor);
 		result.append(", parents: ");
 		result.append(parents);
 		result.append(", hasReceptions: ");

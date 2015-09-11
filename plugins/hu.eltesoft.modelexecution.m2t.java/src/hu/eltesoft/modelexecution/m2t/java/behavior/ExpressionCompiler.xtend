@@ -153,7 +153,8 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(InstanceDeletionExpression expr) {
-		unwrap(compile(expr.reference)) -> fun("dispose")
+		val className = NamedReference.getIdentifier(expr.reference.typeOf)
+		className -> fun("delete", paren(className <> Template.CLASS_IMPL_SUFFIX) <> unwrap(compile(expr.reference)))
 	}
 
 	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {
@@ -229,6 +230,6 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(SignalDataExpression expr) {
-		fun(PrimitiveOperations.CAST, typeOf(expr).convert.javaType -> "class", wrap(SIGDATA_NAME))
+		fun(PrimitiveOperations.CAST, expr.typeOf.convert.javaType -> "class", wrap(SIGDATA_NAME))
 	}
 }
