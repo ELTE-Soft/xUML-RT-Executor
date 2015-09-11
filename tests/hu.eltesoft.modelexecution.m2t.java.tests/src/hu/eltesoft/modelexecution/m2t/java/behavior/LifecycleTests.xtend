@@ -57,7 +57,7 @@ class LifecycleTests extends CompiledCodeCheckTestCase {
 			'''A a = new A(); delete a;''',
 			binOp("java.util.ArrayList<_aeMPwMc1EeSnK7LttAdTLw> _local0", "=",
 				wrap("_aeMPwMc1EeSnK7LttAdTLw" -> fun("create", "null"))),
-			"_aeMPwMc1EeSnK7LttAdTLw_impl" -> fun("delete", paren("_aeMPwMc1EeSnK7LttAdTLw_impl") <> unwrap("_local0"))
+			"_aeMPwMc1EeSnK7LttAdTLw" -> fun("delete", paren("_aeMPwMc1EeSnK7LttAdTLw_impl") <> unwrap("_local0"))
 		)
 	}
 }
