@@ -42,7 +42,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	private ILaunch launch;
 
 	private DebugViewController debugControl = new DebugViewController();
-	
+
 	private VariablesViewController variableControl = new VariablesViewController();
 
 	private EObject entryPoint;
@@ -50,8 +50,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public XUMLRTDebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
 			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
-		this.entryPoint = ModelUtils.javaNameToEObject(
-				LaunchConfig.getEntryPoint(launch.getLaunchConfiguration()), resourceSet);
+		this.entryPoint = ModelUtils.javaNameToEObject(LaunchConfig.getEntryPoint(launch.getLaunchConfiguration()),
+				resourceSet);
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
@@ -64,7 +64,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public DebugViewController getDebugControl() {
 		return debugControl;
 	}
-	
+
 	@Override
 	public VariablesViewController getVariableControl() {
 		return variableControl;
@@ -262,6 +262,20 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			ret.addAll(component.getSmInstances());
 		}
 		return ret;
+	}
+
+	/**
+	 * @return The state machine instance that is suspended in the runtime, or
+	 *         null if there isn't one.
+	 */
+	public StateMachineInstance getSuspendedSMInstance() {
+		String actualSMInstance = vmBrowser.getActualSMInstance();
+		for (StateMachineInstance instance : getSmInstances()) {
+			if (instance.getName().equals(actualSMInstance)) {
+				return instance;
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings({ "unchecked", "restriction" })

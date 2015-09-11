@@ -173,7 +173,6 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		animation.cancelAnimationTimer();
-		animation.removeAllMarkers();
 
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
@@ -198,8 +197,9 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	}
 
 	private ThreadAction animateIfSelected(EObject modelElement) {
+		StateMachineInstance suspendedSMInstance = debugTarget.getSuspendedSMInstance();
 		if (actualSMInstanceIsSelected()) {
-			animation.setAnimationMarker(modelElement);
+			animation.setAnimationMarker(modelElement, suspendedSMInstance);
 			animation.startAnimationTimer(new TimerTask() {
 
 				@Override
@@ -210,6 +210,8 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			});
 			return ThreadAction.RemainSuspended;
 		} else {
+			// remove stuck animation marker if any
+			animation.removeAnimationMarker(suspendedSMInstance);
 			// the virtual machine is resumed immediately
 			return ThreadAction.ShouldResume;
 		}

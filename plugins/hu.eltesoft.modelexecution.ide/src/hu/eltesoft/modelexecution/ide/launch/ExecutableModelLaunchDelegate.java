@@ -159,6 +159,8 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 					debugMode[0] = true;
 				}
 			});
+		} else {
+			return true;
 		}
 
 		if (!debugMode[0]) {

@@ -1,5 +1,7 @@
 package hu.eltesoft.modelexecution.ide.debug.ui;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,11 +13,13 @@ public class AnimationController extends MokaAnimationBase {
 
 	private int animationTimeMultiplier;
 
-	/**
+	/*
 	 * Access to these fields is guarded by the synchronized keyword on the
 	 * marker setter and removal methods below.
 	 */
-	private EObject lastAnimated, lastSuspended;
+	private EObject lastSuspended;
+	
+	private Map<Object, EObject> lastAnimated = new HashMap<>();
 
 	private final Timer animationTimer = new Timer();
 	private TimerTask lastAnimationEndTask;
@@ -64,21 +68,31 @@ public class AnimationController extends MokaAnimationBase {
 		}
 	}
 
-	public synchronized void setAnimationMarker(EObject modelElement) {
-		removeAllMarkers();
-		lastAnimated = AnimationUtils.resolve(modelElement);
-		UTILS.addAnimationMarker(lastAnimated);
+	public synchronized void setAnimationMarker(EObject modelElement, Object group) {
+		EObject animated = lastAnimated.get(group);
+		if (null != animated) {
+			UTILS.removeAnimationMarker(animated);
+		}
+		animated = AnimationUtils.resolve(modelElement);
+		lastAnimated.put(group, animated);
+		UTILS.addAnimationMarker(animated);
 	}
 
-	public synchronized void removeAnimationMarker() {
-		if (null != lastAnimated) {
-			UTILS.removeAnimationMarker(lastAnimated);
-			lastAnimated = null;
+	public synchronized void removeAnimationMarker(Object group) {
+		EObject animated = lastAnimated.remove(group);
+		if (null != animated) {
+			UTILS.removeAnimationMarker(animated);
 		}
 	}
 
+	public synchronized void removeAnimationMarkers() {
+		for (EObject animated : lastAnimated.values()) {
+			UTILS.removeAnimationMarker(animated);
+		}
+		lastAnimated.clear();
+	}
+
 	public synchronized void setSuspendedMarker(EObject modelElement) {
-		removeAllMarkers();
 		lastSuspended = AnimationUtils.resolve(modelElement);
 		UTILS.addSuspendedMarker(lastSuspended);
 		openContainingDiagram(modelElement);
@@ -92,7 +106,7 @@ public class AnimationController extends MokaAnimationBase {
 	}
 
 	public void removeAllMarkers() {
-		removeAnimationMarker();
+		removeAnimationMarkers();
 		removeSuspendedMarker();
 	}
 }
