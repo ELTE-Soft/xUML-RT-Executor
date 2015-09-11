@@ -232,6 +232,8 @@ pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
 // destruction
 pattern DestructorOfClass(cls : Class, destructor : Behavior) {
 	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+	check(!isStatic);
 	Operation.name(operation, operationName);
 	check(Utils.toLowerCase(operationName).equals("destroy"));
 	Operation.method(operation, destructor);
