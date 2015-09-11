@@ -100,6 +100,7 @@ public class AnimationController extends MokaAnimationBase {
 	}
 
 	public synchronized void setSuspendedMarker(EObject modelElement) {
+		removeSuspendedMarker();
 		lastSuspended = AnimationUtils.resolve(modelElement);
 		UTILS.addSuspendedMarker(lastSuspended);
 		openContainingDiagram(modelElement);
