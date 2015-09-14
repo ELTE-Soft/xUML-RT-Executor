@@ -106,6 +106,7 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 			virtualMachineHandler.resume();
 			virtualMachine.resume();
+			animation.removeSuspendedMarker();
 
 			if (DebugEvent.CLIENT_REQUEST != request.getResumeDetail()) {
 				// this is a stepping request, just suspend again

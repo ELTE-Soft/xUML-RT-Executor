@@ -245,6 +245,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	private boolean suspendIfWaitingOrHasBreak(EObject modelElement, boolean hasBreak) {
 		synchronized (animation) {
 			if (waitingForSuspend || hasBreak) {
+				animation.removeAnimationMarker(debugTarget.getSuspendedSMInstance());
 				animation.setSuspendedMarker(modelElement);
 				debugTarget.markThreadAsSuspended(modelElement);
 				waitingForSuspend = false;
