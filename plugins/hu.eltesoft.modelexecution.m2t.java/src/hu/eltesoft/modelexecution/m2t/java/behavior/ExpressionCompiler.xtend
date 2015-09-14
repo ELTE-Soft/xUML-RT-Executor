@@ -153,8 +153,7 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(InstanceDeletionExpression expr) {
-		val className = NamedReference.getIdentifier(expr.reference.typeOf)
-		className -> fun("delete", paren(className <> Template.CLASS_IMPL_SUFFIX) <> unwrap(compile(expr.reference)))
+		unwrap(compile(expr.reference)) -> fun("delete")
 	}
 
 	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {

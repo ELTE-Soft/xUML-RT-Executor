@@ -140,8 +140,8 @@ class RegionTemplate extends Template {
 				«ENDIF»
 				«IF firstState.isFinal»
 					
-					// The class cannot get more events
-					«region.containerClass.identifier».delete((«region.containerClass.implementation») «OWNER_FIELD_NAME»);
+					// Deletes the owner instance. The machine will be unable to receive more events.
+					«OWNER_FIELD_NAME».delete();
 				«ENDIF»
 			}
 		
@@ -198,8 +198,8 @@ class RegionTemplate extends Template {
 									«ENDIF»
 									«IF transition.target.isFinal»
 										
-										// The class cannot get more events
-										«region.containerClass.identifier».delete((«region.containerClass.implementation») «OWNER_FIELD_NAME»);
+										// Deletes the owner instance. The machine will be unable to receive more events.
+										«OWNER_FIELD_NAME».delete();
 									«ENDIF»
 								}
 							«ENDFOR»

@@ -38,10 +38,18 @@ class ClassSpecTemplate extends Template {
 			/** Creator for UML class «classSpec.javadoc» */
 			public static «classSpec.identifier» create(«Consumer.canonicalName»<«classSpec.identifier»> initializer) {
 				«FOR rec : classSpec.ctorRecords»
-					«rec.implementation» «rec.inherited» 
+					final «rec.implementation» «rec.inherited» 
 						= new «rec.implementation»(«FOR par : rec.directParents SEPARATOR ','»«par.inherited»«ENDFOR»);
 				«ENDFOR»
-				«classSpec.implementation» created = new «classSpec.implementation»(«FOR parent : classSpec.parents SEPARATOR ','»«parent.inherited»«ENDFOR»);
+				«classSpec.implementation» created = new «classSpec.implementation»(
+					() -> {
+						«FOR rec : dtorRecords»
+							«rec.inherited».destroy();
+						«ENDFOR»
+					}
+					«FOR parent : classSpec.parents BEFORE ',' SEPARATOR ','»
+						«parent.inherited»
+					«ENDFOR»);
 				if (null != initializer) {
 					initializer.accept(created);
 				}
@@ -53,15 +61,9 @@ class ClassSpecTemplate extends Template {
 			}
 		
 			/** Deleter for UML class «classSpec.javadoc» */
-			public static void delete(«classSpec.implementation» instance) {
-				«InstanceRegistry.canonicalName».getInstanceRegistry().unregisterInstance(instance);
-				instance.destroy();
-				«FOR rec : dtorRecords»
-					instance.«rec.inherited».destroy();
-				«ENDFOR»
-			}
+			void delete();
 		
-			/** Destructor */
+			/** Destructor for UML class «classSpec.javadoc» */
 			void destroy();
 		
 			«content»

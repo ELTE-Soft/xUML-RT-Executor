@@ -14,13 +14,14 @@ public class MockClass extends ClassWithState {
 	}
 
 	public MockClass() {
-		super(0);
+		super(() -> {
+		} , 0);
 		InstanceRegistry.getInstanceRegistry().registerInstance(this);
 	}
 
 	public static void emptyFeed() {
 		MockClass instance = create();
-		instance.dispose();
+		instance.delete();
 	}
 
 	public static void feedEvent() {
@@ -34,11 +35,12 @@ public class MockClass extends ClassWithState {
 	public void receive(Event event) {
 		// dispose the instance after the event is delivered
 		// to let the dispatch loop terminate
-		dispose();
+		delete();
 	}
 
-	private void dispose() {
-		InstanceRegistry.getInstanceRegistry().unregisterInstance(this);
+	@Override
+	public void destroy() {
+		// intentionally left blank, empty destructor
 	}
 
 	@Override
