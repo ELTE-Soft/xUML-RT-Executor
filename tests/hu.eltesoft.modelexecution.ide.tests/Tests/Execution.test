@@ -1,13 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _QhEgcB2GEeWfUbA_Erpteg
 Element-Name: Execution
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _t24QgB4NEeWDyJhARpwrcA
-Runtime-Version: 2.0.0.201506120617
-Save-Time: 7/31/15 3:55 PM
+Runtime-Version: 2.0.0.201509132315
+Save-Time: 9/14/15 6:24 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,9 +15,10 @@ Entry-Name: .content
 
 
 mx-new-xuml-project "TestProject"
-mx-copy-helloworld-to-test
+mx-copy-model-to-test "HelloWorld"
 
-
+// TODO This should not be necessary
+mx-clean-projects
 
 // -------------------------------------------------
 // Make sure there is no previous debug configuration present
@@ -60,7 +60,7 @@ get-window "Debug Configurations" | get-button Debug | get-property enablement |
 with [get-window "Debug Configurations"] {
     get-group "Select model" | get-button Browse | click
     with [get-window "Select model"] {
-        get-tree | select "TestProject/HelloWorld_altered.uml"
+        get-tree | select "TestProject/HelloWorld.uml"
         get-button OK | click
     }
 }
@@ -85,11 +85,11 @@ get-window "Debug Configurations" | get-button Debug | get-property enablement |
 
 
 // -------------------------------------------------
-// Make new xUML project: select feed function
+// Make new xUML project: select main function
 
 with [get-window "Debug Configurations"] {
-    get-group "Select feed function" | get-button Browse | click
-    with [get-window "Select feed function"] {
+    get-group "Select main function" | get-button Browse | click
+    with [get-window "Select main function"] {
         get-table | select "<Operation> run \\(\\)"
         get-button OK | click
     }
@@ -108,7 +108,6 @@ with [get-window "Debug Configurations"] {
 }
 
 
-
 // -------------------------------------------------
 // Execute run configuration
 
@@ -118,6 +117,20 @@ with [get-window "Run Configurations"] {
     get-button Run | click
 }
 
+// Execution log must not contain errors
+get-view Console | get-text-viewer | get-property "getText()" | contains "logError" | verify-false 
+
+
+// Debug run has to be run from the Debug perspective
+mx-open-perspective "Debug"
+
+
+// Since the Debug view is open, we have to reopen the Model Explorer
+// to set breakpoints
+mx-open-view "Papyrus/Model Explorer"
+
+// We need the Problems view, hopefully it will be empty...
+mx-open-view "General/Problems"
 
 // -------------------------------------------------
 // Execute debug configuration
@@ -129,18 +142,21 @@ with [get-window "Debug Configurations"] {
 }
 
 
-// -------------------------------------------------
-// Set a breakpoint and execute debug configuration
 
-// Set the breakpoint
-with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1/Hello" | click
-    select "model/HelloWorld/HelloWorldBehavior/Region1/Hello" | get-menu "Moka/Debug/Toggle breakpoint" | click
-}
+// -------------------------------------------------
+// Execute debug configuration, checking breakpoints
+
+// The Model Explorer view is placed in an unusual location...
+get-tab-folder -index 6 | get-tab-item "Model Explorer" | click
+
+get-tree -index 2 | select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/Hello" 
+    | get-menu "Moka/Debug/Toggle breakpoint" | click
+
+
 
 // Check if it appears in the Breakpoints view
-get-view Breakpoints | get-tree | get-item "model::HelloWorld::HelloWorldBehavior::Region1::Hello" 
-    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello" | verify-true
+get-view Breakpoints | get-tree | get-item "model::HelloWorldComponent::HelloWorld::HelloWorld::HelloWorldBehavior::Region1::Hello" 
+    | get-property caption | equals "model::HelloWorldComponent::HelloWorld::HelloWorld::HelloWorldBehavior::Region1::Hello" | verify-true
 
 // Start debugging
 get-menu "Run/Debug Configurations..." | click
@@ -149,44 +165,55 @@ with [get-window "Debug Configurations"] {
     get-button Debug | click
 }
 
+
 // Check for pause on breakpoint
 get-view Debug | get-tree 
-    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/xUML-Rt Model/Default component/model::HelloWorld::HelloWorldBehavior::Region1::Hello \\[State\\]" 
-    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
+    | get-property caption | equals "Hello [State]" | verify-true
+
+
+
+global [val fillColorHighlightedNode 5487098]
 
 // Check for breakpoint highlighting
-get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
+get-editor "HelloWorld.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
     -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart | get-edit-part 
-    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals 5487098 
+    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals $fillColorHighlightedNode
     | verify-true
 
+
 // Go around the first time
-get-button "Resume (F8)" | click
+get-menu "Run/Resume" | click
 
 // Check for pause on breakpoint
 get-view Debug | get-tree 
-    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/xUML-Rt Model/Default component/model::HelloWorld::HelloWorldBehavior::Region1::Hello \\[State\\]" 
-    | get-property caption | equals "model::HelloWorld::HelloWorldBehavior::Region1::Hello [State]" | verify-true
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
+    | get-property caption | equals "Hello [State]" | verify-true
 
 // Check for breakpoint highlighting
-get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
+get-editor "HelloWorld.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
     -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart | get-edit-part 
-    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals 5487098 
+    -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals $fillColorHighlightedNode 
     | verify-true
 
 // Go to exit the second time
-get-button "Resume (F8)" | click
+get-menu "Run/Resume" | click
 
 // Check for termination
 get-view Debug | get-tree | get-item "<terminated>xUMLTestRunConfig \\[xUML-RT Executor\\]" | get-property caption 
     | equals "<terminated>xUMLTestRunConfig [xUML-RT Executor]" | verify-true
 
 // Highlighting should be turned off on breakpoint as execution is terminated
-with [get-editor "HelloWorld_altered.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
+with [get-editor "HelloWorld.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior 
     | get-edit-part -name HelloWorldBehavior | get-edit-part -className CustomStateMachineCompartmentEditPart 
     | get-edit-part -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello] {
     get-property "modelPropertyNodes[20].name" | equals fillColor | verify-true
-    get-property "modelPropertyNodes[20].value" | equals 5487098 | verify-false
+    get-property "modelPropertyNodes[20].value" | equals $fillColorHighlightedNode | verify-false
 }
+
+
+
+// Switching back to Papyrus perspective so that the final Problems view check can execute
+mx-open-perspective "Papyrus"
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

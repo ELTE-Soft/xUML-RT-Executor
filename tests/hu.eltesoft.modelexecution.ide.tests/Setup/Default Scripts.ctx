@@ -5,8 +5,8 @@ Element-Name: Default Scripts
 Element-Type: context
 Element-Version: 2.0
 Id: _sXg1IB2BEeWfUbA_Erpteg
-Runtime-Version: 2.0.0.201506120617
-Save-Time: 7/31/15 4:41 PM
+Runtime-Version: 2.0.0.201509132315
+Save-Time: 9/14/15 5:15 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -47,10 +47,10 @@ proc "mx-new-xuml-project" [val name] {
 }
 
 
-// Copies the model HelloWorld_altered that is included in the default workbench to TestProject.
-proc "mx-copy-helloworld-to-test" {
+// Copies the model (project_name) that is included in the default workbench to TestProject.
+proc "mx-copy-model-to-test" [val project_name] {
 	with [get-view "Project Explorer" | get-tree] {
-	    select "TestModels/HelloWorld_altered" | key-type "M1+c"
+	    select [concat "TestModels/" $project_name] | key-type "M1+c"
 	    select TestProject | key-type "M1+v"
 	}
 }
@@ -102,5 +102,31 @@ proc "mx-select-execution-engine" {
 	}
 }
 
+
+// Cleans (and rebuilds) all projects
+// This should not be necessary, but the build systems are not invoked otherwise in some cases
+proc "mx-clean-projects" {
+	get-menu "Project/Clean..." | click
+	get-window Clean | get-button OK | click
+}
+
+
+// Opens the given perspective
+proc "mx-open-perspective" [val perspectiveName] {
+	get-button "Open Perspective" | click
+	with [get-window "Open Perspective"] {
+	    get-table | select $perspectiveName
+	    get-button OK | click
+	}
+}
+
+// Opens the given view
+proc "mx-open-view" [val viewName] {
+	get-menu "Window/Show View/Other..." | click
+	with [get-window "Show View"] {
+	    get-tree | select $viewName
+	    get-button OK | click
+	}
+}
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

@@ -1,13 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _QhEgcB2GEeWfUbA_Erpteg
 Element-Name: Project handling
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _5BgxYAqPEeWkm7lMnbRSaQ
-Runtime-Version: 2.0.0.201506120617
-Save-Time: 7/29/15 3:42 PM
+Runtime-Version: 2.0.0.201509132315
+Save-Time: 9/14/15 4:09 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -62,20 +61,21 @@ get-editor "logging.properties" | close
 // -------------------------------------------------
 // Add model to project
 
-mx-copy-helloworld-to-test
+mx-copy-model-to-test "HelloWorld"
 
 
 // Check expected file counts
-get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/bin" | get-property "getItems().length" | equals 8 | verify-true
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
-
+let [val expectedCount 8] {
+	get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
+	get-view Navigator | get-tree | get-item "TestProject/bin" | get-property "getItems().length" | equals $expectedCount | verify-true
+	get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals [minus $expectedCount 1] | verify-true
+}
 
 // -------------------------------------------------
 // Delete project
 
 
-get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld_altered" | key-type Del
+get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld" | key-type Del
 get-window "Delete Resources" | get-button OK | click
 
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click

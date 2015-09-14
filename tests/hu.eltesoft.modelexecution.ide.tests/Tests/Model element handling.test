@@ -1,18 +1,21 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _QhEgcB2GEeWfUbA_Erpteg
 Element-Name: Model element handling
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _sAFiQB3yEeWDyJhARpwrcA
-Runtime-Version: 2.0.0.201506120617
-Save-Time: 7/29/15 3:50 PM
+Runtime-Version: 2.0.0.201509132315
+Save-Time: 9/14/15 7:24 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
+
+
+// The file count in the basic case of this test
+global [val fileCount 7]
 
 
 proc "replace-old-contents" {
@@ -42,7 +45,7 @@ proc "check-files-have-changed" [val message] {
 // If they have, we remember the contents and carry on.
 proc "check-and-replace-old-contents" [val message] {
 	// Store new contents of the generated Java files.
-	repeat [val index] -times 7 -command {
+	repeat [val index] -times $fileCount -command {
 		global [val [concat "new_contents" $index] [mx-get-gen-src-item $index]] -override
 	}
 
@@ -71,24 +74,25 @@ proc "check-files-didnt-change" [val message] {
 
 
 mx-new-xuml-project "TestProject"
-mx-copy-helloworld-to-test
+mx-copy-model-to-test "HelloWorld"
+
+// TODO should not be necessary
+mx-clean-projects
 
 mx-open-default-package
-// TODO remove
-// get-view "Project Explorer" | get-tree | select "TestProject/model-gen-src/\\(default package\\)" | double-click
 
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 
 // Store the initial contents of the generated Java files.
-repeat [val index] -times 7 -command {
+repeat [val index] -times $fileCount -command {
 	global [val [concat "old_contents" $index] [mx-get-gen-src-item $index]]
 }
 
-mx-open-model "HelloWorld_altered"
+mx-open-model "HelloWorld"
 
 
 // -------------------------------------------------
@@ -96,13 +100,13 @@ mx-open-model "HelloWorld_altered"
 
 
 with [get-view "Model Explorer" | get-tree] {
-    select "model/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/State" | click
+    select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/State" | click
     key-type "M1+s"
 }
 
-// Check: we still have exactly 7 Java files
+// Check: we still have exactly the required amount of Java files
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 
 check-and-replace-old-contents "Files remain the same after a new state was inserted"
@@ -112,9 +116,9 @@ check-and-replace-old-contents "Files remain the same after a new state was inse
 // Add transition
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1" | click
-    select "model/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/Transition" | click
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1/<Transition>" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1" | click
+    select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1" | get-menu "New Child/Transition" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/<Transition>" | click
 }
 get-tab-folder -index 4 | get-tab-item Properties | click
 with [get-view Properties] {
@@ -157,8 +161,8 @@ with [get-view "Model Explorer" | get-tree] {
     get-item model | click
     select model | get-menu "New Child/SignalEvent" | click
     key-type "M1+s"
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | click
-    select "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | get-menu "New Child/Trigger" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/transition1" | click
+    select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/transition1" | get-menu "New Child/Trigger" | click
 }
 with [get-view Properties | get-tree] {
     select "UML/Event" | activate-cell-edit -column 1
@@ -180,8 +184,8 @@ check-files-didnt-change "Files have changed after a new signal event and trigge
 
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior" | click
-    select "model/HelloWorld/HelloWorldBehavior" | get-menu "New Child/Signal" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior" | click
+    select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior" | get-menu "New Child/Signal" | click
     key-type "M1+s"
     get-item "model/SignalEvent1" | click
 }
@@ -203,7 +207,7 @@ check-files-didnt-change "Files have changed after a new signal event and trigge
 // Rename signal
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Signal1" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Signal1" | click
     key-type F2
 }
 with [get-window "Rename..."] {
@@ -217,15 +221,15 @@ get-view "Model Explorer" | get-tree | key-type "M1+s"
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 8 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals [plus $fileCount 1] | verify-true
 
 
 
 // -------------------------------------------------
 // Close and reopen model
 
-get-editor "HelloWorld_altered.di" | close
-get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld_altered" | double-click
+get-editor "HelloWorld.di" | close
+get-view "Project Explorer" | get-tree | select "TestProject/HelloWorld" | double-click
 
 get-view "Model Explorer" | get-tree | get-item "model/SignalEvent1" | get-property caption | equals SignalEvent1 
     | verify-true
@@ -236,14 +240,14 @@ get-view "Model Explorer" | get-tree | get-item "model/SignalEvent1" | get-prope
 // Delete signal
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Signal0" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Signal0" | click
     key-type Del
     key-type "M1+s"
 }
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 
 // -------------------------------------------------
@@ -257,44 +261,44 @@ with [get-view "Model Explorer" | get-tree] {
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 // -------------------------------------------------
 // Delete trigger
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1/transition1/Trigger1" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/transition1/Trigger1" | click
     key-type Del
     key-type "M1+s"
 }
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 // -------------------------------------------------
 // Delete transition
 
 with [get-view "Model Explorer" | get-tree] {
-    select "model/HelloWorld/HelloWorldBehavior/Region1/transition1" | key-type Del
+    select "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/transition1" | key-type Del
     key-type "M1+s"
 }
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 // -------------------------------------------------
 // Delete state
 
 with [get-view "Model Explorer" | get-tree] {
-    get-item "model/HelloWorld/HelloWorldBehavior/Region1/State1" | click
+    get-item "model/HelloWorldComponent/HelloWorld/HelloWorld/HelloWorldBehavior/Region1/State1" | click
     key-type Del
     key-type "M1+s"
 }
 
 // Check expected file counts
 get-view Navigator | get-tree | select TestProject | get-menu Refresh | click
-get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals 7 | verify-true
+get-view Navigator | get-tree | get-item "TestProject/model-gen-src" | get-property "getItems().length" | equals $fileCount | verify-true
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
