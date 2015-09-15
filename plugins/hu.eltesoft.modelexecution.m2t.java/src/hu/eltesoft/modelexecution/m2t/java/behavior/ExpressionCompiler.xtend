@@ -1,6 +1,7 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ClassExtentExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
@@ -25,6 +26,7 @@ import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
@@ -230,5 +232,10 @@ class ExpressionCompiler extends CompilerBase {
 
 	def dispatch CodeGenNode compile(SignalDataExpression expr) {
 		fun(PrimitiveOperations.CAST, expr.typeOf.convert.javaType -> "class", wrap(SIGDATA_NAME))
+	}
+
+	def dispatch CodeGenNode compile(ClassExtentExpression expr) {
+		InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
+			fun("allInstances", (compile(expr.class_) <> Template.CLASS_IMPL_SUFFIX) -> "class")
 	}
 }

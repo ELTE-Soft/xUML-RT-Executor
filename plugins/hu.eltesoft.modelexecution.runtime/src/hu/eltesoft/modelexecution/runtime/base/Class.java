@@ -5,15 +5,15 @@ import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
 public abstract class Class {
 
 	private final SubobjectsDestructor subobjectsDestructor;
-	private final int instanceID;
+	private final long instanceID;
 	private boolean deleted = false;
 
-	public Class(SubobjectsDestructor subobjectsDestructor, int instanceID) {
+	public Class(SubobjectsDestructor subobjectsDestructor, long instanceID) {
 		this.subobjectsDestructor = subobjectsDestructor;
 		this.instanceID = instanceID;
 	}
 
-	public int getInstanceID() {
+	public long getInstanceID() {
 		return instanceID;
 	}
 

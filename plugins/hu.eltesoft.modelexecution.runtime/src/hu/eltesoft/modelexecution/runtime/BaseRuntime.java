@@ -127,7 +127,7 @@ public final class BaseRuntime implements AutoCloseable {
 		try {
 			logInfo("Preparing system for execution");
 			prepare(className, mainName);
-			if (!InstanceRegistry.getInstanceRegistry().isEmpty()) {
+			if (InstanceRegistry.getInstanceRegistry().hasReactiveInstances()) {
 				if (controlledStart) {
 					executionReady.await();
 				}
@@ -146,7 +146,7 @@ public final class BaseRuntime implements AutoCloseable {
 							traceWriter.traceEvent(currQueueEvent);
 						}
 					}
-				} while (!InstanceRegistry.getInstanceRegistry().isEmpty());
+				} while (InstanceRegistry.getInstanceRegistry().hasReactiveInstances());
 			}
 			logInfo("Execution terminated successfully");
 			return TerminationResult.SUCCESSFUL_TERMINATION;

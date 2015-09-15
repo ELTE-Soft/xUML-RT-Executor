@@ -53,8 +53,8 @@ class ClassSpecTemplate extends Template {
 				if (null != initializer) {
 					initializer.accept(created);
 				}
+				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);
 				«IF classSpec.hasStateMachine»
-					«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);
 					created.initializeStateMachine();
 				«ENDIF»
 				return created;

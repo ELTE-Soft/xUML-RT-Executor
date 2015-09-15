@@ -1,10 +1,12 @@
 package hu.eltesoft.modelexecution.runtime;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
+import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 
 /**
  * Stores references for objects that can receive events. These events can come
@@ -16,7 +18,9 @@ import java.util.Objects;
 public final class InstanceRegistry {
 	// If multiple runtimes are executed simultaneously, the mapping should be
 	// partitioned by Runtime and synchronized.
-	private Map<InstanceKey, hu.eltesoft.modelexecution.runtime.base.Class> instanceRegistry = new HashMap<>();
+	private ClassMap instanceRegistry = new ClassMap();
+
+	private long numberOfReactiveInstances = 0;
 
 	private List<InstanceListener> listeners = new LinkedList<>();
 
@@ -25,12 +29,17 @@ public final class InstanceRegistry {
 	private InstanceRegistry() {
 	}
 
+	public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances(
+			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+		return instanceRegistry.allInstances(targetClass);
+	}
+
 	/**
 	 * Looks up an instance of the given class.
 	 */
 	public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
 			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, int instanceID) {
-		return instanceRegistry.get(new InstanceKey(targetClass, instanceID));
+		return instanceRegistry.getInstance(targetClass, instanceID);
 	}
 
 	/**
@@ -38,8 +47,13 @@ public final class InstanceRegistry {
 	 * instance is registered, it cannot be garbage-collected.
 	 */
 	public void registerInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
-		InstanceKey key = new InstanceKey(instance);
-		instanceRegistry.put(key, instance);
+		if (!instanceRegistry.addInstance(instance)) {
+			// the registry already contained this instance
+			return;
+		}
+		if (instance instanceof ClassWithState) {
+			++numberOfReactiveInstances;
+		}
 		for (InstanceListener listener : listeners) {
 			listener.instanceCreated(instance);
 		}
@@ -51,14 +65,20 @@ public final class InstanceRegistry {
 	 * message.
 	 */
 	public void unregisterInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
-		instanceRegistry.remove(new InstanceKey(instance));
+		if (!instanceRegistry.removeInstance(instance)) {
+			// the instance was not contained by the registry
+			return;
+		}
+		if (instance instanceof ClassWithState) {
+			--numberOfReactiveInstances;
+		}
 		for (InstanceListener listener : listeners) {
 			listener.instanceDeleted(instance);
 		}
 	}
 
-	public boolean isEmpty() {
-		return instanceRegistry.isEmpty();
+	public boolean hasReactiveInstances() {
+		return numberOfReactiveInstances > 0;
 	}
 
 	public void addInstanceListener(InstanceListener listener) {
@@ -72,41 +92,60 @@ public final class InstanceRegistry {
 		return INSTANCE;
 	}
 
-	public static final class InstanceKey {
-		private Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> klass;
-		private int instanceID;
+	private class ClassMap {
 
-		public InstanceKey(hu.eltesoft.modelexecution.runtime.base.Class instance) {
-			this.klass = instance.getClass();
-			this.instanceID = instance.getInstanceID();
+		private final Map<Class<? extends hu.eltesoft.modelexecution.runtime.base.Class>, IdMap> map = new HashMap<>();
+
+		public boolean addInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
+			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = instance.getClass();
+			return getIdMap(targetClass).put(instance.getInstanceID(), instance);
 		}
 
-		public InstanceKey(Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> klass, int instanceID) {
-			this.klass = klass;
-			this.instanceID = instanceID;
+		public boolean removeInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
+			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = instance.getClass();
+			return getIdMap(targetClass).remove(instance.getInstanceID());
 		}
 
-		@Override
-		public int hashCode() {
-			return Objects.hash(klass, instanceID);
+		public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances(
+				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+			return getIdMap(targetClass).allInstances();
 		}
 
-		public Class<?> getKlass() {
-			return klass;
+		public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
+				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, int instanceID) {
+			return getIdMap(targetClass).getByInstanceID(instanceID);
 		}
 
-		public int getInstanceID() {
-			return instanceID;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == null || !(obj instanceof InstanceKey)) {
-				return false;
+		private IdMap getIdMap(Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+			IdMap idMap = map.get(targetClass);
+			if (null == idMap) {
+				idMap = new IdMap();
+				map.put(targetClass, idMap);
 			}
-			InstanceKey other = (InstanceKey) obj;
-			return instanceID == other.instanceID && klass.equals(other.klass);
+			return idMap;
+		}
+	}
+
+	private class IdMap {
+
+		private final Map<Long, hu.eltesoft.modelexecution.runtime.base.Class> map = new HashMap<>();
+
+		/** Returns whether the inserted instance is new. */
+		public boolean put(long instanceID, hu.eltesoft.modelexecution.runtime.base.Class instance) {
+			return null == map.put(instanceID, instance);
 		}
 
+		/** Returns whether the registry contained the instance. */
+		public boolean remove(long instanceID) {
+			return null != map.remove(instanceID);
+		}
+
+		public hu.eltesoft.modelexecution.runtime.base.Class getByInstanceID(long instanceID) {
+			return map.get(instanceID);
+		}
+
+		public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances() {
+			return new HashSet<>(map.values());
+		}
 	}
 }

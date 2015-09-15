@@ -9,7 +9,7 @@ public abstract class ClassWithState extends Class implements StatefulClass {
 
 	private final StateMachineRegion stateMachine;
 
-	public ClassWithState(SubobjectsDestructor subobjectsDestructor, int instanceID) {
+	public ClassWithState(SubobjectsDestructor subobjectsDestructor, long instanceID) {
 		super(subobjectsDestructor, instanceID);
 		stateMachine = createStateMachine();
 	}

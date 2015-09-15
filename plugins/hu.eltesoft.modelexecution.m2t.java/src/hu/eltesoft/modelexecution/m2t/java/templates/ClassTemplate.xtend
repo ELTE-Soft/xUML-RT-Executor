@@ -20,7 +20,7 @@ import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
 import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
 import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 import java.util.LinkedList
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 
@@ -50,7 +50,7 @@ class ClassTemplate extends Template {
 	'''
 
 	override generateContent() '''
-		private static final «AtomicInteger.canonicalName» nextInstanceID = new «AtomicInteger.canonicalName»(0);
+		private static final «AtomicLong.canonicalName» nextInstanceID = new «AtomicLong.canonicalName»(0);
 		
 		/** Constructor for UML class «classDefinition.javadoc» */
 		public «classDefinition.implementation»(
