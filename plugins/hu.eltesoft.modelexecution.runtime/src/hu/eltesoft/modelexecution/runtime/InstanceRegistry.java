@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.runtime;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,8 +30,7 @@ public final class InstanceRegistry {
 	private InstanceRegistry() {
 	}
 
-	public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances(
-			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+	public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances(Class<C> targetClass) {
 		return instanceRegistry.allInstances(targetClass);
 	}
 
@@ -106,7 +106,7 @@ public final class InstanceRegistry {
 			return getIdMap(targetClass).remove(instance.getInstanceID());
 		}
 
-		public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances(
+		public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances(
 				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
 			return getIdMap(targetClass).allInstances();
 		}
@@ -144,8 +144,9 @@ public final class InstanceRegistry {
 			return map.get(instanceID);
 		}
 
-		public HashSet<hu.eltesoft.modelexecution.runtime.base.Class> allInstances() {
-			return new HashSet<>(map.values());
+		@SuppressWarnings("unchecked")
+		public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances() {
+			return new HashSet<C>((Collection<C>) map.values());
 		}
 	}
 }
