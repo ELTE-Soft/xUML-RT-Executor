@@ -11,7 +11,7 @@ import java.util.Arrays;
 // like division by zero, or invalid casts.
 // TODO: review compatibility of setValue, valueEquality, referenceEquality and
 // cast with collections
-public class PrimitiveOperations {
+public final class PrimitiveOperations {
 
 	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
 
@@ -296,11 +296,11 @@ public class PrimitiveOperations {
 		return wrap(unwrap(lhs) < unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> valueEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
+	public static <T> ArrayList<Boolean> valueEquality(final ArrayList<T> lhs, final ArrayList<T> rhs) {
 		return wrap(unwrap(lhs).equals(unwrap(rhs)));
 	}
 
-	public static ArrayList<Boolean> referenceEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
+	public static <T> ArrayList<Boolean> referenceEquality(final ArrayList<T> lhs, final ArrayList<T> rhs) {
 		return wrap(unwrap(lhs) == unwrap(rhs));
 	}
 
