@@ -76,7 +76,7 @@ class StatementCompiler extends OperatorCompiler {
 	def dispatch CodeGenNode compile(ForStatement loop) {
 		val params = new CodeGenNode("(", ")", "; ")
 		params.add(compile(loop.initialization))
-		params.add(compile(loop.condition))
+		params.add(unwrap(compile(loop.condition)))
 		params.add(compile(loop.update))
 		"for " <> params <> " " <> compile(loop.body)
 	}

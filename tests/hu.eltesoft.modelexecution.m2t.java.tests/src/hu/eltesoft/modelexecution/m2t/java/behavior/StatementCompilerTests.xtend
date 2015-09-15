@@ -96,14 +96,14 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def testForWithEmptyUpdate() {
 		assertCompilesTo('''for(Integer i = 0; false; ){}''',
 			"for (" <> binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)) <>
-				"; " <> booleanLiteral("false") <> "; ) " <> block)
+				"; " <> unwrap(booleanLiteral("false")) <> "; ) " <> block)
 	}
 
 	@Test
 	def testForWithNonEmptyUpdate() {
 		assertCompilesTo('''for(Integer i = 0; false; false ){}''',
 			"for (" <> binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)) <>
-				"; " <> booleanLiteral("false") <> "; " <> booleanLiteral("false") <> ") " <> block)
+				"; " <> unwrap(booleanLiteral("false")) <> "; " <> booleanLiteral("false") <> ") " <> block)
 	}
 
 	@Test
