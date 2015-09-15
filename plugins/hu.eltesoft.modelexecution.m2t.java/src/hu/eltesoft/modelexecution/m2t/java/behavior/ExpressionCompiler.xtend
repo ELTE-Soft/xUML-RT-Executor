@@ -6,6 +6,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.FilterExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperation
@@ -27,6 +28,7 @@ import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
@@ -237,5 +239,13 @@ class ExpressionCompiler extends CompilerBase {
 	def dispatch CodeGenNode compile(ClassExtentExpression expr) {
 		InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
 			fun("allInstances", (compile(expr.class_) <> Template.CLASS_IMPL_SUFFIX) -> "class")
+	}
+
+	def dispatch CodeGenNode compile(FilterExpression expr) {
+		fun(
+			CollectionOperations.FILTER,
+			compile(expr.context),
+			expr.declaration.localName <> " -> " <> unwrap(compile(expr.expression))
+		)
 	}
 }
