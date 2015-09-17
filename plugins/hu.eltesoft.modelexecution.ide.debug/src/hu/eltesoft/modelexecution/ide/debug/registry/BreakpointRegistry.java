@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
+import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
@@ -23,7 +24,7 @@ public class BreakpointRegistry {
 			return;
 		}
 
-		breakpointsForElements.put(modelElement, breakpoint);
+		breakpointsForElements.put(AnimationUtils.resolve(modelElement), breakpoint);
 	}
 
 	public void remove(MokaBreakpoint breakpoint) {

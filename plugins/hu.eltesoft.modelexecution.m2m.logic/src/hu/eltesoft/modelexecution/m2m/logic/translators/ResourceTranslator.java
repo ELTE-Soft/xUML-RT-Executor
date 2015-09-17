@@ -3,12 +3,14 @@ package hu.eltesoft.modelexecution.m2m.logic.translators;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
+import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
+import org.eclipse.incquery.runtime.base.api.filters.IBaseIndexResourceFilter;
+import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
-
-import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
@@ -26,6 +28,9 @@ import hu.eltesoft.modelexecution.uml.incquery.Queries;
  */
 public class ResourceTranslator {
 
+	public static final String PATHMAP_SCHEME = "pathmap";
+	private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
+	
 	public static ResourceTranslator createIncremental(ModelSet modelSet) {
 		return new ResourceTranslator(modelSet, true);
 	}
@@ -52,8 +57,7 @@ public class ResourceTranslator {
 		disposed = false;
 
 		try {
-			IncQueryEngine incQueryEngine = IncQueryEngineService.getOrCreateEngineEvenIfModelIsClosed(resource);
-			engine = AdvancedIncQueryEngine.from(incQueryEngine);
+			createIncQueryEngine();
 
 			Queries.instance().prepare(engine);
 			setupTranslators();
@@ -64,6 +68,24 @@ public class ResourceTranslator {
 		} catch (IncQueryException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void createIncQueryEngine() throws IncQueryException {
+		BaseIndexOptions options = new BaseIndexOptions()
+				.withResourceFilterConfiguration(new IBaseIndexResourceFilter() {
+
+					@Override
+					public boolean isResourceFiltered(Resource resource) {
+						URI uri = resource.getURI();
+						if (uri.toString().contains("RALF")) {
+							return false;
+						}
+						return PATHMAP_SCHEME.equals(uri.scheme()) && !uri.authority().equals(UML_LIBRARIES_AUTHORITY);
+					}
+
+				});
+		EMFScope scope = new EMFScope(resource, options);
+		engine = AdvancedIncQueryEngine.from(AdvancedIncQueryEngine.createUnmanagedEngine(scope));
 	}
 
 	private void setupTranslators() throws IncQueryException {
@@ -123,6 +145,7 @@ public class ResourceTranslator {
 	}
 
 	public List<SourceCodeTask> fullTranslation() {
+		System.out.println("fullTranslation");
 		checkDisposed();
 
 		List<SourceCodeTask> updateTasks = new LinkedList<>();

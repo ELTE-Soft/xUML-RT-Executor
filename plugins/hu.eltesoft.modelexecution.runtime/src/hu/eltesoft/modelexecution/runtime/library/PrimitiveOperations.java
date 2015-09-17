@@ -83,11 +83,13 @@ public class PrimitiveOperations {
 	}
 
 	public static <T> T unwrap(final ArrayList<T> wrapper) {
+		// TODO: if wrapper is empty it is a validation error
 		return wrapper.get(0);
 	}
 
 	public static <T> ArrayList<T> setValue(final ArrayList<T> wrapper, final ArrayList<T> newValue) {
-		wrapper.set(0, unwrap(newValue));
+		wrapper.clear();
+		wrapper.addAll(newValue);
 		return newValue;
 	}
 
@@ -287,11 +289,16 @@ public class PrimitiveOperations {
 		return wrap(unwrap(lhs) < unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> valueEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
-		return wrap(unwrap(lhs).equals(unwrap(rhs)));
+	public static ArrayList<Boolean> valueEquality(final ArrayList<? extends Object> lhs, final ArrayList<? extends Object> rhs) {
+		return wrap(lhs.equals(rhs));
 	}
 
-	public static ArrayList<Boolean> referenceEquality(final ArrayList<Object> lhs, final ArrayList<Object> rhs) {
-		return wrap(unwrap(lhs) == unwrap(rhs));
+	public static ArrayList<Boolean> referenceEquality(final ArrayList<? extends Object> lhs, final ArrayList<? extends Object> rhs) {
+		for (int i = 0; i < lhs.size(); i++) {
+			if (lhs.get(i) != rhs.get(i)) {
+				return wrap(false);
+			}
+		}
+		return wrap(true);
 	}
 }
