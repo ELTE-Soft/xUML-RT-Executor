@@ -107,6 +107,9 @@ public class RuntimeControllerClient {
 
 	protected boolean sendCommand(String command) {
 		awaitControllerReady();
+		if (socket.isClosed()) {
+			return false;
+		}
 		try {
 			writer.append(command + "\n"); //$NON-NLS-1$
 			writer.flush();
