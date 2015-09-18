@@ -114,7 +114,10 @@ final class ExitCodeChecker implements ILaunchesListener2 {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		try {
 			for (String path : pathes) {
-				root.findMember(path).refreshLocal(IResource.DEPTH_ONE, null);
+				IResource toRefresh = root.findMember(path);
+				if (toRefresh != null && toRefresh.exists()) {
+					toRefresh.refreshLocal(IResource.DEPTH_ONE, null);
+				}
 			}
 		} catch (CoreException e) {
 			PluginLogger.logError("Error while refreshing changed folders", e);
