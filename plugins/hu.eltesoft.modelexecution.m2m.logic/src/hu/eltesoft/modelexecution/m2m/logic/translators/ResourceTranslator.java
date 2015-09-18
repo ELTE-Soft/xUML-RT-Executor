@@ -145,7 +145,6 @@ public class ResourceTranslator {
 	}
 
 	public List<SourceCodeTask> fullTranslation() {
-		System.out.println("fullTranslation");
 		checkDisposed();
 
 		List<SourceCodeTask> updateTasks = new LinkedList<>();

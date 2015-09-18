@@ -91,7 +91,7 @@ public class VirtualMachineManager implements ITerminate {
 	public void addBreakpoint(com.sun.jdi.Location location) {
 		EventRequestManager manager = virtualMachine.eventRequestManager();
 		BreakpointRequest request = manager.createBreakpointRequest(location);
-		request.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+		request.setSuspendPolicy(EventRequest.SUSPEND_EVENT_THREAD);
 		request.enable();
 	}
 
@@ -135,6 +135,7 @@ public class VirtualMachineManager implements ITerminate {
 			private void dispatchEvent(Event event) {
 				if (event instanceof VMStartEvent) {
 					fireVMStartEvent((VMStartEvent) event);
+					shouldResume = true;
 				} else if (event instanceof VMDisconnectEvent) {
 					fireVMDisconnectEvent((VMDisconnectEvent) event);
 					// stop on vm disconnect
