@@ -5,8 +5,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.logic
 Bundle-Version: 0.6.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle:
- org.eclipse.uml2.uml,
+Require-Bundle: org.eclipse.uml2.uml,
  org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.emf.common,
  org.eclipse.papyrus.infra.core,
