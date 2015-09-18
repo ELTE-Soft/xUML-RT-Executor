@@ -41,6 +41,11 @@ public class TranslatorRegistry {
 	}
 
 	public void modelSetUnloaded(ModelSet modelSet) {
+		translators.remove(modelSet);
+
+		for (Resource resource : modelSet.getResources()) {
+			modelContainment.remove(resource.getURI(), modelSet);
+		}
 	}
 
 	public synchronized void resourceRemoved(IResource resource) {
