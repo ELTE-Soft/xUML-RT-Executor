@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.runtime.tests
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Fragment-Host: hu.eltesoft.modelexecution.runtime;bundle-version="0.6.0"
+Fragment-Host: hu.eltesoft.modelexecution.runtime;bundle-version="0.6.1"
 Require-Bundle: com.google.guava;bundle-version="16.0.1",
  com.google.jimfs,
  org.json,
- hu.eltesoft.modelexecution.test.utils;bundle-version="0.6.0",
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.6.1",
  org.junit;bundle-version="4.11.0",
  org.mockito.mockito-core;bundle-version="1.9.5",
  org.objenesis;bundle-version="2.1.0"

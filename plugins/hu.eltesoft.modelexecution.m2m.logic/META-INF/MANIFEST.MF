@@ -3,20 +3,20 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.logic
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: 
+Require-Bundle:
  org.eclipse.uml2.uml,
  org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.emf.common,
  org.eclipse.papyrus.infra.core,
  org.eclipse.incquery.databinding.runtime;bundle-version="1.0.0",
- hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2t.java;bundle-version="0.6.0",
+ hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2t.java;bundle-version="0.6.1",
  hu.eltesoft.modelexecution.profile;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.6.0",
+ hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.6.1",
  com.incquerylabs.uml.papyrus;bundle-version="1.0.0",
  com.incquerylabs.uml.ralf;bundle-version="1.0.0"
 Export-Package: hu.eltesoft.modelexecution.m2m.logic,
