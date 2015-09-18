@@ -1,10 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.ReducedAlfSystem
+import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.uml2.uml.Type
 import org.eclipse.uml2.uml.DataType
 import org.eclipse.uml2.uml.Signal
+import org.eclipse.uml2.uml.Type
 
 class TypeSystemExtensions {
 
@@ -14,44 +15,36 @@ class TypeSystemExtensions {
 		this.typeSystem = typeSystem
 	}
 
-	protected def Type typeOf(EObject expression) {
+	def Type typeOf(EObject expression) {
 		typeSystem.type(expression).value.umlType
 	}
 
-	protected def Type primitiveType(Object name) {
-		typeSystem.typeFactory.primitiveTypeReference(name.toString).umlType
+	def isBoolean(EObject expression) {
+		IUMLContextProvider.BOOLEAN_TYPE == typeOf(expression).name
 	}
 
-	protected def isBoolean(EObject expression) {
-		primitiveType(typeSystem.BOOLEAN) == typeOf(expression)
+	def isInteger(EObject expression) {
+		IUMLContextProvider.INTEGER_TYPE == typeOf(expression).name
 	}
 
-	protected def isInteger(EObject expression) {
-		primitiveType(typeSystem.INTEGER) == typeOf(expression)
+	def isReal(EObject expression) {
+		IUMLContextProvider.REAL_TYPE == typeOf(expression).name
 	}
 
-	protected def isReal(EObject expression) {
-		primitiveType(typeSystem.REAL) == typeOf(expression)
+	def isString(EObject expression) {
+		IUMLContextProvider.STRING_TYPE == typeOf(expression).name
 	}
 
-	protected def isString(EObject expression) {
-		primitiveType(typeSystem.STRING) == typeOf(expression)
+	def isPrimitive(EObject expression) {
+		IUMLContextProvider.PRIMITIVE_TYPES.contains(typeOf(expression).name)
 	}
 
-	protected def isPrimitive(EObject expression) {
-		expression.isBoolean || expression.isInteger || expression.isReal || expression.isString
-	}
-
-	protected def hasValueType(EObject expression) {
+	def hasValueType(EObject expression) {
 		val type = typeSystem.type(expression).value.umlType
 		expression.isPrimitive || type instanceof Signal || type instanceof DataType
 	}
 
-	protected def hasReferenceType(EObject expression) {
+	def hasReferenceType(EObject expression) {
 		!expression.hasValueType
-	}
-
-	protected def contextClassName() {
-		typeSystem.umlContext.thisType.name
 	}
 }
