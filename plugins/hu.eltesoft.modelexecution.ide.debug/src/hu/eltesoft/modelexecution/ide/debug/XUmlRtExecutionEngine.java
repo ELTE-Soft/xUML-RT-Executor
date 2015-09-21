@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.ide.debug;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -29,8 +30,10 @@ import org.eclipse.papyrus.moka.engine.IExecutionEngine;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineManager;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.ui.AnimationController;
+import hu.eltesoft.modelexecution.ide.debug.ui.DebugViewController;
 import hu.eltesoft.modelexecution.ide.debug.util.XUMLRTSourceLocator;
 
 /**
@@ -53,6 +56,9 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 
 	/** Direct control over the virtual machine running the runtime */
 	private VirtualMachineManager virtualMachine;
+
+	/** Access the state of the debug control buttons */
+	private final DebugViewController debugControl = new DebugViewController();
 
 	private ExecutionEngineVMConnection virtualMachineHandler;
 
@@ -103,14 +109,24 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
 			xumlrtDebugTarget.resumed();
-
+			EObject removed = animation.removeSuspendedMarker();
+			animateElementThatWasSuspended(removed);
 			virtualMachineHandler.resume();
 			virtualMachine.resume();
-			animation.removeSuspendedMarker();
 
 			if (DebugEvent.CLIENT_REQUEST != request.getResumeDetail()) {
 				// this is a stepping request, just suspend again
 				suspend(null);
+			}
+		}
+	}
+
+	private void animateElementThatWasSuspended(EObject element) {
+		if (element != null) {
+			StateMachineInstance suspendedSMInstance = xumlrtDebugTarget.getSuspendedSMInstance();
+			Object[] selectedDebugElements = debugControl.getSelectedDebugElements();
+			if (Arrays.asList(selectedDebugElements).contains(suspendedSMInstance)) {
+				animation.setAnimationMarker(element, suspendedSMInstance);
 			}
 		}
 	}
