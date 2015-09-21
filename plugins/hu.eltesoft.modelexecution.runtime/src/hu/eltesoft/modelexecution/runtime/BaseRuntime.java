@@ -19,6 +19,7 @@ import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
+import hu.eltesoft.modelexecution.runtime.validation.ValidationError;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 /**
@@ -190,6 +191,10 @@ public final class BaseRuntime implements AutoCloseable {
 
 	public static void logInfo(String message) {
 		errorLogger.log(java.util.logging.Level.INFO, message);
+	}
+	
+	public static void validationError(ValidationError validationError) {
+		errorLogger.log(java.util.logging.Level.SEVERE, validationError.getMessage());
 	}
 
 	public static void logError(String message) {
