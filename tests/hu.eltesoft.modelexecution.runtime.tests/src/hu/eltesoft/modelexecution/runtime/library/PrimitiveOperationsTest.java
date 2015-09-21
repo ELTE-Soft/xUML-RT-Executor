@@ -37,7 +37,7 @@ public class PrimitiveOperationsTest {
 		rhs.add(new BigInteger("42"));
 		TreeSet<BigInteger> lhs = new TreeSet<>();
 		lhs.add(new BigInteger("3"));
-		TreeSet<BigInteger> ret = PrimitiveOperations.setValue(lhs, rhs);
+		ArrayList<BigInteger> ret = PrimitiveOperations.setValue(lhs, rhs);
 		assertEquals(42, lhs.iterator().next().intValue());
 		assertEquals(42, ret.iterator().next().intValue());
 	}
