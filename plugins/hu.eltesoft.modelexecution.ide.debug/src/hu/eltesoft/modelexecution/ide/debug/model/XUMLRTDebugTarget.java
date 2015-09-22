@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.moka.debug.MokaBreakpoint;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.common.process.IProcessWithController;
@@ -186,7 +187,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public void markThreadAsSuspended(EObject modelElement) {
 		isSuspended = true;
 
-		String actualSMInstance = vmBrowser.getActualSMInstance();
+		Pair<String, Integer> actualSMInstance = vmBrowser.getActualSMInstance();
 		List<StateMachineInstance> smInstances = getSmInstances();
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
@@ -275,9 +276,9 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	 *         null if there isn't one.
 	 */
 	public StateMachineInstance getSuspendedSMInstance() {
-		String actualSMInstance = vmBrowser.getActualSMInstance();
+		Pair<String, Integer> actualSMInstance = vmBrowser.getActualSMInstance();
 		for (StateMachineInstance instance : getSmInstances()) {
-			if (instance.getName().equals(actualSMInstance)) {
+			if (actualSMInstance.equals(new Pair<>(instance.getClassId(), instance.getInstanceId()))) {
 				return instance;
 			}
 		}

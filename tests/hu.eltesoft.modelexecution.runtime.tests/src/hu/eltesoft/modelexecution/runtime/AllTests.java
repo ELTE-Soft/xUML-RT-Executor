@@ -5,11 +5,12 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import hu.eltesoft.modelexecution.runtime.external.ExternalEntityRegistryTests;
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperationsTest;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReplayerTest;
 import hu.eltesoft.modelexecution.runtime.trace.TraceWriterTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ BaseRuntimeTest.class, TraceWriterTest.class, TraceReplayerTest.class, JSONTest.class,
-		ExternalEntityRegistryTests.class })
+		ExternalEntityRegistryTests.class, PrimitiveOperationsTest.class })
 public class AllTests {
 }

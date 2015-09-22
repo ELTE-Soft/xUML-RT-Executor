@@ -22,17 +22,19 @@ public final class CollectionOperations {
 	 * Returns filtered elements while preserving the container type. The
 	 * predicate works on wrapped values.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E, C extends Collection<E>> C filter(C collection, Predicate<ArrayList<E>> predicate) {
-		Supplier<C> supplier = null;
-		if (collection instanceof ArrayList<?>) {
-			supplier = () -> (C) new ArrayList<E>();
-		} else if (collection instanceof HashSet<?>) {
-			supplier = () -> (C) new HashSet<E>();
-		} else if (collection instanceof HashMultiset<?>) {
-			supplier = () -> (C) HashMultiset.create();
-		}
+	public static <E> Collection<E> filter(Collection<E> collection, Predicate<Collection<E>> predicate) {
 		return collection.stream().filter(e -> predicate.test(PrimitiveOperations.wrap(e)))
-				.collect(Collectors.toCollection(supplier));
+				.collect(Collectors.toCollection(factoryOf(collection)));
+	}
+
+	public static <E> Supplier<Collection<E>> factoryOf(Collection<?> collection) {
+		if (collection instanceof ArrayList<?>) {
+			return ArrayList::new;
+		} else if (collection instanceof HashSet<?>) {
+			return HashSet::new;
+		} else if (collection instanceof HashMultiset<?>) {
+			return HashMultiset::create;
+		}
+		return null;
 	}
 }

@@ -9,10 +9,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Vertex;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.IntegerValue;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -28,7 +30,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.StackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineStackFrame;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
-import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
 import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 import hu.eltesoft.modelexecution.m2t.java.templates.RegionTemplate;
 import hu.eltesoft.modelexecution.runtime.InstanceRegistry;
@@ -61,13 +62,15 @@ public class VirtualMachineBrowser {
 	 * @return the instance of a class that has a state machine which is
 	 *         currently under execution
 	 */
-	public synchronized String getActualSMInstance() {
+	public synchronized Pair<String, Integer> getActualSMInstance() {
 		JDIThreadWrapper mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			return new JDIUtils(mainThread).invokeToString(owner);
+			Field objectIdField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
+			// FIXME: why can't I execute toString???????
+			return new Pair<>(owner.referenceType().name(), ((IntegerValue) owner.getValue(objectIdField)).intValue());
 		} catch (Exception e) {
 			PluginLogger.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
 			return null;

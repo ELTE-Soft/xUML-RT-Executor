@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.runtime
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: hu.eltesoft.modelexecution.runtime,
  hu.eltesoft.modelexecution.runtime.base,
@@ -11,7 +11,12 @@ Export-Package: hu.eltesoft.modelexecution.runtime,
  hu.eltesoft.modelexecution.runtime.log,
  hu.eltesoft.modelexecution.runtime.meta,
  hu.eltesoft.modelexecution.runtime.serialize,
- hu.eltesoft.modelexecution.runtime.trace
+ hu.eltesoft.modelexecution.runtime.trace,
+ hu.eltesoft.modelexecution.runtime.validation
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.json;bundle-version="20141113.0.0",
- com.google.guava;bundle-version="15.0.0"
+ com.google.guava;bundle-version="15.0.0",
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+

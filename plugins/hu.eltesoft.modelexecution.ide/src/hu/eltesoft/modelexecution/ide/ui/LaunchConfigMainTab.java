@@ -1,9 +1,10 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -48,6 +50,7 @@ import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.launch.LaunchConfig;
 import hu.eltesoft.modelexecution.ide.project.ExecutableModelNature;
 import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference;
+import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes;
 import hu.eltesoft.modelexecution.uml.incquery.EntryPointMatcher;
 
 /**
@@ -232,8 +235,9 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	}
 
 	private Object[] getAllClasses() {
-		List<Class> classes = new LinkedList<>();
-		entryMatcher.getAllMatches().forEach(m -> classes.add(m.getCls()));
+		Set<Class> classes = new TreeSet<>(Comparator.comparing(NamedElement::getName));
+		entryMatcher.getAllMatches().stream().filter(m -> !Stereotypes.isExternalEntity(m.getCls()))
+				.forEach(m -> classes.add(m.getCls()));
 		Object[] classesArray = classes.toArray(new Object[classes.size()]);
 		return classesArray;
 	}
@@ -305,13 +309,13 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 					selectedModelField.setText(member.getFullPath().toString());
 				}
 				initMatchers();
-				selectedClass = (Class) resource.getEObject(
-						configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
+				selectedClass = (Class) resource
+						.getEObject(configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI, EMPTY_STR));
 				if (selectedClass != null) {
 					selectedClassField.setText(selectedClass.getName());
 				}
-				selectedFeedFunction = (Operation) resource.getEObject(
-						configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
+				selectedFeedFunction = (Operation) resource
+						.getEObject(configuration.getAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI, EMPTY_STR));
 				if (selectedFeedFunction != null) {
 					selectedFeedFunctionField.setText(selectedFeedFunction.getName());
 				}
@@ -342,10 +346,8 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 
 		String modelResourcePath = selectedModelResource.getFullPath().toString();
 		configuration.setAttribute(LaunchConfig.ATTR_UML_RESOURCE, modelResourcePath);
-		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI,
-				resource.getURIFragment(selectedClass));
-		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI,
-				resource.getURIFragment(selectedFeedFunction));
+		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_CLASS_URI, resource.getURIFragment(selectedClass));
+		configuration.setAttribute(LaunchConfig.ATTR_EXECUTED_FEED_URI, resource.getURIFragment(selectedFeedFunction));
 
 		// adds the model resource as a mapped resource path
 		configuration.setAttribute(org.eclipse.debug.internal.core.LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
@@ -369,7 +371,7 @@ public class LaunchConfigMainTab extends AbstractLaunchConfigurationTab implemen
 	}
 
 	private Object[] getStaticOperations() {
-		List<Operation> operations = new LinkedList<>();
+		Set<Operation> operations = new TreeSet<>(Comparator.comparing(NamedElement::getName));
 
 		entryMatcher.getAllMatches(selectedClass, null).forEach(m -> operations.add(m.getEntry()));
 		return operations.toArray(new Object[operations.size()]);

@@ -19,6 +19,7 @@ import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
+import hu.eltesoft.modelexecution.runtime.validation.ValidationError;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
 
 /**
@@ -27,18 +28,18 @@ import hu.eltesoft.modelexecution.runtime.trace.Tracer;
  */
 public final class BaseRuntime implements AutoCloseable {
 
-	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime.";
-	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + "Runtime";
-	public static final String STATES_LOGGER_ID = LOGGER_ID + "StateMachine.States";
-	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + "StateMachine.Transitions";
-	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + "Events.Messages";
+	private static final String LOGGER_ID = "hu.eltesoft.modelexecution.runtime.baseRuntime";
+	public static final String RUNTIME_LOGGER_ID = LOGGER_ID + ".Runtime";
+	public static final String STATES_LOGGER_ID = LOGGER_ID + ".StateMachine.States";
+	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + ".StateMachine.Transitions";
+	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + ".Events.Messages";
 
 	private LinkedBlockingDeque<TargetedEvent> queue = new LinkedBlockingDeque<>();
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
 	private RuntimeControllerServer controller;
-	private static java.util.logging.Logger errorLogger = java.util.logging.Logger.getLogger(LOGGER_ID); // $NON-NLS-1$
+	private static java.util.logging.Logger errorLogger = java.util.logging.Logger.getLogger(RUNTIME_LOGGER_ID); // $NON-NLS-1$
 
 	private final ExternalEntityRegistry externalEntities;
 
@@ -190,6 +191,10 @@ public final class BaseRuntime implements AutoCloseable {
 
 	public static void logInfo(String message) {
 		errorLogger.log(java.util.logging.Level.INFO, message);
+	}
+	
+	public static void validationError(ValidationError validationError) {
+		errorLogger.log(java.util.logging.Level.SEVERE, validationError.getMessage());
 	}
 
 	public static void logError(String message) {

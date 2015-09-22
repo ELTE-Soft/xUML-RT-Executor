@@ -10,6 +10,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.BreakpointEvent;
@@ -219,11 +220,12 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	}
 
 	private boolean actualSMInstanceIsSelected() {
-		String actualSMInstance = virtualMachineBrowser.getActualSMInstance();
+		Pair<String, Integer> actualSMInstance = virtualMachineBrowser.getActualSMInstance();
 		for (Object debugElem : debugControl.getSelectedDebugElements()) {
 			if (debugElem instanceof StateMachineInstance) {
 				StateMachineInstance smInstance = (StateMachineInstance) debugElem;
-				if (smInstance.getName().equals(actualSMInstance)) {
+				Pair<String, Integer> smInstanceID = new Pair<>(smInstance.getClassId(), smInstance.getInstanceId());
+				if (smInstanceID.equals(actualSMInstance)) {
 					return true;
 				}
 			}

@@ -245,8 +245,10 @@ public class ExecutableModelLaunchDelegate extends LaunchConfigurationDelegate {
 		for (IProcess process : launch.getProcesses()) {
 			IProject project = getProject(javaConfigs);
 			String path = ProjectProperties.getTraceFilesPath(project);
-			process.setAttribute(PROC_ATTR_TO_REFRESH,
-					project.getFullPath() + ";" + project.findMember(path).getFullPath());
+			IResource toRefresh = project.findMember(path);
+			if (toRefresh != null && toRefresh.exists()) {
+				process.setAttribute(PROC_ATTR_TO_REFRESH, project.getFullPath() + ";" + toRefresh.getFullPath());
+			}
 		}
 	}
 

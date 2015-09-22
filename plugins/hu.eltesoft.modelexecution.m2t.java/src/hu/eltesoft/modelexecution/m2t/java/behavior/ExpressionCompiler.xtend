@@ -175,7 +175,8 @@ class ExpressionCompiler extends CompilerBase {
 				fun(op.name, if (1 == op.ownedParameters.length) {
 					// proxy parameter
 					val param = op.ownedParameters.get(0)
-					"new " <> fun(param.type.name, CONTEXT_NAME)
+					val params = call.parameters as ExpressionList
+					"new " <> fun(param.type.name, unwrap(compile(params.expressions.get(0))))
 				} else {
 					empty
 				})

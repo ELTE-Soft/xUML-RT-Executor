@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.ide;singleton:=true
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.emf.transaction,
@@ -18,18 +18,19 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.papyrus.infra.widgets;bundle-version="1.0.1",
  org.eclipse.papyrus.infra.core,
  org.eclipse.papyrus.infra.emf;bundle-version="1.0.1",
- hu.eltesoft.modelexecution.filemanager;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2t.java;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.runtime;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.uml.incquery,
- hu.eltesoft.modelexecution.ide.common;bundle-version="0.6.0",
- hu.eltesoft.modelexecution.ide.debug;bundle-version="0.6.0",
+ hu.eltesoft.modelexecution.filemanager;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2m.metamodel;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2t.java;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.runtime;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.ide.common;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.ide.debug;bundle-version="0.6.1",
  org.eclipse.papyrus.infra.services.labelprovider;bundle-version="1.1.0",
  org.eclipse.papyrus.emf.facet.custom.ui;bundle-version="1.1.0",
- hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.6.0"
+ hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.6.1",
+ hu.eltesoft.modelexecution.profile
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: hu.eltesoft.modelexecution.ide,
  hu.eltesoft.modelexecution.ide.builder,

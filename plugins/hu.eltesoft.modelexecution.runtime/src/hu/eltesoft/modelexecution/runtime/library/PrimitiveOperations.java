@@ -3,15 +3,22 @@ package hu.eltesoft.modelexecution.runtime.library;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
+import hu.eltesoft.modelexecution.runtime.BaseRuntime;
+import hu.eltesoft.modelexecution.runtime.validation.EmptyValueError;
+import hu.eltesoft.modelexecution.runtime.validation.MultiValueError;
 
 /**
  * Implements primitive operations used by the runtime.
  */
 // TODO: verifications must be implemented
 // like division by zero, or invalid casts.
-// TODO: review compatibility of setValue, valueEquality, referenceEquality and
-// cast with collections
-public final class PrimitiveOperations {
+// TODO: review compatibility of cast with collections
+public class PrimitiveOperations {
 
 	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
 
@@ -91,12 +98,22 @@ public final class PrimitiveOperations {
 		return new ArrayList<>(Arrays.asList(value));
 	}
 
-	public static <T> T unwrap(final ArrayList<T> wrapper) {
-		return wrapper.get(0);
+	public static <T> T unwrap(final Collection<T> wrapper) {
+		if (wrapper.isEmpty()) {
+			BaseRuntime.validationError(new EmptyValueError());
+			return null;
+		} else if (wrapper.size() > 1) {
+			BaseRuntime.validationError(new MultiValueError());
+			return null;
+		} else {
+			return wrapper.iterator().next();
+		}
 	}
 
-	public static <T> ArrayList<T> setValue(final ArrayList<T> wrapper, final ArrayList<T> newValue) {
-		wrapper.set(0, unwrap(newValue));
+	public static <X, C1 extends Collection<X>, C2 extends Collection<X>> C2 setValue(final C1 wrapper,
+			final C2 newValue) {
+		wrapper.clear();
+		wrapper.addAll(newValue);
 		return newValue;
 	}
 
@@ -116,196 +133,227 @@ public final class PrimitiveOperations {
 		return wrap(value);
 	}
 
-	public static ArrayList<Boolean> booleanNegate(final ArrayList<Boolean> value) {
+	public static ArrayList<Boolean> booleanNegate(final Collection<Boolean> value) {
 		return wrap(!unwrap(value));
 	}
 
-	public static ArrayList<BigInteger> integerNegate(final ArrayList<BigInteger> value) {
+	public static ArrayList<BigInteger> integerNegate(final Collection<BigInteger> value) {
 		return wrap(unwrap(value).negate());
 	}
 
-	public static ArrayList<Double> realNegate(final ArrayList<Double> value) {
+	public static ArrayList<Double> realNegate(final Collection<Double> value) {
 		return wrap(-unwrap(value));
 	}
 
-	public static ArrayList<BigInteger> integerPrefixDecrement(final ArrayList<BigInteger> value) {
-		value.set(0, unwrap(value).subtract(BigInteger.ONE));
+	public static <T extends Collection<BigInteger>> T integerPrefixDecrement(final T value) {
+		BigInteger old = unwrap(value);
+		value.clear();
+		value.add(old.subtract(BigInteger.ONE));
 		return value;
 	}
 
-	public static ArrayList<BigInteger> integerPrefixIncrement(final ArrayList<BigInteger> value) {
-		value.set(0, unwrap(value).add(BigInteger.ONE));
+	public static <T extends Collection<BigInteger>> T integerPrefixIncrement(final T value) {
+		BigInteger old = unwrap(value);
+		value.clear();
+		value.add(old.add(BigInteger.ONE));
 		return value;
 	}
 
-	public static ArrayList<BigInteger> integerPostfixDecrement(final ArrayList<BigInteger> value) {
+	public static ArrayList<BigInteger> integerPostfixDecrement(final Collection<BigInteger> value) {
 		BigInteger old = unwrap(value);
-		value.set(0, old.subtract(BigInteger.ONE));
+		value.clear();
+		value.add(old.subtract(BigInteger.ONE));
 		return wrap(old);
 	}
 
-	public static ArrayList<BigInteger> integerPostfixIncrement(final ArrayList<BigInteger> value) {
+	public static ArrayList<BigInteger> integerPostfixIncrement(final Collection<BigInteger> value) {
 		BigInteger old = unwrap(value);
-		value.set(0, old.add(BigInteger.ONE));
+		value.clear();
+		value.add(old.add(BigInteger.ONE));
 		return wrap(old);
 	}
 
-	public static ArrayList<String> stringConcatenation(final ArrayList<String> lhs, final ArrayList<String> rhs) {
+	public static ArrayList<String> stringConcatenation(final Collection<String> lhs, final Collection<String> rhs) {
 		return wrap(unwrap(lhs) + unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerAddInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerAddInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).add(unwrap(rhs)));
 	}
 
-	public static ArrayList<Double> integerAddReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> integerAddReal(final Collection<BigInteger> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs).doubleValue() + unwrap(rhs));
 	}
 
-	public static ArrayList<Double> realAddInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Double> realAddInteger(final Collection<Double> lhs, final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs) + unwrap(rhs).doubleValue());
 	}
 
-	public static ArrayList<Double> realAddReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> realAddReal(final Collection<Double> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs) + unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerSubtractInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerSubtractInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).subtract(unwrap(rhs)));
 	}
 
-	public static ArrayList<Double> integerSubtractReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> integerSubtractReal(final Collection<BigInteger> lhs,
+			final Collection<Double> rhs) {
 		return wrap(unwrap(lhs).doubleValue() - unwrap(rhs));
 	}
 
-	public static ArrayList<Double> realSubtractInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Double> realSubtractInteger(final Collection<Double> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs) - unwrap(rhs).doubleValue());
 	}
 
-	public static ArrayList<Double> realSubtractReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> realSubtractReal(final Collection<Double> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs) - unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerMultiplyInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerMultiplyInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).multiply(unwrap(rhs)));
 	}
 
-	public static ArrayList<Double> integerMultiplyReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> integerMultiplyReal(final Collection<BigInteger> lhs,
+			final Collection<Double> rhs) {
 		return wrap(unwrap(lhs).doubleValue() * unwrap(rhs));
 	}
 
-	public static ArrayList<Double> realMultiplyInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Double> realMultiplyInteger(final Collection<Double> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs) * unwrap(rhs).doubleValue());
 	}
 
-	public static ArrayList<Double> realMultiplyReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> realMultiplyReal(final Collection<Double> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs) * unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerDivideInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerDivideInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).divide(unwrap(rhs)));
 	}
 
-	public static ArrayList<Double> integerDivideReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> integerDivideReal(final Collection<BigInteger> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs).doubleValue() / unwrap(rhs));
 	}
 
-	public static ArrayList<Double> realDivideInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Double> realDivideInteger(final Collection<Double> lhs, final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs) / unwrap(rhs).doubleValue());
 	}
 
-	public static ArrayList<Double> realDivideReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Double> realDivideReal(final Collection<Double> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs) / unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerModuloInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerModuloInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).mod(unwrap(rhs)));
 	}
 
-	public static ArrayList<Boolean> booleanAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+	public static ArrayList<Boolean> booleanAnd(final Collection<Boolean> lhs, final Collection<Boolean> rhs) {
 		return wrap(unwrap(lhs) && unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> booleanOr(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+	public static ArrayList<Boolean> booleanOr(final Collection<Boolean> lhs, final Collection<Boolean> rhs) {
 		return wrap(unwrap(lhs) || unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> booleanBitwiseAnd(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+	public static ArrayList<Boolean> booleanBitwiseAnd(final Collection<Boolean> lhs, final Collection<Boolean> rhs) {
 		return wrap(unwrap(lhs) & unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> booleanBitwiseOr(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+	public static ArrayList<Boolean> booleanBitwiseOr(final Collection<Boolean> lhs, final Collection<Boolean> rhs) {
 		return wrap(unwrap(lhs) | unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> booleanBitwiseXor(final ArrayList<Boolean> lhs, final ArrayList<Boolean> rhs) {
+	public static ArrayList<Boolean> booleanBitwiseXor(final Collection<Boolean> lhs, final Collection<Boolean> rhs) {
 		return wrap(unwrap(lhs) ^ unwrap(rhs));
 	}
 
-	public static ArrayList<BigInteger> integerBitwiseAnd(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerBitwiseAnd(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).and(unwrap(rhs)));
 	}
 
-	public static ArrayList<BigInteger> integerBitwiseOr(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerBitwiseOr(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).or(unwrap(rhs)));
 	}
 
-	public static ArrayList<BigInteger> integerBitwiseXor(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerBitwiseXor(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).xor(unwrap(rhs)));
 	}
 
-	public static ArrayList<BigInteger> integerShiftLeft(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerShiftLeft(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).shiftLeft(unwrap(rhs).intValue()));
 	}
 
-	public static ArrayList<BigInteger> integerShiftRight(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerShiftRight(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).shiftRight(unwrap(rhs).intValue()));
 	}
 
-	public static ArrayList<BigInteger> integerShiftRightUnsigned(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<BigInteger> integerShiftRightUnsigned(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		// The unsigned shift is the same as the signed.
 		// This is guaranteed by the representation of BigInteger class.
 		return integerShiftRight(lhs, rhs);
 	}
 
-	public static ArrayList<Boolean> integerLessThanInteger(final ArrayList<BigInteger> lhs,
-			final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Boolean> integerLessThanInteger(final Collection<BigInteger> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs).compareTo(unwrap(rhs)) < 0);
 	}
 
-	public static ArrayList<Boolean> integerLessThanReal(final ArrayList<BigInteger> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Boolean> integerLessThanReal(final Collection<BigInteger> lhs,
+			final Collection<Double> rhs) {
 		return wrap(unwrap(lhs).doubleValue() < unwrap(rhs));
 	}
 
-	public static ArrayList<Boolean> realLessThanInteger(final ArrayList<Double> lhs, final ArrayList<BigInteger> rhs) {
+	public static ArrayList<Boolean> realLessThanInteger(final Collection<Double> lhs,
+			final Collection<BigInteger> rhs) {
 		return wrap(unwrap(lhs) < unwrap(rhs).doubleValue());
 	}
 
-	public static ArrayList<Boolean> realLessThanReal(final ArrayList<Double> lhs, final ArrayList<Double> rhs) {
+	public static ArrayList<Boolean> realLessThanReal(final Collection<Double> lhs, final Collection<Double> rhs) {
 		return wrap(unwrap(lhs) < unwrap(rhs));
 	}
 
-	public static <T> ArrayList<Boolean> valueEquality(final ArrayList<T> lhs, final ArrayList<T> rhs) {
-		return wrap(unwrap(lhs).equals(unwrap(rhs)));
+	public static ArrayList<Boolean> valueEquality(final Collection<? extends Object> lhs,
+			final Collection<? extends Object> rhs) {
+		return wrap(zipFold(Object::equals, lhs, rhs));
 	}
 
-	public static <T> ArrayList<Boolean> referenceEquality(final ArrayList<T> lhs, final ArrayList<T> rhs) {
-		return wrap(unwrap(lhs) == unwrap(rhs));
+	public static ArrayList<Boolean> referenceEquality(final Collection<? extends Object> lhs,
+			final Collection<? extends Object> rhs) {
+		return wrap(zipFold((a, b) -> a == b, lhs, rhs));
 	}
 
-	public static <TargetType, SourceType> ArrayList<TargetType> cast(Class<TargetType> targetType,
-			ArrayList<SourceType> sourceExpression) {
-		return wrap(targetType.cast(unwrap(sourceExpression)));
+	private static boolean zipFold(BiFunction<Object, Object, Boolean> elementCompare,
+			final Collection<? extends Object> lhs, final Collection<? extends Object> rhs) {
+		if (lhs.size() != rhs.size()) {
+			return false;
+		}
+		Iterator<? extends Object> lhsIt = lhs.iterator();
+		Iterator<? extends Object> rhsIt = rhs.iterator();
+
+		while (lhsIt.hasNext()) {
+			if (!elementCompare.apply(lhsIt.next(), rhsIt.next())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static <TargetType, SourceType> Collection<TargetType> cast(Class<TargetType> targetType,
+			Collection<SourceType> sourceExpression) {
+		return sourceExpression.stream().map(targetType::cast)
+				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression)));
 	}
 }

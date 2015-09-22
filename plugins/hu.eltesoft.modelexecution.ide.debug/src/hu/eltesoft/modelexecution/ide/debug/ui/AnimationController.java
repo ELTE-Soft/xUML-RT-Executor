@@ -106,11 +106,14 @@ public class AnimationController extends MokaAnimationBase {
 		openContainingDiagram(modelElement);
 	}
 
-	public synchronized void removeSuspendedMarker() {
+	public synchronized EObject removeSuspendedMarker() {
+		EObject removed = null;
 		if (null != lastSuspended) {
 			UTILS.removeSuspendedMarker(null);
+			removed = lastSuspended;
 			lastSuspended = null;
 		}
+		return removed;
 	}
 
 	public void removeAllMarkers() {
