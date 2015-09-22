@@ -17,7 +17,6 @@ import hu.eltesoft.modelexecution.runtime.validation.MultiValueError;
  */
 // TODO: verifications must be implemented
 // like division by zero, or invalid casts.
-// TODO: review compatibility of cast with collections
 public class PrimitiveOperations {
 
 	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
@@ -351,9 +350,9 @@ public class PrimitiveOperations {
 		return true;
 	}
 
-	public static <TargetType, SourceType> Collection<TargetType> cast(Class<TargetType> targetType,
-			Collection<SourceType> sourceExpression) {
+	public static <SourceType, TargetType, C1 extends Collection<SourceType>, C2 extends Collection<TargetType>> C2 cast(
+			Class<TargetType> targetType, C1 sourceExpression) {
 		return sourceExpression.stream().map(targetType::cast)
-				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression)));
+				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression, targetType)));
 	}
 }
