@@ -33,15 +33,19 @@ import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.uml2.uml.Association
+import org.eclipse.uml2.uml.BehavioralFeature
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
+import org.eclipse.uml2.uml.Parameter
 import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
+import org.eclipse.uml2.uml.TypedElement
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+import org.eclipse.uml2.uml.ParameterDirectionKind
 
 class ExpressionCompiler extends CompilerBase {
 
@@ -130,7 +134,7 @@ class ExpressionCompiler extends CompilerBase {
 				val constructor = getConstructor(expr.instance as Class)
 				if (null != constructor) {
 					param = "i -> i" ->
-						(NamedReference.getIdentifier(constructor) <> compile(expr.parameters, constructor))
+						(NamedReference.getIdentifier(constructor) <> compile(expr.parameters, constructor, false))
 				}
 				wrap(NamedReference.getIdentifier(expr.instance) -> fun("create", param))
 			}
@@ -145,7 +149,7 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(NamedTuple values, Signal signal) {
-		compileExpressionList(values, signal.ownedAttributes)
+		compileExpressionList(values, signal.ownedAttributes, false)
 	}
 
 	def Operation getConstructor(Class cl) {
@@ -160,53 +164,90 @@ class ExpressionCompiler extends CompilerBase {
 		unwrap(compile(expr.reference)) -> fun("delete")
 	}
 
-	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {
-		unwrap(compile(call.context)) -> switch call.feature {
-			Operation: NamedReference.getIdentifier(call.feature) <> compile(call.parameters, call.feature)
-			Property: fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
-		}
+	def dispatch CodeGenNode compile(
+		FeatureInvocationExpression call
+	) {
+		unwrap(compile(call.context)) ->
+			switch call.feature {
+				Operation:
+					NamedReference.getIdentifier(call.feature) <>
+						compile(call.parameters, call.feature as BehavioralFeature, false)
+				Property:
+					fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
+			}
 	}
 
 	def dispatch CodeGenNode compile(StaticFeatureInvocationExpression call) {
 		val op = call.operation.reference as Operation
 		var cls = op.class_
 		if (Stereotypes.isExternalEntity(cls)) {
-			RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") ->
-				fun(op.name, if (1 == op.ownedParameters.length) {
-					// proxy parameter
-					val param = op.ownedParameters.get(0)
-					val params = call.parameters as ExpressionList
-					"new " <> fun(param.type.name, unwrap(compile(params.expressions.get(0))))
-				} else {
-					empty
-				})
+			val expr = RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") -> op.name <>
+				compile(call.parameters, op, true)
+			if (null != op.getReturnResult) {
+				wrap(expr)
+			} else {
+				expr
+			}
 		} else {
 			(NamedReference.getIdentifier(cls) <> Template.CLASS_IMPL_SUFFIX) ->
-				(NamedReference.getIdentifier(op) <> compile(call.parameters, op))
+				(NamedReference.getIdentifier(op) <> compile(call.parameters, op, false))
 		}
 	}
 
-	def dispatch CodeGenNode compile(ExpressionList values, Operation operation) {
-		if (!values.expressions.empty) {
-			throw new CompilationFailedException("Only by-name parameter passing is supported")
-		}
-		paren()
+	def dispatch CodeGenNode compile(ExpressionList values, BehavioralFeature feature, boolean isExternal) {
+		compileExpressionList(values, feature.ownedParameters, isExternal)
 	}
 
-	def dispatch CodeGenNode compile(NamedTuple values, Operation operation) {
-		compileExpressionList(values, operation.ownedParameters)
+	def dispatch CodeGenNode compile(NamedTuple values, BehavioralFeature feature, boolean isExternal) {
+		compileExpressionList(values, feature.ownedParameters, isExternal)
 	}
 
-	def CodeGenNode compileExpressionList(NamedTuple values, EList<? extends NamedElement> qualifiers) {
+	def <E extends NamedElement & TypedElement> CodeGenNode compileExpressionList(ExpressionList values,
+		EList<E> parameters, boolean isExternal) {
 		val node = paren()
-		for (parameter : qualifiers) {
-			val value = getExpressionByName(values, parameter.name)
-			if (null == value) {
-				throw new CompilationFailedException("Unable to match named parameter")
+		for (i : 0 ..< values.expressions.length) {
+			val parameter = parameters.get(i)
+			if (!parameter.isReturnParameter) {
+				val value = values.expressions.get(i)
+				node.add(compileParameter(parameter, value, isExternal))
 			}
-			node.add(compile(value))
 		}
 		node
+	}
+
+	def <E extends NamedElement & TypedElement> CodeGenNode compileExpressionList(NamedTuple values,
+		EList<E> parameters, boolean isExternal) {
+		val node = paren()
+		for (parameter : parameters) {
+			if (!parameter.isReturnParameter) {
+				val value = getExpressionByName(values, parameter.name)
+				if (null == value) {
+					throw new CompilationFailedException("Unable to match named parameter")
+				}
+				node.add(compileParameter(parameter, value, isExternal))
+			}
+		}
+		node
+	}
+
+	def dispatch isReturnParameter(Object parameter) {
+		false
+	}
+
+	def dispatch isReturnParameter(Parameter parameter) {
+		ParameterDirectionKind.RETURN_LITERAL == (parameter as Parameter).direction
+	}
+
+	def <E extends NamedElement & TypedElement> compileParameter(E parameter, Expression value, boolean isExternal) {
+		var expr = compile(value)
+		if (isExternal) {
+			expr = unwrap(expr)
+			if (!(parameter.type instanceof PrimitiveType)) {
+				// add callable wrapper
+				expr = "new " <> fun(parameter.type.name, expr)
+			}
+		}
+		expr
 	}
 
 	def Expression getExpressionByName(NamedTuple values, String name) {
@@ -223,7 +264,7 @@ class ExpressionCompiler extends CompilerBase {
 		}
 		val association = expr.association.reference as Association
 		var name = NamedReference.getIdentifier(association)
-		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds)
+		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds, false)
 		var opName = if (LinkOperation.LINK == expr.linkOperation) {
 				"link"
 			} else {
