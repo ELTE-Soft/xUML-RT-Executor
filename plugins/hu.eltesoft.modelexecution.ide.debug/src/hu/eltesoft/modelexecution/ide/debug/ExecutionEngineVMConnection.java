@@ -220,7 +220,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	}
 
 	private boolean actualSMInstanceIsSelected() {
-		Pair<String, Integer> actualSMInstance = virtualMachineBrowser.getActualSMInstance();
+		Pair<String, Long> actualSMInstance = virtualMachineBrowser.getActualSMInstance();
 		for (Object debugElem : debugControl.getSelectedDebugElements()) {
 			if (debugElem instanceof StateMachineInstance) {
 				StateMachineInstance smInstance = (StateMachineInstance) debugElem;
