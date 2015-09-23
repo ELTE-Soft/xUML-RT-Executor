@@ -77,10 +77,14 @@ class RegionTranslator extends RootElementTranslator<Region, RgRegion, RegionMat
 
 		// it must be done after state map is populated
 		rootNode.onEObject(PACKAGE.rgRegion_InitialPseudostate, InitialsMatcher.on(engine)) [
+			// TODO: refactor
 			val rgInitialPseudostate = FACTORY.createRgInitialPseudostate
 			rgInitialPseudostate.reference = new NamedReference(initPseudostate)
 			val rgTransition = FACTORY.createRgTransition
 			rgTransition.reference = new Reference(initTransition)
+			if (initTransition.effect != null) {
+				rgTransition.effect = new NamedReference(initTransition.effect);
+			}
 			rgTransition.target = stateMap.get(firstState)
 			rgInitialPseudostate.initialTransition = rgTransition
 			return rgInitialPseudostate

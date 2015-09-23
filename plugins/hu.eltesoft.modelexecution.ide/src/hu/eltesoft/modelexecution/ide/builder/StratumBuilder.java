@@ -96,6 +96,7 @@ public class StratumBuilder extends IncrementalProjectBuilder {
 				return;
 			}
 			try {
+				Files.createDirectories(Paths.get(newLocation.removeLastSegments(1).toString()));
 				if (smapPath.toFile().exists()) {
 					SDEInstaller.install(res.getLocation().toFile(), smapPath.toFile(), newLocation.toFile());
 				} else {
