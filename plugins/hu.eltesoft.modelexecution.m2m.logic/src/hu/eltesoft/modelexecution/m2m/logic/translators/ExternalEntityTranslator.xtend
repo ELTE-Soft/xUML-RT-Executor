@@ -10,10 +10,16 @@ import hu.eltesoft.modelexecution.m2m.metamodel.external.ExternalPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ExternalEntityTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.EntityType
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
-import hu.eltesoft.modelexecution.uml.incquery.ExternalOperationParameterMatcher
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.NamedClsMatcher
 import hu.eltesoft.modelexecution.uml.incquery.NamedOperationMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationParameterLowerBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationParameterMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationParameterTypeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationParameterUpperBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationReturnLowerBoundMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationReturnTypeMatcher
+import hu.eltesoft.modelexecution.uml.incquery.OperationReturnUpperBoundMatcher
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
@@ -44,8 +50,44 @@ class ExternalEntityTranslator extends RootElementTranslator<Class, ExExternalEn
 			elem.reference = new NamedReference(operation)
 			return elem
 		]
-		operationNode.on(PACKAGE.exOperation_ProxyClass, ExternalOperationParameterMatcher.on(engine)) [
-			typeName
+		
+		// operation parameters
+		val parameterNode = operationNode.onEObject(PACKAGE.exOperation_Parameters,
+			OperationParameterMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createParameter
+			elem.reference = new NamedReference(parameter)
+			elem.direction = direction.convert
+			return elem
+		]
+		val parameterTypeNode = parameterNode.onEObject(BASE_PACKAGE.typed_Type,
+			OperationParameterTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createType
+			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
+			return elem
+		]
+		parameterTypeNode.on(BASE_PACKAGE.multiplicity_LowerBound, OperationParameterLowerBoundMatcher.on(engine)) [
+			lowerBound
+		]
+		parameterTypeNode.on(BASE_PACKAGE.multiplicity_UpperBound, OperationParameterUpperBoundMatcher.on(engine)) [
+			upperBound
+		]
+
+		// operation return type
+		val operationReturn = operationNode.onEObject(PACKAGE.exOperation_ReturnType,
+			OperationReturnTypeMatcher.on(engine)) [
+			val elem = BASE_FACTORY.createType
+			elem.baseType = type.convert
+			elem.isOrdered = ordered
+			elem.isUnique = unique
+			return elem
+		]
+		operationReturn.on(BASE_PACKAGE.multiplicity_LowerBound, OperationReturnLowerBoundMatcher.on(engine)) [
+			lowerBound
+		]
+		operationReturn.on(BASE_PACKAGE.multiplicity_UpperBound, OperationReturnUpperBoundMatcher.on(engine)) [
+			upperBound
 		]
 	}
 

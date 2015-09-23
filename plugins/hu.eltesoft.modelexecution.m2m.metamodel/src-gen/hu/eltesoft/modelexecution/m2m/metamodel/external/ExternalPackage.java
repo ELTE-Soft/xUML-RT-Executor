@@ -143,13 +143,22 @@ public interface ExternalPackage extends EPackage {
 	int EX_OPERATION__REFERENCE = BasePackage.NAMED__REFERENCE;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Class</b></em>' attribute.
+	 * The feature id for the '<em><b>Return Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EX_OPERATION__PROXY_CLASS = BasePackage.NAMED_FEATURE_COUNT + 0;
+	int EX_OPERATION__RETURN_TYPE = BasePackage.NAMED_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EX_OPERATION__PARAMETERS = BasePackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Ex Operation</em>' class.
@@ -158,7 +167,7 @@ public interface ExternalPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EX_OPERATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 1;
+	int EX_OPERATION_FEATURE_COUNT = BasePackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Ex Operation</em>' class.
@@ -234,15 +243,26 @@ public interface ExternalPackage extends EPackage {
 	EClass getExOperation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getProxyClass <em>Proxy Class</em>}'.
+	 * Returns the meta object for the reference '{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getReturnType <em>Return Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Proxy Class</em>'.
-	 * @see hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getProxyClass()
+	 * @return the meta object for the reference '<em>Return Type</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getReturnType()
 	 * @see #getExOperation()
 	 * @generated
 	 */
-	EAttribute getExOperation_ProxyClass();
+	EReference getExOperation_ReturnType();
+
+	/**
+	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Parameters</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.external.ExOperation#getParameters()
+	 * @see #getExOperation()
+	 * @generated
+	 */
+	EReference getExOperation_Parameters();
 
 	/**
 	 * Returns the meta object for enum '{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType <em>Ex Entity Type</em>}'.
@@ -322,12 +342,20 @@ public interface ExternalPackage extends EPackage {
 		EClass EX_OPERATION = eINSTANCE.getExOperation();
 
 		/**
-		 * The meta object literal for the '<em><b>Proxy Class</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Return Type</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute EX_OPERATION__PROXY_CLASS = eINSTANCE.getExOperation_ProxyClass();
+		EReference EX_OPERATION__RETURN_TYPE = eINSTANCE.getExOperation_ReturnType();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EX_OPERATION__PARAMETERS = eINSTANCE.getExOperation_Parameters();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.external.ExEntityType <em>Ex Entity Type</em>}' enum.
