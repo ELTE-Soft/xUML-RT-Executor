@@ -52,7 +52,19 @@ public class JDIThreadWrapper {
 				// try another overload
 			}
 		}
-		throw new NoSuchMethodException("No suitable overloaded method is found");
+		throw noOverloadedException(methodName, args);
+	}
+
+	private NoSuchMethodException noOverloadedException(String methodName, Value... args) throws NoSuchMethodException {
+		StringBuilder sb = new StringBuilder("No suitable overloaded method is found: " + methodName + "(");
+		if (args.length > 0) {
+			sb.append(args[0]);
+		}
+		for (int i = 1; i < args.length; i++) {
+			sb.append("," + args[i]);
+		}
+		sb.append(")");
+		return new NoSuchMethodException(sb.toString());
 	}
 
 	public synchronized Value invokeStaticMethod(ClassType type, Method method, Value... args) throws Exception {

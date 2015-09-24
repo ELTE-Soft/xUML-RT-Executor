@@ -47,7 +47,7 @@ public class Component extends DebugElement implements IPresentation {
 		return classes.toArray(new ClassInstances[classes.size()]);
 	}
 
-	public StateMachineInstance addStateMachineInstance(String classId, int instanceId, String originalName) {
+	public StateMachineInstance addStateMachineInstance(String classId, long instanceId, String originalName) {
 		ClassInstances cls = getOrCreateClassFor(classId, originalName);
 		return cls.addStateMachineInstance(instanceId);
 	}

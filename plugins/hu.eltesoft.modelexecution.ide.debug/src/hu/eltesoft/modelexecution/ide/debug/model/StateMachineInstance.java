@@ -24,14 +24,14 @@ import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider
  */
 public class StateMachineInstance extends SuspendableThread implements IPresentation {
 
-	private int instanceId;
+	private long instanceId;
 
 	// lazily populated
 	private List<ModelVariable> attributes = null;
 
 	private ClassInstances cls;
 
-	public StateMachineInstance(ClassInstances parent, int instanceId) {
+	public StateMachineInstance(ClassInstances parent, long instanceId) {
 		super(parent);
 		this.cls = parent;
 		this.instanceId = instanceId;
@@ -60,7 +60,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 		return cls.getClassId();
 	}
 
-	public int getInstanceId() {
+	public long getInstanceId() {
 		return instanceId;
 	}
 

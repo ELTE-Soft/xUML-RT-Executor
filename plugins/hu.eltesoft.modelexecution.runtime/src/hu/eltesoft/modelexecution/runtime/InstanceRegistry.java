@@ -38,7 +38,7 @@ public final class InstanceRegistry {
 	 * Looks up an instance of the given class.
 	 */
 	public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
-			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, int instanceID) {
+			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, long instanceID) {
 		return instanceRegistry.getInstance(targetClass, instanceID);
 	}
 
@@ -112,7 +112,7 @@ public final class InstanceRegistry {
 		}
 
 		public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
-				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, int instanceID) {
+				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, long instanceID) {
 			return getIdMap(targetClass).getByInstanceID(instanceID);
 		}
 

@@ -107,12 +107,12 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 				if (runtimeController != null) {
 					runtimeController.addStateMachineInstanceListener(new StateMachnineInstanceListener() {
 						@Override
-						public void instanceCreated(String classId, int instanceId, String originalName) {
+						public void instanceCreated(String classId, long instanceId, String originalName) {
 							debugTarget.addSMInstance(classId, instanceId, originalName);
 						}
 
 						@Override
-						public void instanceDestroyed(String classId, int instanceId) {
+						public void instanceDestroyed(String classId, long instanceId) {
 							StateMachineInstance removed = debugTarget.removeSMInstance(classId, instanceId);
 							animation.removeAnimationMarker(removed);
 						}
@@ -224,7 +224,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 		for (Object debugElem : debugControl.getSelectedDebugElements()) {
 			if (debugElem instanceof StateMachineInstance) {
 				StateMachineInstance smInstance = (StateMachineInstance) debugElem;
-				Pair<String, Integer> smInstanceID = new Pair<>(smInstance.getClassId(), smInstance.getInstanceId());
+				Pair<String, Long> smInstanceID = new Pair<>(smInstance.getClassId(), smInstance.getInstanceId());
 				if (smInstanceID.equals(actualSMInstance)) {
 					return true;
 				}

@@ -126,7 +126,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		mokaDebugTarget.breakpointChanged(breakpoint, delta);
 	}
 
-	public void addSMInstance(String classId, int instanceId, String originalName) {
+	public void addSMInstance(String classId, long instanceId, String originalName) {
 		if (isTerminated()) {
 			return;
 		}
@@ -156,7 +156,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	 * 
 	 * @return The removed instance or null if such instance was not found.
 	 */
-	public StateMachineInstance removeSMInstance(String classId, int instanceId) {
+	public StateMachineInstance removeSMInstance(String classId, long instanceId) {
 		if (isTerminated()) {
 			return null;
 		}
