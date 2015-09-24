@@ -79,6 +79,15 @@ class JavaTypeConverter {
 		}
 	}
 
+	def createEmpty(CollectionType type) {
+		val collectionName = collectionName(type)
+		if (collectionName == HashMultiset.canonicalName) {
+			collectionName + ".create()"
+		} else {
+			"new " + collectionName + "<>()"
+		}
+	}
+
 	def createEmpty(Multiplicity type) {
 		val expectedNum = expectedNum(type)
 		val collectionName = collectionName(type)

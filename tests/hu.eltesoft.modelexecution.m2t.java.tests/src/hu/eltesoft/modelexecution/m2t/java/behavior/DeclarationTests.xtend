@@ -70,4 +70,23 @@ class DeclarationTests extends CompiledCodeCheckTestCase {
 			binOp("java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local0", "=",
 				wrap("_9SdsIEDoEeWCNoKXHvCpUQ" -> fun("create", "i -> i._LAXgUEHKEeWzwYgcaM4qwA()"))))
 	}
+
+	@Test
+	def testSequenceDefaultInitialization() {
+		assertCompilesTo('''Sequence<Integer> x;''',
+			binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", "new java.util.ArrayList<>()"))
+	}
+
+	@Test
+	def testSetDefaultInitialization() {
+		assertCompilesTo('''Set<Integer> x;''',
+			binOp("java.util.HashSet<java.math.BigInteger> _local0", "=", "new java.util.HashSet<>()"))
+	}
+
+	@Test
+	def testBagDefaultInitialization() {
+		assertCompilesTo('''Bag<Integer> x;''',
+			binOp("com.google.common.collect.HashMultiset<java.math.BigInteger> _local0", "=",
+				"com.google.common.collect.HashMultiset.create()"))
+	}
 }

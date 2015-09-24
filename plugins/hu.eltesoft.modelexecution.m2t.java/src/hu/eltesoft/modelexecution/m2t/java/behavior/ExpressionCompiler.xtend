@@ -2,6 +2,8 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ClassExtentExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionType
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionVariable
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ElementCollectionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
@@ -105,14 +107,26 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(LocalNameDeclarationStatement declaration) {
-		val type = declaration.variable.type.type.convert.javaType(SINGLE)
+		val variable = declaration.variable
+		val baseType = variable.type.type.convert
+		val type = switch variable {
+			CollectionVariable: collectionName(variable.collectionType) <> "<" <> baseType.javaType <> ">"
+			Variable: baseType.javaType(SINGLE)
+		}
+
 		val localName = declaration.variable.localName
 		val rhs = if (null != declaration.expression) {
 				compile(declaration.expression)
+			} else if (variable instanceof CollectionVariable) {
+				compileCollectionInitializer((variable as CollectionVariable).collectionType)
 			} else {
-				compileTypeInitializer(declaration.variable.type.type)
+				compileTypeInitializer(variable.type.type)
 			}
 		binOp(type <> " " <> localName, "=", rhs)
+	}
+
+	def CodeGenNode compileCollectionInitializer(CollectionType type) {
+		sequence(createEmpty(type))
 	}
 
 	def dispatch CodeGenNode compileTypeInitializer(PrimitiveType type) {
