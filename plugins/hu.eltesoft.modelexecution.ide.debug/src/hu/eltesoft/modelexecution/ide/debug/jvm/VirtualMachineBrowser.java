@@ -68,7 +68,7 @@ public class VirtualMachineBrowser {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			Field objectIdField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
+			Field objectIdField = thisObject.referenceType().fieldByName("instanceID");
 			// FIXME: why can't I execute toString???????
 			return new Pair<>(owner.referenceType().name(), ((IntegerValue) owner.getValue(objectIdField)).intValue());
 		} catch (Exception e) {
