@@ -64,6 +64,10 @@
           <element xmi:type="uml:Operation" href="model.uml#_gXRH4BWVEeWYQpLaR7ziYA"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_gXRH4hWVEeWYQpLaR7ziYA"/>
         </children>
+        <children xmi:type="notation:Shape" xmi:id="_wcGa8GKYEeW1-pAbbNaijw" type="3013">
+          <element xmi:type="uml:Operation" href="model.uml#_wbc6sGKYEeW1-pAbbNaijw"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_wcGa8WKYEeW1-pAbbNaijw"/>
+        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_XHdJaRWVEeWYQpLaR7ziYA"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_XHdJahWVEeWYQpLaR7ziYA"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_XHdJaxWVEeWYQpLaR7ziYA"/>
@@ -79,7 +83,7 @@
         <layoutConstraint xmi:type="notation:Location" xmi:id="_Ubhu40DoEeWCNoKXHvCpUQ" y="5"/>
       </children>
       <element xmi:type="uml:Class" href="model.uml#_XHXCwBWVEeWYQpLaR7ziYA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XHdJYRWVEeWYQpLaR7ziYA" x="420" y="120"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XHdJYRWVEeWYQpLaR7ziYA" x="420" y="120" width="161" height="161"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_UdDY4EDoEeWCNoKXHvCpUQ" type="StereotypeComment">
       <styles xmi:type="notation:TitleStyle" xmi:id="_UdDY4UDoEeWCNoKXHvCpUQ" showTitle="true"/>

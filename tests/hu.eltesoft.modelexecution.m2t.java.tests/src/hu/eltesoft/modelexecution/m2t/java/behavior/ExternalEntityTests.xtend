@@ -28,4 +28,23 @@ class ExternalEntityTests extends CompiledCodeCheckTestCase {
 		assertCompilesTo('''E::Op2(this);''', CompilerBase.RUNTIME_INSTANCE -> fun("getExternalEntity", "E.class") ->
 			fun("Op2", "new " <> fun("A", CompilerBase.CONTEXT_NAME)))
 	}
+
+	@Test
+	def testExternalEntityInvocationProxyParameterByName() {
+		assertCompilesTo('''E::Op2(proxy => this);''',
+			CompilerBase.RUNTIME_INSTANCE -> fun("getExternalEntity", "E.class") ->
+				fun("Op2", "new " <> fun("A", CompilerBase.CONTEXT_NAME)))
+	}
+
+	@Test
+	def testExternalEntityPrimitiveParameters() {
+		assertCompilesTo('''E::Op3(false, 42, 3.1415, "hello");''', wrap(CompilerBase.RUNTIME_INSTANCE -> fun("getExternalEntity", "E.class") ->
+			fun("Op3", unwrap(booleanLiteral("false")), unwrap(integerLiteral("42", 10)), unwrap(realLiteral("3.1415")), unwrap(stringLiteral("hello")))))
+	}
+
+	@Test
+	def testExternalEntityPrimitiveParametersByName() {
+		assertCompilesTo('''E::Op3(d => "hello", a => false, b => 42, c => 3.1415);''', wrap(CompilerBase.RUNTIME_INSTANCE -> fun("getExternalEntity", "E.class") ->
+			fun("Op3", unwrap(booleanLiteral("false")), unwrap(integerLiteral("42", 10)), unwrap(realLiteral("3.1415")), unwrap(stringLiteral("hello")))))
+	}
 }
