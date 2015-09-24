@@ -128,7 +128,7 @@ class RegionTemplate extends Template {
 						«trace(initState.nameLiteral, initTransition.reference)»,
 						«firstState.nameLiteral»);
 				«IF null != initTransition.effect»
-					new «initTransition.effect.identifier»(«OWNER_FIELD_NAME»).execute();
+					«initTransition.effect.identifier».execute(«OWNER_FIELD_NAME», null);
 				«ENDIF»
 				
 				«CURRENT_STATE_ATTRIBUTE» = State.«firstState.identifier»;
