@@ -5,6 +5,9 @@ import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+import java.math.BigInteger
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
+import java.util.ArrayList
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
@@ -107,6 +110,17 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	}
 
 	@Test
+	def testForWithCollectionLiteral() {
+		val collection = fun(CollectionOperations.SEQUENCE_LITERAL, unwrap(integerLiteral("0", 10)),
+			unwrap(integerLiteral("2", 10)), unwrap(integerLiteral("4", 10)))
+		assertCompilesTo('''for(Integer number in Sequence<Integer>{ 0, 2, 4 }){ number; }''',
+			"for " <> paren("java.math.BigInteger _local0 : " <> collection) <> " " <> block(
+				"java.util.ArrayList<java.math.BigInteger> _local1 = " <> wrap("_local0"),
+				"_local1"
+			))
+	}
+
+	@Test
 	def testBreak() {
 		assertCompilesTo('''while(false){break;}''',
 			"while " <> paren(unwrap(booleanLiteral("false"))) <> " " <> block("break"))
@@ -149,7 +163,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 					default: return;
 				}
 			''',
-			"switch " <> paren(unwrap(integerLiteral("0", 10))->fun("longValue")) <> " " <> block(
+			"switch " <> paren(unwrap(integerLiteral("0", 10)) -> fun("longValue")) <> " " <> block(
 				"case 1: " <> "case 2: " <> block("break"),
 				"default: " <> block("return")
 			)

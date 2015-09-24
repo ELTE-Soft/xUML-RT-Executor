@@ -136,6 +136,11 @@ class CodeGenNode {
 		this.terminator = terminator
 	}
 
+	def prepend(Object prefix) {
+		items.add(0, prefix)
+		this
+	}
+
 	def add(Object ... newItems) {
 		items.addAll(newItems)
 		this
