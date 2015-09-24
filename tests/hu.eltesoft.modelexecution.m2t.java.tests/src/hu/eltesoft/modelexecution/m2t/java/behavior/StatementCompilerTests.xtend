@@ -2,12 +2,10 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import java.math.BigInteger
-import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
-import java.util.ArrayList
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
