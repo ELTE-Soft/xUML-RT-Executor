@@ -192,23 +192,29 @@ class ExpressionCompiler extends CompilerBase {
 		unwrap(compile(expr.reference)) -> fun("delete")
 	}
 
-	def dispatch CodeGenNode compile(
-		FeatureInvocationExpression call
-	) {
-		unwrap(compile(call.context)) ->
-			switch call.feature {
-				Operation:
-					NamedReference.getIdentifier(call.feature) <>
-						compile(call.parameters, call.feature as BehavioralFeature, false)
-				Property:
-					fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
+	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {
+		val context = compile(call.context)
+		switch call.feature {
+			Operation: {
+				val parameters = compile(call.parameters, call.feature as BehavioralFeature, false)
+				if (StandardLibraryMapping.isStandardFeature(call.feature.qualifiedName)) {
+					parameters.prepend(context)
+					StandardLibraryMapping.getImplementationName(call.feature.qualifiedName) <> parameters
+				} else {
+					unwrap(context) -> NamedReference.getIdentifier(call.feature) <> parameters
+				}
 			}
+			Property:
+				unwrap(context) -> fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
+		}
 	}
 
 	def dispatch CodeGenNode compile(StaticFeatureInvocationExpression call) {
 		val op = call.operation.reference as Operation
 		var cls = op.class_
-		if (Stereotypes.isExternalEntity(cls)) {
+		if (StandardLibraryMapping.isStandardFeature(op.qualifiedName)) {
+			StandardLibraryMapping.getImplementationName(op.qualifiedName) <> compile(call.parameters, op, false)
+		} else if (null != cls && Stereotypes.isExternalEntity(cls)) {
 			val expr = RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") -> op.name <>
 				compile(call.parameters, op, true)
 			if (null != op.getReturnResult) {

@@ -89,6 +89,8 @@ public class PrimitiveOperations {
 
 	public static final String CAST = CLASS_PREFIX + "cast";
 
+	public static final String TO_STRING = CLASS_PREFIX + "toString";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -354,5 +356,9 @@ public class PrimitiveOperations {
 			Class<TargetType> targetType, C1 sourceExpression) {
 		return sourceExpression.stream().map(targetType::cast)
 				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression, targetType)));
+	}
+
+	public static ArrayList<String> toString(ArrayList<?> wrapped) {
+		return wrap(unwrap(wrapped).toString());
 	}
 }

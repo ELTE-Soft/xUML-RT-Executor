@@ -27,6 +27,12 @@ public final class CollectionOperations {
 	public static final String ONE = CLASS_PREFIX + "one";
 	public static final String FILTER = CLASS_PREFIX + "filter";
 
+	public static final String ADD = "add";
+	public static final String ADD_ALL = "addAll";
+
+	public static final String GET = "get";
+	public static final String ADD_AT = "addAt";
+
 	@SafeVarargs
 	public static <E> ArrayList<E> sequenceLiteral(E... items) {
 		return new ArrayList<E>(Arrays.asList(items));
@@ -54,7 +60,7 @@ public final class CollectionOperations {
 	 * Currently it always extracts the first item of the collection.
 	 */
 	public static <E> ArrayList<E> one(Collection<E> collection) {
-		return PrimitiveOperations.wrap(PrimitiveOperations.unwrap(collection));
+		return PrimitiveOperations.wrap(collection.iterator().next());
 	}
 
 	/**
@@ -88,5 +94,25 @@ public final class CollectionOperations {
 			return HashMultiset::create;
 		}
 		return null;
+	}
+
+	public static <E, C extends Collection<E>> ArrayList<Boolean> add(C collection, ArrayList<E> newItem) {
+		return PrimitiveOperations.wrap(collection.add(PrimitiveOperations.unwrap(newItem)));
+	}
+
+	public static <E, C extends Collection<E>, C2 extends Collection<E>> ArrayList<Boolean> addAll(C collection,
+			C2 newItems) {
+		return PrimitiveOperations.wrap(collection.addAll(newItems));
+	}
+
+	public static <E> ArrayList<E> get(ArrayList<E> collection, ArrayList<BigInteger> index) {
+		return PrimitiveOperations.wrap(collection.get(PrimitiveOperations.unwrap(index).intValue()));
+	}
+
+	// FIXME: what is the meaning of the return value here?
+	public static <E> ArrayList<Boolean> addAt(ArrayList<E> collection, ArrayList<BigInteger> index,
+			ArrayList<E> newItem) {
+		collection.add(PrimitiveOperations.unwrap(index).intValue(), PrimitiveOperations.unwrap(newItem));
+		return PrimitiveOperations.booleanLiteral(true);
 	}
 }
