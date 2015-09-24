@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ClassExtentExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ElementCollectionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
@@ -38,6 +39,7 @@ import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.Parameter
+import org.eclipse.uml2.uml.ParameterDirectionKind
 import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
@@ -45,7 +47,6 @@ import org.eclipse.uml2.uml.Type
 import org.eclipse.uml2.uml.TypedElement
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import org.eclipse.uml2.uml.ParameterDirectionKind
 
 class ExpressionCompiler extends CompilerBase {
 
@@ -80,6 +81,19 @@ class ExpressionCompiler extends CompilerBase {
 
 	def dispatch CodeGenNode compile(StringLiteralExpression lit) {
 		stringLiteral(StringEscapeUtils.escapeJava(lit.value))
+	}
+
+	def dispatch CodeGenNode compile(ElementCollectionExpression lit) {
+		val items = paren()
+		for (expr : lit.elements.expressions) {
+			items.add(unwrap(compile(expr)))
+		}
+		val funName = switch lit.collectionType {
+			case SEQUENCE: CollectionOperations.SEQUENCE_LITERAL
+			case SET: CollectionOperations.SET_LITERAL
+			case BAG: CollectionOperations.BAG_LITERAL
+		}
+		funName <> items
 	}
 
 	def dispatch CodeGenNode compile(NullExpression expr) {

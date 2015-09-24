@@ -11,6 +11,7 @@ import java.util.ArrayList
 import java.util.HashSet
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionType
 
 /** This class converts translational-model-level types to Java types. */
 class JavaTypeConverter {
@@ -30,6 +31,13 @@ class JavaTypeConverter {
 	}
 
 	/**
+	 * Java version of a collection type
+	 */
+	def javaType(CollectionType collection, ScalarType baseType) {
+		collectionName(collection) + "<" + scalarType(baseType) + ">"
+	}
+
+	/**
 	 * Java version of a scalar type
 	 */
 	def javaType(ScalarType type) {
@@ -42,6 +50,14 @@ class JavaTypeConverter {
 
 	dispatch def scalarType(ReferencedType type) {
 		type.reference.identifier
+	}
+
+	def String collectionName(CollectionType type) {
+		switch type {
+			case SEQUENCE: ArrayList.canonicalName
+			case SET: HashSet.canonicalName
+			case BAG: HashMultiset.canonicalName
+		}
 	}
 
 	def String collectionName(Multiplicity type) {

@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.runtime.library;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Predicate;
@@ -17,10 +18,29 @@ public final class CollectionOperations {
 
 	private static final String CLASS_PREFIX = CollectionOperations.class.getCanonicalName() + ".";
 
+	public static final String SEQUENCE_LITERAL = CLASS_PREFIX + "sequenceLiteral";
+	public static final String SET_LITERAL = CLASS_PREFIX + "setLiteral";
+	public static final String BAG_LITERAL = CLASS_PREFIX + "bagLiteral";
+
 	public static final String IS_EMPTY = CLASS_PREFIX + "isEmpty";
 	public static final String SIZE = CLASS_PREFIX + "size";
 	public static final String ONE = CLASS_PREFIX + "one";
 	public static final String FILTER = CLASS_PREFIX + "filter";
+
+	@SafeVarargs
+	public static <E> ArrayList<E> sequenceLiteral(E... items) {
+		return new ArrayList<E>(Arrays.asList(items));
+	}
+
+	@SafeVarargs
+	public static <E> HashSet<E> setLiteral(E... items) {
+		return new HashSet<E>(Arrays.asList(items));
+	}
+
+	@SafeVarargs
+	public static <E> HashMultiset<E> bagLiteral(E... items) {
+		return HashMultiset.create(Arrays.asList(items));
+	}
 
 	public static ArrayList<Boolean> isEmpty(Collection<?> collection) {
 		return PrimitiveOperations.wrap(collection.isEmpty());
