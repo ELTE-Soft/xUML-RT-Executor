@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xumlrt="http://modelexecution.eltesoft.hu/xumlrt/" xsi:schemaLocation="http://modelexecution.eltesoft.hu/xumlrt/ ../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml#_hVQhgGFBEeWd5aIC-sp16A">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xumlrt="http://modelexecution.eltesoft.hu/xumlrt/" xsi:schemaLocation="http://modelexecution.eltesoft.hu/xumlrt/ ../../hu.eltesoft.modelexecution.profile/profile/xumlrt.profile.uml">
   <uml:Model xmi:id="_ZW7FsMc1EeSnK7LttAdTLw" name="model">
     <packagedElement xmi:type="uml:Class" xmi:id="_aeMPwMc1EeSnK7LttAdTLw" name="A">
       <ownedOperation xmi:type="uml:Operation" xmi:id="_oMFm4EG6EeWzwYgcaM4qwA" name="Op"/>
@@ -57,7 +57,23 @@
       <ownedOperation xmi:type="uml:Operation" xmi:id="_LAXgUEHKEeWzwYgcaM4qwA" name="B"/>
       <nestedClassifier xmi:type="uml:Signal" xmi:id="_47IQsEGyEeWzwYgcaM4qwA" name="S"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="_5FoZEEHJEeWzwYgcaM4qwA" name="C">
+    <packagedElement xmi:type="uml:Class" xmi:id="_5FoZEEHJEeWzwYgcaM4qwA" name="C" classifierBehavior="_RluFkGL5EeWUi-3jK2MU3Q">
+      <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_RluFkGL5EeWUi-3jK2MU3Q" name="Machine">
+        <region xmi:type="uml:Region" xmi:id="_R4-YwGL5EeWUi-3jK2MU3Q" name="Region">
+          <transition xmi:type="uml:Transition" xmi:id="_W0w9UGL5EeWUi-3jK2MU3Q" source="_Uc344GL5EeWUi-3jK2MU3Q" target="_U1vr4GL5EeWUi-3jK2MU3Q"/>
+          <transition xmi:type="uml:Transition" xmi:id="_XuCusGL5EeWUi-3jK2MU3Q" name="T1" source="_U1vr4GL5EeWUi-3jK2MU3Q" target="_VnkKYGL5EeWUi-3jK2MU3Q">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_zqjc4GL5EeWUi-3jK2MU3Q" name="T1Effect"/>
+            <trigger xmi:type="uml:Trigger" xmi:id="_nrvhgGL5EeWUi-3jK2MU3Q" name="Trigger1" event="_naARQGL5EeWUi-3jK2MU3Q"/>
+          </transition>
+          <subvertex xmi:type="uml:Pseudostate" xmi:id="_Uc344GL5EeWUi-3jK2MU3Q" name="Init"/>
+          <subvertex xmi:type="uml:State" xmi:id="_U1vr4GL5EeWUi-3jK2MU3Q" name="State1">
+            <exit xmi:type="uml:OpaqueBehavior" xmi:id="_vomqYGL5EeWUi-3jK2MU3Q" name="State1Exit"/>
+          </subvertex>
+          <subvertex xmi:type="uml:State" xmi:id="_VnkKYGL5EeWUi-3jK2MU3Q" name="State2">
+            <entry xmi:type="uml:OpaqueBehavior" xmi:id="_tHy6gGL5EeWUi-3jK2MU3Q" name="State2Entry"/>
+          </subvertex>
+        </region>
+      </ownedBehavior>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_7BAgoEHJEeWzwYgcaM4qwA" name="C">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_9yslIEHJEeWzwYgcaM4qwA" name="pInBool">
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
@@ -66,14 +82,6 @@
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
         </ownedParameter>
       </ownedOperation>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Signal" xmi:id="_MR4rMEHNEeWzwYgcaM4qwA" name="SParams">
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_On_m8EHNEeWzwYgcaM4qwA" name="aBool">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
-      </ownedAttribute>
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_R-jTEEHNEeWzwYgcaM4qwA" name="aString">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-      </ownedAttribute>
     </packagedElement>
     <packagedElement xmi:type="uml:Class" xmi:id="_VsclsEvUEeWbvJ0DeAHZOQ" name="D">
       <ownedAttribute xmi:type="uml:Property" xmi:id="_dxeMEEvUEeWbvJ0DeAHZOQ" name="a">
@@ -99,6 +107,15 @@
         <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yYEawEzTEeWKTdNBA6WBAA"/>
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yYhGsEzTEeWKTdNBA6WBAA" value="*"/>
       </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:SignalEvent" xmi:id="_naARQGL5EeWUi-3jK2MU3Q" name="SParamsEvent" signal="_MR4rMEHNEeWzwYgcaM4qwA"/>
+    <packagedElement xmi:type="uml:Signal" xmi:id="_MR4rMEHNEeWzwYgcaM4qwA" name="SParams">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_On_m8EHNEeWzwYgcaM4qwA" name="aBool">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_R-jTEEHNEeWzwYgcaM4qwA" name="aString">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
     </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z7Si8BWVEeWYQpLaR7ziYA">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Z7YpkRWVEeWYQpLaR7ziYA" source="PapyrusVersion">

@@ -36,6 +36,10 @@ abstract class CompiledCodeCheckTestCase {
 		(provider as TestModelUMLContextProvider).definedOperation = fqn
 	}
 
+	def setBehavior(String fqn) {
+		(provider as TestModelUMLContextProvider).behavior = fqn
+	}
+
 	protected def assertCompilesTo(CharSequence actionCode, CodeGenNode ... expectedNodes) {
 		val results = parser.parse(actionCode.toString, provider)
 		if (!results.validationOK) {
