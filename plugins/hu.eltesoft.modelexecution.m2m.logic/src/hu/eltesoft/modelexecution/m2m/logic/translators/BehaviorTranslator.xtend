@@ -86,7 +86,7 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 
 		rootNode.on(PACKAGE.bhBehavior_ParsingResults, ActionCodeMatcher.on(engine)) [
 			val parser = new ReducedAlfParser()
-			val results = parser.parse(behavior)
+			val results = parser.parse(behavior, engine)
 			if (!results.validationOK) {
 				throw new GenerationException(results.formatDiagnostics(behavior))
 			}
