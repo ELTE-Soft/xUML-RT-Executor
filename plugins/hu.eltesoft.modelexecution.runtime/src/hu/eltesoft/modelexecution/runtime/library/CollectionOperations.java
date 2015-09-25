@@ -60,6 +60,9 @@ public final class CollectionOperations {
 	 * Currently it always extracts the first item of the collection.
 	 */
 	public static <E> ArrayList<E> one(Collection<E> collection) {
+		if (collection.isEmpty()) {
+			return PrimitiveOperations.nullValue();
+		}
 		return PrimitiveOperations.wrap(collection.iterator().next());
 	}
 
@@ -109,10 +112,8 @@ public final class CollectionOperations {
 		return PrimitiveOperations.wrap(collection.get(PrimitiveOperations.unwrap(index).intValue()));
 	}
 
-	// FIXME: what is the meaning of the return value here?
-	public static <E> ArrayList<Boolean> addAt(ArrayList<E> collection, ArrayList<BigInteger> index,
+	public static <E> void addAt(ArrayList<E> collection, ArrayList<BigInteger> index,
 			ArrayList<E> newItem) {
 		collection.add(PrimitiveOperations.unwrap(index).intValue(), PrimitiveOperations.unwrap(newItem));
-		return PrimitiveOperations.booleanLiteral(true);
 	}
 }
