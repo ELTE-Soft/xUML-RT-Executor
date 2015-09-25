@@ -30,15 +30,14 @@ public final class InstanceRegistry {
 	private InstanceRegistry() {
 	}
 
-	public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances(Class<C> targetClass) {
+	public <C> HashSet<C> allInstances(Class<? extends C> targetClass) {
 		return instanceRegistry.allInstances(targetClass);
 	}
 
 	/**
 	 * Looks up an instance of the given class.
 	 */
-	public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
-			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, long instanceID) {
+	public <C> C getInstance(Class<? extends C> targetClass, long instanceID) {
 		return instanceRegistry.getInstance(targetClass, instanceID);
 	}
 
@@ -94,7 +93,7 @@ public final class InstanceRegistry {
 
 	private class ClassMap {
 
-		private final Map<Class<? extends hu.eltesoft.modelexecution.runtime.base.Class>, IdMap> map = new HashMap<>();
+		private final Map<Class<?>, IdMap> map = new HashMap<>();
 
 		public boolean addInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
 			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = instance.getClass();
@@ -106,17 +105,15 @@ public final class InstanceRegistry {
 			return getIdMap(targetClass).remove(instance.getInstanceID());
 		}
 
-		public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances(
-				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+		public <C> HashSet<C> allInstances(Class<? extends C> targetClass) {
 			return getIdMap(targetClass).allInstances();
 		}
 
-		public hu.eltesoft.modelexecution.runtime.base.Class getInstance(
-				Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass, long instanceID) {
+		public <C> C getInstance(Class<? extends C> targetClass, long instanceID) {
 			return getIdMap(targetClass).getByInstanceID(instanceID);
 		}
 
-		private IdMap getIdMap(Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass) {
+		private IdMap getIdMap(Class<?> targetClass) {
 			IdMap idMap = map.get(targetClass);
 			if (null == idMap) {
 				idMap = new IdMap();
@@ -128,7 +125,7 @@ public final class InstanceRegistry {
 
 	private class IdMap {
 
-		private final Map<Long, hu.eltesoft.modelexecution.runtime.base.Class> map = new HashMap<>();
+		private final Map<Long, Object> map = new HashMap<>();
 
 		/** Returns whether the inserted instance is new. */
 		public boolean put(long instanceID, hu.eltesoft.modelexecution.runtime.base.Class instance) {
@@ -140,12 +137,13 @@ public final class InstanceRegistry {
 			return null != map.remove(instanceID);
 		}
 
-		public hu.eltesoft.modelexecution.runtime.base.Class getByInstanceID(long instanceID) {
-			return map.get(instanceID);
+		@SuppressWarnings("unchecked")
+		public <C> C getByInstanceID(long instanceID) {
+			return (C) map.get(instanceID);
 		}
 
 		@SuppressWarnings("unchecked")
-		public <C extends hu.eltesoft.modelexecution.runtime.base.Class> HashSet<C> allInstances() {
+		public <C> HashSet<C> allInstances() {
 			return new HashSet<C>((Collection<C>) map.values());
 		}
 	}

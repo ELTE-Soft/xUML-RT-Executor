@@ -316,9 +316,9 @@ class ExpressionCompiler extends CompilerBase {
 
 		val baseType = expr.context.valueTypeOf.convert.javaType
 		var fromType = if (expr.context.typeOf.isCollection) {
-				expr.context.typeOf.collectionName <> "<" <> baseType <> ">"
+				expr.context.typeOf.collectionName <> "<? extends " <> baseType <> ">"
 			} else {
-				"java.util.Collection<" <> baseType <> ">"
+				"java.util.Collection<? extends " <> baseType <> ">"
 			}
 		val toType = expr.typeOf.collectionName <> "<" <> expr.valueTypeOf.convert.javaType <> ">"
 		val lambdaType = "java.util.function.Function<" <> fromType <> ", " <> toType <> ">"

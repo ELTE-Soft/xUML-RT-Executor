@@ -111,7 +111,7 @@ public class PrimitiveOperations {
 		}
 	}
 
-	public static <X, C1 extends Collection<X>, C2 extends Collection<X>> C2 setValue(final C1 wrapper,
+	public static <X, C1 extends Collection<X>, C2 extends Collection<? extends X>> C2 setValue(final C1 wrapper,
 			final C2 newValue) {
 		wrapper.clear();
 		wrapper.addAll(newValue);

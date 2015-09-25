@@ -59,7 +59,7 @@ public final class CollectionOperations {
 	/**
 	 * Currently it always extracts the first item of the collection.
 	 */
-	public static <E> ArrayList<E> one(Collection<E> collection) {
+	public static <E> ArrayList<E> one(Collection<? extends E> collection) {
 		if (collection.isEmpty()) {
 			return PrimitiveOperations.nullValue();
 		}
