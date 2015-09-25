@@ -27,11 +27,11 @@ public final class CollectionOperations {
 	public static final String ONE = CLASS_PREFIX + "one";
 	public static final String FILTER = CLASS_PREFIX + "filter";
 
-	public static final String ADD = "add";
-	public static final String ADD_ALL = "addAll";
+	public static final String ADD = CLASS_PREFIX + "add";
+	public static final String ADD_ALL = CLASS_PREFIX + "addAll";
 
-	public static final String GET = "get";
-	public static final String ADD_AT = "addAt";
+	public static final String GET = CLASS_PREFIX + "get";
+	public static final String ADD_AT = CLASS_PREFIX + "addAt";
 
 	@SafeVarargs
 	public static <E> ArrayList<E> sequenceLiteral(E... items) {
