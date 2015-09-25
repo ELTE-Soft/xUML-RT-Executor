@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssociationAccessExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ClassExtentExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionType
@@ -306,6 +307,47 @@ class ExpressionCompiler extends CompilerBase {
 			}
 		parameters.map[unwrap(it)]
 		name -> opName <> parameters
+	}
+
+	def dispatch CodeGenNode compile(AssociationAccessExpression expr) {
+		val end = expr.association
+		val assoc = end.owner as Association
+		val otherEnd = assoc.otherEnd(end)
+
+		val baseType = expr.context.valueTypeOf.convert.javaType
+		var fromType = if (expr.context.typeOf.isCollection) {
+				expr.context.typeOf.collectionName <> "<" <> baseType <> ">"
+			} else {
+				"java.util.Collection<" <> baseType <> ">"
+			}
+		val toType = expr.typeOf.collectionName <> "<" <> expr.valueTypeOf.convert.javaType <> ">"
+		val lambdaType = "java.util.function.Function<" <> fromType <> ", " <> toType <> ">"
+		val paramName = freshLocalName
+		val resultName = freshLocalName
+		val objName = freshLocalName
+		val assocName = freshLocalName
+		val assocType = assoc.convert.javaType
+		val assocGetter = Template.GETTER_PREFIX <> NamedReference.getIdentifier(otherEnd)
+		val propName = NamedReference.getIdentifier(end)
+		val labmdaBody = block(
+			sequence(toType) <> " " <> resultName <> " = " <> expr.typeOf.createEmpty,
+			"for " <> paren(baseType <> " " <> objName <> " : " <> paramName) <> " " <> block(
+				"for " <> paren(assocType <> " " <> assocName <> " : " <> objName -> fun(assocGetter)) <> " " <> block(
+					resultName -> fun("add", assocName -> propName)
+				)
+			),
+			"return " <> resultName
+		)
+		val lambda = paren(paren(lambdaType) <> paren(paren(paramName) <> " -> " <> labmdaBody))
+		lambda -> fun("apply", compile(expr.context));
+	}
+
+	def otherEnd(Association association, Property property) {
+		for (end : association.ownedEnds) {
+			if (end != property) {
+				return end
+			}
+		}
 	}
 
 	def dispatch CodeGenNode compile(SignalDataExpression expr) {

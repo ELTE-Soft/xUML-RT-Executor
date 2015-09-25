@@ -19,6 +19,10 @@ class TypeSystemExtensions {
 		typeSystem.type(expression).value.umlType
 	}
 
+	def Type valueTypeOf(EObject expression) {
+		typeSystem.type(expression).value.umlValueType
+	}
+
 	def isBoolean(EObject expression) {
 		IUMLContextProvider.BOOLEAN_TYPE == typeOf(expression).name
 	}

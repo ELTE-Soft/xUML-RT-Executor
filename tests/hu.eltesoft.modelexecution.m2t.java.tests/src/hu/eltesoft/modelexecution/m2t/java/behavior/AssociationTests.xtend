@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 
 class AssociationTests extends CompiledCodeCheckTestCase {
 
@@ -28,5 +29,29 @@ class AssociationTests extends CompiledCodeCheckTestCase {
 				wrap("_aeMPwMc1EeSnK7LttAdTLw" -> fun("create", "null"))),
 			"_nmXLsEzTEeWKTdNBA6WBAA" -> "unlink" <> paren(CompilerBase.CONTEXT_NAME, unwrap("_local0"))
 		)
+	}
+	
+	@Test
+	def testNavigationFromThisToOne() {
+		operation = ModelProperties.A_OPERATION
+		assertCompilesTo('''this->b;''', empty())
+	}
+
+	@Test
+	def testNavigationFromThisToMany() {
+		operation = ModelProperties.B_OPERATION
+		assertCompilesTo('''this->a;''', empty())
+	}
+
+	@Test
+	def testNavigationFromThisToThisThroughOne() {
+		operation = ModelProperties.A_OPERATION
+		assertCompilesTo('''this->b->a;''', empty())
+	}
+
+	@Test
+	def testNavigationFromThisToThisThroughMany() {
+		operation = ModelProperties.B_OPERATION
+		assertCompilesTo('''this->a->b;''', empty())
 	}
 }

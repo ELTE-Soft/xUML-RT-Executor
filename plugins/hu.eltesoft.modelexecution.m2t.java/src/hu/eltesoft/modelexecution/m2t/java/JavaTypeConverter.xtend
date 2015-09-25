@@ -12,9 +12,14 @@ import java.util.HashSet
 
 import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionType
+import com.google.common.collect.ImmutableSet
 
 /** This class converts translational-model-level types to Java types. */
 class JavaTypeConverter {
+
+	private static final String STD_COLLECTIONS_SEQUENCE = "std::collections::Sequence";
+	private static final String STD_COLLECTIONS_SET = "std::collections::Set";
+	private static final String STD_COLLECTIONS_BAG = "std::collections::Bag";
 
 	/**
 	 * Java version of a complete type with multiplicity
@@ -52,6 +57,19 @@ class JavaTypeConverter {
 		type.reference.identifier
 	}
 
+	def boolean isCollection(org.eclipse.uml2.uml.Type type) {
+		ImmutableSet.builder().add(STD_COLLECTIONS_SEQUENCE).add(STD_COLLECTIONS_SET).add(STD_COLLECTIONS_BAG).build().
+			contains(type.qualifiedName)
+	}
+
+	def String collectionName(org.eclipse.uml2.uml.Type type) {
+		switch type.qualifiedName {
+			case STD_COLLECTIONS_SEQUENCE: ArrayList.canonicalName
+			case STD_COLLECTIONS_SET: HashSet.canonicalName
+			case STD_COLLECTIONS_BAG: HashMultiset.canonicalName
+		}
+	}
+
 	def String collectionName(CollectionType type) {
 		switch type {
 			case SEQUENCE: ArrayList.canonicalName
@@ -79,8 +97,19 @@ class JavaTypeConverter {
 		}
 	}
 
+	def createEmpty(org.eclipse.uml2.uml.Type type) {
+		createEmptyInternal(collectionName(type))
+	}
+
 	def createEmpty(CollectionType type) {
-		val collectionName = collectionName(type)
+		createEmptyInternal(collectionName(type))
+	}
+
+	def createEmpty(Multiplicity type) {
+		createEmptyInternal(collectionName(type), expectedNum(type))
+	}
+
+	def createEmptyInternal(String collectionName) {
 		if (collectionName == HashMultiset.canonicalName) {
 			collectionName + ".create()"
 		} else {
@@ -88,9 +117,7 @@ class JavaTypeConverter {
 		}
 	}
 
-	def createEmpty(Multiplicity type) {
-		val expectedNum = expectedNum(type)
-		val collectionName = collectionName(type)
+	def createEmptyInternal(String collectionName, String expectedNum) {
 		if (collectionName == HashMultiset.canonicalName) {
 			collectionName + ".create(" + expectedNum + ")"
 		} else {
@@ -101,7 +128,7 @@ class JavaTypeConverter {
 	def expectedNum(Multiplicity type) {
 		switch (0) {
 			case type.upperBound == 1: "1"
-			case type.upperBound == type.lowerBound: type.upperBound
+			case type.upperBound == type.lowerBound: type.upperBound.toString
 			default: ""
 		}
 	}
