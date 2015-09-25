@@ -41,11 +41,11 @@ class LifecycleTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testSignalConstructorPropertyParams() {
-		assertCompilesTo('''new SParams(aBool => true, aString => "hello");''',
+		assertCompilesTo('''new C::SParams(aBool => true, aString => "hello");''',
 			wrap("new " <>
 				fun("_MR4rMEHNEeWzwYgcaM4qwA", fun(PrimitiveOperations.BOOLEAN_LITERAL, "true"),
 					fun(PrimitiveOperations.STRING_LITERAL, str("hello")))))
-		assertCompilesTo('''new SParams(aString => "hello", aBool => true);''',
+		assertCompilesTo('''new C::SParams(aString => "hello", aBool => true);''',
 			wrap("new " <>
 				fun("_MR4rMEHNEeWzwYgcaM4qwA", fun(PrimitiveOperations.BOOLEAN_LITERAL, "true"),
 					fun(PrimitiveOperations.STRING_LITERAL, str("hello")))))

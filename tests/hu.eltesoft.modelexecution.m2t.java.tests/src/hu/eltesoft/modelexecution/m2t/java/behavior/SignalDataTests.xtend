@@ -1,10 +1,10 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
-import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 
 class SignalDataTests extends CompiledCodeCheckTestCase {
 
@@ -12,24 +12,30 @@ class SignalDataTests extends CompiledCodeCheckTestCase {
 		compiler = new ExpressionCompiler()
 	}
 
-	// FIXME: I really don't know why the parser is unable to type the signal data here...
-	// See tests in project ralf-feature-tests under user folder of kmate
-
 	@Test
 	def testSignalDataInStateEntry() {
 		behavior = ModelProperties.STATE_ENTRY
-		assertCompilesTo('''sigdata.aString;''', empty())
+		assertCompilesTo('''sigdata.aString;''',
+			unwrap(
+				fun(PrimitiveOperations.CAST, "_MR4rMEHNEeWzwYgcaM4qwA" -> "class", wrap(CompilerBase.SIGDATA_NAME))) ->
+				fun("get__R$jTEEHNEeWzwYgcaM4qwA"))
 	}
 
 	@Test
 	def testSignalDataInStateExit() {
 		behavior = ModelProperties.STATE_EXIT
-		assertCompilesTo('''sigdata.aBool;''', empty())
+		assertCompilesTo('''sigdata.aBool;''',
+			unwrap(
+				fun(PrimitiveOperations.CAST, "_MR4rMEHNEeWzwYgcaM4qwA" -> "class", wrap(CompilerBase.SIGDATA_NAME))) ->
+				fun("get__On_m8EHNEeWzwYgcaM4qwA"))
 	}
 
 	@Test
 	def testSignalDataInTransitionEffect() {
 		behavior = ModelProperties.TRANSITION_EFFECT
-		assertCompilesTo('''sigdata.aBool;''', empty())
+		assertCompilesTo('''sigdata.aBool;''',
+			unwrap(
+				fun(PrimitiveOperations.CAST, "_MR4rMEHNEeWzwYgcaM4qwA" -> "class", wrap(CompilerBase.SIGDATA_NAME))) ->
+				fun("get__On_m8EHNEeWzwYgcaM4qwA"))
 	}
 }
