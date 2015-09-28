@@ -31,7 +31,6 @@ public final class CollectionOperations {
 	public static final String ADD_ALL = CLASS_PREFIX + "addAll";
 
 	public static final String GET = CLASS_PREFIX + "get";
-	public static final String ADD_AT = CLASS_PREFIX + "addAt";
 
 	@SafeVarargs
 	public static <E> ArrayList<E> sequenceLiteral(E... items) {
@@ -112,7 +111,7 @@ public final class CollectionOperations {
 		return PrimitiveOperations.wrap(collection.get(PrimitiveOperations.unwrap(index).intValue()));
 	}
 
-	public static <E> void addAt(ArrayList<E> collection, ArrayList<BigInteger> index,
+	public static <E> void add(ArrayList<E> collection, ArrayList<BigInteger> index,
 			ArrayList<E> newItem) {
 		collection.add(PrimitiveOperations.unwrap(index).intValue(), PrimitiveOperations.unwrap(newItem));
 	}

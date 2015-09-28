@@ -37,7 +37,6 @@ public class StandardLibraryMapping {
 
 		MAPPING.put(DATA_SEQUENCE + "get", CollectionOperations.GET);
 		MAPPING.put(DATA_SEQUENCE + "add", CollectionOperations.ADD);
-		MAPPING.put(DATA_SEQUENCE + "addAt", CollectionOperations.ADD_AT);
 
 		MAPPING.put(DATA_SET + "add", CollectionOperations.ADD);
 		MAPPING.put(DATA_SET + "addAll", CollectionOperations.ADD_ALL);
