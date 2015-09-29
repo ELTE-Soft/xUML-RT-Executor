@@ -268,13 +268,22 @@ public interface AssociationPackage extends EPackage {
 	int AS_ASSOCIATION_CLASS__HAS_RECEPTIONS = AS_ASSOCIATION_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AS_ASSOCIATION_CLASS__IS_ABSTRACT = AS_ASSOCIATION_FEATURE_COUNT + 10;
+
+	/**
 	 * The number of structural features of the '<em>As Association Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 10;
+	int AS_ASSOCIATION_CLASS_FEATURE_COUNT = AS_ASSOCIATION_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>As Association Class</em>' class.

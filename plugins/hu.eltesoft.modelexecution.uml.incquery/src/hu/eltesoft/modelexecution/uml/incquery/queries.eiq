@@ -170,6 +170,10 @@ pattern ClassOrAssocClass(cls : Class) {
 	neg find IsNode(cls);
 }
 
+pattern AbstractClass(cls : Class, isAbstract) {
+	Class.isAbstract(cls, isAbstract);
+}
+
 private pattern IsBehavior(behavior : Behavior) {
 	Behavior(behavior);
 }

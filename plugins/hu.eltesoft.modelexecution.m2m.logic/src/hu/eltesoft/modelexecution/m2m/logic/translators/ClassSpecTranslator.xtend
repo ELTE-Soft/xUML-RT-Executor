@@ -24,6 +24,7 @@ import java.util.Comparator
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
 
 /**
  * Creates the metamodel for specification interfaces of UML classes.
@@ -51,6 +52,11 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 
 		// parent classes
 		rootNode.on(PACKAGE.clClassSpec_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// abstract class
+		rootNode.on(PACKAGE.clClassSpec_IsAbstract, AbstractClassMatcher.on(engine))[
+			isAbstract
+		]
 
 		// construction
 		val ctorRecordNode = rootNode.onSorted(

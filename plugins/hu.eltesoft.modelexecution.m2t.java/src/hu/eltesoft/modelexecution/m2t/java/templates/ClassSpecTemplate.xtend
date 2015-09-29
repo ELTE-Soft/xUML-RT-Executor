@@ -35,6 +35,8 @@ class ClassSpecTemplate extends Template {
 		public interface «classSpec.identifier» 
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 				
+			«IF !classSpec.isIsAbstract»
+				
 			/** Creator for UML class «classSpec.javadoc» */
 			public static «classSpec.identifier» create(«Consumer.canonicalName»<«classSpec.identifier»> initializer) {
 				«FOR rec : classSpec.ctorRecords»
@@ -59,6 +61,8 @@ class ClassSpecTemplate extends Template {
 				«ENDIF»
 				return created;
 			}
+			
+			«ENDIF»
 		
 			/** Deleter for UML class «classSpec.javadoc» */
 			void delete();

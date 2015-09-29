@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getParents <em>Parents</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#getCtorRecords <em>Ctor Records</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasReceptions <em>Has Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsAbstract <em>Is Abstract</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClassSpec()
@@ -179,5 +180,31 @@ public interface ClClassSpec extends ModelRoot {
 	 * @generated
 	 */
 	void setHasReceptions(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Abstract</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Abstract</em>' attribute.
+	 * @see #setIsAbstract(boolean)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClassSpec_IsAbstract()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isIsAbstract();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsAbstract <em>Is Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Abstract</em>' attribute.
+	 * @see #isIsAbstract()
+	 * @generated
+	 */
+	void setIsAbstract(boolean value);
 
 } // ClClassSpec

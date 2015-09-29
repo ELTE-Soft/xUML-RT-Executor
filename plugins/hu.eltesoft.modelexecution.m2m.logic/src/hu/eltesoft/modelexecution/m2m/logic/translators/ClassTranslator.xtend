@@ -26,6 +26,7 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
+import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
 
 /**
  * Creates the metamodel for implementation classes of UML classes.
@@ -42,8 +43,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(ClsMatcher.on(engine)) [
 			val root = FACTORY.createClClass
-			root.setReference(new NamedReference(cls));
-			root.hasReceptions = Stereotypes.isCallable(cls);
+			root.setReference(new NamedReference(cls))
+			root.hasReceptions = Stereotypes.isCallable(cls)
 			return root;
 		]
 		return rootNode
@@ -53,6 +54,12 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// parent classes
 		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// abstract class
+		rootNode.on(PACKAGE.clClass_IsAbstract, AbstractClassMatcher.on(engine))[
+			isAbstract
+		]
+
 
 		// destructor
 		rootNode.on(PACKAGE.clClass_Destructor, DestructorOfClassMatcher.on(engine))[new NamedReference(destructor)]

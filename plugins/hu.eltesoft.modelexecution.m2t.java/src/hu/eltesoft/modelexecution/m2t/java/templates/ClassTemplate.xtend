@@ -41,7 +41,8 @@ class ClassTemplate extends Template {
 	) '''
 		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.implementation» 
+		public
+			class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
 		
@@ -229,13 +230,15 @@ class ClassTemplate extends Template {
 				«IF operation.hasBody»
 					«IF operation.returnType != null»return«ENDIF»
 						«operation.method.identifier».execute(
-				«IF !operation.isStatic»this«IF operation.hasParameters»,«ENDIF»«ENDIF»
-				«FOR parameter : operation.parameters SEPARATOR ','»
-					«parameter.identifier»
-				«ENDFOR»
-				);
-		«ENDIF»
-		}
+					«IF !operation.isStatic»this«IF operation.hasParameters»,«ENDIF»«ENDIF»
+					«FOR parameter : operation.parameters SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+					);
+				«ELSE»
+				throw new RuntimeException("Calling the abstract method " + «operation.nameLiteral»);
+				«ENDIF»
+			}
 		
 		«IF !operation.isStatic»
 			/** Statically dispatched access to operation «operation.javadoc» 
@@ -255,7 +258,9 @@ class ClassTemplate extends Template {
 						«parameter.identifier»
 					«ENDFOR»
 					);
-			«ENDIF»
+				«ELSE»
+				throw new RuntimeException("Calling the abstract method " + «operation.nameLiteral»);
+				«ENDIF»
 			}
 		«ENDIF»
 	'''

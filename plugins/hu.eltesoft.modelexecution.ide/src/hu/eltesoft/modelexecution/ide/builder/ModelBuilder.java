@@ -20,6 +20,7 @@ import hu.eltesoft.modelexecution.filemanager.FileManagerFactory;
 import hu.eltesoft.modelexecution.filemanager.IFileManagerFactory;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
+import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException;
 import hu.eltesoft.modelexecution.m2t.java.GenerationException;
 
 /**
@@ -95,7 +96,7 @@ public class ModelBuilder extends IncrementalProjectBuilder {
 					try {
 						TranslatorRegistry.INSTANCE.runTranslatorFor(resource,
 								t -> queue.put(resource, t.fullTranslation()));
-					} catch (GenerationException e) {
+					} catch (GenerationException | CompilationFailedException e) {
 						markerManager.putMarkerOnResource(resource, e.getMessage());
 					}
 					return true;
