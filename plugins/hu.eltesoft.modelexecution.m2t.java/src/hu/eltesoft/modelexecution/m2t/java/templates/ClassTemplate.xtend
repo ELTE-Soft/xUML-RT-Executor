@@ -23,6 +23,7 @@ import java.util.LinkedList
 import java.util.concurrent.atomic.AtomicLong
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
+import hu.eltesoft.modelexecution.runtime.base.Event
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -104,6 +105,23 @@ class ClassTemplate extends Template {
 					«generateExternalReception(reception)»
 				«ENDFOR»
 			«ENDIF»
+		«ENDIF»
+		
+		«IF classDefinition.isIsAbstract && classDefinition.isIsActive && !hasStateMachine»
+			@Override
+			public void send(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method send");
+			}
+			
+			@Override
+			public void sendExternal(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method sendExternal");
+			}
+			
+			@Override
+			public void receive(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method receive");
+			}
 		«ENDIF»
 		
 		«generateStructuralClassBody()»

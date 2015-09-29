@@ -177,13 +177,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__IS_ABSTRACT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 10;
 
 	/**
+	 * The feature id for the '<em><b>Is Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__IS_ACTIVE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 11;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 11;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -295,13 +304,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC__IS_ABSTRACT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Is Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__IS_ACTIVE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
+	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Cl Class Spec</em>' class.
@@ -1114,6 +1132,17 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClClass_IsAbstract();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive <em>Is Active</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Active</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_IsActive();
+
+	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1221,6 +1250,17 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getClClassSpec_IsAbstract();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsActive <em>Is Active</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Active</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsActive()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_IsActive();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -1563,6 +1603,14 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_CLASS__IS_ABSTRACT = eINSTANCE.getClClass_IsAbstract();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Active</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__IS_ACTIVE = eINSTANCE.getClClass_IsActive();
+
+		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1643,6 +1691,14 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CL_CLASS_SPEC__IS_ABSTRACT = eINSTANCE.getClClassSpec_IsAbstract();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Active</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__IS_ACTIVE = eINSTANCE.getClClassSpec_IsActive();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.

@@ -360,6 +360,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getClClass_IsActive() {
+		return (EAttribute)clClassEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClClassSpec() {
 		return clClassSpecEClass;
 	}
@@ -443,6 +452,15 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 	 */
 	public EAttribute getClClassSpec_IsAbstract() {
 		return (EAttribute)clClassSpecEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getClClassSpec_IsActive() {
+		return (EAttribute)clClassSpecEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -674,6 +692,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassEClass, CL_CLASS__INHERITED_ASSOCIATIONS);
 		createEAttribute(clClassEClass, CL_CLASS__HAS_RECEPTIONS);
 		createEAttribute(clClassEClass, CL_CLASS__IS_ABSTRACT);
+		createEAttribute(clClassEClass, CL_CLASS__IS_ACTIVE);
 
 		clClassSpecEClass = createEClass(CL_CLASS_SPEC);
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__OPERATIONS);
@@ -685,6 +704,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		createEReference(clClassSpecEClass, CL_CLASS_SPEC__CTOR_RECORDS);
 		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__HAS_RECEPTIONS);
 		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__IS_ABSTRACT);
+		createEAttribute(clClassSpecEClass, CL_CLASS_SPEC__IS_ACTIVE);
 
 		clOperationEClass = createEClass(CL_OPERATION);
 		createEAttribute(clOperationEClass, CL_OPERATION__METHOD);
@@ -784,6 +804,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClass_InheritedAssociations(), this.getClInheritedAssociation(), null, "inheritedAssociations", null, 0, -1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getClClass_HasReceptions(), ecorePackage.getEBoolean(), "hasReceptions", "false", 1, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getClClass_IsAbstract(), ecorePackage.getEBoolean(), "isAbstract", null, 1, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClClass_IsActive(), ecorePackage.getEBoolean(), "isActive", null, 1, 1, ClClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clClassSpecEClass, ClClassSpec.class, "ClClassSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClClassSpec_Operations(), this.getClOperationSpec(), null, "operations", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -795,6 +816,7 @@ public class ClassdefPackageImpl extends EPackageImpl implements ClassdefPackage
 		initEReference(getClClassSpec_CtorRecords(), this.getClCtorRecord(), null, "ctorRecords", null, 0, -1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getClClassSpec_HasReceptions(), ecorePackage.getEBoolean(), "hasReceptions", "false", 1, 1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getClClassSpec_IsAbstract(), ecorePackage.getEBoolean(), "isAbstract", null, 1, 1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getClClassSpec_IsActive(), ecorePackage.getEBoolean(), "isActive", null, 1, 1, ClClassSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(clOperationEClass, ClOperation.class, "ClOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getClOperation_Method(), theBasePackage.getNamedReference(), "method", null, 0, 1, ClOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

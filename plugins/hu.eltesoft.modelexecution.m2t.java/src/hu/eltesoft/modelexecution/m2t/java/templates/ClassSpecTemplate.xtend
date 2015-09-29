@@ -24,7 +24,9 @@ class ClassSpecTemplate extends Template {
 	new(ClClassSpec classSpec) {
 		super(classSpec)
 		this.classSpec = classSpec
-		if (classSpec.hasStateMachine) { extendings.add(StatefulClass.canonicalName) }
+		if (classSpec.hasStateMachine || (classSpec.isIsAbstract && classSpec.isIsActive)) {
+			extendings.add(StatefulClass.canonicalName)
+		}
 		classSpec.parents.forEach[ extendings.add(identifier) ]
 	}
 

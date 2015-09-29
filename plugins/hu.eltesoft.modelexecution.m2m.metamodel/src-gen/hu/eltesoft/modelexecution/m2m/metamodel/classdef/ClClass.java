@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getInheritedAssociations <em>Inherited Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions <em>Has Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive <em>Is Active</em>}</li>
  * </ul>
  *
  * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass()
@@ -250,5 +251,31 @@ public interface ClClass extends ModelRoot {
 	 * @generated
 	 */
 	void setIsAbstract(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Is Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Active</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Active</em>' attribute.
+	 * @see #setIsActive(boolean)
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage#getClClass_IsActive()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isIsActive();
+
+	/**
+	 * Sets the value of the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Active</em>' attribute.
+	 * @see #isIsActive()
+	 * @generated
+	 */
+	void setIsActive(boolean value);
 
 } // ClClass

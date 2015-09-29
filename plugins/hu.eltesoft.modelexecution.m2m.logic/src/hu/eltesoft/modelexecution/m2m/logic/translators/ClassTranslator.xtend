@@ -9,6 +9,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ActiveClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
@@ -26,7 +28,6 @@ import hu.eltesoft.modelexecution.uml.incquery.RegionOfClassMatcher
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine
 import org.eclipse.incquery.runtime.exception.IncQueryException
 import org.eclipse.uml2.uml.Class
-import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
 
 /**
  * Creates the metamodel for implementation classes of UML classes.
@@ -56,10 +57,14 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
 
 		// abstract class
-		rootNode.on(PACKAGE.clClass_IsAbstract, AbstractClassMatcher.on(engine))[
+		rootNode.on(PACKAGE.clClass_IsAbstract, AbstractClassMatcher.on(engine)) [
 			isAbstract
 		]
 
+		// active class
+		rootNode.on(PACKAGE.clClass_IsActive, ActiveClassMatcher.on(engine)) [
+			isActive
+		]
 
 		// destructor
 		rootNode.on(PACKAGE.clClass_Destructor, DestructorOfClassMatcher.on(engine))[new NamedReference(destructor)]

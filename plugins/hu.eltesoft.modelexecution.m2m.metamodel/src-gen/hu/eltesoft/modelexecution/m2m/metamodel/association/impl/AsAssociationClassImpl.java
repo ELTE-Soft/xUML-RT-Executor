@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAssociations <em>Inherited Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isHasReceptions <em>Has Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isIsActive <em>Is Active</em>}</li>
  * </ul>
  *
  * @generated
@@ -202,6 +203,26 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected boolean isAbstract = IS_ABSTRACT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_ACTIVE_EDEFAULT = false; // TODO The default value literal "" is not valid.
+
+	/**
+	 * The cached value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isActive = IS_ACTIVE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -395,6 +416,27 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsActive() {
+		return isActive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsActive(boolean newIsActive) {
+		boolean oldIsActive = isActive;
+		isActive = newIsActive;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE, oldIsActive, isActive));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -420,6 +462,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return isHasReceptions();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
 				return isIsAbstract();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				return isIsActive();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -473,6 +517,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
 				setIsAbstract((Boolean)newValue);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				setIsActive((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -518,6 +565,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
 				setIsAbstract(IS_ABSTRACT_EDEFAULT);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				setIsActive(IS_ACTIVE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -552,6 +602,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return hasReceptions != HAS_RECEPTIONS_EDEFAULT;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
 				return isAbstract != IS_ABSTRACT_EDEFAULT;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				return isActive != IS_ACTIVE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -576,6 +628,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS: return ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS: return ClassdefPackage.CL_CLASS__HAS_RECEPTIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT: return ClassdefPackage.CL_CLASS__IS_ABSTRACT;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE: return ClassdefPackage.CL_CLASS__IS_ACTIVE;
 				default: return -1;
 			}
 		}
@@ -602,6 +655,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS;
 				case ClassdefPackage.CL_CLASS__HAS_RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS;
 				case ClassdefPackage.CL_CLASS__IS_ABSTRACT: return AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT;
+				case ClassdefPackage.CL_CLASS__IS_ACTIVE: return AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE;
 				default: return -1;
 			}
 		}
@@ -628,6 +682,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		result.append(hasReceptions);
 		result.append(", isAbstract: ");
 		result.append(isAbstract);
+		result.append(", isActive: ");
+		result.append(isActive);
 		result.append(')');
 		return result.toString();
 	}
