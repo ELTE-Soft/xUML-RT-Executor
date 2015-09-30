@@ -5,8 +5,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _t24QgB4NEeWDyJhARpwrcA
-Runtime-Version: 2.0.0.201509162316
-Save-Time: 9/17/15 3:43 PM
+Runtime-Version: 2.0.0.201509132315
+Save-Time: 9/30/15 9:45 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -14,137 +14,47 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 
+proc "check-debug-state" [val expected] {
+	get-window "Debug Configurations" | get-button Debug | get-property enablement | equals $expected | verify-true
+}
+
 mx-new-xuml-project "TestProject"
 mx-copy-model-to-test "HelloWorld"
 
-// TODO This should not be necessary
-mx-clean-projects
+mx-make-new-xuml-run-config
 
-// -------------------------------------------------
-// Make sure there is no previous debug configuration present
 
-get-menu "Run/Debug Configurations..." | click
+// Check that the Debug button is disabled
+get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
 
-// Having a fixed name makes it easier to use the configuration in the tester.
-// Our debug configuration will be named "xUMLTestRunConfig".
-// If we have a previous configuration, delete it.
-try {
-	with [get-window "Debug Configurations"] {
-	    get-tree | select "xUML-RT Executor/xUMLTestRunConfig" | get-menu Delete | click
-	    get-window "Confirm Launch Configuration Deletion" | get-button Yes | click
-	}
-} -catch {
-	// there was no previous xUMLTestRunConfig, we proceed
-}
 
 // -------------------------------------------------
 // Make new xUML project
 
-with [get-window "Debug Configurations"] {
-    get-tree | select "xUML-RT Executor" | double-click
-    with [get-editbox -after [get-label "Name:"]] {
-        set-text "xUMLTestRunConfig"
-    }
-    get-button Apply | click
-}
+mx-new-xuml-project-select-model "TestProject/HelloWorld.uml"
+check-debug-state false
 
+mx-new-xuml-project-select-class "<Class> HelloWorld"
+check-debug-state false
 
+mx-new-xuml-project-select-main-function "<Operation> run \\(\\)"
+check-debug-state true
 
-// Check that the Debug button is disabled
-get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
-
-
-// -------------------------------------------------
-// Make new xUML project: select model
-
-with [get-window "Debug Configurations"] {
-    get-group "Select model" | get-button Browse | click
-    with [get-window "Select model"] {
-        get-tree | select "TestProject/HelloWorld.uml"
-        get-button OK | click
-    }
-}
-
-// Check that the Debug button is disabled
-get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
-
-
-// -------------------------------------------------
-// Make new xUML project: select class
-
-with [get-window "Debug Configurations"] {
-    get-group "Select class" | get-button Browse | click
-    with [get-window "Select class"] {
-        get-table | select "<Class> HelloWorld"
-        get-button OK | click
-    }
-}
-
-// Check that the Debug button is disabled
-get-window "Debug Configurations" | get-button Debug | get-property enablement | equals false | verify-true
-
-
-// -------------------------------------------------
-// Make new xUML project: select main function
-
-with [get-window "Debug Configurations"] {
-    get-group "Select main function" | get-button Browse | click
-    with [get-window "Select main function"] {
-        get-table | select "<Operation> run \\(\\)"
-        get-button OK | click
-    }
-}
-
-// Check that the Debug button is disabled
-get-window "Debug Configurations" | get-button Debug | get-property enablement | equals true | verify-true
-
-
-// -------------------------------------------------
-// Make new xUML project: save the configuration
-
-with [get-window "Debug Configurations"] {
-    get-button Apply | click
-    get-button Close | click
-}
-
+mx-new-xuml-project-save-configuration
 
 // -------------------------------------------------
 // Execute run configuration
 
-get-menu "Run/Run Configurations..." | click
-with [get-window "Run Configurations"] {
-    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
-    get-button Run | click
-}
+mx-execute-run-configuration
 
 // Execution log must not contain errors
 get-view Console | get-text-viewer | get-property "getText()" | contains "logError" | verify-false 
 
 
-// Debug run has to be run from the Debug perspective
-mx-open-perspective "Debug"
-
-
-// Since the Debug view is open, we have to reopen the Model Explorer
-// to set breakpoints
-mx-open-view "Papyrus/Model Explorer"
-
-// We need the Problems view, hopefully it will be empty...
-mx-open-view "General/Problems"
-
-// -------------------------------------------------
-// Execute debug configuration
-
-get-menu "Run/Debug Configurations..." | click
-with [get-window "Debug Configurations"] {
-    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
-    get-button Debug | click
-}
-
-
-
 // -------------------------------------------------
 // Execute debug configuration, checking breakpoints
+
+mx-execute-debug-configuration
 
 // The Model Explorer view is placed in an unusual location...
 get-tab-folder -index 6 | get-tab-item "Model Explorer" | click
@@ -158,13 +68,7 @@ get-tree -index 2 | select "model/HelloWorldComponent/HelloWorld/HelloWorld/Hell
 get-view Breakpoints | get-tree | get-item "model::HelloWorldComponent::HelloWorld::HelloWorld::HelloWorldBehavior::Region1::Hello" 
     | get-property caption | equals "model::HelloWorldComponent::HelloWorld::HelloWorld::HelloWorldBehavior::Region1::Hello" | verify-true
 
-// Start debugging
-get-menu "Run/Debug Configurations..." | click
-with [get-window "Debug Configurations"] {
-    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
-    get-button Debug | click
-}
-
+mx-execute-debug-configuration
 
 // Check for pause on breakpoint
 get-view Debug | get-tree 

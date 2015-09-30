@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _sAFiQB3yEeWDyJhARpwrcA
 Runtime-Version: 2.0.0.201509132315
-Save-Time: 9/14/15 7:24 AM
+Save-Time: 9/30/15 9:50 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -75,9 +75,6 @@ proc "check-files-didnt-change" [val message] {
 
 mx-new-xuml-project "TestProject"
 mx-copy-model-to-test "HelloWorld"
-
-// TODO should not be necessary
-mx-clean-projects
 
 mx-open-default-package
 
