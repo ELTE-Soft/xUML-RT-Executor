@@ -14,6 +14,6 @@ class ExtentTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testDefaultConstructor() {
 		assertCompilesTo('''A::instances();''', InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
-			fun("allInstances", "_aeMPwMc1EeSnK7LttAdTLw_impl" -> "class"))
+			fun("allInstances", "_aeMPwMc1EeSnK7LttAdTLw" -> "class"))
 	}
 }

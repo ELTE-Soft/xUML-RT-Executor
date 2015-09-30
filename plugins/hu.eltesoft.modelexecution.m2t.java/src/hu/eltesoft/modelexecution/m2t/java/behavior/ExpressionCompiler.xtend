@@ -356,7 +356,7 @@ class ExpressionCompiler extends CompilerBase {
 
 	def dispatch CodeGenNode compile(ClassExtentExpression expr) {
 		InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
-			fun("allInstances", (compile(expr.class_) <> Template.CLASS_IMPL_SUFFIX) -> "class")
+			fun("allInstances", compile(expr.class_) -> "class")
 	}
 
 	def dispatch CodeGenNode compile(FilterExpression expr) {

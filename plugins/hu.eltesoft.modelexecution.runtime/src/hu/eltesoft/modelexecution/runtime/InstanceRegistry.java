@@ -1,11 +1,15 @@
 package hu.eltesoft.modelexecution.runtime;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.stream.Collectors;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 
@@ -96,21 +100,63 @@ public final class InstanceRegistry {
 		private final Map<Class<?>, IdMap> map = new HashMap<>();
 
 		public boolean addInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
-			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = instance.getClass();
-			return getIdMap(targetClass).put(instance.getInstanceID(), instance);
+			Class<?> specification = getSpecification(instance);
+			return getIdMap(specification).put(instance.getInstanceID(), instance);
 		}
 
 		public boolean removeInstance(hu.eltesoft.modelexecution.runtime.base.Class instance) {
-			Class<? extends hu.eltesoft.modelexecution.runtime.base.Class> targetClass = instance.getClass();
-			return getIdMap(targetClass).remove(instance.getInstanceID());
+			Class<?> specification = getSpecification(instance);
+			return getIdMap(specification).remove(instance.getInstanceID());
+		}
+
+		private Class<?> getSpecification(hu.eltesoft.modelexecution.runtime.base.Class instance) {
+			return getSpecification(instance.getClass());
+		}
+
+		private Class<?> getSpecification(Class<?> targetClass) {
+			if (null != targetClass.getSuperclass()
+					&& targetClass.getSuperclass().equals(hu.eltesoft.modelexecution.runtime.base.Class.class)) {
+				Class<?> specification = targetClass.getInterfaces()[0];
+				return specification;
+			}
+			return targetClass;
 		}
 
 		public <C> HashSet<C> allInstances(Class<? extends C> targetClass) {
-			return getIdMap(targetClass).allInstances();
+			HashSet<C> instances = new HashSet<>();
+			getSubSpecifiactions(targetClass).forEach(spec -> instances.addAll(getIdMap(spec).allInstances()));
+			return instances;
 		}
 
 		public <C> C getInstance(Class<? extends C> targetClass, long instanceID) {
-			return getIdMap(targetClass).getByInstanceID(instanceID);
+			for (Class<?> spec : getSubSpecifiactions(targetClass)) {
+				C instance = getIdMap(spec).getByInstanceID(instanceID);
+				if (null != instance) {
+					return instance;
+				}
+			}
+			return null;
+		}
+
+		private Collection<Class<?>> getSubSpecifiactions(Class<?> targetClass) {
+			Class<?> specification = getSpecification(targetClass);
+			return map.keySet().stream().filter(sub -> isParentSpecificationOf(specification, sub))
+					.collect(Collectors.toList());
+		}
+
+		private boolean isParentSpecificationOf(Class<?> parent, Class<?> sub) {
+			if (sub.equals(parent)) {
+				return true;
+			}
+			Queue<Class<?>> candidates = new ArrayDeque<Class<?>>(Arrays.asList(sub.getInterfaces()));
+			Class<?> current;
+			while (null != (current = candidates.poll())) {
+				if (current.equals(parent)) {
+					return true;
+				}
+				candidates.addAll(Arrays.asList(current.getInterfaces()));
+			}
+			return false;
 		}
 
 		private IdMap getIdMap(Class<?> targetClass) {

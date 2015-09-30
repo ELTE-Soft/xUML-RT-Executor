@@ -16,7 +16,7 @@ class CollectionTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testFilteringInstances() {
 		val extent = InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
-			fun("allInstances", "_VsclsEvUEeWbvJ0DeAHZOQ_impl" -> "class");
+			fun("allInstances", "_VsclsEvUEeWbvJ0DeAHZOQ" -> "class");
 
 		val propertyAccess = unwrap("_local0") -> fun("get__dxeMEEvUEeWbvJ0DeAHZOQ");
 
