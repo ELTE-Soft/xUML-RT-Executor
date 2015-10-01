@@ -214,11 +214,6 @@ class ClassTemplate extends Template {
 		public «javaType(association.type)» «association.getter»() {
 			return «association.identifier»;
 		}
-		
-		@Override
-		public void «association.setter»(«javaType(association.type)» newVal) {
-			«association.identifier» = newVal;
-		}
 	'''
 
 	def generateInheritedAssociation(
@@ -227,11 +222,6 @@ class ClassTemplate extends Template {
 		@Override
 		public «javaType(association.type)» «association.getter»() {
 			return «association.parent.inherited».«association.getter»();
-		}
-		
-		@Override
-		public void «association.setter»(«javaType(association.type)» newVal) {
-			«association.parent.inherited».«association.setter»(newVal);
 		}
 	'''
 

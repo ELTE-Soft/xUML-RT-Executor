@@ -125,10 +125,6 @@ class ClassSpecTemplate extends Template {
 	def generateAssociation(ClAssociation association) '''
 		/** Gets the value(s) of the association «association.javadoc» */
 		«javaType(association.type)» get_«association.identifier»();
-		
-		/** Sets the value(s) of the association «association.javadoc» */
-		void set_«association.identifier»(«javaType(association.type)» newVal);
-		
 	'''
 
 	def generateOperation(ClOperationSpec operation) '''
