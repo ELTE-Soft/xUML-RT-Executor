@@ -299,6 +299,9 @@ class ExpressionCompiler extends CompilerBase {
 		}
 		val association = expr.association.reference as Association
 		var name = NamedReference.getIdentifier(association)
+		if (association instanceof Class) {
+			name = name + Template.CLASS_IMPL_SUFFIX
+		}
 		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds, false)
 		var opName = if (LinkOperation.LINK == expr.linkOperation) {
 				"link"
@@ -325,15 +328,20 @@ class ExpressionCompiler extends CompilerBase {
 		val paramName = freshLocalName
 		val resultName = freshLocalName
 		val objName = freshLocalName
-		val assocName = freshLocalName
+		var assocName = freshLocalName
 		val assocType = assoc.convert.javaType
+		val assocExpr = if (assoc instanceof Class) {
+				paren(paren(assocType + Template.CLASS_IMPL_SUFFIX) <> sequence(assocName))
+			} else {
+				sequence(assocName)
+			}
 		val assocGetter = Template.GETTER_PREFIX <> NamedReference.getIdentifier(otherEnd)
 		val propName = NamedReference.getIdentifier(end)
 		val labmdaBody = block(
 			sequence(toType) <> " " <> resultName <> " = " <> expr.typeOf.createEmpty,
 			"for " <> paren(baseType <> " " <> objName <> " : " <> paramName) <> " " <> block(
 				"for " <> paren(assocType <> " " <> assocName <> " : " <> objName -> fun(assocGetter)) <> " " <> block(
-					resultName -> fun("add", assocName -> propName)
+					resultName -> fun("add", assocExpr -> propName)
 				)
 			),
 			"return " <> resultName
