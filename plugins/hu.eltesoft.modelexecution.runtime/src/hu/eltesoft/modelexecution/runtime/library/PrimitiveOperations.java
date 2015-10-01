@@ -354,8 +354,17 @@ public class PrimitiveOperations {
 
 	public static <SourceType, TargetType, C1 extends Collection<SourceType>, C2 extends Collection<TargetType>> C2 cast(
 			Class<TargetType> targetType, C1 sourceExpression) {
-		return sourceExpression.stream().map(targetType::cast)
+		return sourceExpression.stream().map(e -> safeCast(targetType, e)).filter(e -> null != e)
 				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression, targetType)));
+	}
+
+	public static <SourceType, TargetType> TargetType safeCast(Class<TargetType> targetType,
+			SourceType sourceExpression) {
+		try {
+			return targetType.cast(sourceExpression);
+		} catch (ClassCastException e) {
+			return null;
+		}
 	}
 
 	public static ArrayList<String> toString(ArrayList<?> wrapped) {

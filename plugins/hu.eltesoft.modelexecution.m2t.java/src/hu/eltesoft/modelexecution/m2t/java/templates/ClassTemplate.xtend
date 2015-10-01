@@ -179,7 +179,7 @@ class ClassTemplate extends Template {
 		ClAttribute attribute
 	) '''
 		/** Attribute for UML attribute «attribute.javadoc» */
-		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		private final «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
 		
 		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.getter»() {

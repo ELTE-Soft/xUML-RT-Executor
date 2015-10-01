@@ -111,8 +111,12 @@ public final class CollectionOperations {
 		return PrimitiveOperations.wrap(collection.get(PrimitiveOperations.unwrap(index).intValue()));
 	}
 
-	public static <E> void add(ArrayList<E> collection, ArrayList<BigInteger> index,
-			ArrayList<E> newItem) {
-		collection.add(PrimitiveOperations.unwrap(index).intValue(), PrimitiveOperations.unwrap(newItem));
+	public static <E> void add(ArrayList<E> collection, ArrayList<BigInteger> index, ArrayList<E> newItem) {
+		int i = PrimitiveOperations.unwrap(index).intValue();
+		while (collection.size() - 1 < i) {
+			// FIXME: fill empty places with the default value of the item type
+			collection.add(null);
+		}
+		collection.add(i, PrimitiveOperations.unwrap(newItem));
 	}
 }

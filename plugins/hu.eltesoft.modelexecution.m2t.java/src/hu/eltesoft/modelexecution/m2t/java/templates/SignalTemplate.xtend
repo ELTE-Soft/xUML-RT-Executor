@@ -65,8 +65,8 @@ class SignalTemplate extends Template {
 	override generateContent() '''
 		«FOR attribute : signal.attributes»
 			/** Attribute for signal attribute «attribute.javadoc» */
-			private «javaType(attribute.type, attribute)» «attribute.identifier»
-				= «createEmpty(attribute)»;
+			private final «javaType(attribute.type, attribute)» «attribute.identifier»
+				= «createEmpty(attribute.type, attribute)»;
 			
 			public «javaType(attribute.type, attribute)» «attribute.getter»() {
 				return «attribute.identifier»;

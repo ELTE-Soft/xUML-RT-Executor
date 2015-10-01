@@ -13,6 +13,7 @@ import java.util.ArrayList
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.uml2.uml.Type
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 /** This class converts translational-model-level types to Java types. */
 class JavaTypeConverter {
@@ -100,18 +101,43 @@ class JavaTypeConverter {
 	}
 
 	def createEmpty(Type type) {
-		createEmptyInternal(collectionName(type))
+		createEmptyCollection(collectionName(type))
 	}
 
 	def createEmpty(CollectionType type) {
-		createEmptyInternal(collectionName(type))
+		createEmptyCollection(collectionName(type))
 	}
 
-	def createEmpty(Multiplicity type) {
-		createEmptyInternal(collectionName(type), expectedNum(type))
+	def createEmpty(ScalarType type, Multiplicity mult) {
+		// FIXME: when the lower bound is greater than zero,
+		// the collection should be initialized with the required amount of items
+		if (mult.upperBound > 1 || 0 == mult.upperBound) {
+			// create an empty collection
+			createEmptyCollection(collectionName(mult), expectedNum(mult))
+		} else {
+			// create default value initializer
+			createDefaultValue(type)
+		}
 	}
 
-	def createEmptyInternal(String collectionName) {
+	def createEmpty(hu.eltesoft.modelexecution.m2m.metamodel.base.Type type) {
+		createEmpty(type.baseType, type)
+	}
+
+	def dispatch createDefaultValue(PrimitiveType type) {
+		switch type.type {
+			case BOOLEAN: PrimitiveOperations.BOOLEAN_LITERAL + "(false)"
+			case INTEGER: PrimitiveOperations.INTEGER_LITERAL + '''("0", 10)'''
+			case REAL: PrimitiveOperations.REAL_LITERAL + "(0.0)"
+			case STRING: PrimitiveOperations.STRING_LITERAL + '''("")'''
+		}
+	}
+
+	def dispatch createDefaultValue(ReferencedType type) {
+		return PrimitiveOperations.NULL_VALUE + "()"
+	}
+
+	def createEmptyCollection(String collectionName) {
 		if (collectionName == HashMultiset.canonicalName) {
 			collectionName + ".create()"
 		} else {
@@ -119,7 +145,7 @@ class JavaTypeConverter {
 		}
 	}
 
-	def createEmptyInternal(String collectionName, String expectedNum) {
+	def createEmptyCollection(String collectionName, String expectedNum) {
 		if (collectionName == HashMultiset.canonicalName) {
 			collectionName + ".create(" + expectedNum + ")"
 		} else {
