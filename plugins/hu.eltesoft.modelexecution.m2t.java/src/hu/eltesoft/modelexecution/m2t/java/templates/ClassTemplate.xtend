@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
 import hu.eltesoft.modelexecution.runtime.base.Event
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -62,7 +63,7 @@ class ClassTemplate extends Template {
 				«ENDFOR») {
 			super(subobjectsDestructor, nextInstanceID.getAndIncrement());
 			«FOR parent : classDefinition.parents»
-				this.«parent.inherited» = «parent.inherited»;«»
+				this.«parent.inherited» = «parent.inherited»;
 			«ENDFOR»
 		}
 		
@@ -187,7 +188,7 @@ class ClassTemplate extends Template {
 		
 		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» void «attribute.setter»(«javaType(attribute.type)» newVal) {
-			«attribute.identifier» = newVal;
+			«PrimitiveOperations.SET_VALUE»(«attribute.identifier», newVal);
 		}
 	'''
 
