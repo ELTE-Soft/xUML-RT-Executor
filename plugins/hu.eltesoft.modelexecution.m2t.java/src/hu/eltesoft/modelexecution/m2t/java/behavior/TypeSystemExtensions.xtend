@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.DataType
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 
 class TypeSystemExtensions {
 
@@ -15,7 +16,7 @@ class TypeSystemExtensions {
 		this.typeSystem = typeSystem
 	}
 
-	def Type typeOf(EObject expression) {
+	def Type typeOf(Expression expression) {
 		typeSystem.type(expression).value.umlType
 	}
 
@@ -23,32 +24,32 @@ class TypeSystemExtensions {
 		typeSystem.type(expression).value.umlValueType
 	}
 
-	def isBoolean(EObject expression) {
+	def isBoolean(Expression expression) {
 		IUMLContextProvider.BOOLEAN_TYPE == typeOf(expression).name
 	}
 
-	def isInteger(EObject expression) {
+	def isInteger(Expression expression) {
 		IUMLContextProvider.INTEGER_TYPE == typeOf(expression).name
 	}
 
-	def isReal(EObject expression) {
+	def isReal(Expression expression) {
 		IUMLContextProvider.REAL_TYPE == typeOf(expression).name
 	}
 
-	def isString(EObject expression) {
+	def isString(Expression expression) {
 		IUMLContextProvider.STRING_TYPE == typeOf(expression).name
 	}
 
-	def isPrimitive(EObject expression) {
+	def isPrimitive(Expression expression) {
 		IUMLContextProvider.PRIMITIVE_TYPES.contains(typeOf(expression).name)
 	}
 
-	def hasValueType(EObject expression) {
+	def hasValueType(Expression expression) {
 		val type = typeSystem.type(expression).value.umlType
 		expression.isPrimitive || type instanceof Signal || type instanceof DataType
 	}
 
-	def hasReferenceType(EObject expression) {
+	def hasReferenceType(Expression expression) {
 		!expression.hasValueType
 	}
 }

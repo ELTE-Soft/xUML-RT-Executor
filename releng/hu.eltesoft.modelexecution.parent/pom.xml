@@ -28,7 +28,7 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.runtime/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
 
- 
+
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.cli.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
@@ -39,7 +39,7 @@
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module>
 
- 
+
 		<module>../../features/hu.eltesoft.modelexecution.feature/pom.xml</module>
 		<module>../../features/hu.eltesoft.modelexecution.examples.feature/pom.xml</module>
 
@@ -153,6 +153,32 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-versions-plugin</artifactId>
 				<version>${tycho.version}</version>
+			</plugin>
+
+			<!-- Code coverage -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.4.201502262128</version>
+				<configuration>
+					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 
