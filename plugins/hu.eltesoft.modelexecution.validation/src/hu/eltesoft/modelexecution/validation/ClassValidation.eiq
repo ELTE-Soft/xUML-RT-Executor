@@ -1,0 +1,11 @@
+package hu.eltesoft.modelexecution.validation
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+import hu.eltesoft.modelexecution.uml.incquery.Cls
+
+@Violation(message = "Classes must be public", key = "cl")
+pattern ClassNotPublic(cl : Class) {
+	find Cls(cl);
+	Class.visibility(cl, visibility);
+	visibility != VisibilityKind::public;
+}

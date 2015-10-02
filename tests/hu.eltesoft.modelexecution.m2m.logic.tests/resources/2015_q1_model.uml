@@ -4,7 +4,7 @@
     <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_dgWq0NJaEeSd5I6-OPCzVg" name="StateMachine1">
       <region xmi:type="uml:Region" xmi:id="_ergPUNJaEeSd5I6-OPCzVg" name="Region1">
         <transition xmi:type="uml:Transition" xmi:id="_o30SUNJaEeSd5I6-OPCzVg" name="Initial1_State1" source="_g8XesNJaEeSd5I6-OPCzVg" target="_ifvV8NJaEeSd5I6-OPCzVg"/>
-        <transition xmi:type="uml:Transition" xmi:id="_ueJosNJaEeSd5I6-OPCzVg" name="State1_State2">
+        <transition xmi:type="uml:Transition" xmi:id="_ueJosNJaEeSd5I6-OPCzVg" name="State1_State2" source="_ifvV8NJaEeSd5I6-OPCzVg" target="_txzgENJaEeSd5I6-OPCzVg">
           <trigger xmi:type="uml:Trigger" xmi:id="_AIIXINJbEeSd5I6-OPCzVg" event="_0jq1cNJaEeSd5I6-OPCzVg"/>
         </transition>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_g8XesNJaEeSd5I6-OPCzVg" name="Initial1"/>

@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.uml2.uml,
  hu.eltesoft.modelexecution.profile;bundle-version="0.6.0",
  hu.eltesoft.modelexecution.uml.incquery;bundle-version="0.6.1",
  com.incquerylabs.uml.papyrus;bundle-version="1.0.0",
- com.incquerylabs.uml.ralf;bundle-version="1.0.0"
+ com.incquerylabs.uml.ralf;bundle-version="1.0.0",
+ hu.eltesoft.modelexecution.validation
 Export-Package: hu.eltesoft.modelexecution.m2m.logic,
  hu.eltesoft.modelexecution.m2m.logic.translators

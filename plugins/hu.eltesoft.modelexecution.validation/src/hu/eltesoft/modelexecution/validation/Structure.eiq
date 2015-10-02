@@ -1,0 +1,207 @@
+package hu.eltesoft.modelexecution.validation
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+import hu.eltesoft.modelexecution.uml.incquery.Cls
+import hu.eltesoft.modelexecution.uml.incquery.Association
+import hu.eltesoft.modelexecution.uml.incquery.AssociationClass
+
+private pattern GeneralPackagedElement(elem : Element) {
+	find Package(elem);
+} or {
+	find Component(elem);
+} or {
+	find Event(elem);
+} or {
+	find Signal(elem);
+} or {
+	find Cls(elem);
+} or {
+	find Association(elem);
+} or {
+	find AssociationClass(elem);
+}
+
+//////////////////////////
+// model
+/////////////////////////
+private pattern Model(md : Model) {
+	Model(md);
+}
+
+@Violation(message = "Models can only contain components, packages, events, signals, classes, associations, package imports and profile application", key = "elem")
+pattern ForbiddenModelMember(md : Model, elem : Element) {
+	Package.ownedElement(md, elem);
+	neg find GeneralPackagedElement(elem);
+	neg find PackageImport(elem);
+	neg find ProfileApplication(elem);
+}
+
+@Violation(message = "Model viewpoints are not supported", key = "md")
+pattern ModelViewpoint(md : Model) {
+	Model.viewpoint(md, _);
+}
+
+//////////////////////////
+// package imports
+/////////////////////////
+private pattern PackageImport(pi : PackageImport) {
+	PackageImport(pi);
+}
+
+@Violation(message = "Package import must reference the package to be imported", key = "pi")
+pattern PackageImportWithoutImportedPackage(pi : PackageImport) {
+	neg find PackageImportPackage(pi, _);
+}
+
+private pattern PackageImportPackage(pi : PackageImport, imported : Package) {
+	PackageImport.importedPackage(pi, imported);
+}
+
+@Violation(message = "Package imports must be public", key = "pi")
+pattern PackageImportNonPublic(pi : PackageImport) {
+	PackageImport.visibility(pi, visibility);
+	visibility != VisibilityKind::public;
+}
+
+///////////////////////
+// packages
+///////////////////////
+private pattern Package(pk : Package) {
+	Package(pk);
+	neg find Model(pk);
+}
+
+@Violation(message = "Package merge is not supported", key = "pk")
+pattern PackageMerge(pk : Package) {
+	Package.packageMerge(pk, _);
+}
+
+@Violation(message = "Template binding is not supported for packages", key = "pk")
+pattern PackageTemplateBinding(pk : Package) {
+	Package.templateBinding(pk, _);
+}
+
+@Violation(message = "Template parameters are not supported for packages", key = "pk")
+pattern PackageTemplateParameter(pk : Package) {
+	Package.templateParameter(pk, _);
+}
+
+@Violation(message = "Packages must be public", key = "pk")
+pattern PackageNonPublic(pk : Package) {
+	Package.visibility(pk, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Packages can only contain components, packages, events, signals, associations and classes", key = "elem")
+pattern ForbiddenPackageMember(pk : Package, elem : Element) {
+	find Package(pk);
+	Package.ownedElement(pk, elem);
+	neg find GeneralPackagedElement(elem);
+}
+
+///////////////////////
+// components
+///////////////////////
+private pattern Component(cp : Component) {
+	Component(cp);
+}
+
+@Violation(message = "Packages can only contain components, packages, events, signals and classes", key = "elem")
+pattern ForbiddenComponentMember(cp : Component, elem : Element) {
+	Component.ownedElement(cp, elem);
+	neg find GeneralPackagedElement(elem);
+}
+
+@Violation(message = "Components must be public", key = "cp")
+pattern ComponentNonPublic(cp : Component) {
+	Component.visibility(cp, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Component classifier behaviors are not supported", key = "cp")
+pattern ComponentClassifierBehavior(cp : Component) {
+	Component.classifierBehavior(cp, _);
+}
+
+@Violation(message = "Component extensions are not supported", key = "cp")
+pattern ComponentExtension(cp : Component) {
+	Component.^extension(cp, _);
+}
+
+@Violation(message = "Abstract components are not supported", key = "cp")
+pattern ComponentIsAbstract(cp : Component) {
+	Component.isAbstract(cp, true);
+}
+
+@Violation(message = "Component final specification is not supported", key = "cp")
+pattern ComponentIsFinalSpecification(cp : Component) {
+	Component.isFinalSpecialization(cp, true);
+}
+
+@Violation(message = "Leaf components are not supported", key = "cp")
+pattern LeafComponent(cp : Component) {
+	Component.isLeaf(cp, true);
+}
+
+@Violation(message = "Component powertype extents are not supported", key = "cp")
+pattern ComponentPowertypeExtent(cp : Component) {
+	Component.powertypeExtent(cp, _);
+}
+
+@Violation(message = "Component redefined classifiers are not supported", key = "cp")
+pattern ComponentRedefinedClassifier(cp : Component) {
+	Component.redefinedClassifier(cp, _);
+}
+
+@Violation(message = "Component representation is not supported", key = "cp")
+pattern ComponentRepresentation(cp : Component) {
+	Component.representation(cp, _);
+}
+
+@Violation(message = "Component template parameters are not supported", key = "cp")
+pattern ComponentTemplateParameter(cp : Component) {
+	Component.templateParameter(cp, _);
+}
+
+@Violation(message = "Component use cases are not supported", key = "cp")
+pattern ComponentUseCase(cp : Component) {
+	Component.useCase(cp, _);
+}
+
+@Violation(message = "Directly instantiated components are not supported", key = "cp")
+pattern ComponentDirectlyInstantiated(cp : Component) {
+	Component.isIndirectlyInstantiated(cp, false);
+}
+
+
+///////////////////////
+// events
+///////////////////////
+private pattern Event(ev : Event) {
+	Event(ev);
+}
+
+private pattern SignalEvent(ev : SignalEvent) {
+	SignalEvent(ev);
+}
+
+@Violation(message = "Only signal events are supported", key = "ev")
+pattern EventIsNotSignalEvent(ev : Event) {
+	neg find SignalEvent(ev);
+}
+
+///////////////////////
+// signals
+///////////////////////
+private pattern Signal(sg : Signal) {
+	Signal(sg);
+}
+
+///////////////////////
+// profile application
+///////////////////////
+private pattern ProfileApplication(pa : ProfileApplication) {
+	ProfileApplication(pa);
+}
+
+

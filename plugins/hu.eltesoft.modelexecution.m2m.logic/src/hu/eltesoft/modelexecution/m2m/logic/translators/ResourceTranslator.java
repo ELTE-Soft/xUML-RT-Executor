@@ -15,6 +15,7 @@ import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 import hu.eltesoft.modelexecution.uml.incquery.Queries;
+import hu.eltesoft.modelexecution.validation.Validator;
 
 /**
  * This translator converts model resources into a set of translational models
@@ -26,6 +27,7 @@ import hu.eltesoft.modelexecution.uml.incquery.Queries;
 public class ResourceTranslator {
 
 	public static final String PATHMAP_SCHEME = "pathmap";
+	// private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
 	public static ResourceTranslator createIncremental(ModelSet modelSet) {
 		return new ResourceTranslator(modelSet, true);
@@ -42,9 +44,11 @@ public class ResourceTranslator {
 	private ReversibleTask attachListeners;
 
 	private List<RootElementTranslator<?, ?, ?>> translators;
+	private Validator validator;
 
 	private ResourceTranslator(ModelSet modelSet, boolean incremental) {
 		this.resource = modelSet;
+
 		this.incremental = incremental;
 		setupEngine();
 	}
@@ -54,6 +58,12 @@ public class ResourceTranslator {
 
 		try {
 			createIncQueryEngine();
+			
+			if (incremental) {
+				this.validator = Validator.createIncremental(validator, resource, engine);
+			} else {
+				this.validator = Validator.create(validator, resource, engine);
+			}
 
 			Queries.instance().prepare(engine);
 			setupTranslators();
@@ -122,16 +132,20 @@ public class ResourceTranslator {
 		if (incremental) {
 			attachListeners.revert();
 		}
+		validator.dispose();
 
 		disposed = true;
 	}
 
 	public List<SourceCodeTask> fullTranslation() {
 		checkDisposed();
-
+		validator.clear();
+		validator.validate();
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
-		for (RootElementTranslator<?, ?, ?> translator : translators) {
-			performBatchTranslation(updateTasks, translator);
+		if (validator.isValid()) {
+			for (RootElementTranslator<?, ?, ?> translator : translators) {
+				performBatchTranslation(updateTasks, translator);
+			}
 		}
 		return updateTasks;
 	}
@@ -151,8 +165,10 @@ public class ResourceTranslator {
 		}
 
 		List<SourceCodeTask> changes = new LinkedList<>();
-		for (RootElementTranslator<?, ?, ?> translator : translators) {
-			changes.addAll(translator.incrementalTranslation());
+		if (validator.isValid()) {
+			for (RootElementTranslator<?, ?, ?> translator : translators) {
+				changes.addAll(translator.incrementalTranslation());
+			}
 		}
 		return changes;
 	}

@@ -27,6 +27,8 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.m2t.smap.xtend/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.runtime/pom.xml</module>
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.validation/pom.xml</module>
+		<module>../../plugins/hu.eltesoft.modelexecution.validation.annotations/pom.xml</module>
 
 
 		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
