@@ -114,7 +114,7 @@ public class PrimitiveOperations {
 	public static <X, C1 extends Collection<X>, C2 extends Collection<? extends X>> C2 setValue(final C1 wrapper,
 			final C2 newValue) {
 		if (wrapper == newValue) {
-			// do not copy when it is a self-assignment
+			// do not clear the collection on self-assignment
 			return newValue;
 		}
 		wrapper.clear();
