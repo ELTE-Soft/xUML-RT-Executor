@@ -82,7 +82,7 @@ class JavaTypeConverter {
 	}
 
 	def String collectionName(Multiplicity type) {
-		if (type.upperBound == 1 || type.isOrdered) {
+		if (1 == type.upperBound || type.isOrdered) {
 			ArrayList.canonicalName
 		} else if (type.isUnique) {
 			HashSet.canonicalName
@@ -109,14 +109,14 @@ class JavaTypeConverter {
 	}
 
 	def createEmpty(ScalarType type, Multiplicity mult) {
-		// FIXME: when the lower bound is greater than zero,
-		// the collection should be initialized with the required amount of items
-		if (mult.upperBound > 1 || 0 == mult.upperBound) {
-			// create an empty collection
-			createEmptyCollection(collectionName(mult), expectedNum(mult))
-		} else {
+		if (1 == mult.upperBound) {
 			// create default value initializer
 			createDefaultValue(type)
+		} else {
+			// create an empty collection
+			// FIXME: when the lower bound is greater than zero,
+			// the collection should be initialized with the required amount of items
+			createEmptyCollection(collectionName(mult), expectedNum(mult))
 		}
 	}
 

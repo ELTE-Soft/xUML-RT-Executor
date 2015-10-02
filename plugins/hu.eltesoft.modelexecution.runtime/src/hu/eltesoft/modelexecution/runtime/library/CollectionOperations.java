@@ -117,6 +117,6 @@ public final class CollectionOperations {
 			// FIXME: fill empty places with the default value of the item type
 			collection.add(null);
 		}
-		collection.add(i, PrimitiveOperations.unwrap(newItem));
+		collection.set(i, PrimitiveOperations.unwrap(newItem));
 	}
 }
