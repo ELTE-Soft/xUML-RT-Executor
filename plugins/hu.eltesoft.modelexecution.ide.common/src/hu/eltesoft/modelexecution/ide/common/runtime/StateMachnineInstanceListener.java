@@ -7,8 +7,8 @@ package hu.eltesoft.modelexecution.ide.common.runtime;
  */
 public interface StateMachnineInstanceListener {
 
-	void instanceCreated(String classId, int instanceId, String originalName);
+	void instanceCreated(String classId, long instanceId, String originalName);
 
-	void instanceDestroyed(String classId, int instanceId);
+	void instanceDestroyed(String classId, long instanceId);
 
 }

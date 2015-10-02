@@ -6,11 +6,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.validation.EmptyValueError;
 import hu.eltesoft.modelexecution.runtime.validation.MultiValueError;
 
+/**
+ * Implements primitive operations used by the runtime.
+ */
+// TODO: verifications must be implemented
+// like division by zero, or invalid casts.
 public class PrimitiveOperations {
 
 	private static final String CLASS_PREFIX = PrimitiveOperations.class.getCanonicalName() + ".";
@@ -81,6 +87,10 @@ public class PrimitiveOperations {
 	public static final String VALUE_EQUALITY = CLASS_PREFIX + "valueEquality";
 	public static final String REFERENCE_EQUALITY = CLASS_PREFIX + "referenceEquality";
 
+	public static final String CAST = CLASS_PREFIX + "cast";
+
+	public static final String TO_STRING = CLASS_PREFIX + "toString";
+
 	public static <T> ArrayList<T> nullValue() {
 		return new ArrayList<>();
 	}
@@ -101,8 +111,12 @@ public class PrimitiveOperations {
 		}
 	}
 
-	public static <X, C1 extends Collection<X>, C2 extends Collection<X>> C2 setValue(final C1 wrapper,
+	public static <X, C1 extends Collection<X>, C2 extends Collection<? extends X>> C2 setValue(final C1 wrapper,
 			final C2 newValue) {
+		if (wrapper == newValue) {
+			// do not clear the collection on self-assignment
+			return newValue;
+		}
 		wrapper.clear();
 		wrapper.addAll(newValue);
 		return newValue;
@@ -340,5 +354,24 @@ public class PrimitiveOperations {
 			}
 		}
 		return true;
+	}
+
+	public static <SourceType, TargetType, C1 extends Collection<SourceType>, C2 extends Collection<TargetType>> C2 cast(
+			Class<TargetType> targetType, C1 sourceExpression) {
+		return sourceExpression.stream().map(e -> safeCast(targetType, e)).filter(e -> null != e)
+				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression, targetType)));
+	}
+
+	public static <SourceType, TargetType> TargetType safeCast(Class<TargetType> targetType,
+			SourceType sourceExpression) {
+		try {
+			return targetType.cast(sourceExpression);
+		} catch (ClassCastException e) {
+			return null;
+		}
+	}
+
+	public static ArrayList<String> toString(ArrayList<?> wrapped) {
+		return wrap(unwrap(wrapped).toString());
 	}
 }

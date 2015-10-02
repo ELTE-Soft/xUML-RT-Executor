@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.junit.Test
 
@@ -76,5 +77,25 @@ class LiteralTests extends CompiledCodeCheckTestCase {
 	@Test
 	def testEscapedString() {
 		assertCompilesTo('''"hello\b\t\n\f\r\"'\\world";''', stringLiteral('''hello\b\t\n\f\r\"'\\world'''))
+	}
+
+	@Test
+	def testSequence() {
+		assertCompilesTo('''Sequence<Integer> { 0, 2, 4, 6 };''',
+			fun(CollectionOperations.SEQUENCE_LITERAL, unwrap(integerLiteral("0", 10)), unwrap(integerLiteral("2", 10)),
+				unwrap(integerLiteral("4", 10)), unwrap(integerLiteral("6", 10))))
+	}
+
+	@Test
+	def testSet() {
+		assertCompilesTo('''Set<Boolean> { true, false };''',
+			fun(CollectionOperations.SET_LITERAL, unwrap(booleanLiteral("true")), unwrap(booleanLiteral("false"))))
+	}
+
+	@Test
+	def testBag() {
+		assertCompilesTo('''Bag<String> { "a", "b", "c", "b", "a" };''',
+			fun(CollectionOperations.BAG_LITERAL, unwrap(stringLiteral("a")), unwrap(stringLiteral("b")),
+				unwrap(stringLiteral("c")), unwrap(stringLiteral("b")), unwrap(stringLiteral("a"))))
 	}
 }

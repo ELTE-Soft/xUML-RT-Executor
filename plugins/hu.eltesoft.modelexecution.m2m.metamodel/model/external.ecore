@@ -14,6 +14,8 @@
     <eLiterals name="Singleton" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExOperation" eSuperTypes="base.ecore#//Named">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxyClass" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass base.ecore#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="ecore:EClass base.ecore#//Parameter"/>
   </eClassifiers>
 </ecore:EPackage>

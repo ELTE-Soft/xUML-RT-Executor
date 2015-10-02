@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * </p>
  * <ul>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getRegion <em>Region</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getDestructor <em>Destructor</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getOperations <em>Operations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getReceptions <em>Receptions</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAttributes <em>Attributes</em>}</li>
@@ -45,6 +46,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getAssociations <em>Associations</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getParents <em>Parents</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#getInheritedAssociations <em>Inherited Associations</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isHasReceptions <em>Has Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.association.impl.AsAssociationClassImpl#isIsActive <em>Is Active</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,6 +73,26 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * @ordered
 	 */
 	protected NamedReference region = REGION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final NamedReference DESTRUCTOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDestructor() <em>Destructor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDestructor()
+	 * @generated
+	 * @ordered
+	 */
+	protected NamedReference destructor = DESTRUCTOR_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOperations() <em>Operations</em>}' reference list.
@@ -141,6 +165,66 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	protected EList<ClInheritedAssociation> inheritedAssociations;
 
 	/**
+	 * The default value of the '{@link #isHasReceptions() <em>Has Receptions</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasReceptions()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean HAS_RECEPTIONS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isHasReceptions() <em>Has Receptions</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasReceptions()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean hasReceptions = HAS_RECEPTIONS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_ABSTRACT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isAbstract = IS_ABSTRACT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_ACTIVE_EDEFAULT = false; // TODO The default value literal "" is not valid.
+
+	/**
+	 * The cached value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isActive = IS_ACTIVE_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -178,6 +262,27 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		region = newRegion;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__REGION, oldRegion, region));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NamedReference getDestructor() {
+		return destructor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDestructor(NamedReference newDestructor) {
+		NamedReference oldDestructor = destructor;
+		destructor = newDestructor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR, oldDestructor, destructor));
 	}
 
 	/**
@@ -269,11 +374,76 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isHasReceptions() {
+		return hasReceptions;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setHasReceptions(boolean newHasReceptions) {
+		boolean oldHasReceptions = hasReceptions;
+		hasReceptions = newHasReceptions;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS, oldHasReceptions, hasReceptions));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsAbstract() {
+		return isAbstract;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsAbstract(boolean newIsAbstract) {
+		boolean oldIsAbstract = isAbstract;
+		isAbstract = newIsAbstract;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT, oldIsAbstract, isAbstract));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsActive() {
+		return isActive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsActive(boolean newIsActive) {
+		boolean oldIsActive = isActive;
+		isActive = newIsActive;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE, oldIsActive, isActive));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return getRegion();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				return getDestructor();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return getOperations();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -288,6 +458,12 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return getParents();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
 				return getInheritedAssociations();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS:
+				return isHasReceptions();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
+				return isIsAbstract();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				return isIsActive();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -303,6 +479,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion((NamedReference)newValue);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				setDestructor((NamedReference)newValue);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -332,6 +511,15 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				getInheritedAssociations().clear();
 				getInheritedAssociations().addAll((Collection<? extends ClInheritedAssociation>)newValue);
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS:
+				setHasReceptions((Boolean)newValue);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
+				setIsAbstract((Boolean)newValue);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				setIsActive((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -346,6 +534,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				setRegion(REGION_EDEFAULT);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				setDestructor(DESTRUCTOR_EDEFAULT);
 				return;
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				getOperations().clear();
@@ -368,6 +559,15 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
 				getInheritedAssociations().clear();
 				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS:
+				setHasReceptions(HAS_RECEPTIONS_EDEFAULT);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
+				setIsAbstract(IS_ABSTRACT_EDEFAULT);
+				return;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				setIsActive(IS_ACTIVE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -382,6 +582,8 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		switch (featureID) {
 			case AssociationPackage.AS_ASSOCIATION_CLASS__REGION:
 				return REGION_EDEFAULT == null ? region != null : !REGION_EDEFAULT.equals(region);
+			case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR:
+				return DESTRUCTOR_EDEFAULT == null ? destructor != null : !DESTRUCTOR_EDEFAULT.equals(destructor);
 			case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS:
 				return operations != null && !operations.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS:
@@ -396,6 +598,12 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				return parents != null && !parents.isEmpty();
 			case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS:
 				return inheritedAssociations != null && !inheritedAssociations.isEmpty();
+			case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS:
+				return hasReceptions != HAS_RECEPTIONS_EDEFAULT;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT:
+				return isAbstract != IS_ABSTRACT_EDEFAULT;
+			case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE:
+				return isActive != IS_ACTIVE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -410,6 +618,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (derivedFeatureID) {
 				case AssociationPackage.AS_ASSOCIATION_CLASS__REGION: return ClassdefPackage.CL_CLASS__REGION;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR: return ClassdefPackage.CL_CLASS__DESTRUCTOR;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS: return ClassdefPackage.CL_CLASS__OPERATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS: return ClassdefPackage.CL_CLASS__RECEPTIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES: return ClassdefPackage.CL_CLASS__ATTRIBUTES;
@@ -417,6 +626,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS: return ClassdefPackage.CL_CLASS__ASSOCIATIONS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS: return ClassdefPackage.CL_CLASS__PARENTS;
 				case AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS: return ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS: return ClassdefPackage.CL_CLASS__HAS_RECEPTIONS;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT: return ClassdefPackage.CL_CLASS__IS_ABSTRACT;
+				case AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE: return ClassdefPackage.CL_CLASS__IS_ACTIVE;
 				default: return -1;
 			}
 		}
@@ -433,6 +645,7 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		if (baseClass == ClClass.class) {
 			switch (baseFeatureID) {
 				case ClassdefPackage.CL_CLASS__REGION: return AssociationPackage.AS_ASSOCIATION_CLASS__REGION;
+				case ClassdefPackage.CL_CLASS__DESTRUCTOR: return AssociationPackage.AS_ASSOCIATION_CLASS__DESTRUCTOR;
 				case ClassdefPackage.CL_CLASS__OPERATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__OPERATIONS;
 				case ClassdefPackage.CL_CLASS__RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__RECEPTIONS;
 				case ClassdefPackage.CL_CLASS__ATTRIBUTES: return AssociationPackage.AS_ASSOCIATION_CLASS__ATTRIBUTES;
@@ -440,6 +653,9 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 				case ClassdefPackage.CL_CLASS__ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__ASSOCIATIONS;
 				case ClassdefPackage.CL_CLASS__PARENTS: return AssociationPackage.AS_ASSOCIATION_CLASS__PARENTS;
 				case ClassdefPackage.CL_CLASS__INHERITED_ASSOCIATIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__INHERITED_ASSOCIATIONS;
+				case ClassdefPackage.CL_CLASS__HAS_RECEPTIONS: return AssociationPackage.AS_ASSOCIATION_CLASS__HAS_RECEPTIONS;
+				case ClassdefPackage.CL_CLASS__IS_ABSTRACT: return AssociationPackage.AS_ASSOCIATION_CLASS__IS_ABSTRACT;
+				case ClassdefPackage.CL_CLASS__IS_ACTIVE: return AssociationPackage.AS_ASSOCIATION_CLASS__IS_ACTIVE;
 				default: return -1;
 			}
 		}
@@ -458,8 +674,16 @@ public class AsAssociationClassImpl extends AsAssociationImpl implements AsAssoc
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (region: ");
 		result.append(region);
+		result.append(", destructor: ");
+		result.append(destructor);
 		result.append(", parents: ");
 		result.append(parents);
+		result.append(", hasReceptions: ");
+		result.append(hasReceptions);
+		result.append(", isAbstract: ");
+		result.append(isAbstract);
+		result.append(", isActive: ");
+		result.append(isActive);
 		result.append(')');
 		return result.toString();
 	}

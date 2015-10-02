@@ -42,6 +42,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isHasStateMachine <em>Has State Machine</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getParents <em>Parents</em>}</li>
  *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#getCtorRecords <em>Ctor Records</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isHasReceptions <em>Has Receptions</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl#isIsActive <em>Is Active</em>}</li>
  * </ul>
  *
  * @generated
@@ -126,6 +129,66 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 	 * @ordered
 	 */
 	protected EList<ClCtorRecord> ctorRecords;
+
+	/**
+	 * The default value of the '{@link #isHasReceptions() <em>Has Receptions</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasReceptions()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean HAS_RECEPTIONS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isHasReceptions() <em>Has Receptions</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isHasReceptions()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean hasReceptions = HAS_RECEPTIONS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_ABSTRACT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isAbstract = IS_ABSTRACT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_ACTIVE_EDEFAULT = false; // TODO The default value literal "" is not valid.
+
+	/**
+	 * The cached value of the '{@link #isIsActive() <em>Is Active</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsActive()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isActive = IS_ACTIVE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -244,6 +307,69 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isHasReceptions() {
+		return hasReceptions;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setHasReceptions(boolean newHasReceptions) {
+		boolean oldHasReceptions = hasReceptions;
+		hasReceptions = newHasReceptions;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS_SPEC__HAS_RECEPTIONS, oldHasReceptions, hasReceptions));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsAbstract() {
+		return isAbstract;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsAbstract(boolean newIsAbstract) {
+		boolean oldIsAbstract = isAbstract;
+		isAbstract = newIsAbstract;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS_SPEC__IS_ABSTRACT, oldIsAbstract, isAbstract));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsActive() {
+		return isActive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsActive(boolean newIsActive) {
+		boolean oldIsActive = isActive;
+		isActive = newIsActive;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ClassdefPackage.CL_CLASS_SPEC__IS_ACTIVE, oldIsActive, isActive));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -261,6 +387,12 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 				return getParents();
 			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
 				return getCtorRecords();
+			case ClassdefPackage.CL_CLASS_SPEC__HAS_RECEPTIONS:
+				return isHasReceptions();
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ABSTRACT:
+				return isIsAbstract();
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ACTIVE:
+				return isIsActive();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -301,6 +433,15 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 				getCtorRecords().clear();
 				getCtorRecords().addAll((Collection<? extends ClCtorRecord>)newValue);
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__HAS_RECEPTIONS:
+				setHasReceptions((Boolean)newValue);
+				return;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ABSTRACT:
+				setIsAbstract((Boolean)newValue);
+				return;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ACTIVE:
+				setIsActive((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -334,6 +475,15 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
 				getCtorRecords().clear();
 				return;
+			case ClassdefPackage.CL_CLASS_SPEC__HAS_RECEPTIONS:
+				setHasReceptions(HAS_RECEPTIONS_EDEFAULT);
+				return;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ABSTRACT:
+				setIsAbstract(IS_ABSTRACT_EDEFAULT);
+				return;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ACTIVE:
+				setIsActive(IS_ACTIVE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -360,6 +510,12 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 				return parents != null && !parents.isEmpty();
 			case ClassdefPackage.CL_CLASS_SPEC__CTOR_RECORDS:
 				return ctorRecords != null && !ctorRecords.isEmpty();
+			case ClassdefPackage.CL_CLASS_SPEC__HAS_RECEPTIONS:
+				return hasReceptions != HAS_RECEPTIONS_EDEFAULT;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ABSTRACT:
+				return isAbstract != IS_ABSTRACT_EDEFAULT;
+			case ClassdefPackage.CL_CLASS_SPEC__IS_ACTIVE:
+				return isActive != IS_ACTIVE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -378,6 +534,12 @@ public class ClClassSpecImpl extends NamedImpl implements ClClassSpec {
 		result.append(hasStateMachine);
 		result.append(", parents: ");
 		result.append(parents);
+		result.append(", hasReceptions: ");
+		result.append(hasReceptions);
+		result.append(", isAbstract: ");
+		result.append(isAbstract);
+		result.append(", isActive: ");
+		result.append(isActive);
 		result.append(')');
 		return result.toString();
 	}

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _sXg1IB2BEeWfUbA_Erpteg
 Runtime-Version: 2.0.0.201509132315
-Save-Time: 9/14/15 5:15 AM
+Save-Time: 9/30/15 9:45 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -127,6 +127,97 @@ proc "mx-open-view" [val viewName] {
 	    get-tree | select $viewName
 	    get-button OK | click
 	}
+}
+
+// Makes a full run config and saves it.
+proc "mx-new-xuml-run-config" [val modelName] [val className] [val mainName] {
+	mx-make-new-xuml-run-config
+	mx-new-xuml-project-select-model $modelName
+	mx-new-xuml-project-select-class $className
+	mx-new-xuml-project-select-main-function $mainName
+	mx-new-xuml-project-save-configuration
+}
+
+proc "mx-make-new-xuml-run-config" {
+	get-menu "Run/Debug Configurations..." | click
+	with [get-window "Debug Configurations"] {
+	    get-tree | select "xUML-RT Executor" | double-click
+	    with [get-editbox -after [get-label "Name:"]] {
+	        set-text "xUMLTestRunConfig"
+	    }
+	    get-button Apply | click
+	}
+}	
+
+proc "mx-new-xuml-project-select-model" [val modelName] {
+	with [get-window "Debug Configurations"] {
+	    get-group "Select model" | get-button Browse | click
+	    with [get-window "Select model"] {
+	        get-tree | select $modelName
+	        get-button OK | click
+	    }
+	}
+}
+
+proc "mx-new-xuml-project-select-class" [val className] {
+	with [get-window "Debug Configurations"] {
+	    get-group "Select class" | get-button Browse | click
+	    with [get-window "Select class"] {
+	        get-table | select $className
+	        get-button OK | click
+	    }
+	}
+}
+
+proc "mx-new-xuml-project-select-main-function" [val mainName] {
+	with [get-window "Debug Configurations"] {
+	    get-group "Select main function" | get-button Browse | click
+	    with [get-window "Select main function"] {
+	        get-table | select $mainName
+	        get-button OK | click
+	    }
+	}
+}
+
+
+proc "mx-new-xuml-project-save-configuration" [val mainName] {
+	with [get-window "Debug Configurations"] {
+	    get-button Apply | click
+	    get-button Close | click
+	}
+}
+
+proc "mx-execute-run-configuration" {
+	get-menu "Run/Run Configurations..." | click
+	with [get-window "Run Configurations"] {
+	    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
+	    get-button Run | click
+	}
+}
+	
+proc "mx-execute-debug-configuration" {
+	// Debug run has to be run from the Debug perspective
+	mx-open-perspective "Debug"
+	
+	
+	// Since the Debug view is open, we have to reopen the Model Explorer
+	// to set breakpoints
+	mx-open-view "Papyrus/Model Explorer"
+	
+	// We need the Problems view, hopefully it will be empty...
+	mx-open-view "General/Problems"
+	
+	get-menu "Run/Debug Configurations..." | click
+	with [get-window "Debug Configurations"] {
+	    get-tree | select "xUML-RT Executor/xUMLTestRunConfig"
+	    get-button Debug | click
+	}
+}
+
+
+proc "mx-toggle-breakpoint" [val location] {
+	mx-open-perspective Papyrus
+	get-view "Model Explorer" | get-tree | select $location | get-menu "Moka/Debug/Toggle breakpoint" | click
 }
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

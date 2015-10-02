@@ -3,6 +3,7 @@ package hu.eltesoft.modelexecution.m2t.java.templates
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociation
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClCtorRecord
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2t.java.Template
@@ -23,7 +24,9 @@ class ClassSpecTemplate extends Template {
 	new(ClClassSpec classSpec) {
 		super(classSpec)
 		this.classSpec = classSpec
-		if (classSpec.hasStateMachine) { extendings.add(StatefulClass.canonicalName) }
+		if (classSpec.hasStateMachine || (classSpec.isIsAbstract && classSpec.isIsActive)) {
+			extendings.add(StatefulClass.canonicalName)
+		}
 		classSpec.parents.forEach[ extendings.add(identifier) ]
 	}
 
@@ -34,23 +37,54 @@ class ClassSpecTemplate extends Template {
 		public interface «classSpec.identifier» 
 			«FOR extending : extendings BEFORE 'extends ' SEPARATOR ','»«extending»«ENDFOR» {
 				
+			«IF !classSpec.isIsAbstract»
+				
 			/** Creator for UML class «classSpec.javadoc» */
 			public static «classSpec.identifier» create(«Consumer.canonicalName»<«classSpec.identifier»> initializer) {
 				«FOR rec : classSpec.ctorRecords»
-					«rec.implementation» «rec.inherited» 
+					final «rec.implementation» «rec.inherited» 
 						= new «rec.implementation»(«FOR par : rec.directParents SEPARATOR ','»«par.inherited»«ENDFOR»);
 				«ENDFOR»
-				«classSpec.implementation» created = new «classSpec.implementation»(«FOR parent : classSpec.parents SEPARATOR ','»«parent.inherited»«ENDFOR»);
+				«classSpec.implementation» created = new «classSpec.implementation»(
+					() -> {
+						«FOR rec : dtorRecords»
+							«rec.inherited».destroy();
+						«ENDFOR»
+					}
+					«FOR parent : classSpec.parents BEFORE ',' SEPARATOR ','»
+						«parent.inherited»
+					«ENDFOR»);
 				if (null != initializer) {
 					initializer.accept(created);
 				}
-				«IF classSpec.hasStateMachine»«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);«ENDIF»
-				«IF classSpec.hasStateMachine»created.initializeStateMachine();«ENDIF»
+				«InstanceRegistry.canonicalName».getInstanceRegistry().registerInstance(created);
+				«IF classSpec.hasStateMachine»
+					created.initializeStateMachine();
+				«ENDIF»
 				return created;
 			}
+			
+			«ENDIF»
+		
+			/** Deleter for UML class «classSpec.javadoc» */
+			void delete();
+		
+			/** Destructor for UML class «classSpec.javadoc» */
+			void destroy();
+		
 			«content»
 		}
 	'''
+
+	def dtorRecords() {
+		// this is basically the reverse of the constructor records
+		// do not use reverse() on the original list as it will throw an exception!
+		val result = new LinkedList<ClCtorRecord>(); 
+		for (rec : classSpec.ctorRecords) {
+			result.add(0, rec)
+		}
+		result
+	}
 
 	override generateContent() '''
 		// attributes
@@ -70,12 +104,14 @@ class ClassSpecTemplate extends Template {
 			
 			«generateOperation(operation)»
 		«ENDFOR»
+		«IF classSpec.hasReceptions»
 		
 		// receptions
 		«FOR reception : classSpec.receptions»
 			
 			«generateExternalReception(reception)»
 		«ENDFOR»
+		«ENDIF»
 	'''
 
 	def generateAttribute(ClAttributeSpec attribute) '''
@@ -89,10 +125,6 @@ class ClassSpecTemplate extends Template {
 	def generateAssociation(ClAssociation association) '''
 		/** Gets the value(s) of the association «association.javadoc» */
 		«javaType(association.type)» get_«association.identifier»();
-		
-		/** Sets the value(s) of the association «association.javadoc» */
-		void set_«association.identifier»(«javaType(association.type)» newVal);
-		
 	'''
 
 	def generateOperation(ClOperationSpec operation) '''

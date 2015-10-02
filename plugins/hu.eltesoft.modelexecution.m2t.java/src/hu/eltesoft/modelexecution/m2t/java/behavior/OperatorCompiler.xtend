@@ -5,6 +5,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.ArithmeticExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssignmentOperator
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanUnaryExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CastExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ConditionalLogicalExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.EqualityExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
@@ -261,5 +262,10 @@ class OperatorCompiler extends ExpressionCompiler {
 			case TRIPLE_SHIFT_ASSIGN: getShiftFunction(ShiftOperator.TRIPLE)
 			default: throw new CompilationFailedException("Unsupported compound assignment operator")
 		}
+	}
+
+	def dispatch CodeGenNode compile(CastExpression expr) {
+		val typeName = expr.typeOf.convert.javaType
+		fun(PrimitiveOperations.CAST, typeName -> "class", compile(expr.operand))
 	}
 }

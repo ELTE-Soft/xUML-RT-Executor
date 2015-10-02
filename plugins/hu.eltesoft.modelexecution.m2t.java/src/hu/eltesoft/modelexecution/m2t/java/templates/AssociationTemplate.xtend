@@ -28,32 +28,23 @@ class AssociationTemplate extends Template {
 					this.«end.identifier» = «end.identifier»;
 				«ENDFOR»
 			}
-			«content»
-		}
-	'''
-
-	override generateContent() '''
-		«FOR end : association.ends»
-			/** Attribute for association end «end.javadoc» */
-			public «javaType(end.type)» «end.identifier»;
-		«ENDFOR»
-		
-		public static «association.identifier» link(«endParams») {
-			«association.identifier» assoc = new «association.identifier»(«endIds»);
-			«FOR end : association.ends»
-				«end.identifier».«end.getter»().add(assoc);
-			«ENDFOR»
-			return assoc;
-		}
-		
-		public static «association.identifier» unlink(«endParams») {
-			«association.identifier» assoc = new «association.identifier»(«endIds»);
-			«FOR end : association.ends»
-				«end.identifier».«end.getter»().remove(assoc);
-			«ENDFOR»
-			return assoc;
-		}
-		
+			
+			public static «association.identifier» link(«endParams») {
+				«association.identifier» assoc = new «association.identifier»(«endIds»);
+				«FOR end : association.ends»
+					«end.identifier».«end.getter»().add(assoc);
+				«ENDFOR»
+				return assoc;
+			}
+			
+			public static «association.identifier» unlink(«endParams») {
+				«association.identifier» assoc = new «association.identifier»(«endIds»);
+				«FOR end : association.ends»
+					«end.identifier».«end.getter»().remove(assoc);
+				«ENDFOR»
+				return assoc;
+			}
+			
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == null || !(obj instanceof «association.identifier»)) {
@@ -72,6 +63,16 @@ class AssociationTemplate extends Template {
 		public int hashCode() {
 			return «Objects.canonicalName».hash(«endIds»);
 		}
+		
+			«content»
+		}
+	'''
+
+	override generateContent() '''
+		«FOR end : association.ends»
+			/** Attribute for association end «end.javadoc» */
+			public «javaType(end.type)» «end.identifier»;
+		«ENDFOR»
 	'''
 	
 	def endIds() '''

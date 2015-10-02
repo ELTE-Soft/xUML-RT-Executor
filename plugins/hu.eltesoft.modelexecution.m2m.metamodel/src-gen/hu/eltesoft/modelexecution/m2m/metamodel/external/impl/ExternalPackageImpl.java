@@ -210,8 +210,17 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getExOperation_ProxyClass() {
-		return (EAttribute)exOperationEClass.getEStructuralFeatures().get(0);
+	public EReference getExOperation_ReturnType() {
+		return (EReference)exOperationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getExOperation_Parameters() {
+		return (EReference)exOperationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -257,7 +266,8 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 		createEAttribute(exExternalEntityEClass, EX_EXTERNAL_ENTITY__TYPE);
 
 		exOperationEClass = createEClass(EX_OPERATION);
-		createEAttribute(exOperationEClass, EX_OPERATION__PROXY_CLASS);
+		createEReference(exOperationEClass, EX_OPERATION__RETURN_TYPE);
+		createEReference(exOperationEClass, EX_OPERATION__PARAMETERS);
 
 		// Create enums
 		exEntityTypeEEnum = createEEnum(EX_ENTITY_TYPE);
@@ -288,7 +298,6 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 
 		// Obtain other dependent packages
 		BasePackage theBasePackage = (BasePackage)EPackage.Registry.INSTANCE.getEPackage(BasePackage.eNS_URI);
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -305,7 +314,8 @@ public class ExternalPackageImpl extends EPackageImpl implements ExternalPackage
 		initEAttribute(getExExternalEntity_Type(), this.getExEntityType(), "type", null, 1, 1, ExExternalEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(exOperationEClass, ExOperation.class, "ExOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getExOperation_ProxyClass(), theEcorePackage.getEString(), "proxyClass", null, 0, 1, ExOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExOperation_ReturnType(), theBasePackage.getType(), null, "returnType", null, 0, 1, ExOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExOperation_Parameters(), theBasePackage.getParameter(), null, "parameters", null, 0, -1, ExOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(exEntityTypeEEnum, ExEntityType.class, "ExEntityType");

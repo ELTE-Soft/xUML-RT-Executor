@@ -87,13 +87,22 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS__REGION = BasePackage.MODEL_ROOT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Destructor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__DESTRUCTOR = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Operations</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 1;
+	int CL_CLASS__OPERATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Receptions</b></em>' reference list.
@@ -102,7 +111,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 2;
+	int CL_CLASS__RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
@@ -111,7 +120,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 3;
+	int CL_CLASS__ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Inherited Attributes</b></em>' reference list.
@@ -120,7 +129,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__INHERITED_ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 4;
+	int CL_CLASS__INHERITED_ATTRIBUTES = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Associations</b></em>' reference list.
@@ -129,7 +138,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 5;
+	int CL_CLASS__ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Parents</b></em>' attribute list.
@@ -138,7 +147,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
+	int CL_CLASS__PARENTS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Inherited Associations</b></em>' reference list.
@@ -147,7 +156,34 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS__INHERITED_ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+	int CL_CLASS__INHERITED_ASSOCIATIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Has Receptions</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__HAS_RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__IS_ABSTRACT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Is Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS__IS_ACTIVE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>Cl Class</em>' class.
@@ -156,7 +192,7 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+	int CL_CLASS_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of operations of the '<em>Cl Class</em>' class.
@@ -250,13 +286,40 @@ public interface ClassdefPackage extends EPackage {
 	int CL_CLASS_SPEC__CTOR_RECORDS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Has Receptions</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__HAS_RECEPTIONS = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__IS_ABSTRACT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Is Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CL_CLASS_SPEC__IS_ACTIVE = BasePackage.MODEL_ROOT_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Cl Class Spec</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 7;
+	int CL_CLASS_SPEC_FEATURE_COUNT = BasePackage.MODEL_ROOT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Cl Class Spec</em>' class.
@@ -959,6 +1022,17 @@ public interface ClassdefPackage extends EPackage {
 	EAttribute getClClass_Region();
 
 	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getDestructor <em>Destructor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Destructor</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getDestructor()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_Destructor();
+
+	/**
 	 * Returns the meta object for the reference list '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#getOperations <em>Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1034,6 +1108,39 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClass_InheritedAssociations();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions <em>Has Receptions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Has Receptions</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isHasReceptions()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_HasReceptions();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsAbstract <em>Is Abstract</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Abstract</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsAbstract()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_IsAbstract();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive <em>Is Active</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Active</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClass#isIsActive()
+	 * @see #getClClass()
+	 * @generated
+	 */
+	EAttribute getClClass_IsActive();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec <em>Cl Class Spec</em>}'.
@@ -1121,6 +1228,39 @@ public interface ClassdefPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getClClassSpec_CtorRecords();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasReceptions <em>Has Receptions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Has Receptions</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isHasReceptions()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_HasReceptions();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsAbstract <em>Is Abstract</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Abstract</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsAbstract()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_IsAbstract();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsActive <em>Is Active</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Active</em>'.
+	 * @see hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClClassSpec#isIsActive()
+	 * @see #getClClassSpec()
+	 * @generated
+	 */
+	EAttribute getClClassSpec_IsActive();
 
 	/**
 	 * Returns the meta object for class '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperation <em>Cl Operation</em>}'.
@@ -1383,6 +1523,14 @@ public interface ClassdefPackage extends EPackage {
 		EAttribute CL_CLASS__REGION = eINSTANCE.getClClass_Region();
 
 		/**
+		 * The meta object literal for the '<em><b>Destructor</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__DESTRUCTOR = eINSTANCE.getClClass_Destructor();
+
+		/**
 		 * The meta object literal for the '<em><b>Operations</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1437,6 +1585,30 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS__INHERITED_ASSOCIATIONS = eINSTANCE.getClClass_InheritedAssociations();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Receptions</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__HAS_RECEPTIONS = eINSTANCE.getClClass_HasReceptions();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Abstract</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__IS_ABSTRACT = eINSTANCE.getClClass_IsAbstract();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Active</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS__IS_ACTIVE = eINSTANCE.getClClass_IsActive();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClClassSpecImpl <em>Cl Class Spec</em>}' class.
@@ -1503,6 +1675,30 @@ public interface ClassdefPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CL_CLASS_SPEC__CTOR_RECORDS = eINSTANCE.getClClassSpec_CtorRecords();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Receptions</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__HAS_RECEPTIONS = eINSTANCE.getClClassSpec_HasReceptions();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Abstract</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__IS_ABSTRACT = eINSTANCE.getClClassSpec_IsAbstract();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Active</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CL_CLASS_SPEC__IS_ACTIVE = eINSTANCE.getClClassSpec_IsActive();
 
 		/**
 		 * The meta object literal for the '{@link hu.eltesoft.modelexecution.m2m.metamodel.classdef.impl.ClOperationImpl <em>Cl Operation</em>}' class.

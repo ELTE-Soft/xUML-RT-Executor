@@ -9,10 +9,13 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ActiveClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.AttributeMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatch
 import hu.eltesoft.modelexecution.uml.incquery.ClsMatcher
+import hu.eltesoft.modelexecution.uml.incquery.DestructorOfClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAssociationParentMatcher
 import hu.eltesoft.modelexecution.uml.incquery.InheritedAttributeMatcher
@@ -41,7 +44,8 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 	override protected createMapper(AdvancedIncQueryEngine engine) {
 		val rootNode = fromRoot(ClsMatcher.on(engine)) [
 			val root = FACTORY.createClClass
-			root.setReference(new NamedReference(cls));
+			root.setReference(new NamedReference(cls))
+			root.hasReceptions = Stereotypes.isCallable(cls)
 			return root;
 		]
 		return rootNode
@@ -51,6 +55,19 @@ class ClassTranslator extends RootElementTranslator<Class, ClClass, ClsMatch> {
 
 		// parent classes
 		rootNode.on(PACKAGE.clClass_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// abstract class
+		rootNode.on(PACKAGE.clClass_IsAbstract, AbstractClassMatcher.on(engine)) [
+			isAbstract
+		]
+
+		// active class
+		rootNode.on(PACKAGE.clClass_IsActive, ActiveClassMatcher.on(engine)) [
+			isActive
+		]
+
+		// destructor
+		rootNode.on(PACKAGE.clClass_Destructor, DestructorOfClassMatcher.on(engine))[new NamedReference(destructor)]
 
 		// state machine
 		rootNode.on(PACKAGE.clClass_Region, RegionOfClassMatcher.on(engine))[new NamedReference(region)]

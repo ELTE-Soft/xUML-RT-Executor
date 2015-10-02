@@ -4,6 +4,7 @@
     nsPrefix="hu.eltesoft.modelexecution.m2m.metamodel.classdef">
   <eClassifiers xsi:type="ecore:EClass" name="ClClass" eSuperTypes="base.ecore#//ModelRoot">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="region" eType="ecore:EDataType base.ecore#//NamedReference"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="destructor" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
         upperBound="-1" eType="#//ClOperation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="receptions" ordered="false"
@@ -18,6 +19,12 @@
         upperBound="-1" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inheritedAssociations"
         ordered="false" upperBound="-1" eType="#//ClInheritedAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasReceptions" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isActive" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClClassSpec" eSuperTypes="base.ecore#//ModelRoot">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
@@ -34,6 +41,12 @@
         upperBound="-1" eType="ecore:EDataType base.ecore#//NamedReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ctorRecords" upperBound="-1"
         eType="#//ClCtorRecord"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasReceptions" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isActive" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClOperation" eSuperTypes="#//ClOperationSpec">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="ecore:EDataType base.ecore#//NamedReference"/>

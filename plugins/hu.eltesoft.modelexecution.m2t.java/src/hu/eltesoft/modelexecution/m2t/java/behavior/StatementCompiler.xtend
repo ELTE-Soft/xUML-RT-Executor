@@ -6,6 +6,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.BreakStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.DoStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.EmptyStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ForEachStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ForStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.IfClause
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.IfStatement
@@ -76,9 +77,21 @@ class StatementCompiler extends OperatorCompiler {
 	def dispatch CodeGenNode compile(ForStatement loop) {
 		val params = new CodeGenNode("(", ")", "; ")
 		params.add(compile(loop.initialization))
-		params.add(compile(loop.condition))
+		params.add(unwrap(compile(loop.condition)))
 		params.add(compile(loop.update))
 		"for " <> params <> " " <> compile(loop.body)
+	}
+
+	def dispatch CodeGenNode compile(ForEachStatement loop) {
+		val variable = loop.variableDefinition
+		val rawType = variable.type.type.convert.javaType
+		val rawName = freshLocalName
+		val wrappedType = variable.type.type.convert.javaType(SINGLE)
+		val wrappedName = localName(variable)
+		val collection = compile(loop.expression)
+		val statements = compile(loop.body)
+		statements.prepend(wrappedType <> " " <> wrappedName <> " = " <> wrap(rawName))
+		"for " <> paren(rawType <> " " <> rawName <> " : " <> collection) <> " " <> statements
 	}
 
 	def dispatch CodeGenNode compile(BreakStatement statement) {

@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.m2t.java
 
+import com.incquerylabs.uml.ralf.ReducedAlfSystem
 import com.incquerylabs.uml.ralf.api.impl.ParsingResults
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguageFactory
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Statements
@@ -19,7 +20,6 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
-import com.incquerylabs.uml.ralf.ReducedAlfSystem
 
 class TemplateSmokeTests extends ModelBasedTestCase {
 

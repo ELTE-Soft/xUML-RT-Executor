@@ -7,7 +7,6 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.NamedReference
 import hu.eltesoft.modelexecution.m2m.metamodel.base.PrimitiveType
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAssociationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClAttributeSpec
-import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClReceptionSpec
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
@@ -29,6 +28,7 @@ import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterLowerBoundMatch
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ReceptionParameterUpperBoundMatcher
 import org.eclipse.incquery.runtime.api.IncQueryEngine
+import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClOperationSpec
 
 /**
  * A helper class for translating UML classes. From UML classes both implementation classes and interfaces 
@@ -60,7 +60,7 @@ class ClassConvertHelper {
 		]
 	}
 
-	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode, IncQueryEngine engine) {	
+	def static fillOperation(AbstractFeatureNode<? extends ClOperationSpec, ?> operationNode, IncQueryEngine engine) {
 		// operation parameters
 		val parameterNode = operationNode.onEObject(PACKAGE.clOperationSpec_Parameters,
 			OperationParameterMatcher.on(engine)) [

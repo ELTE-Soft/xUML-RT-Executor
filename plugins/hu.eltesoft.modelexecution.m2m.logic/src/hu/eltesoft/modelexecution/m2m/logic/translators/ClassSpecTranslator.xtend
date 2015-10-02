@@ -9,6 +9,8 @@ import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefFactory
 import hu.eltesoft.modelexecution.m2m.metamodel.classdef.ClassdefPackage
 import hu.eltesoft.modelexecution.m2t.java.templates.ClassSpecTemplateSmap
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.uml.incquery.AbstractClassMatcher
+import hu.eltesoft.modelexecution.uml.incquery.ActiveClassMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassAssociationMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordArgMatcher
 import hu.eltesoft.modelexecution.uml.incquery.ClassCtorRecordMatch
@@ -41,6 +43,7 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 		val rootNode = fromRoot(ClassOrAssocClassMatcher.on(engine)) [
 			val root = FACTORY.createClClassSpec
 			root.setReference(new NamedReference(cls));
+			root.hasReceptions = Stereotypes.isCallable(cls);
 			return root;
 		]
 		return rootNode
@@ -50,6 +53,16 @@ class ClassSpecTranslator extends RootElementTranslator<Class, ClClassSpec, Clas
 
 		// parent classes
 		rootNode.on(PACKAGE.clClassSpec_Parents, ParentMatcher.on(engine))[new NamedReference(parent)]
+
+		// abstract class
+		rootNode.on(PACKAGE.clClassSpec_IsAbstract, AbstractClassMatcher.on(engine))[
+			isAbstract
+		]
+
+		// active class
+		rootNode.on(PACKAGE.clClassSpec_IsActive, ActiveClassMatcher.on(engine)) [
+			isActive
+		]
 
 		// construction
 		val ctorRecordNode = rootNode.onSorted(

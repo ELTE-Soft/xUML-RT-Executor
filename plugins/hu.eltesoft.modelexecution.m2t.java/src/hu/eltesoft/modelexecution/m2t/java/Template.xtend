@@ -7,11 +7,11 @@ import hu.eltesoft.modelexecution.m2m.metamodel.base.ScalarType
 import hu.eltesoft.modelexecution.m2m.metamodel.base.Type
 import hu.eltesoft.modelexecution.m2t.smap.emf.EmfTraceExtensions
 import hu.eltesoft.modelexecution.m2t.smap.emf.LocationQualifier
+import hu.eltesoft.modelexecution.runtime.BaseRuntime
 import java.util.Date
 import javax.annotation.Generated
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
-import hu.eltesoft.modelexecution.runtime.BaseRuntime
 
 /**
  * Base class for code generation templates. It defines a common interface for
@@ -167,22 +167,26 @@ abstract class Template extends EmfTraceExtensions {
 		typeConverter.javaType(type, mult)
 	}
 
-	def createEmpty(Multiplicity type) {
+	def createEmpty(Type type) {
 		typeConverter.createEmpty(type)
 	}
-	
+
+	def createEmpty(ScalarType type, Multiplicity mult) {
+		typeConverter.createEmpty(type, mult)
+	}
+
 	def getter(Named ref) { GETTER_PREFIX + ref.identifier }
-	
+
 	def setter(Named ref) { SETTER_PREFIX + ref.identifier }
-	
+
 	def inherited(Named ref) { ref.identifier + INHERITED_SUFFIX }
-	
+
 	def inherited(NamedReference ref) { ref.identifier + INHERITED_SUFFIX }
-	
+
 	def implementation(Named ref) { ref.identifier + CLASS_IMPL_SUFFIX }
-	
+
 	def implementation(NamedReference ref) { ref.identifier + CLASS_IMPL_SUFFIX }
-	
+
 	protected val runtime = '''«BaseRuntime.canonicalName».getInstance()'''
 
 }

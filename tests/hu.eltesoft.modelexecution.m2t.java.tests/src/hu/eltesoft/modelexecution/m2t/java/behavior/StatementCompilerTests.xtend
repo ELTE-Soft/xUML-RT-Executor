@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import hu.eltesoft.modelexecution.m2t.java.ModelProperties
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
@@ -96,14 +97,25 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def testForWithEmptyUpdate() {
 		assertCompilesTo('''for(Integer i = 0; false; ){}''',
 			"for (" <> binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)) <>
-				"; " <> booleanLiteral("false") <> "; ) " <> block)
+				"; " <> unwrap(booleanLiteral("false")) <> "; ) " <> block)
 	}
 
 	@Test
 	def testForWithNonEmptyUpdate() {
 		assertCompilesTo('''for(Integer i = 0; false; false ){}''',
 			"for (" <> binOp("java.util.ArrayList<java.math.BigInteger> _local0", "=", integerLiteral("0", 10)) <>
-				"; " <> booleanLiteral("false") <> "; " <> booleanLiteral("false") <> ") " <> block)
+				"; " <> unwrap(booleanLiteral("false")) <> "; " <> booleanLiteral("false") <> ") " <> block)
+	}
+
+	@Test
+	def testForWithCollectionLiteral() {
+		val collection = fun(CollectionOperations.SEQUENCE_LITERAL, unwrap(integerLiteral("0", 10)),
+			unwrap(integerLiteral("2", 10)), unwrap(integerLiteral("4", 10)))
+		assertCompilesTo('''for(Integer number in Sequence<Integer>{ 0, 2, 4 }){ number; }''',
+			"for " <> paren("java.math.BigInteger _local0 : " <> collection) <> " " <> block(
+				"java.util.ArrayList<java.math.BigInteger> _local1 = " <> wrap("_local0"),
+				"_local1"
+			))
 	}
 
 	@Test
@@ -149,7 +161,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 					default: return;
 				}
 			''',
-			"switch " <> paren(unwrap(integerLiteral("0", 10))->fun("longValue")) <> " " <> block(
+			"switch " <> paren(unwrap(integerLiteral("0", 10)) -> fun("longValue")) <> " " <> block(
 				"case 1: " <> "case 2: " <> block("break"),
 				"default: " <> block("return")
 			)

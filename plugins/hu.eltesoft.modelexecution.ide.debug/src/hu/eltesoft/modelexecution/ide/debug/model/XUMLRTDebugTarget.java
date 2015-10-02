@@ -126,7 +126,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		mokaDebugTarget.breakpointChanged(breakpoint, delta);
 	}
 
-	public void addSMInstance(String classId, int instanceId, String originalName) {
+	public void addSMInstance(String classId, long instanceId, String originalName) {
 		if (isTerminated()) {
 			return;
 		}
@@ -156,7 +156,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	 * 
 	 * @return The removed instance or null if such instance was not found.
 	 */
-	public StateMachineInstance removeSMInstance(String classId, int instanceId) {
+	public StateMachineInstance removeSMInstance(String classId, long instanceId) {
 		if (isTerminated()) {
 			return null;
 		}
@@ -187,7 +187,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public void markThreadAsSuspended(EObject modelElement) {
 		isSuspended = true;
 
-		Pair<String, Integer> actualSMInstance = vmBrowser.getActualSMInstance();
+		Pair<String, Long> actualSMInstance = vmBrowser.getActualSMInstance();
 		List<StateMachineInstance> smInstances = getSmInstances();
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
@@ -276,7 +276,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	 *         null if there isn't one.
 	 */
 	public StateMachineInstance getSuspendedSMInstance() {
-		Pair<String, Integer> actualSMInstance = vmBrowser.getActualSMInstance();
+		Pair<String, Long> actualSMInstance = vmBrowser.getActualSMInstance();
 		for (StateMachineInstance instance : getSmInstances()) {
 			if (actualSMInstance.equals(new Pair<>(instance.getClassId(), instance.getInstanceId()))) {
 				return instance;

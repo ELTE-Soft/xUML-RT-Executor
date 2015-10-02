@@ -15,13 +15,16 @@ import hu.eltesoft.modelexecution.runtime.base.Class
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion
+import hu.eltesoft.modelexecution.runtime.base.SubobjectsDestructor
+import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
+import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
+import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
 import java.util.LinkedList
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 import static hu.eltesoft.modelexecution.m2t.java.Languages.*
-import hu.eltesoft.modelexecution.runtime.meta.ClassMeta
-import hu.eltesoft.modelexecution.runtime.meta.BoundsMeta
-import hu.eltesoft.modelexecution.runtime.meta.PropertyMeta
+import hu.eltesoft.modelexecution.runtime.base.Event
+import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 
 @SourceMappedTemplate(stratumName=XUML_RT)
 class ClassTemplate extends Template {
@@ -35,27 +38,44 @@ class ClassTemplate extends Template {
 		this.hasStateMachine = classDefinition.region != null
 	}
 
-	override wrapContent(CharSequence content) '''
+	override wrapContent(
+		CharSequence content
+	) '''
 		/** Implementation class for UML class «classDefinition.javadoc» */
 		«generatedHeaderForClass(classDefinition)»
-		public class «classDefinition.implementation» 
+		public
+			class «classDefinition.implementation» 
 			extends «IF (hasStateMachine)»«ClassWithState.canonicalName»«ELSE»«Class.canonicalName»«ENDIF»
 			implements «classDefinition.identifier» {
 		
 			«content»
 		}
 	'''
-	
+
 	override generateContent() '''
+		private static final «AtomicLong.canonicalName» nextInstanceID = new «AtomicLong.canonicalName»(0);
+		
 		/** Constructor for UML class «classDefinition.javadoc» */
+		public «classDefinition.implementation»(
+				«SubobjectsDestructor.canonicalName» subobjectsDestructor
+				«FOR parent : classDefinition.parents BEFORE ',' SEPARATOR ','»
+					«parent.implementation» «parent.inherited»
+				«ENDFOR») {
+			super(subobjectsDestructor, nextInstanceID.getAndIncrement());
+			«FOR parent : classDefinition.parents»
+				this.«parent.inherited» = «parent.inherited»;
+			«ENDFOR»
+		}
+		
 		public «classDefinition.implementation»(
 				«FOR parent : classDefinition.parents SEPARATOR ','»
 					«parent.implementation» «parent.inherited»
 				«ENDFOR») {
-			«IF hasStateMachine»super(instanceCount.getAndIncrement());«ENDIF»
-			«FOR parent : classDefinition.parents»
-				this.«parent.inherited» = «parent.inherited»;«»
-			«ENDFOR»
+			this(() -> {}
+				«FOR parent : classDefinition.parents BEFORE ',' SEPARATOR ','»
+					«parent.inherited»
+				«ENDFOR»
+			);
 		}
 		
 		/** Meta-description of the structure of the class */
@@ -72,70 +92,94 @@ class ClassTemplate extends Template {
 		public String getOriginalClassName() {
 			return «META_REPR_NAME».getName();
 		}
-
+		
 		«IF hasStateMachine»
-			private static «AtomicInteger.canonicalName» instanceCount = new «AtomicInteger.canonicalName»(0);
-
 			@Override
 			protected «StateMachineRegion.canonicalName» createStateMachine() {
 				return new «classDefinition.region.identifier»(this);
 			}
-			
-			// receptions
-			«FOR reception : classDefinition.receptions»
+			«IF classDefinition.hasReceptions»
 				
-				«generateExternalReception(reception)»
-			«ENDFOR»
+				// receptions
+				«FOR reception : classDefinition.receptions»
+					
+					«generateExternalReception(reception)»
+				«ENDFOR»
+			«ENDIF»
+		«ENDIF»
+		
+		«IF classDefinition.isIsAbstract && classDefinition.isIsActive && !hasStateMachine»
+			@Override
+			public void send(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method send");
+			}
 			
+			@Override
+			public void sendExternal(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method sendExternal");
+			}
+			
+			@Override
+			public void receive(«Event.canonicalName» event) {
+				throw new RuntimeException("Calling the abstract method receive");
+			}
 		«ENDIF»
 		
 		«generateStructuralClassBody()»
 	'''
 
 	def generateStructuralClassBody() '''
-	// references to parent objects
-	«FOR parent : classDefinition.parents»
+		// references to parent objects
+		«FOR parent : classDefinition.parents»
+			
+			«parent.implementation» «parent.inherited»;
+		«ENDFOR»
 		
-		«parent.implementation» «parent.inherited»;
-	«ENDFOR»
-
-
-	// attributes
-	«FOR attribute : classDefinition.attributes»
+		// destructor
+		public void destroy() {
+			«IF null != classDefinition.destructor»
+				«classDefinition.destructor.identifier».execute(this);
+			«ELSE»
+				// default destructor, no destroy operation defined in the model
+			«ENDIF»
+		}
 		
-		«generateAttribute(attribute)»
-	«ENDFOR»
-	
-	// inherited attributes
-	«FOR attribute : classDefinition.inheritedAttributes»
+		// attributes
+		«FOR attribute : classDefinition.attributes»
+			
+			«generateAttribute(attribute)»
+		«ENDFOR»
 		
-		«generateInheritedAttribute(attribute)»
-	«ENDFOR»
-	
-	// associations
-	«FOR association : classDefinition.associations»
+		// inherited attributes
+		«FOR attribute : classDefinition.inheritedAttributes»
+			
+			«generateInheritedAttribute(attribute)»
+		«ENDFOR»
 		
-		«generateAssociation(association)»
-	«ENDFOR»
-	
-	// inherited associations
-	«FOR association : classDefinition.inheritedAssociations»
+		// associations
+		«FOR association : classDefinition.associations»
+			
+			«generateAssociation(association)»
+		«ENDFOR»
 		
-		«generateInheritedAssociation(association)»
-	«ENDFOR»
-	
-	// operations (both defined and inherited)
-	«FOR operation : classDefinition.operations»
+		// inherited associations
+		«FOR association : classDefinition.inheritedAssociations»
+			
+			«generateInheritedAssociation(association)»
+		«ENDFOR»
 		
-		«generateOperation(operation)»
-	«ENDFOR»
+		// operations (both defined and inherited)
+		«FOR operation : classDefinition.operations»
+			
+			«generateOperation(operation)»
+		«ENDFOR»
 	'''
 
 	def generateAttribute(
 		ClAttribute attribute
 	) '''
 		/** Attribute for UML attribute «attribute.javadoc» */
-		private «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
+		private final «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.identifier» = «createEmpty(attribute.type)»;
 		
 		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» «javaType(attribute.type)» «attribute.getter»() {
@@ -144,10 +188,10 @@ class ClassTemplate extends Template {
 		
 		«IF !attribute.isStatic»@Override«ENDIF»
 		public «IF attribute.isStatic»static«ENDIF» void «attribute.setter»(«javaType(attribute.type)» newVal) {
-			«attribute.identifier» = newVal;
+			«PrimitiveOperations.SET_VALUE»(«attribute.identifier», newVal);
 		}
 	'''
-	
+
 	def generateInheritedAttribute(
 		ClInheritedAttribute attribute
 	) '''
@@ -170,24 +214,14 @@ class ClassTemplate extends Template {
 		public «javaType(association.type)» «association.getter»() {
 			return «association.identifier»;
 		}
-		
-		@Override
-		public void «association.setter»(«javaType(association.type)» newVal) {
-			«association.identifier» = newVal;
-		}
 	'''
-	
+
 	def generateInheritedAssociation(
 		ClInheritedAssociation association
 	) '''
 		@Override
 		public «javaType(association.type)» «association.getter»() {
 			return «association.parent.inherited».«association.getter»();
-		}
-		
-		@Override
-		public void «association.setter»(«javaType(association.type)» newVal) {
-			«association.parent.inherited».«association.setter»(newVal);
 		}
 	'''
 
@@ -205,13 +239,15 @@ class ClassTemplate extends Template {
 				«IF operation.hasBody»
 					«IF operation.returnType != null»return«ENDIF»
 						«operation.method.identifier».execute(
-				«IF !operation.isStatic»this«IF operation.hasParameters»,«ENDIF»«ENDIF»
-				«FOR parameter : operation.parameters SEPARATOR ','»
-					«parameter.identifier»
-				«ENDFOR»
-				);
-		«ENDIF»
-		}
+					«IF !operation.isStatic»this«IF operation.hasParameters»,«ENDIF»«ENDIF»
+					«FOR parameter : operation.parameters SEPARATOR ','»
+						«parameter.identifier»
+					«ENDFOR»
+					);
+				«ELSE»
+				throw new RuntimeException("Calling the abstract method " + «operation.nameLiteral»);
+				«ENDIF»
+			}
 		
 		«IF !operation.isStatic»
 			/** Statically dispatched access to operation «operation.javadoc» 
@@ -222,20 +258,22 @@ class ClassTemplate extends Template {
 					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
 						«javaType(parameter.type)» «parameter.identifier»
 					«ENDFOR»
-				) {
-					«IF operation.hasBody»
-						«IF operation.returnType != null»return«ENDIF»
-							«operation.method.identifier».execute(
+			) {
+				«IF operation.hasBody»
+					«IF operation.returnType != null»return«ENDIF»
+						«operation.method.identifier».execute(
 					«IF !operation.isStatic»thisRef«ENDIF»
 					«FOR parameter : operation.parameters BEFORE ',' SEPARATOR ','»
 						«parameter.identifier»
 					«ENDFOR»
 					);
-			«ENDIF»
+				«ELSE»
+				throw new RuntimeException("Calling the abstract method " + «operation.nameLiteral»);
+				«ENDIF»
 			}
 		«ENDIF»
 	'''
-	
+
 	def generateExternalReception(ClReception reception) '''
 		/** Method for external reception «reception.javadoc» 
 		 «javadocParams(reception.parameters)» 
@@ -260,12 +298,12 @@ class ClassTemplate extends Template {
 	def hasBody(ClOperation op) { op.method != null }
 
 	def hasParameters(ClOperationSpec op) { !op.parameters.empty }
-	
-	def allAttributes(ClClass cls) { 
+
+	def allAttributes(ClClass cls) {
 		val list = new LinkedList<ClAttributeSpec>
 		list.addAll(cls.attributes)
 		list.addAll(cls.inheritedAttributes)
 		return list
 	}
-	
+
 }

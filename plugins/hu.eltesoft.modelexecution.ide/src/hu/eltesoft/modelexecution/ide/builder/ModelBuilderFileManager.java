@@ -83,10 +83,7 @@ public class ModelBuilderFileManager implements SourceCodeChangeListener {
 	 */
 	public void refreshFolder() {
 		try {
-			IResource genSourceDir = project.findMember(ProjectProperties.getSourceGenPath(project));
-			if (genSourceDir != null && genSourceDir.exists()) {
-				genSourceDir.refreshLocal(IResource.DEPTH_INFINITE, null);
-			}
+			project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		} catch (CoreException e) {
 			PluginLogger.logError("Exception while refreshing folder.", e); //$NON-NLS-1$
 		}

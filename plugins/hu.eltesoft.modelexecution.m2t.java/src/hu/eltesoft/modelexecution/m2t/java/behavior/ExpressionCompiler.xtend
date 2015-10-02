@@ -1,10 +1,16 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.AssociationAccessExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.BooleanLiteralExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ClassExtentExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionType
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.CollectionVariable
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ElementCollectionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionList
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ExpressionStatement
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.FeatureInvocationExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.FilterExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceCreationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.InstanceDeletionExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.LinkOperation
@@ -15,6 +21,7 @@ import com.incquerylabs.uml.ralf.reducedAlfLanguage.NamedTuple
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NaturalLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.NullExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.RealLiteralExpression
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.SignalDataExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StaticFeatureInvocationExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.StringLiteralExpression
 import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
@@ -24,17 +31,23 @@ import hu.eltesoft.modelexecution.m2t.java.CompilationFailedException
 import hu.eltesoft.modelexecution.m2t.java.Template
 import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNode
 import hu.eltesoft.modelexecution.profile.xumlrt.Stereotypes
+import hu.eltesoft.modelexecution.runtime.InstanceRegistry
+import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import hu.eltesoft.modelexecution.runtime.library.PrimitiveOperations
 import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.uml2.uml.Association
+import org.eclipse.uml2.uml.BehavioralFeature
 import org.eclipse.uml2.uml.Class
 import org.eclipse.uml2.uml.NamedElement
 import org.eclipse.uml2.uml.Operation
+import org.eclipse.uml2.uml.Parameter
+import org.eclipse.uml2.uml.ParameterDirectionKind
 import org.eclipse.uml2.uml.PrimitiveType
 import org.eclipse.uml2.uml.Property
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
+import org.eclipse.uml2.uml.TypedElement
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
 
@@ -73,6 +86,19 @@ class ExpressionCompiler extends CompilerBase {
 		stringLiteral(StringEscapeUtils.escapeJava(lit.value))
 	}
 
+	def dispatch CodeGenNode compile(ElementCollectionExpression lit) {
+		val items = paren()
+		for (expr : lit.elements.expressions) {
+			items.add(unwrap(compile(expr)))
+		}
+		val funName = switch lit.collectionType {
+			case SEQUENCE: CollectionOperations.SEQUENCE_LITERAL
+			case SET: CollectionOperations.SET_LITERAL
+			case BAG: CollectionOperations.BAG_LITERAL
+		}
+		funName <> items
+	}
+
 	def dispatch CodeGenNode compile(NullExpression expr) {
 		fun(PrimitiveOperations.NULL_VALUE)
 	}
@@ -82,14 +108,26 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(LocalNameDeclarationStatement declaration) {
-		val type = declaration.variable.type.type.convert.javaType(SINGLE)
+		val variable = declaration.variable
+		val baseType = variable.type.type.convert
+		val type = switch variable {
+			CollectionVariable: collectionName(variable.collectionType) <> "<" <> baseType.javaType <> ">"
+			Variable: baseType.javaType(SINGLE)
+		}
+
 		val localName = declaration.variable.localName
 		val rhs = if (null != declaration.expression) {
 				compile(declaration.expression)
+			} else if (variable instanceof CollectionVariable) {
+				compileCollectionInitializer((variable as CollectionVariable).collectionType)
 			} else {
-				compileTypeInitializer(declaration.variable.type.type)
+				compileTypeInitializer(variable.type.type)
 			}
 		binOp(type <> " " <> localName, "=", rhs)
+	}
+
+	def CodeGenNode compileCollectionInitializer(CollectionType type) {
+		sequence(createEmpty(type))
 	}
 
 	def dispatch CodeGenNode compileTypeInitializer(PrimitiveType type) {
@@ -125,7 +163,7 @@ class ExpressionCompiler extends CompilerBase {
 				val constructor = getConstructor(expr.instance as Class)
 				if (null != constructor) {
 					param = "i -> i" ->
-						(NamedReference.getIdentifier(constructor) <> compile(expr.parameters, constructor))
+						(NamedReference.getIdentifier(constructor) <> compile(expr.parameters, constructor, false))
 				}
 				wrap(NamedReference.getIdentifier(expr.instance) -> fun("create", param))
 			}
@@ -140,7 +178,7 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(NamedTuple values, Signal signal) {
-		compileExpressionList(values, signal.ownedAttributes)
+		compileExpressionList(values, signal.ownedAttributes, false)
 	}
 
 	def Operation getConstructor(Class cl) {
@@ -152,56 +190,99 @@ class ExpressionCompiler extends CompilerBase {
 	}
 
 	def dispatch CodeGenNode compile(InstanceDeletionExpression expr) {
-		unwrap(compile(expr.reference)) -> fun("dispose")
+		unwrap(compile(expr.reference)) -> fun("delete")
 	}
 
 	def dispatch CodeGenNode compile(FeatureInvocationExpression call) {
-		unwrap(compile(call.context)) -> switch call.feature {
-			Operation: NamedReference.getIdentifier(call.feature) <> compile(call.parameters, call.feature)
-			Property: fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
+		val context = compile(call.context)
+		switch call.feature {
+			Operation: {
+				val parameters = compile(call.parameters, call.feature as BehavioralFeature, false)
+				if (StandardLibraryMapping.isStandardFeature(call.feature.qualifiedName)) {
+					parameters.prepend(context)
+					StandardLibraryMapping.getImplementationName(call.feature.qualifiedName) <> parameters
+				} else {
+					unwrap(context) -> NamedReference.getIdentifier(call.feature) <> parameters
+				}
+			}
+			Property:
+				unwrap(context) -> fun(Template.GETTER_PREFIX <> NamedReference.getIdentifier(call.feature))
 		}
 	}
 
 	def dispatch CodeGenNode compile(StaticFeatureInvocationExpression call) {
 		val op = call.operation.reference as Operation
 		var cls = op.class_
-		if (Stereotypes.isExternalEntity(cls)) {
-			RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") ->
-				fun(op.name, if (1 == op.ownedParameters.length) {
-					// proxy parameter
-					val param = op.ownedParameters.get(0)
-					val params = call.parameters as ExpressionList
-					"new " <> fun(param.type.name, unwrap(compile(params.expressions.get(0))))
-				} else {
-					empty
-				})
+		if (StandardLibraryMapping.isStandardFeature(op.qualifiedName)) {
+			StandardLibraryMapping.getImplementationName(op.qualifiedName) <> compile(call.parameters, op, false)
+		} else if (null != cls && Stereotypes.isExternalEntity(cls)) {
+			val expr = RUNTIME_INSTANCE -> fun("getExternalEntity", cls.name <> ".class") -> op.name <>
+				compile(call.parameters, op, true)
+			if (null != op.getReturnResult) {
+				wrap(expr)
+			} else {
+				expr
+			}
 		} else {
 			(NamedReference.getIdentifier(cls) <> Template.CLASS_IMPL_SUFFIX) ->
-				(NamedReference.getIdentifier(op) <> compile(call.parameters, op))
+				(NamedReference.getIdentifier(op) <> compile(call.parameters, op, false))
 		}
 	}
 
-	def dispatch CodeGenNode compile(ExpressionList values, Operation operation) {
-		if (!values.expressions.empty) {
-			throw new CompilationFailedException("Only by-name parameter passing is supported")
-		}
-		paren()
+	def dispatch CodeGenNode compile(ExpressionList values, BehavioralFeature feature, boolean isExternal) {
+		compileExpressionList(values, feature.ownedParameters, isExternal)
 	}
 
-	def dispatch CodeGenNode compile(NamedTuple values, Operation operation) {
-		compileExpressionList(values, operation.ownedParameters)
+	def dispatch CodeGenNode compile(NamedTuple values, BehavioralFeature feature, boolean isExternal) {
+		compileExpressionList(values, feature.ownedParameters, isExternal)
 	}
 
-	def CodeGenNode compileExpressionList(NamedTuple values, EList<? extends NamedElement> qualifiers) {
+	def <E extends NamedElement & TypedElement> CodeGenNode compileExpressionList(ExpressionList values,
+		EList<E> parameters, boolean isExternal) {
 		val node = paren()
-		for (parameter : qualifiers) {
-			val value = getExpressionByName(values, parameter.name)
-			if (null == value) {
-				throw new CompilationFailedException("Unable to match named parameter")
+		for (i : 0 ..< values.expressions.length) {
+			val parameter = parameters.get(i)
+			if (!parameter.isReturnParameter) {
+				val value = values.expressions.get(i)
+				node.add(compileParameter(parameter, value, isExternal))
 			}
-			node.add(compile(value))
 		}
 		node
+	}
+
+	def <E extends NamedElement & TypedElement> CodeGenNode compileExpressionList(NamedTuple values,
+		EList<E> parameters, boolean isExternal) {
+		val node = paren()
+		for (parameter : parameters) {
+			if (!parameter.isReturnParameter) {
+				val value = getExpressionByName(values, parameter.name)
+				if (null == value) {
+					throw new CompilationFailedException("Unable to match named parameter")
+				}
+				node.add(compileParameter(parameter, value, isExternal))
+			}
+		}
+		node
+	}
+
+	def dispatch isReturnParameter(Object parameter) {
+		false
+	}
+
+	def dispatch isReturnParameter(Parameter parameter) {
+		ParameterDirectionKind.RETURN_LITERAL == (parameter as Parameter).direction
+	}
+
+	def <E extends NamedElement & TypedElement> compileParameter(E parameter, Expression value, boolean isExternal) {
+		var expr = compile(value)
+		if (isExternal) {
+			expr = unwrap(expr)
+			if (!(parameter.type instanceof PrimitiveType)) {
+				// add callable wrapper
+				expr = "new " <> fun(parameter.type.name, expr)
+			}
+		}
+		expr
 	}
 
 	def Expression getExpressionByName(NamedTuple values, String name) {
@@ -218,7 +299,10 @@ class ExpressionCompiler extends CompilerBase {
 		}
 		val association = expr.association.reference as Association
 		var name = NamedReference.getIdentifier(association)
-		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds)
+		if (association instanceof Class) {
+			name = name + Template.CLASS_IMPL_SUFFIX
+		}
+		var parameters = compileExpressionList(expr.parameters as NamedTuple, association.ownedEnds, false)
 		var opName = if (LinkOperation.LINK == expr.linkOperation) {
 				"link"
 			} else {
@@ -226,5 +310,68 @@ class ExpressionCompiler extends CompilerBase {
 			}
 		parameters.map[unwrap(it)]
 		name -> opName <> parameters
+	}
+
+	def dispatch CodeGenNode compile(AssociationAccessExpression expr) {
+		val end = expr.association
+		val assoc = end.owner as Association
+		val otherEnd = assoc.otherEnd(end)
+
+		val baseType = expr.context.valueTypeOf.convert.javaType
+		var fromType = if (expr.context.typeOf.isCollection) {
+				expr.context.typeOf.collectionName <> "<? extends " <> baseType <> ">"
+			} else {
+				"java.util.Collection<? extends " <> baseType <> ">"
+			}
+		val toType = expr.typeOf.collectionName <> "<" <> expr.valueTypeOf.convert.javaType <> ">"
+		val lambdaType = "java.util.function.Function<" <> fromType <> ", " <> toType <> ">"
+		val paramName = freshLocalName
+		val resultName = freshLocalName
+		val objName = freshLocalName
+		var assocName = freshLocalName
+		val assocType = assoc.convert.javaType
+		val assocExpr = if (assoc instanceof Class) {
+				paren(paren(assocType + Template.CLASS_IMPL_SUFFIX) <> sequence(assocName))
+			} else {
+				sequence(assocName)
+			}
+		val assocGetter = Template.GETTER_PREFIX <> NamedReference.getIdentifier(otherEnd)
+		val propName = NamedReference.getIdentifier(end)
+		val labmdaBody = block(
+			sequence(toType) <> " " <> resultName <> " = " <> expr.typeOf.createEmpty,
+			"for " <> paren(baseType <> " " <> objName <> " : " <> paramName) <> " " <> block(
+				"for " <> paren(assocType <> " " <> assocName <> " : " <> objName -> fun(assocGetter)) <> " " <> block(
+					resultName -> fun("add", assocExpr -> propName)
+				)
+			),
+			"return " <> resultName
+		)
+		val lambda = paren(paren(lambdaType) <> paren(paren(paramName) <> " -> " <> labmdaBody))
+		lambda -> fun("apply", compile(expr.context));
+	}
+
+	def otherEnd(Association association, Property property) {
+		for (end : association.ownedEnds) {
+			if (end != property) {
+				return end
+			}
+		}
+	}
+
+	def dispatch CodeGenNode compile(SignalDataExpression expr) {
+		fun(PrimitiveOperations.CAST, expr.typeOf.convert.javaType -> "class", wrap(SIGDATA_NAME))
+	}
+
+	def dispatch CodeGenNode compile(ClassExtentExpression expr) {
+		InstanceRegistry.canonicalName -> fun("getInstanceRegistry") ->
+			fun("allInstances", compile(expr.class_) -> "class")
+	}
+
+	def dispatch CodeGenNode compile(FilterExpression expr) {
+		fun(
+			CollectionOperations.FILTER,
+			compile(expr.context),
+			expr.declaration.localName <> " -> " <> unwrap(compile(expr.expression))
+		)
 	}
 }

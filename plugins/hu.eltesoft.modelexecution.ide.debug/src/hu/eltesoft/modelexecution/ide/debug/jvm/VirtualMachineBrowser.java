@@ -14,7 +14,7 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import com.sun.jdi.ClassType;
 import com.sun.jdi.Field;
 import com.sun.jdi.IncompatibleThreadStateException;
-import com.sun.jdi.IntegerValue;
+import com.sun.jdi.LongValue;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
@@ -62,7 +62,7 @@ public class VirtualMachineBrowser {
 	 * @return the instance of a class that has a state machine which is
 	 *         currently under execution
 	 */
-	public synchronized Pair<String, Integer> getActualSMInstance() {
+	public synchronized Pair<String, Long> getActualSMInstance() {
 		JDIThreadWrapper mainThread = getMainThread();
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
@@ -70,7 +70,7 @@ public class VirtualMachineBrowser {
 			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
 			Field objectIdField = owner.referenceType().fieldByName("instanceID");
 			// FIXME: why can't I execute toString???????
-			return new Pair<>(owner.referenceType().name(), ((IntegerValue) owner.getValue(objectIdField)).intValue());
+			return new Pair<>(owner.referenceType().name(), ((LongValue) owner.getValue(objectIdField)).longValue());
 		} catch (Exception e) {
 			PluginLogger.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
 			return null;

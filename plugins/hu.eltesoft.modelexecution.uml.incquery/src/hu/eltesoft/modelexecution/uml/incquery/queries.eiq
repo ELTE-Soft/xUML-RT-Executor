@@ -135,6 +135,14 @@ pattern StaticBehavior(behavior : Behavior, isStatic) {
 	Operation.isStatic(operation, isStatic);
 }
 
+pattern BehaviorWithSignal(behavior : Behavior) {
+	State.entry(_, behavior);
+} or {
+	State.exit(_, behavior);
+} or {
+	Transition.effect(_, behavior);
+}
+
 pattern ActionCode(behavior : OpaqueBehavior, actionCode) {
 	OpaqueBehavior.body(behavior, actionCode);
 	OpaqueBehavior.language(behavior, langName);
@@ -160,6 +168,14 @@ pattern ClassOrAssocClass(cls : Class) {
 	neg find IsStereotype(cls);
 	neg find IsComponent(cls);
 	neg find IsNode(cls);
+}
+
+pattern AbstractClass(cls : Class, isAbstract) {
+	Class.isAbstract(cls, isAbstract);
+}
+
+pattern ActiveClass(cls : Class, isActive) {
+	Class.isActive(cls, isActive);
 }
 
 private pattern IsBehavior(behavior : Behavior) {
@@ -219,6 +235,16 @@ pattern ClassCtorRecord(cls : Class, ancestor : Class, order) {
 pattern ClassCtorRecordArg(cls : Class, ancestor : Class, parent : Class) {
 	find ClassCtorRecord(cls, ancestor, _);
 	find Parent(ancestor, parent);
+}
+
+// destruction
+pattern DestructorOfClass(cls : Class, destructor : Behavior) {
+	Class.ownedOperation(cls, operation);
+	Operation.isStatic(operation, isStatic);
+	check(!isStatic);
+	Operation.name(operation, operationName);
+	check(Utils.toLowerCase(operationName).equals("destroy"));
+	Operation.method(operation, destructor);
 }
 
 // state machine
@@ -423,27 +449,26 @@ pattern Reception(cls : Class, reception : Reception, signal : Signal) {
 }
 
 pattern
-ReceptionParameter(cls : Class, reception : Reception, parameter : Parameter, type : Type, ordered, unique) {
+ReceptionParameter(cls : Class, reception : Reception, parameter : Property, type : Type, ordered, unique) {
 	find Reception(cls, reception, _);
-	Reception.ownedParameter(reception, parameter);
-	Parameter.direction(parameter, direction);
-	direction == ParameterDirectionKind::in;
-	Parameter.type(parameter, type);
-	Parameter.isOrdered(parameter, ordered);
-	Parameter.isUnique(parameter, unique);
+	Reception.signal(reception, signal);
+	Signal.ownedAttribute(signal, parameter);
+	Property.type(parameter, type);
+	Property.isOrdered(parameter, ordered);
+	Property.isUnique(parameter, unique);
 }
 
 pattern
-ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Parameter, lowerBound) {
+ReceptionParameterLowerBound(cls : Class, reception : Reception, parameter : Property, lowerBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.lowerValue(parameter, lowerBoundSpec);
+	Property.lowerValue(parameter, lowerBoundSpec);
 	find NumericValue(lowerBoundSpec, lowerBound);
 }
 
 pattern
-ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Parameter, upperBound) {
+ReceptionParameterUpperBound(cls : Class, reception : Reception, parameter : Property, upperBound) {
 	find ReceptionParameter(cls, reception, parameter, _, _, _);
-	Parameter.upperValue(parameter, upperBoundSpec);
+	Property.upperValue(parameter, upperBoundSpec);
 	find NumericValue(upperBoundSpec, upperBound);
 }
 

@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.emf.EMFScope
 import org.eclipse.uml2.uml.Model
+import org.eclipse.uml2.uml.OpaqueBehavior
 import org.eclipse.uml2.uml.Operation
 import org.eclipse.uml2.uml.resource.UMLResource
 
@@ -17,6 +18,7 @@ class TestModelUMLContextProvider extends UMLContextProvider {
 	var Model model
 	val ResourceSet resourceSet
 	var Operation definedOperation
+	var OpaqueBehavior behavior
 
 	new(String location) {
 		resourceSet = new ResourceSetImpl
@@ -31,10 +33,16 @@ class TestModelUMLContextProvider extends UMLContextProvider {
 
 	public def setDefinedOperation(String elementFQN) {
 		definedOperation = model.allOwnedElements.filter(Operation).findFirst[qualifiedName == elementFQN]
+		behavior = null
+	}
+
+	public def setBehavior(String elementFQN) {
+		behavior = model.allOwnedElements.filter(OpaqueBehavior).findFirst[qualifiedName == elementFQN]
+		definedOperation = null
 	}
 
 	override protected getContextObject() {
-		definedOperation
+		definedOperation ?: behavior
 	}
 
 	override getDefinedOperation() {
