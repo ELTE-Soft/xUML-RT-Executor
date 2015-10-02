@@ -163,6 +163,9 @@
 				<configuration>
 					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+					<excludes>
+						<exclude>**/src-gen</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
