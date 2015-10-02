@@ -165,7 +165,7 @@
 					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
 					<excludes>
 						<!-- The pattern is applied on class files, not on source files -->
-						<exclude>**/hu/eltesoft/modelexecution/m2m/metamodel</exclude>
+						<exclude>**/hu/eltesoft/modelexecution/m2m/metamodel/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
