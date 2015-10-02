@@ -114,9 +114,22 @@ public final class CollectionOperations {
 	public static <E> void add(ArrayList<E> collection, ArrayList<BigInteger> index, ArrayList<E> newItem) {
 		int i = PrimitiveOperations.unwrap(index).intValue();
 		while (collection.size() - 1 < i) {
-			// FIXME: fill empty places with the default value of the item type
-			collection.add(null);
+			collection.add(defaultValueOf(PrimitiveOperations.unwrap(newItem).getClass()));
 		}
 		collection.set(i, PrimitiveOperations.unwrap(newItem));
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <E> E defaultValueOf(Class<?> type) {
+		if (Boolean.class.equals(type)) {
+			return (E) new Boolean(false);
+		} else if (BigInteger.class.equals(type)) {
+			return (E) BigInteger.valueOf(0);
+		} else if (Double.class.equals(type)) {
+			return (E) new Double(0.0);
+		} else if (String.class.equals(type)) {
+			return (E) "";
+		} else
+			return null;
 	}
 }
