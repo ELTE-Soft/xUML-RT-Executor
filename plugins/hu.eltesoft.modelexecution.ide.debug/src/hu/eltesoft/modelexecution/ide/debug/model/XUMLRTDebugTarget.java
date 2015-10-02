@@ -48,6 +48,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
 	private EObject entryPoint;
 
+	private String suspendedStateMachine = "";
+
 	public XUMLRTDebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
 			ResourceSet resourceSet, ILaunch launch) {
 		super(null, xUmlRtExecutionEngine.getDebugTarget());
@@ -85,7 +87,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	@Override
 	public String getName() {
 		if (entryPoint != null) {
-			return ((NamedElement) entryPoint).getQualifiedName();
+			return ((NamedElement) entryPoint).getQualifiedName() + suspendedStateMachine;
 		} else {
 			return Messages.XUMLRTDebugTarget_debug_target_name;
 		}
@@ -108,7 +110,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			inst.clearStackFrames();
 			debugControl.updateElement(inst);
 		});
-
+		suspendedStateMachine = "";
+		debugControl.updateElement(this);
 	}
 
 	@Override
@@ -191,17 +194,22 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		List<StateMachineInstance> smInstances = getSmInstances();
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
-			if (smInstance.getName().equals(actualSMInstance)) {
+			if (actualSMInstance.getKey().equals(smInstance.getClassId())
+					&& actualSMInstance.getValue().equals(smInstance.getInstanceId())) {
 				// this is necessary, because the model element could be a
 				// transition
 				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
+				suspendedStateMachine = " [" + smInstance.getClassName() + "#" + smInstance.getInstanceId() + "]";
+				debugControl.updateElement(this);
 			} else {
 				// the current state of the state machine will be queried later
 				stackFrame = new StateMachineStackFrame(smInstance, resourceSet);
 			}
 			smInstance.setStackFrames(new StackFrame[] { stackFrame });
+
 			// force refresh of debug controls on toolbar
 			debugControl.reselect();
+			
 			// force the refresh of the state machine instance to get rid of
 			// phantom stack frames
 			debugControl.refresh(smInstance);

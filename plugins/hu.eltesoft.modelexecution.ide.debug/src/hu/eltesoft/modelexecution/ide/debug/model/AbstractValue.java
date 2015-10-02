@@ -20,6 +20,7 @@ import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.ObjectReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StringReference;
+import com.sun.jdi.VMDisconnectedException;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
@@ -73,20 +74,24 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 
 	@Override
 	public IVariable[] getVariables() throws DebugException {
-		if (value instanceof ObjectReference) {
-			ObjectReference valueObj = (ObjectReference) value;
-			ReferenceType type = valueObj.referenceType();
-			Field metaField = type.fieldByName(Template.META_REPR_NAME);
-			if (metaField != null) {
-				// structure
-				return getVariablesUsingMetainfo(valueObj, type, metaField);
-			} else if (jdiUtils.isCollectionType(type)) {
-				// collection
-				List<IVariable> list = new LinkedList<IVariable>();
-				List<Value> collectionValues = jdiUtils.getCollectionValues(valueObj);
-				return handleCollectionValues(list, collectionValues);
+		try {
+			if (value instanceof ObjectReference) {
+				ObjectReference valueObj = (ObjectReference) value;
+				ReferenceType type = valueObj.referenceType();
+				Field metaField = type.fieldByName(Template.META_REPR_NAME);
+				if (metaField != null) {
+					// structure
+					return getVariablesUsingMetainfo(valueObj, type, metaField);
+				} else if (jdiUtils.isCollectionType(type)) {
+					// collection
+					List<IVariable> list = new LinkedList<IVariable>();
+					List<Value> collectionValues = jdiUtils.getCollectionValues(valueObj);
+					return handleCollectionValues(list, collectionValues);
 
+				}
 			}
+		} catch (VMDisconnectedException e) {
+			PluginLogger.logError("Error while calculating variables", e);
 		}
 		return new IVariable[0];
 	}
@@ -130,20 +135,25 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 
 	@Override
 	public String getValueString() throws DebugException {
-		// default is to use the mirror's toString
-		String ret = value.toString();
-		// show the object using it's toString method
-		if (value instanceof ObjectReference) {
-			ObjectReference objectReference = (ObjectReference) value;
-			try {
-				ret = resolveSingletonObject(objectReference);
-			} catch (Exception e) {
-				// all exceptions are caught, we want to hide exceptions of UI
-				PluginLogger.logError("Error while invoking toString to get representation", e);
+		try {
+			// default is to use the mirror's toString
+			String ret = value.toString();
+			// show the object using it's toString method
+			if (value instanceof ObjectReference) {
+				ObjectReference objectReference = (ObjectReference) value;
+				try {
+					ret = resolveSingletonObject(objectReference);
+				} catch (Exception e) {
+					// all exceptions are caught, we want to hide exceptions of
+					// UI
+					PluginLogger.logError("Error while invoking toString to get representation", e);
+				}
 			}
+			return ret;
+		} catch (VMDisconnectedException e) {
+			PluginLogger.logError("Error while calculating label", e);
+			return "???";
 		}
-
-		return ret;
 	}
 
 	/**
@@ -168,7 +178,12 @@ public abstract class AbstractValue extends DebugElement implements IValue, IPre
 
 	@Override
 	public boolean hasVariables() throws DebugException {
-		return getVariables().length > 0;
+		try {
+			return getVariables().length > 0;
+		} catch (VMDisconnectedException e) {
+			PluginLogger.logError("Error while asking children", e);
+			return false;
+		}
 	}
 
 	@Override

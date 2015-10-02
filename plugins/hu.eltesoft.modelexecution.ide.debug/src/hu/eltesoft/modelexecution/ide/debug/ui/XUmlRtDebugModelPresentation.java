@@ -63,7 +63,7 @@ public class XUmlRtDebugModelPresentation implements IDebugModelPresentation, ID
 
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof IPresentation) {
+		if (element != null && element instanceof IPresentation) {
 			return ((IPresentation) element).getImage();
 		} else {
 			return null;

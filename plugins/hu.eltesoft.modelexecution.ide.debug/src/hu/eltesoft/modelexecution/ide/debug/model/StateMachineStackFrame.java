@@ -126,8 +126,10 @@ public class StateMachineStackFrame extends StackFrame {
 	}
 
 	public void setModelElement(NamedElement modelElement) {
-		this.modelElement = modelElement;
-		this.resourceSet = modelElement.eResource().getResourceSet();
+		if (modelElement != null) {
+			this.modelElement = modelElement;
+			this.resourceSet = modelElement.eResource().getResourceSet();
+		}
 	}
 
 	public NamedElement getModelElement() {

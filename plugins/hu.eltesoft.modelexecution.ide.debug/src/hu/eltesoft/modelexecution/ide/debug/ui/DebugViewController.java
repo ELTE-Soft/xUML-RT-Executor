@@ -44,7 +44,16 @@ public class DebugViewController {
 			v.setAutoExpandLevel(0);
 			postAction.run();
 		} , postAction);
-
+	}
+	
+	public void expandAndSelect(DebugElement element) {
+		accessViewer(v -> {
+			v.refresh();
+		});
+		performWhenVisible(element, (v, path) -> {
+			v.setSelection(new TreeSelection(new TreePath[] { path }));
+			v.setAutoExpandLevel(0);
+		} , () -> {});
 	}
 
 	/**
