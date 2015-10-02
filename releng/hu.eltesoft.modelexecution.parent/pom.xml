@@ -164,7 +164,8 @@
 					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
 					<excludes>
-						<exclude>**/src-gen</exclude>
+						<!-- The pattern is applied on class files, not on source files -->
+						<exclude>**/hu/eltesoft/modelexecution/m2m/metamodel</exclude>
 					</excludes>
 				</configuration>
 				<executions>
