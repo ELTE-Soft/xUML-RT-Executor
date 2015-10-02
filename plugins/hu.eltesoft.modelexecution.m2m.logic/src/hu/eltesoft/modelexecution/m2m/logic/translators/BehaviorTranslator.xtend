@@ -42,7 +42,7 @@ class BehaviorTranslator extends RootElementTranslator<OpaqueBehavior, BhBehavio
 			val root = FACTORY.createBhBehavior
 			root.reference = new NamedReference(behavior)
 			root.hasSignal = false
-			// root.parsingResults = new ReducedAlfParser().emptyResult
+			root.parsingResults = new ReducedAlfParser().emptyResult
 			return root;
 		]
 		return rootNode;
