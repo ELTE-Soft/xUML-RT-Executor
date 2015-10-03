@@ -30,6 +30,8 @@ import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
+
 public class Validator {
 
 	private IncQueryEngine engine;
@@ -42,7 +44,7 @@ public class Validator {
 	private boolean incremental;
 
 	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
-	
+
 	static {
 		try {
 			queries.add(General.instance());
@@ -53,13 +55,13 @@ public class Validator {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void prepare() throws IncQueryException {
 		for (BaseGeneratedPatternGroup group : queries) {
 			group.prepare(engine);
 		}
 	}
-	
+
 	private static Set<IQuerySpecification<?>> getSpecifications() {
 		Set<IQuerySpecification<?>> ret = new HashSet<>();
 		for (BaseGeneratedPatternGroup group : queries) {
@@ -197,10 +199,25 @@ public class Validator {
 			PAnnotation constraintAnnot) {
 		String message = (String) constraintAnnot.getFirstValue("message");
 		String key = (String) constraintAnnot.getFirstValue("key");
+		String severityStr = (String) constraintAnnot.getFirstValue("severity");
 		Element element = (Element) match.get(key);
-		ValidationError error = new ValidationError(match.patternName(), message, element);
+		ValidationError error = new ValidationError(match.patternName(), getSeverity(severityStr), message, element);
 		validationErrors.put(new Pair<>(matcher, EcoreUtil.getURI(element)), error);
 		error.show();
+	}
+
+	private Severity getSeverity(String severityStr) {
+		if (severityStr == null) {
+			return Severity.ERROR;
+		}
+		switch (severityStr.toLowerCase()) {
+		case "info":
+			return Severity.INFO;
+		case "warning":
+			return Severity.WARNING;
+		default:
+			return Severity.ERROR;
+		}
 	}
 
 	private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, Element element) {

@@ -138,11 +138,6 @@ pattern ComponentIsFinalSpecification(cp : Component) {
 	Component.isFinalSpecialization(cp, true);
 }
 
-@Violation(message = "Leaf components are not supported", key = "cp")
-pattern LeafComponent(cp : Component) {
-	Component.isLeaf(cp, true);
-}
-
 @Violation(message = "Component powertype extents are not supported", key = "cp")
 pattern ComponentPowertypeExtent(cp : Component) {
 	Component.powertypeExtent(cp, _);

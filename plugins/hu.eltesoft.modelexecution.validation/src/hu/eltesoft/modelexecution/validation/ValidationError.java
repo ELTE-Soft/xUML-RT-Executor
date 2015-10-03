@@ -14,13 +14,28 @@ import org.eclipse.uml2.uml.NamedElement;
 
 public class ValidationError {
 
+	public enum Severity {
+		INFO(IMarker.SEVERITY_INFO), WARNING(IMarker.SEVERITY_WARNING), ERROR(IMarker.SEVERITY_ERROR);
+		private int severityCode;
+
+		private Severity(int severityCode) {
+			this.severityCode = severityCode;
+		}
+
+		public int getSeverityCode() {
+			return severityCode;
+		}
+	}
+
 	private Element element;
 	private String messageFormat;
 	private String name;
 	private IMarker marker;
+	private Severity severity;
 
-	public ValidationError(String name, String message, Element element) {
+	public ValidationError(String name, Severity severity, String message, Element element) {
 		this.name = name;
+		this.severity = severity;
 		messageFormat = message;
 		this.element = element;
 	}
@@ -55,7 +70,7 @@ public class ValidationError {
 		}
 		try {
 			marker = resource.createMarker(EValidator.MARKER);
-			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+			marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
 			if (element instanceof NamedElement) {
 				String qualifiedName = ((NamedElement) element).getQualifiedName();
 				if (qualifiedName != null) {

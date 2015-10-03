@@ -4,12 +4,21 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 import hu.eltesoft.modelexecution.uml.incquery.State
 import hu.eltesoft.modelexecution.uml.incquery.Region
 
+//////////////////////////////////
 // validation for state machines
-@Violation(message = "State machines cannot be leaf", key = "sm")
-pattern LeafStateMachine(sm : StateMachine) {
-	StateMachine.isLeaf(sm, true);
+///////////////////////////////////
+@ExactlyOne(message = "State machines must have exactly one region", key = "sm")
+pattern StateMachineMustHaveOneRegion(sm : StateMachine, rg : Region) {
+	StateMachine.region(sm, rg);
 }
 
+@Violation(message = "State machines can only contain regions", key = "elem")
+pattern ForbiddenStateMachineMember(sm : StateMachine, elem) {
+	StateMachine.ownedElement(sm, elem);
+	neg find Region(elem);
+}
+
+// simply unsupported
 @Violation(message = "State machines cannot be abstract", key = "sm")
 pattern AbstractStateMachine(sm : StateMachine) {
 	StateMachine.isAbstract(sm, true);
@@ -81,27 +90,13 @@ pattern StateMachineWithTemplateParameter(sm : StateMachine) {
 	StateMachine.templateParameter(sm, _);
 }
 
-@ExactlyOne(message = "State machines must have exactly one region", key = "sm")
-pattern StateMachineMustHaveOneRegion(sm : StateMachine, rg : Region) {
-	StateMachine.region(sm, rg);
-}
-
-@Violation(message = "State machines can only contain regions", key = "elem")
-pattern ForbiddenStateMachineMember(sm : StateMachine, elem) {
-	StateMachine.ownedElement(sm, elem);
-	neg find Region(elem);
-}
-
+/////////////////////////////
 // validation for regions
+////////////////////////////
 @Violation(message = "State machine regions must be public", key = "rg")
-pattern RegionWithTemplateParameter(rg : Region) {
+pattern RegionNotPublic(rg : Region) {
 	Region.visibility(rg, visibility);
 	visibility != VisibilityKind::public;
-}
-
-@Violation(message = "State machines regions cannot be leaf", key = "rg")
-pattern LeafRegion(rg : Region) {
-	Region.isLeaf(rg, true);
 }
 
 @Violation(message = "State machines regions can only contain transitions and states", key = "elem")
@@ -122,7 +117,16 @@ pattern InitialState(rg : Region, init : Pseudostate) {
 	Pseudostate.kind(init, ::initial);
 }
 
+///////////////////////////
 // validation for states
+///////////////////////////
+
+@Violation(message = "States must be public", key = "st")
+pattern StateMustBePublic(st : State) {
+	State.visibility(st, visibility);
+	visibility != VisibilityKind::public;
+}
+
 @Violation(message = "States cannot have an invariant", key = "st")
 pattern StateWithInvariant(st : State) {
 	State.stateInvariant(st, _);
@@ -143,30 +147,23 @@ pattern StateWithDeferrableTrigger(st : State) {
 	State.deferrableTrigger(st, _);
 }
 
-@Violation(message = "States cannot be leaf", key = "st")
-pattern LeafState(st : State) {
-	State.isLeaf(st, true);
-}
-
-@Violation(message = "States must be public", key = "st")
-pattern StateMustBePublic(st : State) {
-	State.visibility(st, visibility);
-	visibility != VisibilityKind::public;
-}
-
 @Violation(message = "States cannot redefine another", key = "st")
 pattern StateRedefineAnother(st : State) {
 	State.redefinedState(st, _);
 }
 
+///////////////////
 // initial state
+///////////////////
 @Violation(message = "Initial pseudostate must be public", key = "ps")
 pattern InitialPseudostateNotPublic(ps : Pseudostate) {
 	Pseudostate.visibility(ps, visibility);
 	visibility != VisibilityKind::public;
 }
 
+//////////////////
 // final states
+//////////////////
 @Violation(message = "Final states cannot have entry action", key = "st")
 pattern FinalStateWithEntryAction(st : FinalState) {
 	FinalState.entry(st, _);
@@ -177,7 +174,9 @@ pattern FinalStateWithExitAction(st : FinalState) {
 	FinalState.exit(st, _);
 }
 
+//////////////////
 // transitions
+//////////////////
 @Violation(message = "The source of the transition is an initial pseudostate or a state", key = "tr")
 pattern TransitionSourceUnknown(tr : Transition) {
 	neg find TransitionSource(tr, _);
@@ -211,32 +210,6 @@ private pattern TransitionTarget(tr : Transition, trg : Vertex) {
 	State(trg);
 }
 
-@Violation(message = "Transitions must be public", key = "tr")
-pattern TransitionNotPublic(tr : Transition) {
-	Transition.visibility(tr, visibility);
-	visibility != VisibilityKind::public;
-}
-
-@Violation(message = "Transitions must not be leaf", key = "tr")
-pattern LeafTransition(tr : Transition) {
-	Transition.isLeaf(tr, true);
-}
-
-@Violation(message = "Transitions must be external", key = "tr")
-pattern NonExternalTransition(tr : Transition) {
-	Transition.kind(tr, k);
-	k != TransitionKind::external;
-}
-
-@Violation(message = "Transitions cannot have guards", key = "tr")
-pattern TransitionWithGuard(tr : Transition) {
-	Transition.guard(tr, _);
-}
-
-@Violation(message = "Transitions cannot redefine another", key = "tr")
-pattern TransitionRedefinesAnother(tr : Transition) {
-	Transition.redefinedTransition(tr, _);
-}
 
 @Violation(message = "Transitions between normal states must have a trigger with an event", key = "tr")
 pattern TransitionWithoutEvent(tr : Transition) {
@@ -260,4 +233,26 @@ pattern InitialTransition(src : Pseudostate, tr : Transition) {
 pattern InitialTransitionWithTrigger(tr : Transition) {
 	find InitialTransition(_, tr);
 	Transition.trigger(tr, _);
+}
+
+@Violation(message = "Transitions must be public", key = "tr")
+pattern TransitionNotPublic(tr : Transition) {
+	Transition.visibility(tr, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Transitions must be external", key = "tr")
+pattern NonExternalTransition(tr : Transition) {
+	Transition.kind(tr, k);
+	k != TransitionKind::external;
+}
+
+@Violation(message = "Transitions cannot have guards", key = "tr")
+pattern TransitionWithGuard(tr : Transition) {
+	Transition.guard(tr, _);
+}
+
+@Violation(message = "Transitions cannot redefine another", key = "tr")
+pattern TransitionRedefinesAnother(tr : Transition) {
+	Transition.redefinedTransition(tr, _);
 }

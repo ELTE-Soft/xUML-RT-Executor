@@ -6,3 +6,9 @@ import "http://www.eclipse.org/uml2/5.0.0/UML"
 pattern TwoElementWithSameName(qname, elem) {
 	NamedElement.qualifiedName(elem, qname);
 }
+
+@ExactlyOne(message = "Redefinition of leaf element is not allowed", key = "redefining")
+pattern LeafRedefined(elem : RedefinableElement, redefining) {
+	RedefinableElement.redefinedElement(redefining, elem);
+	RedefinableElement.isLeaf(elem, true);
+}
