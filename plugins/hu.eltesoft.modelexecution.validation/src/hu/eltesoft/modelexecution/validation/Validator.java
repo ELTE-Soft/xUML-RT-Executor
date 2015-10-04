@@ -30,15 +30,24 @@ import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 
 public class Validator {
 
+	private static final String SEVERITY_ATTRIBUTE = "severity";
+	private static final String MESSAGE_ATTRIBUTE = "message";
+	private static final String MARKED_ELEMENTS_ATTRIBUTE = "mark";
+
+	private static final String VIOLATION_ANNOTATION = "Violation";
+
 	private IncQueryEngine engine;
 
 	private Map<IncQueryMatcher<? extends IPatternMatch>, IMatchUpdateListener<IPatternMatch>> updateListeners = new HashMap<>();
-	private Map<Pair<IncQueryMatcher<? extends IPatternMatch>, URI>, ValidationError> validationErrors = new HashMap<>();
-	private Map<Pair<IncQueryMatcher<? extends IPatternMatch>, List<Element>>, Integer> numberOfMatches = new HashMap<>();
+	private Multimap<Pair<IncQueryMatcher<? extends IPatternMatch>, URI>, ValidationError> validationErrors = HashMultimap
+			.create();
 
 	private ModelSet modelSet;
 	private boolean incremental;
@@ -123,18 +132,11 @@ public class Validator {
 		AdvancedIncQueryEngine advEngine = AdvancedIncQueryEngine.from(engine);
 		try {
 			for (IQuerySpecification<?> query : getSpecifications()) {
-				PAnnotation constraintAnnot = query.getFirstAnnotationByName("Violation");
+				PAnnotation constraintAnnot = query.getFirstAnnotationByName(VIOLATION_ANNOTATION);
 				IMatchUpdateListener<IPatternMatch> listener = null;
 				IncQueryMatcher<? extends IPatternMatch> matcher = query.getMatcher(engine);
 				if (constraintAnnot != null) {
 					listener = new ViolationPatternListener(matcher, constraintAnnot);
-
-				}
-				constraintAnnot = query.getFirstAnnotationByName("ExactlyOne");
-				if (constraintAnnot != null) {
-					listener = new ExactlyOnePatternListener(matcher, constraintAnnot);
-				}
-				if (listener != null) {
 					advEngine.addMatchUpdateListener(matcher, listener, true);
 					updateListeners.put(matcher, listener);
 				}
@@ -151,15 +153,10 @@ public class Validator {
 		}
 		try {
 			for (IQuerySpecification<?> query : getSpecifications()) {
-				PAnnotation constraintAnnot = query.getFirstAnnotationByName("Violation");
+				PAnnotation constraintAnnot = query.getFirstAnnotationByName(VIOLATION_ANNOTATION);
 				if (constraintAnnot != null) {
 					checkQuery(query, constraintAnnot);
 					checkViolationConstraint(query, constraintAnnot);
-				}
-				constraintAnnot = query.getFirstAnnotationByName("ExactlyOne");
-				if (constraintAnnot != null) {
-					checkQuery(query, constraintAnnot);
-					checkUniquenessConstraint(query, constraintAnnot);
 				}
 			}
 		} catch (IncQueryException e) {
@@ -168,10 +165,13 @@ public class Validator {
 	}
 
 	private void checkQuery(IQuerySpecification<?> query, PAnnotation constraintAnnot) {
-		String key = (String) constraintAnnot.getFirstValue("key");
-		if (!query.getParameterNames().contains(key)) {
-			throw new RuntimeException(
-					"Key is not part of the parameters in query '" + query.getFullyQualifiedName() + "'");
+		@SuppressWarnings("unchecked")
+		Collection<String> marked = (Collection<String>) constraintAnnot.getFirstValue(MARKED_ELEMENTS_ATTRIBUTE);
+		for (String mark : marked) {
+			if (!query.getParameterNames().contains(mark)) {
+				throw new RuntimeException(
+						"Key is not part of the parameters in query '" + query.getFullyQualifiedName() + "'");
+			}
 		}
 	}
 
@@ -181,29 +181,28 @@ public class Validator {
 		matcher.forEachMatch(m -> registerConstraintError(matcher, m, constraintAnnot));
 	}
 
-	private void checkUniquenessConstraint(IQuerySpecification<?> query, PAnnotation constraintAnnot)
-			throws IncQueryException {
-		IncQueryMatcher<? extends IPatternMatch> matcher = query.getMatcher(engine);
-		String key = (String) constraintAnnot.getFirstValue("key");
-		Map<Object, IPatternMatch> results = new HashMap<>();
-		matcher.forEachMatch(m -> {
-			if (results.containsKey(m.get(key))) {
-				registerConstraintError(matcher, m, constraintAnnot);
-			} else {
-				results.put(m.get(key), m);
-			}
-		});
-	}
-
 	private void registerConstraintError(IncQueryMatcher<? extends IPatternMatch> matcher, IPatternMatch match,
 			PAnnotation constraintAnnot) {
-		String message = (String) constraintAnnot.getFirstValue("message");
-		String key = (String) constraintAnnot.getFirstValue("key");
-		String severityStr = (String) constraintAnnot.getFirstValue("severity");
-		Element element = (Element) match.get(key);
-		ValidationError error = new ValidationError(match.patternName(), getSeverity(severityStr), message, element);
-		validationErrors.put(new Pair<>(matcher, EcoreUtil.getURI(element)), error);
-		error.show();
+		String message = (String) constraintAnnot.getFirstValue(MESSAGE_ATTRIBUTE);
+		@SuppressWarnings("unchecked")
+		Collection<String> marked = (Collection<String>) constraintAnnot.getFirstValue(MARKED_ELEMENTS_ATTRIBUTE);
+		String severity = (String) constraintAnnot.getFirstValue(SEVERITY_ATTRIBUTE);
+		List<Element> elements = getMarked(match, marked);
+		ValidationError error = new ValidationError(match, getSeverity(severity), message, elements);
+
+		Pair<IncQueryMatcher<? extends IPatternMatch>, URI> key = new Pair<>(matcher, EcoreUtil.getURI(elements.get(0)));
+		if (validationErrors.get(key).isEmpty()) {
+			error.show();
+		}
+		validationErrors.put(key, error);
+	}
+
+	private List<Element> getMarked(IPatternMatch match, Collection<String> marked) {
+		List<Element> elements = new LinkedList<Element>();
+		for (String mark : marked) {
+			elements.add((Element) match.get(mark));
+		}
+		return elements;
 	}
 
 	private Severity getSeverity(String severityStr) {
@@ -217,13 +216,6 @@ public class Validator {
 			return Severity.WARNING;
 		default:
 			return Severity.ERROR;
-		}
-	}
-
-	private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, Element element) {
-		ValidationError removed = validationErrors.remove(new Pair<>(matcher, EcoreUtil.getURI(element)));
-		if (removed != null) {
-			removed.remove();
 		}
 	}
 
@@ -258,12 +250,13 @@ public class Validator {
 
 		private PAnnotation constraintAnnot;
 		private IncQueryMatcher<Match> matcher;
-		private String key;
+		private Collection<String> marked;
 
+		@SuppressWarnings("unchecked")
 		public ViolationPatternListener(IncQueryMatcher<Match> matcher, PAnnotation constraintAnnot) {
 			this.matcher = matcher;
 			this.constraintAnnot = constraintAnnot;
-			key = (String) constraintAnnot.getFirstValue("key");
+			marked = (Collection<String>) constraintAnnot.getFirstValue(MARKED_ELEMENTS_ATTRIBUTE);
 		}
 
 		@Override
@@ -273,63 +266,20 @@ public class Validator {
 
 		@Override
 		public void notifyDisappearance(IPatternMatch match) {
-			Element element = (Element) match.get(key);
-			removeValidationError(matcher, element);
-		}
-
-	}
-
-	public class ExactlyOnePatternListener<Match extends IPatternMatch> implements IMatchUpdateListener<IPatternMatch> {
-
-		private String key;
-		private Collection<String> otherKeys;
-		private IncQueryMatcher<Match> matcher;
-		private PAnnotation constraintAnnot;
-
-		@SuppressWarnings("unchecked")
-		public ExactlyOnePatternListener(IncQueryMatcher<Match> matcher, PAnnotation constraintAnnot) {
-			this.matcher = matcher;
-			this.constraintAnnot = constraintAnnot;
-			key = (String) constraintAnnot.getFirstValue("key");
-			otherKeys = (Collection<String>) constraintAnnot.getFirstValue("otherKeys");
-			if (otherKeys == null) {
-				otherKeys = new LinkedList<>();
+			for (String mark : marked) {
+				removeValidationError(matcher, (Element) match.get(mark));
 			}
 		}
 
-		@Override
-		public void notifyAppearance(IPatternMatch match) {
-			Element element = (Element) match.get(key);
-			List<Element> keys = getKeyList(match, element);
-			Integer val = numberOfMatches.merge(new Pair<>(matcher, keys), 1, (v, a) -> v + 1);
-			checkMachNum(match, element, val);
-		}
-
-		@Override
-		public void notifyDisappearance(IPatternMatch match) {
-			Element element = (Element) match.get(key);
-			List<Element> keys = getKeyList(match, element);
-			// the mapped elements should never be null
-			Integer val = numberOfMatches.merge(new Pair<>(matcher, keys), 0, (v, a) -> v - 1);
-			checkMachNum(match, element, val);
-		}
-
-		private List<Element> getKeyList(IPatternMatch match, Element element) {
-			List<Element> keys = new LinkedList<Element>();
-			keys.add(element);
-			for (String otherKey : otherKeys) {
-				keys.add((Element) match.get(otherKey));
-			}
-			return keys;
-		}
-
-		private void checkMachNum(IPatternMatch match, Element element, Integer val) {
-			if (val == 1) {
-				removeValidationError(matcher, element);
-			} else {
-				registerConstraintError(matcher, match, constraintAnnot);
+		private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, Element element) {
+			Pair<IncQueryMatcher<? extends IPatternMatch>, URI> pair = new Pair<>(matcher, EcoreUtil.getURI(element));
+			ValidationError removed = validationErrors.get(pair).iterator().next();
+			validationErrors.remove(pair, removed);
+			if (validationErrors.get(pair).isEmpty() && removed != null) {
+				removed.remove();
 			}
 		}
+
 	}
 
 }

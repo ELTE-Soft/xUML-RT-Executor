@@ -1,6 +1,9 @@
 package hu.eltesoft.modelexecution.validation;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -9,6 +12,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 
@@ -27,26 +31,44 @@ public class ValidationError {
 		}
 	}
 
-	private Element element;
+	static final private Pattern keyPattern = 
+	        Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
+	final private Matcher matcher;
+	
+	private List<Element> elements;
 	private String messageFormat;
-	private String name;
 	private IMarker marker;
 	private Severity severity;
+	private IPatternMatch match;
 
-	public ValidationError(String name, Severity severity, String message, Element element) {
-		this.name = name;
+	public ValidationError(IPatternMatch match, Severity severity, String message, List<Element> elements) {
+		this.match = match;
+		matcher = keyPattern.matcher(message);
 		this.severity = severity;
 		messageFormat = message;
-		this.element = element;
+		this.elements = elements;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(element, messageFormat);
+		return Objects.hash(elements, messageFormat);
 	}
 
 	public String getName() {
-		return name;
+		return match.patternName();
+	}
+
+	private String formatMessage() {
+		matcher.reset();
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find())
+        {
+            String k = matcher.group(1);
+            String v = match.get(k).toString();
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(v));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
 	}
 
 	@Override
@@ -55,12 +77,12 @@ public class ValidationError {
 			return false;
 		}
 		ValidationError other = (ValidationError) obj;
-		return element.equals(other.element) && messageFormat.equals(other.messageFormat);
+		return elements.equals(other.elements) && messageFormat.equals(other.messageFormat);
 	}
 
 	public void show() {
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
-		String platformString = element.eResource().getURI().toPlatformString(true);
+		String platformString = elements.get(0).eResource().getURI().toPlatformString(true);
 		IResource resource = null;
 		if (platformString != null) {
 			resource = workspace.findMember(platformString);
@@ -68,19 +90,21 @@ public class ValidationError {
 		if (resource == null) {
 			return;
 		}
-		try {
-			marker = resource.createMarker(EValidator.MARKER);
-			marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
-			if (element instanceof NamedElement) {
-				String qualifiedName = ((NamedElement) element).getQualifiedName();
-				if (qualifiedName != null) {
-					marker.setAttribute(IMarker.LOCATION, qualifiedName);
+		for (Element element : elements) {
+			try {
+				marker = resource.createMarker(EValidator.MARKER);
+				marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
+				if (elements instanceof NamedElement) {
+					String qualifiedName = ((NamedElement) element).getQualifiedName();
+					if (qualifiedName != null) {
+						marker.setAttribute(IMarker.LOCATION, qualifiedName);
+					}
 				}
+				marker.setAttribute(IMarker.MESSAGE, formatMessage());
+				marker.setAttribute(EValidator.URI_ATTRIBUTE, EcoreUtil.getURI(element).toString());
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-			marker.setAttribute(IMarker.MESSAGE, messageFormat);
-			marker.setAttribute(EValidator.URI_ATTRIBUTE, EcoreUtil.getURI(element).toString());
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 	}
 

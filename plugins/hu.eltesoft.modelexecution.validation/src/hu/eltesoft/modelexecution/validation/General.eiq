@@ -2,12 +2,14 @@ package hu.eltesoft.modelexecution.validation
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 
-@ExactlyOne(message = "Two elements with the same qualified name", key = "elem")
-pattern TwoElementWithSameName(qname, elem) {
-	NamedElement.qualifiedName(elem, qname);
+@Violation(message = "Two elements with the same qualified name: {qname}", mark = { "elem1", "elem2" })
+pattern TwoElementWithSameName(qname, elem1, elem2) {
+	NamedElement.qualifiedName(elem1, qname);
+	NamedElement.qualifiedName(elem2, qname);
+	elem1 != elem2;
 }
 
-@ExactlyOne(message = "Redefinition of leaf element is not allowed", key = "redefining")
+@Violation(message = "Redefinition of leaf element is not allowed", mark = { "redefining" })
 pattern LeafRedefined(elem : RedefinableElement, redefining) {
 	RedefinableElement.redefinedElement(redefining, elem);
 	RedefinableElement.isLeaf(elem, true);

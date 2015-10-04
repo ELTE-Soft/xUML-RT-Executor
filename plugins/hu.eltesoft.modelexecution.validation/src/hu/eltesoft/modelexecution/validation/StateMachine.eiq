@@ -7,85 +7,96 @@ import hu.eltesoft.modelexecution.uml.incquery.Region
 //////////////////////////////////
 // validation for state machines
 ///////////////////////////////////
-@ExactlyOne(message = "State machines must have exactly one region", key = "sm")
-pattern StateMachineMustHaveOneRegion(sm : StateMachine, rg : Region) {
+@Violation(message = "State machine without region", mark = { "sm" })
+pattern StateMachineMustHaveRegion(sm : StateMachine) {
+	neg find StateMachineRegion(sm, _);
+}
+
+@Violation(message = "Multiple regions for a state machine", mark = { "rg1", "rg2" })
+pattern StateMachineMustHaveOneRegion(sm : StateMachine, rg1 : Region, rg2 : Region) {
+	find StateMachineRegion(sm, rg1);
+	find StateMachineRegion(sm, rg2);
+	rg1 != rg2;
+}
+
+private pattern StateMachineRegion(sm : StateMachine, rg : Region) {
 	StateMachine.region(sm, rg);
 }
 
-@Violation(message = "State machines can only contain regions", key = "elem")
+@Violation(message = "State machines can only contain regions", mark = { "elem" })
 pattern ForbiddenStateMachineMember(sm : StateMachine, elem) {
 	StateMachine.ownedElement(sm, elem);
 	neg find Region(elem);
 }
 
 // simply unsupported
-@Violation(message = "State machines cannot be abstract", key = "sm")
+@Violation(message = "State machines cannot be abstract", mark = { "sm" })
 pattern AbstractStateMachine(sm : StateMachine) {
 	StateMachine.isAbstract(sm, true);
 }
 
-@Violation(message = "State machines cannot be active", key = "sm")
+@Violation(message = "State machines cannot be active", mark = { "sm" })
 pattern ActiveStateMachine(sm : StateMachine) {
 	StateMachine.isActive(sm, true);
 }
 
-@Violation(message = "State machines must be reentrant", key = "sm")
+@Violation(message = "State machines must be reentrant", mark = { "sm" })
 pattern NonReentrantStateMachine(sm : StateMachine) {
 	StateMachine.isReentrant(sm, false);
 }
 
-@Violation(message = "State machines must be public", key = "sm")
+@Violation(message = "State machines must be public", mark = { "sm" })
 pattern NonPublicStateMachine(sm : StateMachine) {
 	StateMachine.visibility(sm, visibility);
 	visibility != VisibilityKind::public;
 }
 
-@Violation(message = "State machines cannot have specification", key = "sm")
+@Violation(message = "State machines cannot have specification", mark = { "sm" })
 pattern StateMachineWithSpecification(sm : StateMachine) {
 	StateMachine.specification(sm, _);
 }
 
-@Violation(message = "State machines cannot have classifier behavior", key = "sm")
+@Violation(message = "State machines cannot have classifier behavior", mark = { "sm" })
 pattern StateMachineWithClassifierBehavior(sm : StateMachine) {
 	StateMachine.classifierBehavior(sm, _);
 }
 
-@Violation(message = "State machines cannot have extension", key = "sm")
+@Violation(message = "State machines cannot have extension", mark = { "sm" })
 pattern StateMachineWithExtension(sm : StateMachine) {
 	StateMachine.^extension(sm, _);
 }
 
-@Violation(message = "State machines cannot extend another", key = "sm")
+@Violation(message = "State machines cannot extend another", mark = { "sm" })
 pattern StateMachineExtendsAnother(sm : StateMachine) {
 	StateMachine.extendedStateMachine(sm, _);
 }
 
-@Violation(message = "State machines cannot have powertype extent feature", key = "sm")
+@Violation(message = "State machines cannot have powertype extent feature", mark = { "sm" })
 pattern StateMachinePowertypeExtent(sm : StateMachine) {
 	StateMachine.powertypeExtent(sm, _);
 }
 
-@Violation(message = "State machines cannot redefine behavior", key = "sm")
+@Violation(message = "State machines cannot redefine behavior", mark = { "sm" })
 pattern StateMachineRedefineBehavior(sm : StateMachine) {
 	StateMachine.redefinedBehavior(sm, _);
 }
 
-@Violation(message = "State machines cannot redefine classifier", key = "sm")
+@Violation(message = "State machines cannot redefine classifier", mark = { "sm" })
 pattern StateMachineRedefineClassifier(sm : StateMachine) {
 	StateMachine.redefinedClassifier(sm, _);
 }
 
-@Violation(message = "State machines cannot have representation", key = "sm")
+@Violation(message = "State machines cannot have representation", mark = { "sm" })
 pattern StateMachineWithRepresentation(sm : StateMachine) {
 	StateMachine.representation(sm, _);
 }
 
-@Violation(message = "State machines cannot have submachine state", key = "sm")
+@Violation(message = "State machines cannot have submachine state", mark = { "sm" })
 pattern StateMachineWithSubmachineState(sm : StateMachine) {
 	StateMachine.submachineState(sm, _);
 }
 
-@Violation(message = "State machines cannot have template parameter", key = "sm")
+@Violation(message = "State machines cannot have template parameter", mark = { "sm" })
 pattern StateMachineWithTemplateParameter(sm : StateMachine) {
 	StateMachine.templateParameter(sm, _);
 }
@@ -93,13 +104,13 @@ pattern StateMachineWithTemplateParameter(sm : StateMachine) {
 /////////////////////////////
 // validation for regions
 ////////////////////////////
-@Violation(message = "State machine regions must be public", key = "rg")
+@Violation(message = "State machine regions must be public", mark = { "rg" })
 pattern RegionNotPublic(rg : Region) {
 	Region.visibility(rg, visibility);
 	visibility != VisibilityKind::public;
 }
 
-@Violation(message = "State machines regions can only contain transitions and states", key = "elem")
+@Violation(message = "State machines regions can only contain transitions and states", mark = { "elem" })
 pattern ForbiddenRegionMember(rg : Region, elem) {
 	Region.ownedElement(rg, elem);
 	neg find State(_, elem);
@@ -111,8 +122,19 @@ private pattern Transition(tr : Transition) {
 	Transition(tr);
 }
 
-@ExactlyOne(message = "State machine regions must have exactly one initial pseudostate", key = "rg")
-pattern InitialState(rg : Region, init : Pseudostate) {
+@Violation(message = "State machine regions must have an initial pseudostate", mark = { "rg" })
+pattern RegionWithoutInitialState(rg : Region) {
+	neg find InitialState(rg, _);
+}
+
+@Violation(message = "State machine regions cannot have multiple initial pseudostate", mark = { "init1", "init2" })
+pattern MultipleInitialState(rg : Region, init1 : Pseudostate, init2 : Pseudostate) {
+	find InitialState(rg, init1);
+	find InitialState(rg, init2);
+	init1 != init2;
+}
+
+private pattern InitialState(rg : Region, init : Pseudostate) {
 	Region.ownedElement(rg, init);
 	Pseudostate.kind(init, ::initial);
 }
@@ -121,33 +143,33 @@ pattern InitialState(rg : Region, init : Pseudostate) {
 // validation for states
 ///////////////////////////
 
-@Violation(message = "States must be public", key = "st")
+@Violation(message = "States must be public", mark = { "st" })
 pattern StateMustBePublic(st : State) {
 	State.visibility(st, visibility);
 	visibility != VisibilityKind::public;
 }
 
-@Violation(message = "States cannot have an invariant", key = "st")
+@Violation(message = "States cannot have an invariant", mark = { "st" })
 pattern StateWithInvariant(st : State) {
 	State.stateInvariant(st, _);
 }
 
-@Violation(message = "States cannot have a do activity", key = "st")
+@Violation(message = "States cannot have a do activity", mark = { "st" })
 pattern StateWithDoActivity(st : State) {
 	State.doActivity(st, _);
 }
 
-@Violation(message = "States cannot have submachine", key = "st")
+@Violation(message = "States cannot have submachine", mark = { "st" })
 pattern StateWithSubmachine(st : State) {
 	State.submachine(st, _);
 }
 
-@Violation(message = "States cannot have deferrable trigger", key = "st")
+@Violation(message = "States cannot have deferrable trigger", mark = { "st" })
 pattern StateWithDeferrableTrigger(st : State) {
 	State.deferrableTrigger(st, _);
 }
 
-@Violation(message = "States cannot redefine another", key = "st")
+@Violation(message = "States cannot redefine another", mark = { "st" })
 pattern StateRedefineAnother(st : State) {
 	State.redefinedState(st, _);
 }
@@ -155,7 +177,7 @@ pattern StateRedefineAnother(st : State) {
 ///////////////////
 // initial state
 ///////////////////
-@Violation(message = "Initial pseudostate must be public", key = "ps")
+@Violation(message = "Initial pseudostate must be public", mark = { "ps" })
 pattern InitialPseudostateNotPublic(ps : Pseudostate) {
 	Pseudostate.visibility(ps, visibility);
 	visibility != VisibilityKind::public;
@@ -164,12 +186,12 @@ pattern InitialPseudostateNotPublic(ps : Pseudostate) {
 //////////////////
 // final states
 //////////////////
-@Violation(message = "Final states cannot have entry action", key = "st")
+@Violation(message = "Final states cannot have entry action", mark = { "st" })
 pattern FinalStateWithEntryAction(st : FinalState) {
 	FinalState.entry(st, _);
 }
 
-@Violation(message = "Final states cannot have exit action", key = "st")
+@Violation(message = "Final states cannot have exit action", mark = { "st" })
 pattern FinalStateWithExitAction(st : FinalState) {
 	FinalState.exit(st, _);
 }
@@ -177,7 +199,7 @@ pattern FinalStateWithExitAction(st : FinalState) {
 //////////////////
 // transitions
 //////////////////
-@Violation(message = "The source of the transition is an initial pseudostate or a state", key = "tr")
+@Violation(message = "The source of the transition is an initial pseudostate or a state", mark = { "tr" })
 pattern TransitionSourceUnknown(tr : Transition) {
 	neg find TransitionSource(tr, _);
 }
@@ -190,7 +212,7 @@ private pattern TransitionSource(tr : Transition, src : Vertex) {
 	Pseudostate.kind(src, ::initial);
 }
 
-@Violation(message = "Multiple transitions from a single state with a single event are not supported", key = "src")
+@Violation(message = "Multiple transitions from a single state with a single event are not supported", mark = { "src" })
 pattern MultipleTransitionsWithAnEvent(tr1 : Transition, tr2 : Transition, src : State, ev : Event) {
 	Transition.source(tr1, src);
 	find TransitionEvent(tr1, ev);
@@ -200,7 +222,7 @@ pattern MultipleTransitionsWithAnEvent(tr1 : Transition, tr2 : Transition, src :
 }
 
 
-@Violation(message = "The target of the transition is an initial pseudostate or a state", key = "tr")
+@Violation(message = "The target of the transition is an initial pseudostate or a state", mark = { "tr" })
 pattern TransitionTargetUnknown(tr : Transition) {
 	neg find TransitionTarget(tr, _);
 }
@@ -211,7 +233,7 @@ private pattern TransitionTarget(tr : Transition, trg : Vertex) {
 }
 
 
-@Violation(message = "Transitions between normal states must have a trigger with an event", key = "tr")
+@Violation(message = "Transitions between normal states must have a trigger with an event", mark = { "tr" })
 pattern TransitionWithoutEvent(tr : Transition) {
 	Transition.source(tr, src);
 	State(src);
@@ -223,36 +245,47 @@ private pattern TransitionEvent(tr : Transition, ev : Event) {
 	Trigger.event(tg, ev);
 }
 
-@ExactlyOne(message = "There must be exactly one initial transition from an initial pseudostate", key = "src")
+@Violation(message = "No transition from an initial pseudostate", mark = { "src" })
+pattern NoInitialTransition(src : Pseudostate) {
+	neg find InitialTransition(src, _);
+}
+
+@Violation(message = "Multiple initial transitions from an initial pseudostate", mark = { "tr1", "tr2" })
+pattern MultipleInitialTransitions(src : Pseudostate, tr1 : Transition, tr2 : Transition) {
+	find InitialTransition(src, tr1);
+	find InitialTransition(src, tr2);
+	tr1 != tr2;
+}
+
 pattern InitialTransition(src : Pseudostate, tr : Transition) {
 	find InitialState(_, src);
 	Transition.source(tr, src);
 }
 
-@Violation(message = "Transitions from initial state must not have a trigger", key = "tr")
+@Violation(message = "Transitions from initial state must not have a trigger", mark = { "tr" })
 pattern InitialTransitionWithTrigger(tr : Transition) {
 	find InitialTransition(_, tr);
 	Transition.trigger(tr, _);
 }
 
-@Violation(message = "Transitions must be public", key = "tr")
+@Violation(message = "Transitions must be public", mark = { "tr" })
 pattern TransitionNotPublic(tr : Transition) {
 	Transition.visibility(tr, visibility);
 	visibility != VisibilityKind::public;
 }
 
-@Violation(message = "Transitions must be external", key = "tr")
+@Violation(message = "Transitions must be external", mark = { "tr" })
 pattern NonExternalTransition(tr : Transition) {
 	Transition.kind(tr, k);
 	k != TransitionKind::external;
 }
 
-@Violation(message = "Transitions cannot have guards", key = "tr")
+@Violation(message = "Transitions cannot have guards", mark = { "tr" })
 pattern TransitionWithGuard(tr : Transition) {
 	Transition.guard(tr, _);
 }
 
-@Violation(message = "Transitions cannot redefine another", key = "tr")
+@Violation(message = "Transitions cannot redefine another", mark = { "tr" })
 pattern TransitionRedefinesAnother(tr : Transition) {
 	Transition.redefinedTransition(tr, _);
 }
