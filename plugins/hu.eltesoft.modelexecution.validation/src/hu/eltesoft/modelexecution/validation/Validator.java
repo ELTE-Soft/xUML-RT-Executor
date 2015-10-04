@@ -190,11 +190,15 @@ public class Validator {
 		List<Element> elements = getMarked(match, marked);
 		ValidationError error = new ValidationError(match, getSeverity(severity), message, elements);
 
-		Pair<IncQueryMatcher<? extends IPatternMatch>, URI> key = new Pair<>(matcher, EcoreUtil.getURI(elements.get(0)));
-		if (validationErrors.get(key).isEmpty()) {
-			error.show();
+		LinkedList<Element> toMark = new LinkedList<Element>();
+		for (Element element : elements) {
+			Pair<IncQueryMatcher<? extends IPatternMatch>, URI> key = new Pair<>(matcher, EcoreUtil.getURI(element));
+			if (validationErrors.get(key).isEmpty()) {
+				toMark.add(element);
+				validationErrors.put(key, error);
+			}
 		}
-		validationErrors.put(key, error);
+		error.show(toMark);
 	}
 
 	private List<Element> getMarked(IPatternMatch match, Collection<String> marked) {

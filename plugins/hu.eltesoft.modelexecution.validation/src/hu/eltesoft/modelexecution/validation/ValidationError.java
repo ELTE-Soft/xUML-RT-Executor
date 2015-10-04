@@ -1,5 +1,6 @@
 package hu.eltesoft.modelexecution.validation;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -31,10 +32,9 @@ public class ValidationError {
 		}
 	}
 
-	static final private Pattern keyPattern = 
-	        Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
+	static final private Pattern keyPattern = Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
 	final private Matcher matcher;
-	
+
 	private List<Element> elements;
 	private String messageFormat;
 	private IMarker marker;
@@ -60,15 +60,20 @@ public class ValidationError {
 
 	private String formatMessage() {
 		matcher.reset();
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find())
-        {
-            String k = matcher.group(1);
-            String v = match.get(k).toString();
-            matcher.appendReplacement(sb, Matcher.quoteReplacement(v));
-        }
-        matcher.appendTail(sb);
-        return sb.toString();
+		StringBuffer sb = new StringBuffer();
+		while (matcher.find()) {
+			String k = matcher.group(1);
+			Object obj = match.get(k);
+			String v;
+			if (obj instanceof NamedElement) {
+				v = ((NamedElement) obj).getQualifiedName();
+			} else {
+				v = obj.toString();
+			}
+			matcher.appendReplacement(sb, Matcher.quoteReplacement(v));
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
 	}
 
 	@Override
@@ -80,7 +85,7 @@ public class ValidationError {
 		return elements.equals(other.elements) && messageFormat.equals(other.messageFormat);
 	}
 
-	public void show() {
+	public void show(LinkedList<Element> toMark) {
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
 		String platformString = elements.get(0).eResource().getURI().toPlatformString(true);
 		IResource resource = null;
@@ -91,20 +96,27 @@ public class ValidationError {
 			return;
 		}
 		for (Element element : elements) {
-			try {
-				marker = resource.createMarker(EValidator.MARKER);
-				marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
-				if (elements instanceof NamedElement) {
-					String qualifiedName = ((NamedElement) element).getQualifiedName();
-					if (qualifiedName != null) {
-						marker.setAttribute(IMarker.LOCATION, qualifiedName);
-					}
+			markElement(toMark, resource, element);
+		}
+	}
+
+	private void markElement(LinkedList<Element> toMark, IResource resource, Element element) {
+		if (!toMark.contains(element)) {
+			return;
+		}
+		try {
+			marker = resource.createMarker(EValidator.MARKER);
+			marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
+			if (elements instanceof NamedElement) {
+				String qualifiedName = ((NamedElement) element).getQualifiedName();
+				if (qualifiedName != null) {
+					marker.setAttribute(IMarker.LOCATION, qualifiedName);
 				}
-				marker.setAttribute(IMarker.MESSAGE, formatMessage());
-				marker.setAttribute(EValidator.URI_ATTRIBUTE, EcoreUtil.getURI(element).toString());
-			} catch (CoreException e) {
-				e.printStackTrace();
 			}
+			marker.setAttribute(IMarker.MESSAGE, formatMessage());
+			marker.setAttribute(EValidator.URI_ATTRIBUTE, EcoreUtil.getURI(element).toString());
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 

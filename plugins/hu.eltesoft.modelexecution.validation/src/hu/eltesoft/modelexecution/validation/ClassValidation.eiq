@@ -1,11 +1,187 @@
 package hu.eltesoft.modelexecution.validation
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
-import hu.eltesoft.modelexecution.uml.incquery.Cls
+import hu.eltesoft.modelexecution.uml.incquery.NumericValue
+import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClass
+import hu.eltesoft.modelexecution.uml.incquery.Parent
+import hu.eltesoft.modelexecution.uml.incquery.IsAncestor
+import hu.eltesoft.modelexecution.uml.incquery.OperationOverride
+import hu.eltesoft.modelexecution.uml.incquery.Attribute
+import hu.eltesoft.modelexecution.uml.incquery.AttributeType
+import hu.eltesoft.modelexecution.uml.incquery.Operation
+import hu.eltesoft.modelexecution.uml.incquery.Reception
+import hu.eltesoft.modelexecution.uml.incquery.Event
+import hu.eltesoft.modelexecution.uml.incquery.Association
+import hu.eltesoft.modelexecution.uml.incquery.Method
 
-@Violation(message = "Classes must be public", mark = { "cl" })
+@Violation(message = "Classes must be public, there is no visibility checking", mark = { "cl" })
 pattern ClassNotPublic(cl : Class) {
-	find Cls(cl);
+	find ClassOrAssocClass(cl);
 	Class.visibility(cl, visibility);
 	visibility != VisibilityKind::public;
 }
+
+@Violation(message = "Leaf class {cl} cannot be generalized", mark = { "spec" })
+pattern LeafClassGeneralized(cl : Class, spec : Class) {
+	Class.isLeaf(cl, true);
+	Generalization.general(gen, cl);
+	Generalization.specific(gen, spec);
+}
+
+@Violation(message = "Self generalization is not allowed", mark = { "cl" })
+pattern SelfGeneralization(cl : Class) {
+	Generalization.general(gen, cl);
+	Generalization.specific(gen, cl);
+}
+
+@Violation(message = "Multiple direct generalization is not allowed", mark = { "spec" })
+pattern DirectMultipleGeneralization(spec : Class) {
+	Generalization.general(gen1, cl);
+	Generalization.specific(gen1, spec);
+	Generalization.general(gen2, cl);
+	Generalization.specific(gen2, spec);
+	gen1 != gen2;
+}
+
+@Violation(message = "Cyclic inheritance", mark = { "cl" })
+pattern CyclicInheritance(cl : Class) {
+	find IsAncestor(cl, other);
+	find IsAncestor(other, cl);
+}
+
+@Violation(message = "Class with behavior must be active", mark = { "cl" })
+pattern PassiveClassWithBehavior(cl : Class) {
+	find ClassOrAssocClass(cl);
+	Class.isActive(cl, false);
+	Class.classifierBehavior(cl, _);
+}
+
+@Violation(message = "If state machine is owned by class it must be its classifier behavior", mark = { "beh" })
+pattern ClassStateMachineOwnedBehavior(beh : StateMachine) {
+	Class.ownedBehavior(cl, beh);
+	neg find ClassifierBehavior(cl, beh);
+}
+
+private pattern ClassifierBehavior(cl : Class, beh : Behavior) {
+	Class.classifierBehavior(cl, beh);
+}
+
+@Violation(message = "Multiple possible overrides for operation {overridden}", mark = { "cl" })
+pattern AmbigousOperation(cl : Class, overridden : Operation) {
+	find OperationOverride(cl, overridden, overrider1);
+	find OperationOverride(cl, overridden, overrider2);
+	overrider1 != overrider2;
+}
+
+@Violation(message = "Unknown element in class {cl}", mark = { "elem" })
+pattern UnrecognizedElementInClass(cl : Class, elem : Element) {
+	find ClassOrAssocClass(cl);
+	Class.ownedElement(cl, elem);
+	neg find Attribute(_, elem, _);
+	neg find Operation(_, elem, _);
+	neg find Reception(_, elem, _);
+	neg find Method(_, _, elem);
+	neg find Event(elem);
+	neg find Signal(elem);
+	neg find Association(elem);
+	neg find Generalization(elem);
+	neg find StateMachine(elem);
+}
+
+// FIXME: use declared
+private pattern Signal(gen : Signal) {
+	Signal(gen);
+}
+
+// FIXME: use declared
+private pattern StateMachine(sm : StateMachine) {
+	StateMachine(sm);
+}
+
+private pattern Generalization(gen : Generalization) {
+	Generalization(gen);
+}
+
+//////////////////////////////
+// association class
+//////////////////////////////
+@Violation(message = "Generalization of association class {ac} is not supported", mark = { "spec" })
+pattern GeneralizationOfAssocClass(ac : AssociationClass, spec : Class) {
+	find Parent(spec, ac);
+}
+
+
+//////////////////////////////
+// property
+//////////////////////////////
+@Violation(message = "Generalization of association class {ac} is not supported", mark = { "pr" })
+pattern NonDatatypeProperty(pr : Property) {
+	find ClassOrAssocClass(cl);
+	find AttributeType(cl, pr, ty, _, _);
+	neg find DataType(ty);
+}
+
+private pattern DataType(dt : DataType) {
+	DataType(dt);
+}
+
+@Violation(message = "Aggregation is not supported", mark = { "pr" })
+pattern PropertyAggregation(pr : Property) {
+	Property.aggregation(pr, ag);
+	ag != AggregationKind::none;
+}
+
+@Violation(message = "Default value is not supported", mark = { "pr" })
+pattern PropertyDefaultValue(pr : Property) {
+	Property.defaultValue(pr, _);
+}
+
+@Violation(message = "Derived properties are not supported", mark = { "pr" })
+pattern PropertyIsDerived(pr : Property) {
+	Property.isDerived(pr, true);
+}
+
+@Violation(message = "Derived properties are not supported", mark = { "pr" })
+pattern PropertyIsDerivedUnion(pr : Property) {
+	Property.isDerivedUnion(pr, true);
+}
+
+@Violation(message = "ID properties are not supported", mark = { "pr" })
+pattern PropertyIsID(pr : Property) {
+	Property.isID(pr, true);
+}
+
+@Violation(message = "Read-only properties are not supported", mark = { "pr" })
+pattern PropertyIsReadOnly(pr : Property) {
+	Property.isReadOnly(pr, true);
+}
+
+@Violation(message = "Property redefinition is not supported", mark = { "pr" })
+pattern PropertyRedefinedProperty(pr : Property) {
+	Property.redefinedProperty(pr, _);
+}
+
+@Violation(message = "Property subsetting is not supported", mark = { "pr" })
+pattern PropertySubsettedProperty(pr : Property) {
+	Property.subsettedProperty(pr, _);
+}
+
+@Violation(message = "Properties must be public, there is no visibility checking", mark = { "pr" })
+pattern PropertyNotPublic(pr : Property) {
+	Property.visibility(pr, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Unrecognized element in property {pr}", mark = { "elem" })
+pattern PropertyUnrecognizedElement(pr : Property, elem : Element) {
+	Property.ownedElement(pr, elem);
+}
+
+@Violation(message = "Unique properties cannot have lower bound higher than 1, because they could not be default initialized", mark = { "pr" })
+pattern PropertyCannotBeDefaultInitialized(pr : Property) {
+	Property.isUnique(pr, true);
+	Property.lowerValue(pr, low);
+	find NumericValue(low, v);
+	check(1 < (v as Integer));
+}
+

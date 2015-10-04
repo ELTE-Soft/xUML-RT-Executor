@@ -5,7 +5,7 @@ import hu.eltesoft.modelexecution.uml.incquery.State
 import hu.eltesoft.modelexecution.uml.incquery.Region
 
 //////////////////////////////////
-// validation for state machines
+// state machines
 ///////////////////////////////////
 @Violation(message = "State machine without region", mark = { "sm" })
 pattern StateMachineMustHaveRegion(sm : StateMachine) {
@@ -27,12 +27,6 @@ private pattern StateMachineRegion(sm : StateMachine, rg : Region) {
 pattern ForbiddenStateMachineMember(sm : StateMachine, elem) {
 	StateMachine.ownedElement(sm, elem);
 	neg find Region(elem);
-}
-
-// simply unsupported
-@Violation(message = "State machines cannot be abstract", mark = { "sm" })
-pattern AbstractStateMachine(sm : StateMachine) {
-	StateMachine.isAbstract(sm, true);
 }
 
 @Violation(message = "State machines cannot be active", mark = { "sm" })
@@ -61,34 +55,9 @@ pattern StateMachineWithClassifierBehavior(sm : StateMachine) {
 	StateMachine.classifierBehavior(sm, _);
 }
 
-@Violation(message = "State machines cannot have extension", mark = { "sm" })
-pattern StateMachineWithExtension(sm : StateMachine) {
-	StateMachine.^extension(sm, _);
-}
-
-@Violation(message = "State machines cannot extend another", mark = { "sm" })
-pattern StateMachineExtendsAnother(sm : StateMachine) {
-	StateMachine.extendedStateMachine(sm, _);
-}
-
-@Violation(message = "State machines cannot have powertype extent feature", mark = { "sm" })
-pattern StateMachinePowertypeExtent(sm : StateMachine) {
-	StateMachine.powertypeExtent(sm, _);
-}
-
 @Violation(message = "State machines cannot redefine behavior", mark = { "sm" })
 pattern StateMachineRedefineBehavior(sm : StateMachine) {
 	StateMachine.redefinedBehavior(sm, _);
-}
-
-@Violation(message = "State machines cannot redefine classifier", mark = { "sm" })
-pattern StateMachineRedefineClassifier(sm : StateMachine) {
-	StateMachine.redefinedClassifier(sm, _);
-}
-
-@Violation(message = "State machines cannot have representation", mark = { "sm" })
-pattern StateMachineWithRepresentation(sm : StateMachine) {
-	StateMachine.representation(sm, _);
 }
 
 @Violation(message = "State machines cannot have submachine state", mark = { "sm" })
@@ -96,13 +65,8 @@ pattern StateMachineWithSubmachineState(sm : StateMachine) {
 	StateMachine.submachineState(sm, _);
 }
 
-@Violation(message = "State machines cannot have template parameter", mark = { "sm" })
-pattern StateMachineWithTemplateParameter(sm : StateMachine) {
-	StateMachine.templateParameter(sm, _);
-}
-
 /////////////////////////////
-// validation for regions
+// regions
 ////////////////////////////
 @Violation(message = "State machine regions must be public", mark = { "rg" })
 pattern RegionNotPublic(rg : Region) {
@@ -140,7 +104,7 @@ private pattern InitialState(rg : Region, init : Pseudostate) {
 }
 
 ///////////////////////////
-// validation for states
+// states
 ///////////////////////////
 
 @Violation(message = "States must be public", mark = { "st" })
@@ -181,6 +145,31 @@ pattern StateRedefineAnother(st : State) {
 pattern InitialPseudostateNotPublic(ps : Pseudostate) {
 	Pseudostate.visibility(ps, visibility);
 	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "No transition from an initial pseudostate", mark = { "src" })
+pattern NoInitialTransition(src : Pseudostate) {
+	find InitialState(_, src);
+	neg find InitialTransition(src, _);
+}
+
+@Violation(message = "Multiple initial transitions from an initial pseudostate", mark = { "tr1", "tr2" })
+pattern MultipleInitialTransitions(src : Pseudostate, tr1 : Transition, tr2 : Transition) {
+	find InitialState(_, src);
+	find InitialTransition(src, tr1);
+	find InitialTransition(src, tr2);
+	tr1 != tr2;
+}
+
+@Violation(message = "The initial transition must not have a trigger", mark = { "tr" })
+pattern InitialTransitionWithTrigger(tr : Transition) {
+	find InitialTransition(_, tr);
+	Transition.trigger(tr, _);
+}
+
+private pattern InitialTransition(src : Pseudostate, tr : Transition) {
+	find InitialState(_, src);
+	Transition.source(tr, src);
 }
 
 //////////////////
@@ -243,29 +232,6 @@ pattern TransitionWithoutEvent(tr : Transition) {
 private pattern TransitionEvent(tr : Transition, ev : Event) {
 	Transition.trigger(tr, tg);
 	Trigger.event(tg, ev);
-}
-
-@Violation(message = "No transition from an initial pseudostate", mark = { "src" })
-pattern NoInitialTransition(src : Pseudostate) {
-	neg find InitialTransition(src, _);
-}
-
-@Violation(message = "Multiple initial transitions from an initial pseudostate", mark = { "tr1", "tr2" })
-pattern MultipleInitialTransitions(src : Pseudostate, tr1 : Transition, tr2 : Transition) {
-	find InitialTransition(src, tr1);
-	find InitialTransition(src, tr2);
-	tr1 != tr2;
-}
-
-pattern InitialTransition(src : Pseudostate, tr : Transition) {
-	find InitialState(_, src);
-	Transition.source(tr, src);
-}
-
-@Violation(message = "Transitions from initial state must not have a trigger", mark = { "tr" })
-pattern InitialTransitionWithTrigger(tr : Transition) {
-	find InitialTransition(_, tr);
-	Transition.trigger(tr, _);
 }
 
 @Violation(message = "Transitions must be public", mark = { "tr" })

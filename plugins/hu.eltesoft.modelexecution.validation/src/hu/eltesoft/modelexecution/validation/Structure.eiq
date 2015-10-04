@@ -2,6 +2,7 @@ package hu.eltesoft.modelexecution.validation
 
 import "http://www.eclipse.org/uml2/5.0.0/UML"
 import hu.eltesoft.modelexecution.uml.incquery.Cls
+import hu.eltesoft.modelexecution.uml.incquery.Event
 import hu.eltesoft.modelexecution.uml.incquery.Association
 import hu.eltesoft.modelexecution.uml.incquery.AssociationClass
 
@@ -123,46 +124,6 @@ pattern ComponentClassifierBehavior(cp : Component) {
 	Component.classifierBehavior(cp, _);
 }
 
-@Violation(message = "Component extensions are not supported", mark = { "cp" })
-pattern ComponentExtension(cp : Component) {
-	Component.^extension(cp, _);
-}
-
-@Violation(message = "Abstract components are not supported", mark = { "cp" })
-pattern ComponentIsAbstract(cp : Component) {
-	Component.isAbstract(cp, true);
-}
-
-@Violation(message = "Component final specification is not supported", mark = { "cp" })
-pattern ComponentIsFinalSpecification(cp : Component) {
-	Component.isFinalSpecialization(cp, true);
-}
-
-@Violation(message = "Component powertype extents are not supported", mark = { "cp" })
-pattern ComponentPowertypeExtent(cp : Component) {
-	Component.powertypeExtent(cp, _);
-}
-
-@Violation(message = "Component redefined classifiers are not supported", mark = { "cp" })
-pattern ComponentRedefinedClassifier(cp : Component) {
-	Component.redefinedClassifier(cp, _);
-}
-
-@Violation(message = "Component representation is not supported", mark = { "cp" })
-pattern ComponentRepresentation(cp : Component) {
-	Component.representation(cp, _);
-}
-
-@Violation(message = "Component template parameters are not supported", mark = { "cp" })
-pattern ComponentTemplateParameter(cp : Component) {
-	Component.templateParameter(cp, _);
-}
-
-@Violation(message = "Component use cases are not supported", mark = { "cp" })
-pattern ComponentUseCase(cp : Component) {
-	Component.useCase(cp, _);
-}
-
 @Violation(message = "Directly instantiated components are not supported", mark = { "cp" })
 pattern ComponentDirectlyInstantiated(cp : Component) {
 	Component.isIndirectlyInstantiated(cp, false);
@@ -172,10 +133,6 @@ pattern ComponentDirectlyInstantiated(cp : Component) {
 ///////////////////////
 // events
 ///////////////////////
-private pattern Event(ev : Event) {
-	Event(ev);
-}
-
 private pattern SignalEvent(ev : SignalEvent) {
 	SignalEvent(ev);
 }
