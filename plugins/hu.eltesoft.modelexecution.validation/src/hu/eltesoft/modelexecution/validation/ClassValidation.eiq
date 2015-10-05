@@ -185,3 +185,110 @@ pattern PropertyCannotBeDefaultInitialized(pr : Property) {
 	check(1 < (v as Integer));
 }
 
+//////////////////////////////
+// operations
+//////////////////////////////
+@Violation(message = "Return type cannot have multiplicity", mark = { "param" })
+pattern ReturnTypeMultiplicity(param : Parameter) {
+	Operation.ownedParameter(_, param);
+	Parameter.direction(param, ParameterDirectionKind::^return);
+}
+
+@Violation(message = "If the operation is not abstract it must have a method", mark = { "op" })
+pattern NonAbstractOperationWithoutMethod(op : Operation) {
+	Operation.isAbstract(op, false);
+	neg find Method(_, op, _);
+}
+
+@Violation(message = "Abstract operation cannot have a method", mark = { "op" })
+pattern AbstractOperationWithMethod(op : Operation) {
+	Operation.isAbstract(op, true);
+	find Method(_, op, _);
+}
+
+@Violation(message = "Parameters of the method must be the same as its specification {redefined}", 
+	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
+)
+pattern OperationAndMethodParametersMustBeTheSame(op : Operation, method : Behavior) {
+	find Method(_, op, method);
+}
+
+@Violation(message = "Parameters of the operation must be the same as the redefined operation {redefined}", 
+	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
+)
+pattern RedefinedAndRedefiningParametersMustBeTheSame(redefined : Operation, op : Operation) {
+	Operation.redefinedOperation(op, redefined);
+}
+
+@Violation(message = "Redefining operation must have the same name as the redefined", mark = { "op" })
+pattern RedefiningNameDifferent(op : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.name(op, n1);
+	Operation.name(redefined, n2);
+	n1 != n2;
+}
+
+@Violation(message = "Redefining operation must be in a descendant of the class of the redefined", mark = { "op" })
+pattern RedefinedMustBeInAncestor(op : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.class(op, opCls);
+	Operation.class(redefined, redefinedCls);
+	neg find IsAncestor(opCls, redefinedCls);
+}
+
+@Violation(message = "The redefining operation cannot be abstract", mark = { "op" })
+pattern RedefiningAbstract(op : Operation) {
+	Operation.redefinedOperation(op, _);
+	Operation.isAbstract(op, true);
+}
+
+@Violation(message = "The redefining operation cannot be static", mark = { "op" })
+pattern RedefiningStatic(op : Operation) {
+	Operation.redefinedOperation(op, _);
+	Operation.isStatic(op, true);
+}
+
+@Violation(message = "Cannot redefine the static operation {redefined}", mark = { "op" })
+pattern RedefinedStatic(op : Operation, redefined : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.isStatic(redefined, true);
+}
+
+@Violation(message = "Cannot redefine the leaf operation {redefined}", mark = { "op" })
+pattern RedefinedLeaf(op : Operation, redefined : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.isLeaf(redefined, true);
+}
+
+@Violation(message = "Only abstract classes can contain abstract operations", mark = { "op" })
+pattern ClassContainsAbstractOperation(op : Operation) {
+	Operation.isAbstract(op, true);
+	Operation.class(op, cls);
+	Class.isAbstract(cls, false);
+}
+
+@Violation(message = "An operation cannot be static and abstract at the same time", mark = { "op" })
+pattern StaticAbstractOperation(op : Operation) {
+	Operation.isAbstract(op, true);
+	Operation.class(op, cls);
+	Class.isAbstract(cls, false);
+}
+
+@Violation(message = "Only methods marked with the stereotype Create can have the same name as the class", 
+	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation"
+)
+pattern UnmarkedConstructor(op : Operation) {
+	Operation.name(op, name);
+	Operation.class(op, cls);
+	Class.name(cls, name);
+}
+
+@Violation(message = "Only methods marked with the stereotype Destroy can be named 'destroy'", 
+	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation"
+)
+pattern UnmarkedDestructor(op : Operation) {
+	Operation.name(op, "destroy");
+}
+
+
+
