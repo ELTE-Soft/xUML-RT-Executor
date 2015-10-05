@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -32,7 +31,6 @@ public class ValidationError {
 		}
 	}
 
-	static final private Pattern keyPattern = Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
 	final private Matcher matcher;
 
 	private List<EObject> elements;
@@ -43,7 +41,7 @@ public class ValidationError {
 
 	public ValidationError(IPatternMatch match, Severity severity, String message, List<EObject> elements) {
 		this.match = match;
-		matcher = keyPattern.matcher(message);
+		matcher = ValidationRule.KEY_PATTERN.matcher(message);
 		this.severity = severity;
 		messageFormat = message;
 		this.elements = elements;

@@ -299,7 +299,7 @@ pattern StaticAbstractOperation(op : Operation) {
 }
 
 @Violation(message = "Only methods marked with the stereotype Create can have the same name as the class", 
-	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation"
+	mark = { "op" } /*, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation" */
 )
 pattern UnmarkedConstructor(op : Operation) {
 	Operation.name(op, name);
@@ -308,7 +308,7 @@ pattern UnmarkedConstructor(op : Operation) {
 }
 
 @Violation(message = "Only methods marked with the stereotype Destroy can be named 'destroy'", 
-	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation"
+	mark = { "op" } /*, post = "hu.eltesoft.modelexecution.validation.utils.CreateOperation" */
 )
 pattern UnmarkedDestructor(op : Operation) {
 	Operation.name(op, "destroy");
