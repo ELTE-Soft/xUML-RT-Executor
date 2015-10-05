@@ -1,6 +1,8 @@
 package hu.eltesoft.modelexecution.validation
 
-import "http://www.eclipse.org/uml2/5.0.0/UML"
+import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
+import "http://modelexecution.eltesoft.hu/xumlrt/"
+
 import hu.eltesoft.modelexecution.uml.incquery.NumericValue
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClass
 import hu.eltesoft.modelexecution.uml.incquery.Parent
@@ -113,7 +115,7 @@ pattern GeneralizationSet(gen : Generalization) {
 
 @Violation(message = "Generalizations must be substitutable", mark = { "gen" })
 pattern GeneralizationNotSubstitutable(gen : Generalization) {
-	Generalization.isSubstitutable(gen, flase);
+	Generalization.isSubstitutable(gen, false);
 }
 
 //////////////////////////////
@@ -128,7 +130,7 @@ pattern GeneralizationOfAssocClass(ac : AssociationClass, spec : Class) {
 //////////////////////////////
 // property
 //////////////////////////////
-@Violation(message = "Generalization of association class {ac} is not supported", mark = { "pr" })
+@Violation(message = "Type of class attribute must be a data type", mark = { "pr" })
 pattern NonDatatypeProperty(pr : Property) {
 	find ClassOrAssocClass(cl);
 	find AttributeType(cl, pr, ty, _, _);
@@ -153,11 +155,14 @@ pattern PropertyDefaultValue(pr : Property) {
 @Violation(message = "Derived properties are not supported", mark = { "pr" })
 pattern PropertyIsDerived(pr : Property) {
 	Property.isDerived(pr, true);
+} or {
+	Property.isDerivedUnion(pr, true);
 }
 
-@Violation(message = "Derived properties are not supported", mark = { "pr" })
-pattern PropertyIsDerivedUnion(pr : Property) {
-	Property.isDerivedUnion(pr, true);
+
+@Violation(message = "Composite properties are not supported", mark = { "pr" })
+pattern PropertyIsComposite(pr : Property) {
+	Property.isComposite(pr, true);
 }
 
 @Violation(message = "ID properties are not supported", mark = { "pr" })
@@ -189,6 +194,13 @@ pattern PropertyNotPublic(pr : Property) {
 @Violation(message = "Unrecognized element in property {pr}", mark = { "elem" })
 pattern PropertyUnrecognizedElement(pr : Property, elem : Element) {
 	Property.ownedElement(pr, elem);
+	neg find IsBound(pr, elem);
+}
+
+private pattern IsBound(pr : MultiplicityElement, elem : ValueSpecification) {
+	MultiplicityElement.upperValue(pr, elem);
+} or {
+	MultiplicityElement.lowerValue(pr, elem);
 }
 
 @Violation(message = "Unique properties cannot have lower bound higher than 1, because they could not be default initialized", mark = { "pr" })
@@ -206,11 +218,16 @@ pattern PropertyCannotBeDefaultInitialized(pr : Property) {
 pattern ReturnTypeMultiplicity(param : Parameter) {
 	Operation.ownedParameter(_, param);
 	Parameter.direction(param, ParameterDirectionKind::^return);
+	Parameter.upperValue(param, high);
+	find NumericValue(high, uv);
+	check(uv != 1);
 }
 
 @Violation(message = "If the operation is not abstract it must have a method", mark = { "op" })
 pattern NonAbstractOperationWithoutMethod(op : Operation) {
 	Operation.isAbstract(op, false);
+	Operation.class(op, cls);
+	neg find ExternalEntity(cls, _);
 	neg find Method(_, op, _);
 }
 
@@ -218,13 +235,6 @@ pattern NonAbstractOperationWithoutMethod(op : Operation) {
 pattern AbstractOperationWithMethod(op : Operation) {
 	Operation.isAbstract(op, true);
 	find Method(_, op, _);
-}
-
-@Violation(message = "Parameters of the method must be the same as its specification {redefined}", 
-	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
-)
-pattern OperationAndMethodParametersMustBeTheSame(op : Operation, method : Behavior) {
-	find Method(_, op, method);
 }
 
 @Violation(message = "Parameters of the operation must be the same as the redefined operation {redefined}", 
@@ -342,6 +352,22 @@ pattern MethodWithOtherImplementation(me : OpaqueBehavior) {
 @Violation(message = "Method without specification", mark = { "me" })
 pattern MethodWithoutSpecification(me : OpaqueBehavior) {
 	neg find Method(_, _, me);
+	neg find SMEffect(me);
+}
+
+private pattern SMEffect(me : OpaqueBehavior) {
+	State.entry(_, me);
+} or {
+	State.exit(_, me);
+} or {
+	Transition.effect(_, me);
+}
+
+@Violation(message = "Parameters of the method must be the same as its specification {op}", 
+	mark = { "method" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
+)
+pattern OperationAndMethodParametersMustBeTheSame(op : Operation, method : Behavior) {
+	find Method(_, op, method);
 }
 
 @Violation(message = "Method cannot have classifier behavior", mark = { "me" })
@@ -415,9 +441,10 @@ pattern ParameterNonPublic(pm : Parameter) {
 	visibility != VisibilityKind::public;
 }
 
-@Violation(message = "Unrecognised element in parameter", mark = { "pm" })
+@Violation(message = "Unrecognised element in parameter", mark = { "elem" })
 pattern ParameterElement(elem : Element) {
-	Parameter.ownedElement(_, elem);
+	Parameter.ownedElement(pr, elem);
+	neg find IsBound(pr, elem);
 }
 
 //////////////////////////////
@@ -472,10 +499,181 @@ pattern AssociationDerived(ac : Association) {
 	Association.isDerived(ac, true);
 }
 
-@Violation(message = "Associations can only contain their member ends", mark = { "pm" })
+@Violation(message = "Associations can only contain their member ends", mark = { "elem" })
 pattern AssociationElement(elem : Element) {
 	neg find ClassOrAssocClass(ac);
-	Association(ac);
-	Association.ownedElement(_, elem);
+	Association.ownedElement(ac, elem);
 	neg find AssociationEnds(ac, elem, _);
 }
+
+//////////////////////////////
+// reception
+//////////////////////////////
+@Violation(message = "Reception without signal", mark = { "rc" })
+pattern ReceptionWithoutSignal(rc : Reception) {
+	neg find ReceptionSignal(rc, _);
+}
+
+private pattern ReceptionSignal(rc : Reception, sg : Signal) {
+	Reception.signal(rc, sg);
+}
+
+@Violation(message = "Abstract receptions are not supported", mark = { "rc" })
+pattern ReceptionAbstract(rc : Reception) {
+	Reception.isAbstract(rc, true);
+}
+
+@Violation(message = "Static receptions are not supported", mark = { "rc" })
+pattern ReceptionStatic(rc : Reception) {
+	Reception.isStatic(rc, true);
+}
+
+@Violation(message = "Reception methods are not supported", mark = { "rc" })
+pattern ReceptionMethod(rc : Reception) {
+	Reception.method(rc, _);
+}
+
+@Violation(message = "Receptions cannot raise exceptions", mark = { "rc" })
+pattern ReceptionRaisedException(rc : Reception) {
+	Reception.raisedException(rc, _);
+}
+
+@Violation(message = "Reception visibility must be public", mark = { "rc" })
+pattern ReceptionNonPublic(rc : Reception) {
+	Reception.visibility(rc, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Receptions can only contain parameters", mark = { "elem" })
+pattern ReceptionElement(elem : Element) {
+	Reception.ownedElement(_, elem);
+	neg find Parameter(elem);
+}
+
+@Violation(message = "Reception parameters must be the same as their signals",
+	mark = { "rc" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
+)
+pattern ReceptionParameters(rc : Reception, sg : Signal) {
+	find ReceptionSignal(rc, sg);
+}
+
+//////////////////////////////
+// external entity
+//////////////////////////////
+private pattern ExternalEntity(base : Class, annot : ExternalEntity) {
+	ExternalEntity.base_Class(annot, base);
+}
+
+@Violation(message = "All operations of an external entity are static", mark = { "op" })
+pattern ExternalEntityOpNotStatic(op : Operation) {
+	find ExternalEntity(cls, _);
+	Class.ownedOperation(cls, op);
+	Operation.isStatic(op, false);
+}
+
+@Violation(message = "An external entity has no attributes", mark = { "attr" })
+pattern ExternalEntityAttribute(attr : Property) {
+	find ExternalEntity(cl, _);
+	Class.ownedAttribute(cl, attr);
+}
+
+@Violation(message = "Name of an external entity class must be a valid Java class name", mark = { "cl" })
+pattern ExternalEntityNameNotValid(cl : Class) {
+	find ExternalEntity(cl, _);
+	Class.name(cl, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Name of an operation on an external entity must be a valid Java method name", mark = { "op" })
+pattern ExternalEntityOperationNameNotValid(op : Operation) {
+	find ExternalEntity(cl, _);
+	Class.ownedOperation(cl, op);
+	Operation.name(op, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Type of a parameter on an external entity operation must be a primitive type, or a class with Callable stereotype applied", mark = { "pm" })
+pattern ExternalEntityOperationParameterTypeNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.type(pm, ty);
+	neg find PrimitiveType(ty);
+	neg find Callable(ty, _);
+}
+
+@Violation(message = "Only input parameters are accepted on an external entity operation", mark = { "pm" })
+pattern ExternalEntityOperationParameterMustBeIn(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.direction(pm, dir);
+	dir != ParameterDirectionKind::in;
+}
+
+@Violation(message = "Name of an operation parameter on an external entity must be a valid Java identifier", mark = { "pm" })
+pattern ExternalEntityOperationParameterNameNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.name(pm, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Multiplicity of an operation parameter on an external entity must be 1", mark = { "pm" })
+pattern ExternalEntityOperationParameterMultiplicityNotOne(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.lowerValue(pm, lower);
+	find NumericValue(lower, lv);
+	check (lv != 1);
+} or {
+	find ExternalEntityOpParam(pm);
+	Parameter.upperValue(pm, upper);
+	find NumericValue(upper, uv);
+	check (uv != 1);
+}
+
+@Violation(message = "External entity must be an abstract class", mark = { "cl" })
+pattern ExternalEntityMustBeAbstract(cl : Class) {
+	find ExternalEntity(cl, _);
+	Class.isAbstract(cl, false);
+}
+
+@Violation(message = "External entity operations must return nothing or a single primitive value", mark = { "pm" })
+pattern ExternalEntityOperationParameterReturnNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.direction(pm, ::^return);
+	Parameter.type(pm, typ);
+	neg find PrimitiveType(typ);
+}
+
+@Violation(message = "External entity cannot be the generalization of a class", mark = { "cl" })
+pattern ExternalEntityGeneralization(cl : Class) {
+	find ExternalEntity(cl, _);
+	find Parent(cl, _);
+}
+
+@Violation(message = "External entity cannot be generalized", mark = { "cl" })
+pattern ExternalEntityGeneralized(cl : Class) {
+	find ExternalEntity(cl, _);
+	find Parent(_, cl);
+}
+
+@Violation(message = "Two external entities cannot have the same name", mark = { "cl1", "cl2" })
+pattern ExternalEntitiesWithTheSameName(cl1 : Class, cl2 : Class) {
+	find ExternalEntity(cl1, _);
+	find ExternalEntity(cl2, _);
+	Class.name(cl1, name);
+	Class.name(cl2, name);
+}
+
+private pattern PrimitiveType(ty : PrimitiveType) {
+	PrimitiveType(ty);
+}
+
+private pattern ExternalEntityOpParam(pm : Parameter) {
+	find ExternalEntity(cl, _);
+	Class.ownedOperation(cl, op);
+	Operation.ownedParameter(op, pm);
+}
+
+private pattern Callable(base : Class, annot : Callable) {
+	Callable.base_Class(annot, base);
+}
+
+
+

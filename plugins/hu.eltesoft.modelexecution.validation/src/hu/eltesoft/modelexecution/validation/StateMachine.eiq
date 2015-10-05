@@ -1,8 +1,10 @@
 package hu.eltesoft.modelexecution.validation
 
-import "http://www.eclipse.org/uml2/5.0.0/UML"
+import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
+
 import hu.eltesoft.modelexecution.uml.incquery.State
 import hu.eltesoft.modelexecution.uml.incquery.Region
+import hu.eltesoft.modelexecution.uml.incquery.Reception;
 
 //////////////////////////////////
 // state machines
@@ -227,6 +229,16 @@ pattern TransitionWithoutEvent(tr : Transition) {
 	Transition.source(tr, src);
 	State(src);
 	neg find TransitionEvent(tr, _);
+}
+
+@Violation(message = "Class {cl} must contain the reception for {ev}", mark = { "tr" })
+pattern EventWithoutReception(tr : Transition, cl : Class, ev : Event) {
+	Transition.container(tr, rg);
+	Region.stateMachine(rg, sm);
+	Class.classifierBehavior(cl, sm);
+	find TransitionEvent(tr, ev);
+	SignalEvent.signal(ev, sg);
+	neg find Reception(cl, _, sg);
 }
 
 private pattern TransitionEvent(tr : Transition, ev : Event) {

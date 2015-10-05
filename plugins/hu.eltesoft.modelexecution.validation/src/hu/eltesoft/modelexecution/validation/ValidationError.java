@@ -11,10 +11,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 
 public class ValidationError {
@@ -35,13 +35,13 @@ public class ValidationError {
 	static final private Pattern keyPattern = Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
 	final private Matcher matcher;
 
-	private List<Element> elements;
+	private List<EObject> elements;
 	private String messageFormat;
 	private IMarker marker;
 	private Severity severity;
 	private IPatternMatch match;
 
-	public ValidationError(IPatternMatch match, Severity severity, String message, List<Element> elements) {
+	public ValidationError(IPatternMatch match, Severity severity, String message, List<EObject> elements) {
 		this.match = match;
 		matcher = keyPattern.matcher(message);
 		this.severity = severity;
@@ -85,7 +85,7 @@ public class ValidationError {
 		return elements.equals(other.elements) && messageFormat.equals(other.messageFormat);
 	}
 
-	public void show(LinkedList<Element> toMark) {
+	public void show(LinkedList<EObject> toMark) {
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
 		String platformString = elements.get(0).eResource().getURI().toPlatformString(true);
 		IResource resource = null;
@@ -95,12 +95,12 @@ public class ValidationError {
 		if (resource == null) {
 			return;
 		}
-		for (Element element : elements) {
+		for (EObject element : elements) {
 			markElement(toMark, resource, element);
 		}
 	}
 
-	private void markElement(LinkedList<Element> toMark, IResource resource, Element element) {
+	private void markElement(LinkedList<EObject> toMark, IResource resource, EObject element) {
 		if (!toMark.contains(element)) {
 			return;
 		}

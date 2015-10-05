@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -27,7 +28,6 @@ import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.annotations.PAnnotation;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.collect.HashMultimap;
@@ -187,11 +187,11 @@ public class Validator {
 		@SuppressWarnings("unchecked")
 		Collection<String> marked = (Collection<String>) constraintAnnot.getFirstValue(MARKED_ELEMENTS_ATTRIBUTE);
 		String severity = (String) constraintAnnot.getFirstValue(SEVERITY_ATTRIBUTE);
-		List<Element> elements = getMarked(match, marked);
+		List<EObject> elements = getMarked(match, marked);
 		ValidationError error = new ValidationError(match, getSeverity(severity), message, elements);
 
-		LinkedList<Element> toMark = new LinkedList<Element>();
-		for (Element element : elements) {
+		LinkedList<EObject> toMark = new LinkedList<EObject>();
+		for (EObject element : elements) {
 			Pair<IncQueryMatcher<? extends IPatternMatch>, URI> key = new Pair<>(matcher, EcoreUtil.getURI(element));
 			if (validationErrors.get(key).isEmpty()) {
 				toMark.add(element);
@@ -201,10 +201,10 @@ public class Validator {
 		error.show(toMark);
 	}
 
-	private List<Element> getMarked(IPatternMatch match, Collection<String> marked) {
-		List<Element> elements = new LinkedList<Element>();
+	private List<EObject> getMarked(IPatternMatch match, Collection<String> marked) {
+		List<EObject> elements = new LinkedList<EObject>();
 		for (String mark : marked) {
-			elements.add((Element) match.get(mark));
+			elements.add((EObject) match.get(mark));
 		}
 		return elements;
 	}
@@ -271,11 +271,11 @@ public class Validator {
 		@Override
 		public void notifyDisappearance(IPatternMatch match) {
 			for (String mark : marked) {
-				removeValidationError(matcher, (Element) match.get(mark));
+				removeValidationError(matcher, (EObject) match.get(mark));
 			}
 		}
 
-		private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, Element element) {
+		private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, EObject element) {
 			Pair<IncQueryMatcher<? extends IPatternMatch>, URI> pair = new Pair<>(matcher, EcoreUtil.getURI(element));
 			ValidationError removed = validationErrors.get(pair).iterator().next();
 			validationErrors.remove(pair, removed);

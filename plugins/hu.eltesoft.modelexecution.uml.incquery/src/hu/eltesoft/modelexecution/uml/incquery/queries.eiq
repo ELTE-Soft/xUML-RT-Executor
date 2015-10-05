@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.uml.incquery
 
-import "http://www.eclipse.org/uml2/5.0.0/UML"
+import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
 
 /* Type information from some parameter is missing on purpose. 
  * Otherwise IncQuery will not report matches that refer to elements of a resource 
