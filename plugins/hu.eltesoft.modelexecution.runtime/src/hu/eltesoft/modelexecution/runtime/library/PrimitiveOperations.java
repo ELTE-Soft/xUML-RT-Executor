@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.validation.EmptyValueError;
@@ -358,8 +357,15 @@ public class PrimitiveOperations {
 
 	public static <SourceType, TargetType, C1 extends Collection<SourceType>, C2 extends Collection<TargetType>> C2 cast(
 			Class<TargetType> targetType, C1 sourceExpression) {
-		return sourceExpression.stream().map(e -> safeCast(targetType, e)).filter(e -> null != e)
-				.collect(Collectors.toCollection(CollectionOperations.factoryOf(sourceExpression, targetType)));
+		@SuppressWarnings("unchecked")
+		C2 result = (C2) CollectionOperations.factoryOf(sourceExpression, targetType).get();
+		for (SourceType item : sourceExpression) {
+			TargetType newItem = safeCast(targetType, item);
+			if (null != newItem) {
+				result.add(newItem);
+			}
+		}
+		return result;
 	}
 
 	public static <SourceType, TargetType> TargetType safeCast(Class<TargetType> targetType,
