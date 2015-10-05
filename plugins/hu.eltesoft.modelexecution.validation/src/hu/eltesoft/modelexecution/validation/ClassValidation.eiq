@@ -103,6 +103,20 @@ private pattern Generalization(gen : Generalization) {
 }
 
 //////////////////////////////
+// generalization
+//////////////////////////////
+
+@Violation(message = "Generalization sets are not supported", mark = { "gen" })
+pattern GeneralizationSet(gen : Generalization) {
+	Generalization.generalizationSet(gen, _);
+}
+
+@Violation(message = "Generalizations must be substitutable", mark = { "gen" })
+pattern GeneralizationNotSubstitutable(gen : Generalization) {
+	Generalization.isSubstitutable(gen, flase);
+}
+
+//////////////////////////////
 // association class
 //////////////////////////////
 @Violation(message = "Generalization of association class {ac} is not supported", mark = { "spec" })
@@ -355,8 +369,113 @@ pattern MethodRedefines(me : OpaqueBehavior) {
 	OpaqueBehavior.redefinedBehavior(me, _);
 }
 
-@Violation(message = "Methods must be public", mark = { "op" })
+@Violation(message = "Methods must be public", mark = { "me" })
 pattern MethodNotPublic(me : OpaqueBehavior) {
 	OpaqueBehavior.visibility(me, visibility);
 	visibility != VisibilityKind::public;
+}
+
+
+@Violation(message = "Unrecognised element in method", mark = { "elem" })
+pattern MethodElement(elem : Element) {
+	OpaqueBehavior.ownedElement(_, elem);
+	neg find Parameter(elem);
+}
+
+//////////////////////////////
+// parameter
+//////////////////////////////
+private pattern Parameter(elem : Parameter) {
+	Parameter(elem);
+}
+
+@Violation(message = "Parameters effect must be create", mark = { "pm" })
+pattern ParameterEffect(pm : Parameter) {
+	Parameter.effect(pm, ParameterEffectKind::create);
+}
+
+@Violation(message = "Exception parameters are not supported", mark = { "pm" })
+pattern ParameterException(pm : Parameter) {
+	Parameter.isException(pm, true);
+}
+
+@Violation(message = "Stream parameters are not supported", mark = { "pm" })
+pattern ParameterStream(pm : Parameter) {
+	Parameter.isStream(pm, true);
+}
+
+@Violation(message = "Parameter sets are not supported", mark = { "pm" })
+pattern ParameterSet(pm : Parameter) {
+	Parameter.parameterSet(pm, _);
+}
+
+@Violation(message = "Parameter visibility must be public", mark = { "pm" })
+pattern ParameterNonPublic(pm : Parameter) {
+	Parameter.visibility(pm, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Unrecognised element in parameter", mark = { "pm" })
+pattern ParameterElement(elem : Element) {
+	Parameter.ownedElement(_, elem);
+}
+
+//////////////////////////////
+// association
+//////////////////////////////
+@Violation(message = "Association visibility must be public", mark = { "ac" })
+pattern AssociationNonPublic(ac : Association) {
+	Association.visibility(ac, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Association must have two ends", mark = { "ac" })
+pattern AssociationMissingEnd(ac : Association) {
+	neg find AssociationEnds(ac, me1, me2);
+} or {
+	find AssociationEnds(ac, me1, me2);
+	Association.memberEnd(ac, me3);
+	me1 != me3;
+	me2 != me3;
+}
+
+private pattern AssociationEnds(ac : Association, me1 : Property, me2 : Property) {
+	Association.memberEnd(ac, me1);
+	Association.memberEnd(ac, me2);
+	me1 != me2;
+}
+
+@Violation(message = "Association ends must have class type", mark = { "ac" })
+pattern AssociationEndMustBeClass(ac : Association) {
+	Association.memberEnd(ac, me);
+	Property.type(me, t);
+	neg find ClassOrAssocClass(t);
+}
+
+@Violation(message = "Association member ends must be navigable", mark = { "ac" })
+pattern AssociationEndMustBeNavigable(ac : Association) {
+	Association.memberEnd(ac, me);
+	neg find NavigableEnd(ac, me);
+}
+
+private pattern NavigableEnd(ac, me) {
+	Association.navigableOwnedEnd(ac, me);
+}
+
+@Violation(message = "Abstract associations are not supported", mark = { "ac" })
+pattern AssociationAbstract(ac : Association) {
+	Association.isAbstract(ac, true);
+}
+
+@Violation(message = "Derived associations are not supported", mark = { "ac" })
+pattern AssociationDerived(ac : Association) {
+	Association.isDerived(ac, true);
+}
+
+@Violation(message = "Associations can only contain their member ends", mark = { "pm" })
+pattern AssociationElement(elem : Element) {
+	neg find ClassOrAssocClass(ac);
+	Association(ac);
+	Association.ownedElement(_, elem);
+	neg find AssociationEnds(ac, elem, _);
 }
