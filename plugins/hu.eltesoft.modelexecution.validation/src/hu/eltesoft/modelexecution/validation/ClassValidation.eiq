@@ -290,5 +290,73 @@ pattern UnmarkedDestructor(op : Operation) {
 	Operation.name(op, "destroy");
 }
 
+@Violation(message = "The method of an operation must be an opaque behavior", mark = { "op" })
+pattern MethodNotOpaqueBehavior(op : Operation) {
+	Operation.method(op, meth);
+	neg find OpaqueBehavior(meth);
+}
 
+private pattern OpaqueBehavior(beh : OpaqueBehavior) {
+	OpaqueBehavior(beh);
+}
 
+@Violation(message = "Operations must be public, there is no visibility checking", mark = { "op" })
+pattern OperationNotPublic(op : Operation) {
+	Operation.visibility(op, visibility);
+	visibility != VisibilityKind::public;
+}
+
+//////////////////////////////
+// method
+//////////////////////////////
+@Violation(message = "The method must have rALF language implementation", mark = { "me" })
+pattern MethodWithoutRalf(me : OpaqueBehavior) {
+	neg find MethodRalf(me);
+}
+
+private pattern MethodRalf(me : OpaqueBehavior) {
+	OpaqueBehavior.language(me, "rALF");
+	OpaqueBehavior.body(me, _);
+}
+
+@Violation(message = "The method have an implementation that is not rALF", mark = { "me" })
+pattern MethodWithOtherImplementation(me : OpaqueBehavior) {
+	OpaqueBehavior.language(me, lang);
+	lang != "rALF";
+}
+
+@Violation(message = "Method without specification", mark = { "me" })
+pattern MethodWithoutSpecification(me : OpaqueBehavior) {
+	neg find Method(_, _, me);
+}
+
+@Violation(message = "Method cannot have classifier behavior", mark = { "me" })
+pattern MethodClassifierBehavior(me : OpaqueBehavior) {
+	OpaqueBehavior.classifierBehavior(me, _);
+}
+
+@Violation(message = "Method cannot be abstract", mark = { "me" })
+pattern MethodAbstract(me : OpaqueBehavior) {
+	OpaqueBehavior.isAbstract(me, true);
+}
+
+@Violation(message = "Method cannot be active", mark = { "me" })
+pattern MethodActive(me : OpaqueBehavior) {
+	OpaqueBehavior.isActive(me, true);
+}
+
+@Violation(message = "Method cannot be reentrant", mark = { "me" })
+pattern MethodReentrant(me : OpaqueBehavior) {
+	OpaqueBehavior.isReentrant(me, true);
+}
+
+@Violation(message = "Operations can redefine each other, methods cannot", mark = { "me" })
+pattern MethodRedefines(me : OpaqueBehavior) {
+	OpaqueBehavior.redefinedBehavior(me, _);
+}
+
+@Violation(message = "Methods must be public", mark = { "op" })
+pattern MethodNotPublic(me : OpaqueBehavior) {
+	OpaqueBehavior.visibility(me, visibility);
+	visibility != VisibilityKind::public;
+}
