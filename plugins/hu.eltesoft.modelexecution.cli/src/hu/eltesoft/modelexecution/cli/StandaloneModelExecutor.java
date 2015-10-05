@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Paths;
-import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 import org.apache.commons.cli.CommandLine;
 
@@ -17,6 +16,7 @@ import hu.eltesoft.modelexecution.cli.exceptions.CannotLoadNameMappingException;
 import hu.eltesoft.modelexecution.cli.exceptions.CliRuntimeException;
 import hu.eltesoft.modelexecution.cli.exceptions.MissingFileException;
 import hu.eltesoft.modelexecution.cli.exceptions.NoClassAndFeedException;
+import hu.eltesoft.modelexecution.cli.logger.ConsoleLogger;
 import hu.eltesoft.modelexecution.runtime.XUMLRTRuntime;
 
 public class StandaloneModelExecutor {
@@ -45,7 +45,7 @@ public class StandaloneModelExecutor {
 			String classpath = String.join(java.io.File.pathSeparatorChar + "", runtimeJar, rootDir);
 			String runtimeClassName = XUMLRTRuntime.class.getCanonicalName();
 
-			AbstractMap.SimpleImmutableEntry<String, String> mappedNamePair = getClassFeedMappedName(rootDir, className,
+			SimpleImmutableEntry<String, String> mappedNamePair = getClassFeedMappedName(rootDir, className,
 					feedName);
 			String mappedClassName = mappedNamePair.getKey();
 			String mappedFeedName = mappedNamePair.getValue();
@@ -69,11 +69,11 @@ public class StandaloneModelExecutor {
 		}
 	}
 
-	private AbstractMap.SimpleImmutableEntry<String, String> getClassFeedMappedName(String rootDir, String className,
+	private SimpleImmutableEntry<String, String> getClassFeedMappedName(String rootDir, String className,
 			String feedName) {
-		Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> nameMapping = getNameMap(
+		Map<SimpleImmutableEntry<String, String>, SimpleImmutableEntry<String, String>> nameMapping = getNameMap(
 				rootDir);
-		SimpleImmutableEntry<String, String> classAndFeed = new AbstractMap.SimpleImmutableEntry<>(className, feedName);
+		SimpleImmutableEntry<String, String> classAndFeed = new SimpleImmutableEntry<>(className, feedName);
 
 		if (!nameMapping.containsKey(classAndFeed)) {
 			throw new NoClassAndFeedException(nameMapping);
@@ -83,12 +83,12 @@ public class StandaloneModelExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>> getNameMap(
+	private Map<SimpleImmutableEntry<String, String>, SimpleImmutableEntry<String, String>> getNameMap(
 			String rootDir) {
 		File mappingFile = new File(rootDir, MAPPING_FILE_NAME);
 		String mappingFileName = mappingFile.toString();
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(mappingFile));) {
-			return (Map<AbstractMap.SimpleImmutableEntry<String, String>, AbstractMap.SimpleImmutableEntry<String, String>>) ois
+			return (Map<SimpleImmutableEntry<String, String>, SimpleImmutableEntry<String, String>>) ois
 					.readObject();
 		} catch (IOException e) {
 			throw new MissingFileException(mappingFileName);

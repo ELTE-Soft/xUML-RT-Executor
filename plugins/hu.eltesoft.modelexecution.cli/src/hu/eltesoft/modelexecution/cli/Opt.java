@@ -10,6 +10,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 
+import hu.eltesoft.modelexecution.cli.logger.Loggers;
+
 /**
  * Describes the syntax of the command line options.
  */
@@ -26,7 +28,7 @@ public enum Opt {
 
 	READ_TRACE("read-trace", "rtr", Utils.list(EXECUTE), Utils.list(), "dir"),
 
-	LOGGER("logger", "l", Utils.list(EXECUTE), Utils.list(LoggerType.LOGGER_NONE, LoggerType.LOGGER_MINIMAL), "logger"),
+	LOGGER("logger", "l", Utils.list(EXECUTE), Utils.list(Loggers.LOGGER_NONE, Loggers.LOGGER_MINIMAL), "logger"),
 
 	ROOT("root", "r", Utils.list(EXECUTE, SETUP), Utils.list(), "dir");
 
@@ -41,9 +43,9 @@ public enum Opt {
 	 * If the option has a limited number of values, list them here. An empty
 	 * list means the values are not limited to a few items.
 	 */
-	private List<LoggerType> argValueNames;
+	private List<Loggers> argValueNames;
 
-	private Opt(String longName, String shortName, List<Opt> requiredOpts, List<LoggerType> argValueNames,
+	private Opt(String longName, String shortName, List<Opt> requiredOpts, List<Loggers> argValueNames,
 			String... argNames) {
 		this.longName = longName;
 		this.shortName = shortName;
@@ -82,8 +84,8 @@ public enum Opt {
 
 	private List<String> getPossibleValues() {
 		List<String> argValuesText = new ArrayList<>();
-		LoggerType defaultValue = argValueNames.get(0);
-		for (LoggerType argValueName : new TreeSet<>(argValueNames)) {
+		Loggers defaultValue = argValueNames.get(0);
+		for (Loggers argValueName : new TreeSet<>(argValueNames)) {
 			String optText = argValueName.name;
 			if (argValueName == defaultValue) {
 				optText += " (" + Messages.DEFAULT_VALUE.getMsg() + ")";
@@ -93,11 +95,11 @@ public enum Opt {
 		return argValuesText;
 	}
 
-	boolean isPresent(CommandLine cmd) {
+	public boolean isPresent(CommandLine cmd) {
 		return cmd.hasOption(shortName) || cmd.hasOption(longName);
 	}
 
-	Optional<String> getOption(CommandLine cmd, int index) {
+	public Optional<String> getOption(CommandLine cmd, int index) {
 		Optional<String[]> options = getOptions(cmd);
 		if (!options.isPresent()) {
 			return Optional.empty();
@@ -105,7 +107,7 @@ public enum Opt {
 		return Optional.of(options.get()[index]);
 	}
 
-	Optional<String[]> getOptions(CommandLine cmd) {
+	public Optional<String[]> getOptions(CommandLine cmd) {
 		Optional<String> presentName = getPresentName(cmd);
 		if (!presentName.isPresent()) {
 			return Optional.empty();
@@ -113,7 +115,7 @@ public enum Opt {
 		return Optional.of(cmd.getOptionValues(presentName.get()));
 	}
 
-	Optional<String> getPresentName(CommandLine cmd) {
+	public Optional<String> getPresentName(CommandLine cmd) {
 		if (cmd.hasOption(longName)) {
 			return Optional.of(longName);
 		}
