@@ -659,6 +659,7 @@ pattern ExternalEntitiesWithTheSameName(cl1 : Class, cl2 : Class) {
 	find ExternalEntity(cl2, _);
 	Class.name(cl1, name);
 	Class.name(cl2, name);
+	cl1 != cl2;
 }
 
 private pattern PrimitiveType(ty : PrimitiveType) {
