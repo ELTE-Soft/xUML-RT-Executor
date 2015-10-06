@@ -10,6 +10,7 @@ import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
 import hu.eltesoft.modelexecution.cli.exceptions.CliRuntimeException;
+import hu.eltesoft.modelexecution.profile.xumlrt.XUMLRTPackage;
 
 public class Registry {
 
@@ -28,6 +29,7 @@ public class Registry {
 					org.eclipse.xtext.XtextPackage.eINSTANCE);
 		pkgRegistry.putIfAbsent("http://www.incquerylabs.com/uml/ralf/ReducedAlfLanguage",
 					com.incquerylabs.uml.ralf.reducedAlfLanguage.ReducedAlfLanguagePackage.eINSTANCE);
+		pkgRegistry.putIfAbsent("http://modelexecution.eltesoft.hu/xumlrt/", XUMLRTPackage.eINSTANCE);
 	}
 
 	static void registerPathMaps(ModelSet modelSet, String jarPath) {
