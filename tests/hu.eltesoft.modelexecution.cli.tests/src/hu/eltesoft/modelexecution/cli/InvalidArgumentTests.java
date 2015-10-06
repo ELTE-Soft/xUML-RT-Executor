@@ -1,105 +1,46 @@
 package hu.eltesoft.modelexecution.cli;
 
-import java.io.IOException;
+import static org.junit.Assert.assertFalse;
 
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.UnrecognizedOptionException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.junit.Test;
-
-import hu.eltesoft.modelexecution.cli.exceptions.BadArgCountException;
-import hu.eltesoft.modelexecution.cli.exceptions.BadDirectoryException;
-import hu.eltesoft.modelexecution.cli.exceptions.BadFileException;
-import hu.eltesoft.modelexecution.cli.exceptions.DanglingArgumentsException;
-import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
-import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
-import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /*
- * Tests invalid arguments. All of these will throw a subclass of {@link IllegalArgumentException}.
+ * Tests invalid arguments. All of these will print an error message to the standard error stream.
  */
+@RunWith(Parameterized.class)
 public class InvalidArgumentTests {
-	@Test(expected = NothingToDoException.class)
-	public void nothingToDo() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("");
+
+	private final String arguments;
+
+	public InvalidArgumentTests(String arguments) {
+		this.arguments = arguments;
 	}
 
-	@Test(expected = ParseException.class)
-	public void setupArgIsMissing() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-s");
+	@Test
+	public void tryToRun() throws Exception {
+		SimpleEntry<String, String> output = TestUtils.withRedirectedIO(() -> {
+			TestUtils.runCli(arguments);
+		});
+		// standard error should not be empty
+		assertFalse(output.getValue().isEmpty());
 	}
 
-	@Test(expected = BadFileException.class)
-	public void setupBadArg() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-s notExistingFile");
-	}
-
-	@Test(expected = IncompatibleOptsException.class)
-	public void wtrRequiresExecute() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-wtr someArg");
-	}
-
-	@Test(expected = IncompatibleOptsException.class)
-	public void rtrRequiresExecute() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-rtr someArg");
-	}
-
-	@Test(expected = IncompatibleOptsException.class)
-	public void rtrRequiresExecute2() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-rtr someArg -s someArg");
-	}
-
-	@Test(expected = IncompatibleOptsException.class)
-	public void rootRequiresSetupOrExecute() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-r someArg");
-	}
-
-	@Test(expected = IncompatibleOptsException.class)
-	public void loggerRequiresExecute() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-l someArg");
-	}
-
-	@Test(expected = UnknownArgForOptException.class)
-	public void loggerInvalidArg() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-l invalidArg -e someArg");
-	}
-
-	@Test(expected = BadArgCountException.class)
-	public void executeBadArgCount1() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-e someArg");
-	}
-
-	@Test(expected = DanglingArgumentsException.class)
-	public void danglingArgs() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("dangling1 -e someArg someArg2 dangling2");
-	}
-
-	@Test(expected = BadDirectoryException.class)
-	public void invalidDirRoot() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-r invalidDir -e someArg someArg2");
-	}
-
-	@Test(expected = BadDirectoryException.class)
-	public void invalidDirWtr() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-rtr invalidDir -e someArg someArg2");
-	}
-
-	@Test(expected = BadDirectoryException.class)
-	public void invalidDirRtr() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-rtr invalidDir -e someArg someArg2");
-	}
-
-	@Test(expected = BadFileException.class)
-	public void invalidFileSetup() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-s invalidFile");
-	}
-
-	@Test(expected = UnknownArgForOptException.class)
-	public void invalidLoggerValue() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-l invalidValue -e someArg someArg2");
-	}
-
-	@Test(expected = UnrecognizedOptionException.class)
-	public void invalidArgument() throws ParseException, IOException, InterruptedException {
-		TestUtils.runCli("-unknownArgument");
+	@Parameters
+	public static Collection<Object[]> getParameters() {
+		return Arrays
+				.asList("", "-s", "-s notExistingFile", "-wtr someArg", "-rtr someArg", "-rtr someArg -s someArg",
+						"-r someArg", "-l someArg", "-l invalidArg -e someArg", "-e someArg",
+						"dangling1 -e someArg someArg2 dangling2", "-r invalidDir -e someArg someArg2",
+						"-rtr invalidDir -e someArg someArg2", "-rtr invalidDir -e someArg someArg2", "-s invalidFile",
+						"-l invalidValue -e someArg someArg2", "-unknownArgument")
+				.stream().map(args -> new Object[] { args }).collect(Collectors.toList());
 	}
 }

@@ -61,7 +61,11 @@ public class Utils {
 
 	private static boolean isExecutedFromJar() {
 		String classFile = "hu/eltesoft/modelexecution/cli/ConsoleModelRunner.class";
-		return ClassLoader.getSystemResource(classFile).toString().startsWith("jar:");
+		URL resourcePath = ClassLoader.getSystemResource(classFile);
+		if (null == resourcePath) {
+			return false;
+		}
+		return resourcePath.toString().startsWith("jar:");
 	}
 
 	/*
