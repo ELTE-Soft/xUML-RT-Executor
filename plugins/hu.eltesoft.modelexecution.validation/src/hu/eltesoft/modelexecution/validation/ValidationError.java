@@ -105,7 +105,7 @@ public class ValidationError {
 		try {
 			marker = resource.createMarker(EValidator.MARKER);
 			marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
-			if (elements instanceof NamedElement) {
+			if (element instanceof NamedElement) {
 				String qualifiedName = ((NamedElement) element).getQualifiedName();
 				if (qualifiedName != null) {
 					marker.setAttribute(IMarker.LOCATION, qualifiedName);
