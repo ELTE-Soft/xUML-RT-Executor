@@ -209,6 +209,7 @@ public class ValidationRule {
 	}
 
 	private void doClear() {
+		// TODO: remove just the markers placed
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
 		validationErrors.clear();
 		for (Resource resource : modelSet.getResources()) {

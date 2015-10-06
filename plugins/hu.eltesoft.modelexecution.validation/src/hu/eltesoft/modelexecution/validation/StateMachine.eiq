@@ -231,8 +231,8 @@ pattern TransitionWithoutEvent(tr : Transition) {
 	neg find TransitionEvent(tr, _);
 }
 
-@Violation(message = "Class {cl} must contain the reception for {ev}", mark = { "tr" })
-pattern EventWithoutReception(tr : Transition, cl : Class, ev : Event) {
+@Violation(message = "Class {cl} must contain the reception for {sg}", mark = { "tr" })
+pattern EventWithoutReception(tr : Transition, cl : Class, sg : Signal) {
 	Transition.container(tr, rg);
 	Region.stateMachine(rg, sm);
 	Class.classifierBehavior(cl, sm);
