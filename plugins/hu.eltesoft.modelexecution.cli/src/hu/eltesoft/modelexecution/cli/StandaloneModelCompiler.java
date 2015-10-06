@@ -44,10 +44,6 @@ import hu.eltesoft.modelexecution.m2t.smap.xtend.SourceMappedText;
 
 public class StandaloneModelCompiler {
 
-	static final String ACTION_LANGUAGE_PATHMAP = "pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/";
-	static final String RALF_LIBRARY_PATHMAP = "pathmap://RALF/library.uml";
-	static final String XUMLRT_PROFILE_PATHMAP = "pathmap://XUMLRT_PROFILE/";
-
 	private ConsoleLogger logger;
 
 	public StandaloneModelCompiler(ConsoleLogger logger) {
