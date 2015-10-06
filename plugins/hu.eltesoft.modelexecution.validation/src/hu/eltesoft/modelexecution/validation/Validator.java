@@ -2,7 +2,13 @@ package hu.eltesoft.modelexecution.validation;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.IQuerySpecification;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
@@ -15,6 +21,7 @@ public class Validator {
 	private Set<ValidationRule> rules = new HashSet<>();
 
 	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
+	private static ModelSet modelSet;
 
 	static {
 		try {
@@ -28,6 +35,7 @@ public class Validator {
 	}
 
 	public static Validator create(Validator previous, ModelSet modelSet, IncQueryEngine engine) {
+		Validator.modelSet = modelSet;
 		if (previous != null) {
 			if (!previous.incremental) {
 				return previous;
@@ -88,13 +96,50 @@ public class Validator {
 	}
 
 	public void clear() {
-		for (ValidationRule rule : rules) {
-			rule.clear();
+		if (incremental) {
+			return;
+		}
+		doClear();
+	}
+
+	private void doClear() {
+		for (ValidationRule validationRule : rules) {
+			validationRule.clear();
+		}
+		forEachResource(modelSet, r -> r.deleteMarkers(EValidator.MARKER, true, IResource.DEPTH_INFINITE));
+	}
+
+	public static void forEachResource(ModelSet modelSet, ThrowingConsumer<IResource> action) {
+		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+		for (Resource resource : modelSet.getResources()) {
+			String platformString = resource.getURI().toPlatformString(true);
+			if (platformString != null) {
+				IResource res = workspace.findMember(platformString);
+				action.accept(res);
+			}
 		}
 	}
 
 	public boolean isValid() {
 		return rules.stream().allMatch(r -> r.isValid());
+	}
+	
+	@FunctionalInterface
+	public interface ThrowingConsumer<T> extends Consumer<T> {
+
+	    @Override
+	    default void accept(final T elem) {
+	        try {
+	            acceptThrows(elem);
+	        } catch (final Exception e) {
+	            /* Do whatever here ... */
+	            System.out.println("handling an exception...");
+	            throw new RuntimeException(e);
+	        }
+	    }
+
+	    void acceptThrows(T elem) throws Exception;
+
 	}
 
 }

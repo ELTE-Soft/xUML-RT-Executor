@@ -7,14 +7,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EValidator;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.api.IMatchUpdateListener;
@@ -25,9 +19,6 @@ import org.eclipse.incquery.runtime.api.IncQueryMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.annotations.PAnnotation;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 import hu.eltesoft.modelexecution.validation.utils.BaseValidator;
@@ -40,15 +31,15 @@ public class ValidationRule {
 	private static final String POST_CHECK_ATTRIBUTE = "post";
 
 	public static final Pattern KEY_PATTERN = Pattern.compile("\\{([a-zA-Z][a-zA-Z0-9_]*)\\}");
+	public static final String PATTERN_NAME = "PatternName";
 
 	private static final String VIOLATION_ANNOTATION = "Violation";
 
 	private IncQueryEngine engine;
 
 	private IMatchUpdateListener<IPatternMatch> updateListener;
-	private Multimap<URI, ValidationError> validationErrors = HashMultimap.create();
+	private int numErrors;
 
-	private ModelSet modelSet;
 	private boolean incremental;
 	private IQuerySpecification<?> spec;
 	private Collection<String> markedElements;
@@ -56,10 +47,12 @@ public class ValidationRule {
 	private Severity severity;
 	private IncQueryMatcher<? extends IPatternMatch> matcher;
 	private BaseValidator postCheck;
+	private static ModelSet modelSet;
 
 	public static ValidationRule create(IQuerySpecification<?> spec, ModelSet modelSet, IncQueryEngine engine,
 			boolean incremental) throws IncQueryException {
-		ValidationRule rule = new ValidationRule(spec, modelSet, engine, incremental);
+		ValidationRule.modelSet = modelSet;
+		ValidationRule rule = new ValidationRule(spec, engine, incremental);
 		if (!rule.initialize(spec)) {
 			return null;
 		}
@@ -69,10 +62,9 @@ public class ValidationRule {
 		return rule;
 	}
 
-	private ValidationRule(IQuerySpecification<?> spec, ModelSet modelSet, IncQueryEngine engine, boolean incremental)
+	private ValidationRule(IQuerySpecification<?> spec, IncQueryEngine engine, boolean incremental)
 			throws IncQueryException {
 		this.spec = spec;
-		this.modelSet = modelSet;
 		this.engine = engine;
 		this.matcher = spec.getMatcher(engine);
 		this.incremental = incremental;
@@ -128,7 +120,6 @@ public class ValidationRule {
 	}
 
 	public void dispose() {
-		clear();
 		AdvancedIncQueryEngine advEngine = AdvancedIncQueryEngine.from(engine);
 		advEngine.removeMatchUpdateListener(matcher, updateListener);
 	}
@@ -159,7 +150,10 @@ public class ValidationRule {
 
 	private void checkViolationConstraint() throws IncQueryException {
 		IncQueryMatcher<? extends IPatternMatch> matcher = spec.getMatcher(engine);
-		matcher.forEachMatch(m -> registerConstraintError(matcher, m));
+		matcher.forEachMatch(m -> {
+			++numErrors;
+			registerConstraintError(matcher, m);
+		});
 	}
 
 	private void registerConstraintError(IncQueryMatcher<? extends IPatternMatch> matcher, IPatternMatch match) {
@@ -168,15 +162,7 @@ public class ValidationRule {
 		}
 		List<EObject> elements = getMarked(match);
 		ValidationError error = new ValidationError(match, severity, message, elements);
-
-		LinkedList<EObject> toMark = new LinkedList<EObject>();
-		for (EObject element : elements) {
-			if (validationErrors.get(EcoreUtil.getURI(element)).isEmpty()) {
-				toMark.add(element);
-				validationErrors.put(EcoreUtil.getURI(element), error);
-			}
-		}
-		error.show(toMark);
+		error.show();
 	}
 
 	private List<EObject> getMarked(IPatternMatch match) {
@@ -201,32 +187,8 @@ public class ValidationRule {
 		}
 	}
 
-	public void clear() {
-		if (incremental) {
-			return;
-		}
-		doClear();
-	}
-
-	private void doClear() {
-		// TODO: remove just the markers placed
-		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
-		validationErrors.clear();
-		for (Resource resource : modelSet.getResources()) {
-			String platformString = resource.getURI().toPlatformString(true);
-			if (platformString != null) {
-				IResource res = workspace.findMember(platformString);
-				try {
-					res.deleteMarkers(EValidator.MARKER, true, IResource.DEPTH_INFINITE);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	public boolean isValid() {
-		return validationErrors.isEmpty();
+		return numErrors == 0;
 	}
 
 	public class ViolationPatternListener<Match extends IPatternMatch> implements IMatchUpdateListener<IPatternMatch> {
@@ -239,24 +201,33 @@ public class ValidationRule {
 
 		@Override
 		public void notifyAppearance(IPatternMatch match) {
+			++numErrors;
 			registerConstraintError(matcher, match);
 		}
 
 		@Override
 		public void notifyDisappearance(IPatternMatch match) {
+			--numErrors;
 			for (String mark : markedElements) {
 				removeValidationError(matcher, (EObject) match.get(mark));
 			}
 		}
 
 		private void removeValidationError(IncQueryMatcher<? extends IPatternMatch> matcher, EObject element) {
-			ValidationError removed = validationErrors.get(EcoreUtil.getURI(element)).iterator().next();
-			validationErrors.remove(EcoreUtil.getURI(element), removed);
-			if (validationErrors.get(EcoreUtil.getURI(element)).isEmpty() && removed != null) {
-				removed.remove();
-			}
+			Validator.forEachResource(modelSet, res -> {
+				String patternName = matcher.getSpecification().getFullyQualifiedName();
+				String uriString = EcoreUtil.getURI(element).toString();
+				IMarker marker = ValidationError.getMarker(res, uriString, patternName);
+				if (marker != null) {
+					marker.delete();
+				}
+			});
 		}
 
+	}
+
+	public void clear() {
+		numErrors = 0;
 	}
 
 }

@@ -1,6 +1,5 @@
 package hu.eltesoft.modelexecution.validation;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -52,10 +51,6 @@ public class ValidationError {
 		return Objects.hash(elements, messageFormat);
 	}
 
-	public String getName() {
-		return match.patternName();
-	}
-
 	private String formatMessage() {
 		matcher.reset();
 		StringBuffer sb = new StringBuffer();
@@ -83,7 +78,7 @@ public class ValidationError {
 		return elements.equals(other.elements) && messageFormat.equals(other.messageFormat);
 	}
 
-	public void show(LinkedList<EObject> toMark) {
+	public void show() {
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
 		String platformString = elements.get(0).eResource().getURI().toPlatformString(true);
 		IResource resource = null;
@@ -94,17 +89,21 @@ public class ValidationError {
 			return;
 		}
 		for (EObject element : elements) {
-			markElement(toMark, resource, element);
+			markElement(resource, element);
 		}
 	}
 
-	private void markElement(LinkedList<EObject> toMark, IResource resource, EObject element) {
-		if (!toMark.contains(element)) {
-			return;
-		}
+	private void markElement(IResource resource, EObject element) {
 		try {
+			String uriString = EcoreUtil.getURI(element).toString();
+			String patternName = match.specification().getFullyQualifiedName();
+			IMarker existing = getMarker(resource, uriString, patternName);
+			if (existing != null) {
+				return;
+			}
 			marker = resource.createMarker(EValidator.MARKER);
 			marker.setAttribute(IMarker.SEVERITY, severity.getSeverityCode());
+			marker.setAttribute(ValidationRule.PATTERN_NAME, patternName);
 			if (element instanceof NamedElement) {
 				String qualifiedName = ((NamedElement) element).getQualifiedName();
 				if (qualifiedName != null) {
@@ -112,10 +111,21 @@ public class ValidationError {
 				}
 			}
 			marker.setAttribute(IMarker.MESSAGE, formatMessage());
-			marker.setAttribute(EValidator.URI_ATTRIBUTE, EcoreUtil.getURI(element).toString());
+			marker.setAttribute(EValidator.URI_ATTRIBUTE, uriString);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static IMarker getMarker(IResource resource, String uriString, String patternName) throws CoreException {
+		IMarker[] existingMarkers = resource.findMarkers(EValidator.MARKER, true, IResource.DEPTH_INFINITE);
+		for (IMarker existing : existingMarkers) {
+			if (uriString.equals(existing.getAttribute(EValidator.URI_ATTRIBUTE, ""))
+					&& patternName.equals(existing.getAttribute(ValidationRule.PATTERN_NAME, ""))) {
+				return existing;
+			}
+		}
+		return null;
 	}
 
 	public void remove() {
