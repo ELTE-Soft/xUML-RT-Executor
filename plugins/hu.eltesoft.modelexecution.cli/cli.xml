@@ -21,9 +21,11 @@
 			<unpack>true</unpack>
 			<scope>provided</scope>
 			<excludes>
+				<exclude>com.google.guava:*</exclude>
 				<exclude>org.apache.maven:*</exclude>
 				<exclude>org.codehaus.*:*</exclude>
 				<exclude>org.eclipse.incquery:incquery-maven-plugin</exclude>
+				<exclude>org.eclipse.sisu:*</exclude>
 				<exclude>org.sonatype.*:*</exclude>
 			</excludes>
 		</dependencySet>
