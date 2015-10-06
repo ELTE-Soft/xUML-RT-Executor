@@ -13,6 +13,10 @@ import hu.eltesoft.modelexecution.cli.exceptions.CliRuntimeException;
 
 public class Registry {
 
+	static final String ACTION_LANGUAGE_PATHMAP = "pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/";
+	static final String RALF_LIBRARY_PATHMAP = "pathmap://RALF/library.uml";
+	static final String XUMLRT_PROFILE_PATHMAP = "pathmap://XUMLRT_PROFILE/";
+	
 	static void registerReducedAlfLanguage() {
 		Map<String, Object> extMap = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		extMap.putIfAbsent("ecore", new org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl());
@@ -33,13 +37,13 @@ public class Registry {
 		uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
 		uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
 	
-		uriMap.put(URI.createURI(StandaloneModelCompiler.ACTION_LANGUAGE_PATHMAP),
+		uriMap.put(URI.createURI(ACTION_LANGUAGE_PATHMAP),
 				uri.appendSegment("resources").appendSegment("action-language-profile").appendSegment(""));
 	
-		uriMap.put(URI.createURI(StandaloneModelCompiler.RALF_LIBRARY_PATHMAP),
+		uriMap.put(URI.createURI(RALF_LIBRARY_PATHMAP),
 				uri.appendSegment("model").appendSegment("collections").appendSegment("collections.uml"));
 	
-		uriMap.put(URI.createURI(StandaloneModelCompiler.XUMLRT_PROFILE_PATHMAP), uri.appendSegment("profile").appendSegment(""));
+		uriMap.put(URI.createURI(XUMLRT_PROFILE_PATHMAP), uri.appendSegment("profile").appendSegment(""));
 	}
 
 	static void registerPathMaps(ModelSet modelSet) {

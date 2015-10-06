@@ -4,8 +4,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.function.BiFunction;
+
+import com.google.common.collect.HashMultiset;
 
 import hu.eltesoft.modelexecution.runtime.BaseRuntime;
 import hu.eltesoft.modelexecution.runtime.validation.EmptyValueError;
@@ -355,10 +358,33 @@ public class PrimitiveOperations {
 		return true;
 	}
 
-	public static <SourceType, TargetType, C1 extends Collection<SourceType>, C2 extends Collection<TargetType>> C2 cast(
-			Class<TargetType> targetType, C1 sourceExpression) {
-		@SuppressWarnings("unchecked")
-		C2 result = (C2) CollectionOperations.factoryOf(sourceExpression, targetType).get();
+	public static <SourceType, TargetType> ArrayList<TargetType> cast(Class<TargetType> targetType,
+			ArrayList<SourceType> sourceExpression) {
+		ArrayList<TargetType> result = new ArrayList<>();
+		for (SourceType item : sourceExpression) {
+			TargetType newItem = safeCast(targetType, item);
+			if (null != newItem) {
+				result.add(newItem);
+			}
+		}
+		return result;
+	}
+
+	public static <SourceType, TargetType> HashSet<TargetType> cast(Class<TargetType> targetType,
+			HashSet<SourceType> sourceExpression) {
+		HashSet<TargetType> result = new HashSet<>();
+		for (SourceType item : sourceExpression) {
+			TargetType newItem = safeCast(targetType, item);
+			if (null != newItem) {
+				result.add(newItem);
+			}
+		}
+		return result;
+	}
+
+	public static <SourceType, TargetType> HashMultiset<TargetType> cast(Class<TargetType> targetType,
+			HashMultiset<SourceType> sourceExpression) {
+		HashMultiset<TargetType> result = HashMultiset.create();
 		for (SourceType item : sourceExpression) {
 			TargetType newItem = safeCast(targetType, item);
 			if (null != newItem) {

@@ -1,12 +1,16 @@
 package hu.eltesoft.modelexecution.runtime.library;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 import org.junit.Test;
+
+import com.google.common.collect.HashMultiset;
 
 public class PrimitiveOperationsTest {
 
@@ -19,7 +23,7 @@ public class PrimitiveOperationsTest {
 		assertEquals(42, lhs.get(0).intValue());
 		assertEquals(42, ret.get(0).intValue());
 	}
-	
+
 	@Test
 	public void testSetValue() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -30,7 +34,19 @@ public class PrimitiveOperationsTest {
 		assertEquals(42, lhs.get(0).intValue());
 		assertEquals(42, ret.get(0).intValue());
 	}
-	
+
+	@Test
+	public void testSetValueSelf() throws Exception {
+		ArrayList<BigInteger> lhs = new ArrayList<>();
+		lhs.add(new BigInteger("42"));
+		ArrayList<BigInteger> rhs = lhs;
+		ArrayList<BigInteger> ret = PrimitiveOperations.setValue(lhs, rhs);
+		assertFalse(lhs.isEmpty());
+		assertFalse(ret.isEmpty());
+		assertEquals(42, lhs.get(0).intValue());
+		assertEquals(42, ret.get(0).intValue());
+	}
+
 	@Test
 	public void testSetValue_ordered() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -41,7 +57,7 @@ public class PrimitiveOperationsTest {
 		assertEquals(42, lhs.iterator().next().intValue());
 		assertEquals(42, ret.iterator().next().intValue());
 	}
-	
+
 	@Test
 	public void testIntegerPrefixIncrement() throws Exception {
 		ArrayList<BigInteger> val = new ArrayList<>();
@@ -50,7 +66,7 @@ public class PrimitiveOperationsTest {
 		assertEquals(43, ret.get(0).intValue());
 		assertEquals(43, val.get(0).intValue());
 	}
-	
+
 	@Test
 	public void testIntegerPrefixDecrement() throws Exception {
 		ArrayList<BigInteger> val = new ArrayList<>();
@@ -68,7 +84,7 @@ public class PrimitiveOperationsTest {
 		assertEquals(42, ret.get(0).intValue());
 		assertEquals(43, val.get(0).intValue());
 	}
-	
+
 	@Test
 	public void testIntegerPostfixDecrement() throws Exception {
 		ArrayList<BigInteger> val = new ArrayList<>();
@@ -77,7 +93,7 @@ public class PrimitiveOperationsTest {
 		assertEquals(42, ret.get(0).intValue());
 		assertEquals(41, val.get(0).intValue());
 	}
-	
+
 	@Test
 	public void testValueEquality_true() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -87,7 +103,7 @@ public class PrimitiveOperationsTest {
 		ArrayList<Boolean> eq = PrimitiveOperations.valueEquality(lhs, rhs);
 		assertEquals(true, eq.get(0));
 	}
-	
+
 	@Test
 	public void testValueEquality_false() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -97,7 +113,7 @@ public class PrimitiveOperationsTest {
 		ArrayList<Boolean> eq = PrimitiveOperations.valueEquality(lhs, rhs);
 		assertEquals(false, eq.get(0));
 	}
-	
+
 	@Test
 	public void testReferenceEquality_true() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -108,7 +124,7 @@ public class PrimitiveOperationsTest {
 		ArrayList<Boolean> eq = PrimitiveOperations.referenceEquality(lhs, rhs);
 		assertEquals(true, eq.get(0));
 	}
-	
+
 	@Test
 	public void testReferenceEquality_false() throws Exception {
 		ArrayList<BigInteger> rhs = new ArrayList<>();
@@ -117,5 +133,18 @@ public class PrimitiveOperationsTest {
 		lhs.add(new BigInteger("42"));
 		ArrayList<Boolean> eq = PrimitiveOperations.referenceEquality(lhs, rhs);
 		assertEquals(false, eq.get(0));
+	}
+
+	@Test
+	public void testSafeCast() throws Exception {
+		HashMultiset<A> as = HashMultiset.create(Arrays.asList(new B(), new A(), new B(), new A(), new B()));
+		HashMultiset<B> bs = PrimitiveOperations.cast(B.class, as);
+		assertEquals(3, bs.size()); // null values are filtered
+	}
+
+	private static class A {
+	}
+
+	private static class B extends A {
 	}
 }

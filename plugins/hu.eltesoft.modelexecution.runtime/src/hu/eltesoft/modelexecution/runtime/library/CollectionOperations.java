@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.HashMultiset;
 
@@ -66,44 +64,43 @@ public final class CollectionOperations {
 	}
 
 	/**
-	 * Returns filtered elements while preserving the container type. The
-	 * predicate works on wrapped values.
+	 * Returns filtered elements. The predicate works on wrapped values.
 	 */
-	public static <E, C extends Collection<E>> C filter(C collection, Predicate<ArrayList<E>> predicate) {
-		return collection.stream().filter(e -> predicate.test(PrimitiveOperations.wrap(e)))
-				.collect(Collectors.toCollection(factoryOf(collection)));
+	public static <E> ArrayList<E> filter(ArrayList<E> collection, Predicate<ArrayList<E>> predicate) {
+		ArrayList<E> result = new ArrayList<>();
+		for (E item : collection) {
+			if (predicate.test(PrimitiveOperations.wrap(item))) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <E, C extends Collection<E>> Supplier<C> factoryOf(C collection) {
-		if (collection instanceof ArrayList<?>) {
-			return () -> (C) new ArrayList<E>();
-		} else if (collection instanceof HashSet<?>) {
-			return () -> (C) new HashSet<E>();
-		} else if (collection instanceof HashMultiset<?>) {
-			return () -> (C) HashMultiset.create();
+	public static <E> HashSet<E> filter(HashSet<E> collection, Predicate<ArrayList<E>> predicate) {
+		HashSet<E> result = new HashSet<>();
+		for (E item : collection) {
+			if (predicate.test(PrimitiveOperations.wrap(item))) {
+				result.add(item);
+			}
 		}
-		return null;
+		return result;
 	}
 
-	public static <E, C extends Collection<?>> Supplier<? extends Collection<E>> factoryOf(C collection,
-			Class<E> newItemType) {
-		if (collection instanceof ArrayList<?>) {
-			return ArrayList::new;
-		} else if (collection instanceof HashSet<?>) {
-			return HashSet::new;
-		} else if (collection instanceof HashMultiset<?>) {
-			return HashMultiset::create;
+	public static <E> HashMultiset<E> filter(HashMultiset<E> collection, Predicate<ArrayList<E>> predicate) {
+		HashMultiset<E> result = HashMultiset.create();
+		for (E item : collection) {
+			if (predicate.test(PrimitiveOperations.wrap(item))) {
+				result.add(item);
+			}
 		}
-		return null;
+		return result;
 	}
 
 	public static <E, C extends Collection<E>> ArrayList<Boolean> add(C collection, ArrayList<E> newItem) {
 		return PrimitiveOperations.wrap(collection.add(PrimitiveOperations.unwrap(newItem)));
 	}
 
-	public static <E, C extends Collection<E>, C2 extends Collection<E>> ArrayList<Boolean> addAll(C collection,
-			C2 newItems) {
+	public static <E> ArrayList<Boolean> addAll(Collection<E> collection, Collection<E> newItems) {
 		return PrimitiveOperations.wrap(collection.addAll(newItems));
 	}
 
