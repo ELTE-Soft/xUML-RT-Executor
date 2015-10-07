@@ -23,7 +23,7 @@ public class HelpTest {
 		String stdOut = output.getKey();
 
 		// it will always be started from a jar, hence the runner name
-		assertThat("Help message contains executable name", stdOut, containsString(TestUtils.runnerName));
+		assertThat("Help message contains executable name", stdOut, containsString(TestUtils.JAR_NAME));
 
 		for (Opt opt : Opt.values()) {
 			String optShortName = "-" + opt.shortName;

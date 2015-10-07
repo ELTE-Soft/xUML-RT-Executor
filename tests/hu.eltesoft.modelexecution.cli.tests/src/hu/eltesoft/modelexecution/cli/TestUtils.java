@@ -15,10 +15,32 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.cli.ParseException;
 
 public class TestUtils {
-	static String version = "0.7.0";
-	static String fullVersion = version + "-SNAPSHOT.jar";
-	static String runnerName = "xumlrt-executor-cli-" + fullVersion;
-	static Path runnerPath = Paths.get("..", "..", "plugins", "hu.eltesoft.modelexecution.cli", "target", runnerName);
+	static final String VERSION = "0.7.0";
+	static final String FULL_VERSION = VERSION + "-SNAPSHOT.jar";
+	static final String JAR_NAME = "xumlrt-executor-cli-" + FULL_VERSION;
+	static final Path JAR_PATH = Paths.get("..", "..", "plugins", "hu.eltesoft.modelexecution.cli", "target", JAR_NAME);
+
+	static final String JACOCO_ARG_PREFIX = "-javaagent:";
+	static final String JACOCO_DEST_FILE_FORMAT = "=destfile=target/jacoco-run%d.exec";
+
+	static int runCounter = 0;
+
+	static String nextJacocoArgs() {
+		String jacocoVersion = System.getProperty("jacoco.version");
+		if (null == jacocoVersion) {
+			return "";
+		}
+
+		String mavenLocalRepository = System.getProperty("maven.localRepository");
+		if (null == mavenLocalRepository) {
+			return "";
+		}
+
+		Path jacocoRelativeJar = Paths.get("org", "jacoco", "org.jacoco.agent", jacocoVersion,
+				"org.jacoco.agent-" + jacocoVersion + "-runtime.jar");
+		String jacocoAbsoluteJar = Paths.get(mavenLocalRepository, jacocoRelativeJar.toString()).toString();
+		return JACOCO_ARG_PREFIX + jacocoAbsoluteJar + String.format(JACOCO_DEST_FILE_FORMAT, runCounter++);
+	}
 
 	/*
 	 * Executes the CLI.
@@ -63,7 +85,14 @@ public class TestUtils {
 
 	private static List<String> makeProcArgs(String... args) {
 		List<String> procArgs = new ArrayList<>();
-		addAllTo(procArgs, new String[] { "java", "-jar", runnerPath.toAbsolutePath().toString() });
+		addAllTo(procArgs, new String[] { "java" });
+
+		String jacocoArgs = nextJacocoArgs();
+		if (!jacocoArgs.isEmpty()) {
+			procArgs.add(jacocoArgs);
+		}
+
+		addAllTo(procArgs, new String[] { "-jar", JAR_PATH.toAbsolutePath().toString() });
 		addAllTo(procArgs, args);
 		return procArgs;
 	}
