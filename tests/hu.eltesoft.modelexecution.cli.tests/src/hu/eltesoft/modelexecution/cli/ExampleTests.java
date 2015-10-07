@@ -15,9 +15,17 @@ public class ExampleTests extends ModelBasedTests {
 	private static final Path EXAMPLE_MODELS_DIR = Paths.get("..", "..", "plugins",
 			"hu.eltesoft.modelexecution.examples", "resources");
 
+	// fields of a single item:
+	// - main class name (same as file name without extension)
+	// - main function name
+	// - whether it is a terminating model
 	private static final List<Object[]> MODELS_AND_FUNCTIONS = ImmutableList.<Object[]> builder()
-			.add(new Object[] { "HelloWorld", "run", true }).add(new Object[] { "Loop", "feed", false })
-			.add(new Object[] { "Machine", "feed", true }).add(new Object[] { "Phone", "feed", false }).build();
+			.add(new Object[] { "HelloWorld", "run", true }).add(new Object[] { "Machine", "feed", true }).build();
+
+	// WARNING: do not run non-terminating models, as unfortunately it is not
+	// guaranteed now that the process gets killed by invoking destroyForcibly
+	// .add(new Object[] { "Loop", "feed", false })
+	// .add(new Object[] { "Phone", "feed", false })
 
 	@Parameters(name = "{1}")
 	public static Collection<Object[]> getParameters() {

@@ -1,8 +1,7 @@
 package hu.eltesoft.modelexecution.cli;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +36,8 @@ public abstract class ModelBasedTests {
 	@Parameter(3)
 	public boolean isTerminating;
 
-	private File srcFolder;
-	private File buildFolder;
+	protected File srcFolder;
+	protected File buildFolder;
 
 	@Before
 	public void before() throws IOException {
@@ -66,18 +65,18 @@ public abstract class ModelBasedTests {
 			TestUtils.runCli(10 * 60, "-s", modelPath, "-r", modelDir);
 		});
 		// standard error and output are both empty
-		assertTrue("Standard output after compilation must be empty", output.getKey().isEmpty());
-		assertTrue("Standard error after compilation must be empty", output.getValue().isEmpty());
+		assertEquals("Standard output after compilation must be empty", "", output.getKey());
+		assertEquals("Standard error after compilation must be empty", "", output.getValue());
 
 		output = TestUtils.withRedirectedIO(() -> {
 			boolean terminated = TestUtils.runCli(10, "-e", mainClass, mainFunction, "-r", modelDir);
 			assertEquals("Termination property failed by timeout", isTerminating, terminated);
 		});
 		// standard error must not be empty
-		assertFalse("Standard error after compilation must not be empty", output.getValue().isEmpty());
+		assertNotEquals("Standard error after compilation must not be empty", "", output.getValue());
 		boolean containsTerminationLog = output.getValue().contains("INFO: Execution terminated successfully");
 		assertEquals("Termination property failed by logging", isTerminating, containsTerminationLog);
 		// standard output must be empty
-		assertTrue("Standard output after compilation must be empty", output.getKey().isEmpty());
+		assertEquals("Standard output after compilation must be empty", "", output.getKey());
 	}
 }

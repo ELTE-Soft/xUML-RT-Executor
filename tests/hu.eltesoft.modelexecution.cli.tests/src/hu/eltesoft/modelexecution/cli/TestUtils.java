@@ -37,7 +37,16 @@ public class TestUtils {
 		// underlying file descriptors, not the streams.
 		inheritStreamIO(process.getInputStream(), System.out);
 		inheritStreamIO(process.getErrorStream(), System.err);
-		return process.waitFor(timeout, TimeUnit.SECONDS);
+		boolean finished = false;
+		try {
+			finished = process.waitFor(timeout, TimeUnit.SECONDS);
+		} finally {
+			if (!finished) {
+				process.destroyForcibly();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static void inheritStreamIO(final InputStream src, final PrintStream dest) {
