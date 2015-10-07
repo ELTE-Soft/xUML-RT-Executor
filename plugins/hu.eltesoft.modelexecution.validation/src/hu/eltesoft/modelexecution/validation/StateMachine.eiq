@@ -140,6 +140,22 @@ pattern StateRedefineAnother(st : State) {
 	State.redefinedState(st, _);
 }
 
+@Violation(message = "Unreachable state", mark = { "st" })
+pattern UnreachableState(st : State) {
+	State.container(st, rg);
+	find InitialState(rg, init);
+	neg find ReachableState(init, st);
+}
+
+private pattern ReachableState(from : Vertex, to : Vertex) {
+	find TransitionStep+(from, to);
+}
+
+private pattern TransitionStep(from : Vertex, to : Vertex) {
+	Transition.source(tr, from);
+	Transition.target(tr, to);
+}
+
 ///////////////////
 // initial state
 ///////////////////

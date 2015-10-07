@@ -11,4 +11,7 @@
   <extension id="hu.eltesoft.modelexecution.validation.ExternalEntity" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.ExternalEntity" id="hu.eltesoft.modelexecution.validation.ExternalEntity"/>
   </extension>
+  <extension id="hu.eltesoft.modelexecution.validation.StateMachine" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.StateMachine" id="hu.eltesoft.modelexecution.validation.StateMachine"/>
+  </extension>
 </plugin>
