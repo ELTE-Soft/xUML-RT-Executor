@@ -141,6 +141,15 @@ pattern NonDatatypeProperty(pr : Property) {
 	neg find DataType(ty);
 }
 
+@Violation(message = "A property must have a type", mark = { "pr" })
+pattern PropertyWithoutType(pr : Property) {
+	neg find PropertyType(pr, _);
+}
+
+private pattern PropertyType(pr : Property, t) {
+	Property.type(pr, t);
+}
+
 private pattern DataType(dt : DataType) {
 	DataType(dt);
 }
@@ -231,14 +240,6 @@ pattern ReturnTypeMultiplicity(param : Parameter) {
 pattern AbstractOperationWithMethod(op : Operation) {
 	Operation.isAbstract(op, true);
 	Operation.method(op, _);
-}
-
-
-@Violation(message = "Parameters of the operation must be the same as the redefined operation {redefined}", 
-	mark = { "op" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
-)
-pattern RedefinedAndRedefiningParametersMustBeTheSame(redefined : Operation, op : Operation) {
-	Operation.redefinedOperation(op, redefined);
 }
 
 @Violation(message = "Redefining operation must have the same name as the redefined", mark = { "op" })
@@ -395,13 +396,6 @@ private pattern SMEffect(me : OpaqueBehavior) {
 	Transition.effect(_, me);
 }
 
-@Violation(message = "Parameters of the method must be the same as its specification {op}", 
-	mark = { "method" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
-)
-pattern OperationAndMethodParametersMustBeTheSame(op : Operation, method : Behavior) {
-	find Method(_, op, method);
-}
-
 @Violation(message = "Method cannot have classifier behavior", mark = { "me" })
 pattern MethodClassifierBehavior(me : OpaqueBehavior) {
 	OpaqueBehavior.classifierBehavior(me, _);
@@ -454,6 +448,15 @@ pattern MultiReturns(bf : BehavioralFeature, pm1 : Parameter, pm2 : Parameter) {
 	Parameter.direction(pm1, ::^return);
 	Parameter.direction(pm2, ::^return);
 	pm1 != pm2;
+}
+
+@Violation(message = "A parameter must have a type", mark = { "pm" })
+pattern ParameterWithoutType(pm : Parameter) {
+	neg find ParameterType(pm, _);
+}
+
+private pattern ParameterType(pm : Parameter, t) {
+	Parameter.type(pm, t);
 }
 
 @Violation(message = "Parameters effect must be create", mark = { "pm" })
@@ -543,6 +546,7 @@ pattern AssociationElement(elem : Element) {
 //////////////////////////////
 @Violation(message = "Reception without signal", mark = { "rc" })
 pattern ReceptionWithoutSignal(rc : Reception) {
+	Reception(rc);
 	neg find ReceptionSignal(rc, _);
 }
 
@@ -554,6 +558,14 @@ private pattern ReceptionSignal(rc : Reception, sg : Signal) {
 pattern ReceptionAbstract(rc : Reception) {
 	Reception.isAbstract(rc, true);
 }
+
+@Violation(message = "Reception parameters must have 'in' direction", mark = { "param" })
+pattern ReceptionParameterNotIn(param : Parameter) {
+	Reception.ownedParameter(_, param);
+	Parameter.direction(param, dir);
+	dir != ParameterDirectionKind::in;
+}
+
 
 @Violation(message = "Static receptions are not supported", mark = { "rc" })
 pattern ReceptionStatic(rc : Reception) {
@@ -580,13 +592,6 @@ pattern ReceptionNonPublic(rc : Reception) {
 pattern ReceptionElement(elem : Element) {
 	Reception.ownedElement(_, elem);
 	neg find Parameter(elem);
-}
-
-@Violation(message = "Reception parameters must be the same as their signals",
-	mark = { "rc" }, post = "hu.eltesoft.modelexecution.validation.utils.ParameterValidator"
-)
-pattern ReceptionParameters(rc : Reception, sg : Signal) {
-	find ReceptionSignal(rc, sg);
 }
 
 

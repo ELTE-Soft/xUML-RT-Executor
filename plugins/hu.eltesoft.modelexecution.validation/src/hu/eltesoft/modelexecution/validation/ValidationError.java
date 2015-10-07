@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
-import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.NamedElement;
 
 public class ValidationError {

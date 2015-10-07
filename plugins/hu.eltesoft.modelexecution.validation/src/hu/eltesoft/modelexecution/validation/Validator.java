@@ -33,6 +33,7 @@ public class Validator {
 			queries.add(ClassValidation.instance());
 			queries.add(ExternalEntity.instance());
 			queries.add(StateMachine.instance());
+			queries.add(ParameterChecks.instance());
 		} catch (IncQueryException e) {
 			e.printStackTrace();
 		}
