@@ -29,7 +29,6 @@ public class SystemTests extends ModelBasedTests {
 
 	private static final String TESTER_UML_FILE_NAME = "Tester.uml";
 
-	private static final Path CI_SYSTEM_MODELS_DIR = Paths.get("..", "..", "testing", "TestModels");
 	private static final Path TRUNK_SYSTEM_MODELS_DIR = Paths.get("..", "..", "..", "testing", "TestModels");
 	private static final Path BRANCH_SYSTEM_MODELS_DIR = Paths.get("..", "..", "..", "..", "testing", "TestModels");
 
@@ -62,10 +61,9 @@ public class SystemTests extends ModelBasedTests {
 
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> getParameters() {
-		File ciDir = CI_SYSTEM_MODELS_DIR.toFile();
 		File trunkDir = TRUNK_SYSTEM_MODELS_DIR.toFile();
 		File branchDir = BRANCH_SYSTEM_MODELS_DIR.toFile();
-		systemModelsDir = ciDir.exists() ? ciDir : (trunkDir.exists() ? trunkDir : branchDir);
+		systemModelsDir = trunkDir.exists() ? trunkDir : branchDir;
 
 		Stream<File> umlFiles = Arrays.stream(systemModelsDir.listFiles()).filter(file -> {
 			String name = file.getName();
