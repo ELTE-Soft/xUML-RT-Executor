@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
 
 public class BaseValidator {
@@ -18,9 +19,12 @@ public class BaseValidator {
 		for (String mark : marked) {
 			Object object = match.get(mark);
 			if (object instanceof EObject) {
-				URI uri = ((EObject) object).eResource().getURI();
-				if (uri != null) {
-					return !"pathmap".equals(uri.scheme());
+				Resource eResource = ((EObject) object).eResource();
+				if (eResource != null) {
+					URI uri = eResource.getURI();
+					if (uri != null) {
+						return !"pathmap".equals(uri.scheme());
+					}
 				}
 			}
 		}

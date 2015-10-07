@@ -4,9 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.IQuerySpecification;
@@ -114,25 +117,38 @@ public class Validator {
 		}
 	}
 
+	public static IMarker refreshMarkers(IResource resource, ModelSet modelSet) throws CoreException {
+		IMarker[] existingMarkers = resource.findMarkers(EValidator.MARKER, true, IResource.DEPTH_INFINITE);
+		for (IMarker existing : existingMarkers) {
+			if (!existing.exists()) {
+				continue;
+			}
+			if (null == modelSet.getEObject(URI.createURI(existing.getAttribute(EValidator.URI_ATTRIBUTE, "")), true)) {
+				existing.delete();
+			}
+		}
+		return null;
+	}
+
 	public boolean isValid() {
 		return rules.stream().allMatch(r -> r.isValid());
 	}
-	
+
 	@FunctionalInterface
 	public interface ThrowingConsumer<T> extends Consumer<T> {
 
-	    @Override
-	    default void accept(final T elem) {
-	        try {
-	            acceptThrows(elem);
-	        } catch (final Exception e) {
-	            /* Do whatever here ... */
-	            System.out.println("handling an exception...");
-	            throw new RuntimeException(e);
-	        }
-	    }
+		@Override
+		default void accept(final T elem) {
+			try {
+				acceptThrows(elem);
+			} catch (final Exception e) {
+				/* Do whatever here ... */
+				System.out.println("handling an exception...");
+				throw new RuntimeException(e);
+			}
+		}
 
-	    void acceptThrows(T elem) throws Exception;
+		void acceptThrows(T elem) throws Exception;
 
 	}
 

@@ -46,12 +46,11 @@ public class ValidationRule {
 	private Severity severity;
 	private IncQueryMatcher<? extends IPatternMatch> matcher;
 	private BaseValidator postCheck;
-	private static ModelSet modelSet;
+	private ModelSet modelSet;
 
 	public static ValidationRule create(IQuerySpecification<?> spec, ModelSet modelSet, IncQueryEngine engine,
 			boolean incremental) throws IncQueryException {
-		ValidationRule.modelSet = modelSet;
-		ValidationRule rule = new ValidationRule(spec, engine, incremental);
+		ValidationRule rule = new ValidationRule(spec, modelSet, engine, incremental);
 		if (!rule.initialize(spec)) {
 			return null;
 		}
@@ -61,9 +60,10 @@ public class ValidationRule {
 		return rule;
 	}
 
-	private ValidationRule(IQuerySpecification<?> spec, IncQueryEngine engine, boolean incremental)
+	private ValidationRule(IQuerySpecification<?> spec, ModelSet modelSet, IncQueryEngine engine, boolean incremental)
 			throws IncQueryException {
 		this.spec = spec;
+		this.modelSet = modelSet;
 		this.engine = engine;
 		this.matcher = spec.getMatcher(engine);
 	}
@@ -214,6 +214,8 @@ public class ValidationRule {
 				IMarker marker = ValidationError.getMarker(res, uriString, patternName);
 				if (marker != null) {
 					marker.delete();
+				} else {
+					Validator.refreshMarkers(res, modelSet);
 				}
 			});
 		}

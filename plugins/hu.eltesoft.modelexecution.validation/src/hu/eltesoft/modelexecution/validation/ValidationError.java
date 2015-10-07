@@ -11,8 +11,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.api.IPatternMatch;
+import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.eclipse.uml2.uml.NamedElement;
 
 public class ValidationError {
@@ -80,7 +82,11 @@ public class ValidationError {
 
 	public void show() {
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
-		String platformString = elements.get(0).eResource().getURI().toPlatformString(true);
+		Resource eResource = elements.get(0).eResource();
+		if (eResource == null) {
+			return;
+		}
+		String platformString = eResource.getURI().toPlatformString(true);
 		IResource resource = null;
 		if (platformString != null) {
 			resource = workspace.findMember(platformString);
@@ -120,6 +126,9 @@ public class ValidationError {
 	public static IMarker getMarker(IResource resource, String uriString, String patternName) throws CoreException {
 		IMarker[] existingMarkers = resource.findMarkers(EValidator.MARKER, true, IResource.DEPTH_INFINITE);
 		for (IMarker existing : existingMarkers) {
+			if (!existing.exists()) {
+				continue;
+			}
 			if (uriString.equals(existing.getAttribute(EValidator.URI_ATTRIBUTE, ""))
 					&& patternName.equals(existing.getAttribute(ValidationRule.PATTERN_NAME, ""))) {
 				return existing;
