@@ -40,7 +40,6 @@ public class ValidationRule {
 	private IMatchUpdateListener<IPatternMatch> updateListener;
 	private int numErrors;
 
-	private boolean incremental;
 	private IQuerySpecification<?> spec;
 	private Collection<String> markedElements;
 	private String message;
@@ -67,7 +66,6 @@ public class ValidationRule {
 		this.spec = spec;
 		this.engine = engine;
 		this.matcher = spec.getMatcher(engine);
-		this.incremental = incremental;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -138,9 +136,6 @@ public class ValidationRule {
 	}
 
 	public void validate() {
-		if (incremental) {
-			return;
-		}
 		try {
 			checkViolationConstraint();
 		} catch (IncQueryException e) {
@@ -151,7 +146,6 @@ public class ValidationRule {
 	private void checkViolationConstraint() throws IncQueryException {
 		IncQueryMatcher<? extends IPatternMatch> matcher = spec.getMatcher(engine);
 		matcher.forEachMatch(m -> {
-			++numErrors;
 			registerConstraintError(matcher, m);
 		});
 	}
@@ -160,6 +154,7 @@ public class ValidationRule {
 		if (!postCheck.check(match)) {
 			return;
 		}
+		++numErrors;
 		List<EObject> elements = getMarked(match);
 		ValidationError error = new ValidationError(match, severity, message, elements);
 		error.show();
@@ -201,7 +196,6 @@ public class ValidationRule {
 
 		@Override
 		public void notifyAppearance(IPatternMatch match) {
-			++numErrors;
 			registerConstraintError(matcher, match);
 		}
 

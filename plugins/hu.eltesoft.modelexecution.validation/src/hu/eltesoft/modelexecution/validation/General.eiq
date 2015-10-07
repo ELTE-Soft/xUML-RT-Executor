@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.validation
 
-import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
+import "http://www.eclipse.org/uml2/2.0.0/UML"
 
 import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClass
 import hu.eltesoft.modelexecution.uml.incquery.Operation

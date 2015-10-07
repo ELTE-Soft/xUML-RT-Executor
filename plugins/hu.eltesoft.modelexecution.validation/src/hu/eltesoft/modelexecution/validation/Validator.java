@@ -21,13 +21,14 @@ public class Validator {
 	private Set<ValidationRule> rules = new HashSet<>();
 
 	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
-	private static ModelSet modelSet;
+	private ModelSet modelSet;
 
 	static {
 		try {
 			queries.add(General.instance());
 			queries.add(Structure.instance());
 			queries.add(ClassValidation.instance());
+			queries.add(ExternalEntity.instance());
 			queries.add(StateMachine.instance());
 		} catch (IncQueryException e) {
 			e.printStackTrace();
@@ -35,7 +36,6 @@ public class Validator {
 	}
 
 	public static Validator create(Validator previous, ModelSet modelSet, IncQueryEngine engine) {
-		Validator.modelSet = modelSet;
 		if (previous != null) {
 			if (!previous.incremental) {
 				return previous;
@@ -66,6 +66,7 @@ public class Validator {
 	}
 
 	private Validator(ModelSet modelSet, IncQueryEngine engine, boolean incremental) throws IncQueryException {
+		this.modelSet = modelSet;
 		for (BaseGeneratedPatternGroup group : queries) {
 			for (IQuerySpecification<?> spec : group.getSpecifications()) {
 				ValidationRule rule = ValidationRule.create(spec, modelSet, engine, incremental);
@@ -96,13 +97,6 @@ public class Validator {
 	}
 
 	public void clear() {
-		if (incremental) {
-			return;
-		}
-		doClear();
-	}
-
-	private void doClear() {
 		for (ValidationRule validationRule : rules) {
 			validationRule.clear();
 		}

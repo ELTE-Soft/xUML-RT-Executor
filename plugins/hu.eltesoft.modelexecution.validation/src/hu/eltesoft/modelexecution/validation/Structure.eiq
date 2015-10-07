@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.validation
 
-import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
+import "http://www.eclipse.org/uml2/2.0.0/UML"
 
 import hu.eltesoft.modelexecution.uml.incquery.Cls
 import hu.eltesoft.modelexecution.uml.incquery.Event
@@ -50,15 +50,6 @@ pattern ModelViewpoint(md : Model) {
 /////////////////////////
 private pattern PackageImport(pi : PackageImport) {
 	PackageImport(pi);
-}
-
-@Violation(message = "Package import must reference the package to be imported", mark = { "pi" })
-pattern PackageImportWithoutImportedPackage(pi : PackageImport) {
-	neg find PackageImportPackage(pi, _);
-}
-
-private pattern PackageImportPackage(pi : PackageImport, imported : Package) {
-	PackageImport.importedPackage(pi, imported);
 }
 
 @Violation(message = "Package imports must be public", mark = { "pi" })

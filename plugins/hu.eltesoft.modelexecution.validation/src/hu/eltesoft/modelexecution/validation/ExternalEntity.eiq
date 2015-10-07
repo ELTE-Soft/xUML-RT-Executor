@@ -1,0 +1,151 @@
+package hu.eltesoft.modelexecution.validation
+
+import "platform:/resource/org.eclipse.uml2.uml/model/UML.ecore"
+import "http://modelexecution.eltesoft.hu/xumlrt/"
+
+//////////////////////////////
+// external entity
+//////////////////////////////
+private pattern ExternalEntity(base : Class, annot : ExternalEntity) {
+	ExternalEntity.base_Class(annot, base);
+}
+
+@Violation(message = "All operations of an external entity are static", mark = { "op" })
+pattern ExternalEntityOpNotStatic(op : Operation) {
+	find ExternalEntity(cls, _);
+	Class.ownedOperation(cls, op);
+	Operation.isStatic(op, false);
+}
+
+@Violation(message = "An external entity has no attributes", mark = { "attr" })
+pattern ExternalEntityAttribute(attr : Property) {
+	find ExternalEntity(cl, _);
+	Class.ownedAttribute(cl, attr);
+}
+
+@Violation(message = "Name of an external entity class must be a valid Java class name", mark = { "cl" })
+pattern ExternalEntityNameNotValid(cl : Class) {
+	find ExternalEntity(cl, _);
+	Class.name(cl, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Name of an operation on an external entity must be a valid Java method name", mark = { "op" })
+pattern ExternalEntityOperationNameNotValid(op : Operation) {
+	find ExternalEntity(cl, _);
+	Class.ownedOperation(cl, op);
+	Operation.name(op, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Type of a parameter on an external entity operation must be a primitive type, or a class with Callable stereotype applied", mark = { "pm" })
+pattern ExternalEntityOperationParameterTypeNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.type(pm, ty);
+	neg find PrimitiveType(ty);
+	neg find Callable(ty, _);
+}
+
+@Violation(message = "Only input parameters are accepted on an external entity operation", mark = { "pm" })
+pattern ExternalEntityOperationParameterMustBeIn(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.direction(pm, dir);
+	dir != ParameterDirectionKind::in;
+	dir != ParameterDirectionKind::^return;
+}
+
+@Violation(message = "Name of an operation parameter on an external entity must be a valid Java identifier", mark = { "pm" })
+pattern ExternalEntityOperationParameterNameNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.name(pm, name);
+	check(!Helpers.validJavaIdentifierName(name));
+}
+
+@Violation(message = "Multiplicity of an operation parameter on an external entity must be 1", mark = { "pm" })
+pattern ExternalEntityOperationParameterMultiplicityNotOne(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.lowerValue(pm, lower);
+	find _NumericValue(lower, lv);
+	check (lv != 1);
+} or {
+	find ExternalEntityOpParam(pm);
+	Parameter.upperValue(pm, upper);
+	find _NumericValue(upper, uv);
+	check (uv != 1);
+}
+
+@Violation(message = "External entity must be an abstract class", mark = { "cl" })
+pattern ExternalEntityMustBeAbstract(cl : Class) {
+	find ExternalEntity(cl, _);
+	Class.isAbstract(cl, false);
+}
+
+@Violation(message = "External entity operations must return nothing or a single primitive value", mark = { "pm" })
+pattern ExternalEntityOperationParameterReturnNotValid(pm : Parameter) {
+	find ExternalEntityOpParam(pm);
+	Parameter.direction(pm, ::^return);
+	Parameter.type(pm, typ);
+	neg find PrimitiveType(typ);
+}
+
+@Violation(message = "External entity cannot be the generalization of a class", mark = { "cl" })
+pattern ExternalEntityGeneralization(cl : Class) {
+	find ExternalEntity(cl, _);
+	find _Parent(cl, _);
+}
+
+@Violation(message = "External entity cannot be generalized", mark = { "cl" })
+pattern ExternalEntityGeneralized(cl : Class) {
+	find ExternalEntity(cl, _);
+	find _Parent(_, cl);
+}
+
+@Violation(message = "Two external entities cannot have the same name", mark = { "cl1", "cl2" })
+pattern ExternalEntitiesWithTheSameName(cl1 : Class, cl2 : Class) {
+	find ExternalEntity(cl1, _);
+	find ExternalEntity(cl2, _);
+	Class.name(cl1, name);
+	Class.name(cl2, name);
+	cl1 != cl2;
+}
+
+private pattern PrimitiveType(ty : PrimitiveType) {
+	PrimitiveType(ty);
+}
+
+private pattern ExternalEntityOpParam(pm : Parameter) {
+	find ExternalEntity(cl, _);
+	Class.ownedOperation(cl, op);
+	Operation.ownedParameter(op, pm);
+}
+
+private pattern Callable(base : Class, annot : Callable) {
+	Callable.base_Class(annot, base);
+}
+
+//// MOVED HERE from ClassValidation.eiq
+
+@Violation(message = "If the operation is not abstract it must have a method", mark = { "op" })
+pattern NonAbstractOperationWithoutMethod(op : Operation) {
+	Operation.isAbstract(op, false);
+	Operation.class(op, cls);
+	neg find ExternalEntity(cls, _);
+	neg find HasMethod(op);
+}
+
+private pattern HasMethod(op : Operation) {
+	Operation.method(op, _);
+}
+
+//// COPIED FROM queries.eiq
+
+private pattern _Parent(child : Class, parent : Class) {
+	Generalization.general(gen, parent);
+	Generalization.specific(gen, child);
+}
+
+private pattern _NumericValue(spec : ValueSpecification, value) {
+	LiteralInteger.value(spec, value);
+} or {
+	LiteralUnlimitedNatural.value(spec, value);
+}
