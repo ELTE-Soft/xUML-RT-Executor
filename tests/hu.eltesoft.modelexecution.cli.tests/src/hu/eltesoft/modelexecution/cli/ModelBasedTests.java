@@ -1,10 +1,11 @@
 package hu.eltesoft.modelexecution.cli;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.junit.After;
@@ -40,7 +41,7 @@ public abstract class ModelBasedTests {
 	protected File buildFolder;
 
 	@Before
-	public void before() throws IOException {
+	public void before() throws Throwable {
 		srcFolder = baseFolder.newFolder("src");
 		buildFolder = baseFolder.newFolder("build");
 
@@ -64,7 +65,6 @@ public abstract class ModelBasedTests {
 		SimpleEntry<String, String> output = TestUtils.withRedirectedIO(() -> {
 			TestUtils.runCli(10 * 60, "-s", modelPath, "-r", modelDir);
 		});
-		// standard error and output are both empty
 		assertEquals("Standard output after compilation must be empty", "", output.getKey());
 		assertEquals("Standard error after compilation must be empty", "", output.getValue());
 
@@ -72,11 +72,21 @@ public abstract class ModelBasedTests {
 			boolean terminated = TestUtils.runCli(10, "-e", mainClass, mainFunction, "-r", modelDir);
 			assertEquals("Termination property failed by timeout", isTerminating, terminated);
 		});
-		// standard error must not be empty
-		assertNotEquals("Standard error after compilation must not be empty", "", output.getValue());
+		checkSuccessfulTermination(output);
+		validateRunnerOutput(output);
+	}
+
+	private void checkSuccessfulTermination(SimpleEntry<String, String> output) {
 		boolean containsTerminationLog = output.getValue().contains("INFO: Execution terminated successfully");
-		assertEquals("Termination property failed by logging", isTerminating, containsTerminationLog);
-		// standard output must be empty
+		if (isTerminating) {
+			assertTrue("Log does not indicate successful termination", containsTerminationLog);
+		} else {
+			assertFalse("Log indicates termination for a non-terminating model", containsTerminationLog);
+		}
+	}
+
+	protected void validateRunnerOutput(SimpleEntry<String, String> output) {
+		assertNotEquals("Standard error after compilation must not be empty", "", output.getValue());
 		assertEquals("Standard output after compilation must be empty", "", output.getKey());
 	}
 }
