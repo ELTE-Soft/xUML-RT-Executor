@@ -20,7 +20,7 @@ public class HelpTest {
 	@Test
 	public void help() throws Exception {
 		SimpleEntry<String, String> output = TestUtils.withRedirectedIO(() -> {
-			TestUtils.runCli("-h");
+			TestUtils.runCli(2, "-h");
 		});
 
 		String stdOut = output.getKey();

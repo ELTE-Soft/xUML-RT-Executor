@@ -10,6 +10,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.cli.ParseException;
 
@@ -23,8 +24,10 @@ public class TestUtils {
 	 * Executes the CLI.
 	 * 
 	 * @param argsTxt Plays the role of the command line arguments.
+	 * 
+	 * @param timeout A runtime limit in seconds.
 	 */
-	public static void runCli(String... args) throws ParseException, IOException, InterruptedException {
+	public static boolean runCli(int timeout, String... args) throws ParseException, IOException, InterruptedException {
 		List<String> procArgs = makeProcArgs(args);
 
 		ProcessBuilder processBuilder = new ProcessBuilder(procArgs);
@@ -34,7 +37,7 @@ public class TestUtils {
 		// underlying file descriptors, not the streams.
 		inheritStreamIO(process.getInputStream(), System.out);
 		inheritStreamIO(process.getErrorStream(), System.err);
-		process.waitFor();
+		return process.waitFor(timeout, TimeUnit.SECONDS);
 	}
 
 	private static void inheritStreamIO(final InputStream src, final PrintStream dest) {
@@ -69,7 +72,7 @@ public class TestUtils {
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				ByteArrayOutputStream err = new ByteArrayOutputStream();
 				PrintStream newStdOut = new PrintStream(out);
-				PrintStream newStdErr = new PrintStream(err);) {
+				PrintStream newStdErr = new PrintStream(err)) {
 			System.setOut(newStdOut);
 			System.setErr(newStdErr);
 

@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ HelpTest.class, InvalidArgumentsExceptionsTests.class, InvalidArgumentTests.class,
-		ResourceBundleTests.class, ValidArgumentTests.class })
+@SuiteClasses({ ExampleTests.class, HelpTest.class, InvalidArgumentsExceptionsTests.class, InvalidArgumentTests.class,
+		ResourceBundleTests.class, SystemTests.class })
 public class AllTests {
 }
