@@ -53,7 +53,7 @@
 						<vmArgs>
 							<vmArg>-Dosgi.requiredJavaVersion=1.8</vmArg>
 							<vmArg>-Xmx1536m</vmArg>
-							<vmArg>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=target/jacoco.exec</vmArg>
+							<vmArg>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=../../jacoco.exec</vmArg>
 						</vmArgs>
 					</aut>
 				</configuration>
