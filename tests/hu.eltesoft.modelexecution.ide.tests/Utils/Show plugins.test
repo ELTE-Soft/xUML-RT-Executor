@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _ph6oIAqVEeWkm7lMnbRSaQ
 Runtime-Version: 2.0.0.201509132315
-Save-Time: 10/9/15 12:05 AM
+Save-Time: 10/9/15 12:12 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,7 +16,7 @@ Entry-Name: .content
 get-menu "Help/Installation Details" | click
 
 // Note: when the command line executes the tests, it is called "Eclipse Installation Details"
-global [val "inst-window-name" "Eclipse Installation Details"]
+global [val "inst-window-name" "Eclipse (Platform )?Installation Details"]
 
 with [get-window $inst-window-name] {
     get-tab-folder | get-tab-item "Plug-ins" | click
