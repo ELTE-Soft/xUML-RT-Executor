@@ -10,5 +10,5 @@ import hu.eltesoft.modelexecution.m2m.logic.registry.RootNameStorageTest;
 @RunWith(Suite.class)
 @SuiteClasses({ BatchResourceTranslatorTests.class, IncrementalResourceTranslatorTests.class,
 		UpgradedResourceTranslatorTests.class, ChangeRegistryTests.class, RootNameStorageTest.class })
-public class AllTests {
+public class UnitTests {
 }

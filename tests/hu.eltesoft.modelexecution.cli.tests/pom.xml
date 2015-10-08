@@ -11,4 +11,17 @@
 		<version>0.7.0-SNAPSHOT</version>
 		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
 	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<argLine>${tycho.testArgLine} -Dmaven.localRepository=${settings.localRepository} -Djacoco.version=${jacoco.version}</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
