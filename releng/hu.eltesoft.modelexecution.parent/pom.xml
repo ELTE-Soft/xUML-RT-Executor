@@ -29,15 +29,15 @@
 		<module>../../plugins/hu.eltesoft.modelexecution.uml.incquery/pom.xml</module>
 
 
-		<module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
+		<!-- <module>../../tests/hu.eltesoft.modelexecution.test.utils/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.cli.tests/pom.xml</module>
-		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module>
-		<!-- <module>../../tests/hu.eltesoft.modelexecution.ide.tests/pom.xml</module> -->
-		<module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.filemanager.tests/pom.xml</module> -->
+		<module>../../tests/hu.eltesoft.modelexecution.ide.tests/pom.xml</module>
+		<!-- <module>../../tests/hu.eltesoft.modelexecution.m2m.logic.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.java.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.emf.tests/pom.xml</module>
 		<module>../../tests/hu.eltesoft.modelexecution.m2t.smap.xtend.tests/pom.xml</module>
-		<module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module>
+		<module>../../tests/hu.eltesoft.modelexecution.runtime.tests/pom.xml</module> -->
 
 
 		<module>../../features/hu.eltesoft.modelexecution.feature/pom.xml</module>
@@ -55,7 +55,7 @@
 		<build-helper.version>1.7</build-helper.version>
 		<xtend.version>2.8.3</xtend.version>
 		<incquery.version>1.0.0</incquery.version>
-		<rcptt.version>2.0.0</rcptt.version>
+		<rcptt.version>2.0.1</rcptt.version>
 		<jacoco.version>0.7.4.201502262128</jacoco.version>
 	</properties>
 
