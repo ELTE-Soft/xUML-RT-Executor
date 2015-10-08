@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.ImmutableList;
 
-public class ExampleTests extends ModelBasedTests {
+public class ExampleModelTests extends ModelBasedTests {
 
 	private static final Path EXAMPLE_MODELS_DIR = Paths.get("..", "..", "plugins",
 			"hu.eltesoft.modelexecution.examples", "resources");

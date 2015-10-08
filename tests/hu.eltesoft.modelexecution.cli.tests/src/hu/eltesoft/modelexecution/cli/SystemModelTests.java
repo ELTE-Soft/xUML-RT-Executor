@@ -16,14 +16,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 
-public class SystemTests extends ModelBasedTests {
+public class SystemModelTests extends ModelBasedTests {
 
 	// TODO: maintain this list according to system tests
 	private static final Set<String> EXCLUDED_TESTS = ImmutableSet.<String> builder().add("AssociationClass").build();
