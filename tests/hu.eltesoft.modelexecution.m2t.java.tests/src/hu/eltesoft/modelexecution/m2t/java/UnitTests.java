@@ -28,5 +28,5 @@ import hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeTests;
 		ExternalEntityTests.class, InvocationTests.class, LifecycleTests.class, LiteralTests.class, OperatorTests.class,
 		SignalDataTests.class, StatementCompilerTests.class, CodeGenNodeBlockTests.class,
 		CodeGenNodeExtensonsTests.class, CodeGenNodeSmapTests.class, CodeGenNodeTests.class })
-public class AllTests {
+public class UnitTests {
 }

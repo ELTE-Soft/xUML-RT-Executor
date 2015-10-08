@@ -6,5 +6,5 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ SmapStringConcatenationTest.class, SourceMappedTemplateTest.class, SourceMappedTextTest.class })
-public class AllTests {
+public class UnitTests {
 }

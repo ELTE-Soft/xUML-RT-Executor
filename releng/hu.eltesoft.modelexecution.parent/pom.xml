@@ -147,7 +147,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<test>AllTests</test>
+					<includes>**/UnitTests.java</includes>
 				</configuration>
 			</plugin>
 			<plugin>
