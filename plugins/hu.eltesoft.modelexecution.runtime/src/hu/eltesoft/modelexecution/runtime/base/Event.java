@@ -11,7 +11,7 @@ import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
 public abstract class Event implements JSONSerializable, Comparable<Event> {
 
 	public enum Priority {
-		NORMAL, HIGH
+		HIGH, NORMAL
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class SignalEvent extends Event {
 			return false;
 		}
 		SignalEvent other = (SignalEvent) obj;
-		return signal.equals(other.signal);
+		return priority.equals(other.priority) && signal.equals(other.signal);
 	}
 
 }

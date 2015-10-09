@@ -6,6 +6,7 @@ import hu.eltesoft.modelexecution.runtime.library.CollectionOperations
 import org.junit.Test
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+import hu.eltesoft.modelexecution.runtime.base.Event
 
 class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
@@ -128,13 +129,20 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 	def sendNewSignalToNewObject() {
 		assertCompilesTo('''send new S() to new B();''',
 			"_9SdsIEDoEeWCNoKXHvCpUQ" -> fun("create", "i -> i._LAXgUEHKEeWzwYgcaM4qwA()") ->
-				fun("send", "new " <> SignalEvent.canonicalName <> paren("new " <> fun("_47IQsEGyEeWzwYgcaM4qwA"))))
+				fun("send",
+					"new " <> SignalEvent.canonicalName <>
+						paren("new " <>
+							fun("_47IQsEGyEeWzwYgcaM4qwA"), Event.Priority.canonicalName -> Event.Priority.NORMAL.name))
+		)
 	}
 
 	@Test
 	def sendNewSignalToThisObject() {
 		assertCompilesTo('''send new S() to this;''', CompilerBase.CONTEXT_NAME ->
-			fun("send", "new " <> SignalEvent.canonicalName <> paren("new " <> fun("_47IQsEGyEeWzwYgcaM4qwA"))))
+			fun("send",
+				"new " <> SignalEvent.canonicalName <>
+					paren("new " <>
+						fun("_47IQsEGyEeWzwYgcaM4qwA"), Event.Priority.canonicalName -> Event.Priority.HIGH.name)))
 	}
 
 	@Test
@@ -148,7 +156,11 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 				wrap("new " <> fun("_47IQsEGyEeWzwYgcaM4qwA"))),
 			binOp("java.util.ArrayList<_9SdsIEDoEeWCNoKXHvCpUQ> _local1", "=",
 				wrap("_9SdsIEDoEeWCNoKXHvCpUQ" -> fun("create", "i -> i._LAXgUEHKEeWzwYgcaM4qwA()"))),
-			unwrap("_local1") -> fun("send", "new " <> fun(SignalEvent.canonicalName, unwrap("_local0"))))
+			unwrap("_local1") ->
+				fun("send",
+					"new " <>
+						fun(SignalEvent.canonicalName, unwrap("_local0"),
+							Event.Priority.canonicalName -> Event.Priority.NORMAL.name)))
 	}
 
 	@Test
