@@ -66,9 +66,6 @@ public class PrimitiveOperations {
 
 	public static final String INTEGER_MODULO_INTEGER = CLASS_PREFIX + "integerModuloInteger";
 
-	public static final String BOOLEAN_AND = CLASS_PREFIX + "booleanAnd";
-	public static final String BOOLEAN_OR = CLASS_PREFIX + "booleanOr";
-
 	public static final String BOOLEAN_BITWISE_AND = CLASS_PREFIX + "booleanBitwiseAnd";
 	public static final String BOOLEAN_BITWISE_OR = CLASS_PREFIX + "booleanBitwiseOr";
 	public static final String BOOLEAN_BITWISE_XOR = CLASS_PREFIX + "booleanBitwiseXor";

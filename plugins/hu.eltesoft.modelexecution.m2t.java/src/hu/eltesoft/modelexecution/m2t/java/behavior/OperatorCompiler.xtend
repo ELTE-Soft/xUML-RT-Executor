@@ -143,12 +143,7 @@ class OperatorCompiler extends ExpressionCompiler {
 	}
 
 	def dispatch CodeGenNode compile(ConditionalLogicalExpression expr) {
-		val opName = if ("&&" == expr.operator) {
-				PrimitiveOperations.BOOLEAN_AND
-			} else {
-				PrimitiveOperations.BOOLEAN_OR
-			}
-		fun(opName, compile(expr.operand1), compile(expr.operand2))
+		wrap(binOp(unwrap(compile(expr.operand1)), expr.operator, unwrap(compile(expr.operand2))))
 	}
 
 	def dispatch CodeGenNode compile(LogicalExpression expr) {
