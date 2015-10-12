@@ -373,13 +373,6 @@ pattern MethodWithoutRalf(me : OpaqueBehavior) {
 
 private pattern MethodRalf(me : OpaqueBehavior) {
 	OpaqueBehavior.language(me, "rALF");
-	OpaqueBehavior.body(me, _);
-}
-
-@Violation(message = "The method have an implementation that is not rALF", mark = { "me" })
-pattern MethodWithOtherImplementation(me : OpaqueBehavior) {
-	OpaqueBehavior.language(me, lang);
-	lang != "rALF";
 }
 
 @Violation(message = "Method without specification", mark = { "me" })
