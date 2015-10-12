@@ -14,6 +14,8 @@ import hu.eltesoft.modelexecution.runtime.serialize.JSONDecoder;
 public class SignalEvent extends Event {
 
 	private static final String JSON_SIGNAL_FIELD = "signal";
+	private static final String JSON_PRIORITY_FIELD = "priority";
+	private static final String JSON_SEQUENCE_NUMBER_FIELD = "sequenceNumber";
 
 	/**
 	 * The signal carried by the event. Cannot be null.
@@ -30,6 +32,11 @@ public class SignalEvent extends Event {
 		this.signal = signal;
 	}
 
+	public SignalEvent(Signal signal, Event.Priority priority) {
+		this.signal = signal;
+		this.priority = priority;
+	}
+
 	public Signal getSignal() {
 		return signal;
 	}
@@ -39,6 +46,8 @@ public class SignalEvent extends Event {
 		JSONObject ret = new JSONObject();
 		ret.put(JSONDecoder.JSON_CLASS, getClass().getCanonicalName());
 		ret.put(JSON_SIGNAL_FIELD, signal.jsonEncode());
+		ret.put(JSON_PRIORITY_FIELD, priority.ordinal());
+		ret.put(JSON_SEQUENCE_NUMBER_FIELD, sequenceNumber);
 		return ret;
 	}
 
@@ -46,6 +55,8 @@ public class SignalEvent extends Event {
 	public void jsonDecode(JSONDecoder reader, JSONObject obj) throws ClassNotFoundException, JSONException {
 		JSONObject signalJSON = obj.getJSONObject(JSON_SIGNAL_FIELD);
 		signal = (Signal) reader.decodeJSON(signalJSON);
+		priority = Event.Priority.values()[obj.getInt(JSON_PRIORITY_FIELD)];
+		sequenceNumber = obj.getInt(JSON_SEQUENCE_NUMBER_FIELD);
 	}
 
 	@Override
@@ -59,7 +70,7 @@ public class SignalEvent extends Event {
 			return false;
 		}
 		SignalEvent other = (SignalEvent) obj;
-		return signal.equals(other.signal);
+		return priority.equals(other.priority) && signal.equals(other.signal);
 	}
 
 }

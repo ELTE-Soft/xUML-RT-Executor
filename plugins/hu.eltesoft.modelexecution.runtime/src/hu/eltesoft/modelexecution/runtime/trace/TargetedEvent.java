@@ -16,7 +16,7 @@ import hu.eltesoft.modelexecution.runtime.serialize.JSONSerializable;
  * stored indirectly, because it has to be serialized, deserialized and still
  * point to the same object.
  */
-public class TargetedEvent implements JSONSerializable {
+public class TargetedEvent implements JSONSerializable, Comparable<TargetedEvent> {
 
 	private static final String JSON_KEY_FROM_OUTSIDE = "fromOutside";
 	private static final String JSON_KEY_EVENT = "message";
@@ -104,4 +104,8 @@ public class TargetedEvent implements JSONSerializable {
 		fromOutside = obj.getBoolean(JSON_KEY_FROM_OUTSIDE);
 	}
 
+	@Override
+	public int compareTo(TargetedEvent other) {
+		return event.compareTo(other.event);
+	}
 }

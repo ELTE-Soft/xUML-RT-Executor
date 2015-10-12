@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
@@ -19,8 +19,8 @@ import hu.eltesoft.modelexecution.runtime.trace.NoTracer;
 import hu.eltesoft.modelexecution.runtime.trace.TargetedEvent;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader;
 import hu.eltesoft.modelexecution.runtime.trace.TraceReader.EventSource;
-import hu.eltesoft.modelexecution.runtime.validation.ValidationError;
 import hu.eltesoft.modelexecution.runtime.trace.Tracer;
+import hu.eltesoft.modelexecution.runtime.validation.ValidationError;
 
 /**
  * Executes the model using logging and tracing. Receives the name of the class
@@ -34,7 +34,7 @@ public final class BaseRuntime implements AutoCloseable {
 	public static final String TRANSITIONS_LOGGER_ID = LOGGER_ID + ".StateMachine.Transitions";
 	public static final String MESSAGES_LOGGER_ID = LOGGER_ID + ".Events.Messages";
 
-	private LinkedBlockingDeque<TargetedEvent> queue = new LinkedBlockingDeque<>();
+	private PriorityBlockingQueue<TargetedEvent> queue = new PriorityBlockingQueue<>();
 	private Tracer traceWriter = new NoTracer();
 	private TraceReader traceReader = new NoTraceReader();
 	private Logger logger = new NoLogger();
@@ -99,13 +99,13 @@ public final class BaseRuntime implements AutoCloseable {
 
 	public void addEventToQueue(ClassWithState target, Event event) {
 		TargetedEvent targetedEvent = new TargetedEvent(target, event);
-		queue.addLast(targetedEvent);
+		queue.add(targetedEvent);
 		logger.messageQueued(target, event);
 	}
 
 	public void addExternalEventToQueue(ClassWithState target, Event event) {
 		TargetedEvent targetedEvent = TargetedEvent.createOutsideEvent(target, event);
-		queue.addLast(targetedEvent);
+		queue.add(targetedEvent);
 		logger.messageQueued(target, event);
 	}
 
@@ -142,7 +142,7 @@ public final class BaseRuntime implements AutoCloseable {
 						TargetedEvent currQueueEvent = queue.take();
 						if (traceReader.dispatchEvent(currQueueEvent, logger) == EventSource.Trace) {
 							// put back the event to the original position
-							queue.addFirst(currQueueEvent);
+							queue.add(currQueueEvent);
 						} else {
 							traceWriter.traceEvent(currQueueEvent);
 						}
@@ -192,7 +192,7 @@ public final class BaseRuntime implements AutoCloseable {
 	public static void logInfo(String message) {
 		errorLogger.log(java.util.logging.Level.INFO, message);
 	}
-	
+
 	public static void validationError(ValidationError validationError) {
 		errorLogger.log(java.util.logging.Level.SEVERE, validationError.getMessage());
 	}

@@ -6,8 +6,11 @@ import hu.eltesoft.modelexecution.runtime.base.ClassWithState;
 import hu.eltesoft.modelexecution.runtime.base.Event;
 import hu.eltesoft.modelexecution.runtime.base.SignalEvent;
 import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
+import hu.eltesoft.modelexecution.runtime.base.Event.Priority;
 
 public class MockClass extends ClassWithState {
+
+	private int eventsToReceive = 0;
 
 	public static MockClass create() {
 		return new MockClass();
@@ -26,7 +29,17 @@ public class MockClass extends ClassWithState {
 
 	public static void feedEvent() {
 		MockClass instance = create();
+		instance.eventsToReceive = 1;
 		BaseRuntime.getInstance().addEventToQueue(instance, new SignalEvent(new DummySignal()));
+		// do not dispose the instance here as it will be
+		// unregistered before entering the event loop
+	}
+	
+	public static void priorityFeed() {
+		MockClass instance = create();
+		instance.eventsToReceive = 2;
+		BaseRuntime.getInstance().addEventToQueue(instance, new SignalEvent(new DummySignal()));
+		BaseRuntime.getInstance().addEventToQueue(instance, new SignalEvent(new DummySignal(), Priority.HIGH));
 		// do not dispose the instance here as it will be
 		// unregistered before entering the event loop
 	}
@@ -35,7 +48,9 @@ public class MockClass extends ClassWithState {
 	public void receive(Event event) {
 		// dispose the instance after the event is delivered
 		// to let the dispatch loop terminate
-		delete();
+		if (--eventsToReceive <= 0) {
+			delete();
+		}
 	}
 
 	@Override

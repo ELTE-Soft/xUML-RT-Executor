@@ -18,7 +18,7 @@ public abstract class Signal implements JSONSerializable {
 			if (cls.equals(BigInteger.class)) {
 				// ints cannot be cast to BigInteger, all the other primitive
 				// types can be simply casted
-				consumer.accept((E) BigInteger.valueOf((int) array.get(i)));
+				consumer.accept((E) new BigInteger(array.get(i).toString(), 10));
 			} else {
 				consumer.accept((E) array.get(i));
 			}
