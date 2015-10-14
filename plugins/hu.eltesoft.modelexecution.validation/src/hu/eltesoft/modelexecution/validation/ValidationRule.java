@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -182,8 +183,12 @@ public class ValidationRule {
 		}
 	}
 
-	public boolean isValid() {
-		return numErrors == 0;
+	public Optional<Severity> highestProblemSeverity() {
+		if (numErrors == 0) {
+			return Optional.empty();
+		} else {
+			return Optional.of(severity);
+		}
 	}
 
 	public class ViolationPatternListener<Match extends IPatternMatch> implements IMatchUpdateListener<IPatternMatch> {

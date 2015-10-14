@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><plugin>
-  <extension id="hu.eltesoft.modelexecution.validation.ExternalEntity" point="org.eclipse.incquery.runtime.queryspecification">
-    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.ExternalEntity" id="hu.eltesoft.modelexecution.validation.ExternalEntity"/>
-  </extension>
   <extension id="hu.eltesoft.modelexecution.validation.ClassValidation" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.ClassValidation" id="hu.eltesoft.modelexecution.validation.ClassValidation"/>
   </extension>
@@ -13,5 +10,11 @@
   </extension>
   <extension id="hu.eltesoft.modelexecution.validation.Structure" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.Structure" id="hu.eltesoft.modelexecution.validation.Structure"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.validation.ExternalEntity" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.ExternalEntity" id="hu.eltesoft.modelexecution.validation.ExternalEntity"/>
+  </extension>
+  <extension id="hu.eltesoft.modelexecution.validation.StateMachine" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.validation.StateMachine" id="hu.eltesoft.modelexecution.validation.StateMachine"/>
   </extension>
 </plugin>

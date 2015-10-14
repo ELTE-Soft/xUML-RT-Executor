@@ -1,7 +1,10 @@
 package hu.eltesoft.modelexecution.validation;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IMarker;
@@ -17,6 +20,8 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
+
+import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 
 public class Validator {
 
@@ -131,8 +136,16 @@ public class Validator {
 		return null;
 	}
 
-	public boolean isValid() {
-		return rules.stream().allMatch(r -> r.isValid());
+	public Optional<Severity> highestProblemSeverity() {
+		Set<Severity> severities = new TreeSet<Severity>(Comparator.reverseOrder());
+		for (ValidationRule validationRule : rules) {
+			validationRule.highestProblemSeverity().ifPresent(s -> severities.add(s));
+		}
+		if (severities.isEmpty()) {
+			return Optional.empty();
+		} else {
+			return Optional.of(severities.iterator().next());
+		}
 	}
 
 	@FunctionalInterface

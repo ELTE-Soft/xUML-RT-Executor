@@ -1,20 +1,31 @@
 package hu.eltesoft.modelexecution.m2m.logic.translators;
 
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.common.CommonPlugin;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 
 import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties.ValidationLevels;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.ReversibleTask;
 import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslator;
 import hu.eltesoft.modelexecution.uml.incquery.Queries;
+import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 import hu.eltesoft.modelexecution.validation.Validator;
 
 /**
@@ -27,7 +38,6 @@ import hu.eltesoft.modelexecution.validation.Validator;
 public class ResourceTranslator {
 
 	public static final String PATHMAP_SCHEME = "pathmap";
-	// private static final String UML_LIBRARIES_AUTHORITY = "UML_LIBRARIES";
 
 	public static ResourceTranslator createIncremental(ModelSet modelSet) {
 		return new ResourceTranslator(modelSet, true);
@@ -58,7 +68,7 @@ public class ResourceTranslator {
 
 		try {
 			createIncQueryEngine();
-			
+
 			if (incremental) {
 				this.validator = Validator.createIncremental(validator, resource, engine);
 			} else {
@@ -142,7 +152,7 @@ public class ResourceTranslator {
 		validator.clear();
 		validator.validate();
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
-		if (validator.isValid()) {
+		if (isValid()) {
 			for (RootElementTranslator<?, ?, ?> translator : translators) {
 				performBatchTranslation(updateTasks, translator);
 			}
@@ -165,11 +175,49 @@ public class ResourceTranslator {
 		}
 
 		List<SourceCodeTask> changes = new LinkedList<>();
-		if (validator.isValid()) {
+		if (isValid()) {
 			for (RootElementTranslator<?, ?, ?> translator : translators) {
 				changes.addAll(translator.incrementalTranslation());
 			}
 		}
 		return changes;
 	}
+
+	private boolean isValid() {
+		Optional<Severity> highestProblemSeverity = validator.highestProblemSeverity();
+		if (highestProblemSeverity.isPresent()) {
+			Severity severity = highestProblemSeverity.get();
+			Optional<ValidationLevels> validationLevel = getValidationLevel();
+			ValidationLevels validLevel = validationLevel.orElse(ProjectProperties.DEFAULT_VALIDATION_LEVEL);
+			switch (severity) {
+			case ERROR:
+				return validLevel.equals(ValidationLevels.NEVER_STOP);
+			case WARNING:
+				return validLevel.equals(ValidationLevels.NEVER_STOP)
+						|| validLevel.equals(ValidationLevels.STOP_ON_ERRORS);
+			default:
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	private Optional<ValidationLevels> getValidationLevel() {
+		return getProject().map(ProjectProperties::getValidationSetting);
+	}
+
+	private Optional<IProject> getProject() {
+		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+
+		for (Resource res : resource.getResources()) {
+			URI locationUri = URI.create(CommonPlugin.asLocalURI(res.getURI()).toString());
+			IContainer[] found = workspace.findContainersForLocationURI(locationUri);
+			if (found.length > 0) {
+				return Optional.of(found[0].getProject());
+			}
+		}
+		return Optional.empty();
+	}
+
 }
