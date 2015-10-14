@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _t24QgB4NEeWDyJhARpwrcA
 Runtime-Version: 2.0.0.201509132315
-Save-Time: 9/30/15 9:45 PM
+Save-Time: 10/4/15 8:28 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -72,16 +72,15 @@ mx-execute-debug-configuration
 
 // Check for pause on breakpoint
 get-view Debug | get-tree 
-    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run \\[HelloWorld#0\\]/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
     | get-property caption | equals "Hello [State]" | verify-true
-
 
 
 global [val fillColorHighlightedNode 5487098]
 
 // Manually select state
 get-view Debug | get-tree 
-    | select "xUMLTestRunConfig [xUML-RT Executor]/model::HelloWorldComponent::HelloWorld::HelloWorld::run/Default Component/HelloWorld/HelloWorld#0/Hello [State]"
+    | select "xUMLTestRunConfig [xUML-RT Executor]/model::HelloWorldComponent::HelloWorld::HelloWorld::run [HelloWorld#0]/Default Component/HelloWorld/HelloWorld#0/Hello [State]"
 
 // Check for breakpoint highlighting
 get-editor "HelloWorld.di" | get-diagram -index 1 | get-edit-part -name HelloWorldBehavior | get-edit-part 
@@ -89,13 +88,12 @@ get-editor "HelloWorld.di" | get-diagram -index 1 | get-edit-part -name HelloWor
     -name Region1 | get-edit-part -name Region1 | get-edit-part -name Hello | get-property fillColor | equals $fillColorHighlightedNode
     | verify-true
 
-
 // Go around the first time
 get-menu "Run/Resume" | click
 
 // Check for pause on breakpoint
 get-view Debug | get-tree 
-    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
+    | get-item "xUMLTestRunConfig \\[xUML-RT Executor\\]/model::HelloWorldComponent::HelloWorld::HelloWorld::run \\[HelloWorld#0\\]/Default Component/HelloWorld/HelloWorld#0/Hello \\[State\\]" 
     | get-property caption | equals "Hello [State]" | verify-true
 
 // Check for breakpoint highlighting

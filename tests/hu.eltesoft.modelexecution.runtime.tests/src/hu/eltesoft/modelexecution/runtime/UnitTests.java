@@ -13,5 +13,5 @@ import hu.eltesoft.modelexecution.runtime.trace.TraceWriterTest;
 @RunWith(Suite.class)
 @SuiteClasses({ BaseRuntimeTest.class, TraceWriterTest.class, TraceReplayerTest.class, JSONTest.class,
 		ExternalEntityRegistryTests.class, CollectionOperationsTest.class, PrimitiveOperationsTest.class })
-public class AllTests {
+public class UnitTests {
 }

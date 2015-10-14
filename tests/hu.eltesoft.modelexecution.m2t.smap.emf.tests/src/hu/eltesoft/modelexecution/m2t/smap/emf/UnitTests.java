@@ -6,5 +6,5 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ReferenceToLineMappingTests.class, LocationRegistryTests.class })
-public class AllTests {
+public class UnitTests {
 }

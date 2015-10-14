@@ -18,7 +18,7 @@ public class NoClassAndFeedException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		String validClassAndFeeds = nameMapping.keySet().stream().sorted()
+		String validClassAndFeeds = nameMapping.keySet().stream().sorted(this::comparePair)
 				.map(pair -> String.format("    (%s,%s)%n", pair.getKey(), pair.getValue()))
 				.collect(Collectors.joining());
 		return Messages.NO_CLASS_AND_FEED.getMsg() + validClassAndFeeds;
@@ -27,5 +27,10 @@ public class NoClassAndFeedException extends IllegalArgumentException {
 	@Override
 	public String getLocalizedMessage() {
 		return toString();
+	}
+
+	private int comparePair(SimpleImmutableEntry<String, String> a, SimpleImmutableEntry<String, String> b) {
+		int result = a.getKey().compareTo(b.getKey());
+		return 0 == result ? a.getValue().compareTo(b.getValue()) : result;
 	}
 }

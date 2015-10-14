@@ -11,7 +11,7 @@ import hu.eltesoft.modelexecution.cli.exceptions.IncompatibleOptsException;
 import hu.eltesoft.modelexecution.cli.exceptions.NothingToDoException;
 import hu.eltesoft.modelexecution.cli.exceptions.UnknownArgForOptException;
 
-public class ArgumentsTests {
+public class InvalidArgumentsExceptionsTests {
 
 	private void runCli(String argsTxt) throws ParseException {
 		String[] args = argsTxt.split(" ");

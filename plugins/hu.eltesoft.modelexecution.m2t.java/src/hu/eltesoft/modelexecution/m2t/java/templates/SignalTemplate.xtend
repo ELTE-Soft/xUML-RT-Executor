@@ -42,6 +42,12 @@ class SignalTemplate extends Template {
 					«PrimitiveOperations.SET_VALUE»(this.«attribute.identifier», «attribute.identifier»);
 				«ENDFOR»
 			}
+			«IF !signal.attributes.empty»
+				
+				/** Zero-arg constructor for the signal to enable deserialization */
+				public «signal.identifier»() {
+				}
+			«ENDIF»
 			
 			/** Meta-description of the structure of the class */
 			public static «ClassMeta.canonicalName» «META_REPR_NAME» = new «ClassMeta.canonicalName»(
@@ -65,7 +71,7 @@ class SignalTemplate extends Template {
 	override generateContent() '''
 		«FOR attribute : signal.attributes»
 			/** Attribute for signal attribute «attribute.javadoc» */
-			private final «javaType(attribute.type, attribute)» «attribute.identifier»
+			private «javaType(attribute.type, attribute)» «attribute.identifier»
 				= «createEmpty(attribute.type, attribute)»;
 			
 			public «javaType(attribute.type, attribute)» «attribute.getter»() {

@@ -9,7 +9,7 @@ public class NothingToDoException extends IllegalArgumentException {
 
 	@Override
 	public String toString() {
-		return Messages.MISSING_ACTION_OPTIONS.getMsg() + Utils.join(ConsoleModelRunner.ACTION_OPTS, "\n\t");
+		return Messages.MISSING_ACTION_OPTIONS.getMsg() + Utils.join(ConsoleModelRunner.getActionOpts(), "\n\t");
 	}
 
 	@Override

@@ -85,12 +85,12 @@ class OperatorTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testBooleanAnd() {
-		assertCompilesTo('''true && false;''', fun(PrimitiveOperations.BOOLEAN_AND, TRUE, FALSE))
+		assertCompilesTo('''true && false;''', wrap(binOp(unwrap(TRUE), "&&", unwrap(FALSE))))
 	}
 
 	@Test
 	def testBooleanOr() {
-		assertCompilesTo('''true || false;''', fun(PrimitiveOperations.BOOLEAN_OR, TRUE, FALSE))
+		assertCompilesTo('''true || false;''', wrap(binOp(unwrap(TRUE), "||", unwrap(FALSE))))
 	}
 
 	@Test

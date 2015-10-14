@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/hu.eltesoft.modelexecution.feature_0.6.1.qualifier.jar" id="hu.eltesoft.modelexecution.feature" version="0.6.1.qualifier">
+   <feature url="features/hu.eltesoft.modelexecution.feature_0.7.0.qualifier.jar" id="hu.eltesoft.modelexecution.feature" version="0.7.0.qualifier">
       <category name="hu.eltesoft.modelexecution.category"/>
    </feature>
-   <feature url="features/hu.eltesoft.modelexecution.examples.feature_0.6.1.qualifier.jar" id="hu.eltesoft.modelexecution.examples.feature" version="0.6.1.qualifier">
+   <feature url="features/hu.eltesoft.modelexecution.examples.feature_0.7.0.qualifier.jar" id="hu.eltesoft.modelexecution.examples.feature" version="0.7.0.qualifier">
       <category name="hu.eltesoft.modelexecution.category"/>
    </feature>
    <category-def name="hu.eltesoft.modelexecution.category" label="xUML-RT Executor">

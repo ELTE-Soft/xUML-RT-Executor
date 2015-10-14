@@ -22,6 +22,8 @@ import hu.eltesoft.modelexecution.runtime.base.SignalEvent
 import org.apache.commons.lang.StringEscapeUtils
 
 import static hu.eltesoft.modelexecution.m2t.java.behavior.codegen.CodeGenNodeExtensons.*
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.ThisExpression
+import hu.eltesoft.modelexecution.runtime.base.Event
 
 // TODO: missing statements: ForEachStatement, ClassifyStatement
 class StatementCompiler extends OperatorCompiler {
@@ -100,7 +102,16 @@ class StatementCompiler extends OperatorCompiler {
 
 	def dispatch CodeGenNode compile(SendSignalStatement send) {
 		unwrap(compile(send.target)) ->
-			fun("send", "new " <> fun(SignalEvent.canonicalName, unwrap(compile(send.signal))))
+			fun("send",
+				"new " <> fun(SignalEvent.canonicalName, unwrap(compile(send.signal)), send.target.eventPriority))
+	}
+
+	def dispatch eventPriority(ThisExpression sendTarget) {
+		Event.Priority.canonicalName -> Event.Priority.HIGH.name
+	}
+
+	def dispatch eventPriority(Expression sendTarget) {
+		Event.Priority.canonicalName -> Event.Priority.NORMAL.name
 	}
 
 	def dispatch CodeGenNode compile(SwitchStatement statement) {
