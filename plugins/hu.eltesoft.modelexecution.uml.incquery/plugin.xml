@@ -1,1 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><plugin/>
+<?xml version="1.0" encoding="UTF-8"?><plugin>
+  <extension id="hu.eltesoft.modelexecution.uml.incquery.Queries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:hu.eltesoft.modelexecution.uml.incquery.Queries" id="hu.eltesoft.modelexecution.uml.incquery.Queries"/>
+  </extension>
+</plugin>
