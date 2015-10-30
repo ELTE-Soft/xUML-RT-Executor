@@ -1,6 +1,6 @@
 package hu.eltesoft.modelexecution.validation
 
-import "http://www.eclipse.org/uml2/2.0.0/UML"
+import "http://www.eclipse.org/uml2/5.0.0/UML"
 
 import hu.eltesoft.modelexecution.uml.incquery.NumericValue
 import hu.eltesoft.modelexecution.uml.incquery.Method
