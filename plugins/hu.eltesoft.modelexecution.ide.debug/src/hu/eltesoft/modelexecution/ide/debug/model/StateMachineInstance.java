@@ -66,6 +66,10 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 
 	@Override
 	public IStackFrame[] getStackFrames() {
+		return getStateMachineStackFrames();
+	}
+	
+	public StateMachineStackFrame[] getStateMachineStackFrames() {
 		return stackFrames.toArray(new StateMachineStackFrame[stackFrames.size()]);
 	}
 

@@ -1,9 +1,20 @@
 package hu.eltesoft.modelexecution.ide.debug.ui;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.ui.model.elements.ElementContentProvider;
+import org.eclipse.debug.internal.ui.viewers.model.TreeModelContentProvider;
+import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelDelta;
+import org.eclipse.debug.internal.ui.viewers.model.provisional.ModelDelta;
+import org.eclipse.debug.internal.ui.viewers.model.provisional.PresentationContext;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.TreeModelViewer;
+import org.eclipse.debug.internal.ui.viewers.provisional.AbstractModelProxy;
 import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -17,13 +28,17 @@ import org.eclipse.ui.PlatformUI;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.model.DebugElement;
+import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
+import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 
 @SuppressWarnings("restriction")
-public class DebugViewController {
+public class DebugViewController extends AbstractModelProxy {
 
 	private static final Display DISPLAY = Display.getDefault();
 	private static final int MAX_WAIT_TIME = 5000;
 	private static final long WAIT_INTERVAL = 10;
+	
+	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(IDebugUIConstants.ID_DEBUG_VIEW);
 
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
@@ -45,7 +60,7 @@ public class DebugViewController {
 			postAction.run();
 		} , postAction);
 	}
-	
+
 	public void expandAndSelect(DebugElement element) {
 		accessViewer(v -> {
 			v.refresh();
@@ -53,7 +68,8 @@ public class DebugViewController {
 		performWhenVisible(element, (v, path) -> {
 			v.setSelection(new TreeSelection(new TreePath[] { path }));
 			v.setAutoExpandLevel(0);
-		} , () -> {});
+		} , () -> {
+		});
 	}
 
 	/**
@@ -90,8 +106,15 @@ public class DebugViewController {
 		});
 	}
 
-	public void addDebugElement(Object parent, Object child) {
-		accessViewer(v -> v.add(parent, child));
+	public void addDebugElement(DebugElement parent, DebugElement child) {
+		accessViewer(v -> {
+			TreeModelContentProvider contentProvider = (TreeModelContentProvider) v.getContentProvider();
+			try {
+				contentProvider.modelChanged(createNewAddDelta(parent, child), this);
+			} catch (Exception e) {
+				PluginLogger.logError("Error while updating model", e);
+			}
+		});
 	}
 
 	public void removeDebugElement(Object removed) {
@@ -108,6 +131,45 @@ public class DebugViewController {
 
 	public void refresh(Object toRefresh) {
 		accessViewer(v -> v.refresh(toRefresh));
+	}
+
+	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child) throws CoreException {
+		ModelDelta unchangedDelta = unchangedDelta(parent);
+		
+		return unchangedDelta;
+	}
+
+	private ModelDelta unchangedDelta(DebugElement modelElement) throws CoreException {
+		ModelDelta launchDelta = deltaToDebugTarget(modelElement.getXUmlRtDebugTarget());
+		return unchangedDeltaOfElem(launchDelta, modelElement);
+	}
+
+	private ModelDelta unchangedDeltaOfElem(ModelDelta rootDelta, DebugElement modelElement) throws CoreException {
+		DebugElement parentElem = modelElement.getParent();
+		if (parentElem != null) {
+			CombiningContentProvider<?> adapter = (CombiningContentProvider<?>) parentElem.getAdapter(ElementContentProvider.class);
+			int numChildren = adapter.getChildCount(parentElem, DEBUG_VIEW_CONTEXT, null);
+			Object[] children = adapter.getChildren(parentElem, 0, numChildren, DEBUG_VIEW_CONTEXT, null);
+			int indexOf = Arrays.asList(children).indexOf(modelElement);
+			ModelDelta delta = unchangedDeltaOfElem(rootDelta, parentElem);
+			return delta.addNode(parentElem, indexOf, IModelDelta.NO_CHANGE);
+		} else {
+			return rootDelta;
+		}
+	}
+
+	private ModelDelta deltaToDebugTarget(XUMLRTDebugTarget debugTarget) {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ModelDelta delta = new ModelDelta(launchManager, IModelDelta.NO_CHANGE);
+
+		ILaunch launch = debugTarget.getLaunch();
+		int launchIndex = Arrays.asList(launchManager.getLaunches()).indexOf(launch);
+		int debugTargetIndex = Arrays.asList(launch.getDebugTargets()).indexOf(debugTarget);
+
+		ModelDelta launchDelta = delta.addNode(launch, launchIndex, IModelDelta.NO_CHANGE,
+				launchManager.getLaunches().length);
+		launchDelta.addNode(debugTarget, debugTargetIndex, IModelDelta.NO_CHANGE, debugTarget.getComponents().length);
+		return launchDelta;
 	}
 
 	public void reselect() {
