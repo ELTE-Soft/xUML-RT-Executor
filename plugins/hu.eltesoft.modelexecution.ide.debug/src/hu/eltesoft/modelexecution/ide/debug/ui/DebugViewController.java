@@ -10,6 +10,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.ui.model.elements.ElementContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.TreeModelContentProvider;
+import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelDelta;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.ModelDelta;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.PresentationContext;
@@ -37,8 +38,9 @@ public class DebugViewController extends AbstractModelProxy {
 	private static final Display DISPLAY = Display.getDefault();
 	private static final int MAX_WAIT_TIME = 5000;
 	private static final long WAIT_INTERVAL = 10;
-	
-	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(IDebugUIConstants.ID_DEBUG_VIEW);
+
+	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(
+			IDebugUIConstants.ID_DEBUG_VIEW);
 
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
@@ -134,9 +136,13 @@ public class DebugViewController extends AbstractModelProxy {
 	}
 
 	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child) throws CoreException {
-		ModelDelta unchangedDelta = unchangedDelta(parent);
-		
-		return unchangedDelta;
+		ModelDelta delta = unchangedDelta(parent);
+		delta.addNode(child, IModelDelta.ADDED);
+		ModelDelta newDelta;
+		while (null != (newDelta = (ModelDelta) delta.getParentDelta())) {
+			delta = newDelta;
+		}
+		return delta;
 	}
 
 	private ModelDelta unchangedDelta(DebugElement modelElement) throws CoreException {
@@ -147,15 +153,17 @@ public class DebugViewController extends AbstractModelProxy {
 	private ModelDelta unchangedDeltaOfElem(ModelDelta rootDelta, DebugElement modelElement) throws CoreException {
 		DebugElement parentElem = modelElement.getParent();
 		if (parentElem != null) {
-			CombiningContentProvider<?> adapter = (CombiningContentProvider<?>) parentElem.getAdapter(ElementContentProvider.class);
-			int numChildren = adapter.getChildCount(parentElem, DEBUG_VIEW_CONTEXT, null);
-			Object[] children = adapter.getChildren(parentElem, 0, numChildren, DEBUG_VIEW_CONTEXT, null);
-			int indexOf = Arrays.asList(children).indexOf(modelElement);
-			ModelDelta delta = unchangedDeltaOfElem(rootDelta, parentElem);
-			return delta.addNode(parentElem, indexOf, IModelDelta.NO_CHANGE);
-		} else {
-			return rootDelta;
+			IElementContentProvider adapter = parentElem.getAdapter(IElementContentProvider.class);
+			if (adapter != null && adapter instanceof CombiningContentProvider<?>) {
+				CombiningContentProvider<?> contentProvider = (CombiningContentProvider<?>) adapter;
+				int numChildren = contentProvider.getChildCount(parentElem, DEBUG_VIEW_CONTEXT, null);
+				Object[] children = contentProvider.getChildren(parentElem, 0, numChildren, DEBUG_VIEW_CONTEXT, null);
+				int indexOf = Arrays.asList(children).indexOf(modelElement);
+				ModelDelta delta = unchangedDeltaOfElem(rootDelta, parentElem);
+				return delta.addNode(parentElem, indexOf, IModelDelta.NO_CHANGE);
+			}
 		}
+		return rootDelta;
 	}
 
 	private ModelDelta deltaToDebugTarget(XUMLRTDebugTarget debugTarget) {
@@ -168,8 +176,7 @@ public class DebugViewController extends AbstractModelProxy {
 
 		ModelDelta launchDelta = delta.addNode(launch, launchIndex, IModelDelta.NO_CHANGE,
 				launchManager.getLaunches().length);
-		launchDelta.addNode(debugTarget, debugTargetIndex, IModelDelta.NO_CHANGE, debugTarget.getComponents().length);
-		return launchDelta;
+		return launchDelta.addNode(debugTarget, debugTargetIndex, IModelDelta.NO_CHANGE, debugTarget.getComponents().length);
 	}
 
 	public void reselect() {
