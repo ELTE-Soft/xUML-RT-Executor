@@ -1,6 +1,9 @@
 package hu.eltesoft.modelexecution.ide.debug.ui;
 
 import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -8,7 +11,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.internal.ui.model.elements.ElementContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.TreeModelContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelDelta;
@@ -23,6 +25,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -111,17 +115,10 @@ public class DebugViewController extends AbstractModelProxy {
 	}
 
 	public void addDebugElement(DebugElement parent, DebugElement child) {
-		// accessViewer(v -> {
-		// TreeModelContentProvider contentProvider = (TreeModelContentProvider)
-		// v.getContentProvider();
-		// try {
-		// contentProvider.modelChanged(createNewAddDelta(parent, child), this);
-		// } catch (Exception e) {
-		// PluginLogger.logError("Error while updating model", e);
-		// }
-		// });
 		try {
-			contentProvider.modelChanged(createNewAddDelta(parent, child), this);
+			boolean[] a = new boolean[1];
+			accessViewer(v -> a[0] = v.getExpandedState(parent));
+			contentProvider.modelChanged(createNewAddDelta(parent, child, a[0]), this);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -143,10 +140,11 @@ public class DebugViewController extends AbstractModelProxy {
 		accessViewer(v -> v.refresh(toRefresh));
 	}
 
-	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child) throws CoreException {
+	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child, boolean a) throws CoreException {
 		ModelDelta delta = unchangedDelta(parent);
-		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT);
+		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT | IModelDelta.EXPAND);
 		delta.addNode(child, IModelDelta.ADDED);
+
 		ModelDelta newDelta;
 		while (null != (newDelta = (ModelDelta) delta.getParentDelta())) {
 			delta = newDelta;
