@@ -41,6 +41,7 @@ public class DebugViewController extends AbstractModelProxy {
 
 	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(
 			IDebugUIConstants.ID_DEBUG_VIEW);
+	private TreeModelContentProvider contentProvider;
 
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
@@ -105,18 +106,25 @@ public class DebugViewController extends AbstractModelProxy {
 	public void init() {
 		accessViewer(v -> {
 			v.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
+			contentProvider = (TreeModelContentProvider) v.getContentProvider();
 		});
 	}
 
 	public void addDebugElement(DebugElement parent, DebugElement child) {
-		accessViewer(v -> {
-			TreeModelContentProvider contentProvider = (TreeModelContentProvider) v.getContentProvider();
-			try {
-				contentProvider.modelChanged(createNewAddDelta(parent, child), this);
-			} catch (Exception e) {
-				PluginLogger.logError("Error while updating model", e);
-			}
-		});
+		// accessViewer(v -> {
+		// TreeModelContentProvider contentProvider = (TreeModelContentProvider)
+		// v.getContentProvider();
+		// try {
+		// contentProvider.modelChanged(createNewAddDelta(parent, child), this);
+		// } catch (Exception e) {
+		// PluginLogger.logError("Error while updating model", e);
+		// }
+		// });
+		try {
+			contentProvider.modelChanged(createNewAddDelta(parent, child), this);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void removeDebugElement(Object removed) {
@@ -137,6 +145,7 @@ public class DebugViewController extends AbstractModelProxy {
 
 	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child) throws CoreException {
 		ModelDelta delta = unchangedDelta(parent);
+		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT);
 		delta.addNode(child, IModelDelta.ADDED);
 		ModelDelta newDelta;
 		while (null != (newDelta = (ModelDelta) delta.getParentDelta())) {
@@ -160,7 +169,8 @@ public class DebugViewController extends AbstractModelProxy {
 				Object[] children = contentProvider.getChildren(parentElem, 0, numChildren, DEBUG_VIEW_CONTEXT, null);
 				int indexOf = Arrays.asList(children).indexOf(modelElement);
 				ModelDelta delta = unchangedDeltaOfElem(rootDelta, parentElem);
-				return delta.addNode(parentElem, indexOf, IModelDelta.NO_CHANGE);
+				delta.setChildCount(children.length);
+				return delta.addNode(modelElement, indexOf, IModelDelta.NO_CHANGE);
 			}
 		}
 		return rootDelta;
@@ -168,15 +178,16 @@ public class DebugViewController extends AbstractModelProxy {
 
 	private ModelDelta deltaToDebugTarget(XUMLRTDebugTarget debugTarget) {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		ModelDelta delta = new ModelDelta(launchManager, IModelDelta.NO_CHANGE);
+		ModelDelta delta = new ModelDelta(launchManager, -1, IModelDelta.NO_CHANGE, launchManager.getLaunches().length);
 
 		ILaunch launch = debugTarget.getLaunch();
 		int launchIndex = Arrays.asList(launchManager.getLaunches()).indexOf(launch);
 		int debugTargetIndex = Arrays.asList(launch.getDebugTargets()).indexOf(debugTarget);
 
 		ModelDelta launchDelta = delta.addNode(launch, launchIndex, IModelDelta.NO_CHANGE,
-				launchManager.getLaunches().length);
-		return launchDelta.addNode(debugTarget, debugTargetIndex, IModelDelta.NO_CHANGE, debugTarget.getComponents().length);
+				launchManager.getDebugTargets().length);
+		return launchDelta.addNode(debugTarget, debugTargetIndex, IModelDelta.NO_CHANGE,
+				debugTarget.getComponents().length);
 	}
 
 	public void reselect() {
