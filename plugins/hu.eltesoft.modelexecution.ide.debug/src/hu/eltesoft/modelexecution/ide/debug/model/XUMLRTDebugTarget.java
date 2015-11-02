@@ -136,11 +136,14 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		boolean selectElement = !hasSMInstance();
 		if (defaultComponent == null) {
 			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
-			debugControl.addDebugElement(this, defaultComponent);
+			debugControl.addDebugElement(defaultComponent);
 		}
 		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		if (selectElement) {
-			debugControl.expandAndSelect(added, () -> sendStartSignal(launch));
+			debugControl.addDebugElementSelected(added);
+			sendStartSignal(launch);
+		} else {
+			debugControl.addDebugElement(added);
 		}
 	}
 
@@ -208,11 +211,11 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			smInstance.setStackFrames(new StackFrame[] { stackFrame });
 
 			// force refresh of debug controls on toolbar
-			debugControl.reselect();
-			
+//			debugControl.reselect();
+
 			// force the refresh of the state machine instance to get rid of
 			// phantom stack frames
-			debugControl.refresh(smInstance);
+//			debugControl.refresh(smInstance);
 		}
 	}
 

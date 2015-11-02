@@ -1,10 +1,6 @@
 package hu.eltesoft.modelexecution.ide.debug.ui;
 
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -20,19 +16,16 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.TreeModelViewer;
 import org.eclipse.debug.internal.ui.viewers.provisional.AbstractModelProxy;
 import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreePath;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
+import hu.eltesoft.modelexecution.ide.debug.model.Component;
 import hu.eltesoft.modelexecution.ide.debug.model.DebugElement;
+import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 
@@ -40,8 +33,6 @@ import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider
 public class DebugViewController extends AbstractModelProxy {
 
 	private static final Display DISPLAY = Display.getDefault();
-	private static final int MAX_WAIT_TIME = 5000;
-	private static final long WAIT_INTERVAL = 10;
 
 	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(
 			IDebugUIConstants.ID_DEBUG_VIEW);
@@ -57,94 +48,65 @@ public class DebugViewController extends AbstractModelProxy {
 		return ret[0];
 	}
 
-	public void expandAndSelect(DebugElement element, Runnable postAction) {
-		accessViewer(v -> {
-			v.refresh();
-		});
-		performWhenVisible(element, (v, path) -> {
-			v.setSelection(new TreeSelection(new TreePath[] { path }));
-			v.setAutoExpandLevel(0);
-			postAction.run();
-		} , postAction);
-	}
-
-	public void expandAndSelect(DebugElement element) {
-		accessViewer(v -> {
-			v.refresh();
-		});
-		performWhenVisible(element, (v, path) -> {
-			v.setSelection(new TreeSelection(new TreePath[] { path }));
-			v.setAutoExpandLevel(0);
-		} , () -> {
-		});
-	}
-
-	/**
-	 * Starts a new thread that waits until the element is visible in the debug
-	 * view and then executes the given action.
-	 */
-	public void performWhenVisible(Object element, BiConsumer<TreeModelViewer, TreePath> action, Runnable failure) {
-		new Thread(() -> {
-			boolean selectionCompleted[] = new boolean[] { false };
-			long start_time = System.currentTimeMillis();
-			while (!selectionCompleted[0] && System.currentTimeMillis() - start_time < MAX_WAIT_TIME) {
-				try {
-					Thread.sleep(WAIT_INTERVAL);
-				} catch (Exception e) {
-					PluginLogger.logError("interrupted", e);
-				}
-				accessViewer(v -> {
-					TreePath[] toSelect = v.getElementPaths(element);
-					if (toSelect.length > 0) {
-						action.accept(v, toSelect[0]);
-						selectionCompleted[0] = true;
-					}
-				});
-			}
-			if (!selectionCompleted[0]) {
-				failure.run();
-			}
-		}).start();
-	}
-
 	public void init() {
 		accessViewer(v -> {
-			v.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
 			contentProvider = (TreeModelContentProvider) v.getContentProvider();
 		});
 	}
 
-	public void addDebugElement(DebugElement parent, DebugElement child) {
+	public void addDebugElement(DebugElement child) {
 		try {
-			boolean[] a = new boolean[1];
-			accessViewer(v -> a[0] = v.getExpandedState(parent));
-			contentProvider.modelChanged(createNewAddDelta(parent, child, a[0]), this);
+			contentProvider.modelChanged(getTopLevelDelta(createNewAddDelta(child)), this);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			PluginLogger.logError("Error while trying to add model element", e);
 		}
 	}
 
-	public void removeDebugElement(Object removed) {
-		accessViewer(v -> v.remove(removed));
+	public void addDebugElementSelected(StateMachineInstance added) {
+		try {
+			ModelDelta addDelta = createNewAddDelta(added);
+			addDelta.setFlags(addDelta.getFlags() | IModelDelta.SELECT);
+			contentProvider.modelChanged(getTopLevelDelta(addDelta), this);
+		} catch (CoreException e) {
+			PluginLogger.logError("Error while trying to add and select model element", e);
+		}
 	}
 
-	public void updateElement(Object toUpdate) {
-		accessViewer(v -> v.update(toUpdate, null));
-	}
-
-	public void refreshDebugElements() {
-		accessViewer(v -> v.refresh());
-	}
-
-	public void refresh(Object toRefresh) {
-		accessViewer(v -> v.refresh(toRefresh));
-	}
-
-	private IModelDelta createNewAddDelta(DebugElement parent, DebugElement child, boolean a) throws CoreException {
-		ModelDelta delta = unchangedDelta(parent);
+	private ModelDelta createNewAddDelta(DebugElement added) throws CoreException {
+		ModelDelta delta = unchangedDeltaToParent(added);
 		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT | IModelDelta.EXPAND);
-		delta.addNode(child, IModelDelta.ADDED);
+		return delta.addNode(added, IModelDelta.ADDED);
+	}
 
+	public void removeDebugElement(DebugElement removed) {
+		try {
+			contentProvider.modelChanged(getTopLevelDelta(createRemoveDelta(removed)), this);
+		} catch (CoreException e) {
+			PluginLogger.logError("Error while trying to remove model element", e);
+		}
+	}
+
+	private ModelDelta createRemoveDelta(DebugElement removed) throws CoreException {
+		ModelDelta delta = unchangedDeltaToParent(removed);
+		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT);
+		return delta.addNode(removed, IModelDelta.REMOVED);
+	}
+
+	public void updateElement(DebugElement toUpdate) {
+		try {
+			contentProvider.modelChanged(getTopLevelDelta(createNewUpdateDelta(toUpdate)), this);
+		} catch (CoreException e) {
+			PluginLogger.logError("Error while trying to add model element", e);
+		}
+	}
+
+	private ModelDelta createNewUpdateDelta(DebugElement toUpdate) throws CoreException {
+		ModelDelta delta = unchangedDeltaToParent(toUpdate);
+		delta.setFlags(delta.getFlags() | IModelDelta.CONTENT);
+		return delta.addNode(toUpdate, IModelDelta.STATE);
+	}
+
+	private ModelDelta getTopLevelDelta(ModelDelta delta) {
 		ModelDelta newDelta;
 		while (null != (newDelta = (ModelDelta) delta.getParentDelta())) {
 			delta = newDelta;
@@ -152,9 +114,13 @@ public class DebugViewController extends AbstractModelProxy {
 		return delta;
 	}
 
-	private ModelDelta unchangedDelta(DebugElement modelElement) throws CoreException {
+	private ModelDelta unchangedDeltaToParent(DebugElement modelElement) throws CoreException {
 		ModelDelta launchDelta = deltaToDebugTarget(modelElement.getXUmlRtDebugTarget());
-		return unchangedDeltaOfElem(launchDelta, modelElement);
+		if (modelElement.getParent() != null) {
+			return unchangedDeltaOfElem(launchDelta, modelElement.getParent());
+		} else {
+			return launchDelta;
+		}
 	}
 
 	private ModelDelta unchangedDeltaOfElem(ModelDelta rootDelta, DebugElement modelElement) throws CoreException {
@@ -213,4 +179,5 @@ public class DebugViewController extends AbstractModelProxy {
 		}
 		action.accept((TreeModelViewer) debugView.getViewer());
 	}
+
 }

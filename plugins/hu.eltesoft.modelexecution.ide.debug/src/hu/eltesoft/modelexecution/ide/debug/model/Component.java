@@ -137,7 +137,7 @@ public class Component extends DebugElement implements IPresentation {
 		}
 		ClassInstances cls = new ClassInstances(this, classId, className);
 		classes.add(cls);
-		getDebugControl().addDebugElement(this, cls);
+		getDebugControl().addDebugElement(cls);
 		return cls;
 	}
 
