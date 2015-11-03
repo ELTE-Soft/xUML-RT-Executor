@@ -58,8 +58,6 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
-		debugControl.init();
-
 		setDebugTarget(this);
 	}
 

@@ -16,19 +16,21 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.TreeModelViewer;
 import org.eclipse.debug.internal.ui.viewers.provisional.AbstractModelProxy;
 import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
-import hu.eltesoft.modelexecution.ide.debug.model.Component;
 import hu.eltesoft.modelexecution.ide.debug.model.DebugElement;
 import hu.eltesoft.modelexecution.ide.debug.model.StateMachineInstance;
 import hu.eltesoft.modelexecution.ide.debug.model.XUMLRTDebugTarget;
 import hu.eltesoft.modelexecution.ide.debug.model.utils.CombiningContentProvider;
 
+/**
+ * Performs changes on the debug tree view. Modifications in the debug model
+ * should call methods of this class.
+ */
 @SuppressWarnings("restriction")
 public class DebugViewController extends AbstractModelProxy {
 
@@ -36,7 +38,6 @@ public class DebugViewController extends AbstractModelProxy {
 
 	private static final PresentationContext DEBUG_VIEW_CONTEXT = new PresentationContext(
 			IDebugUIConstants.ID_DEBUG_VIEW);
-	private TreeModelContentProvider contentProvider;
 
 	/**
 	 * @return the debug elements selected in the debug view or an empty array,
@@ -48,25 +49,26 @@ public class DebugViewController extends AbstractModelProxy {
 		return ret[0];
 	}
 
-	public void init() {
-		accessViewer(v -> {
-			contentProvider = (TreeModelContentProvider) v.getContentProvider();
-		});
-	}
-
-	public void addDebugElement(DebugElement child) {
+	/**
+	 * Adds a new debug element to the debug tree.
+	 */
+	public void addDebugElement(DebugElement added) {
 		try {
-			contentProvider.modelChanged(getTopLevelDelta(createNewAddDelta(child)), this);
+			updateModel(getTopLevelDelta(createNewAddDelta(added)));
 		} catch (CoreException e) {
 			PluginLogger.logError("Error while trying to add model element", e);
 		}
 	}
 
+	/**
+	 * Adds a new debug element to the debug tree and immediately reveal and
+	 * select it.
+	 */
 	public void addDebugElementSelected(StateMachineInstance added) {
 		try {
 			ModelDelta addDelta = createNewAddDelta(added);
-			addDelta.setFlags(addDelta.getFlags() | IModelDelta.SELECT);
-			contentProvider.modelChanged(getTopLevelDelta(addDelta), this);
+			addDelta.setFlags(addDelta.getFlags() | IModelDelta.REVEAL | IModelDelta.SELECT);
+			updateModel(getTopLevelDelta(addDelta));
 		} catch (CoreException e) {
 			PluginLogger.logError("Error while trying to add and select model element", e);
 		}
@@ -80,7 +82,7 @@ public class DebugViewController extends AbstractModelProxy {
 
 	public void removeDebugElement(DebugElement removed) {
 		try {
-			contentProvider.modelChanged(getTopLevelDelta(createRemoveDelta(removed)), this);
+			updateModel(getTopLevelDelta(createRemoveDelta(removed)));
 		} catch (CoreException e) {
 			PluginLogger.logError("Error while trying to remove model element", e);
 		}
@@ -92,9 +94,12 @@ public class DebugViewController extends AbstractModelProxy {
 		return delta.addNode(removed, IModelDelta.REMOVED);
 	}
 
+	/**
+	 * Update the label and icon of the debug element.
+	 */
 	public void updateElement(DebugElement toUpdate) {
 		try {
-			contentProvider.modelChanged(getTopLevelDelta(createNewUpdateDelta(toUpdate)), this);
+			updateModel(getTopLevelDelta(createNewUpdateDelta(toUpdate)));
 		} catch (CoreException e) {
 			PluginLogger.logError("Error while trying to add model element", e);
 		}
@@ -114,6 +119,9 @@ public class DebugViewController extends AbstractModelProxy {
 		return delta;
 	}
 
+	/**
+	 * Creates the part of the delta to the parent of the element.
+	 */
 	private ModelDelta unchangedDeltaToParent(DebugElement modelElement) throws CoreException {
 		ModelDelta launchDelta = deltaToDebugTarget(modelElement.getXUmlRtDebugTarget());
 		if (modelElement.getParent() != null) {
@@ -140,6 +148,10 @@ public class DebugViewController extends AbstractModelProxy {
 		return rootDelta;
 	}
 
+	/**
+	 * Creates the part of the delta from the launch manager to the debug
+	 * target.
+	 */
 	private ModelDelta deltaToDebugTarget(XUMLRTDebugTarget debugTarget) {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ModelDelta delta = new ModelDelta(launchManager, -1, IModelDelta.NO_CHANGE, launchManager.getLaunches().length);
@@ -154,14 +166,16 @@ public class DebugViewController extends AbstractModelProxy {
 				debugTarget.getComponents().length);
 	}
 
-	public void reselect() {
-		accessViewer(v -> {
-			ISelection selection = v.getSelection();
-			v.setSelection(selection);
-		});
+	private void updateModel(IModelDelta delta) {
+		accessViewer(v -> ((TreeModelContentProvider) v.getContentProvider()).modelChanged(delta, this));
 	}
 
-	public void accessViewer(Consumer<TreeModelViewer> action) {
+	/**
+	 * Performs the given action on the debug tree view. Can be performed from
+	 * both UI and non-UI thread. Returns without performing the action if the
+	 * debug view is not open.
+	 */
+	private void accessViewer(Consumer<TreeModelViewer> action) {
 		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
 			// we must perform this operation on a UI thread
