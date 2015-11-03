@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_UM7-sNJaEeSd5I6-OPCzVg" name="model">
-  <packagedElement xmi:type="uml:Class" xmi:id="_b_QEcNJaEeSd5I6-OPCzVg" name="Class1">
+  <packagedElement xmi:type="uml:Class" xmi:id="_b_QEcNJaEeSd5I6-OPCzVg" name="Class1" classifierBehavior="_dgWq0NJaEeSd5I6-OPCzVg" isActive="true">
     <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_dgWq0NJaEeSd5I6-OPCzVg" name="StateMachine1">
       <region xmi:type="uml:Region" xmi:id="_ergPUNJaEeSd5I6-OPCzVg" name="Region1">
         <transition xmi:type="uml:Transition" xmi:id="_o30SUNJaEeSd5I6-OPCzVg" name="Initial1_State1" source="_g8XesNJaEeSd5I6-OPCzVg" target="_ifvV8NJaEeSd5I6-OPCzVg"/>
@@ -12,7 +12,11 @@
         <subvertex xmi:type="uml:State" xmi:id="_txzgENJaEeSd5I6-OPCzVg" name="State2"/>
       </region>
     </ownedBehavior>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_ptSFQNJbEeSd5I6-OPCzVg" name="Operation1"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GzJ-gIJAEeWfcIYFAupgIA" name="Method1" specification="_ptSFQNJbEeSd5I6-OPCzVg" body="">
+      <language>rALF</language>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_ptSFQNJbEeSd5I6-OPCzVg" name="Operation1" method="_GzJ-gIJAEeWfcIYFAupgIA"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_85S9cII_EeWfcIYFAupgIA" name="Reception1" signal="_w9jDUNJaEeSd5I6-OPCzVg"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Signal" xmi:id="_w9jDUNJaEeSd5I6-OPCzVg" name="Signal1"/>
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_0jq1cNJaEeSd5I6-OPCzVg" name="SignalEvent1" signal="_w9jDUNJaEeSd5I6-OPCzVg"/>
