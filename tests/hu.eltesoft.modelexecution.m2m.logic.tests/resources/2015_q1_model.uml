@@ -20,4 +20,5 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Signal" xmi:id="_w9jDUNJaEeSd5I6-OPCzVg" name="Signal1"/>
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_0jq1cNJaEeSd5I6-OPCzVg" name="SignalEvent1" signal="_w9jDUNJaEeSd5I6-OPCzVg"/>
+  <packagedElement xmi:type="uml:Signal" xmi:id="_rLGZMIJGEeWI-al8_amKuw" name="Signal2"/>
 </uml:Model>

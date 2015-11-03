@@ -50,8 +50,8 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
 	protected void assertFullBuildQueueSizeIsCorrect() {
 		List<SourceCodeTask> queue = translator.fullTranslation();
-		// a class specification, a class implementation, a region, and a signal
-		assertEquals(4, queue.size());
+		// a behavior, a class specification, a class implementation, a region, and two signals
+		assertEquals(6, queue.size());
 	}
 
 	@Test
