@@ -12,9 +12,10 @@
 		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
 	</parent>
 	
+	<!--IncQuery Maven builder is turned off on this project, as UML Standard profile
+		is not available as a standalone Maven package in a repository.
 	<build>
 		<plugins>
-			<!-- Using maven-clean-plugin to remove previously generated code -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -27,7 +28,6 @@
 						<configuration>
 							<filesets>
 								<fileset>
-									<!-- Generated code folder -->
 									<directory>src-gen</directory>
 									<includes>
 										<include>**/*</include>
@@ -38,12 +38,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Setting up generator -->
 			<plugin>
 				<groupId>org.eclipse.incquery</groupId>
 				<artifactId>incquery-maven-plugin</artifactId>
 				<version>${incquery.version}</version>
-				<!-- Binding execution to the code generation lifecycle phase -->
 				<executions>
 					<execution>
 						<goals>
@@ -86,8 +84,6 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only.
-					It has no influence on the Maven build itself.-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -121,4 +117,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	-->
 </project>
