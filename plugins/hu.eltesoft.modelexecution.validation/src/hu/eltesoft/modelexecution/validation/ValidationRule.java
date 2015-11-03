@@ -119,6 +119,11 @@ public class ValidationRule {
 	}
 
 	public void dispose() {
+		if (null == updateListener) {
+			// it makes no sense to remove a non-existing update listener,
+			// when the engine is not incremental
+			return;
+		}
 		AdvancedIncQueryEngine advEngine = AdvancedIncQueryEngine.from(engine);
 		advEngine.removeMatchUpdateListener(matcher, updateListener);
 	}

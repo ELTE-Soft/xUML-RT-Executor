@@ -212,6 +212,11 @@ public class ResourceTranslator {
 
 		for (Resource res : resource.getResources()) {
 			URI locationUri = URI.create(CommonPlugin.asLocalURI(res.getURI()).toString());
+			if (!locationUri.isAbsolute()) {
+				// findContainersForLocationURI throws illegal argument
+				// exception for relative URIs
+				continue;
+			}
 			IContainer[] found = workspace.findContainersForLocationURI(locationUri);
 			if (found.length > 0) {
 				return Optional.of(found[0].getProject());
