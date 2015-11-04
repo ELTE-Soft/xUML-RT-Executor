@@ -8,6 +8,8 @@ import java.util.List;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.junit.Test;
 
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
+import hu.eltesoft.modelexecution.ide.common.ProjectProperties.ValidationLevels;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
 
@@ -25,6 +27,9 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 	public void setUp() {
 		super.setUp();
 		translator = createTranslator();
+
+		// do not stop on model validation errors
+		ProjectProperties.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
 	};
 
 	protected abstract ResourceTranslator createTranslator();
@@ -50,7 +55,8 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
 	protected void assertFullBuildQueueSizeIsCorrect() {
 		List<SourceCodeTask> queue = translator.fullTranslation();
-		// a behavior, a class specification, a class implementation, a region, and two signals
+		// a behavior, a class specification, a class implementation, a region,
+		// and two signals
 		assertEquals(6, queue.size());
 	}
 

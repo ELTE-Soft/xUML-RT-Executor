@@ -35,7 +35,8 @@ public class ProjectProperties {
 
 	public static final String PROP_VALIDATION_LEVEL = PROPERTY_PREFIX + "validation_level";
 
-	public static final ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
+	// do not make it final, as it enables the tests to set it to NEVER_STOP
+	public static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
 	
 	public enum ValidationLevels {
 		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
