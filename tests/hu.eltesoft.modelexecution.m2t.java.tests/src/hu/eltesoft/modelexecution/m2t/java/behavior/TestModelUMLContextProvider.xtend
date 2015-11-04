@@ -45,7 +45,7 @@ class TestModelUMLContextProvider extends UMLContextProvider {
 		definedOperation ?: behavior
 	}
 
-	override getDefinedOperation() {
+	def getDefinedOperation() {
 		definedOperation
 	}
 

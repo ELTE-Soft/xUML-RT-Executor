@@ -32,8 +32,13 @@
       </ownedOperation>
     </packagedElement>
     <packagedElement xmi:type="uml:Class" xmi:id="_9SdsIEDoEeWCNoKXHvCpUQ" name="B">
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_n9EfQIL8EeWCKpvUGbNVkA" name="MethodBool" specification="_n2_6wEGFEeWzwYgcaM4qwA">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_rAIAkIL8EeWCKpvUGbNVkA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+      </ownedBehavior>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_-1zHIEDoEeWCNoKXHvCpUQ" name="OpVoid"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_n2_6wEGFEeWzwYgcaM4qwA" name="OpBool">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_n2_6wEGFEeWzwYgcaM4qwA" name="OpBool" method="_n9EfQIL8EeWCKpvUGbNVkA">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_q1wK4EGFEeWzwYgcaM4qwA" direction="return">
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
         </ownedParameter>
