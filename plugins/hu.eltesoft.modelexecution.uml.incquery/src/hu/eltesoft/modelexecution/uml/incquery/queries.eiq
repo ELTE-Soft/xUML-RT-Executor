@@ -223,7 +223,7 @@ ParentAncestor(descendant : Class, parent : Class, ancestor : Class) {
 	find IsAncestor(parent, ancestor);
 }
 
-private pattern IsAncestor(descendant : Class, ancestor : Class) {
+pattern IsAncestor(descendant : Class, ancestor : Class) {
 	find Parent +(descendant, ancestor);
 }
 
@@ -518,8 +518,8 @@ ClassAssociationUpperBound(cls : Class, end : Property, type : Association, uppe
 }
 
 // -- event.eiq ----------------------------------------------------------------
-pattern Event(event : SignalEvent) {
-	SignalEvent(event); // TODO support different events in the future 
+pattern Event(event : Event) {
+	Event(event);
 }
 
 pattern SignalEvent(event : SignalEvent, signal : Signal) {
@@ -639,7 +639,7 @@ SignalAttributeUpperBound(signal : Signal, attribute : Property, upperBound) {
 
 // -- general patterns ?
 
-private pattern NumericValue(spec : ValueSpecification, value) {
+pattern NumericValue(spec : ValueSpecification, value) {
 	LiteralInteger.value(spec, value);
 } or {
 	LiteralUnlimitedNatural.value(spec, value);

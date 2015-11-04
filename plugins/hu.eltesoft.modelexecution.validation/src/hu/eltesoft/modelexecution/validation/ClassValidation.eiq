@@ -1,0 +1,591 @@
+package hu.eltesoft.modelexecution.validation
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+import "http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard"
+
+import hu.eltesoft.modelexecution.uml.incquery.NumericValue
+import hu.eltesoft.modelexecution.uml.incquery.ClassOrAssocClass
+import hu.eltesoft.modelexecution.uml.incquery.Parent
+import hu.eltesoft.modelexecution.uml.incquery.IsAncestor
+import hu.eltesoft.modelexecution.uml.incquery.OperationOverride
+import hu.eltesoft.modelexecution.uml.incquery.AttributeType
+import hu.eltesoft.modelexecution.uml.incquery.Operation
+import hu.eltesoft.modelexecution.uml.incquery.Reception
+import hu.eltesoft.modelexecution.uml.incquery.Event
+import hu.eltesoft.modelexecution.uml.incquery.Association
+import hu.eltesoft.modelexecution.uml.incquery.Method
+
+@Violation(message = "Classes must be public, there is no visibility checking", mark = { "cl" })
+pattern ClassNotPublic(cl : Class) {
+	find ClassOrAssocClass(cl);
+	Class.visibility(cl, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Leaf class {cl} cannot be generalized", mark = { "spec" })
+pattern LeafClassGeneralized(cl : Class, spec : Class) {
+	Class.isLeaf(cl, true);
+	Generalization.general(gen, cl);
+	Generalization.specific(gen, spec);
+}
+
+@Violation(message = "Self generalization is not allowed", mark = { "cl" })
+pattern SelfGeneralization(cl : Class) {
+	Generalization.general(gen, cl);
+	Generalization.specific(gen, cl);
+}
+
+@Violation(message = "Multiple direct generalization is not allowed", mark = { "spec" })
+pattern DirectMultipleGeneralization(spec : Class) {
+	Generalization.general(gen1, cl);
+	Generalization.specific(gen1, spec);
+	Generalization.general(gen2, cl);
+	Generalization.specific(gen2, spec);
+	gen1 != gen2;
+}
+
+@Violation(message = "Cyclic inheritance", mark = { "cl" })
+pattern CyclicInheritance(cl : Class) {
+	find IsAncestor(cl, other);
+	find IsAncestor(other, cl);
+}
+
+@Violation(message = "Class with behavior must be active", mark = { "cl" })
+pattern PassiveClassWithBehavior(cl : Class) {
+	find ClassOrAssocClass(cl);
+	Class.isActive(cl, false);
+	Class.classifierBehavior(cl, _);
+}
+
+@Violation(message = "If state machine is owned by class it must be its classifier behavior", mark = { "beh" })
+pattern ClassStateMachineOwnedBehavior(beh : StateMachine) {
+	Class.ownedBehavior(cl, beh);
+	neg find ClassifierBehavior(cl, beh);
+}
+
+private pattern ClassifierBehavior(cl : Class, beh : Behavior) {
+	Class.classifierBehavior(cl, beh);
+}
+
+@Violation(message = "Multiple possible overrides for operation {overridden}", mark = { "cl" })
+pattern AmbigousOperation(cl : Class, overridden : Operation) {
+	find OperationOverride(cl, overridden, overrider1);
+	find OperationOverride(cl, overridden, overrider2);
+	overrider1 != overrider2;
+}
+
+@Violation(message = "Unknown element in class {cl}", mark = { "elem" })
+pattern UnrecognizedElementInClass(cl : Class, elem : Element) {
+	find ClassOrAssocClass(cl);
+	Class.ownedElement(cl, elem);
+	neg find Property(elem);
+	neg find Operation(_, elem, _);
+	neg find Reception(_, elem, _);
+	neg find Method(_, _, elem);
+	neg find Event(elem);
+	neg find Signal(elem);
+	neg find Association(elem);
+	neg find Generalization(elem);
+	neg find StateMachine(elem);
+}
+
+private pattern Property(prop : Property) {
+	Property(prop);
+}
+
+// FIXME: use declared
+private pattern Signal(gen : Signal) {
+	Signal(gen);
+}
+
+// FIXME: use declared
+private pattern StateMachine(sm : StateMachine) {
+	StateMachine(sm);
+}
+
+private pattern Generalization(gen : Generalization) {
+	Generalization(gen);
+}
+
+//////////////////////////////
+// generalization
+//////////////////////////////
+
+@Violation(message = "Generalization sets are not supported", mark = { "gen" })
+pattern GeneralizationSet(gen : Generalization) {
+	Generalization.generalizationSet(gen, _);
+}
+
+@Violation(message = "Generalizations must be substitutable", mark = { "gen" })
+pattern GeneralizationNotSubstitutable(gen : Generalization) {
+	Generalization.isSubstitutable(gen, false);
+}
+
+//////////////////////////////
+// association class
+//////////////////////////////
+@Violation(message = "Generalization of association class {ac} is not supported", mark = { "spec" })
+pattern GeneralizationOfAssocClass(ac : AssociationClass, spec : Class) {
+	find Parent(spec, ac);
+}
+
+
+//////////////////////////////
+// property
+//////////////////////////////
+@Violation(message = "Type of class attribute must be a data type", mark = { "pr" })
+pattern NonDatatypeProperty(pr : Property) {
+	find ClassOrAssocClass(cl);
+	find AttributeType(cl, pr, ty, _, _);
+	neg find DataType(ty);
+}
+
+@Violation(message = "A property must have a type", mark = { "pr" })
+pattern PropertyWithoutType(pr : Property) {
+	neg find PropertyType(pr, _);
+}
+
+private pattern PropertyType(pr : Property, t) {
+	Property.type(pr, t);
+}
+
+private pattern DataType(dt : DataType) {
+	DataType(dt);
+}
+
+@Violation(message = "Aggregation is not supported", mark = { "pr" })
+pattern PropertyAggregation(pr : Property) {
+	Property.aggregation(pr, ag);
+	ag != AggregationKind::none;
+}
+
+@Violation(message = "Default value is not supported", mark = { "pr" })
+pattern PropertyDefaultValue(pr : Property) {
+	Property.defaultValue(pr, _);
+}
+
+@Violation(message = "Derived properties are not supported", mark = { "pr" })
+pattern PropertyIsDerived(pr : Property) {
+	Property.isDerived(pr, true);
+} or {
+	Property.isDerivedUnion(pr, true);
+}
+
+
+@Violation(message = "Composite properties are not supported", mark = { "pr" })
+pattern PropertyIsComposite(pr : Property) {
+	Property.isComposite(pr, true);
+}
+
+@Violation(message = "ID properties are not supported", mark = { "pr" })
+pattern PropertyIsID(pr : Property) {
+	Property.isID(pr, true);
+}
+
+@Violation(message = "Read-only properties are not supported", mark = { "pr" })
+pattern PropertyIsReadOnly(pr : Property) {
+	Property.isReadOnly(pr, true);
+}
+
+@Violation(message = "Property redefinition is not supported", mark = { "pr" })
+pattern PropertyRedefinedProperty(pr : Property) {
+	Property.redefinedProperty(pr, _);
+}
+
+@Violation(message = "Property subsetting is not supported", mark = { "pr" })
+pattern PropertySubsettedProperty(pr : Property) {
+	Property.subsettedProperty(pr, _);
+}
+
+@Violation(message = "Properties must be public, there is no visibility checking", mark = { "pr" })
+pattern PropertyNotPublic(pr : Property) {
+	Property.visibility(pr, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Unrecognized element in property {pr}", mark = { "elem" })
+pattern PropertyUnrecognizedElement(pr : Property, elem : Element) {
+	Property.ownedElement(pr, elem);
+	neg find IsBound(pr, elem);
+}
+
+private pattern IsBound(pr : MultiplicityElement, elem : ValueSpecification) {
+	MultiplicityElement.upperValue(pr, elem);
+} or {
+	MultiplicityElement.lowerValue(pr, elem);
+}
+
+@Violation(message = "Unique properties cannot have lower bound higher than 1, because they could not be default initialized", mark = { "pr" })
+pattern PropertyCannotBeDefaultInitialized(pr : Property) {
+	Property.isUnique(pr, true);
+	Property.lowerValue(pr, low);
+	find NumericValue(low, v);
+	check(1 < (v as Integer));
+}
+
+//////////////////////////////
+// operations
+//////////////////////////////
+@Violation(message = "Return type cannot have multiplicity", mark = { "param" })
+pattern ReturnTypeMultiplicity(param : Parameter) {
+	Operation.ownedParameter(_, param);
+	Parameter.direction(param, ParameterDirectionKind::^return);
+	Parameter.upperValue(param, high);
+	find NumericValue(high, uv);
+	check(uv != 1);
+}
+
+@Violation(message = "Abstract operation cannot have a method", mark = { "op" })
+pattern AbstractOperationWithMethod(op : Operation) {
+	Operation.isAbstract(op, true);
+	Operation.method(op, _);
+}
+
+@Violation(message = "Redefining operation must have the same name as the redefined", mark = { "op" })
+pattern RedefiningNameDifferent(op : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.name(op, n1);
+	Operation.name(redefined, n2);
+	n1 != n2;
+}
+
+@Violation(message = "Redefining operation must be in a descendant of the class of the redefined", mark = { "op" })
+pattern RedefinedMustBeInAncestor(op : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.class(op, opCls);
+	Operation.class(redefined, redefinedCls);
+	neg find IsAncestor(opCls, redefinedCls);
+}
+
+@Violation(message = "The redefining operation cannot be abstract", mark = { "op" })
+pattern RedefiningAbstract(op : Operation) {
+	Operation.redefinedOperation(op, _);
+	Operation.isAbstract(op, true);
+}
+
+@Violation(message = "The redefining operation cannot be static", mark = { "op" })
+pattern RedefiningStatic(op : Operation) {
+	Operation.redefinedOperation(op, _);
+	Operation.isStatic(op, true);
+}
+
+@Violation(message = "Cannot redefine the static operation {redefined}", mark = { "op" })
+pattern RedefinedStatic(op : Operation, redefined : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.isStatic(redefined, true);
+}
+
+@Violation(message = "Cannot redefine the leaf operation {redefined}", mark = { "op" })
+pattern RedefinedLeaf(op : Operation, redefined : Operation) {
+	Operation.redefinedOperation(op, redefined);
+	Operation.isLeaf(redefined, true);
+}
+
+@Violation(message = "Only abstract classes can contain abstract operations", mark = { "op" })
+pattern ClassContainsAbstractOperation(op : Operation) {
+	Operation.isAbstract(op, true);
+	Operation.class(op, cls);
+	Class.isAbstract(cls, false);
+}
+
+@Violation(message = "An operation cannot be static and abstract at the same time", mark = { "op" })
+pattern StaticAbstractOperation(op : Operation) {
+	Operation.isAbstract(op, true);
+	Operation.class(op, cls);
+	Class.isAbstract(cls, false);
+}
+
+@Violation(message = "Only methods marked with the stereotype Create can have the same name as the class", mark = { "op" })
+pattern UnmarkedConstructor(op : Operation) {
+	neg find Constructor(op);
+	Operation.name(op, name);
+	Operation.class(op, cls);
+	Class.name(cls, name);
+}
+
+@Violation(message = "The constructor must have the same name as the class", mark = { "op" })
+pattern ConstructorWrongName(op : Operation) {
+	find Constructor(op);
+	Operation.name(op, name1);
+	Operation.class(op, cls);
+	Class.name(cls, name2);
+	name1 != name2;
+}
+
+@Violation(message = "Constructor cannot have return type", mark = { "op" })
+pattern ConstructorReturn(op : Operation) {
+	find Constructor(op);
+	Operation.ownedParameter(op, par);
+	Parameter.direction(par, ::^return);
+}
+
+private pattern Constructor(op : BehavioralFeature) {
+	Create.base_BehavioralFeature(_, op);
+}
+
+@Violation(message = "Only methods marked with the stereotype Destroy can be named 'destroy'", mark = { "op" })
+pattern UnmarkedDestructor(op : Operation) {
+	neg find Destructor(op);
+	Operation.name(op, "destroy");
+}
+
+@Violation(message = "Destructors must be named 'destroy'", mark = { "op" })
+pattern DestructorWrongName(op : Operation) {
+	find Destructor(op);
+	Operation.name(op, name);
+	name != "destroy";
+}
+
+@Violation(message = "Destructors cannot have parameters", mark = { "op" })
+pattern DestructorParameter(op : Operation) {
+	find Destructor(op);
+	Operation.ownedParameter(op, _);
+}
+
+private pattern Destructor(op : BehavioralFeature) {
+	Destroy.base_BehavioralFeature(_, op);
+}
+
+@Violation(message = "The method of an operation must be an opaque behavior", mark = { "op" })
+pattern MethodNotOpaqueBehavior(op : Operation) {
+	Operation.method(op, meth);
+	neg find OpaqueBehavior(meth);
+}
+
+private pattern OpaqueBehavior(beh : OpaqueBehavior) {
+	OpaqueBehavior(beh);
+}
+
+@Violation(message = "Operations must be public, there is no visibility checking", mark = { "op" })
+pattern OperationNotPublic(op : Operation) {
+	Operation.visibility(op, visibility);
+	visibility != VisibilityKind::public;
+}
+
+//////////////////////////////
+// method
+//////////////////////////////
+@Violation(message = "The method must have rALF language implementation", mark = { "me" })
+pattern MethodWithoutRalf(me : OpaqueBehavior) {
+	neg find MethodRalf(me);
+}
+
+private pattern MethodRalf(me : OpaqueBehavior) {
+	OpaqueBehavior.language(me, "rALF");
+}
+
+@Violation(message = "Method without specification", mark = { "me" })
+pattern MethodWithoutSpecification(me : OpaqueBehavior) {
+	neg find Method(_, _, me);
+	neg find SMEffect(me);
+}
+
+private pattern SMEffect(me : OpaqueBehavior) {
+	State.entry(_, me);
+} or {
+	State.exit(_, me);
+} or {
+	Transition.effect(_, me);
+}
+
+@Violation(message = "Method cannot have classifier behavior", mark = { "me" })
+pattern MethodClassifierBehavior(me : OpaqueBehavior) {
+	OpaqueBehavior.classifierBehavior(me, _);
+}
+
+@Violation(message = "Method cannot be abstract", mark = { "me" })
+pattern MethodAbstract(me : OpaqueBehavior) {
+	OpaqueBehavior.isAbstract(me, true);
+}
+
+@Violation(message = "Method cannot be active", mark = { "me" })
+pattern MethodActive(me : OpaqueBehavior) {
+	OpaqueBehavior.isActive(me, true);
+}
+
+@Violation(message = "Method must be reentrant", mark = { "me" })
+pattern MethodReentrant(me : OpaqueBehavior) {
+	OpaqueBehavior.isReentrant(me, false);
+}
+
+@Violation(message = "Operations can redefine each other, methods cannot", mark = { "me" })
+pattern MethodRedefines(me : OpaqueBehavior) {
+	OpaqueBehavior.redefinedBehavior(me, _);
+}
+
+@Violation(message = "Methods must be public", mark = { "me" })
+pattern MethodNotPublic(me : OpaqueBehavior) {
+	OpaqueBehavior.visibility(me, visibility);
+	visibility != VisibilityKind::public;
+}
+
+
+@Violation(message = "Unrecognised element in method", mark = { "elem" })
+pattern MethodElement(elem : Element) {
+	OpaqueBehavior.ownedElement(_, elem);
+	neg find Parameter(elem);
+}
+
+//////////////////////////////
+// parameter
+//////////////////////////////
+private pattern Parameter(elem : Parameter) {
+	Parameter(elem);
+}
+
+@Violation(message = "{bf} can have at most one return parameter", mark = { "pm1", "pm2" })
+pattern MultiReturns(bf : BehavioralFeature, pm1 : Parameter, pm2 : Parameter) {
+	BehavioralFeature.ownedParameter(bf, pm1);
+	BehavioralFeature.ownedParameter(bf, pm2);
+	Parameter.direction(pm1, ::^return);
+	Parameter.direction(pm2, ::^return);
+	pm1 != pm2;
+}
+
+@Violation(message = "A parameter must have a type", mark = { "pm" })
+pattern ParameterWithoutType(pm : Parameter) {
+	neg find ParameterType(pm, _);
+}
+
+private pattern ParameterType(pm : Parameter, t) {
+	Parameter.type(pm, t);
+}
+
+@Violation(message = "Parameters effect must be create", mark = { "pm" })
+pattern ParameterEffect(pm : Parameter) {
+	Parameter.effect(pm, eff);
+	eff != ParameterEffectKind::create;
+}
+
+@Violation(message = "Exception parameters are not supported", mark = { "pm" })
+pattern ParameterException(pm : Parameter) {
+	Parameter.isException(pm, true);
+}
+
+@Violation(message = "Stream parameters are not supported", mark = { "pm" })
+pattern ParameterStream(pm : Parameter) {
+	Parameter.isStream(pm, true);
+}
+
+@Violation(message = "Parameter sets are not supported", mark = { "pm" })
+pattern ParameterSet(pm : Parameter) {
+	Parameter.parameterSet(pm, _);
+}
+
+@Violation(message = "Parameter visibility must be public", mark = { "pm" })
+pattern ParameterNonPublic(pm : Parameter) {
+	Parameter.visibility(pm, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Unrecognised element in parameter", mark = { "elem" })
+pattern ParameterElement(elem : Element) {
+	Parameter.ownedElement(pr, elem);
+	neg find IsBound(pr, elem);
+}
+
+//////////////////////////////
+// association
+//////////////////////////////
+@Violation(message = "Association visibility must be public", mark = { "ac" })
+pattern AssociationNonPublic(ac : Association) {
+	Association.visibility(ac, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Association must have two ends", mark = { "ac" })
+pattern AssociationMissingEnd(ac : Association) {
+	neg find AssociationEnds(ac, _, _);
+} or {
+	find AssociationEnds(ac, me1, me2);
+	Association.memberEnd(ac, me3);
+	me1 != me3;
+	me2 != me3;
+}
+
+private pattern AssociationEnds(ac : Association, me1 : Property, me2 : Property) {
+	Association.memberEnd(ac, me1);
+	Association.memberEnd(ac, me2);
+	me1 != me2;
+}
+
+@Violation(message = "Association ends must have class type", mark = { "ac" })
+pattern AssociationEndMustBeClass(ac : Association) {
+	Association.memberEnd(ac, me);
+	Property.type(me, t);
+	neg find ClassOrAssocClass(t);
+}
+
+@Violation(message = "Abstract associations are not supported", mark = { "ac" })
+pattern AssociationAbstract(ac : Association) {
+	Association.isAbstract(ac, true);
+}
+
+@Violation(message = "Derived associations are not supported", mark = { "ac" })
+pattern AssociationDerived(ac : Association) {
+	Association.isDerived(ac, true);
+}
+
+@Violation(message = "Associations can only contain their member ends", mark = { "elem" })
+pattern AssociationElement(elem : Element) {
+	neg find ClassOrAssocClass(ac);
+	Association.ownedElement(ac, elem);
+	neg find AssociationEnds(ac, elem, _);
+}
+
+//////////////////////////////
+// reception
+//////////////////////////////
+@Violation(message = "Reception without signal", mark = { "rc" })
+pattern ReceptionWithoutSignal(rc : Reception) {
+	Reception(rc);
+	neg find ReceptionSignal(rc, _);
+}
+
+private pattern ReceptionSignal(rc : Reception, sg : Signal) {
+	Reception.signal(rc, sg);
+}
+
+@Violation(message = "Abstract receptions are not supported", mark = { "rc" })
+pattern ReceptionAbstract(rc : Reception) {
+	Reception.isAbstract(rc, true);
+}
+
+@Violation(message = "Reception parameters must have 'in' direction", mark = { "param" })
+pattern ReceptionParameterNotIn(param : Parameter) {
+	Reception.ownedParameter(_, param);
+	Parameter.direction(param, dir);
+	dir != ParameterDirectionKind::in;
+}
+
+
+@Violation(message = "Static receptions are not supported", mark = { "rc" })
+pattern ReceptionStatic(rc : Reception) {
+	Reception.isStatic(rc, true);
+}
+
+@Violation(message = "Reception methods are not supported", mark = { "rc" })
+pattern ReceptionMethod(rc : Reception) {
+	Reception.method(rc, _);
+}
+
+@Violation(message = "Receptions cannot raise exceptions", mark = { "rc" })
+pattern ReceptionRaisedException(rc : Reception) {
+	Reception.raisedException(rc, _);
+}
+
+@Violation(message = "Reception visibility must be public", mark = { "rc" })
+pattern ReceptionNonPublic(rc : Reception) {
+	Reception.visibility(rc, visibility);
+	visibility != VisibilityKind::public;
+}
+
+@Violation(message = "Receptions can only contain parameters", mark = { "elem" })
+pattern ReceptionElement(elem : Element) {
+	Reception.ownedElement(_, elem);
+	neg find Parameter(elem);
+}
+
+
+
+

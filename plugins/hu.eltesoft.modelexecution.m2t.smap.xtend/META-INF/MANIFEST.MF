@@ -4,9 +4,9 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2t.smap.xtend
 Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: hu.eltesoft.modelexecution.m2t.smap.xtend
 Require-Bundle: org.eclipse.xtext.smap;bundle-version="2.8.3",
  org.eclipse.xtext;bundle-version="2.8.3",
  org.eclipse.xtend.lib;bundle-version="2.8.3",
  org.eclipse.ui.workbench;bundle-version="3.1.0"
-Export-Package: hu.eltesoft.modelexecution.m2t.smap.xtend
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

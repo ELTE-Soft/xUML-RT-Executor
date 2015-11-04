@@ -1,0 +1,124 @@
+package hu.eltesoft.modelexecution.validation
+
+import "http://www.eclipse.org/uml2/5.0.0/UML"
+
+import hu.eltesoft.modelexecution.uml.incquery.NumericValue
+import hu.eltesoft.modelexecution.uml.incquery.Method
+
+
+@Violation(message = "Number of parameters ({methodParams}) does not the same as specification {op} ({opParams})", mark = { "method" })
+pattern OperationMethodParameterNum(op : Operation, method : Behavior, opParams, methodParams) {
+	find Method(_, op, method);
+	opParams == count find ParameterOfOperation(op, _);
+	methodParams == count find ParameterOfBehavior(method, _);
+	opParams != methodParams;
+}
+
+private pattern ParameterOfOperation(op : Operation, p : Parameter) {
+	Operation.ownedParameter(op, p);
+}
+
+private pattern ParameterOfBehavior(beh : Behavior, p : Parameter) {
+	Behavior.ownedParameter(beh, p);
+}
+
+
+@Violation(message = "Parameter of the method {method} does not conform to its specification in {op}", 
+  mark = { "methodParam" }, post = "hu.eltesoft.modelexecution.validation.utils.IndexChecked"
+)
+pattern OperationMethodParameterCheck(opParam : Parameter, methodParam : Parameter, op : Operation, method : Behavior) {
+	find Method(_, op, method);
+	Operation.ownedParameter(op, opParam);
+	OpaqueBehavior.ownedParameter(method, methodParam);
+	neg find ParamsCheck(opParam, methodParam);
+}
+
+private pattern ParamsCheck(opParam : Parameter, methodParam : Parameter) {
+	Parameter.type(opParam, type);
+	Parameter.type(methodParam, type);
+	Parameter.direction(opParam, dir);
+	Parameter.direction(methodParam, dir);
+	find LowerValue(opParam, lv);
+	find LowerValue(methodParam, lv);
+	find UpperValue(opParam, uv);
+	find UpperValue(methodParam, uv);
+}
+
+private pattern LowerValue(me : MultiplicityElement, lowerBound) {
+	find Lower(me, lower);
+	find NumericValue(lower, lowerBound);
+} or {
+	neg find Lower(me, _);
+	lowerBound == 1;
+}
+
+private pattern Lower(me : MultiplicityElement, lower : ValueSpecification) {
+	MultiplicityElement.lowerValue(me, lower);
+}
+
+private pattern UpperValue(me : MultiplicityElement, upperBound) {
+	find Upper(me, upper);
+	find NumericValue(upper, upperBound);
+} or {
+	neg find Upper(me, _);
+	upperBound == 1;
+}
+
+private pattern Upper(me : MultiplicityElement, upper : ValueSpecification) {
+	MultiplicityElement.upperValue(me, upper);
+}
+
+@Violation(message = "Number of parameters ({params}) does not the same as number of properties in signal {sg} ({properties})", mark = { "rc" })
+pattern ReceptionSignalParameterNum(rc : Reception, sg : Signal, params, properties) {
+	Reception.signal(rc, sg);
+	params == count find ParameterOfReception(rc, _);
+	properties == count find PropertiesOfSignal(sg, _);
+	params != properties;
+}
+
+private pattern ParameterOfReception(rc : Reception, p : Parameter) {
+	Reception.ownedParameter(rc, p);
+}
+
+private pattern PropertiesOfSignal(sg : Signal, p : Property) {
+	Signal.attribute(sg, p);
+}
+
+@Violation(message = "Reception parameter must conform to the property {property} of signal {sg}",
+	mark = { "param" }, post = "hu.eltesoft.modelexecution.validation.utils.IndexChecked"
+)
+pattern ReceptionSignalChecks(param : Parameter, property : Property, rc : Reception, sg : Signal) {
+	Reception.signal(rc, sg);
+	Reception.ownedParameter(rc, param);
+	Signal.attribute(sg, property);
+	neg find ParamPropCheck(param, property);
+}
+
+private pattern ParamPropCheck(param : Parameter, property : Property) {
+	Parameter.type(param, type);
+	Property.type(property, type);
+	find LowerValue(param, lv);
+	find LowerValue(property, lv);
+	find UpperValue(param, uv);
+	find UpperValue(property, uv);
+}
+
+
+@Violation(message = "Number of parameters ({redefinerParams}) does not the same as of redefined {redefined} ({redefinedParams})", mark = { "redefiner" })
+pattern RedefinedOperationParameterNum(redefined : Operation, redefiner : Operation, redefinerParams, redefinedParams) {
+	Operation.redefinedOperation(redefiner, redefined);
+	redefinerParams == count find ParameterOfOperation(redefiner, _);
+	redefinedParams == count find ParameterOfOperation(redefined, _);
+	redefinerParams != redefinedParams;
+}
+
+@Violation(message = "Parameters of the operation must be the same as the redefined operation {redefined}", 
+	mark = { "redefiner" }, post = "hu.eltesoft.modelexecution.validation.utils.IndexChecked"
+)
+pattern RedefinedAndRedefiningParametersMustBeTheSame(redefined : Operation, redefiner : Operation) {
+	Operation.redefinedOperation(redefiner, redefined);
+	Operation.ownedParameter(redefined, redefinedParam);
+	Operation.ownedParameter(redefiner, redefinerParam);
+	neg find ParamsCheck(redefinedParam, redefinerParam);
+}
+

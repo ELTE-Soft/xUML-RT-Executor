@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Signal;
@@ -55,13 +56,18 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 		Class class1 = namedChild(model, Class.class, "Class1");
 		String classRootName = NamedReference.getIdentifier(class1);
 
+		// remove the associated behavior first,
+		// as the model should be valid after removal
+		Behavior method1 = namedChild(class1, Behavior.class, "Method1");
+		method1.destroy();
+		
 		Operation operation1 = namedChild(class1, Operation.class, "Operation1");
 		operation1.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 
-		// 2 = class specification + class implementation
-		assertEquals(2, queue.size());
+		// 3 = remove behavior + modify class specification + modify class implementation
+		assertEquals(3, queue.size());
 
 		SourceCodeChangeListener listener = mock(SourceCodeChangeListener.class);
 
@@ -74,9 +80,9 @@ public class IncrementalResourceTranslatorTests extends ResourceTranslatorTests 
 
 	@Test
 	public void testIncrementalBuildAfterSignalRemoved() {
-		Signal signal1 = namedChild(model, Signal.class, "Signal1");
-		String signalRootName = NamedReference.getIdentifier(signal1);
-		signal1.destroy();
+		Signal signal2 = namedChild(model, Signal.class, "Signal2");
+		String signalRootName = NamedReference.getIdentifier(signal2);
+		signal2.destroy();
 
 		List<SourceCodeTask> queue = translator.incrementalTranslation();
 		assertEquals(1, queue.size());

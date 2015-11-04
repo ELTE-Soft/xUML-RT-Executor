@@ -33,6 +33,16 @@ public class ProjectProperties {
 
 	public static final String DEFAULT_TRACES_PATH = "traces"; //$NON-NLS-1$
 
+	public static final String PROP_VALIDATION_LEVEL = PROPERTY_PREFIX + "validation_level";
+
+	// do not make it final, as it enables the tests to set it to NEVER_STOP
+	public static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
+	
+	public enum ValidationLevels {
+		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
+	}
+	
+
 	public static IEclipsePreferences getProperties(IProject project) {
 		IScopeContext projectScope = new ProjectScope(project);
 		return projectScope.getNode(XUMLRTConstants.NATURE_ID);
@@ -136,6 +146,28 @@ public class ProjectProperties {
 
 	private static void setTraceFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_TRACES_PATH, path);
+	}
+	
+	/**
+	 * Get the validation level of the project
+	 */
+	public static ValidationLevels getValidationSetting(IProject project) {
+		return getValidationSetting(getProperties(project));
+	}
+
+	private static ValidationLevels getValidationSetting(IEclipsePreferences properties) {
+		return ValidationLevels.valueOf(properties.get(PROP_VALIDATION_LEVEL, DEFAULT_VALIDATION_LEVEL.name()));
+	}
+	
+	/**
+	 * Set the validation level of the project
+	 */
+	public static void setValidationSetting(IProject project, ValidationLevels level) {
+		setValidationSetting(getProperties(project), level);
+	}
+
+	private static void setValidationSetting(IEclipsePreferences properties, ValidationLevels level) {
+		properties.put(PROP_VALIDATION_LEVEL, level.name());
 	}
 
 }
