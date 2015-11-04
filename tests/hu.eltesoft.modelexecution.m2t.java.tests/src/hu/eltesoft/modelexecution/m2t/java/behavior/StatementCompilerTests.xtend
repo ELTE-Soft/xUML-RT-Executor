@@ -59,7 +59,7 @@ class StatementCompilerTests extends CompiledCodeCheckTestCase {
 
 	@Test
 	def testReturnFalse() {
-		operation = ModelProperties.BOOL_OPERATION
+		behavior = ModelProperties.BOOL_METHOD
 		assertCompilesTo('''return false;''', "return " <> booleanLiteral("false"))
 	}
 

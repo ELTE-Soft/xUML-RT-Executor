@@ -15,4 +15,5 @@ public class ModelProperties {
 	public static final String STATE_ENTRY = "State2Entry";
 	public static final String STATE_EXIT = "State1Exit";
 	public static final String TRANSITION_EFFECT = "T1Effect";
+	public static final String BOOL_METHOD = "model::B::MethodBool";
 }
