@@ -80,7 +80,14 @@ public class ValidationError {
 	}
 
 	public void show() {
-		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+		IWorkspaceRoot workspace;
+		try {
+			workspace = ResourcesPlugin.getWorkspace().getRoot();
+		} catch (IllegalStateException e) {
+			// when the workspace is closed, eg. in standalone mode
+			return;
+		}
+
 		Resource eResource = elements.get(0).eResource();
 		if (eResource == null) {
 			return;
