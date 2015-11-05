@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2t.smap.xtend
-Bundle-Version: 0.7.0.qualifier
+Bundle-Version: 0.8.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: hu.eltesoft.modelexecution.m2t.smap.xtend
 Require-Bundle: org.eclipse.xtext.smap;bundle-version="2.8.3",
