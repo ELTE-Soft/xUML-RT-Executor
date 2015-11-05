@@ -7,7 +7,6 @@ import java.util.TimerTask;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.moka.MokaConstants;
-import org.eclipse.papyrus.moka.ui.presentation.AnimationUtils;
 
 /**
  * Manages highlighting states and transitions for animation and when suspended
@@ -34,7 +33,7 @@ public class AnimationController extends MokaAnimationBase {
 	public AnimationController(int xumlRTDelay) {
 		animationTimeMultiplier = xumlRTDelay;
 
-		AnimationUtils.init();
+		CustomAnimationUtils.init();
 	}
 
 	public boolean getAnimate() {
@@ -80,7 +79,7 @@ public class AnimationController extends MokaAnimationBase {
 		if (null != animated) {
 			UTILS.removeAnimationMarker(animated);
 		}
-		animated = AnimationUtils.resolve(modelElement);
+		animated = CustomAnimationUtils.resolve(modelElement);
 		lastAnimated.put(group, animated);
 		UTILS.addAnimationMarker(animated);
 	}
@@ -101,7 +100,7 @@ public class AnimationController extends MokaAnimationBase {
 
 	public synchronized void setSuspendedMarker(EObject modelElement) {
 		removeSuspendedMarker();
-		lastSuspended = AnimationUtils.resolve(modelElement);
+		lastSuspended = CustomAnimationUtils.resolve(modelElement);
 		UTILS.addSuspendedMarker(lastSuspended);
 		openContainingDiagram(modelElement);
 	}
