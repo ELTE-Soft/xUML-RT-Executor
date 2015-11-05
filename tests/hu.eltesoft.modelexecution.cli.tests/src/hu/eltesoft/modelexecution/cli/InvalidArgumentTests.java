@@ -27,7 +27,7 @@ public class InvalidArgumentTests {
 	@Test
 	public void tryToRun() throws Exception {
 		SimpleEntry<String, String> output = TestUtils.withRedirectedIO(() -> {
-			TestUtils.runCli(2, arguments);
+			TestUtils.runCli(5, arguments);
 		});
 		// standard error should not be empty
 		assertFalse(output.getValue().isEmpty());
