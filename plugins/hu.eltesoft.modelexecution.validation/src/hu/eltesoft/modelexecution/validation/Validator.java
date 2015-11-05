@@ -32,24 +32,12 @@ public class Validator {
 		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
 	}
 
+	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
+	private static boolean queriesInitialized;
+
+	private ModelSet modelSet;
 	private boolean incremental;
 	private Set<ValidationRule> rules = new HashSet<>();
-
-	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
-	private ModelSet modelSet;
-
-	static {
-		try {
-			queries.add(General.instance());
-			queries.add(Structure.instance());
-			queries.add(ClassValidation.instance());
-			queries.add(ExternalEntity.instance());
-			queries.add(StateMachine.instance());
-			queries.add(ParameterChecks.instance());
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static Validator create(Validator previous, ModelSet modelSet, IncQueryEngine engine) {
 		if (previous != null) {
@@ -82,6 +70,20 @@ public class Validator {
 	}
 
 	private Validator(ModelSet modelSet, IncQueryEngine engine, boolean incremental) throws IncQueryException {
+		if (!queriesInitialized) {
+			queriesInitialized = true;
+			try {
+				queries.add(General.instance());
+				queries.add(Structure.instance());
+				queries.add(ClassValidation.instance());
+				queries.add(ExternalEntity.instance());
+				queries.add(StateMachine.instance());
+				queries.add(ParameterChecks.instance());
+			} catch (IncQueryException e) {
+				e.printStackTrace();
+			}
+		}
+
 		this.modelSet = modelSet;
 		for (BaseGeneratedPatternGroup group : queries) {
 			for (IQuerySpecification<?> spec : group.getSpecifications()) {
