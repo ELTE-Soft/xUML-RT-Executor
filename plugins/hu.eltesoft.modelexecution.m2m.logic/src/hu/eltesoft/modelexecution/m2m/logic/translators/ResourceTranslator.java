@@ -208,7 +208,13 @@ public class ResourceTranslator {
 	}
 
 	private Optional<IProject> getProject() {
-		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+		IWorkspaceRoot workspace;
+		try {
+			workspace = ResourcesPlugin.getWorkspace().getRoot();
+		} catch (IllegalStateException e) {
+			// when the workspace is closed, eg. in standalone mode
+			return Optional.empty();
+		}
 
 		for (Resource res : resource.getResources()) {
 			URI locationUri = URI.create(CommonPlugin.asLocalURI(res.getURI()).toString());
