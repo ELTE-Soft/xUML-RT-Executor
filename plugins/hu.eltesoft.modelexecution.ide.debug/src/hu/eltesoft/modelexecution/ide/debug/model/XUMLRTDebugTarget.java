@@ -292,7 +292,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public StateMachineInstance getSuspendedSMInstance() {
 		Pair<String, Long> actualSMInstance = vmBrowser.getActualSMInstance();
 		for (StateMachineInstance instance : getSmInstances()) {
-			if (actualSMInstance.equals(new Pair<>(instance.getClassId(), instance.getInstanceId()))) {
+			if (new Pair<>(instance.getClassId(), instance.getInstanceId()).equals(actualSMInstance)) {
 				return instance;
 			}
 		}
