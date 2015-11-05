@@ -124,8 +124,16 @@ public class DebugViewController extends AbstractModelProxy {
 	 */
 	private ModelDelta unchangedDeltaToParent(DebugElement modelElement) throws CoreException {
 		ModelDelta launchDelta = deltaToDebugTarget(modelElement.getXUmlRtDebugTarget());
-		if (modelElement.getParent() != null) {
-			return unchangedDeltaOfElem(launchDelta, modelElement.getParent());
+		DebugElement parent = modelElement.getParent();
+		if (parent != null) {
+			ModelDelta delta = unchangedDeltaOfElem(launchDelta, parent);
+			IElementContentProvider adapter = parent.getAdapter(IElementContentProvider.class);
+			if (adapter != null && adapter instanceof CombiningContentProvider<?>) {
+				CombiningContentProvider<?> contentProvider = (CombiningContentProvider<?>) adapter;
+				int numChildren = contentProvider.getChildCount(parent, DEBUG_VIEW_CONTEXT, null);
+				delta.setChildCount(numChildren);
+			}
+			return delta;
 		} else {
 			return launchDelta;
 		}
