@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.cli.ParseException;
 
 public class TestUtils {
-	static final String VERSION = "0.7.0";
+	static final String VERSION = "0.8.0";
 	static final String FULL_VERSION = VERSION + "-SNAPSHOT.jar";
 	static final String JAR_NAME = "xumlrt-executor-cli-" + FULL_VERSION;
 	static final Path JAR_PATH = Paths.get("..", "..", "plugins", "hu.eltesoft.modelexecution.cli", "target", JAR_NAME);
