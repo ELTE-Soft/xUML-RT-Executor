@@ -37,7 +37,7 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	public StateMachineInstance addStateMachineInstance(long instanceId) {
 		StateMachineInstance added = new StateMachineInstance(this, instanceId);
 		instances.add(added);
-		getDebugControl().addDebugElement(this, added);
+		getDebugControl().addDebugElement(added);
 		return added;
 	}
 
@@ -97,6 +97,11 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	@Override
 	public DebugElement getParent() {
 		return component;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ name=" + name + " }";
 	}
 
 }

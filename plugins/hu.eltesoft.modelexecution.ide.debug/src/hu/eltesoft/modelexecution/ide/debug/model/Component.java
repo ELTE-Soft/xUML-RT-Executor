@@ -55,6 +55,10 @@ public class Component extends DebugElement implements IPresentation {
 	public void removeStateMachineInstance(StateMachineInstance instance) {
 		ClassInstances cls = getOrCreateClassFor(instance.getClassId(), instance.getClassName());
 		cls.removeStateMachineInstance(instance);
+		if (cls.getSmInstances().isEmpty()) {
+			classes.remove(cls);
+			getDebugControl().removeDebugElement(cls);
+		}
 	}
 
 	public StateMachineInstance[] getInstances() {
@@ -137,7 +141,7 @@ public class Component extends DebugElement implements IPresentation {
 		}
 		ClassInstances cls = new ClassInstances(this, classId, className);
 		classes.add(cls);
-		getDebugControl().addDebugElement(this, cls);
+		getDebugControl().addDebugElement(cls);
 		return cls;
 	}
 

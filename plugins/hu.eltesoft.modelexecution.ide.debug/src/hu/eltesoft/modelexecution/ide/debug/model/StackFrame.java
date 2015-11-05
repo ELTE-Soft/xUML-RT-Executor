@@ -113,5 +113,10 @@ public abstract class StackFrame extends DebugElement implements IStackFrame, IP
 	public DebugElement getParent() {
 		return instance;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ instance=" + instance.toString() + " }";
+	}
 
 }

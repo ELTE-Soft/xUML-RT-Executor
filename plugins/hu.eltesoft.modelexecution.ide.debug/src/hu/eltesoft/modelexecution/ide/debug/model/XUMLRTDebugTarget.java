@@ -58,8 +58,6 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		this.vmBrowser = vmBrowser;
 		this.resourceSet = resourceSet;
 		this.launch = launch;
-		debugControl.init();
-
 		setDebugTarget(this);
 	}
 
@@ -136,11 +134,19 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		boolean selectElement = !hasSMInstance();
 		if (defaultComponent == null) {
 			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
-			debugControl.addDebugElement(this, defaultComponent);
+			debugControl.addDebugElement(defaultComponent);
 		}
 		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
+
 		if (selectElement) {
-			debugControl.expandAndSelect(added, () -> sendStartSignal(launch));
+			debugControl.addDebugElementSelected(added);
+			sendStartSignal(launch);
+		} else {
+			debugControl.addDebugElement(added);
+		}
+		if (isSuspended) {
+			StateMachineStackFrame stackFrame = new StateMachineStackFrame(added, resourceSet);
+			added.setStackFrames(new StackFrame[] { stackFrame });
 		}
 	}
 
@@ -209,10 +215,10 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
 			// force refresh of debug controls on toolbar
 			debugControl.reselect();
-			
+
 			// force the refresh of the state machine instance to get rid of
 			// phantom stack frames
-			debugControl.refresh(smInstance);
+//			debugControl.refresh(smInstance);
 		}
 	}
 
@@ -286,7 +292,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	public StateMachineInstance getSuspendedSMInstance() {
 		Pair<String, Long> actualSMInstance = vmBrowser.getActualSMInstance();
 		for (StateMachineInstance instance : getSmInstances()) {
-			if (actualSMInstance.equals(new Pair<>(instance.getClassId(), instance.getInstanceId()))) {
+			if (new Pair<>(instance.getClassId(), instance.getInstanceId()).equals(actualSMInstance)) {
 				return instance;
 			}
 		}

@@ -66,6 +66,10 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 
 	@Override
 	public IStackFrame[] getStackFrames() {
+		return getStateMachineStackFrames();
+	}
+	
+	public StateMachineStackFrame[] getStateMachineStackFrames() {
 		return stackFrames.toArray(new StateMachineStackFrame[stackFrames.size()]);
 	}
 
@@ -107,7 +111,7 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 		clearStackFrames();
 		this.stackFrames.addAll(Arrays.asList(stackFrames));
 		for (StackFrame stackFrame : stackFrames) {
-			getDebugControl().addDebugElement(this, stackFrame);
+			getDebugControl().addDebugElement(stackFrame);
 		}
 		// refresh attributes
 		getVariableControl().refresh();
@@ -171,6 +175,11 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	@Override
 	public DebugElement getParent() {
 		return cls;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ cls=" + cls + ", instanceId=" + instanceId + "}";
 	}
 
 }

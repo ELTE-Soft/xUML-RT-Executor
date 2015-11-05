@@ -30,7 +30,7 @@ public class CombiningContentProvider<T> extends ElementContentProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object[] getChildren(Object parent, int index, int length, IPresentationContext context,
+	public Object[] getChildren(Object parent, int index, int length, IPresentationContext context,
 			IViewerUpdate monitor) throws CoreException {
 		List<Object> ret = new ArrayList<>();
 		String id = context.getId();
@@ -44,7 +44,7 @@ public class CombiningContentProvider<T> extends ElementContentProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor)
+	public int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor)
 			throws CoreException {
 		int ret = 0;
 		String id = context.getId();
