@@ -79,12 +79,12 @@ final class SignalQuerySpecification extends BaseGeneratedEMFQuerySpecification<
     
     @Override
     public List<String> getParameterNames() {
-      return Arrays.asList("gen");
+      return Arrays.asList("sg");
     }
     
     @Override
     public List<PParameter> getParameters() {
-      return Arrays.asList(new PParameter("gen", "org.eclipse.uml2.uml.Signal"));
+      return Arrays.asList(new PParameter("sg", "org.eclipse.uml2.uml.Signal"));
     }
     
     @Override
@@ -93,12 +93,12 @@ final class SignalQuerySpecification extends BaseGeneratedEMFQuerySpecification<
       try {
       {
       	PBody body = new PBody(this);
-      	PVariable var_gen = body.getOrCreateVariableByName("gen");
+      	PVariable var_sg = body.getOrCreateVariableByName("sg");
       	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_gen, "gen")
+      		new ExportedParameter(body, var_sg, "sg")
       	));
-      	new TypeConstraint(body, new FlatTuple(var_gen), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_gen), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
       	bodies.add(body);
       }
       	// to silence compiler error

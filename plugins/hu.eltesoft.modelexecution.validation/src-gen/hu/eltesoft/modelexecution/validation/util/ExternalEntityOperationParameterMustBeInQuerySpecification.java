@@ -113,9 +113,9 @@ public final class ExternalEntityOperationParameterMustBeInQuerySpecification ex
       	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
       	new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
       	new Equality(body, var__virtual_0_, var_dir);
-      	new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.ParameterDirectionKind.get("in"));
+      	new ConstantValue(body, var__virtual_1_, getEnumLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ParameterDirectionKind", "in").getInstance());
       	new Inequality(body, var_dir, var__virtual_1_);
-      	new ConstantValue(body, var__virtual_2_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
+      	new ConstantValue(body, var__virtual_2_, getEnumLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ParameterDirectionKind", "return").getInstance());
       	new Inequality(body, var_dir, var__virtual_2_);
       	bodies.add(body);
       }
