@@ -18,7 +18,6 @@ import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import com.incquerylabs.uml.papyrus.IncQueryEngineService;
 
 import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties.ValidationLevels;
 import hu.eltesoft.modelexecution.m2m.logic.SourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.UpdateSourceCodeTask;
 import hu.eltesoft.modelexecution.m2m.logic.tasks.CompositeReversibleTask;
@@ -27,6 +26,7 @@ import hu.eltesoft.modelexecution.m2m.logic.translators.base.RootElementTranslat
 import hu.eltesoft.modelexecution.uml.incquery.Queries;
 import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 import hu.eltesoft.modelexecution.validation.Validator;
+import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 /**
  * This translator converts model resources into a set of translational models
@@ -188,7 +188,7 @@ public class ResourceTranslator {
 		if (highestProblemSeverity.isPresent()) {
 			Severity severity = highestProblemSeverity.get();
 			Optional<ValidationLevels> validationLevel = getValidationLevel();
-			ValidationLevels validLevel = validationLevel.orElse(ProjectProperties.DEFAULT_VALIDATION_LEVEL);
+			ValidationLevels validLevel = validationLevel.orElse(Validator.DEFAULT_VALIDATION_LEVEL);
 			switch (severity) {
 			case ERROR:
 				return validLevel.equals(ValidationLevels.NEVER_STOP);

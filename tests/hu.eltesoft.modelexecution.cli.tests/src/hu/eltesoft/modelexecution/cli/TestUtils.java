@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.cli.ParseException;
 
 public class TestUtils {
+
+	private static final boolean ENABLE_REMOTE_DEBUG = false;
+
 	static final String VERSION = "0.8.0";
 	static final String FULL_VERSION = VERSION + "-SNAPSHOT.jar";
 	static final String JAR_NAME = "xumlrt-executor-cli-" + FULL_VERSION;
@@ -86,6 +89,10 @@ public class TestUtils {
 	private static List<String> makeProcArgs(String... args) {
 		List<String> procArgs = new ArrayList<>();
 		addAllTo(procArgs, new String[] { "java" });
+
+		if (ENABLE_REMOTE_DEBUG) {
+			addAllTo(procArgs, new String[] { "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000" });
+		}
 
 		String jacocoArgs = nextJacocoArgs();
 		if (!jacocoArgs.isEmpty()) {

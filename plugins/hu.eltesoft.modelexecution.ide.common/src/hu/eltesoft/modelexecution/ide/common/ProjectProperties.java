@@ -5,6 +5,9 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 
+import hu.eltesoft.modelexecution.validation.Validator;
+import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
+
 /**
  * Utility functions for handling project properties of executable model
  * projects. The properties are not initialized on nature configuration but have
@@ -34,14 +37,6 @@ public class ProjectProperties {
 	public static final String DEFAULT_TRACES_PATH = "traces"; //$NON-NLS-1$
 
 	public static final String PROP_VALIDATION_LEVEL = PROPERTY_PREFIX + "validation_level";
-
-	// do not make it final, as it enables the tests to set it to NEVER_STOP
-	public static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
-	
-	public enum ValidationLevels {
-		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
-	}
-	
 
 	public static IEclipsePreferences getProperties(IProject project) {
 		IScopeContext projectScope = new ProjectScope(project);
@@ -147,7 +142,7 @@ public class ProjectProperties {
 	private static void setTraceFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_TRACES_PATH, path);
 	}
-	
+
 	/**
 	 * Get the validation level of the project
 	 */
@@ -156,9 +151,10 @@ public class ProjectProperties {
 	}
 
 	private static ValidationLevels getValidationSetting(IEclipsePreferences properties) {
-		return ValidationLevels.valueOf(properties.get(PROP_VALIDATION_LEVEL, DEFAULT_VALIDATION_LEVEL.name()));
+		return ValidationLevels
+				.valueOf(properties.get(PROP_VALIDATION_LEVEL, Validator.DEFAULT_VALIDATION_LEVEL.name()));
 	}
-	
+
 	/**
 	 * Set the validation level of the project
 	 */

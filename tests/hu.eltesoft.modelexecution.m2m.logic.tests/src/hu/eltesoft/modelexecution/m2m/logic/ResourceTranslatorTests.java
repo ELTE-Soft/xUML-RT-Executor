@@ -8,10 +8,10 @@ import java.util.List;
 import org.eclipse.papyrus.infra.core.resource.ModelSet;
 import org.junit.Test;
 
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties.ValidationLevels;
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
+import hu.eltesoft.modelexecution.validation.Validator;
+import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
@@ -29,7 +29,7 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 		translator = createTranslator();
 
 		// do not stop on model validation errors
-		ProjectProperties.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
+		Validator.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
 	};
 
 	protected abstract ResourceTranslator createTranslator();

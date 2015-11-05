@@ -29,8 +29,8 @@ import org.osgi.service.prefs.BackingStoreException;
 import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
-import hu.eltesoft.modelexecution.ide.common.ProjectProperties.ValidationLevels;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
+import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 /**
  * The appearance of the property page where properties of an executable model

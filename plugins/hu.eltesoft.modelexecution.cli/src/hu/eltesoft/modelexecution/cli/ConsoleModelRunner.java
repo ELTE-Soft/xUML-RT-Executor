@@ -15,6 +15,8 @@ import hu.eltesoft.modelexecution.cli.logger.ConsoleLogger;
 import hu.eltesoft.modelexecution.cli.logger.IdleLogger;
 import hu.eltesoft.modelexecution.cli.logger.VerboseConsoleLogger;
 import hu.eltesoft.modelexecution.filemanager.FileManager;
+import hu.eltesoft.modelexecution.validation.Validator;
+import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 /**
  * Console application that compiles and/or executes the model based on the
@@ -22,7 +24,7 @@ import hu.eltesoft.modelexecution.filemanager.FileManager;
  */
 public class ConsoleModelRunner {
 	static ConsoleModelRunner runner = new ConsoleModelRunner();
-	
+
 	public static ConsoleModelRunner getRunner() {
 		return runner;
 	}
@@ -30,7 +32,7 @@ public class ConsoleModelRunner {
 	public static Options getOptions() {
 		return getRunner().options;
 	}
-	
+
 	public static List<String> getActionOpts() {
 		return ACTION_OPTS;
 	}
@@ -48,6 +50,9 @@ public class ConsoleModelRunner {
 	private ConsoleLogger logger = new IdleLogger();
 
 	public static void main(String[] args) {
+		// turn off model validation in cli
+		Validator.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
+
 		try {
 			runner.run(args);
 		} catch (IllegalArgumentException | ParseException e) {
@@ -103,7 +108,7 @@ public class ConsoleModelRunner {
 
 		logger.verboseTimeMsg(Messages.FINISHED_RUNNING);
 	}
-	
+
 	/**
 	 * @return Gets the absolute path of the {@link Opt.ROOT} option, except
 	 *         when it is not present; then it is null, as {@link FileManager}
@@ -115,6 +120,5 @@ public class ConsoleModelRunner {
 		}
 		return Paths.get(Opt.ROOT.getOption(cmd, 0).get()).toAbsolutePath().toString();
 	}
-
 
 }

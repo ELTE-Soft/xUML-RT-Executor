@@ -25,6 +25,13 @@ import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 
 public class Validator {
 
+	// do not make it final, as it enables the tests to set it to NEVER_STOP
+	public static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
+
+	public enum ValidationLevels {
+		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
+	}
+
 	private boolean incremental;
 	private Set<ValidationRule> rules = new HashSet<>();
 
