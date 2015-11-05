@@ -113,7 +113,14 @@ public class Validator {
 	}
 
 	public static void forEachResource(ModelSet modelSet, ThrowingConsumer<IResource> action) {
-		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+		IWorkspaceRoot workspace;
+		try {
+			workspace = ResourcesPlugin.getWorkspace().getRoot();
+		} catch (IllegalStateException e) {
+			// when the workspace is closed, eg. in standalone mode
+			return;
+		}
+
 		for (Resource resource : modelSet.getResources()) {
 			String platformString = resource.getURI().toPlatformString(true);
 			if (platformString != null) {
