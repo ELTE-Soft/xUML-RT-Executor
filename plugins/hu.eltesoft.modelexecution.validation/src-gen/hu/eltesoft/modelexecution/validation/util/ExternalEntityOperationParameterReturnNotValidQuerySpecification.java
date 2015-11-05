@@ -111,7 +111,7 @@ public final class ExternalEntityOperationParameterReturnNotValidQuerySpecificat
       	));
       	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
       	new PositivePatternCall(body, new FlatTuple(var_pm), ExternalEntityOpParamQuerySpecification.instance().getInternalQueryRepresentation());
-      	new ConstantValue(body, var__virtual_0_, getEnumLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ParameterDirectionKind", "return").getInstance());
+      	new ConstantValue(body, var__virtual_0_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
       	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
       	new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
       	new Equality(body, var__virtual_1_, var__virtual_0_);
