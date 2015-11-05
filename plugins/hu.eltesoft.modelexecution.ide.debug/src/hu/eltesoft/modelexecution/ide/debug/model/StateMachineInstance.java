@@ -176,5 +176,10 @@ public class StateMachineInstance extends SuspendableThread implements IPresenta
 	public DebugElement getParent() {
 		return cls;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ cls=" + cls + ", instanceId=" + instanceId + "}";
+	}
 
 }

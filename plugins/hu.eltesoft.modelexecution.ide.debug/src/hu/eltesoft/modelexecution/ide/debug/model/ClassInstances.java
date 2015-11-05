@@ -98,5 +98,10 @@ public class ClassInstances extends DebugElement implements IPresentation {
 	public DebugElement getParent() {
 		return component;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ name=" + name + " }";
+	}
 
 }

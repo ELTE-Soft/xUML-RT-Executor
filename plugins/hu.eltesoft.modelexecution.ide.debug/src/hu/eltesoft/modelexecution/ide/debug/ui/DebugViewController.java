@@ -169,6 +169,11 @@ public class DebugViewController extends AbstractModelProxy {
 	private void updateModel(IModelDelta delta) {
 		accessViewer(v -> ((TreeModelContentProvider) v.getContentProvider()).modelChanged(delta, this));
 	}
+	
+
+	public void reselect() {
+		accessViewer(v -> v.setSelection(v.getSelection()));
+	}
 
 	/**
 	 * Performs the given action on the debug tree view. Can be performed from
