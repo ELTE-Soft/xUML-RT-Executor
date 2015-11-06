@@ -200,8 +200,8 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		List<StateMachineInstance> smInstances = getSmInstances();
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
-			if (actualSMInstance.getKey().equals(smInstance.getClassId())
-					&& actualSMInstance.getValue().equals(smInstance.getInstanceId())) {
+			if (smInstance.getClassId().equals(actualSMInstance.getKey())
+					&& smInstance.getInstanceId() == actualSMInstance.getValue()) {
 				// this is necessary, because the model element could be a
 				// transition
 				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);

@@ -10,6 +10,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.sun.jdi.ReferenceType;
@@ -183,6 +184,11 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			// forces the termination when the editor is closed
 			forceTermination();
 			return ThreadAction.ShouldResume;
+		}
+
+		if (!event.thread().isAtBreakpoint()) {
+			System.err.println("Thread is not at a breakpoint when breaked at "
+					+ ((NamedElement) modelElement).getQualifiedName());
 		}
 
 		boolean hasBreak = debugTarget.hasEnabledBreakpointOn(modelElement);

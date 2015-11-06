@@ -2,20 +2,24 @@ package hu.eltesoft.modelexecution.ide.debug.jvm;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.sun.jdi.AbsentInformationException;
 import com.sun.jdi.ClassType;
 import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.InterfaceType;
 import com.sun.jdi.InvalidTypeException;
 import com.sun.jdi.LocalVariable;
 import com.sun.jdi.Method;
 import com.sun.jdi.ObjectReference;
+import com.sun.jdi.ReferenceType;
 import com.sun.jdi.StackFrame;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.debug.util.JDIUtils;
+import hu.eltesoft.modelexecution.runtime.base.StateMachineRegion;
 
 /**
  * Used to guarantee mutual exclusive access for multiple view components using
@@ -128,16 +132,33 @@ public class JDIThreadWrapper {
 	}
 
 	public boolean isValid() {
-		return thread.isSuspended();
+		return thread.isAtBreakpoint();
 	}
 
 	private StackFrame getExecutionPoint() {
 		try {
-			return thread.frames().get(0);
+			Optional<StackFrame> frame = thread.frames().stream().filter(this::isStepCallInStateMachine).findFirst();
+			if (frame.isPresent()) {
+				return frame.get();
+			}
+			throw new IllegalStateException("Unable to calculate current execution point");
 		} catch (IncompatibleThreadStateException e) {
 			PluginLogger.logError("Could not ask execution point", e);
 			throw new RuntimeException(e);
 		}
 	}
 
+	private boolean isStepCallInStateMachine(StackFrame frame) {
+		Method method = frame.location().method();
+		String methodName = method.name();
+		if (!methodName.startsWith("step") && !methodName.equals("doInitialTransition")) {
+			return false;
+		}
+		ReferenceType declaringType = method.declaringType();
+		if (!(declaringType instanceof ClassType)) {
+			return false;
+		}
+		List<InterfaceType> interfaces = ((ClassType) declaringType).interfaces();
+		return interfaces.stream().anyMatch(i -> StateMachineRegion.class.getCanonicalName().equals(i.name()));
+	}
 }
