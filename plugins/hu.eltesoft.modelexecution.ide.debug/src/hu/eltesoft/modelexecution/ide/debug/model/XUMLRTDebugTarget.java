@@ -197,6 +197,14 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		isSuspended = true;
 
 		Pair<String, Long> actualSMInstance = vmBrowser.getActualSMInstance();
+		if (null == actualSMInstance) {
+			// worst-case branch:
+			// do not let the debugger throw an NPE in the loop below
+			// force refresh of debug controls on toolbar
+			debugControl.reselect();
+			return;
+		}
+
 		List<StateMachineInstance> smInstances = getSmInstances();
 		for (StateMachineInstance smInstance : smInstances) {
 			StateMachineStackFrame stackFrame;
@@ -218,7 +226,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
 			// force the refresh of the state machine instance to get rid of
 			// phantom stack frames
-//			debugControl.refresh(smInstance);
+			// debugControl.refresh(smInstance);
 		}
 	}
 
