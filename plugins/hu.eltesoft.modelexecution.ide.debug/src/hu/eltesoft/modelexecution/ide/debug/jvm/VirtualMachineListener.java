@@ -24,6 +24,8 @@ public interface VirtualMachineListener {
 	void handleClassPrepare(ClassPrepareEvent event);
 
 	ThreadAction handleBreakpoint(BreakpointEvent event);
+	
+	void handleResumeFromBreakpoint();
 
 	public enum ThreadAction {
 		ShouldResume, RemainSuspended;

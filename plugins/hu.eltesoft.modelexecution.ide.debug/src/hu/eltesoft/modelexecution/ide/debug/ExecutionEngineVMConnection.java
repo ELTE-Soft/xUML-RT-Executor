@@ -10,7 +10,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.sun.jdi.ReferenceType;
@@ -115,7 +114,9 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 						@Override
 						public void instanceDestroyed(String classId, long instanceId) {
 							StateMachineInstance removed = debugTarget.removeSMInstance(classId, instanceId);
-							animation.removeAnimationMarker(removed);
+							if (null != removed) {
+								animation.removeAnimationMarker(removed);
+							}
 						}
 					});
 				}
@@ -176,6 +177,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		animation.cancelAnimationTimer();
+		debugTarget.getVMBrowser().fetchActualSMInstance();
 
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
@@ -184,11 +186,6 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			// forces the termination when the editor is closed
 			forceTermination();
 			return ThreadAction.ShouldResume;
-		}
-
-		if (!event.thread().isAtBreakpoint()) {
-			System.err.println("Thread is not at a breakpoint when breaked at "
-					+ ((NamedElement) modelElement).getQualifiedName());
 		}
 
 		boolean hasBreak = debugTarget.hasEnabledBreakpointOn(modelElement);
@@ -202,6 +199,11 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			}
 		}
 		return ThreadAction.ShouldResume;
+	}
+
+	@Override
+	public void handleResumeFromBreakpoint() {
+		debugTarget.getVMBrowser().dropCachedActualSMInstance();
 	}
 
 	private ThreadAction animateIfSelected(EObject modelElement) {
@@ -267,7 +269,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	 * Puts the handler in suspending mode where it stops on each possible
 	 * point.
 	 */
-	public void waitForSuspend() {
+	public synchronized void waitForSuspend() {
 		synchronized (animation) {
 			waitingForSuspend = true;
 		}

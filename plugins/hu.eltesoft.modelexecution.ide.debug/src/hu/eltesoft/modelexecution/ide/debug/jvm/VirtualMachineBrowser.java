@@ -51,11 +51,36 @@ public class VirtualMachineBrowser {
 	private static final String GET_INSTANCE_REGISTRY_METHOD = "getInstanceRegistry"; //$NON-NLS-1$
 	private static final String MAIN_THREAD_NAME = "main"; //$NON-NLS-1$
 
-	private VirtualMachine virtualMachine;
-	private JDIThreadWrapper mainThread;
+	private final VirtualMachineManager vmManager;
+	private final VirtualMachine virtualMachine;
 
-	public VirtualMachineBrowser(VirtualMachine virtualMachine) {
-		this.virtualMachine = virtualMachine;
+	private JDIThreadWrapper mainThread;
+	private Pair<String, Long> cachedSMInstance;
+
+	public VirtualMachineBrowser(VirtualMachineManager vmManager) {
+		this.vmManager = vmManager;
+		virtualMachine = vmManager.getVirtualMachine();
+	}
+
+	public synchronized void dropCachedActualSMInstance() {
+		cachedSMInstance = null;
+		mainThread = null;
+	}
+
+	public synchronized void fetchActualSMInstance() {
+		JDIThreadWrapper mainThread = getMainThread();
+		try {
+			ObjectReference thisObject = mainThread.getActualThis();
+			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
+			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
+			Field objectIdField = owner.referenceType().fieldByName("instanceID");
+			String instanceTypeName = owner.referenceType().name();
+			long instanceID = ((LongValue) owner.getValue(objectIdField)).longValue();
+			cachedSMInstance = new Pair<>(instanceTypeName, instanceID);
+		} catch (Exception e) {
+			PluginLogger.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
+			cachedSMInstance = null;
+		}
 	}
 
 	/**
@@ -63,18 +88,7 @@ public class VirtualMachineBrowser {
 	 *         currently under execution
 	 */
 	public synchronized Pair<String, Long> getActualSMInstance() {
-		JDIThreadWrapper mainThread = getMainThread();
-		try {
-			ObjectReference thisObject = mainThread.getActualThis();
-			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
-			ObjectReference owner = (ObjectReference) thisObject.getValue(ownerField);
-			Field objectIdField = owner.referenceType().fieldByName("instanceID");
-			// FIXME: why can't I execute toString???????
-			return new Pair<>(owner.referenceType().name(), ((LongValue) owner.getValue(objectIdField)).longValue());
-		} catch (Exception e) {
-			PluginLogger.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
-			return null;
-		}
+		return cachedSMInstance;
 	}
 
 	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
@@ -88,12 +102,12 @@ public class VirtualMachineBrowser {
 	 * multiple times, because if a valid thread exists, it returns that and
 	 * evade concurrent use of the same jvm thread.
 	 */
-	public JDIThreadWrapper getMainThread() {
+	private JDIThreadWrapper getMainThread() {
 		if (mainThread == null || !mainThread.isValid()) {
 			List<ThreadReference> threads = virtualMachine.allThreads();
 			for (ThreadReference thread : threads) {
 				if (thread.name().equals(MAIN_THREAD_NAME)) {
-					mainThread = new JDIThreadWrapper(thread);
+					mainThread = new JDIThreadWrapper(vmManager, thread);
 				}
 			}
 		}
@@ -213,5 +227,4 @@ public class VirtualMachineBrowser {
 		return createVariable(stackFrame, mainThread, actualState,
 				new OwnerMeta(Messages.VirtualMachineConnection_variable_currentState_label));
 	}
-
 }

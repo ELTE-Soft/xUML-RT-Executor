@@ -30,25 +30,23 @@ import hu.eltesoft.modelexecution.ide.debug.util.ModelUtils;
 
 public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 
+	private final BreakpointRegistry breakpoints = new BreakpointRegistry();
+	private final DebugViewController debugControl = new DebugViewController();
+	private final VariablesViewController variableControl = new VariablesViewController();
+
+	private final EObject entryPoint;
+	private final ResourceSet resourceSet;
+	private final ILaunch launch;
+	private final VirtualMachineBrowser vmBrowser;
+
+	// the value of this variable could be set from multiple threads
+	private volatile String suspendedSMInstanceName = "";
+
+	private final List<Component> components = new LinkedList<>();
 	private Component defaultComponent = null;
 
-	private List<Component> components = new LinkedList<>();
-
-	private BreakpointRegistry breakpoints = new BreakpointRegistry();
-
-	private ResourceSet resourceSet;
-
-	private VirtualMachineBrowser vmBrowser;
-
-	private ILaunch launch;
-
-	private DebugViewController debugControl = new DebugViewController();
-
-	private VariablesViewController variableControl = new VariablesViewController();
-
-	private EObject entryPoint;
-
-	private String suspendedStateMachine = "";
+	// ensures synchronized access to components including the default one
+	private final Object componentsLock = new Object();
 
 	public XUMLRTDebugTarget(VirtualMachineBrowser vmBrowser, XUmlRtExecutionEngine xUmlRtExecutionEngine,
 			ResourceSet resourceSet, ILaunch launch) {
@@ -85,21 +83,24 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	@Override
 	public String getName() {
 		if (entryPoint != null) {
-			return ((NamedElement) entryPoint).getQualifiedName() + suspendedStateMachine;
+			return ((NamedElement) entryPoint).getQualifiedName() + suspendedSMInstanceName;
 		} else {
 			return Messages.XUMLRTDebugTarget_debug_target_name;
 		}
 	}
 
 	public void terminated() {
-		if (defaultComponent != null) {
-			debugControl.removeDebugElement(defaultComponent);
+		synchronized (componentsLock) {
+			if (defaultComponent != null) {
+				debugControl.removeDebugElement(defaultComponent);
+			}
+
+			defaultComponent = null;
+			for (Component component : components) {
+				debugControl.removeDebugElement(component);
+			}
+			components.clear();
 		}
-		defaultComponent = null;
-		for (Component component : components) {
-			debugControl.removeDebugElement(component);
-		}
-		components.clear();
 	}
 
 	public void resumed() {
@@ -108,7 +109,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			inst.clearStackFrames();
 			debugControl.updateElement(inst);
 		});
-		suspendedStateMachine = "";
+		suspendedSMInstanceName = "";
 		debugControl.updateElement(this);
 	}
 
@@ -131,12 +132,18 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		if (isTerminated()) {
 			return;
 		}
-		boolean selectElement = !hasSMInstance();
-		if (defaultComponent == null) {
-			defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
-			debugControl.addDebugElement(defaultComponent);
+
+		boolean selectElement;
+		StateMachineInstance added;
+
+		synchronized (componentsLock) {
+			selectElement = !hasSMInstance();
+			if (defaultComponent == null) {
+				defaultComponent = new Component(this, Messages.DebugTarget_default_component_label);
+				debugControl.addDebugElement(defaultComponent);
+			}
+			added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 		}
-		StateMachineInstance added = defaultComponent.addStateMachineInstance(classId, instanceId, originalName);
 
 		if (selectElement) {
 			debugControl.addDebugElementSelected(added);
@@ -148,6 +155,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 			StateMachineStackFrame stackFrame = new StateMachineStackFrame(added, resourceSet);
 			added.setStackFrames(new StackFrame[] { stackFrame });
 		}
+
 	}
 
 	private void sendStartSignal(ILaunch launch) {
@@ -169,20 +177,28 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 		if (isTerminated()) {
 			return null;
 		}
-		List<StateMachineInstance> smInstances = defaultComponent.getSmInstances();
-		StateMachineInstance removedInstance = null;
-		for (StateMachineInstance smInstance : smInstances) {
-			if (smInstance.getClassId().equals(classId) && smInstance.getInstanceId() == instanceId) {
-				removedInstance = smInstance;
+
+		synchronized (componentsLock) {
+			if (null == defaultComponent) {
+				// terminate may already have removed it
+				return null;
 			}
+			
+			List<StateMachineInstance> smInstances = defaultComponent.getSmInstances();
+			StateMachineInstance removedInstance = null;
+			for (StateMachineInstance smInstance : smInstances) {
+				if (smInstance.getClassId().equals(classId) && smInstance.getInstanceId() == instanceId) {
+					removedInstance = smInstance;
+				}
+			}
+			defaultComponent.removeStateMachineInstance(removedInstance);
+			// remove default component if became empty
+			if (!defaultComponent.hasSMInstance()) {
+				debugControl.removeDebugElement(defaultComponent);
+				defaultComponent = null;
+			}
+			return removedInstance;
 		}
-		defaultComponent.removeStateMachineInstance(removedInstance);
-		// remove default component if became empty
-		if (!defaultComponent.hasSMInstance()) {
-			debugControl.removeDebugElement(defaultComponent);
-			defaultComponent = null;
-		}
-		return removedInstance;
 	}
 
 	/**
@@ -213,7 +229,7 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 				// this is necessary, because the model element could be a
 				// transition
 				stackFrame = new StateMachineStackFrame(smInstance, (NamedElement) modelElement);
-				suspendedStateMachine = " [" + smInstance.getClassName() + "#" + smInstance.getInstanceId() + "]";
+				suspendedSMInstanceName = " [" + smInstance.getClassName() + "#" + smInstance.getInstanceId() + "]";
 				debugControl.updateElement(this);
 			} else {
 				// the current state of the state machine will be queried later
@@ -253,16 +269,20 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	}
 
 	public Component getDefaultComponent() {
-		return defaultComponent;
+		synchronized (componentsLock) {
+			return defaultComponent;
+		}
 	}
 
 	public Component[] getComponents() {
-		LinkedList<Component> ret = new LinkedList<>();
-		if (defaultComponent != null) {
-			ret.add(defaultComponent);
+		synchronized (componentsLock) {
+			LinkedList<Component> ret = new LinkedList<>();
+			if (defaultComponent != null) {
+				ret.add(defaultComponent);
+			}
+			ret.addAll(components);
+			return ret.toArray(new Component[ret.size()]);
 		}
-		ret.addAll(components);
-		return ret.toArray(new Component[ret.size()]);
 	}
 
 	public StateMachineInstance[] getStateMachineInstances() {
@@ -271,26 +291,30 @@ public class XUMLRTDebugTarget extends DelegatingDebugTarget {
 	}
 
 	public boolean hasSMInstance() {
-		if (defaultComponent != null) {
-			return true;
-		}
-		for (Component component : components) {
-			if (component.hasSMInstance()) {
+		synchronized (componentsLock) {
+			if (defaultComponent != null) {
 				return true;
 			}
+			for (Component component : components) {
+				if (component.hasSMInstance()) {
+					return true;
+				}
+			}
+			return false;
 		}
-		return false;
 	}
 
 	public List<StateMachineInstance> getSmInstances() {
-		List<StateMachineInstance> ret = new LinkedList<>();
-		if (defaultComponent != null) {
-			ret.addAll(defaultComponent.getSmInstances());
+		synchronized (componentsLock) {
+			List<StateMachineInstance> ret = new LinkedList<>();
+			if (defaultComponent != null) {
+				ret.addAll(defaultComponent.getSmInstances());
+			}
+			for (Component component : components) {
+				ret.addAll(component.getSmInstances());
+			}
+			return ret;
 		}
-		for (Component component : components) {
-			ret.addAll(component.getSmInstances());
-		}
-		return ret;
 	}
 
 	/**
