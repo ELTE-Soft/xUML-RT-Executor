@@ -114,7 +114,9 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 						@Override
 						public void instanceDestroyed(String classId, long instanceId) {
 							StateMachineInstance removed = debugTarget.removeSMInstance(classId, instanceId);
-							animation.removeAnimationMarker(removed);
+							if (null != removed) {
+								animation.removeAnimationMarker(removed);
+							}
 						}
 					});
 				}
@@ -175,6 +177,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		animation.cancelAnimationTimer();
+		debugTarget.getVMBrowser().initializeAtBreakpoint();
 
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
@@ -196,6 +199,11 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 			}
 		}
 		return ThreadAction.ShouldResume;
+	}
+
+	@Override
+	public void handleResumeFromBreakpoint() {
+		debugTarget.getVMBrowser().cleanupAfterBrakpoint();
 	}
 
 	private ThreadAction animateIfSelected(EObject modelElement) {
@@ -261,7 +269,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	 * Puts the handler in suspending mode where it stops on each possible
 	 * point.
 	 */
-	public void waitForSuspend() {
+	public synchronized void waitForSuspend() {
 		synchronized (animation) {
 			waitingForSuspend = true;
 		}

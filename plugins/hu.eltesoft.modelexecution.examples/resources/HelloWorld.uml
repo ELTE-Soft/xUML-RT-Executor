@@ -5,7 +5,7 @@
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_XAu5wN9EEeS1Ge-g6TNhew" name="GreetAgainSignalEvent" signal="_dSZFEN9EEeS1Ge-g6TNhew"/>
   <packagedElement xmi:type="uml:Component" xmi:id="_UDuN0FL6EeWG2JsfEzlJog" name="HelloWorldComponent">
     <packagedElement xmi:type="uml:Package" xmi:id="_ZqlIoFL6EeWG2JsfEzlJog" name="HelloWorld">
-      <packagedElement xmi:type="uml:Class" xmi:id="_XiCXYN9BEeS1Ge-g6TNhew" name="HelloWorld">
+      <packagedElement xmi:type="uml:Class" xmi:id="_XiCXYN9BEeS1Ge-g6TNhew" name="HelloWorld" classifierBehavior="_lbKqYN9BEeS1Ge-g6TNhew" isActive="true">
         <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_lbKqYN9BEeS1Ge-g6TNhew" name="HelloWorldBehavior">
           <region xmi:type="uml:Region" xmi:id="_sIWUEN9BEeS1Ge-g6TNhew" name="Region1">
             <transition xmi:type="uml:Transition" xmi:id="_Q5h84N9CEeS1Ge-g6TNhew" name="Greet" source="_vvbIcN9BEeS1Ge-g6TNhew" target="_ygRfcN9BEeS1Ge-g6TNhew"/>

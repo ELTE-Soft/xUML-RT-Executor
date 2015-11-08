@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.ITerminate;
 
 import com.sun.jdi.VMDisconnectedException;
 import com.sun.jdi.VirtualMachine;
@@ -29,24 +28,33 @@ import hu.eltesoft.modelexecution.ide.debug.jvm.VirtualMachineListener.ThreadAct
  * Two way communication with the virtual machine running the runtime.
  */
 @SuppressWarnings("restriction")
-public class VirtualMachineManager implements ITerminate {
+public class VirtualMachineManager {
 
-	private Thread eventHandlerThread;
-	private VirtualMachine virtualMachine;
-	private IProcessWithVM javaProcess;
+	private final VirtualMachine virtualMachine;
+	private final IProcessWithVM javaProcess;
 
-	private List<VirtualMachineListener> eventListeners = new LinkedList<>();
+	private final VirtualMachineBrowser vmBrowser;
+
+	private final List<VirtualMachineListener> eventListeners = new LinkedList<>();
+	private final Thread eventHandlerThread;
+
 	private boolean eventsEnabled;
 	private boolean disconnectFired;
-	private VirtualMachineBrowser vmBrowser;
+
+	private volatile boolean isSuspendedAtBreakpoint = false;
+
+	public boolean isSuspendedAtBreakpoint() {
+		return isSuspendedAtBreakpoint;
+	}
 
 	public VirtualMachineManager(ILaunch launch) {
 		javaProcess = getJavaProcess(launch);
 		virtualMachine = javaProcess.getVM();
-		vmBrowser = new VirtualMachineBrowser(virtualMachine);
 		if (virtualMachine == null) {
 			PluginLogger.logError("Cannot extract virtual machine from java process");
 		}
+
+		vmBrowser = new VirtualMachineBrowser(this);
 
 		eventHandlerThread = createEventHandlerThread();
 		eventHandlerThread.start();
@@ -146,7 +154,12 @@ public class VirtualMachineManager implements ITerminate {
 					fireClassPrepareEvent((ClassPrepareEvent) event);
 					shouldResume = true;
 				} else if (event instanceof BreakpointEvent) {
+					isSuspendedAtBreakpoint = true;
 					shouldResume |= fireBreakpointEvent((BreakpointEvent) event);
+					if (shouldResume) {
+						isSuspendedAtBreakpoint = false;
+						fireResumeFromBreakpointEvent();
+					}
 				}
 			}
 		});
@@ -177,7 +190,7 @@ public class VirtualMachineManager implements ITerminate {
 		eventListeners.forEach(l -> l.handleClassPrepare(event));
 	}
 
-	protected boolean fireBreakpointEvent(BreakpointEvent event) {
+	private boolean fireBreakpointEvent(BreakpointEvent event) {
 		ThreadAction action = ThreadAction.ShouldResume;
 		for (VirtualMachineListener listener : eventListeners) {
 			action = action.merge(listener.handleBreakpoint(event));
@@ -185,18 +198,12 @@ public class VirtualMachineManager implements ITerminate {
 		return action.shouldResume();
 	}
 
-	@Override
-	public boolean canTerminate() {
-		return javaProcess.canTerminate();
+	private void fireResumeFromBreakpointEvent() {
+		eventListeners.forEach(l -> l.handleResumeFromBreakpoint());
 	}
 
-	@Override
-	public boolean isTerminated() {
-		return javaProcess.isTerminated();
-	}
-
-	@Override
 	public void terminate() throws DebugException {
+		isSuspendedAtBreakpoint = false;
 		virtualMachine.dispose();
 		// the java process may receive the termination signal multiple times,
 		// because disconnect event can also send one
@@ -205,22 +212,12 @@ public class VirtualMachineManager implements ITerminate {
 
 	public void resume() {
 		try {
+			isSuspendedAtBreakpoint = false;
+			fireResumeFromBreakpointEvent();
 			virtualMachine.resume();
 		} catch (VMDisconnectedException e) {
 			// suppress any actions after the vm is disconnected
 		}
-	}
-
-	public void suspend() {
-		try {
-			virtualMachine.suspend();
-		} catch (VMDisconnectedException e) {
-			// suppress any actions after the vm is disconnected
-		}
-	}
-
-	public void disconnect() {
-		virtualMachine.dispose();
 	}
 
 	/**
@@ -231,4 +228,7 @@ public class VirtualMachineManager implements ITerminate {
 		return vmBrowser;
 	}
 
+	VirtualMachine getVirtualMachine() {
+		return virtualMachine;
+	}
 }

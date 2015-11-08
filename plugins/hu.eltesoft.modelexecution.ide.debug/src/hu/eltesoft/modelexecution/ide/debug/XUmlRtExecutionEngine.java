@@ -108,6 +108,11 @@ public class XUmlRtExecutionEngine extends AbstractExecutionEngine implements IE
 	@Override
 	public void resume(Resume_Request request) {
 		synchronized (animation) {
+			if (!virtualMachine.isSuspendedAtBreakpoint()) {
+				// another earlier request already resumed the virtual machine
+				return;
+			}
+
 			xumlrtDebugTarget.resumed();
 			EObject removed = animation.removeSuspendedMarker();
 			animateElementThatWasSuspended(removed);

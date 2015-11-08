@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Zrmj0K3cEeSTKss-fgtTSw" name="model">
-  <packagedElement xmi:type="uml:Class" xmi:id="_wgep0K3cEeSTKss-fgtTSw" name="Phone">
+  <packagedElement xmi:type="uml:Class" xmi:id="_wgep0K3cEeSTKss-fgtTSw" name="Phone" classifierBehavior="_IAILIK3dEeSfGL0Ju9NCPQ" isActive="true">
     <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_IAILIK3dEeSfGL0Ju9NCPQ" name="PhoneBehavior">
       <region xmi:type="uml:Region" xmi:id="_UMVpUK3dEeSfGL0Ju9NCPQ" name="Region1">
         <transition xmi:type="uml:Transition" xmi:id="_UciEoK3hEeSfGL0Ju9NCPQ" name="TInitial" source="_U5axwK3dEeSfGL0Ju9NCPQ" target="_m3PpQK3dEeSfGL0Ju9NCPQ">

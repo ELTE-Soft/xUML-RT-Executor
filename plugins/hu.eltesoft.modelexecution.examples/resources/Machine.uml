@@ -5,7 +5,7 @@
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_WL0ZgKuHEeSBF899A__G5w" name="HammerHitEvent" signal="_VvKvMKuGEeSBF899A__G5w"/>
   <packagedElement xmi:type="uml:Component" xmi:id="_qSulMETZEeWmWN8i46p-Hw" name="MachineComp">
     <packagedElement xmi:type="uml:Package" xmi:id="_uPLMoETZEeWmWN8i46p-Hw" name="machinePackage">
-      <packagedElement xmi:type="uml:Class" xmi:id="_HteA8KuEEeSBF899A__G5w" name="Machine" classifierBehavior="_zim0sKuEEeSBF899A__G5w">
+      <packagedElement xmi:type="uml:Class" xmi:id="_HteA8KuEEeSBF899A__G5w" name="Machine" classifierBehavior="_zim0sKuEEeSBF899A__G5w" isActive="true">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_ATnAoFFKEeW2R_sUopYc-g" name="switchOnCounter">
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
         </ownedAttribute>

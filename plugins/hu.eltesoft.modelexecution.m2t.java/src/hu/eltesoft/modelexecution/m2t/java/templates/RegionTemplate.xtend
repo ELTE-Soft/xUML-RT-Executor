@@ -122,10 +122,10 @@ class RegionTemplate extends Template {
 				«runtime».logExitState(«traceLiteral(initState, Exit)»);
 		
 				// Initial transition effect
-				«runtime».logTransition(
+				«trace(runtime, initTransition.reference)».logTransition(
 						"<init transition>",
 						"<init transition>",
-						«trace(initState.nameLiteral, initTransition.reference)»,
+						«initState.nameLiteral»,
 						«firstState.nameLiteral»);
 				«IF null != initTransition.effect»
 					«initTransition.effect.identifier».execute(«OWNER_FIELD_NAME», null);
@@ -180,11 +180,8 @@ class RegionTemplate extends Template {
 									«ENDIF»
 								
 									// Transition effect
-									«runtime».logTransition(
-											«transition.event.nameLiteral»,
-											«transition.message.nameLiteral»,
-											«trace(state.nameLiteral, transition.reference)»,
-											«transition.target.nameLiteral»);
+									«/* NOTE: it is critical for the next call to span only a single source line */»
+									«trace(runtime, transition.reference)».logTransition(«transition.event.nameLiteral», «transition.message.nameLiteral», «state.nameLiteral», «transition.target.nameLiteral»);
 									«IF null != transition.effect»
 										«transition.effect.identifier».execute(«OWNER_FIELD_NAME», «SIGNAL_VARIABLE»);
 									«ENDIF»
