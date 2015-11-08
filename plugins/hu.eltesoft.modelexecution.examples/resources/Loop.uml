@@ -4,7 +4,7 @@
   <packagedElement xmi:type="uml:SignalEvent" xmi:id="_mXjvsK31EeS9yN-by9sk6Q" name="BackwardEvent" signal="_ScGG0K31EeS9yN-by9sk6Q"/>
   <packagedElement xmi:type="uml:Component" xmi:id="_Kss10ETdEeWmWN8i46p-Hw" name="Loop">
     <packagedElement xmi:type="uml:Package" xmi:id="_MQQ6UETdEeWmWN8i46p-Hw" name="Loop">
-      <packagedElement xmi:type="uml:Class" xmi:id="_4RQcgK3yEeS9yN-by9sk6Q" name="Loop" classifierBehavior="_9_zeQK3zEeS9yN-by9sk6Q">
+      <packagedElement xmi:type="uml:Class" xmi:id="_4RQcgK3yEeS9yN-by9sk6Q" name="Loop" classifierBehavior="_9_zeQK3zEeS9yN-by9sk6Q" isActive="true">
         <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Hr17MK3zEeS9yN-by9sk6Q" name="FeedBehavior" specification="_9jz7QK3yEeS9yN-by9sk6Q">
           <language>rALF</language>
           <body>// This feed only creates the object.&#xD;
