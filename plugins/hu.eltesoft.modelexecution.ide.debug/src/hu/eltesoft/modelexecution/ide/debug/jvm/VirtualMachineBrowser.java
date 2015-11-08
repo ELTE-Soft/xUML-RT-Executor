@@ -55,20 +55,34 @@ public class VirtualMachineBrowser {
 	private final VirtualMachine virtualMachine;
 
 	private JDIThreadWrapper mainThread;
-	private Pair<String, Long> cachedSMInstance;
+	private Pair<String, Long> currentSMInstance;
 
 	public VirtualMachineBrowser(VirtualMachineManager vmManager) {
 		this.vmManager = vmManager;
 		virtualMachine = vmManager.getVirtualMachine();
 	}
 
-	public synchronized void dropCachedActualSMInstance() {
-		cachedSMInstance = null;
+	public synchronized void cleanupAfterBrakpoint() {
+		currentSMInstance = null;
 		mainThread = null;
 	}
 
-	public synchronized void fetchActualSMInstance() {
-		JDIThreadWrapper mainThread = getMainThread();
+	public synchronized void initializeAtBreakpoint() {
+		mainThread = createMainThreadWrapper();
+		currentSMInstance = fetchSMInstance();
+	}
+
+	private JDIThreadWrapper createMainThreadWrapper() {
+		List<ThreadReference> threads = virtualMachine.allThreads();
+		for (ThreadReference thread : threads) {
+			if (thread.name().equals(MAIN_THREAD_NAME)) {
+				return new JDIThreadWrapper(vmManager, thread);
+			}
+		}
+		throw new IllegalStateException("Unable to initialze JDI thread wrapper"); //$NON-NLS-1$
+	}
+
+	private Pair<String, Long> fetchSMInstance() {
 		try {
 			ObjectReference thisObject = mainThread.getActualThis();
 			Field ownerField = thisObject.referenceType().fieldByName(RegionTemplate.OWNER_FIELD_NAME);
@@ -76,10 +90,9 @@ public class VirtualMachineBrowser {
 			Field objectIdField = owner.referenceType().fieldByName("instanceID");
 			String instanceTypeName = owner.referenceType().name();
 			long instanceID = ((LongValue) owner.getValue(objectIdField)).longValue();
-			cachedSMInstance = new Pair<>(instanceTypeName, instanceID);
+			return new Pair<>(instanceTypeName, instanceID);
 		} catch (Exception e) {
-			PluginLogger.logError("Could not ask the current SM instance", e); //$NON-NLS-1$
-			cachedSMInstance = null;
+			throw new IllegalStateException("Could not ask the current SM instance", e); //$NON-NLS-1$
 		}
 	}
 
@@ -88,7 +101,7 @@ public class VirtualMachineBrowser {
 	 *         currently under execution
 	 */
 	public synchronized Pair<String, Long> getActualSMInstance() {
-		return cachedSMInstance;
+		return currentSMInstance;
 	}
 
 	protected ModelVariable createVariable(StackFrame frame, JDIThreadWrapper mainThread, Value value,
@@ -97,27 +110,9 @@ public class VirtualMachineBrowser {
 		return new ModelVariable(debugTarget, leftVal, mainThread, value);
 	}
 
-	/**
-	 * Gets the thread on which the runtime runs. It is safe to use this method
-	 * multiple times, because if a valid thread exists, it returns that and
-	 * evade concurrent use of the same jvm thread.
-	 */
-	private JDIThreadWrapper getMainThread() {
-		if (mainThread == null || !mainThread.isValid()) {
-			List<ThreadReference> threads = virtualMachine.allThreads();
-			for (ThreadReference thread : threads) {
-				if (thread.name().equals(MAIN_THREAD_NAME)) {
-					mainThread = new JDIThreadWrapper(vmManager, thread);
-				}
-			}
-		}
-		return mainThread;
-	}
-
 	public synchronized List<ModelVariable> getAttributes(StateMachineInstance instance) throws DebugException {
 		try {
 			List<ModelVariable> ret = new LinkedList<>();
-			JDIThreadWrapper mainThread = getMainThread();
 			ObjectReference smInstance = getInstanceFromRegistry(instance, mainThread);
 			SingleValue value = new SingleValue(instance.getXUmlRtDebugTarget(), mainThread, smInstance);
 			for (IVariable variable : value.getVariables()) {
@@ -159,7 +154,6 @@ public class VirtualMachineBrowser {
 		List<ModelVariable> ret = new LinkedList<>();
 		StateMachineInstance stateMachineInstance = (StateMachineInstance) stackFrame.getThread();
 		try {
-			JDIThreadWrapper mainThread = getMainThread();
 			ObjectReference instance = getInstanceFromRegistry(stateMachineInstance, mainThread);
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
 					GET_STATE_MACHINE_METHOD);
@@ -200,7 +194,6 @@ public class VirtualMachineBrowser {
 
 	public synchronized NamedElement loadModelElement(StateMachineStackFrame stackFrame, ResourceSet resourceSet) {
 		try {
-			JDIThreadWrapper mainThread = getMainThread();
 			ObjectReference instance = getInstanceFromRegistry(stackFrame.getStateMachineInstance(), mainThread);
 			ObjectReference stateMachine = (ObjectReference) mainThread.invokeMethod(instance,
 					GET_STATE_MACHINE_METHOD);

@@ -177,7 +177,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 	@Override
 	public ThreadAction handleBreakpoint(BreakpointEvent event) {
 		animation.cancelAnimationTimer();
-		debugTarget.getVMBrowser().fetchActualSMInstance();
+		debugTarget.getVMBrowser().initializeAtBreakpoint();
 
 		com.sun.jdi.Location stoppedAt = event.location();
 		Reference reference = locationConverter.referenceFor(stoppedAt);
@@ -203,7 +203,7 @@ public final class ExecutionEngineVMConnection implements VirtualMachineListener
 
 	@Override
 	public void handleResumeFromBreakpoint() {
-		debugTarget.getVMBrowser().dropCachedActualSMInstance();
+		debugTarget.getVMBrowser().cleanupAfterBrakpoint();
 	}
 
 	private ThreadAction animateIfSelected(EObject modelElement) {
