@@ -5,9 +5,6 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 
-import hu.eltesoft.modelexecution.validation.Validator;
-import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
-
 /**
  * Utility functions for handling project properties of executable model
  * projects. The properties are not initialized on nature configuration but have
@@ -142,28 +139,4 @@ public class ProjectProperties {
 	private static void setTraceFilesPath(IEclipsePreferences properties, String path) {
 		properties.put(PROP_TRACES_PATH, path);
 	}
-
-	/**
-	 * Get the validation level of the project
-	 */
-	public static ValidationLevels getValidationSetting(IProject project) {
-		return getValidationSetting(getProperties(project));
-	}
-
-	private static ValidationLevels getValidationSetting(IEclipsePreferences properties) {
-		return ValidationLevels
-				.valueOf(properties.get(PROP_VALIDATION_LEVEL, Validator.DEFAULT_VALIDATION_LEVEL.name()));
-	}
-
-	/**
-	 * Set the validation level of the project
-	 */
-	public static void setValidationSetting(IProject project, ValidationLevels level) {
-		setValidationSetting(getProperties(project), level);
-	}
-
-	private static void setValidationSetting(IEclipsePreferences properties, ValidationLevels level) {
-		properties.put(PROP_VALIDATION_LEVEL, level.name());
-	}
-
 }

@@ -22,7 +22,6 @@ Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.jdt.debug,
  org.eclipse.debug.core,
  org.eclipse.papyrus.moka,
- org.eclipse.swt,
- hu.eltesoft.modelexecution.validation
+ org.eclipse.swt
 Bundle-Activator: hu.eltesoft.modelexecution.ide.common.PluginLogger
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

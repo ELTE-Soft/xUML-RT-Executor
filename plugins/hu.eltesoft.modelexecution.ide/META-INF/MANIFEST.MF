@@ -30,8 +30,7 @@ Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.0",
  org.eclipse.papyrus.infra.services.labelprovider;bundle-version="1.1.0",
  org.eclipse.papyrus.emf.facet.custom.ui;bundle-version="1.1.0",
  hu.eltesoft.modelexecution.m2t.smap.emf;bundle-version="0.8.0",
- hu.eltesoft.modelexecution.profile,
- hu.eltesoft.modelexecution.validation
+ hu.eltesoft.modelexecution.profile
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: hu.eltesoft.modelexecution.ide,
  hu.eltesoft.modelexecution.ide.builder,

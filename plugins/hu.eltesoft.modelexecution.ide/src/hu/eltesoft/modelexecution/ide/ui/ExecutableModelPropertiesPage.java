@@ -1,7 +1,5 @@
 package hu.eltesoft.modelexecution.ide.ui;
 
-import java.util.Arrays;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
@@ -17,7 +15,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -30,7 +27,6 @@ import hu.eltesoft.modelexecution.ide.Messages;
 import hu.eltesoft.modelexecution.ide.common.PluginLogger;
 import hu.eltesoft.modelexecution.ide.common.ProjectProperties;
 import hu.eltesoft.modelexecution.ide.common.util.ClasspathUtils;
-import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 /**
  * The appearance of the property page where properties of an executable model
@@ -49,8 +45,6 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 
 	private ResourceSelector generatedTracesFolderSelector;
 
-	private Combo validationLevel;
-
 	@Override
 	protected Control createContents(Composite parent) {
 		IEclipsePreferences preferences = getPreferences();
@@ -66,8 +60,6 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 		debugFilesFolderControl(preferences, properties);
 		instrumentedClassFilesFolderControl(preferences, properties);
 		generatedTracesFolderControl(preferences, properties);
-
-		validationLevelControl(properties);
 
 		return properties;
 	}
@@ -141,26 +133,6 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 		instrumentedClassFolderGroup.pack();
 	}
 
-	private void validationLevelControl(Composite properties) {
-		Group validationLevelGroup = new Group(properties, SWT.NONE);
-		validationLevelGroup.setLayoutData(gridDataFillBoth);
-		validationLevelGroup.setLayout(new GridLayout(2, false));
-
-		Label validationLevelLabel = new Label(validationLevelGroup, SWT.NONE);
-		validationLevelLabel.setText("Code should not be generated: ");
-
-		ValidationLevels validationSetting = ProjectProperties.getValidationSetting(getProject());
-		validationLevel = new Combo(validationLevelGroup, SWT.NONE);
-
-		validationLevel.add("always generate");
-		validationLevel.add("on errors");
-		validationLevel.add("on warnings");
-
-		validationLevel.select(validationSetting.ordinal());
-
-		validationLevelGroup.pack();
-	}
-
 	private IEclipsePreferences getPreferences() {
 		return ProjectProperties.getProperties(getProject());
 	}
@@ -179,15 +151,6 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 	}
 
 	@Override
-	public boolean isValid() {
-		int selectedValidationLevel = validationLevel.getSelectionIndex();
-		return generatedFilesFolderSelector.selectionValid() && debugFilesFolderSelector.selectionValid()
-				&& instrumentedClassFilesFolderSelector.selectionValid()
-				&& generatedTracesFolderSelector.selectionValid() && selectedValidationLevel >= 0
-				&& selectedValidationLevel < ValidationLevels.values().length && super.isValid();
-	}
-
-	@Override
 	public boolean performOk() {
 		String oldSrcGenPath = ProjectProperties.getSourceGenPath(getProject());
 		String newSrcGenPath = generatedFilesFolderSelector.getSelectedResourcePath().toString();
@@ -198,8 +161,6 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				instrumentedClassFilesFolderSelector.getSelectedResourcePath().toString());
 		ProjectProperties.setTraceFilesPath(getProject(),
 				generatedTracesFolderSelector.getSelectedResourcePath().toString());
-		ProjectProperties.setValidationSetting(getProject(),
-				Arrays.asList(ValidationLevels.values()).get(validationLevel.getSelectionIndex()));
 		if (!newSrcGenPath.equals(oldSrcGenPath)) {
 			try {
 				ClasspathUtils.removeClasspathEntry(JavaCore.create(getProject()),

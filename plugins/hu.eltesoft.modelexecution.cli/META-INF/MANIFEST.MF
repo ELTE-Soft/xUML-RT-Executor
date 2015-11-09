@@ -21,6 +21,5 @@ Require-Bundle: org.apache.commons.cli;bundle-version="1.2.0",
  hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.8.0",
  hu.eltesoft.modelexecution.profile;bundle-version="0.6.0",
  hu.eltesoft.modelexecution.runtime;bundle-version="0.8.0",
- hu.eltesoft.modelexecution.validation,
  org.eclipse.papyrus.infra.core,
  org.eclipse.papyrus.uml.alf.libraries;bundle-version="1.1.0"
