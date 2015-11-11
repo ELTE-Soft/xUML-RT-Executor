@@ -30,7 +30,7 @@ import org.eclipse.uml2.uml.Signal;
  * <code><pre>
  * {@literal @}Violation(message = "Signals properties must be single", mark = { "prop" })
  * pattern SignalPropertyMultiple(sg : Signal, prop : Property) {
- * 	Signal.attribute(sg, prop);
+ * 	Signal.ownedAttribute(sg, prop);
  * 	Property.upperValue(prop, high);
  * 	find NumericValue(high, hv);
  * 	check (hv as Integer {@literal >} 1);

@@ -36,7 +36,7 @@ import org.eclipse.uml2.uml.Signal;
  * pattern ReceptionSignalChecks(param : Parameter, property : Property, rc : Reception, sg : Signal) {
  * 	Reception.signal(rc, sg);
  * 	Reception.ownedParameter(rc, param);
- * 	Signal.attribute(sg, property);
+ * 	Signal.ownedAttribute(sg, property);
  * 	neg find ParamPropCheck(param, property);
  * }
  * </pre></code>

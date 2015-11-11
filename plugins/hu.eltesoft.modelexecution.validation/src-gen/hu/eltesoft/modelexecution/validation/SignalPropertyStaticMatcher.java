@@ -30,7 +30,7 @@ import org.eclipse.uml2.uml.Signal;
  * <code><pre>
  * {@literal @}Violation(message = "Signals properties cannot be static", mark = { "prop" })
  * pattern SignalPropertyStatic(sg : Signal, prop : Property) {
- * 	Signal.attribute(sg, prop);
+ * 	Signal.ownedAttribute(sg, prop);
  * 	Property.isStatic(prop, true);
  * }
  * </pre></code>

@@ -171,12 +171,6 @@ pattern PropertyIsDerived(pr : Property) {
 	Property.isDerivedUnion(pr, true);
 }
 
-
-@Violation(message = "Composite properties are not supported", mark = { "pr" })
-pattern PropertyIsComposite(pr : Property) {
-	Property.isComposite(pr, true);
-}
-
 @Violation(message = "ID properties are not supported", mark = { "pr" })
 pattern PropertyIsID(pr : Property) {
 	Property.isID(pr, true);

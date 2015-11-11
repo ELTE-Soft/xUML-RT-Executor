@@ -81,7 +81,7 @@ private pattern ParameterOfReception(rc : Reception, p : Parameter) {
 }
 
 private pattern PropertiesOfSignal(sg : Signal, p : Property) {
-	Signal.attribute(sg, p);
+	Signal.ownedAttribute(sg, p);
 }
 
 @Violation(message = "Reception parameter must conform to the property {property} of signal {sg}",
@@ -90,7 +90,7 @@ private pattern PropertiesOfSignal(sg : Signal, p : Property) {
 pattern ReceptionSignalChecks(param : Parameter, property : Property, rc : Reception, sg : Signal) {
 	Reception.signal(rc, sg);
 	Reception.ownedParameter(rc, param);
-	Signal.attribute(sg, property);
+	Signal.ownedAttribute(sg, property);
 	neg find ParamPropCheck(param, property);
 }
 

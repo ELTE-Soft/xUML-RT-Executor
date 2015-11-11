@@ -101,7 +101,7 @@ pattern MultipleInitialState(rg : Region, init1 : Pseudostate, init2 : Pseudosta
 }
 
 private pattern InitialState(rg : Region, init : Pseudostate) {
-	Region.ownedElement(rg, init);
+	Region.subvertex(rg, init);
 	Pseudostate.kind(init, ::initial);
 }
 

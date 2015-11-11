@@ -125,7 +125,7 @@ public final class ReceptionSignalChecksQuerySpecification extends BaseGenerated
       	new TypeConstraint(body, new FlatTuple(var_rc, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
       	new Equality(body, var__virtual_1_, var_param);
       	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_sg, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier", "attribute")));
+      	new TypeConstraint(body, new FlatTuple(var_sg, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal", "ownedAttribute")));
       	new Equality(body, var__virtual_2_, var_property);
       	new NegativePatternCall(body, new FlatTuple(var_param, var_property), ParamPropCheckQuerySpecification.instance().getInternalQueryRepresentation());
       	bodies.add(body);

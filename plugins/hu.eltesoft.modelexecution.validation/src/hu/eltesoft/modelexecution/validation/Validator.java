@@ -134,7 +134,9 @@ public class Validator {
 			String platformString = resource.getURI().toPlatformString(true);
 			if (platformString != null) {
 				IResource res = workspace.findMember(platformString);
-				action.accept(res);
+				if (res != null) {
+					action.accept(res);
+				}
 			}
 		}
 	}

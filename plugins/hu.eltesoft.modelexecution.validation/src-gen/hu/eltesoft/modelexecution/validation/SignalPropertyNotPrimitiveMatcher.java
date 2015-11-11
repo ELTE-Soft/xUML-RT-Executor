@@ -30,7 +30,7 @@ import org.eclipse.uml2.uml.Signal;
  * <code><pre>
  * {@literal @}Violation(message = "Signals properties must be primitive types", mark = { "prop" })
  * pattern SignalPropertyNotPrimitive(sg : Signal, prop : Property) {
- * 	Signal.attribute(sg, prop);
+ * 	Signal.ownedAttribute(sg, prop);
  * 	Property.type(prop, ty);
  * 	neg find PrimitiveType(ty);
  * }

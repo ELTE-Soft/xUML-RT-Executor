@@ -45,7 +45,6 @@ import hu.eltesoft.modelexecution.validation.PassiveClassWithBehaviorMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyAggregationMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyCannotBeDefaultInitializedMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyDefaultValueMatcher;
-import hu.eltesoft.modelexecution.validation.PropertyIsCompositeMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyIsDerivedMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyIsIDMatcher;
 import hu.eltesoft.modelexecution.validation.PropertyIsReadOnlyMatcher;
@@ -119,7 +118,6 @@ import hu.eltesoft.modelexecution.validation.util.PassiveClassWithBehaviorQueryS
 import hu.eltesoft.modelexecution.validation.util.PropertyAggregationQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyCannotBeDefaultInitializedQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyDefaultValueQuerySpecification;
-import hu.eltesoft.modelexecution.validation.util.PropertyIsCompositeQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyIsDerivedQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyIsIDQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyIsReadOnlyQuerySpecification;
@@ -184,7 +182,6 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>PropertyAggregation</li>
  * <li>PropertyDefaultValue</li>
  * <li>PropertyIsDerived</li>
- * <li>PropertyIsComposite</li>
  * <li>PropertyIsID</li>
  * <li>PropertyIsReadOnly</li>
  * <li>PropertyRedefinedProperty</li>
@@ -292,7 +289,6 @@ public final class ClassValidation extends BaseGeneratedPatternGroup {
     querySpecifications.add(PropertyAggregationQuerySpecification.instance());
     querySpecifications.add(PropertyDefaultValueQuerySpecification.instance());
     querySpecifications.add(PropertyIsDerivedQuerySpecification.instance());
-    querySpecifications.add(PropertyIsCompositeQuerySpecification.instance());
     querySpecifications.add(PropertyIsIDQuerySpecification.instance());
     querySpecifications.add(PropertyIsReadOnlyQuerySpecification.instance());
     querySpecifications.add(PropertyRedefinedPropertyQuerySpecification.instance());
@@ -485,14 +481,6 @@ public final class ClassValidation extends BaseGeneratedPatternGroup {
   
   public PropertyIsDerivedMatcher getPropertyIsDerived(final IncQueryEngine engine) throws IncQueryException {
     return PropertyIsDerivedMatcher.on(engine);
-  }
-  
-  public PropertyIsCompositeQuerySpecification getPropertyIsComposite() throws IncQueryException {
-    return PropertyIsCompositeQuerySpecification.instance();
-  }
-  
-  public PropertyIsCompositeMatcher getPropertyIsComposite(final IncQueryEngine engine) throws IncQueryException {
-    return PropertyIsCompositeMatcher.on(engine);
   }
   
   public PropertyIsIDQuerySpecification getPropertyIsID() throws IncQueryException {
