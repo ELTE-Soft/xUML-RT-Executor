@@ -1,12 +1,11 @@
 package hu.eltesoft.modelexecution.m2t.java.behavior
 
 import com.incquerylabs.uml.ralf.ReducedAlfSystem
+import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 import com.incquerylabs.uml.ralf.scoping.IUMLContextProvider
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.DataType
 import org.eclipse.uml2.uml.Signal
 import org.eclipse.uml2.uml.Type
-import com.incquerylabs.uml.ralf.reducedAlfLanguage.Expression
 
 class TypeSystemExtensions {
 
@@ -20,7 +19,7 @@ class TypeSystemExtensions {
 		typeSystem.type(expression).value.umlType
 	}
 
-	def Type valueTypeOf(EObject expression) {
+	def Type valueTypeOf(Expression expression) {
 		typeSystem.type(expression).value.umlValueType
 	}
 

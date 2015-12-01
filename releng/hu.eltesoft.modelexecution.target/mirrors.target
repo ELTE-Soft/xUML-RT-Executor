@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="mirrors" sequenceNumber="63">
+<?pde version="3.8"?><target name="mirrors" sequenceNumber="67">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.google.jimfs" version="1.0.0"/>
 <unit id="org.json" version="20141113.0.0"/>
 <unit id="com.google.guava" version="16.0.1"/>
 <repository location="http://mextest.inf.elte.hu/updates/thirdparty"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.papyrus.extra.moka.feature.feature.group" version="1.1.0.201506101813"/>
-<repository location="http://mextest.inf.elte.hu/updates/mirrors/papyrus-mars"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.powermock.mockito-junit.feature.feature.group" version="1.5.6.0"/>
@@ -21,25 +17,29 @@
 <repository location="http://mextest.inf.elte.hu/updates/mirrors/incquery"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jdt.feature.group" version="3.11.0.v20150603-2000"/>
-<unit id="org.eclipse.platform.ide" version="4.5.0.I20150603-2000"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.11.1.v20150904-0015"/>
+<unit id="org.eclipse.platform.ide" version="4.5.1.M20150904-0015"/>
 <repository location="http://mextest.inf.elte.hu/updates/mirrors/eclipse-core-4.5"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.papyrus.sdk.feature.feature.group" version="1.1.0.201506101814"/>
-<unit id="org.eclipse.ocl.examples.feature.group" version="6.0.0.v20150608-1714"/>
-<unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.4.0.v20150610-1925"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.11.0.v20150601-0402"/>
+<unit id="org.eclipse.ocl.examples.feature.group" version="6.0.1.v20150908-1239"/>
+<unit id="org.eclipse.papyrus.sdk.feature.feature.group" version="1.1.2.201509161440"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.11.1.v20150806-0404"/>
+<unit id="org.eclipse.emf.cdo.epp.feature.group" version="4.4.1.v20150916-0832"/>
 <repository location="http://mextest.inf.elte.hu/updates/mirrors/eclipse-mars"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201511020311"/>
+<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201511260333"/>
 <unit id="org.eclipse.xtext.runtime.feature.group" version="2.8.4.v201508050135"/>
-<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201511020311"/>
-<unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.0.v20150331-0735"/>
-<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201511020311"/>
-<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201511020311"/>
+<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201511260333"/>
+<unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.1.v20151009-0657"/>
+<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201511260333"/>
+<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201511260333"/>
 <repository location="http://mextest.inf.elte.hu/updates/mirrors/emdw-common"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.papyrus.extra.moka.feature.feature.group" version="1.1.2.201509161524"/>
+<repository location="http://mextest.inf.elte.hu/updates/mirrors/papyrus-mars"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
