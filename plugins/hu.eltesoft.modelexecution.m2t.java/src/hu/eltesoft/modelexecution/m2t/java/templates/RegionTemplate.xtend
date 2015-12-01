@@ -114,6 +114,13 @@ class RegionTemplate extends Template {
 			}
 		
 			private «region.containerClass.identifier» «OWNER_FIELD_NAME»;
+		
+		«/* FIXME: This is a fast workaround. The compiler should generate the owner field only when needed. */»
+			// Suppresses unused warnings on owner field
+			protected «region.containerClass.identifier» getOwner() {
+				return «OWNER_FIELD_NAME»;
+			}
+		
 			private State «CURRENT_STATE_ATTRIBUTE» = State.«initState.identifier»;
 		
 			@Override
