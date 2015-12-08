@@ -2,19 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.m2m.logic.tests
-Bundle-Version: 0.8.0.qualifier
+Bundle-Version: 0.8.1.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.uml2.uml,
  org.eclipse.incquery.runtime;bundle-version="1.0.0",
- hu.eltesoft.modelexecution.test.utils;bundle-version="0.8.0",
- hu.eltesoft.modelexecution.m2t.java;bundle-version="0.8.0",
- hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.8.0",
- hu.eltesoft.modelexecution.runtime;bundle-version="0.8.0",
+ hu.eltesoft.modelexecution.test.utils;bundle-version="0.8.1",
+ hu.eltesoft.modelexecution.m2t.java;bundle-version="0.8.1",
+ hu.eltesoft.modelexecution.m2t.smap.xtend;bundle-version="0.8.1",
+ hu.eltesoft.modelexecution.runtime;bundle-version="0.8.1",
  org.junit;bundle-version="4.11.0",
  org.mockito.mockito-core;bundle-version="1.9.5",
  org.objenesis;bundle-version="2.1.0",
  org.eclipse.emf.edit;bundle-version="2.11.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Fragment-Host: hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.8.0"
+Fragment-Host: hu.eltesoft.modelexecution.m2m.logic;bundle-version="0.8.1"

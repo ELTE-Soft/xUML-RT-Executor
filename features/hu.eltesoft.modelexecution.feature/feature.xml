@@ -2,7 +2,7 @@
 <feature
       id="hu.eltesoft.modelexecution.feature"
       label="xUML-RT Executor"
-      version="0.8.0.qualifier"
+      version="0.8.1.qualifier"
       provider-name="ELTE-Soft Kft">
 
    <description>
@@ -104,11 +104,11 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <requires>
-      <import feature="com.incquerylabs.emdw.common.project.feature" version="1.0.0.201508251538"/>
-      <import feature="com.incquerylabs.uml.papyrus.feature" version="1.0.0.201508251538"/>
-      <import feature="com.incquerylabs.uml.ralf.feature" version="1.0.0.201508251538"/>
       <import feature="org.eclipse.papyrus.sdk.feature" version="1.1.2.201509161440"/>
       <import feature="org.eclipse.papyrus.extra.moka.feature" version="1.1.2.201509161524"/>
+      <import feature="com.incquerylabs.uml.papyrus.feature" version="1.0.0.201512050444"/>
+      <import feature="com.incquerylabs.uml.ralf.feature" version="1.0.0.201512050444"/>
+      <import feature="com.incquerylabs.emdw.common.project.feature" version="1.0.0.201512050444"/>
    </requires>
 
    <plugin

@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>hu.eltesoft.modelexecution</groupId>
 		<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.1-SNAPSHOT</version>
 		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
 	</parent>
 
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>hu.eltesoft.modelexecution</groupId>
 			<artifactId>hu.eltesoft.modelexecution.update</artifactId>
-			<version>0.8.0-SNAPSHOT</version>
+			<version>0.8.1-SNAPSHOT</version>
 			<type>zip</type>
 		</dependency>
 	</dependencies>

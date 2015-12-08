@@ -2,7 +2,7 @@
 <feature
       id="hu.eltesoft.modelexecution.examples.feature"
       label="xUML-RT Example Models"
-      version="0.8.0.qualifier"
+      version="0.8.1.qualifier"
       provider-name="ELTE-Soft Kft">
 
    <description>
@@ -104,8 +104,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <requires>
-      <import feature="hu.eltesoft.modelexecution.feature" version="0.6.0.qualifier"/>
-      <import feature="com.incquerylabs.emdw.examples.feature" version="1.0.0.201508251538"/>
+      <import feature="hu.eltesoft.modelexecution.feature" version="0.8.1.qualifier"/>
+      <import feature="com.incquerylabs.emdw.examples.feature" version="1.0.0.201512050444"/>
    </requires>
 
    <plugin
