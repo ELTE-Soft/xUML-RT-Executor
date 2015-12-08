@@ -109,6 +109,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import feature="com.incquerylabs.uml.papyrus.feature" version="1.0.0.201512050444"/>
       <import feature="com.incquerylabs.uml.ralf.feature" version="1.0.0.201512050444"/>
       <import feature="com.incquerylabs.emdw.common.project.feature" version="1.0.0.201512050444"/>
+      <import feature="org.eclipse.incquery.sdk.feature" version="1.1.0.201512031022"/>
+      <import feature="org.eclipse.incquery.uml.feature" version="1.1.0.201512031022"/>
+      <import feature="it.xsemantics.runtime.feature" version="1.9.0.v20151118-1108"/>
+      <import feature="org.eclipse.xtext.runtime" version="2.9.0.v201512010527"/>
    </requires>
 
    <plugin
@@ -190,13 +194,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <plugin
          id="org.json"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
