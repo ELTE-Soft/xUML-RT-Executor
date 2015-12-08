@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Validation
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: hu.eltesoft.modelexecution.validation;singleton:=true
 Bundle-Version: 0.8.1.qualifier
+Bundle-Vendor: %Bundle-Vendor
 Export-Package: hu.eltesoft.modelexecution.validation,
  hu.eltesoft.modelexecution.validation.util
 Require-Bundle: org.eclipse.incquery.runtime;bundle-version="1.0.1",
