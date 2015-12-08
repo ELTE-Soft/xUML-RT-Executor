@@ -95,29 +95,30 @@ public final class FinalSpecificationQuerySpecification extends BaseGeneratedEMF
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_elem = body.getOrCreateVariableByName("elem");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_elem, "elem")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier")));
-      	new ConstantValue(body, var__virtual_0_, true);
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier")));
-      	new TypeConstraint(body, new FlatTuple(var_elem, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier", "isFinalSpecialization")));
-      	new Equality(body, var__virtual_1_, var__virtual_0_);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Final specifications are not supported");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"elem"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_elem = body.getOrCreateVariableByName("elem");
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_elem, "elem")
+      		));
+      		// 	Classifier.isFinalSpecialization(elem, true)
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new ConstantValue(body, var__virtual_0_, true);
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_elem, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Classifier", "isFinalSpecialization")));
+      		new Equality(body, var__virtual_1_, var__virtual_0_);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Final specifications are not supported");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "elem"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

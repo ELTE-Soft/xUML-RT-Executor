@@ -94,25 +94,26 @@ public final class ParameterWithoutTypeQuerySpecification extends BaseGeneratedE
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pm = body.getOrCreateVariableByName("pm");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pm, "pm")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new NegativePatternCall(body, new FlatTuple(var_pm, var___0_), ParameterTypeQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "A parameter must have a type");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"pm"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_pm = body.getOrCreateVariableByName("pm");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pm, "pm")
+      		));
+      		// 	neg find ParameterType(pm, _)
+      		new NegativePatternCall(body, new FlatTuple(var_pm, var___0_), ParameterTypeQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "A parameter must have a type");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "pm"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -100,49 +100,52 @@ public final class ExternalEntityNameNotValidQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var_name = body.getOrCreateVariableByName("name");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_cl, "cl")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new PositivePatternCall(body, new FlatTuple(var_cl, var___0_), ExternalEntityQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name")));
-      	new Equality(body, var__virtual_0_, var_name);
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern ExternalEntityNameNotValid";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("name");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.String name = (java.lang.String) provider.getValue("name");
-      			return evaluateExpression_1_1(name);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Name of an external entity class must be a valid Java class name");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"cl"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		PVariable var_name = body.getOrCreateVariableByName("name");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_cl, "cl")
+      		));
+      		// 	find ExternalEntity(cl, _)
+      		new PositivePatternCall(body, new FlatTuple(var_cl, var___0_), ExternalEntityQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Class.name(cl, name)
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "name")));
+      		new Equality(body, var__virtual_0_, var_name);
+      		// 	check(!Helpers.validJavaIdentifierName(name))
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern ExternalEntityNameNotValid";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("name");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.String name = (java.lang.String) provider.getValue("name");
+      		                                    return evaluateExpression_1_1(name);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Name of an external entity class must be a valid Java class name");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "cl"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

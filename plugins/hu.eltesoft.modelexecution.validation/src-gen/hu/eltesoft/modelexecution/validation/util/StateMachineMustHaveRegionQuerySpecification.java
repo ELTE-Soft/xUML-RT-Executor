@@ -94,25 +94,26 @@ public final class StateMachineMustHaveRegionQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_sm = body.getOrCreateVariableByName("sm");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_sm, "sm")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_sm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
-      	new NegativePatternCall(body, new FlatTuple(var_sm, var___0_), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "State machine without region");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"sm"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_sm = body.getOrCreateVariableByName("sm");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_sm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_sm, "sm")
+      		));
+      		// 	neg find StateMachineRegion(sm, _)
+      		new NegativePatternCall(body, new FlatTuple(var_sm, var___0_), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "State machine without region");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "sm"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

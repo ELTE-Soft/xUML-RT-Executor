@@ -96,32 +96,33 @@ public final class ForbiddenComponentMemberQuerySpecification extends BaseGenera
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_cp = body.getOrCreateVariableByName("cp");
-      	PVariable var_elem = body.getOrCreateVariableByName("elem");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_cp, "cp"),
-      				
-      		new ExportedParameter(body, var_elem, "elem")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_cp), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Component")));
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element")));
-      	new TypeConstraint(body, new FlatTuple(var_cp), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Component")));
-      	new TypeConstraint(body, new FlatTuple(var_cp, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element", "ownedElement")));
-      	new Equality(body, var__virtual_0_, var_elem);
-      	new NegativePatternCall(body, new FlatTuple(var_elem), GeneralPackagedElementQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Packages can only contain components, packages, events, signals and classes");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"elem"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_cp = body.getOrCreateVariableByName("cp");
+      		PVariable var_elem = body.getOrCreateVariableByName("elem");
+      		new TypeConstraint(body, new FlatTuple(var_cp), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Component")));
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_cp, "cp"),
+      		   new ExportedParameter(body, var_elem, "elem")
+      		));
+      		// 	Component.ownedElement(cp, elem)
+      		new TypeConstraint(body, new FlatTuple(var_cp), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Component")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_cp, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element", "ownedElement")));
+      		new Equality(body, var__virtual_0_, var_elem);
+      		// 	neg find GeneralPackagedElement(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), GeneralPackagedElementQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Packages can only contain components, packages, events, signals and classes");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "elem"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

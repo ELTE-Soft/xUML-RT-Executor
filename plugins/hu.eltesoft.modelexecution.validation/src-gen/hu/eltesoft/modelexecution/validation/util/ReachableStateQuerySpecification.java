@@ -93,20 +93,20 @@ final class ReachableStateQuerySpecification extends BaseGeneratedEMFQuerySpecif
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_from = body.getOrCreateVariableByName("from");
-      	PVariable var_to = body.getOrCreateVariableByName("to");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_from, "from"),
-      				
-      		new ExportedParameter(body, var_to, "to")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_from), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex")));
-      	new TypeConstraint(body, new FlatTuple(var_to), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex")));
-      	new BinaryTransitiveClosure(body, new FlatTuple(var_from, var_to), TransitionStepQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_from = body.getOrCreateVariableByName("from");
+      		PVariable var_to = body.getOrCreateVariableByName("to");
+      		new TypeConstraint(body, new FlatTuple(var_from), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex")));
+      		new TypeConstraint(body, new FlatTuple(var_to), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_from, "from"),
+      		   new ExportedParameter(body, var_to, "to")
+      		));
+      		// 	find TransitionStep+(from, to)
+      		new BinaryTransitiveClosure(body, new FlatTuple(var_from, var_to), TransitionStepQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

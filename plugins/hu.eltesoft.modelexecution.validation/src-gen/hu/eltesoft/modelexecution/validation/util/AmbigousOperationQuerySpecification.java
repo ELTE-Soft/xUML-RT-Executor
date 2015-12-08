@@ -95,32 +95,34 @@ public final class AmbigousOperationQuerySpecification extends BaseGeneratedEMFQ
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var_overridden = body.getOrCreateVariableByName("overridden");
-      	PVariable var_overrider1 = body.getOrCreateVariableByName("overrider1");
-      	PVariable var_overrider2 = body.getOrCreateVariableByName("overrider2");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_cl, "cl"),
-      				
-      		new ExportedParameter(body, var_overridden, "overridden")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_overridden), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new PositivePatternCall(body, new FlatTuple(var_cl, var_overridden, var_overrider1), OperationOverrideQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_cl, var_overridden, var_overrider2), OperationOverrideQuerySpecification.instance().getInternalQueryRepresentation());
-      	new Inequality(body, var_overrider1, var_overrider2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Multiple possible overrides for operation {overridden}");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"cl"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		PVariable var_overridden = body.getOrCreateVariableByName("overridden");
+      		PVariable var_overrider1 = body.getOrCreateVariableByName("overrider1");
+      		PVariable var_overrider2 = body.getOrCreateVariableByName("overrider2");
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		new TypeConstraint(body, new FlatTuple(var_overridden), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_cl, "cl"),
+      		   new ExportedParameter(body, var_overridden, "overridden")
+      		));
+      		// 	find OperationOverride(cl, overridden, overrider1)
+      		new PositivePatternCall(body, new FlatTuple(var_cl, var_overridden, var_overrider1), OperationOverrideQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find OperationOverride(cl, overridden, overrider2)
+      		new PositivePatternCall(body, new FlatTuple(var_cl, var_overridden, var_overrider2), OperationOverrideQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	overrider1 != overrider2
+      		new Inequality(body, var_overrider1, var_overrider2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Multiple possible overrides for operation {overridden}");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "cl"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

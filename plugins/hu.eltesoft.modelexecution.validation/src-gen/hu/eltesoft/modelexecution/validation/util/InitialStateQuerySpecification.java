@@ -94,29 +94,30 @@ final class InitialStateQuerySpecification extends BaseGeneratedEMFQuerySpecific
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_rg = body.getOrCreateVariableByName("rg");
-      	PVariable var_init = body.getOrCreateVariableByName("init");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_rg, "rg"),
-      				
-      		new ExportedParameter(body, var_init, "init")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
-      	new TypeConstraint(body, new FlatTuple(var_init), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
-      	new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
-      	new TypeConstraint(body, new FlatTuple(var_rg, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region", "subvertex")));
-      	new Equality(body, var__virtual_0_, var_init);
-      	new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.PseudostateKind.get("initial"));
-      	new TypeConstraint(body, new FlatTuple(var_init), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
-      	new TypeConstraint(body, new FlatTuple(var_init, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate", "kind")));
-      	new Equality(body, var__virtual_2_, var__virtual_1_);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_rg = body.getOrCreateVariableByName("rg");
+      		PVariable var_init = body.getOrCreateVariableByName("init");
+      		new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
+      		new TypeConstraint(body, new FlatTuple(var_init), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_rg, "rg"),
+      		   new ExportedParameter(body, var_init, "init")
+      		));
+      		// 	Region.subvertex(rg, init)
+      		new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_rg, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region", "subvertex")));
+      		new Equality(body, var__virtual_0_, var_init);
+      		// 	Pseudostate.kind(init, ::initial)
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.PseudostateKind.get("initial"));
+      		new TypeConstraint(body, new FlatTuple(var_init), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_init, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate", "kind")));
+      		new Equality(body, var__virtual_2_, var__virtual_1_);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

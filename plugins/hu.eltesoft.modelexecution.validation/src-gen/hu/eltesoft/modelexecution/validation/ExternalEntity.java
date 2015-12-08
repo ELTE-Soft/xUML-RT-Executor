@@ -54,7 +54,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>ExternalEntityGeneralization</li>
  * <li>ExternalEntityGeneralized</li>
  * <li>ExternalEntitiesWithTheSameName</li>
- * <li>PrimitiveType</li>
+ * <li>PrimitiveType_</li>
  * <li>ExternalEntityOpParam</li>
  * <li>Callable</li>
  * <li>NonAbstractOperationWithoutMethod</li>

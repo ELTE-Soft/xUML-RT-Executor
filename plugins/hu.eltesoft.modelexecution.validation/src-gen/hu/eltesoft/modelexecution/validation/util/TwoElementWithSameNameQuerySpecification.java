@@ -94,31 +94,32 @@ public final class TwoElementWithSameNameQuerySpecification extends BaseGenerate
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_qname = body.getOrCreateVariableByName("qname");
-      	PVariable var_elem1 = body.getOrCreateVariableByName("elem1");
-      	PVariable var_elem2 = body.getOrCreateVariableByName("elem2");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_qname, "qname"),
-      				
-      		new ExportedParameter(body, var_elem1, "elem1"),
-      				
-      		new ExportedParameter(body, var_elem2, "elem2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_elem1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
-      	new TypeConstraint(body, new FlatTuple(var_elem2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
-      	new TypeConstraint(body, new FlatTuple(var_elem1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
-      	new TypeConstraint(body, new FlatTuple(var_elem1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "qualifiedName")));
-      	new Equality(body, var__virtual_0_, var_qname);
-      	new TypeConstraint(body, new FlatTuple(var_elem2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
-      	new TypeConstraint(body, new FlatTuple(var_elem2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "qualifiedName")));
-      	new Equality(body, var__virtual_1_, var_qname);
-      	new Inequality(body, var_elem1, var_elem2);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_qname = body.getOrCreateVariableByName("qname");
+      		PVariable var_elem1 = body.getOrCreateVariableByName("elem1");
+      		PVariable var_elem2 = body.getOrCreateVariableByName("elem2");
+      		new TypeConstraint(body, new FlatTuple(var_elem1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
+      		new TypeConstraint(body, new FlatTuple(var_elem2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_qname, "qname"),
+      		   new ExportedParameter(body, var_elem1, "elem1"),
+      		   new ExportedParameter(body, var_elem2, "elem2")
+      		));
+      		// 	NamedElement.qualifiedName(elem1, qname)
+      		new TypeConstraint(body, new FlatTuple(var_elem1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_elem1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "qualifiedName")));
+      		new Equality(body, var__virtual_0_, var_qname);
+      		// 	NamedElement.qualifiedName(elem2, qname)
+      		new TypeConstraint(body, new FlatTuple(var_elem2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_elem2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "NamedElement", "qualifiedName")));
+      		new Equality(body, var__virtual_1_, var_qname);
+      		// 	elem1 != elem2
+      		new Inequality(body, var_elem1, var_elem2);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

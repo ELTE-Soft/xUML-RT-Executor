@@ -32,7 +32,7 @@ import org.eclipse.uml2.uml.Parameter;
  * 	find ExternalEntityOpParam(pm);
  * 	Parameter.direction(pm, ::^return);
  * 	Parameter.type(pm, typ);
- * 	neg find PrimitiveType(typ);
+ * 	neg find PrimitiveType_(typ);
  * }
  * </pre></code>
  * 

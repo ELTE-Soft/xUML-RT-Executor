@@ -98,31 +98,34 @@ public final class UnreachableStateQuerySpecification extends BaseGeneratedEMFQu
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_st = body.getOrCreateVariableByName("st");
-      	PVariable var_rg = body.getOrCreateVariableByName("rg");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_init = body.getOrCreateVariableByName("init");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_st, "st")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_st), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
-      	new TypeConstraint(body, new FlatTuple(var_st), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
-      	new TypeConstraint(body, new FlatTuple(var_st, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container")));
-      	new Equality(body, var__virtual_0_, var_rg);
-      	new PositivePatternCall(body, new FlatTuple(var_rg, var_init), InitialStateQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_init, var_st), ReachableStateQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Unreachable state");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"st"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_st = body.getOrCreateVariableByName("st");
+      		PVariable var_rg = body.getOrCreateVariableByName("rg");
+      		PVariable var_init = body.getOrCreateVariableByName("init");
+      		new TypeConstraint(body, new FlatTuple(var_st), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_st, "st")
+      		));
+      		// 	State.container(st, rg)
+      		new TypeConstraint(body, new FlatTuple(var_st), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_st, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Vertex", "container")));
+      		new Equality(body, var__virtual_0_, var_rg);
+      		// 	find InitialState(rg, init)
+      		new PositivePatternCall(body, new FlatTuple(var_rg, var_init), InitialStateQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find ReachableState(init, st)
+      		new NegativePatternCall(body, new FlatTuple(var_init, var_st), ReachableStateQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Unreachable state");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "st"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

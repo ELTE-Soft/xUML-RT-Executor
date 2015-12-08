@@ -99,44 +99,45 @@ public final class OperationMethodParameterNumQuerySpecification extends BaseGen
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_op = body.getOrCreateVariableByName("op");
-      	PVariable var_method = body.getOrCreateVariableByName("method");
-      	PVariable var_opParams = body.getOrCreateVariableByName("opParams");
-      	PVariable var_methodParams = body.getOrCreateVariableByName("methodParams");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_op, "op"),
-      				
-      		new ExportedParameter(body, var_method, "method"),
-      				
-      		new ExportedParameter(body, var_opParams, "opParams"),
-      				
-      		new ExportedParameter(body, var_methodParams, "methodParams")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior")));
-      	new PositivePatternCall(body, new FlatTuple(var___0_, var_op, var_method), MethodQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PatternMatchCounter(body, new FlatTuple(var_op, var___1_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_0_);
-      	new Equality(body, var_opParams, var__virtual_0_);
-      	new PatternMatchCounter(body, new FlatTuple(var_method, var___2_), ParameterOfBehaviorQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
-      	new Equality(body, var_methodParams, var__virtual_1_);
-      	new Inequality(body, var_opParams, var_methodParams);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Number of parameters ({methodParams}) does not the same as specification {op} ({opParams})");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"method"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_op = body.getOrCreateVariableByName("op");
+      		PVariable var_method = body.getOrCreateVariableByName("method");
+      		PVariable var_opParams = body.getOrCreateVariableByName("opParams");
+      		PVariable var_methodParams = body.getOrCreateVariableByName("methodParams");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
+      		new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_op, "op"),
+      		   new ExportedParameter(body, var_method, "method"),
+      		   new ExportedParameter(body, var_opParams, "opParams"),
+      		   new ExportedParameter(body, var_methodParams, "methodParams")
+      		));
+      		// 	find Method(_, op, method)
+      		new PositivePatternCall(body, new FlatTuple(var___0_, var_op, var_method), MethodQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	opParams == count find ParameterOfOperation(op, _)
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new PatternMatchCounter(body, new FlatTuple(var_op, var___1_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_0_);
+      		new Equality(body, var_opParams, var__virtual_0_);
+      		// 	methodParams == count find ParameterOfBehavior(method, _)
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new PatternMatchCounter(body, new FlatTuple(var_method, var___2_), ParameterOfBehaviorQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
+      		new Equality(body, var_methodParams, var__virtual_1_);
+      		// 	opParams != methodParams
+      		new Inequality(body, var_opParams, var_methodParams);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Number of parameters ({methodParams}) does not the same as specification {op} ({opParams})");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "method"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

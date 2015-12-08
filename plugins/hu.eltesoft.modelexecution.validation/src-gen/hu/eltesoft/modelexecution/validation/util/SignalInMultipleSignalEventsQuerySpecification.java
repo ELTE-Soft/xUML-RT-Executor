@@ -95,41 +95,42 @@ public final class SignalInMultipleSignalEventsQuerySpecification extends BaseGe
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_sg = body.getOrCreateVariableByName("sg");
-      	PVariable var_ev1 = body.getOrCreateVariableByName("ev1");
-      	PVariable var_ev2 = body.getOrCreateVariableByName("ev2");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_sg, "sg"),
-      				
-      		new ExportedParameter(body, var_ev1, "ev1"),
-      				
-      		new ExportedParameter(body, var_ev2, "ev2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_ev1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
-      	new TypeConstraint(body, new FlatTuple(var_ev2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
-      	new TypeConstraint(body, new FlatTuple(var_ev1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
-      	new TypeConstraint(body, new FlatTuple(var_ev1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
-      	new Equality(body, var__virtual_0_, var_sg);
-      	new TypeConstraint(body, new FlatTuple(var_ev2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
-      	new TypeConstraint(body, new FlatTuple(var_ev2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
-      	new Equality(body, var__virtual_1_, var_sg);
-      	new Inequality(body, var_ev1, var_ev2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "The signal {sg} cannot appear as signal of two signal events");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"ev1", 
-      					"ev2"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_sg = body.getOrCreateVariableByName("sg");
+      		PVariable var_ev1 = body.getOrCreateVariableByName("ev1");
+      		PVariable var_ev2 = body.getOrCreateVariableByName("ev2");
+      		new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      		new TypeConstraint(body, new FlatTuple(var_ev1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
+      		new TypeConstraint(body, new FlatTuple(var_ev2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_sg, "sg"),
+      		   new ExportedParameter(body, var_ev1, "ev1"),
+      		   new ExportedParameter(body, var_ev2, "ev2")
+      		));
+      		// 	SignalEvent.signal(ev1, sg)
+      		new TypeConstraint(body, new FlatTuple(var_ev1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_ev1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
+      		new Equality(body, var__virtual_0_, var_sg);
+      		// 	SignalEvent.signal(ev2, sg)
+      		new TypeConstraint(body, new FlatTuple(var_ev2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_ev2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
+      		new Equality(body, var__virtual_1_, var_sg);
+      		// 	ev1 != ev2
+      		new Inequality(body, var_ev1, var_ev2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "The signal {sg} cannot appear as signal of two signal events");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "ev1", 
+      		                "ev2"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

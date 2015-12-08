@@ -94,24 +94,25 @@ public final class MethodWithoutRalfQuerySpecification extends BaseGeneratedEMFQ
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
-      	new NegativePatternCall(body, new FlatTuple(var_me), MethodRalfQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "The method must have rALF language implementation");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"me"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me")
+      		));
+      		// 	neg find MethodRalf(me)
+      		new NegativePatternCall(body, new FlatTuple(var_me), MethodRalfQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "The method must have rALF language implementation");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "me"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

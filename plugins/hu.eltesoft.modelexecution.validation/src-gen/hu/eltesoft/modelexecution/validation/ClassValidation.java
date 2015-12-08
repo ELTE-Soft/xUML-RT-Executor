@@ -169,7 +169,7 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
  * <li>AmbigousOperation</li>
  * <li>UnrecognizedElementInClass</li>
  * <li>Property</li>
- * <li>Signal</li>
+ * <li>Signal_</li>
  * <li>StateMachine</li>
  * <li>Generalization</li>
  * <li>GeneralizationSet</li>

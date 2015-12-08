@@ -95,35 +95,36 @@ public final class StateMachineMustHaveOneRegionQuerySpecification extends BaseG
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_sm = body.getOrCreateVariableByName("sm");
-      	PVariable var_rg1 = body.getOrCreateVariableByName("rg1");
-      	PVariable var_rg2 = body.getOrCreateVariableByName("rg2");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_sm, "sm"),
-      				
-      		new ExportedParameter(body, var_rg1, "rg1"),
-      				
-      		new ExportedParameter(body, var_rg2, "rg2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_sm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
-      	new TypeConstraint(body, new FlatTuple(var_rg1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
-      	new TypeConstraint(body, new FlatTuple(var_rg2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
-      	new PositivePatternCall(body, new FlatTuple(var_sm, var_rg1), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_sm, var_rg2), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
-      	new Inequality(body, var_rg1, var_rg2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Multiple regions for a state machine");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"rg1", 
-      					"rg2"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_sm = body.getOrCreateVariableByName("sm");
+      		PVariable var_rg1 = body.getOrCreateVariableByName("rg1");
+      		PVariable var_rg2 = body.getOrCreateVariableByName("rg2");
+      		new TypeConstraint(body, new FlatTuple(var_sm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
+      		new TypeConstraint(body, new FlatTuple(var_rg1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
+      		new TypeConstraint(body, new FlatTuple(var_rg2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_sm, "sm"),
+      		   new ExportedParameter(body, var_rg1, "rg1"),
+      		   new ExportedParameter(body, var_rg2, "rg2")
+      		));
+      		// 	find StateMachineRegion(sm, rg1)
+      		new PositivePatternCall(body, new FlatTuple(var_sm, var_rg1), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find StateMachineRegion(sm, rg2)
+      		new PositivePatternCall(body, new FlatTuple(var_sm, var_rg2), StateMachineRegionQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	rg1 != rg2
+      		new Inequality(body, var_rg1, var_rg2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Multiple regions for a state machine");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "rg1", 
+      		                "rg2"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

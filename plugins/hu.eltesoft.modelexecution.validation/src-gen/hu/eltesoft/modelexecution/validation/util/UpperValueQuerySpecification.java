@@ -97,38 +97,40 @@ final class UpperValueQuerySpecification extends BaseGeneratedEMFQuerySpecificat
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
-      	PVariable var_upper = body.getOrCreateVariableByName("upper");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me"),
-      				
-      		new ExportedParameter(body, var_upperBound, "upperBound")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new PositivePatternCall(body, new FlatTuple(var_me, var_upper), UpperQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_upper, var_upperBound), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me"),
-      				
-      		new ExportedParameter(body, var_upperBound, "upperBound")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new NegativePatternCall(body, new FlatTuple(var_me, var___0_), UpperQuerySpecification.instance().getInternalQueryRepresentation());
-      	new ConstantValue(body, var__virtual_0_, 1);
-      	new Equality(body, var_upperBound, var__virtual_0_);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
+      		PVariable var_upper = body.getOrCreateVariableByName("upper");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me"),
+      		   new ExportedParameter(body, var_upperBound, "upperBound")
+      		));
+      		// 	find Upper(me, upper)
+      		new PositivePatternCall(body, new FlatTuple(var_me, var_upper), UpperQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find NumericValue(upper, upperBound)
+      		new PositivePatternCall(body, new FlatTuple(var_upper, var_upperBound), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var_upperBound = body.getOrCreateVariableByName("upperBound");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me"),
+      		   new ExportedParameter(body, var_upperBound, "upperBound")
+      		));
+      		// 	neg find Upper(me, _)
+      		new NegativePatternCall(body, new FlatTuple(var_me, var___0_), UpperQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	upperBound == 1
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new ConstantValue(body, var__virtual_0_, 1);
+      		new Equality(body, var_upperBound, var__virtual_0_);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

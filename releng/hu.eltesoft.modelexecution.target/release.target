@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="default" sequenceNumber="41">
+<?pde version="3.8"?><target name="release" sequenceNumber="42">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.11.1.v20150904-0015"/>
@@ -17,11 +17,6 @@
 <repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.6.0"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.incquery.uml.feature.feature.group" version="1.0.1.201508191609"/>
-<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="1.0.1.201508191609"/>
-<repository location="http://download.eclipse.org/incquery/updates/release"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.papyrus.extra.moka.feature.feature.group" version="1.1.2.201509161524"/>
 <repository location="http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/mars"/>
 </location>
@@ -33,17 +28,17 @@
 <repository location="http://download.eclipse.org/releases/mars"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.incquery.uml.feature.feature.group" version="1.0.1.201508191609"/>
-<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="1.0.1.201508191609"/>
+<unit id="org.eclipse.incquery.uml.feature.feature.group" version="1.1.0.201512031022"/>
+<unit id="org.eclipse.incquery.sdk.feature.source.feature.group" version="1.1.0.201512031022"/>
 <repository location="http://download.eclipse.org/incquery/updates/release"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201511260333"/>
-<unit id="org.eclipse.xtext.runtime.feature.group" version="2.8.4.v201508050135"/>
-<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201511260333"/>
-<unit id="it.xsemantics.runtime.feature.feature.group" version="1.8.1.v20151009-0657"/>
-<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201511260333"/>
-<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201511260333"/>
+<unit id="com.incquerylabs.uml.papyrus.feature.feature.group" version="1.0.0.201512050444"/>
+<unit id="com.incquerylabs.uml.ralf.feature.feature.group" version="1.0.0.201512050444"/>
+<unit id="com.incquerylabs.emdw.common.project.feature.feature.group" version="1.0.0.201512050444"/>
+<unit id="org.eclipse.xtext.runtime.feature.group" version="2.9.0.v201512010527"/>
+<unit id="com.incquerylabs.emdw.examples.feature.feature.group" version="1.0.0.201512050444"/>
+<unit id="it.xsemantics.runtime.feature.feature.group" version="1.9.0.v20151118-1108"/>
 <repository location="http://static.incquerylabs.com/projects/ericsson/milestones/201511/emdw-common/"/>
 </location>
 </locations>

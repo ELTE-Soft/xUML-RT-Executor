@@ -100,49 +100,52 @@ public final class HighBoundZeroQuerySpecification extends BaseGeneratedEMFQuery
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var_high = body.getOrCreateVariableByName("high");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_hv = body.getOrCreateVariableByName("hv");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
-      	new Equality(body, var__virtual_0_, var_high);
-      	new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern HighBoundZero";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("hv");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
-      			return evaluateExpression_1_1(hv);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "High bound cannot be lower than one");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"me"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var_high = body.getOrCreateVariableByName("high");
+      		PVariable var_hv = body.getOrCreateVariableByName("hv");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me")
+      		));
+      		// 	MultiplicityElement.upperValue(me, high)
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
+      		new Equality(body, var__virtual_0_, var_high);
+      		// 	find NumericValue(high, hv)
+      		new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	check (1 > hv as Integer && hv != (-1))
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern HighBoundZero";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("hv");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
+      		                                    return evaluateExpression_1_1(hv);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "High bound cannot be lower than one");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "me"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {
@@ -154,7 +157,8 @@ public final class HighBoundZeroQuerySpecification extends BaseGeneratedEMFQuery
   
   private static boolean evaluateExpression_1_1(final Object hv) {
     boolean _and = false;
-    if (!(1 > (((Integer) hv)).intValue())) {
+    boolean _greaterThan = (1 > (((Integer) hv)).intValue());
+    if (!_greaterThan) {
       _and = false;
     } else {
       boolean _notEquals = (!Objects.equal(hv, Integer.valueOf((-1))));

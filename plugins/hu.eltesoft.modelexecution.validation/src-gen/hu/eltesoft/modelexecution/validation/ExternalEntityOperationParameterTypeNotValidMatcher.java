@@ -31,7 +31,7 @@ import org.eclipse.uml2.uml.Parameter;
  * pattern ExternalEntityOperationParameterTypeNotValid(pm : Parameter) {
  * 	find ExternalEntityOpParam(pm);
  * 	Parameter.type(pm, ty);
- * 	neg find PrimitiveType(ty);
+ * 	neg find PrimitiveType_(ty);
  * 	neg find Callable(ty, _);
  * }
  * </pre></code>

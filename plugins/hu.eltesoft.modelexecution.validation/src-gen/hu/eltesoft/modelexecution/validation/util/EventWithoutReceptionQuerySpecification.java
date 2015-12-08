@@ -98,53 +98,57 @@ public final class EventWithoutReceptionQuerySpecification extends BaseGenerated
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_tr = body.getOrCreateVariableByName("tr");
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var_sg = body.getOrCreateVariableByName("sg");
-      	PVariable var_rg = body.getOrCreateVariableByName("rg");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_sm = body.getOrCreateVariableByName("sm");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var_ev = body.getOrCreateVariableByName("ev");
-      	PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_tr, "tr"),
-      				
-      		new ExportedParameter(body, var_cl, "cl"),
-      				
-      		new ExportedParameter(body, var_sg, "sg")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_tr, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "container")));
-      	new Equality(body, var__virtual_0_, var_rg);
-      	new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
-      	new TypeConstraint(body, new FlatTuple(var_rg, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region", "stateMachine")));
-      	new Equality(body, var__virtual_1_, var_sm);
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "classifierBehavior")));
-      	new Equality(body, var__virtual_2_, var_sm);
-      	new PositivePatternCall(body, new FlatTuple(var_tr, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
-      	new TypeConstraint(body, new FlatTuple(var_ev, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
-      	new Equality(body, var__virtual_3_, var_sg);
-      	new NegativePatternCall(body, new FlatTuple(var_cl, var___0_, var_sg), ReceptionQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Class {cl} must contain the reception for {sg}");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"tr"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_tr = body.getOrCreateVariableByName("tr");
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		PVariable var_sg = body.getOrCreateVariableByName("sg");
+      		PVariable var_rg = body.getOrCreateVariableByName("rg");
+      		PVariable var_sm = body.getOrCreateVariableByName("sm");
+      		PVariable var_ev = body.getOrCreateVariableByName("ev");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_tr, "tr"),
+      		   new ExportedParameter(body, var_cl, "cl"),
+      		   new ExportedParameter(body, var_sg, "sg")
+      		));
+      		// 	Transition.container(tr, rg)
+      		new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_tr, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "container")));
+      		new Equality(body, var__virtual_0_, var_rg);
+      		// 	Region.stateMachine(rg, sm)
+      		new TypeConstraint(body, new FlatTuple(var_rg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_rg, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Region", "stateMachine")));
+      		new Equality(body, var__virtual_1_, var_sm);
+      		// 	Class.classifierBehavior(cl, sm)
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "classifierBehavior")));
+      		new Equality(body, var__virtual_2_, var_sm);
+      		// 	find TransitionEvent(tr, ev)
+      		new PositivePatternCall(body, new FlatTuple(var_tr, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	SignalEvent.signal(ev, sg)
+      		new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent")));
+      		PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
+      		new TypeConstraint(body, new FlatTuple(var_ev, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "SignalEvent", "signal")));
+      		new Equality(body, var__virtual_3_, var_sg);
+      		// 	neg find Reception(cl, _, sg)
+      		new NegativePatternCall(body, new FlatTuple(var_cl, var___0_, var_sg), ReceptionQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Class {cl} must contain the reception for {sg}");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "tr"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

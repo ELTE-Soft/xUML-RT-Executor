@@ -5,7 +5,7 @@ import hu.eltesoft.modelexecution.validation.ExternalEntityOperationParameterTyp
 import hu.eltesoft.modelexecution.validation.ExternalEntityOperationParameterTypeNotValidMatcher;
 import hu.eltesoft.modelexecution.validation.util.CallableQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.ExternalEntityOpParamQuerySpecification;
-import hu.eltesoft.modelexecution.validation.util.PrimitiveTypeQuerySpecification;
+import hu.eltesoft.modelexecution.validation.util.PrimitiveType_QuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -99,32 +99,36 @@ public final class ExternalEntityOperationParameterTypeNotValidQuerySpecificatio
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pm = body.getOrCreateVariableByName("pm");
-      	PVariable var_ty = body.getOrCreateVariableByName("ty");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pm, "pm")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new PositivePatternCall(body, new FlatTuple(var_pm), ExternalEntityOpParamQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
-      	new Equality(body, var__virtual_0_, var_ty);
-      	new NegativePatternCall(body, new FlatTuple(var_ty), PrimitiveTypeQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_ty, var___0_), CallableQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Type of a parameter on an external entity operation must be a primitive type, or a class with Callable stereotype applied");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"pm"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_pm = body.getOrCreateVariableByName("pm");
+      		PVariable var_ty = body.getOrCreateVariableByName("ty");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pm, "pm")
+      		));
+      		// 	find ExternalEntityOpParam(pm)
+      		new PositivePatternCall(body, new FlatTuple(var_pm), ExternalEntityOpParamQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Parameter.type(pm, ty)
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
+      		new Equality(body, var__virtual_0_, var_ty);
+      		// 	neg find PrimitiveType_(ty)
+      		new NegativePatternCall(body, new FlatTuple(var_ty), PrimitiveType_QuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Callable(ty, _)
+      		new NegativePatternCall(body, new FlatTuple(var_ty, var___0_), CallableQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Type of a parameter on an external entity operation must be a primitive type, or a class with Callable stereotype applied");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "pm"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

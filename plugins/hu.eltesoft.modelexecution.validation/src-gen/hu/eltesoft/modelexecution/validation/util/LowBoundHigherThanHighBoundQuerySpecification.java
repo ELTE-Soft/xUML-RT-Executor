@@ -102,94 +102,103 @@ public final class LowBoundHigherThanHighBoundQuerySpecification extends BaseGen
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var_low = body.getOrCreateVariableByName("low");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_lv = body.getOrCreateVariableByName("lv");
-      	PVariable var_high = body.getOrCreateVariableByName("high");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_hv = body.getOrCreateVariableByName("hv");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
-      	new Equality(body, var__virtual_0_, var_low);
-      	new PositivePatternCall(body, new FlatTuple(var_low, var_lv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
-      	new Equality(body, var__virtual_1_, var_high);
-      	new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern LowBoundHigherThanHighBound";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("hv", "lv");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
-      			java.lang.Object lv = (java.lang.Object) provider.getValue("lv");
-      			return evaluateExpression_1_1(hv, lv);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var_low = body.getOrCreateVariableByName("low");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_lv = body.getOrCreateVariableByName("lv");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
-      	new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
-      	new Equality(body, var__virtual_0_, var_low);
-      	new PositivePatternCall(body, new FlatTuple(var_low, var_lv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_me, var___0_), HighBoundQuerySpecification.instance().getInternalQueryRepresentation());
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern LowBoundHigherThanHighBound";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("lv");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.Object lv = (java.lang.Object) provider.getValue("lv");
-      			return evaluateExpression_2_1(lv);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "High bound must be higher than lower bound");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"me"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var_low = body.getOrCreateVariableByName("low");
+      		PVariable var_lv = body.getOrCreateVariableByName("lv");
+      		PVariable var_high = body.getOrCreateVariableByName("high");
+      		PVariable var_hv = body.getOrCreateVariableByName("hv");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me")
+      		));
+      		// 	MultiplicityElement.lowerValue(me, low)
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
+      		new Equality(body, var__virtual_0_, var_low);
+      		// 	find NumericValue(low, lv)
+      		new PositivePatternCall(body, new FlatTuple(var_low, var_lv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	MultiplicityElement.upperValue(me, high)
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_me, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
+      		new Equality(body, var__virtual_1_, var_high);
+      		// 	find NumericValue(high, hv)
+      		new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	check (lv as Integer > hv as Integer && hv != (-1))
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern LowBoundHigherThanHighBound";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("hv", "lv");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
+      		                                    java.lang.Object lv = (java.lang.Object) provider.getValue("lv");
+      		                                    return evaluateExpression_1_1(hv, lv);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var_low = body.getOrCreateVariableByName("low");
+      		PVariable var_lv = body.getOrCreateVariableByName("lv");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me")
+      		));
+      		// 	MultiplicityElement.lowerValue(me, low)
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_me, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
+      		new Equality(body, var__virtual_0_, var_low);
+      		// 	find NumericValue(low, lv)
+      		new PositivePatternCall(body, new FlatTuple(var_low, var_lv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find HighBound(me, _)
+      		new NegativePatternCall(body, new FlatTuple(var_me, var___0_), HighBoundQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	check (lv as Integer > 1)
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern LowBoundHigherThanHighBound";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("lv");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.Object lv = (java.lang.Object) provider.getValue("lv");
+      		                                    return evaluateExpression_2_1(lv);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "High bound must be higher than lower bound");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "me"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

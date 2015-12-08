@@ -93,23 +93,23 @@ final class ExternalEntityQuerySpecification extends BaseGeneratedEMFQuerySpecif
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_base = body.getOrCreateVariableByName("base");
-      	PVariable var_annot = body.getOrCreateVariableByName("annot");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_base, "base"),
-      				
-      		new ExportedParameter(body, var_annot, "annot")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_base), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_annot), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity")));
-      	new TypeConstraint(body, new FlatTuple(var_annot), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity")));
-      	new TypeConstraint(body, new FlatTuple(var_annot, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity", "base_Class")));
-      	new Equality(body, var__virtual_0_, var_base);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_base = body.getOrCreateVariableByName("base");
+      		PVariable var_annot = body.getOrCreateVariableByName("annot");
+      		new TypeConstraint(body, new FlatTuple(var_base), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		new TypeConstraint(body, new FlatTuple(var_annot), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_base, "base"),
+      		   new ExportedParameter(body, var_annot, "annot")
+      		));
+      		// 	ExternalEntity.base_Class(annot, base)
+      		new TypeConstraint(body, new FlatTuple(var_annot), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_annot, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://modelexecution.eltesoft.hu/xumlrt/", "ExternalEntity", "base_Class")));
+      		new Equality(body, var__virtual_0_, var_base);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

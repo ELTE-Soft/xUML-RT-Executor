@@ -94,32 +94,33 @@ final class AssociationEndsQuerySpecification extends BaseGeneratedEMFQuerySpeci
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ac = body.getOrCreateVariableByName("ac");
-      	PVariable var_me1 = body.getOrCreateVariableByName("me1");
-      	PVariable var_me2 = body.getOrCreateVariableByName("me2");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ac, "ac"),
-      				
-      		new ExportedParameter(body, var_me1, "me1"),
-      				
-      		new ExportedParameter(body, var_me2, "me2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new TypeConstraint(body, new FlatTuple(var_me1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_me2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
-      	new Equality(body, var__virtual_0_, var_me1);
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
-      	new Equality(body, var__virtual_1_, var_me2);
-      	new Inequality(body, var_me1, var_me2);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_ac = body.getOrCreateVariableByName("ac");
+      		PVariable var_me1 = body.getOrCreateVariableByName("me1");
+      		PVariable var_me2 = body.getOrCreateVariableByName("me2");
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		new TypeConstraint(body, new FlatTuple(var_me1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		new TypeConstraint(body, new FlatTuple(var_me2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ac, "ac"),
+      		   new ExportedParameter(body, var_me1, "me1"),
+      		   new ExportedParameter(body, var_me2, "me2")
+      		));
+      		// 	Association.memberEnd(ac, me1)
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
+      		new Equality(body, var__virtual_0_, var_me1);
+      		// 	Association.memberEnd(ac, me2)
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
+      		new Equality(body, var__virtual_1_, var_me2);
+      		// 	me1 != me2
+      		new Inequality(body, var_me1, var_me2);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -36,7 +36,7 @@ import org.eclipse.uml2.uml.Element;
  * 	neg find Reception(_, elem, _);
  * 	neg find Method(_, _, elem);
  * 	neg find Event(elem);
- * 	neg find Signal(elem);
+ * 	neg find Signal_(elem);
  * 	neg find Association(elem);
  * 	neg find Generalization(elem);
  * 	neg find StateMachine(elem);

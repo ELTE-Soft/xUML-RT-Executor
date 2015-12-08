@@ -98,45 +98,50 @@ public final class AssociationMissingEndQuerySpecification extends BaseGenerated
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ac = body.getOrCreateVariableByName("ac");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ac, "ac")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new NegativePatternCall(body, new FlatTuple(var_ac, var___0_, var___1_), AssociationEndsQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ac = body.getOrCreateVariableByName("ac");
-      	PVariable var_me1 = body.getOrCreateVariableByName("me1");
-      	PVariable var_me2 = body.getOrCreateVariableByName("me2");
-      	PVariable var_me3 = body.getOrCreateVariableByName("me3");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ac, "ac")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new PositivePatternCall(body, new FlatTuple(var_ac, var_me1, var_me2), AssociationEndsQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
-      	new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
-      	new Equality(body, var__virtual_0_, var_me3);
-      	new Inequality(body, var_me1, var_me3);
-      	new Inequality(body, var_me2, var_me3);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Association must have two ends");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"ac"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_ac = body.getOrCreateVariableByName("ac");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ac, "ac")
+      		));
+      		// 	neg find AssociationEnds(ac, _, _)
+      		new NegativePatternCall(body, new FlatTuple(var_ac, var___0_, var___1_), AssociationEndsQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_ac = body.getOrCreateVariableByName("ac");
+      		PVariable var_me1 = body.getOrCreateVariableByName("me1");
+      		PVariable var_me2 = body.getOrCreateVariableByName("me2");
+      		PVariable var_me3 = body.getOrCreateVariableByName("me3");
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ac, "ac")
+      		));
+      		// 	find AssociationEnds(ac, me1, me2)
+      		new PositivePatternCall(body, new FlatTuple(var_ac, var_me1, var_me2), AssociationEndsQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Association.memberEnd(ac, me3)
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_ac, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Association", "memberEnd")));
+      		new Equality(body, var__virtual_0_, var_me3);
+      		// 	me1 != me3
+      		new Inequality(body, var_me1, var_me3);
+      		// 	me2 != me3
+      		new Inequality(body, var_me2, var_me3);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Association must have two ends");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "ac"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -99,57 +99,60 @@ public final class SignalPropertyMultipleQuerySpecification extends BaseGenerate
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_sg = body.getOrCreateVariableByName("sg");
-      	PVariable var_prop = body.getOrCreateVariableByName("prop");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_high = body.getOrCreateVariableByName("high");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_hv = body.getOrCreateVariableByName("hv");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_sg, "sg"),
-      				
-      		new ExportedParameter(body, var_prop, "prop")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_prop), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_sg, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal", "ownedAttribute")));
-      	new Equality(body, var__virtual_0_, var_prop);
-      	new TypeConstraint(body, new FlatTuple(var_prop), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_prop, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
-      	new Equality(body, var__virtual_1_, var_high);
-      	new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern SignalPropertyMultiple";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("hv");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
-      			return evaluateExpression_1_1(hv);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Signals properties must be single");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"prop"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_sg = body.getOrCreateVariableByName("sg");
+      		PVariable var_prop = body.getOrCreateVariableByName("prop");
+      		PVariable var_high = body.getOrCreateVariableByName("high");
+      		PVariable var_hv = body.getOrCreateVariableByName("hv");
+      		new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      		new TypeConstraint(body, new FlatTuple(var_prop), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_sg, "sg"),
+      		   new ExportedParameter(body, var_prop, "prop")
+      		));
+      		// 	Signal.ownedAttribute(sg, prop)
+      		new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_sg, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal", "ownedAttribute")));
+      		new Equality(body, var__virtual_0_, var_prop);
+      		// 	Property.upperValue(prop, high)
+      		new TypeConstraint(body, new FlatTuple(var_prop), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_prop, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "upperValue")));
+      		new Equality(body, var__virtual_1_, var_high);
+      		// 	find NumericValue(high, hv)
+      		new PositivePatternCall(body, new FlatTuple(var_high, var_hv), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	check (hv as Integer > 1)
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern SignalPropertyMultiple";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("hv");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.Object hv = (java.lang.Object) provider.getValue("hv");
+      		                                    return evaluateExpression_1_1(hv);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Signals properties must be single");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "prop"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

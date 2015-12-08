@@ -98,47 +98,48 @@ public final class OperationMethodParameterCheckQuerySpecification extends BaseG
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_opParam = body.getOrCreateVariableByName("opParam");
-      	PVariable var_methodParam = body.getOrCreateVariableByName("methodParam");
-      	PVariable var_op = body.getOrCreateVariableByName("op");
-      	PVariable var_method = body.getOrCreateVariableByName("method");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_opParam, "opParam"),
-      				
-      		new ExportedParameter(body, var_methodParam, "methodParam"),
-      				
-      		new ExportedParameter(body, var_op, "op"),
-      				
-      		new ExportedParameter(body, var_method, "method")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior")));
-      	new PositivePatternCall(body, new FlatTuple(var___0_, var_op, var_method), MethodQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_op, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
-      	new Equality(body, var__virtual_0_, var_opParam);
-      	new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
-      	new TypeConstraint(body, new FlatTuple(var_method, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior", "ownedParameter")));
-      	new Equality(body, var__virtual_1_, var_methodParam);
-      	new NegativePatternCall(body, new FlatTuple(var_opParam, var_methodParam), ParamsCheckQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("post", "hu.eltesoft.modelexecution.validation.utils.IndexChecked");
-      	annotation.addAttribute("message", "Parameter of the method {method} does not conform to its specification in {op}");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"methodParam"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_opParam = body.getOrCreateVariableByName("opParam");
+      		PVariable var_methodParam = body.getOrCreateVariableByName("methodParam");
+      		PVariable var_op = body.getOrCreateVariableByName("op");
+      		PVariable var_method = body.getOrCreateVariableByName("method");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_opParam, "opParam"),
+      		   new ExportedParameter(body, var_methodParam, "methodParam"),
+      		   new ExportedParameter(body, var_op, "op"),
+      		   new ExportedParameter(body, var_method, "method")
+      		));
+      		// 	find Method(_, op, method)
+      		new PositivePatternCall(body, new FlatTuple(var___0_, var_op, var_method), MethodQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Operation.ownedParameter(op, opParam)
+      		new TypeConstraint(body, new FlatTuple(var_op), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_op, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
+      		new Equality(body, var__virtual_0_, var_opParam);
+      		// 	OpaqueBehavior.ownedParameter(method, methodParam)
+      		new TypeConstraint(body, new FlatTuple(var_method), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_method, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Behavior", "ownedParameter")));
+      		new Equality(body, var__virtual_1_, var_methodParam);
+      		// 	neg find ParamsCheck(opParam, methodParam)
+      		new NegativePatternCall(body, new FlatTuple(var_opParam, var_methodParam), ParamsCheckQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("post", "hu.eltesoft.modelexecution.validation.utils.IndexChecked");
+      		annotation.addAttribute("message", "Parameter of the method {method} does not conform to its specification in {op}");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "methodParam"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -91,16 +91,17 @@ final class PackageImportQuerySpecification extends BaseGeneratedEMFQuerySpecifi
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pi = body.getOrCreateVariableByName("pi");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pi, "pi")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pi), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PackageImport")));
-      	new TypeConstraint(body, new FlatTuple(var_pi), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PackageImport")));
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_pi = body.getOrCreateVariableByName("pi");
+      		new TypeConstraint(body, new FlatTuple(var_pi), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PackageImport")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pi, "pi")
+      		));
+      		// 	PackageImport(pi)
+      		new TypeConstraint(body, new FlatTuple(var_pi), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PackageImport")));
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

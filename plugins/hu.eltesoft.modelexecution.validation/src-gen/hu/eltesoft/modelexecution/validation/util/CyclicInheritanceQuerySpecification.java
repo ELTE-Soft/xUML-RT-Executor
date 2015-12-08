@@ -94,26 +94,28 @@ public final class CyclicInheritanceQuerySpecification extends BaseGeneratedEMFQ
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var_other = body.getOrCreateVariableByName("other");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_cl, "cl")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new PositivePatternCall(body, new FlatTuple(var_cl, var_other), IsAncestorQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_other, var_cl), IsAncestorQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Cyclic inheritance");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"cl"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		PVariable var_other = body.getOrCreateVariableByName("other");
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_cl, "cl")
+      		));
+      		// 	find IsAncestor(cl, other)
+      		new PositivePatternCall(body, new FlatTuple(var_cl, var_other), IsAncestorQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find IsAncestor(other, cl)
+      		new PositivePatternCall(body, new FlatTuple(var_other, var_cl), IsAncestorQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Cyclic inheritance");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "cl"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -96,37 +96,39 @@ public final class MultipleInitialTransitionsQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_src = body.getOrCreateVariableByName("src");
-      	PVariable var_tr1 = body.getOrCreateVariableByName("tr1");
-      	PVariable var_tr2 = body.getOrCreateVariableByName("tr2");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_src, "src"),
-      				
-      		new ExportedParameter(body, var_tr1, "tr1"),
-      				
-      		new ExportedParameter(body, var_tr2, "tr2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_src), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
-      	new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new PositivePatternCall(body, new FlatTuple(var___0_, var_src), InitialStateQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_src, var_tr1), InitialTransitionQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_src, var_tr2), InitialTransitionQuerySpecification.instance().getInternalQueryRepresentation());
-      	new Inequality(body, var_tr1, var_tr2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Multiple initial transitions from an initial pseudostate");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"tr1", 
-      					"tr2"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_src = body.getOrCreateVariableByName("src");
+      		PVariable var_tr1 = body.getOrCreateVariableByName("tr1");
+      		PVariable var_tr2 = body.getOrCreateVariableByName("tr2");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_src), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Pseudostate")));
+      		new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_src, "src"),
+      		   new ExportedParameter(body, var_tr1, "tr1"),
+      		   new ExportedParameter(body, var_tr2, "tr2")
+      		));
+      		// 	find InitialState(_, src)
+      		new PositivePatternCall(body, new FlatTuple(var___0_, var_src), InitialStateQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find InitialTransition(src, tr1)
+      		new PositivePatternCall(body, new FlatTuple(var_src, var_tr1), InitialTransitionQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find InitialTransition(src, tr2)
+      		new PositivePatternCall(body, new FlatTuple(var_src, var_tr2), InitialTransitionQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	tr1 != tr2
+      		new Inequality(body, var_tr1, var_tr2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Multiple initial transitions from an initial pseudostate");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "tr1", 
+      		                "tr2"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

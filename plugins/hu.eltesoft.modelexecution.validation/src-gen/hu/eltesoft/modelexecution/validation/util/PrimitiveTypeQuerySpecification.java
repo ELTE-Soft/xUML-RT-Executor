@@ -91,16 +91,17 @@ final class PrimitiveTypeQuerySpecification extends BaseGeneratedEMFQuerySpecifi
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ty = body.getOrCreateVariableByName("ty");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ty, "ty")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ty), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PrimitiveType")));
-      	new TypeConstraint(body, new FlatTuple(var_ty), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PrimitiveType")));
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_ty = body.getOrCreateVariableByName("ty");
+      		new TypeConstraint(body, new FlatTuple(var_ty), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PrimitiveType")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ty, "ty")
+      		));
+      		// 	PrimitiveType(ty)
+      		new TypeConstraint(body, new FlatTuple(var_ty), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "PrimitiveType")));
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

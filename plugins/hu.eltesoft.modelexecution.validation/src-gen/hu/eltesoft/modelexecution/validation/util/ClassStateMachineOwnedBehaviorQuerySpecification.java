@@ -96,29 +96,31 @@ public final class ClassStateMachineOwnedBehaviorQuerySpecification extends Base
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_beh = body.getOrCreateVariableByName("beh");
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_beh, "beh")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "ownedBehavior")));
-      	new Equality(body, var__virtual_0_, var_beh);
-      	new NegativePatternCall(body, new FlatTuple(var_cl, var_beh), ClassifierBehaviorQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "If state machine is owned by class it must be its classifier behavior");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"beh"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_beh = body.getOrCreateVariableByName("beh");
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "StateMachine")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_beh, "beh")
+      		));
+      		// 	Class.ownedBehavior(cl, beh)
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioredClassifier", "ownedBehavior")));
+      		new Equality(body, var__virtual_0_, var_beh);
+      		// 	neg find ClassifierBehavior(cl, beh)
+      		new NegativePatternCall(body, new FlatTuple(var_cl, var_beh), ClassifierBehaviorQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "If state machine is owned by class it must be its classifier behavior");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "beh"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

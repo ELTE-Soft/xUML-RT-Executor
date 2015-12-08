@@ -98,46 +98,47 @@ public final class ReceptionSignalParameterNumQuerySpecification extends BaseGen
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_rc = body.getOrCreateVariableByName("rc");
-      	PVariable var_sg = body.getOrCreateVariableByName("sg");
-      	PVariable var_params = body.getOrCreateVariableByName("params");
-      	PVariable var_properties = body.getOrCreateVariableByName("properties");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_rc, "rc"),
-      				
-      		new ExportedParameter(body, var_sg, "sg"),
-      				
-      		new ExportedParameter(body, var_params, "params"),
-      				
-      		new ExportedParameter(body, var_properties, "properties")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_rc), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception")));
-      	new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
-      	new TypeConstraint(body, new FlatTuple(var_rc), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception")));
-      	new TypeConstraint(body, new FlatTuple(var_rc, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception", "signal")));
-      	new Equality(body, var__virtual_0_, var_sg);
-      	new PatternMatchCounter(body, new FlatTuple(var_rc, var___0_), ParameterOfReceptionQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
-      	new Equality(body, var_params, var__virtual_1_);
-      	new PatternMatchCounter(body, new FlatTuple(var_sg, var___1_), PropertiesOfSignalQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_2_);
-      	new Equality(body, var_properties, var__virtual_2_);
-      	new Inequality(body, var_params, var_properties);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Number of parameters ({params}) does not the same as number of properties in signal {sg} ({properties})");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"rc"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_rc = body.getOrCreateVariableByName("rc");
+      		PVariable var_sg = body.getOrCreateVariableByName("sg");
+      		PVariable var_params = body.getOrCreateVariableByName("params");
+      		PVariable var_properties = body.getOrCreateVariableByName("properties");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		new TypeConstraint(body, new FlatTuple(var_rc), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception")));
+      		new TypeConstraint(body, new FlatTuple(var_sg), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Signal")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_rc, "rc"),
+      		   new ExportedParameter(body, var_sg, "sg"),
+      		   new ExportedParameter(body, var_params, "params"),
+      		   new ExportedParameter(body, var_properties, "properties")
+      		));
+      		// 	Reception.signal(rc, sg)
+      		new TypeConstraint(body, new FlatTuple(var_rc), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_rc, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Reception", "signal")));
+      		new Equality(body, var__virtual_0_, var_sg);
+      		// 	params == count find ParameterOfReception(rc, _)
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new PatternMatchCounter(body, new FlatTuple(var_rc, var___0_), ParameterOfReceptionQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
+      		new Equality(body, var_params, var__virtual_1_);
+      		// 	properties == count find PropertiesOfSignal(sg, _)
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new PatternMatchCounter(body, new FlatTuple(var_sg, var___1_), PropertiesOfSignalQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_2_);
+      		new Equality(body, var_properties, var__virtual_2_);
+      		// 	params != properties
+      		new Inequality(body, var_params, var_properties);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Number of parameters ({params}) does not the same as number of properties in signal {sg} ({properties})");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "rc"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

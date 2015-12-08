@@ -96,43 +96,46 @@ public final class RedefinedAndRedefiningParametersMustBeTheSameQuerySpecificati
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_redefined = body.getOrCreateVariableByName("redefined");
-      	PVariable var_redefiner = body.getOrCreateVariableByName("redefiner");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var_redefinedParam = body.getOrCreateVariableByName("redefinedParam");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_redefinerParam = body.getOrCreateVariableByName("redefinerParam");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_redefined, "redefined"),
-      				
-      		new ExportedParameter(body, var_redefiner, "redefiner")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation", "redefinedOperation")));
-      	new Equality(body, var__virtual_0_, var_redefined);
-      	new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefined, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
-      	new Equality(body, var__virtual_1_, var_redefinedParam);
-      	new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
-      	new Equality(body, var__virtual_2_, var_redefinerParam);
-      	new NegativePatternCall(body, new FlatTuple(var_redefinedParam, var_redefinerParam), ParamsCheckQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("post", "hu.eltesoft.modelexecution.validation.utils.IndexChecked");
-      	annotation.addAttribute("message", "Parameters of the operation must be the same as the redefined operation {redefined}");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"redefiner"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_redefined = body.getOrCreateVariableByName("redefined");
+      		PVariable var_redefiner = body.getOrCreateVariableByName("redefiner");
+      		PVariable var_redefinedParam = body.getOrCreateVariableByName("redefinedParam");
+      		PVariable var_redefinerParam = body.getOrCreateVariableByName("redefinerParam");
+      		new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_redefined, "redefined"),
+      		   new ExportedParameter(body, var_redefiner, "redefiner")
+      		));
+      		// 	Operation.redefinedOperation(redefiner, redefined)
+      		new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation", "redefinedOperation")));
+      		new Equality(body, var__virtual_0_, var_redefined);
+      		// 	Operation.ownedParameter(redefined, redefinedParam)
+      		new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_redefined, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
+      		new Equality(body, var__virtual_1_, var_redefinedParam);
+      		// 	Operation.ownedParameter(redefiner, redefinerParam)
+      		new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
+      		new Equality(body, var__virtual_2_, var_redefinerParam);
+      		// 	neg find ParamsCheck(redefinedParam, redefinerParam)
+      		new NegativePatternCall(body, new FlatTuple(var_redefinedParam, var_redefinerParam), ParamsCheckQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("post", "hu.eltesoft.modelexecution.validation.utils.IndexChecked");
+      		annotation.addAttribute("message", "Parameters of the operation must be the same as the redefined operation {redefined}");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "redefiner"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

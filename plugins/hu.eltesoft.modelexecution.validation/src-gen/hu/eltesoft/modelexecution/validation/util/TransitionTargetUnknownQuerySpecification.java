@@ -94,25 +94,26 @@ public final class TransitionTargetUnknownQuerySpecification extends BaseGenerat
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_tr = body.getOrCreateVariableByName("tr");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_tr, "tr")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new NegativePatternCall(body, new FlatTuple(var_tr, var___0_), TransitionTargetQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "The target of the transition is an initial pseudostate or a state");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"tr"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_tr = body.getOrCreateVariableByName("tr");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		new TypeConstraint(body, new FlatTuple(var_tr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_tr, "tr")
+      		));
+      		// 	neg find TransitionTarget(tr, _)
+      		new NegativePatternCall(body, new FlatTuple(var_tr, var___0_), TransitionTargetQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "The target of the transition is an initial pseudostate or a state");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "tr"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

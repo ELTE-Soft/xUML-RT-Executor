@@ -94,24 +94,25 @@ public final class EventIsNotSignalEventQuerySpecification extends BaseGenerated
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ev = body.getOrCreateVariableByName("ev");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ev, "ev")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Event")));
-      	new NegativePatternCall(body, new FlatTuple(var_ev), IsSignalEventQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Only signal events are supported");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"ev"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_ev = body.getOrCreateVariableByName("ev");
+      		new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Event")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ev, "ev")
+      		));
+      		// 	neg find IsSignalEvent(ev)
+      		new NegativePatternCall(body, new FlatTuple(var_ev), IsSignalEventQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Only signal events are supported");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "ev"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

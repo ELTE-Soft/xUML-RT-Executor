@@ -96,43 +96,50 @@ final class ParamsCheckQuerySpecification extends BaseGeneratedEMFQuerySpecifica
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_opParam = body.getOrCreateVariableByName("opParam");
-      	PVariable var_methodParam = body.getOrCreateVariableByName("methodParam");
-      	PVariable var_type = body.getOrCreateVariableByName("type");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_dir = body.getOrCreateVariableByName("dir");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
-      	PVariable var_lv = body.getOrCreateVariableByName("lv");
-      	PVariable var_uv = body.getOrCreateVariableByName("uv");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_opParam, "opParam"),
-      				
-      		new ExportedParameter(body, var_methodParam, "methodParam")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_opParam, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
-      	new Equality(body, var__virtual_0_, var_type);
-      	new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_methodParam, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
-      	new Equality(body, var__virtual_1_, var_type);
-      	new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_opParam, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
-      	new Equality(body, var__virtual_2_, var_dir);
-      	new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_methodParam, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
-      	new Equality(body, var__virtual_3_, var_dir);
-      	new PositivePatternCall(body, new FlatTuple(var_opParam, var_lv), LowerValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_methodParam, var_lv), LowerValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_opParam, var_uv), UpperValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	new PositivePatternCall(body, new FlatTuple(var_methodParam, var_uv), UpperValueQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_opParam = body.getOrCreateVariableByName("opParam");
+      		PVariable var_methodParam = body.getOrCreateVariableByName("methodParam");
+      		PVariable var_type = body.getOrCreateVariableByName("type");
+      		PVariable var_dir = body.getOrCreateVariableByName("dir");
+      		PVariable var_lv = body.getOrCreateVariableByName("lv");
+      		PVariable var_uv = body.getOrCreateVariableByName("uv");
+      		new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_opParam, "opParam"),
+      		   new ExportedParameter(body, var_methodParam, "methodParam")
+      		));
+      		// 	Parameter.type(opParam, type)
+      		new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_opParam, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
+      		new Equality(body, var__virtual_0_, var_type);
+      		// 	Parameter.type(methodParam, type)
+      		new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_methodParam, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
+      		new Equality(body, var__virtual_1_, var_type);
+      		// 	Parameter.direction(opParam, dir)
+      		new TypeConstraint(body, new FlatTuple(var_opParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_opParam, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
+      		new Equality(body, var__virtual_2_, var_dir);
+      		// 	Parameter.direction(methodParam, dir)
+      		new TypeConstraint(body, new FlatTuple(var_methodParam), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
+      		new TypeConstraint(body, new FlatTuple(var_methodParam, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
+      		new Equality(body, var__virtual_3_, var_dir);
+      		// 	find LowerValue(opParam, lv)
+      		new PositivePatternCall(body, new FlatTuple(var_opParam, var_lv), LowerValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find LowerValue(methodParam, lv)
+      		new PositivePatternCall(body, new FlatTuple(var_methodParam, var_lv), LowerValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find UpperValue(opParam, uv)
+      		new PositivePatternCall(body, new FlatTuple(var_opParam, var_uv), UpperValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	find UpperValue(methodParam, uv)
+      		new PositivePatternCall(body, new FlatTuple(var_methodParam, var_uv), UpperValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

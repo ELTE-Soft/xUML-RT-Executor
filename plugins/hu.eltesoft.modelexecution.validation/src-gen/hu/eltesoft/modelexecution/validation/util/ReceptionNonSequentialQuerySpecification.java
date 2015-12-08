@@ -96,31 +96,33 @@ public final class ReceptionNonSequentialQuerySpecification extends BaseGenerate
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_beh = body.getOrCreateVariableByName("beh");
-      	PVariable var_con = body.getOrCreateVariableByName("con");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_beh, "beh")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
-      	new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
-      	new TypeConstraint(body, new FlatTuple(var_beh, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "concurrency")));
-      	new Equality(body, var__virtual_0_, var_con);
-      	new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.CallConcurrencyKind.get("sequential"));
-      	new Inequality(body, var_con, var__virtual_1_);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Only sequential behaviors are supported");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"beh"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_beh = body.getOrCreateVariableByName("beh");
+      		PVariable var_con = body.getOrCreateVariableByName("con");
+      		new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_beh, "beh")
+      		));
+      		// 	BehavioralFeature.concurrency(beh, con)
+      		new TypeConstraint(body, new FlatTuple(var_beh), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_beh, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "concurrency")));
+      		new Equality(body, var__virtual_0_, var_con);
+      		// 	con != CallConcurrencyKind::sequential
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new ConstantValue(body, var__virtual_1_, org.eclipse.uml2.uml.CallConcurrencyKind.get("sequential"));
+      		new Inequality(body, var_con, var__virtual_1_);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Only sequential behaviors are supported");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "beh"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

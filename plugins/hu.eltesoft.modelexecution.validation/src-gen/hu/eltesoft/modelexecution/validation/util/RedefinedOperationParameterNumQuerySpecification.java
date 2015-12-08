@@ -97,46 +97,47 @@ public final class RedefinedOperationParameterNumQuerySpecification extends Base
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_redefined = body.getOrCreateVariableByName("redefined");
-      	PVariable var_redefiner = body.getOrCreateVariableByName("redefiner");
-      	PVariable var_redefinerParams = body.getOrCreateVariableByName("redefinerParams");
-      	PVariable var_redefinedParams = body.getOrCreateVariableByName("redefinedParams");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_redefined, "redefined"),
-      				
-      		new ExportedParameter(body, var_redefiner, "redefiner"),
-      				
-      		new ExportedParameter(body, var_redefinerParams, "redefinerParams"),
-      				
-      		new ExportedParameter(body, var_redefinedParams, "redefinedParams")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
-      	new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation", "redefinedOperation")));
-      	new Equality(body, var__virtual_0_, var_redefined);
-      	new PatternMatchCounter(body, new FlatTuple(var_redefiner, var___0_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
-      	new Equality(body, var_redefinerParams, var__virtual_1_);
-      	new PatternMatchCounter(body, new FlatTuple(var_redefined, var___1_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_2_);
-      	new Equality(body, var_redefinedParams, var__virtual_2_);
-      	new Inequality(body, var_redefinerParams, var_redefinedParams);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Number of parameters ({redefinerParams}) does not the same as of redefined {redefined} ({redefinedParams})");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"redefiner"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_redefined = body.getOrCreateVariableByName("redefined");
+      		PVariable var_redefiner = body.getOrCreateVariableByName("redefiner");
+      		PVariable var_redefinerParams = body.getOrCreateVariableByName("redefinerParams");
+      		PVariable var_redefinedParams = body.getOrCreateVariableByName("redefinedParams");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		new TypeConstraint(body, new FlatTuple(var_redefined), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_redefined, "redefined"),
+      		   new ExportedParameter(body, var_redefiner, "redefiner"),
+      		   new ExportedParameter(body, var_redefinerParams, "redefinerParams"),
+      		   new ExportedParameter(body, var_redefinedParams, "redefinedParams")
+      		));
+      		// 	Operation.redefinedOperation(redefiner, redefined)
+      		new TypeConstraint(body, new FlatTuple(var_redefiner), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_redefiner, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Operation", "redefinedOperation")));
+      		new Equality(body, var__virtual_0_, var_redefined);
+      		// 	redefinerParams == count find ParameterOfOperation(redefiner, _)
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new PatternMatchCounter(body, new FlatTuple(var_redefiner, var___0_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_1_);
+      		new Equality(body, var_redefinerParams, var__virtual_1_);
+      		// 	redefinedParams == count find ParameterOfOperation(redefined, _)
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new PatternMatchCounter(body, new FlatTuple(var_redefined, var___1_), ParameterOfOperationQuerySpecification.instance().getInternalQueryRepresentation(), var__virtual_2_);
+      		new Equality(body, var_redefinedParams, var__virtual_2_);
+      		// 	redefinerParams != redefinedParams
+      		new Inequality(body, var_redefinerParams, var_redefinedParams);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Number of parameters ({redefinerParams}) does not the same as of redefined {redefined} ({redefinedParams})");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "redefiner"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

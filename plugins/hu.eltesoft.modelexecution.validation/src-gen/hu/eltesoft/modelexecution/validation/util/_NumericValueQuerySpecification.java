@@ -93,38 +93,38 @@ final class _NumericValueQuerySpecification extends BaseGeneratedEMFQuerySpecifi
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_spec = body.getOrCreateVariableByName("spec");
-      	PVariable var_value = body.getOrCreateVariableByName("value");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_spec, "spec"),
-      				
-      		new ExportedParameter(body, var_value, "value")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ValueSpecification")));
-      	new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralInteger")));
-      	new TypeConstraint(body, new FlatTuple(var_spec, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralInteger", "value")));
-      	new Equality(body, var__virtual_0_, var_value);
-      	bodies.add(body);
-      }
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_spec = body.getOrCreateVariableByName("spec");
-      	PVariable var_value = body.getOrCreateVariableByName("value");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_spec, "spec"),
-      				
-      		new ExportedParameter(body, var_value, "value")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ValueSpecification")));
-      	new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralUnlimitedNatural")));
-      	new TypeConstraint(body, new FlatTuple(var_spec, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralUnlimitedNatural", "value")));
-      	new Equality(body, var__virtual_0_, var_value);
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_spec = body.getOrCreateVariableByName("spec");
+      		PVariable var_value = body.getOrCreateVariableByName("value");
+      		new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ValueSpecification")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_spec, "spec"),
+      		   new ExportedParameter(body, var_value, "value")
+      		));
+      		// 	LiteralInteger.value(spec, value)
+      		new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralInteger")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_spec, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralInteger", "value")));
+      		new Equality(body, var__virtual_0_, var_value);
+      		bodies.add(body);
+      	}
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_spec = body.getOrCreateVariableByName("spec");
+      		PVariable var_value = body.getOrCreateVariableByName("value");
+      		new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ValueSpecification")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_spec, "spec"),
+      		   new ExportedParameter(body, var_value, "value")
+      		));
+      		// 	LiteralUnlimitedNatural.value(spec, value)
+      		new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralUnlimitedNatural")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_spec, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "LiteralUnlimitedNatural", "value")));
+      		new Equality(body, var__virtual_0_, var_value);
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

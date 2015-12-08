@@ -83,7 +83,7 @@ pattern UnrecognizedElementInClass(cl : Class, elem : Element) {
 	neg find Reception(_, elem, _);
 	neg find Method(_, _, elem);
 	neg find Event(elem);
-	neg find Signal(elem);
+	neg find Signal_(elem);
 	neg find Association(elem);
 	neg find Generalization(elem);
 	neg find StateMachine(elem);
@@ -94,7 +94,7 @@ private pattern Property(prop : Property) {
 }
 
 // FIXME: use declared
-private pattern Signal(gen : Signal) {
+private pattern Signal_(gen : Signal) {
 	Signal(gen);
 }
 

@@ -91,16 +91,17 @@ final class ProfileApplicationQuerySpecification extends BaseGeneratedEMFQuerySp
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pa = body.getOrCreateVariableByName("pa");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pa, "pa")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pa), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ProfileApplication")));
-      	new TypeConstraint(body, new FlatTuple(var_pa), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ProfileApplication")));
-      	bodies.add(body);
-      }
+      	{
+      		PBody body = new PBody(this);
+      		PVariable var_pa = body.getOrCreateVariableByName("pa");
+      		new TypeConstraint(body, new FlatTuple(var_pa), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ProfileApplication")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pa, "pa")
+      		));
+      		// 	ProfileApplication(pa)
+      		new TypeConstraint(body, new FlatTuple(var_pa), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "ProfileApplication")));
+      		bodies.add(body);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

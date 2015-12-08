@@ -42,7 +42,7 @@ pattern ExternalEntityOperationNameNotValid(op : Operation) {
 pattern ExternalEntityOperationParameterTypeNotValid(pm : Parameter) {
 	find ExternalEntityOpParam(pm);
 	Parameter.type(pm, ty);
-	neg find PrimitiveType(ty);
+	neg find PrimitiveType_(ty);
 	neg find Callable(ty, _);
 }
 
@@ -85,7 +85,7 @@ pattern ExternalEntityOperationParameterReturnNotValid(pm : Parameter) {
 	find ExternalEntityOpParam(pm);
 	Parameter.direction(pm, ::^return);
 	Parameter.type(pm, typ);
-	neg find PrimitiveType(typ);
+	neg find PrimitiveType_(typ);
 }
 
 @Violation(message = "External entity cannot be the generalization of a class", mark = { "cl" })
@@ -109,7 +109,7 @@ pattern ExternalEntitiesWithTheSameName(cl1 : Class, cl2 : Class) {
 	cl1 != cl2;
 }
 
-private pattern PrimitiveType(ty : PrimitiveType) {
+private pattern PrimitiveType_(ty : PrimitiveType) {
 	PrimitiveType(ty);
 }
 

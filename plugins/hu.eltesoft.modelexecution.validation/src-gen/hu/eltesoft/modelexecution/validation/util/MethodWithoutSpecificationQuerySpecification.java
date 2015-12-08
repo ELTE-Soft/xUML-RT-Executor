@@ -95,27 +95,29 @@ public final class MethodWithoutSpecificationQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_me = body.getOrCreateVariableByName("me");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_me, "me")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
-      	new NegativePatternCall(body, new FlatTuple(var___0_, var___1_, var_me), MethodQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_me), SMEffectQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Method without specification");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"me"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_me = body.getOrCreateVariableByName("me");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		new TypeConstraint(body, new FlatTuple(var_me), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "OpaqueBehavior")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_me, "me")
+      		));
+      		// 	neg find Method(_, _, me)
+      		new NegativePatternCall(body, new FlatTuple(var___0_, var___1_, var_me), MethodQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find SMEffect(me)
+      		new NegativePatternCall(body, new FlatTuple(var_me), SMEffectQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Method without specification");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "me"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

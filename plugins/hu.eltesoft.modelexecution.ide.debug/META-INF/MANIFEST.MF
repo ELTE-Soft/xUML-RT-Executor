@@ -30,4 +30,5 @@ Export-Package: hu.eltesoft.modelexecution.ide.debug,
  hu.eltesoft.modelexecution.ide.debug.jvm,
  hu.eltesoft.modelexecution.ide.debug.util
 Import-Package: org.eclipse.papyrus.emf.facet.query.java.core,
- org.eclipse.ui.part
+ org.eclipse.ui.part,
+ org.eclipse.xtext.xbase.lib;version="2.9.0"

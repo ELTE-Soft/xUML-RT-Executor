@@ -95,37 +95,38 @@ public final class LeafRedefinedQuerySpecification extends BaseGeneratedEMFQuery
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_elem = body.getOrCreateVariableByName("elem");
-      	PVariable var_redefining = body.getOrCreateVariableByName("redefining");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_elem, "elem"),
-      				
-      		new ExportedParameter(body, var_redefining, "redefining")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
-      	new TypeConstraint(body, new FlatTuple(var_redefining), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
-      	new TypeConstraint(body, new FlatTuple(var_redefining), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
-      	new TypeConstraint(body, new FlatTuple(var_redefining, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement", "redefinedElement")));
-      	new Equality(body, var__virtual_0_, var_elem);
-      	new ConstantValue(body, var__virtual_1_, true);
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
-      	new TypeConstraint(body, new FlatTuple(var_elem, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement", "isLeaf")));
-      	new Equality(body, var__virtual_2_, var__virtual_1_);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Redefinition of leaf element is not allowed");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"redefining"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_elem = body.getOrCreateVariableByName("elem");
+      		PVariable var_redefining = body.getOrCreateVariableByName("redefining");
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
+      		new TypeConstraint(body, new FlatTuple(var_redefining), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_elem, "elem"),
+      		   new ExportedParameter(body, var_redefining, "redefining")
+      		));
+      		// 	RedefinableElement.redefinedElement(redefining, elem)
+      		new TypeConstraint(body, new FlatTuple(var_redefining), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_redefining, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement", "redefinedElement")));
+      		new Equality(body, var__virtual_0_, var_elem);
+      		// 	RedefinableElement.isLeaf(elem, true)
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new ConstantValue(body, var__virtual_1_, true);
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_elem, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "RedefinableElement", "isLeaf")));
+      		new Equality(body, var__virtual_2_, var__virtual_1_);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Redefinition of leaf element is not allowed");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "redefining"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -97,46 +97,48 @@ public final class MultipleTransitionsWithAnEventQuerySpecification extends Base
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_tr1 = body.getOrCreateVariableByName("tr1");
-      	PVariable var_tr2 = body.getOrCreateVariableByName("tr2");
-      	PVariable var_src = body.getOrCreateVariableByName("src");
-      	PVariable var_ev = body.getOrCreateVariableByName("ev");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_tr1, "tr1"),
-      				
-      		new ExportedParameter(body, var_tr2, "tr2"),
-      				
-      		new ExportedParameter(body, var_src, "src"),
-      				
-      		new ExportedParameter(body, var_ev, "ev")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_src), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
-      	new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Event")));
-      	new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_tr1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "source")));
-      	new Equality(body, var__virtual_0_, var_src);
-      	new PositivePatternCall(body, new FlatTuple(var_tr1, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
-      	new TypeConstraint(body, new FlatTuple(var_tr2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "source")));
-      	new Equality(body, var__virtual_1_, var_src);
-      	new PositivePatternCall(body, new FlatTuple(var_tr2, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
-      	new Inequality(body, var_tr1, var_tr2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Multiple transitions from a single state with a single event are not supported");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"src"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_tr1 = body.getOrCreateVariableByName("tr1");
+      		PVariable var_tr2 = body.getOrCreateVariableByName("tr2");
+      		PVariable var_src = body.getOrCreateVariableByName("src");
+      		PVariable var_ev = body.getOrCreateVariableByName("ev");
+      		new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		new TypeConstraint(body, new FlatTuple(var_src), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "State")));
+      		new TypeConstraint(body, new FlatTuple(var_ev), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Event")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_tr1, "tr1"),
+      		   new ExportedParameter(body, var_tr2, "tr2"),
+      		   new ExportedParameter(body, var_src, "src"),
+      		   new ExportedParameter(body, var_ev, "ev")
+      		));
+      		// 	Transition.source(tr1, src)
+      		new TypeConstraint(body, new FlatTuple(var_tr1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_tr1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "source")));
+      		new Equality(body, var__virtual_0_, var_src);
+      		// 	find TransitionEvent(tr1, ev)
+      		new PositivePatternCall(body, new FlatTuple(var_tr1, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Transition.source(tr2, src)
+      		new TypeConstraint(body, new FlatTuple(var_tr2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_tr2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Transition", "source")));
+      		new Equality(body, var__virtual_1_, var_src);
+      		// 	find TransitionEvent(tr2, ev)
+      		new PositivePatternCall(body, new FlatTuple(var_tr2, var_ev), TransitionEventQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	tr1 != tr2
+      		new Inequality(body, var_tr1, var_tr2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Multiple transitions from a single state with a single event are not supported");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "src"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

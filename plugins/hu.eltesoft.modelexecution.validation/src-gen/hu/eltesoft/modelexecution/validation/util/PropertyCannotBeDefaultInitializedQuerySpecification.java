@@ -100,55 +100,59 @@ public final class PropertyCannotBeDefaultInitializedQuerySpecification extends 
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pr = body.getOrCreateVariableByName("pr");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_low = body.getOrCreateVariableByName("low");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var_v = body.getOrCreateVariableByName("v");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pr, "pr")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new ConstantValue(body, var__virtual_0_, true);
-      	new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_pr, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique")));
-      	new Equality(body, var__virtual_1_, var__virtual_0_);
-      	new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
-      	new TypeConstraint(body, new FlatTuple(var_pr, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
-      	new Equality(body, var__virtual_2_, var_low);
-      	new PositivePatternCall(body, new FlatTuple(var_low, var_v), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
-      new ExpressionEvaluation(body, new IExpressionEvaluator() {
-      	
-      	@Override
-      	public String getShortDescription() {
-      		return "Expression evaluation from pattern PropertyCannotBeDefaultInitialized";
-      	}
-      
-      	@Override
-      	public Iterable<String> getInputParameterNames() {
-      		return Arrays.asList("v");
-      	}
-      
-      	@Override
-      	public Object evaluateExpression(IValueProvider provider) throws Exception {
-      			java.lang.Object v = (java.lang.Object) provider.getValue("v");
-      			return evaluateExpression_1_1(v);
-      		}
-      
-      },  null); 
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Unique properties cannot have lower bound higher than 1, because they could not be default initialized");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"pr"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_pr = body.getOrCreateVariableByName("pr");
+      		PVariable var_low = body.getOrCreateVariableByName("low");
+      		PVariable var_v = body.getOrCreateVariableByName("v");
+      		new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pr, "pr")
+      		));
+      		// 	Property.isUnique(pr, true)
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new ConstantValue(body, var__virtual_0_, true);
+      		new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_pr, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "isUnique")));
+      		new Equality(body, var__virtual_1_, var__virtual_0_);
+      		// 	Property.lowerValue(pr, low)
+      		new TypeConstraint(body, new FlatTuple(var_pr), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Property")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_pr, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "MultiplicityElement", "lowerValue")));
+      		new Equality(body, var__virtual_2_, var_low);
+      		// 	find NumericValue(low, v)
+      		new PositivePatternCall(body, new FlatTuple(var_low, var_v), NumericValueQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	check(1 < (v as Integer))
+      		new ExpressionEvaluation(body, new IExpressionEvaluator() {
+      		                            
+      		                            @Override
+      		                            public String getShortDescription() {
+      		                                return "Expression evaluation from pattern PropertyCannotBeDefaultInitialized";
+      		                            }
+      		
+      		                            @Override
+      		                            public Iterable<String> getInputParameterNames() {
+      		                                return Arrays.asList("v");
+      		                            }
+      		
+      		                            @Override
+      		                            public Object evaluateExpression(IValueProvider provider) throws Exception {
+      		                                    java.lang.Object v = (java.lang.Object) provider.getValue("v");
+      		                                    return evaluateExpression_1_1(v);
+      		                                }
+      		
+      		                        },  null); 
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Unique properties cannot have lower bound higher than 1, because they could not be default initialized");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "pr"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

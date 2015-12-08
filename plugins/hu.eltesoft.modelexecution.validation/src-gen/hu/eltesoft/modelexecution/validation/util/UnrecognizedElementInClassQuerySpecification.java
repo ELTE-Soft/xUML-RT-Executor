@@ -11,7 +11,7 @@ import hu.eltesoft.modelexecution.validation.UnrecognizedElementInClassMatch;
 import hu.eltesoft.modelexecution.validation.UnrecognizedElementInClassMatcher;
 import hu.eltesoft.modelexecution.validation.util.GeneralizationQuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.PropertyQuerySpecification;
-import hu.eltesoft.modelexecution.validation.util.SignalQuerySpecification;
+import hu.eltesoft.modelexecution.validation.util.Signal_QuerySpecification;
 import hu.eltesoft.modelexecution.validation.util.StateMachineQuerySpecification;
 import java.util.Arrays;
 import java.util.List;
@@ -106,47 +106,57 @@ public final class UnrecognizedElementInClassQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_cl = body.getOrCreateVariableByName("cl");
-      	PVariable var_elem = body.getOrCreateVariableByName("elem");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
-      	PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
-      	PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
-      	PVariable var___3_ = body.getOrCreateVariableByName("_<3>");
-      	PVariable var___4_ = body.getOrCreateVariableByName("_<4>");
-      	PVariable var___5_ = body.getOrCreateVariableByName("_<5>");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_cl, "cl"),
-      				
-      		new ExportedParameter(body, var_elem, "elem")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element")));
-      	new PositivePatternCall(body, new FlatTuple(var_cl), ClassOrAssocClassQuerySpecification.instance().getInternalQueryRepresentation());
-      	new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element", "ownedElement")));
-      	new Equality(body, var__virtual_0_, var_elem);
-      	new NegativePatternCall(body, new FlatTuple(var_elem), PropertyQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var___0_, var_elem, var___1_), OperationQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var___2_, var_elem, var___3_), ReceptionQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var___4_, var___5_, var_elem), MethodQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_elem), EventQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_elem), SignalQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_elem), AssociationQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_elem), GeneralizationQuerySpecification.instance().getInternalQueryRepresentation());
-      	new NegativePatternCall(body, new FlatTuple(var_elem), StateMachineQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Unknown element in class {cl}");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"elem"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_cl = body.getOrCreateVariableByName("cl");
+      		PVariable var_elem = body.getOrCreateVariableByName("elem");
+      		PVariable var___0_ = body.getOrCreateVariableByName("_<0>");
+      		PVariable var___1_ = body.getOrCreateVariableByName("_<1>");
+      		PVariable var___2_ = body.getOrCreateVariableByName("_<2>");
+      		PVariable var___3_ = body.getOrCreateVariableByName("_<3>");
+      		PVariable var___4_ = body.getOrCreateVariableByName("_<4>");
+      		PVariable var___5_ = body.getOrCreateVariableByName("_<5>");
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		new TypeConstraint(body, new FlatTuple(var_elem), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_cl, "cl"),
+      		   new ExportedParameter(body, var_elem, "elem")
+      		));
+      		// 	find ClassOrAssocClass(cl)
+      		new PositivePatternCall(body, new FlatTuple(var_cl), ClassOrAssocClassQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Class.ownedElement(cl, elem)
+      		new TypeConstraint(body, new FlatTuple(var_cl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_cl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Element", "ownedElement")));
+      		new Equality(body, var__virtual_0_, var_elem);
+      		// 	neg find Property(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), PropertyQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Operation(_, elem, _)
+      		new NegativePatternCall(body, new FlatTuple(var___0_, var_elem, var___1_), OperationQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Reception(_, elem, _)
+      		new NegativePatternCall(body, new FlatTuple(var___2_, var_elem, var___3_), ReceptionQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Method(_, _, elem)
+      		new NegativePatternCall(body, new FlatTuple(var___4_, var___5_, var_elem), MethodQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Event(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), EventQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Signal_(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), Signal_QuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Association(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), AssociationQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find Generalization(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), GeneralizationQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	neg find StateMachine(elem)
+      		new NegativePatternCall(body, new FlatTuple(var_elem), StateMachineQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Unknown element in class {cl}");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "elem"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

@@ -96,53 +96,56 @@ public final class MultiReturnsQuerySpecification extends BaseGeneratedEMFQueryS
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_bf = body.getOrCreateVariableByName("bf");
-      	PVariable var_pm1 = body.getOrCreateVariableByName("pm1");
-      	PVariable var_pm2 = body.getOrCreateVariableByName("pm2");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
-      	PVariable var__virtual_4_ = body.getOrCreateVariableByName(".virtual{4}");
-      	PVariable var__virtual_5_ = body.getOrCreateVariableByName(".virtual{5}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_bf, "bf"),
-      				
-      		new ExportedParameter(body, var_pm1, "pm1"),
-      				
-      		new ExportedParameter(body, var_pm2, "pm2")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
-      	new TypeConstraint(body, new FlatTuple(var_pm1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
-      	new TypeConstraint(body, new FlatTuple(var_bf, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
-      	new Equality(body, var__virtual_0_, var_pm1);
-      	new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
-      	new TypeConstraint(body, new FlatTuple(var_bf, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
-      	new Equality(body, var__virtual_1_, var_pm2);
-      	new ConstantValue(body, var__virtual_2_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
-      	new TypeConstraint(body, new FlatTuple(var_pm1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm1, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
-      	new Equality(body, var__virtual_3_, var__virtual_2_);
-      	new ConstantValue(body, var__virtual_4_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
-      	new TypeConstraint(body, new FlatTuple(var_pm2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm2, var__virtual_5_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
-      	new Equality(body, var__virtual_5_, var__virtual_4_);
-      	new Inequality(body, var_pm1, var_pm2);
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "{bf} can have at most one return parameter");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"pm1", 
-      					"pm2"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_bf = body.getOrCreateVariableByName("bf");
+      		PVariable var_pm1 = body.getOrCreateVariableByName("pm1");
+      		PVariable var_pm2 = body.getOrCreateVariableByName("pm2");
+      		new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
+      		new TypeConstraint(body, new FlatTuple(var_pm1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		new TypeConstraint(body, new FlatTuple(var_pm2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_bf, "bf"),
+      		   new ExportedParameter(body, var_pm1, "pm1"),
+      		   new ExportedParameter(body, var_pm2, "pm2")
+      		));
+      		// 	BehavioralFeature.ownedParameter(bf, pm1)
+      		new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new TypeConstraint(body, new FlatTuple(var_bf, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
+      		new Equality(body, var__virtual_0_, var_pm1);
+      		// 	BehavioralFeature.ownedParameter(bf, pm2)
+      		new TypeConstraint(body, new FlatTuple(var_bf), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_bf, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "BehavioralFeature", "ownedParameter")));
+      		new Equality(body, var__virtual_1_, var_pm2);
+      		// 	Parameter.direction(pm1, ::return)
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new ConstantValue(body, var__virtual_2_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
+      		new TypeConstraint(body, new FlatTuple(var_pm1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
+      		new TypeConstraint(body, new FlatTuple(var_pm1, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
+      		new Equality(body, var__virtual_3_, var__virtual_2_);
+      		// 	Parameter.direction(pm2, ::return)
+      		PVariable var__virtual_4_ = body.getOrCreateVariableByName(".virtual{4}");
+      		new ConstantValue(body, var__virtual_4_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
+      		new TypeConstraint(body, new FlatTuple(var_pm2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_5_ = body.getOrCreateVariableByName(".virtual{5}");
+      		new TypeConstraint(body, new FlatTuple(var_pm2, var__virtual_5_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
+      		new Equality(body, var__virtual_5_, var__virtual_4_);
+      		// 	pm1 != pm2
+      		new Inequality(body, var_pm1, var_pm2);
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "{bf} can have at most one return parameter");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "pm1", 
+      		                "pm2"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

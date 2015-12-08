@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import hu.eltesoft.modelexecution.validation.ExternalEntityOperationParameterReturnNotValidMatch;
 import hu.eltesoft.modelexecution.validation.ExternalEntityOperationParameterReturnNotValidMatcher;
 import hu.eltesoft.modelexecution.validation.util.ExternalEntityOpParamQuerySpecification;
-import hu.eltesoft.modelexecution.validation.util.PrimitiveTypeQuerySpecification;
+import hu.eltesoft.modelexecution.validation.util.PrimitiveType_QuerySpecification;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -99,36 +99,40 @@ public final class ExternalEntityOperationParameterReturnNotValidQuerySpecificat
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_pm = body.getOrCreateVariableByName("pm");
-      	PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      	PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      	PVariable var_typ = body.getOrCreateVariableByName("typ");
-      	PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_pm, "pm")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new PositivePatternCall(body, new FlatTuple(var_pm), ExternalEntityOpParamQuerySpecification.instance().getInternalQueryRepresentation());
-      	new ConstantValue(body, var__virtual_0_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
-      	new Equality(body, var__virtual_1_, var__virtual_0_);
-      	new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
-      	new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
-      	new Equality(body, var__virtual_2_, var_typ);
-      	new NegativePatternCall(body, new FlatTuple(var_typ), PrimitiveTypeQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "External entity operations must return nothing or a single primitive value");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"pm"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_pm = body.getOrCreateVariableByName("pm");
+      		PVariable var_typ = body.getOrCreateVariableByName("typ");
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_pm, "pm")
+      		));
+      		// 	find ExternalEntityOpParam(pm)
+      		new PositivePatternCall(body, new FlatTuple(var_pm), ExternalEntityOpParamQuerySpecification.instance().getInternalQueryRepresentation());
+      		// 	Parameter.direction(pm, ::return)
+      		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
+      		new ConstantValue(body, var__virtual_0_, org.eclipse.uml2.uml.ParameterDirectionKind.get("return"));
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
+      		new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter", "direction")));
+      		new Equality(body, var__virtual_1_, var__virtual_0_);
+      		// 	Parameter.type(pm, typ)
+      		new TypeConstraint(body, new FlatTuple(var_pm), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Parameter")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_pm, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "TypedElement", "type")));
+      		new Equality(body, var__virtual_2_, var_typ);
+      		// 	neg find PrimitiveType_(typ)
+      		new NegativePatternCall(body, new FlatTuple(var_typ), PrimitiveType_QuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "External entity operations must return nothing or a single primitive value");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "pm"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {

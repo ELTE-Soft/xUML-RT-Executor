@@ -94,28 +94,28 @@ public final class GeneralizationOfAssocClassQuerySpecification extends BaseGene
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       Set<PBody> bodies = Sets.newLinkedHashSet();
       try {
-      {
-      	PBody body = new PBody(this);
-      	PVariable var_ac = body.getOrCreateVariableByName("ac");
-      	PVariable var_spec = body.getOrCreateVariableByName("spec");
-      	body.setExportedParameters(Arrays.<ExportedParameter>asList(
-      		new ExportedParameter(body, var_ac, "ac"),
-      				
-      		new ExportedParameter(body, var_spec, "spec")
-      	));
-      	new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "AssociationClass")));
-      	new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
-      	new PositivePatternCall(body, new FlatTuple(var_spec, var_ac), ParentQuerySpecification.instance().getInternalQueryRepresentation());
-      	bodies.add(body);
-      }
       	{
-      	PAnnotation annotation = new PAnnotation("Violation");
-      	annotation.addAttribute("message", "Generalization of association class {ac} is not supported");
-      	annotation.addAttribute("mark", Arrays.asList(new Object[] {
-      					"spec"
-      				}));
-      	addAnnotation(annotation);
-      }
+      		PBody body = new PBody(this);
+      		PVariable var_ac = body.getOrCreateVariableByName("ac");
+      		PVariable var_spec = body.getOrCreateVariableByName("spec");
+      		new TypeConstraint(body, new FlatTuple(var_ac), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "AssociationClass")));
+      		new TypeConstraint(body, new FlatTuple(var_spec), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.eclipse.org/uml2/5.0.0/UML", "Class")));
+      		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ac, "ac"),
+      		   new ExportedParameter(body, var_spec, "spec")
+      		));
+      		// 	find Parent(spec, ac)
+      		new PositivePatternCall(body, new FlatTuple(var_spec, var_ac), ParentQuerySpecification.instance().getInternalQueryRepresentation());
+      		bodies.add(body);
+      	}
+      	                {
+      		PAnnotation annotation = new PAnnotation("Violation");
+      		annotation.addAttribute("message", "Generalization of association class {ac} is not supported");
+      		annotation.addAttribute("mark", Arrays.asList(new Object[] {
+      		                "spec"
+      		                }));
+      		addAnnotation(annotation);
+      	}
       	// to silence compiler error
       	if (false) throw new IncQueryException("Never", "happens");
       } catch (IncQueryException ex) {
