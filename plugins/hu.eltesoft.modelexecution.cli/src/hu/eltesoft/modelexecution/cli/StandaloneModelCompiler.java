@@ -108,10 +108,10 @@ public class StandaloneModelCompiler {
 	}
 
 	private ModelSet compileModelToJava() {
+		Registry.registerPathMaps();
 		ModelSet modelSet = new ModelSet();
 		UMLResourcesUtil.init(modelSet);
-		hu.eltesoft.modelexecution.cli.Registry.registerPathMaps(modelSet);
-		hu.eltesoft.modelexecution.cli.Registry.registerReducedAlfLanguage();
+		Registry.registerReducedAlfLanguage();
 		return modelSet;
 	}
 
@@ -221,12 +221,12 @@ public class StandaloneModelCompiler {
 		if (rootDir.exists()) {
 			return false;
 		}
-		
+
 		boolean success = rootDir.mkdir();
 		if (!success) {
 			throw new RootDirCreationFailed(rootDirName);
 		}
-		
+
 		return true;
 	}
 }
