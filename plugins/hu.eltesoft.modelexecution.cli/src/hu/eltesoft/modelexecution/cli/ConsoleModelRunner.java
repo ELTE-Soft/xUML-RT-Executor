@@ -15,8 +15,6 @@ import hu.eltesoft.modelexecution.cli.logger.ConsoleLogger;
 import hu.eltesoft.modelexecution.cli.logger.IdleLogger;
 import hu.eltesoft.modelexecution.cli.logger.VerboseConsoleLogger;
 import hu.eltesoft.modelexecution.filemanager.FileManager;
-import hu.eltesoft.modelexecution.validation.Validator;
-import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 /**
  * Console application that compiles and/or executes the model based on the
@@ -50,9 +48,6 @@ public class ConsoleModelRunner {
 	private ConsoleLogger logger = new IdleLogger();
 
 	public static void main(String[] args) {
-		// turn off model validation in cli
-		Validator.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
-
 		try {
 			runner.run(args);
 		} catch (IllegalArgumentException | ParseException e) {

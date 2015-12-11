@@ -14,9 +14,13 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -49,6 +53,7 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 
 	private ResourceSelector generatedTracesFolderSelector;
 
+	private Button validationEnabledCheck;
 	private Combo validationLevel;
 
 	@Override
@@ -142,21 +147,42 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 	}
 
 	private void validationLevelControl(Composite properties) {
+		ValidationLevels validationSetting = ProjectProperties.getValidationSetting(getProject());
+
 		Group validationLevelGroup = new Group(properties, SWT.NONE);
+		validationLevelGroup.setText("Static model validation");
 		validationLevelGroup.setLayoutData(gridDataFillBoth);
 		validationLevelGroup.setLayout(new GridLayout(2, false));
 
-		Label validationLevelLabel = new Label(validationLevelGroup, SWT.NONE);
-		validationLevelLabel.setText("Code should not be generated: ");
+		validationEnabledCheck = new Button(validationLevelGroup, SWT.CHECK);
+		validationEnabledCheck.setText("Enable validation. Code should not be generated:");
+		validationEnabledCheck.setSelection(!ValidationLevels.NONE.equals(validationSetting));
+		validationEnabledCheck.addSelectionListener(new SelectionAdapter() {
 
-		ValidationLevels validationSetting = ProjectProperties.getValidationSetting(getProject());
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (validationEnabledCheck.getSelection()) {
+					setMessage(
+							"Validation is an experimental feature. It could consume a lot of memory in certain cases."
+									+ "It is recommended to increase the heap and stack size available for Eclipse.",
+							IMessageProvider.WARNING);
+					validationLevel.setEnabled(true);
+				} else {
+					setMessage("");
+					validationLevel.setEnabled(false);
+				}
+			}
+		});
+
 		validationLevel = new Combo(validationLevelGroup, SWT.NONE);
-
 		validationLevel.add("always generate");
 		validationLevel.add("on errors");
 		validationLevel.add("on warnings");
-
-		validationLevel.select(validationSetting.ordinal());
+		if (ValidationLevels.NONE.equals(validationSetting)) {
+			validationLevel.setEnabled(false);
+		} else {
+			validationLevel.select(validationSetting.ordinal());
+		}
 
 		validationLevelGroup.pack();
 	}
@@ -180,11 +206,14 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 
 	@Override
 	public boolean isValid() {
+		boolean validationEnabled = validationEnabledCheck.getSelection();
 		int selectedValidationLevel = validationLevel.getSelectionIndex();
 		return generatedFilesFolderSelector.selectionValid() && debugFilesFolderSelector.selectionValid()
 				&& instrumentedClassFilesFolderSelector.selectionValid()
-				&& generatedTracesFolderSelector.selectionValid() && selectedValidationLevel >= 0
-				&& selectedValidationLevel < ValidationLevels.values().length && super.isValid();
+				&& generatedTracesFolderSelector.selectionValid()
+				&& (!validationEnabled
+						|| (selectedValidationLevel >= 0 && selectedValidationLevel < ValidationLevels.values().length))
+				&& super.isValid();
 	}
 
 	@Override
@@ -198,8 +227,13 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 				instrumentedClassFilesFolderSelector.getSelectedResourcePath().toString());
 		ProjectProperties.setTraceFilesPath(getProject(),
 				generatedTracesFolderSelector.getSelectedResourcePath().toString());
-		ProjectProperties.setValidationSetting(getProject(),
-				Arrays.asList(ValidationLevels.values()).get(validationLevel.getSelectionIndex()));
+
+		ValidationLevels newValidationLevel = ValidationLevels.NONE;
+		if (validationEnabledCheck.getSelection()) {
+			newValidationLevel = Arrays.asList(ValidationLevels.values()).get(validationLevel.getSelectionIndex());
+		}
+		ProjectProperties.setValidationSetting(getProject(), newValidationLevel);
+
 		if (!newSrcGenPath.equals(oldSrcGenPath)) {
 			try {
 				ClasspathUtils.removeClasspathEntry(JavaCore.create(getProject()),
@@ -237,4 +271,16 @@ public class ExecutableModelPropertiesPage extends PropertyPage implements IWork
 		return super.performOk();
 	}
 
+	@Override
+	protected void performDefaults() {
+		ValidationLevels validationSetting = ProjectProperties.getValidationSetting(getProject());
+		validationEnabledCheck.setSelection(!ValidationLevels.NONE.equals(validationSetting));
+		if (ValidationLevels.NONE.equals(validationSetting)) {
+			validationLevel.setEnabled(false);
+		} else {
+			validationLevel.select(validationSetting.ordinal());
+		}
+
+		super.performDefaults();
+	}
 }

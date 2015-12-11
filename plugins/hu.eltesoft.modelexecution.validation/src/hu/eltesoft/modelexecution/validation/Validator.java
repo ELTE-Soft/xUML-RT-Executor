@@ -25,17 +25,17 @@ import hu.eltesoft.modelexecution.validation.ValidationError.Severity;
 
 public class Validator {
 
-	// do not make it final, as it enables the tests to set it to NEVER_STOP
-	public static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.STOP_ON_ERRORS;
+	public final static ValidationLevels DEFAULT_VALIDATION_LEVEL = ValidationLevels.NONE;
 
 	public enum ValidationLevels {
-		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS
+		NEVER_STOP, STOP_ON_ERRORS, STOP_ON_WARNINGS, NONE
 	}
 
 	private static Set<BaseGeneratedPatternGroup> queries = new HashSet<>();
 	private static boolean queriesInitialized;
 
 	private ModelSet modelSet;
+	private IncQueryEngine engine;
 	private boolean incremental;
 	private Set<ValidationRule> rules = new HashSet<>();
 
@@ -46,12 +46,7 @@ public class Validator {
 			}
 			previous.dispose();
 		}
-		try {
-			return new Validator(modelSet, engine, false);
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return new Validator(modelSet, engine, false);
 	}
 
 	public static Validator createIncremental(Validator previous, ModelSet modelSet, IncQueryEngine engine) {
@@ -61,15 +56,16 @@ public class Validator {
 			}
 			previous.dispose();
 		}
-		try {
-			return new Validator(modelSet, engine, true);
-		} catch (IncQueryException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return new Validator(modelSet, engine, true);
 	}
 
-	private Validator(ModelSet modelSet, IncQueryEngine engine, boolean incremental) throws IncQueryException {
+	private Validator(ModelSet modelSet, IncQueryEngine engine, boolean incremental) {
+		this.modelSet = modelSet;
+		this.engine = engine;
+		this.incremental = incremental;
+	}
+
+	private void prepare() throws IncQueryException {
 		if (!queriesInitialized) {
 			queriesInitialized = true;
 			try {
@@ -84,21 +80,19 @@ public class Validator {
 			}
 		}
 
-		this.modelSet = modelSet;
-		for (BaseGeneratedPatternGroup group : queries) {
-			for (IQuerySpecification<?> spec : group.getSpecifications()) {
-				ValidationRule rule = ValidationRule.create(spec, modelSet, engine, incremental);
-				if (rule != null) {
-					rules.add(rule);
+		if (rules.isEmpty()) {
+			for (BaseGeneratedPatternGroup group : queries) {
+				for (IQuerySpecification<?> spec : group.getSpecifications()) {
+					ValidationRule rule = ValidationRule.create(spec, modelSet, engine, incremental);
+					if (rule != null) {
+						rules.add(rule);
+					}
 				}
 			}
-		}
-		prepare(engine);
-	}
 
-	private void prepare(IncQueryEngine engine) throws IncQueryException {
-		for (BaseGeneratedPatternGroup group : queries) {
-			group.prepare(engine);
+			for (BaseGeneratedPatternGroup group : queries) {
+				group.prepare(engine);
+			}
 		}
 	}
 
@@ -109,6 +103,13 @@ public class Validator {
 	}
 
 	public void validate() {
+		try {
+			prepare();
+		} catch (IncQueryException e) {
+			e.printStackTrace();
+			return;
+		}
+
 		for (ValidationRule rule : rules) {
 			rule.validate();
 		}

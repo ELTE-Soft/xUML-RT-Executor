@@ -10,8 +10,6 @@ import org.junit.Test;
 
 import hu.eltesoft.modelexecution.m2m.logic.translators.ResourceTranslator;
 import hu.eltesoft.modelexecution.test.utils.ModelBasedTestCase;
-import hu.eltesoft.modelexecution.validation.Validator;
-import hu.eltesoft.modelexecution.validation.Validator.ValidationLevels;
 
 public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 
@@ -27,9 +25,6 @@ public abstract class ResourceTranslatorTests extends ModelBasedTestCase {
 	public void setUp() {
 		super.setUp();
 		translator = createTranslator();
-
-		// do not stop on model validation errors
-		Validator.DEFAULT_VALIDATION_LEVEL = ValidationLevels.NEVER_STOP;
 	};
 
 	protected abstract ResourceTranslator createTranslator();

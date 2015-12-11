@@ -149,8 +149,13 @@ public class ResourceTranslator {
 
 	public List<SourceCodeTask> fullTranslation() {
 		checkDisposed();
+
 		validator.clear();
-		validator.validate();
+		Optional<ValidationLevels> validationLevel = getValidationLevel();
+		if (validationLevel.isPresent() && !ValidationLevels.NONE.equals(validationLevel.get())) {
+			validator.validate();
+		}
+
 		List<SourceCodeTask> updateTasks = new LinkedList<>();
 		if (isValid()) {
 			for (RootElementTranslator<?, ?, ?> translator : translators) {
