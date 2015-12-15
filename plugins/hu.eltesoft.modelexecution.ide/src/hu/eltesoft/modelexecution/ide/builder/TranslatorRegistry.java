@@ -2,8 +2,10 @@ package hu.eltesoft.modelexecution.ide.builder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -32,6 +34,7 @@ public class TranslatorRegistry {
 	}
 
 	public void modelSetLoaded(ModelSet modelSet) {
+		upgradeCovered(modelSet);
 		ResourceTranslator t = translatorFor(modelSet, ResourceTranslator::createIncremental);
 		t.toIncremental(modelSet);
 
@@ -49,22 +52,50 @@ public class TranslatorRegistry {
 		}
 	}
 
+	private void upgradeCovered(ModelSet parent) {
+		ModelSet oldModelSet = null;
+
+		for (ModelSet childCandidate : translators.keySet()) {
+			if (covers(parent, childCandidate)) {
+				oldModelSet = childCandidate;
+				break;
+			}
+		}
+
+		if (null != oldModelSet) {
+			for (Map.Entry<URI, ModelSet> entry : modelContainment.entrySet()) {
+				if (entry.getValue() == oldModelSet) {
+					entry.setValue(parent);
+				}
+			}
+			translators.put(parent, translators.remove(oldModelSet));
+		}
+	}
+
+	private boolean covers(ModelSet parent, ModelSet childCandidate) {
+		Set<URI> covered = parent.getResources().stream().map(Resource::getURI).collect(Collectors.toSet());
+		return childCandidate.getResources().stream().map(Resource::getURI).allMatch(uri -> covered.contains(uri));
+	}
+
 	public synchronized void resourceRemoved(IResource resource) {
 		try {
 			resource.accept(new IResourceVisitor() {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
-					ModelSet removed = modelContainment.remove(resource.getLocationURI());
+					ModelSet removed = modelContainment.remove(fileToURI(resource));
 					if (removed != null) {
 						checkIfUsed(removed);
 					}
 					return true;
 				}
 
-				private void checkIfUsed(ModelSet removed) {
-					if (!modelContainment.values().contains(removed)) {
-						// TODO: release resource
+				private void checkIfUsed(ModelSet modelSet) {
+					if (!modelContainment.values().contains(modelSet)) {
+						ResourceTranslator removed = translators.remove(modelSet);
+						if (null != removed) {
+							removed.dispose();
+						}
 					}
 				}
 			});
@@ -141,6 +172,7 @@ public class TranslatorRegistry {
 			try {
 				modelSet = new ModelSet();
 				modelSet.getResource(uri, true);
+				modelContainment.put(uri, modelSet);
 			} catch (Exception e) {
 				PluginLogger.logError("Error while rebuilding resource", e); //$NON-NLS-1$
 			}
@@ -165,5 +197,4 @@ public class TranslatorRegistry {
 		}
 		return extension.toLowerCase().equals(UML_EXTENSION);
 	}
-
 }
