@@ -9,7 +9,7 @@
 		<groupId>hu.eltesoft.modelexecution</groupId>
 		<artifactId>hu.eltesoft.modelexecution.parent</artifactId>
 		<version>0.8.1-SNAPSHOT</version>
-		<relativePath>../../releng/hu.eltesoft.modelexecution.parent/pom.xml</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	
 	<!--IncQuery Maven builder is turned off on this project, as UML Standard profile
