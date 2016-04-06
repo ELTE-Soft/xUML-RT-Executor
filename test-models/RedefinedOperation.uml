@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Nv_uoGKgEeWvp6VCX7JcEA" name="RedefinedOperation">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_bFKY8GKgEeWvp6VCX7JcEA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_bFKY8WKgEeWvp6VCX7JcEA" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_bFKY8mKgEeWvp6VCX7JcEA" name="run" specification="_bFKY82KgEeWvp6VCX7JcEA">
+      <language>rALF</language>
+      <body>Child child = new Child();&#xD;
+child.op();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_bFKY82KgEeWvp6VCX7JcEA" name="run" isStatic="true" method="_bFKY8mKgEeWvp6VCX7JcEA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_bFTi4GKgEeWvp6VCX7JcEA" name="Parent">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_bFTi4WKgEeWvp6VCX7JcEA" name="SendFailure" specification="_bFTi4mKgEeWvp6VCX7JcEA">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::fail();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_bFTi4mKgEeWvp6VCX7JcEA" name="op" method="_bFTi4WKgEeWvp6VCX7JcEA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_bFTi42KgEeWvp6VCX7JcEA" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_bFTi5GKgEeWvp6VCX7JcEA" general="_bFTi4GKgEeWvp6VCX7JcEA"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_dMVg0GKgEeWvp6VCX7JcEA" name="SendSuccess" specification="_dMeqwGKgEeWvp6VCX7JcEA">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_dMeqwGKgEeWvp6VCX7JcEA" name="op" method="_dMVg0GKgEeWvp6VCX7JcEA"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_e6lLV2KgEeWvp6VCX7JcEA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_e6lLWGKgEeWvp6VCX7JcEA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_oqT2UGaNEeWhLqVIIP-Etg" name="AbstractClassTwoStepInheritance">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_sAFfUGaNEeWhLqVIIP-Etg">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sALl8GaNEeWhLqVIIP-Etg" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_sALl8WaNEeWhLqVIIP-Etg" name="run" specification="_sALl8maNEeWhLqVIIP-Etg">
+      <language>rALF</language>
+      <body>Parent parent = new Child();&#xD;
+parent.op();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_sALl8maNEeWhLqVIIP-Etg" name="run" isStatic="true" method="_sALl8WaNEeWhLqVIIP-Etg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_tLeUYGaNEeWhLqVIIP-Etg" name="GrandParent" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_tLeUYWaNEeWhLqVIIP-Etg" name="op" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sALl82aNEeWhLqVIIP-Etg" name="Parent" isAbstract="true">
+    <generalization xmi:type="uml:Generalization" xmi:id="_wagcMGaNEeWhLqVIIP-Etg" general="_tLeUYGaNEeWhLqVIIP-Etg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sARskGaNEeWhLqVIIP-Etg" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_sARskWaNEeWhLqVIIP-Etg" general="_sALl82aNEeWhLqVIIP-Etg"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_sARskmaNEeWhLqVIIP-Etg" name="SendSuccess" specification="_sARsk2aNEeWhLqVIIP-Etg">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_sARsk2aNEeWhLqVIIP-Etg" name="op" method="_sARskmaNEeWhLqVIIP-Etg" redefinedOperation="_tLeUYWaNEeWhLqVIIP-Etg"/>
+  </packagedElement>
+</uml:Model>

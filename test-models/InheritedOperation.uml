@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XOX08GKdEeWf6eQZbxluFg" name="InheritedOperation">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_YzuCIGKdEeWf6eQZbxluFg">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YzuCIWKdEeWf6eQZbxluFg" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_YzuCImKdEeWf6eQZbxluFg" name="run" specification="_YzuCI2KdEeWf6eQZbxluFg">
+      <language>rALF</language>
+      <body>Child child = new Child();&#xD;
+child.op();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_YzuCI2KdEeWf6eQZbxluFg" name="run" isStatic="true" method="_YzuCImKdEeWf6eQZbxluFg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YzuCJGKdEeWf6eQZbxluFg" name="Parent">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kOy-UGKdEeWf6eQZbxluFg" name="SendSuccess" specification="_bIaBkGKdEeWf6eQZbxluFg">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_bIaBkGKdEeWf6eQZbxluFg" name="op" method="_kOy-UGKdEeWf6eQZbxluFg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YzuCJmKdEeWf6eQZbxluFg" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_YzuCJ2KdEeWf6eQZbxluFg" general="_YzuCJGKdEeWf6eQZbxluFg"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_lTiY12KdEeWf6eQZbxluFg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_lTsJ0GKdEeWf6eQZbxluFg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

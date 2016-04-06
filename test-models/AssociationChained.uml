@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_rTzskGN2EeW1K_JLG4xloQ" name="AssociationChained">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_2up_QGN2EeW1K_JLG4xloQ">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_2uqmUGN2EeW1K_JLG4xloQ" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_2uqmUWN2EeW1K_JLG4xloQ" name="run" specification="_2uqmUmN2EeW1K_JLG4xloQ">
+      <language>rALF</language>
+      <body>A a = new A();&#xD;
+B b = new B();&#xD;
+ABAssoc::link(a => a, b => b);&#xD;
+a->b->a.one().sendSuccess();&#xD;
+ABAssoc::unlink(a => a, b => b);&#xD;
+if (!a->b.isEmpty()) {&#xD;
+	Root::TesterPackage::Tester::fail();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_2uqmUmN2EeW1K_JLG4xloQ" name="run" isStatic="true" method="_2uqmUWN2EeW1K_JLG4xloQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_2ur0cGN2EeW1K_JLG4xloQ" name="A">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_-2RmoGN2EeW1K_JLG4xloQ" name="sendSuccessBehavior" specification="_-2UC4GN2EeW1K_JLG4xloQ">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_-2UC4GN2EeW1K_JLG4xloQ" name="sendSuccess" method="_-2RmoGN2EeW1K_JLG4xloQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_2ur0cWN2EeW1K_JLG4xloQ" name="B">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_2ur0cmN2EeW1K_JLG4xloQ" name="sendSuccessBehavior" specification="_2ur0c2N2EeW1K_JLG4xloQ">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_2ur0c2N2EeW1K_JLG4xloQ" name="sendSuccess" method="_2ur0cmN2EeW1K_JLG4xloQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_2usbgGN2EeW1K_JLG4xloQ" name="ABAssoc" memberEnd="_2usbg2N2EeW1K_JLG4xloQ _2usbhGN2EeW1K_JLG4xloQ" navigableOwnedEnd="_2usbg2N2EeW1K_JLG4xloQ _2usbhGN2EeW1K_JLG4xloQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_2usbgWN2EeW1K_JLG4xloQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_2usbgmN2EeW1K_JLG4xloQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_2usbg2N2EeW1K_JLG4xloQ" name="b" type="_2ur0cWN2EeW1K_JLG4xloQ" association="_2usbgGN2EeW1K_JLG4xloQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_2usbhGN2EeW1K_JLG4xloQ" name="a" type="_2ur0cGN2EeW1K_JLG4xloQ" association="_2usbgGN2EeW1K_JLG4xloQ"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_98uIcWN2EeW1K_JLG4xloQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_98uIcmN2EeW1K_JLG4xloQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_SohpEGHKEeWDjZ4hzXnMYA" name="AttributeAccess">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_XRbt4GHKEeWDjZ4hzXnMYA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_XRbt4WHKEeWDjZ4hzXnMYA" name="Test">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_gY5BoGHKEeWDjZ4hzXnMYA" name="x">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_XRbt62HKEeWDjZ4hzXnMYA" name="run" specification="_XRbt7GHKEeWDjZ4hzXnMYA">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+test.x = 10;&#xD;
+Test test2 = new Test();&#xD;
+test2.x = 3;&#xD;
+if (test2.x == 3 &amp;&amp; test.x == 10) {&#xD;
+  Root::TesterPackage::Tester::success();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_XRbt7GHKEeWDjZ4hzXnMYA" name="run" isStatic="true" method="_XRbt62HKEeWDjZ4hzXnMYA"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_e8VkEGHKEeWDjZ4hzXnMYA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_e8VkEWHKEeWDjZ4hzXnMYA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

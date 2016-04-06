@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NSNWgGKMEeWRHu4EUOYLvA" name="SignalWithData">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_eGpkEGKMEeWRHu4EUOYLvA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_eGzVEGKMEeWRHu4EUOYLvA" name="Test" classifierBehavior="_eGzVEWKMEeWRHu4EUOYLvA" isActive="true">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_eGzVEWKMEeWRHu4EUOYLvA" name="StateMachine2">
+      <region xmi:type="uml:Region" xmi:id="_eGzVEmKMEeWRHu4EUOYLvA" name="Region1">
+        <transition xmi:type="uml:Transition" xmi:id="_eGzVE2KMEeWRHu4EUOYLvA" source="_eGzVFmKMEeWRHu4EUOYLvA" target="_eGzVF2KMEeWRHu4EUOYLvA"/>
+        <transition xmi:type="uml:Transition" xmi:id="_eGzVFGKMEeWRHu4EUOYLvA" source="_eGzVF2KMEeWRHu4EUOYLvA" target="_eGzVGWKMEeWRHu4EUOYLvA">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_-otroGKNEeWRHu4EUOYLvA" name="CheckFinish">
+            <language>rALF</language>
+            <body>if (sigdata.x == 3) { Root::TesterPackage::Tester::success(); }</body>
+          </effect>
+          <trigger xmi:type="uml:Trigger" xmi:id="_eGzVFWKMEeWRHu4EUOYLvA" name="Finish" event="_eGzVHGKMEeWRHu4EUOYLvA"/>
+        </transition>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="_eGzVFmKMEeWRHu4EUOYLvA" name="Initial1"/>
+        <subvertex xmi:type="uml:State" xmi:id="_eGzVF2KMEeWRHu4EUOYLvA" name="State1"/>
+        <subvertex xmi:type="uml:FinalState" xmi:id="_eGzVGWKMEeWRHu4EUOYLvA" name="FinalState1"/>
+      </region>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_eGzVGmKMEeWRHu4EUOYLvA" name="run" specification="_eGzVG2KMEeWRHu4EUOYLvA">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+send new Finish(x => 3) to test;</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_eGzVG2KMEeWRHu4EUOYLvA" name="run" isStatic="true" method="_eGzVGmKMEeWRHu4EUOYLvA"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_utJJQGNdEeWwdJY4OQmzyA" name="FinishReception" signal="_eGzVHWKMEeWRHu4EUOYLvA">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_ZgHUAGzjEeWvfdk3DcKicg" name="x">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+    </ownedReception>
+  </packagedElement>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_eGzVHGKMEeWRHu4EUOYLvA" name="FinishEvent" signal="_eGzVHWKMEeWRHu4EUOYLvA"/>
+  <packagedElement xmi:type="uml:Signal" xmi:id="_eGzVHWKMEeWRHu4EUOYLvA" name="Finish">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_2XbAUGKMEeWRHu4EUOYLvA" name="x">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_UcSst2KOEeWRHu4EUOYLvA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Ucb2oGKOEeWRHu4EUOYLvA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

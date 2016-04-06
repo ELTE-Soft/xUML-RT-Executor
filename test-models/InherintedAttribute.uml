@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_1sH4MGKaEeWrFcnPUBx-6g" name="InheritedAttribute">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_7XOZ0GKaEeWrFcnPUBx-6g">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_7XOZ0WKaEeWrFcnPUBx-6g" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_7XOZ0mKaEeWrFcnPUBx-6g" name="run" specification="_7XOZ1GKaEeWrFcnPUBx-6g">
+      <language>rALF</language>
+      <body>Child child = new Child();&#xD;
+child.x = 3;&#xD;
+Parent child2 = new Child();&#xD;
+child2.x = 4;&#xD;
+if (child.x == 3 &amp;&amp; child2.x == 4) {&#xD;
+	Root::TesterPackage::Tester::success();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_7XOZ1GKaEeWrFcnPUBx-6g" name="run" isStatic="true" method="_7XOZ0mKaEeWrFcnPUBx-6g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_8mS1AGKaEeWrFcnPUBx-6g" name="Parent">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_R9xv8GKbEeWrFcnPUBx-6g" name="x" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_-xMmUGKaEeWrFcnPUBx-6g" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_O_uDYGKbEeWrFcnPUBx-6g" general="_8mS1AGKaEeWrFcnPUBx-6g"/>
+  </packagedElement>
+</uml:Model>

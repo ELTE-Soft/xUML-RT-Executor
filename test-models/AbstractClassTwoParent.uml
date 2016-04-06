@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_WG7QIGaMEeWhLqVIIP-Etg" name="AbstractClassTwoParent">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_aSXV0GaMEeWhLqVIIP-Etg">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_aSXV0WaMEeWhLqVIIP-Etg" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_aSXV0maMEeWhLqVIIP-Etg" name="run" specification="_aSXV02aMEeWhLqVIIP-Etg">
+      <language>rALF</language>
+      <body>Parent1 parent1= new Child();&#xD;
+parent1.op();&#xD;
+Parent2 parent2 = new Child();&#xD;
+parent2.op();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_aSXV02aMEeWhLqVIIP-Etg" name="run" isStatic="true" method="_aSXV0maMEeWhLqVIIP-Etg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_aSjjEGaMEeWhLqVIIP-Etg" name="Parent1" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_aSjjEWaMEeWhLqVIIP-Etg" name="op" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_cMlm0GaMEeWhLqVIIP-Etg" name="Parent2" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_cMlm0WaMEeWhLqVIIP-Etg" name="op" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_aSjjEmaMEeWhLqVIIP-Etg" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_aSjjE2aMEeWhLqVIIP-Etg" general="_aSjjEGaMEeWhLqVIIP-Etg"/>
+    <generalization xmi:type="uml:Generalization" xmi:id="_hiTHQGaMEeWhLqVIIP-Etg" general="_cMlm0GaMEeWhLqVIIP-Etg"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_aSjjFGaMEeWhLqVIIP-Etg" name="SendSuccess" specification="_aSjjFWaMEeWhLqVIIP-Etg">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_aSjjFWaMEeWhLqVIIP-Etg" name="op" method="_aSjjFGaMEeWhLqVIIP-Etg" redefinedOperation="_aSjjEWaMEeWhLqVIIP-Etg _cMlm0WaMEeWhLqVIIP-Etg"/>
+  </packagedElement>
+</uml:Model>

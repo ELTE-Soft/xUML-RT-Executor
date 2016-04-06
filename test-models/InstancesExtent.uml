@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ActionLanguage="http://www.omg.org/spec/ALF/20120827/ActionLanguage-Profile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/ALF/20120827/ActionLanguage-Profile pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ">
+  <uml:Model xmi:id="_iHuCQGdtEeWV5piTeJe-0g" name="InstancesExtent">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_k8JRsGdtEeWV5piTeJe-0g">
+      <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_spW1AGdtEeWV5piTeJe-0g" name="Test">
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_spW1AWdtEeWV5piTeJe-0g" name="run" specification="_spW1AmdtEeWV5piTeJe-0g">
+        <language>rALF</language>
+        <body>new A();&#xD;
+new B();&#xD;
+new C();&#xD;
+new D();&#xD;
+new E();&#xD;
+&#xD;
+if (4 != A::instances().size()) {&#xD;
+	Root::TesterPackage::Tester::fail();&#xD;
+}&#xD;
+&#xD;
+if (2 != B::instances().size()) {&#xD;
+	Root::TesterPackage::Tester::fail();	&#xD;
+}&#xD;
+&#xD;
+if (2 != C::instances().size()) {&#xD;
+	Root::TesterPackage::Tester::fail();	&#xD;
+}&#xD;
+&#xD;
+if (1 != D::instances().size()) {&#xD;
+	Root::TesterPackage::Tester::fail();	&#xD;
+}&#xD;
+&#xD;
+if (1 != E::instances().size()) {&#xD;
+	Root::TesterPackage::Tester::fail();	&#xD;
+}&#xD;
+&#xD;
+Root::TesterPackage::Tester::success();</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_spW1AmdtEeWV5piTeJe-0g" name="run" isStatic="true" method="_spW1AWdtEeWV5piTeJe-0g"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ytwncGdtEeWV5piTeJe-0g" name="A"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_z4hKYGdtEeWV5piTeJe-0g" name="B">
+      <generalization xmi:type="uml:Generalization" xmi:id="_58bNkGdtEeWV5piTeJe-0g" general="_ytwncGdtEeWV5piTeJe-0g"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_0SOq4GdtEeWV5piTeJe-0g" name="C">
+      <generalization xmi:type="uml:Generalization" xmi:id="_6SI-4GdtEeWV5piTeJe-0g" general="_ytwncGdtEeWV5piTeJe-0g"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_0-xn0GdtEeWV5piTeJe-0g" name="D">
+      <generalization xmi:type="uml:Generalization" xmi:id="_6o8VUGdtEeWV5piTeJe-0g" general="_0SOq4GdtEeWV5piTeJe-0g"/>
+      <generalization xmi:type="uml:Generalization" xmi:id="_687BQGdtEeWV5piTeJe-0g" general="_z4hKYGdtEeWV5piTeJe-0g"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_10KXsGdtEeWV5piTeJe-0g" name="E"/>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ODSOIGduEeWV5piTeJe-0g">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ODUDUGduEeWV5piTeJe-0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+    </profileApplication>
+  </uml:Model>
+  <ActionLanguage:TextualRepresentation xmi:id="_ODYUwGduEeWV5piTeJe-0g" language="com.incquerylabs.uml.ralf.ReducedAlfLanguage"/>
+</xmi:XMI>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_GojRIGNsEeWSnIZ3HZdqiw" name="OperationOverload">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_JLS6sGNsEeWSnIZ3HZdqiw">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_JLVW8GNsEeWSnIZ3HZdqiw" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JLVW8WNsEeWSnIZ3HZdqiw" name="run" specification="_JLVW82NsEeWSnIZ3HZdqiw">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+test.op();</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JLVW8mNsEeWSnIZ3HZdqiw" name="opBehavior" specification="_JLVW9GNsEeWSnIZ3HZdqiw">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ka9y0GNsEeWSnIZ3HZdqiw" name="opBehaviorParametered" specification="_Ka_A8GNsEeWSnIZ3HZdqiw">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_xZakcGNsEeWSnIZ3HZdqiw" name="i">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <language>rALF</language>
+      <body>if (i == 3) {&#xD;
+	Root::TesterPackage::Tester::success();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_JLVW82NsEeWSnIZ3HZdqiw" name="run" isStatic="true" method="_JLVW8WNsEeWSnIZ3HZdqiw"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_JLVW9GNsEeWSnIZ3HZdqiw" name="op" method="_JLVW8mNsEeWSnIZ3HZdqiw"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Ka_A8GNsEeWSnIZ3HZdqiw" name="op" method="_Ka9y0GNsEeWSnIZ3HZdqiw">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_hcxhkGNsEeWSnIZ3HZdqiw" name="i">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+</uml:Model>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_wDrV8GG-EeWdToC55PH_EQ" name="FinalEffect">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_KHQMkGG_EeWDjZ4hzXnMYA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_KHZ9kGG_EeWDjZ4hzXnMYA" name="Test" classifierBehavior="_KHZ9kWG_EeWDjZ4hzXnMYA" isActive="true">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_KHZ9kWG_EeWDjZ4hzXnMYA" name="StateMachine2">
+      <region xmi:type="uml:Region" xmi:id="_KHZ9kmG_EeWDjZ4hzXnMYA" name="Region1">
+        <transition xmi:type="uml:Transition" xmi:id="_KHZ9lmG_EeWDjZ4hzXnMYA" source="_KHZ9m2G_EeWDjZ4hzXnMYA" target="_KHZ9mmG_EeWDjZ4hzXnMYA">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_KHZ9nGG_EeWDjZ4hzXnMYA" name="SendSuccess">
+            <language>rALF</language>
+            <body>Root::TesterPackage::Tester::success();</body>
+          </effect>
+          <trigger xmi:type="uml:Trigger" xmi:id="_KHZ9l2G_EeWDjZ4hzXnMYA" name="FinishTrigger" event="_KHs4gGG_EeWDjZ4hzXnMYA"/>
+        </transition>
+        <transition xmi:type="uml:Transition" xmi:id="_QfxN0GG_EeWDjZ4hzXnMYA" source="_KHZ9mGG_EeWDjZ4hzXnMYA" target="_KHZ9m2G_EeWDjZ4hzXnMYA"/>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="_KHZ9mGG_EeWDjZ4hzXnMYA" name="Initial1"/>
+        <subvertex xmi:type="uml:FinalState" xmi:id="_KHZ9mmG_EeWDjZ4hzXnMYA" name="FinalState1"/>
+        <subvertex xmi:type="uml:State" xmi:id="_KHZ9m2G_EeWDjZ4hzXnMYA" name="State2"/>
+      </region>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_KHZ9nWG_EeWDjZ4hzXnMYA" name="run" specification="_KHZ9nmG_EeWDjZ4hzXnMYA">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+send new Finish() to test;</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_KHZ9nmG_EeWDjZ4hzXnMYA" name="run" isStatic="true" method="_KHZ9nWG_EeWDjZ4hzXnMYA"/>
+    <ownedReception xmi:type="uml:Reception" xmi:id="_xbVWAGzuEeWRLJVqEJUGQA" name="Finish" signal="_KHs4gWG_EeWDjZ4hzXnMYA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:SignalEvent" xmi:id="_KHs4gGG_EeWDjZ4hzXnMYA" name="FinishEvent" signal="_KHs4gWG_EeWDjZ4hzXnMYA"/>
+  <packagedElement xmi:type="uml:Signal" xmi:id="_KHs4gWG_EeWDjZ4hzXnMYA" name="Finish"/>
+</uml:Model>

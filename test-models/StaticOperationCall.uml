@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_yPUqIGHqEeWuD_AMt-7Amw" name="StaticOperationCall">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_zt9LUGHqEeWuD_AMt-7Amw">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zt9LUWHqEeWuD_AMt-7Amw" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_zt9LUmHqEeWuD_AMt-7Amw" name="run" specification="_zt9LVGHqEeWuD_AMt-7Amw">
+      <language>rALF</language>
+      <body>op();</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_zt9LU2HqEeWuD_AMt-7Amw" name="op" specification="_zt9LVWHqEeWuD_AMt-7Amw">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_zt9LVGHqEeWuD_AMt-7Amw" name="run" isStatic="true" method="_zt9LUmHqEeWuD_AMt-7Amw"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_zt9LVWHqEeWuD_AMt-7Amw" name="op" isStatic="true" method="_zt9LU2HqEeWuD_AMt-7Amw"/>
+  </packagedElement>
+</uml:Model>
