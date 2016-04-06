@@ -3,7 +3,7 @@ language: java
 jdk:
   - oraclejdk8
 install: true  # disable install phase
-script: sh -c 'cd releng/hu.eltesoft.modelexecution.parent && mvn -Prelease verify'
+script: sh -c 'cd releng/hu.eltesoft.modelexecution.parent && mvn verify'
 cache:
   directories:
    - $HOME/.m2
