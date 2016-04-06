@@ -2,6 +2,7 @@ sudo: false
 language: java
 jdk:
   - oraclejdk8
+install: # intentionally left blank
 script:
   - mvn -Prelease verify
 cache:
