@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_rLy5sGNuEeWSnIZ3HZdqiw" name="Destructor">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_vrLPEGNuEeWSnIZ3HZdqiw">
+      <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_vrL2IGNuEeWSnIZ3HZdqiw" name="Test" classifierBehavior="_vrL2IWNuEeWSnIZ3HZdqiw" isActive="true">
+      <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_vrL2IWNuEeWSnIZ3HZdqiw" name="StateMachine2">
+        <region xmi:type="uml:Region" xmi:id="_vrL2ImNuEeWSnIZ3HZdqiw" name="Region1">
+          <transition xmi:type="uml:Transition" xmi:id="_vrL2I2NuEeWSnIZ3HZdqiw" source="_vrL2J2NuEeWSnIZ3HZdqiw" target="_vrL2KGNuEeWSnIZ3HZdqiw"/>
+          <subvertex xmi:type="uml:Pseudostate" xmi:id="_vrL2J2NuEeWSnIZ3HZdqiw" name="Initial1"/>
+          <subvertex xmi:type="uml:State" xmi:id="_vrL2KGNuEeWSnIZ3HZdqiw" name="State1"/>
+        </region>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_vrL2KmNuEeWSnIZ3HZdqiw" name="run" specification="_vrL2K2NuEeWSnIZ3HZdqiw" isReentrant="true">
+        <language>rALF</language>
+        <body>Test test = new Test();&#xD;
+delete test;</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Bi6ssGNvEeWSnIZ3HZdqiw" name="destroyBehavior" specification="_4INs0GNuEeWSnIZ3HZdqiw" isReentrant="true">
+        <language>rALF</language>
+        <body>Root::TesterPackage::Tester::success();</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_vrL2K2NuEeWSnIZ3HZdqiw" name="run" isStatic="true" method="_vrL2KmNuEeWSnIZ3HZdqiw"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_4INs0GNuEeWSnIZ3HZdqiw" name="destroy" method="_Bi6ssGNvEeWSnIZ3HZdqiw"/>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_DtZAMGNvEeWSnIZ3HZdqiw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_DtZnQGNvEeWSnIZ3HZdqiw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_jxOhAGzvEeWRLJVqEJUGQA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jxXq8GzvEeWRLJVqEJUGQA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <standard:Destroy xmi:id="_k8KqIGzvEeWRLJVqEJUGQA" base_BehavioralFeature="_4INs0GNuEeWSnIZ3HZdqiw"/>
+</xmi:XMI>

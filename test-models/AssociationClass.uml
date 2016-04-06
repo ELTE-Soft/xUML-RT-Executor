@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_VSsBwGg3EeWavOi5e_hTnw" name="AssociationClass">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_qWcvcGg3EeWavOi5e_hTnw">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qWvDUGg3EeWavOi5e_hTnw" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_qWvDUWg3EeWavOi5e_hTnw" name="run" specification="_qWvDUmg3EeWavOi5e_hTnw" isReentrant="true">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+A a = new A();&#xD;
+B b = new B();&#xD;
+AB::link(a => a, b => b);&#xD;
+a->b.one().sendSuccess();&#xD;
+if (AB::instances().isEmpty()) {&#xD;
+	Root::TesterPackage::Tester::fail();&#xD;
+}
+AB::unlink(a => a, b => b);&#xD;
+if (!a->b.isEmpty() || !AB::instances().isEmpty()) {&#xD;
+	Root::TesterPackage::Tester::fail();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_qWvDUmg3EeWavOi5e_hTnw" name="run" isStatic="true" method="_qWvDUWg3EeWavOi5e_hTnw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qWvDU2g3EeWavOi5e_hTnw" name="A"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qWvDVGg3EeWavOi5e_hTnw" name="B">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_qWvDVWg3EeWavOi5e_hTnw" name="sendSuccessBehavior" specification="_qWvDVmg3EeWavOi5e_hTnw" isReentrant="true">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_qWvDVmg3EeWavOi5e_hTnw" name="sendSuccess" method="_qWvDVWg3EeWavOi5e_hTnw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:AssociationClass" xmi:id="_qWvDV2g3EeWavOi5e_hTnw" name="AB" memberEnd="_qWvDWmg3EeWavOi5e_hTnw _qWvDW2g3EeWavOi5e_hTnw" navigableOwnedEnd="_qWvDWmg3EeWavOi5e_hTnw _qWvDW2g3EeWavOi5e_hTnw">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_qWvDWmg3EeWavOi5e_hTnw" name="b" type="_qWvDVGg3EeWavOi5e_hTnw" association="_qWvDV2g3EeWavOi5e_hTnw"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_qWvDW2g3EeWavOi5e_hTnw" name="a" type="_qWvDU2g3EeWavOi5e_hTnw" association="_qWvDV2g3EeWavOi5e_hTnw"/>
+  </packagedElement>
+</uml:Model>

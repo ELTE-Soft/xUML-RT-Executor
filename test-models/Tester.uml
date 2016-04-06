@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xumlrt="http://modelexecution.eltesoft.hu/xumlrt/">
+  <uml:Model xmi:id="_QR7UgGBeEeWYQ7eEzaqnqQ" name="Root">
+    <packagedElement xmi:type="uml:Package" xmi:id="_R_fpkGBeEeWYQ7eEzaqnqQ" name="TesterPackage">
+      <packagedElement xmi:type="uml:Class" xmi:id="_Tn_RYGBeEeWYQ7eEzaqnqQ" name="Tester" isAbstract="true">
+        <ownedOperation xmi:id="_9b0UsGBeEeWYQ7eEzaqnqQ" name="success" isStatic="true"/>
+        <ownedOperation xmi:id="_Mn4u4GBiEeWl_JVMFv8jww" name="fail" isStatic="true"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_lcDv8GBeEeWYQ7eEzaqnqQ">
+      <eAnnotations xmi:id="_lcFlIGBeEeWYQ7eEzaqnqQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://modelexecution.eltesoft.hu/xumlrt/#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://XUMLRT_PROFILE/xumlrt.profile.uml#_HaqtUBDoEeWE3_d6VQejPQ"/>
+    </profileApplication>
+  </uml:Model>
+  <xumlrt:ExternalEntity xmi:id="_nOMb8GBeEeWYQ7eEzaqnqQ" class="TesterImpl" type="Singleton" base_Class="_Tn_RYGBeEeWYQ7eEzaqnqQ"/>
+</xmi:XMI>

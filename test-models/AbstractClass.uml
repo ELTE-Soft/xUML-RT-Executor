@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Owa9oGaBEeW726uozT18tg" name="AbstractClass">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_Zf9pgGaBEeW726uozT18tg">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Zf9pgWaBEeW726uozT18tg" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Zf9pgmaBEeW726uozT18tg" name="run" specification="_Zf9pg2aBEeW726uozT18tg">
+      <language>rALF</language>
+      <body>Parent parent = new Child();&#xD;
+parent.op();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Zf9pg2aBEeW726uozT18tg" name="run" isStatic="true" method="_Zf9pgmaBEeW726uozT18tg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Zf9phGaBEeW726uozT18tg" name="Parent" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Zf9phmaBEeW726uozT18tg" name="op" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_ZgDwIGaBEeW726uozT18tg" name="Child">
+    <generalization xmi:type="uml:Generalization" xmi:id="_ZgDwIWaBEeW726uozT18tg" general="_Zf9phGaBEeW726uozT18tg"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fpDHoGaBEeW726uozT18tg" name="SendSuccess" specification="_fpDHoWaBEeW726uozT18tg">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_fpDHoWaBEeW726uozT18tg" name="op" method="_fpDHoGaBEeW726uozT18tg" redefinedOperation="_Zf9phmaBEeW726uozT18tg"/>
+  </packagedElement>
+</uml:Model>

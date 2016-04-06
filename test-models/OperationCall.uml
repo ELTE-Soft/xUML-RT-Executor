@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_RZCQ8GHnEeWDjZ4hzXnMYA" name="OperationCall">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_TJN1IGHnEeWDjZ4hzXnMYA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_TJN1IWHnEeWDjZ4hzXnMYA" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TJN1I2HnEeWDjZ4hzXnMYA" name="run" specification="_TJN1JGHnEeWDjZ4hzXnMYA">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+test.op();</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_bi8Y0GHqEeWuD_AMt-7Amw" name="op" specification="_UVO8UGHnEeWDjZ4hzXnMYA">
+      <language>rALF</language>
+      <body>Root::TesterPackage::Tester::success();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_TJN1JGHnEeWDjZ4hzXnMYA" name="run" isStatic="true" method="_TJN1I2HnEeWDjZ4hzXnMYA"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_UVO8UGHnEeWDjZ4hzXnMYA" name="op" method="_bi8Y0GHqEeWuD_AMt-7Amw"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_fS8nF2HnEeWDjZ4hzXnMYA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_fS8nGGHnEeWDjZ4hzXnMYA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_E-ZEIGNmEeWNkso5SpBosA" name="OperationMultiplicityArgs">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_G0oNAGNmEeWNkso5SpBosA">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_G0qpQGNmEeWNkso5SpBosA" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_G0qpQWNmEeWNkso5SpBosA" name="runBehavior" specification="_G0qpR2NmEeWNkso5SpBosA">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+Set&lt;Integer> vinout = Set&lt;Integer>{1,2,3};&#xD;
+Set&lt;Integer> vout;&#xD;
+Integer returned = test.op(pin => Set&lt;Integer>{4,5}, pinout => vinout, pout => vout);&#xD;
+if (returned == 1 &amp;&amp; vinout == Set&lt;Integer>{1,2,3,4,5} &amp;&amp; vout == Set&lt;Integer>{6,7}) {&#xD;
+	Root::TesterPackage::Tester::success();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_lr_Q0GNoEeWNkso5SpBosA" name="opBehavior" specification="_G0qpSGNmEeWNkso5SpBosA">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_nw4ugGNtEeWSnIZ3HZdqiw" name="pin">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nw4ugWNtEeWSnIZ3HZdqiw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nw4ugmNtEeWSnIZ3HZdqiw" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_nw58oGNtEeWSnIZ3HZdqiw" name="pout" direction="out">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nw58oWNtEeWSnIZ3HZdqiw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nw58omNtEeWSnIZ3HZdqiw" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_nw6jsGNtEeWSnIZ3HZdqiw" name="pinout" direction="inout">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nw6jsWNtEeWSnIZ3HZdqiw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nw6jsmNtEeWSnIZ3HZdqiw" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_nw7KwGNtEeWSnIZ3HZdqiw" name="ret" direction="return">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nw7KwWNtEeWSnIZ3HZdqiw" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nw7KwmNtEeWSnIZ3HZdqiw" value="1"/>
+      </ownedParameter>
+      <language>rALF</language>
+      <body>pinout.addAll(pin);&#xD;
+pout = Set&lt;Integer>{6,7};&#xD;
+return pinout.one();</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_G0qpR2NmEeWNkso5SpBosA" name="run" isStatic="true" method="_G0qpQWNmEeWNkso5SpBosA"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_G0qpSGNmEeWNkso5SpBosA" name="op" method="_lr_Q0GNoEeWNkso5SpBosA">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_G0qpSWNmEeWNkso5SpBosA" name="pin">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LOlP0GNmEeWNkso5SpBosA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LOxdEGNmEeWNkso5SpBosA" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_G0qpSmNmEeWNkso5SpBosA" name="pout" direction="out">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MipfwGNmEeWNkso5SpBosA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MiuYQGNmEeWNkso5SpBosA" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_G0qpS2NmEeWNkso5SpBosA" name="pinout" direction="inout">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NxM9kGNmEeWNkso5SpBosA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NxSdIGNmEeWNkso5SpBosA" value="*"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_G0qpTGNmEeWNkso5SpBosA" name="ret" direction="return">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PC-HcGNmEeWNkso5SpBosA" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PDCY4GNmEeWNkso5SpBosA" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+</uml:Model>

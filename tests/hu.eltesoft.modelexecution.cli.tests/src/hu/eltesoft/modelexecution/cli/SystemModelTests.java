@@ -29,10 +29,7 @@ public class SystemModelTests extends ModelBasedTests {
 
 	private static final String TESTER_UML_FILE_NAME = "Tester.uml";
 
-	private static final Path TRUNK_SYSTEM_MODELS_DIR = Paths.get("..", "..", "..", "testing", "TestModels");
-	private static final Path BRANCH_SYSTEM_MODELS_DIR = Paths.get("..", "..", "..", "..", "testing", "TestModels");
-
-	private static File systemModelsDir;
+	private static final File SYSTEM_MODELS_DIR = Paths.get("..", "..", "test-models").toFile();
 
 	@Before
 	@Override
@@ -41,7 +38,7 @@ public class SystemModelTests extends ModelBasedTests {
 
 		// copy Tester.uml to source folder
 		File targetFile = srcFolder.toPath().resolve(TESTER_UML_FILE_NAME).toFile();
-		File testerFile = systemModelsDir.toPath().resolve(TESTER_UML_FILE_NAME).toFile();
+		File testerFile = SYSTEM_MODELS_DIR.toPath().resolve(TESTER_UML_FILE_NAME).toFile();
 		Files.copy(testerFile, targetFile);
 
 		// copy external entity implementation to build folder
@@ -61,11 +58,7 @@ public class SystemModelTests extends ModelBasedTests {
 
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> getParameters() {
-		File trunkDir = TRUNK_SYSTEM_MODELS_DIR.toFile();
-		File branchDir = BRANCH_SYSTEM_MODELS_DIR.toFile();
-		systemModelsDir = trunkDir.exists() ? trunkDir : branchDir;
-
-		Stream<File> umlFiles = Arrays.stream(systemModelsDir.listFiles()).filter(file -> {
+		Stream<File> umlFiles = Arrays.stream(SYSTEM_MODELS_DIR.listFiles()).filter(file -> {
 			String name = file.getName();
 			if (TESTER_UML_FILE_NAME.equals(name)) {
 				return false;

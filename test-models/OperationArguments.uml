@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_G2FdUGHsEeWuD_AMt-7Amw" name="OperationArguments">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_TRvswGHsEeWuD_AMt-7Amw">
+    <importedPackage xmi:type="uml:Package" href="Tester.uml#_R_fpkGBeEeWYQ7eEzaqnqQ"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_TR5dwGHsEeWuD_AMt-7Amw" name="Test">
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TR5dwWHsEeWuD_AMt-7Amw" name="run" specification="_TR5dw2HsEeWuD_AMt-7Amw">
+      <language>rALF</language>
+      <body>Test test = new Test();&#xD;
+Integer vinout = 5;&#xD;
+Integer vout;&#xD;
+Integer returned = test.op(pin => 3, pinout => vinout, pout => vout);&#xD;
+if (returned == 1 &amp;&amp; vinout == 8 &amp;&amp; vout == 2) {&#xD;
+	Root::TesterPackage::Tester::success();&#xD;
+}</body>
+    </ownedBehavior>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TR5dwmHsEeWuD_AMt-7Amw" name="op" specification="_TR5dxGHsEeWuD_AMt-7Amw">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_VkJRQGNtEeWSnIZ3HZdqiw" name="pin">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_VkJ4UGNtEeWSnIZ3HZdqiw" name="pout" direction="out">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_VkJ4UWNtEeWSnIZ3HZdqiw" name="pinout" direction="inout">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_VkKfYGNtEeWSnIZ3HZdqiw" name="ret" direction="return">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <language>rALF</language>
+      <body>pinout = pinout + pin;&#xD;
+pout = 2;&#xD;
+return 1;</body>
+    </ownedBehavior>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_TR5dw2HsEeWuD_AMt-7Amw" name="run" isStatic="true" method="_TR5dwWHsEeWuD_AMt-7Amw"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_TR5dxGHsEeWuD_AMt-7Amw" name="op" method="_TR5dwmHsEeWuD_AMt-7Amw">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_jRwzwGHsEeWuD_AMt-7Amw" name="pin">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_lOlFwGHsEeWuD_AMt-7Amw" name="pout" direction="out">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_nf0voGHsEeWuD_AMt-7Amw" name="pinout" direction="inout">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_pV2dIGHsEeWuD_AMt-7Amw" name="ret" direction="return">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_2dxVp2HsEeWuD_AMt-7Amw">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_2dxVqGHsEeWuD_AMt-7Amw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>
